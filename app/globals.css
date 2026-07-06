@@ -1,0 +1,68 @@
+@import "tailwindcss";
+
+:root {
+  --background: #0b0b0f;
+  --foreground: #ededf0;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-gold: #c9a35c;
+  --color-cream: #e8dcc3;
+  --color-ivory: #f2efe8;
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-cormorant);
+  --font-cinzel: var(--font-cinzel);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+}
+
+/* rótulos em versalete dourado (Cinzel) usados em todas as telas */
+.kicker {
+  font-family: var(--font-cinzel), serif;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+}
+
+/* botão primário "pergaminho" */
+.btn-gold {
+  background: linear-gradient(180deg, #f2ecdd, #ddceac);
+  color: #161410;
+  box-shadow: 0 0 22px rgba(201, 163, 92, 0.2);
+}
+.btn-gold:hover {
+  box-shadow: 0 0 28px rgba(201, 163, 92, 0.35);
+}
+
+@keyframes vmPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(201, 163, 92, 0.45);
+  }
+  50% {
+    box-shadow: 0 0 0 7px rgba(201, 163, 92, 0);
+  }
+}
+@keyframes vmCaret {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+.vm-pulse {
+  animation: vmPulse 1.6s infinite;
+}
+.vm-caret {
+  animation: vmCaret 1s infinite;
+}

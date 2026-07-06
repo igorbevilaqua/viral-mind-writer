@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__claude_ai_Supabase__execute_sql",
+      "Bash(gh auth *)",
+      "Bash(gh repo *)"
+    ]
+  }
+}

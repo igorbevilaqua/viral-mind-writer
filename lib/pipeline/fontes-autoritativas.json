@@ -1,0 +1,24 @@
+{
+  "_comentario": "Hierarquia de fontes para o fact-check (Fase 2). Editável. tier_1 = primárias/institucionais (mais forte), tier_2 = jornalismo com histórico, tier_3 = confirmação cruzada (datas/contexto; fraco p/ superlativos e números finos). Tier 0 (site do próprio cliente, p/ fatos sobre ele mesmo) é contextual, tratado no prompt. Domínios sem 'www'; subdomínios casam por sufixo.",
+  "tier_1": [
+    "sec.gov", "cvm.gov.br", "gov.br", "gov.uk", "europa.eu", "un.org", "who.int",
+    "imf.org", "worldbank.org", "oecd.org", "federalreserve.gov", "bcb.gov.br",
+    "ibge.gov.br", "ipea.gov.br", "census.gov", "bls.gov", "eurostat.ec.europa.eu",
+    "nature.com", "science.org", "nejm.org", "jamanetwork.com", "thelancet.com",
+    "pubmed.ncbi.nlm.nih.gov", "ncbi.nlm.nih.gov", "nasa.gov", "esa.int", "cern.ch",
+    "supremo.stf.jus.br", "stf.jus.br", "stj.jus.br", "planalto.gov.br"
+  ],
+  "tier_2": [
+    "reuters.com", "apnews.com", "bloomberg.com", "ft.com", "nytimes.com", "wsj.com",
+    "economist.com", "theguardian.com", "washingtonpost.com", "bbc.com", "bbc.co.uk",
+    "dw.com", "lemonde.fr", "elpais.com", "folha.uol.com.br", "estadao.com.br",
+    "oglobo.globo.com", "g1.globo.com", "valor.globo.com", "cnnbrasil.com.br",
+    "uol.com.br", "nexojornal.com.br", "techcrunch.com", "theverge.com", "wired.com",
+    "arstechnica.com", "nationalgeographic.com", "scientificamerican.com"
+  ],
+  "tier_3": [
+    "wikipedia.org", "britannica.com", "aosfatos.org", "lupa.uol.com.br",
+    "projetocomprova.com.br", "snopes.com", "factcheck.org", "politifact.com",
+    "investopedia.com", "imdb.com"
+  ]
+}

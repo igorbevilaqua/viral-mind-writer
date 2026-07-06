@@ -1,0 +1,11 @@
+-- Consolidação (2026-07-03): as tabelas vm_* passaram a viver no projeto
+-- Viral Data (qclvrddrqulgfzccndnl), junto do corpus. Aplicada lá como
+-- "vm_app_tables" via MCP. O projeto antigo Viral Mind (eakiimzf...) foi
+-- aposentado. Diferenças vs 0001_init.sql:
+--   - client_id referencia clientes(id) (tabela do corpus) em vez de clients(id)
+--   - viral_data_cliente_id ficou redundante (= client_id); mantido p/ compat
+-- Dados migrados: vm_playbooks (via scripts/seed-playbooks.ts) e
+-- vm_banned_phrases (32 regex). Sessões/roteiros começaram do zero.
+--
+-- Este arquivo é registro histórico — o schema fonte é o 0001 com as
+-- substituições acima.
