@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { createSession, type NewAttachment } from "@/lib/actions";
 import type { ThemeSuggestion } from "@/lib/pipeline/suggest";
@@ -16,6 +16,25 @@ const KIND_LABELS: Record<NewAttachment["kind"], { label: string; placeholder: s
 };
 
 const VIDEO_URL = /youtube\.com|youtu\.be|instagram\.com|tiktok\.com/i;
+
+// Frases que rotacionam durante a espera de cada fase — a pesquisa é a longa, então tem mais.
+const SUGGEST_MESSAGES: Record<string, string[]> = {
+  dados: [
+    "Lendo dados, preferências e hits de clientes afins...",
+    "Cruzando padrões validados por performance e recência...",
+  ],
+  pesquisa: [
+    "Caçador de pautas varrendo a web e o X em tempo real...",
+    "Rastreando o que está bombando agora no nicho...",
+    "Separando o que tem tração de verdade do ruído...",
+    "Conferindo datas, números e fontes das oportunidades...",
+  ],
+  sintese: [
+    "Diretor de pauta cruzando dados validados com a pesquisa...",
+    "Rankeando da aposta mais forte à mais fraca...",
+    "Escrevendo ângulo, abordagem e gancho de cada tema...",
+  ],
+};
 
 // Modelagem (desconstruir e replicar a arquitetura) só faz sentido para material com estrutura de vídeo.
 const CAN_MODELAGEM: NewAttachment["kind"][] = ["reference_script", "video_link"];
@@ -69,6 +88,24 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
   const [suggestPhase, setSuggestPhase] = useState<string | null>(null);
   const [sugestoes, setSugestoes] = useState<ThemeSuggestion[]>([]);
   const [suggestError, setSuggestError] = useState<string | null>(null);
+  const [msgIdx, setMsgIdx] = useState(0);
+  const promptRef = useRef<HTMLTextAreaElement>(null);
+
+  // Rotaciona as frases de status enquanto a fase está ativa (reseta a cada troca de fase).
+  useEffect(() => {
+    if (!suggestPhase) return;
+    setMsgIdx(0);
+    const id = setInterval(() => setMsgIdx((i) => i + 1), 2600);
+    return () => clearInterval(id);
+  }, [suggestPhase]);
+
+  // Textarea que cresce com o conteúdo (sugestão aceita pode ser longa) até um teto, aí rola.
+  useEffect(() => {
+    const el = promptRef.current;
+    if (!el) return;
+    el.style.height = "auto";
+    el.style.height = `${Math.min(el.scrollHeight, 340)}px`;
+  }, [prompt]);
 
   const addAttachment = (kind: NewAttachment["kind"]) =>
     setAttachments((a) => [...a, { kind, is_modelagem: false, url: "", raw_content: "" }]);
@@ -152,7 +189,7 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
     }
   };
 
-  const useTheme = (s: ThemeSuggestion) => {
+  const applyTheme = (s: ThemeSuggestion) => {
     setPrompt(
       `${s.tema}\n\nÂNGULO NARRATIVO: ${s.angulo_narrativo}\nABORDAGEM: ${s.forma_abordagem}${
         s.estrutura_sugerida ? `\nESTRUTURA SUGERIDA: ${s.estrutura_sugerida}` : ""
@@ -183,11 +220,12 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
       {/* prompt */}
       <div className="rounded-[18px] border border-white/[.12] bg-white/[.03] overflow-hidden focus-within:border-gold/40 transition-colors">
         <textarea
+          ref={promptRef}
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
           rows={4}
           placeholder="Descreva o vídeo: tema, ângulo, formato…"
-          className="w-full bg-transparent resize-none outline-none px-5 pt-5 pb-2 text-[15px] leading-relaxed placeholder:text-white/35"
+          className="w-full bg-transparent resize-none outline-none px-5 pt-5 pb-2 text-[15px] leading-relaxed placeholder:text-white/35 overflow-y-auto"
         />
         <div className="flex items-center gap-2.5 px-3.5 py-3 border-t border-white/[.07] bg-white/[.02] flex-wrap">
           <select
@@ -230,11 +268,15 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
       {suggestPhase && (
         <div className="mt-4 rounded-[14px] border border-gold/25 bg-gold/[.04] px-4 py-3.5 flex items-center gap-3">
           <span className="w-2 h-2 rounded-full bg-gold vm-pulse shrink-0" />
-          <p className="text-[13px] text-white/70">
-            {suggestPhase === "dados" && "Lendo dados, preferências e hits de clientes afins..."}
-            {suggestPhase === "pesquisa" && "Caçador de pautas varrendo a web e o X em tempo real..."}
-            {suggestPhase === "sintese" && "Diretor de pauta cruzando dados validados com a pesquisa..."}
-          </p>
+          {(() => {
+            const msgs = SUGGEST_MESSAGES[suggestPhase] ?? SUGGEST_MESSAGES.dados;
+            const msg = msgs[msgIdx % msgs.length];
+            return (
+              <p key={msg} className="text-[13px] text-white/70 vm-fade-in">
+                {msg}
+              </p>
+            );
+          })()}
         </div>
       )}
       {suggestError && (
@@ -255,7 +297,7 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
                   <span className="font-display text-gold/70 text-lg leading-none mt-0.5">{i + 1}.</span>
                   <p className="flex-1 min-w-0 text-[14.5px] font-medium text-cream leading-snug">{s.tema}</p>
                   <button
-                    onClick={() => useTheme(s)}
+                    onClick={() => applyTheme(s)}
                     className="btn-gold shrink-0 rounded-[9px] px-3.5 py-1.5 text-[12px] font-semibold"
                   >
                     Usar este tema

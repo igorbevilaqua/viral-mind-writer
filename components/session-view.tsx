@@ -541,9 +541,33 @@ export default function SessionView({
           <span className="text-white/25">/</span>
           <span className="font-mono text-white/60">#{session.id.slice(0, 6)}</span>
         </div>
-        <h1 className="font-display text-2xl sm:text-3xl font-medium leading-[1.25] text-ivory mt-3.5">
-          {session.prompt}
-        </h1>
+        {(() => {
+          // Prompts vindos de uma sugestão trazem tema + briefing longo (ângulo, abordagem, apoio).
+          // Título = 1ª linha; o resto vira um briefing recolhível — não polui o topo da sessão.
+          const nl = session.prompt.indexOf("\n");
+          const titulo = (nl === -1 ? session.prompt : session.prompt.slice(0, nl)).trim();
+          const briefing = nl === -1 ? "" : session.prompt.slice(nl + 1).trim();
+          return (
+            <>
+              <h1 className="font-display text-2xl sm:text-3xl font-medium leading-[1.25] text-ivory mt-3.5">
+                {titulo}
+              </h1>
+              {briefing && (
+                <details className="mt-2.5 group">
+                  <summary className="cursor-pointer inline-flex items-center gap-1.5 text-[12.5px] text-white/45 select-none hover:text-white/70">
+                    <svg width="11" height="11" viewBox="0 0 16 16" fill="none" className="transition-transform group-open:rotate-90">
+                      <path d="M6 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                    Briefing da pauta
+                  </summary>
+                  <p className="mt-2.5 whitespace-pre-wrap text-[13px] leading-relaxed text-white/70 border-l-2 border-gold/25 pl-4">
+                    {briefing}
+                  </p>
+                </details>
+              )}
+            </>
+          );
+        })()}
         <div className="flex items-center gap-2.5 mt-3 flex-wrap">
           {session.clientNome && (
             <span className="rounded-full border border-indigo-500/40 bg-indigo-500/[.08] px-3 py-1 text-xs text-indigo-300">

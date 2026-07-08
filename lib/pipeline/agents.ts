@@ -39,6 +39,36 @@ export function taughtBlock(ctx: GenerationContext, dimensoes: string[], n = 3):
   return rows.map((r) => `- ${r.titulo} — ${r.descricao}`).join("\n");
 }
 
+// Claude às vezes serializa o input da tool — ou um campo array dele — como string JSON
+// (double-encode). Sem isso, `input.campo.map(...)` estoura "reading 'map' of undefined".
+// Mesmo problema já tratado no ideador (suggest.ts).
+function toolInput(block: { input: unknown }): Record<string, unknown> {
+  let v: unknown = block.input;
+  if (typeof v === "string") {
+    try {
+      v = JSON.parse(v);
+    } catch {
+      v = {};
+    }
+  }
+  return v && typeof v === "object" ? (v as Record<string, unknown>) : {};
+}
+
+function toolArray<T>(input: Record<string, unknown>, key: string): T[] {
+  let v: unknown = input[key];
+  if (typeof v === "string") {
+    try {
+      v = JSON.parse(v);
+    } catch {
+      v = [];
+    }
+  }
+  if (v && !Array.isArray(v) && typeof v === "object" && Array.isArray((v as Record<string, unknown>)[key])) {
+    v = (v as Record<string, unknown>)[key];
+  }
+  return Array.isArray(v) ? (v as T[]) : [];
+}
+
 export function formatNarrativa(n: NarrativaCandidata): string {
   return `TÍTULO: ${n.titulo}
 ESTRUTURA: ${n.estrutura}
@@ -160,7 +190,9 @@ Proponha as narrativas candidatas.`,
 
   const toolUse = res.content.find((b) => b.type === "tool_use");
   if (!toolUse || toolUse.type !== "tool_use") throw new Error("storytelling: sem narrativas estruturadas");
-  return (toolUse.input as { candidatas: NarrativaCandidata[] }).candidatas;
+  const candidatas = toolArray<NarrativaCandidata>(toolInput(toolUse), "candidatas");
+  if (!candidatas.length) throw new Error("storytelling: nenhuma narrativa válida");
+  return candidatas;
 }
 
 // ── 2. Dados (rankeia narrativas + orienta roteiro e hook) ──────────────────
@@ -228,7 +260,12 @@ Rankeie as candidatas e produza as orientações.`,
 
   const toolUse = res.content.find((b) => b.type === "tool_use");
   if (!toolUse || toolUse.type !== "tool_use") throw new Error("dados: sem ranking estruturado");
-  return toolUse.input as { ranking: RankingItem[]; orientacao_roteiro: string; orientacao_hook: string };
+  const input = toolInput(toolUse);
+  return {
+    ranking: toolArray<RankingItem>(input, "ranking"),
+    orientacao_roteiro: String(input.orientacao_roteiro ?? ""),
+    orientacao_hook: String(input.orientacao_hook ?? ""),
+  };
 }
 
 // ── 5. Hook (projetado sobre o roteiro pronto + narrativa + dados) ──────────
@@ -286,7 +323,12 @@ Desenhe o hook.`,
 
   const toolUse = res.content.find((b) => b.type === "tool_use");
   if (!toolUse || toolUse.type !== "tool_use") throw new Error("hook: sem saída estruturada");
-  return toolUse.input as { hook: string; variantes: string[]; racional: string };
+  const input = toolInput(toolUse);
+  return {
+    hook: String(input.hook ?? ""),
+    variantes: toolArray<string>(input, "variantes"),
+    racional: String(input.racional ?? ""),
+  };
 }
 
 // ── 6. Comando (CTA) ─────────────────────────────────────────────────────────
