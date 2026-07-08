@@ -16,7 +16,7 @@ export default async function SessionPage({
 
   const { data: session } = await appDb
     .from("vm_sessions")
-    .select("id, prompt, status, error_message, created_at, clientes(nome)")
+    .select("id, prompt, status, error_message, artifacts, created_at, clientes(nome)")
     .eq("id", id)
     .maybeSingle();
   if (!session) notFound();
@@ -24,7 +24,9 @@ export default async function SessionPage({
   const [{ data: scripts }, { data: analyses }] = await Promise.all([
     appDb
       .from("vm_generated_scripts")
-      .select("id, version, headline, hook, hook_variants, roteiro, comando, fontes, slop_lint_violations, created_at")
+      .select(
+        "id, version, headline, hook, hook_variants, roteiro, comando, fontes, slop_lint_violations, status, published_url, published_at, created_at"
+      )
       .eq("session_id", id)
       .order("version", { ascending: false }),
     appDb
@@ -32,6 +34,14 @@ export default async function SessionPage({
       .select("analysis, replication_brief, vm_attachments!inner(session_id)")
       .eq("vm_attachments.session_id", id),
   ]);
+
+  // Performance real dos roteiros publicados (flywheel fechado — sincroniza toda segunda via ETL)
+  const { data: performance } = scripts?.length
+    ? await appDb
+        .from("vm_script_performance")
+        .select("script_id, views, retencao_hook, retencao_final, compartilhamentos, seguidores_ganhos")
+        .in("script_id", scripts.map((s) => s.id))
+    : { data: [] };
 
   const client = Array.isArray(session.clientes) ? session.clientes[0] : session.clientes;
 
@@ -45,7 +55,9 @@ export default async function SessionPage({
         clientNome: client?.nome ?? null,
       }}
       scripts={scripts ?? []}
+      performance={performance ?? []}
       analyses={(analyses ?? []).map((a) => ({ analysis: a.analysis, replication_brief: a.replication_brief }))}
+      artifacts={session.artifacts ?? null}
       autoStart={start === "1" && session.status === "draft"}
     />
   );

@@ -22,9 +22,13 @@ const warned = slopLint("Isso é simplesmente comum.", phrases);
 assert.equal(blockCount(warned), 0);
 assert.equal(warned.length, 1);
 
-// travessões em excesso bloqueiam
+// travessão é proibido — tolerância zero (requisito do humanizador)
 const dashes = slopLint("A taxa — que ninguém viu — subiu de novo.", phrases);
 assert.ok(blockCount(dashes) >= 1, "2 travessões deveriam bloquear");
+const oneDash = slopLint("A taxa subiu — e ninguém percebeu.", phrases);
+assert.ok(blockCount(oneDash) >= 1, "1 travessão deveria bloquear");
+const enDash = slopLint("A taxa subiu – e ninguém percebeu.", phrases);
+assert.ok(blockCount(enDash) >= 1, "en dash como travessão deveria bloquear");
 
 // regex inválida cadastrada não derruba o lint
 assert.ok(Array.isArray(slopLint("qualquer texto", phrases)));

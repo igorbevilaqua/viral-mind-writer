@@ -1,8 +1,47 @@
 export type PipelineEvent =
-  | { type: "phase"; phase: "coleta" | "modelagem" | "rascunho" | "critica" | "humanizacao" | "salvando" }
+  | {
+      type: "phase";
+      phase:
+        | "pesquisa"
+        | "modelagem"
+        | "narrativas"
+        | "roteiro"
+        | "hook_comando"
+        | "revisao"
+        | "humanizacao"
+        | "salvando";
+    }
+  | { type: "narrativas"; candidatas: NarrativaCandidata[]; ranking: RankingItem[]; escolhida: number }
   | { type: "token"; text: string }
   | { type: "done"; scriptId: string }
   | { type: "error"; message: string };
+
+export interface NarrativaCandidata {
+  titulo: string;
+  estrutura: string; // código + nome no playbook, ex: "A1. Jornada do Herói"
+  personagem: string;
+  conflito: string;
+  mecanismo_emocional: string;
+  beats: string[];
+  gancho_potencial: string;
+  porque_funciona: string;
+}
+
+export interface RankingItem {
+  indice: number; // posição na lista de candidatas
+  score: number; // 0-100
+  justificativa: string;
+}
+
+// Cacheado em vm_sessions.artifacts: trocar narrativa / regenerar não re-paga pesquisa+storytelling.
+export interface SessionArtifacts {
+  dossie: string;
+  candidatas: NarrativaCandidata[];
+  ranking: RankingItem[];
+  escolhida: number; // índice em candidatas
+  orientacao_roteiro: string;
+  orientacao_hook: string;
+}
 
 export interface Attachment {
   id: string;
@@ -28,6 +67,21 @@ export interface BannedPhrase {
   severity: "block" | "warn";
 }
 
+// Payload dos insights por cliente materializados pelo ETL (insight_type client_*)
+export interface ClientInsightPayload {
+  titulo: string;
+  descricao: string;
+  score: number;
+  tipo?: string;
+  performance_ratio?: number;
+  media_views?: number | null;
+  media_seguidores?: number | null;
+  amostra?: number;
+  recencia_dias?: number | null;
+  ultimo_uso?: string | null;
+  destaque?: boolean;
+}
+
 export interface GenerationContext {
   sessionId: string;
   prompt: string;
@@ -39,6 +93,7 @@ export interface GenerationContext {
   fewShot: { roteiro: string; origem: string }[];
   attachments: Attachment[];
   modelagemBriefs: string[];
+  artifacts: SessionArtifacts | null;
 }
 
 export interface ScriptSections {

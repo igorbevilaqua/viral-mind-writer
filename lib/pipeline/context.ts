@@ -2,9 +2,10 @@ import OpenAI from "openai";
 import { appDb, viralData } from "../db";
 import type { Attachment, BannedPhrase, ClientPrefs, GenerationContext } from "./types";
 
-const openai = new OpenAI();
-
 async function embed(text: string): Promise<number[]> {
+  // instanciado aqui (não no import): sem OPENAI_API_KEY o construtor lança,
+  // e o try/catch do few-shot absorve — a geração segue sem exemplos vetoriais.
+  const openai = new OpenAI();
   const res = await openai.embeddings.create({
     model: "text-embedding-3-small", // 1536 dims, compatível com os embeddings existentes
     input: text.slice(0, 8000),
@@ -34,7 +35,7 @@ async function fetchFewShot(prompt: string, clientId: string | null) {
 export async function loadContext(sessionId: string): Promise<GenerationContext> {
   const { data: session, error } = await appDb
     .from("vm_sessions")
-    .select("id, prompt, client_id")
+    .select("id, prompt, client_id, artifacts")
     .eq("id", sessionId)
     .single();
   if (error || !session) throw new Error(`sessão não encontrada: ${error?.message}`);
@@ -71,6 +72,32 @@ export async function loadContext(sessionId: string): Promise<GenerationContext>
     .select("insight_type, scope, payload")
     .in("scope", scopes);
 
+  // Aprendizados ensinados (menu Ensinar): entram como pseudo-insights taught_<dimensao>,
+  // roteados por dimensão nos agentes via taughtBlock. Curadoria humana: prevalecem em conflito.
+  const taught: { insight_type: string; scope: string; payload: unknown }[] = [];
+  try {
+    const { data } = await appDb
+      .from("vm_lesson_learnings")
+      .select("dimensao, titulo, descricao, created_at, vm_lessons!inner(client_id)")
+      .eq("active", true)
+      .order("created_at", { ascending: false });
+    const rows = (data ?? [])
+      .map((t) => ({ ...t, lessonClient: (Array.isArray(t.vm_lessons) ? t.vm_lessons[0] : t.vm_lessons)?.client_id ?? null }))
+      .filter((t) => t.lessonClient === null || t.lessonClient === session.client_id)
+      // client-scoped antes de global; dentro do grupo, mais novos primeiro (já ordenado)
+      .sort((a, b) => Number(!!b.lessonClient) - Number(!!a.lessonClient))
+      .slice(0, 12); // orçamento de contexto do agente Dados
+    taught.push(
+      ...rows.map((t) => ({
+        insight_type: `taught_${t.dimensao}`,
+        scope: t.lessonClient ? `client:${t.lessonClient}` : "global",
+        payload: { titulo: t.titulo, descricao: t.descricao },
+      }))
+    );
+  } catch (e) {
+    console.error("aprendizados ensinados indisponíveis, seguindo sem", e);
+  }
+
   return {
     sessionId,
     prompt: session.prompt,
@@ -78,9 +105,10 @@ export async function loadContext(sessionId: string): Promise<GenerationContext>
     clientPrefs,
     playbooks,
     bannedPhrases: (bannedRes.data ?? []) as BannedPhrase[],
-    insights: insights ?? [],
+    insights: [...(insights ?? []), ...taught],
     fewShot,
     attachments: (attachments.data ?? []) as Attachment[],
     modelagemBriefs: [],
+    artifacts: (session.artifacts as GenerationContext["artifacts"]) ?? null,
   };
 }

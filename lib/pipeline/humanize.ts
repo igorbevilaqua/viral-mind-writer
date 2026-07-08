@@ -1,9 +1,10 @@
 import { anthropic, WRITER_MODEL } from "../anthropic";
+import { agentPrompt } from "./agents";
 import { slopLint, blockCount, type LintViolation } from "./slop-lint";
 import type { GenerationContext } from "./types";
 import { OUTPUT_FORMAT } from "./draft";
 
-// Passe final: re-textura sem re-estruturar + lint determinístico com até 2 retries.
+// 8. Humanizador: re-textura sem re-estruturar + lint determinístico com até 2 retries.
 export async function humanize(
   ctx: GenerationContext,
   script: string
@@ -27,7 +28,7 @@ export async function humanize(
     const res = await anthropic.messages.create({
       model: WRITER_MODEL,
       max_tokens: 4000,
-      system: `Você é um roteirista humano brasileiro fazendo o passe final de naturalidade. Reescreva o roteiro mantendo EXATAMENTE a mesma estrutura, beats e argumentos — mude apenas a textura do texto para soar como fala espontânea de brasileiro. Nada de registro de IA.\n\n${ctx.playbooks.style_guide ?? ""}\n\n${voiceRefs}`,
+      system: `${agentPrompt("humanizador")}\n\n# GUIA DE ESTILO\n${ctx.playbooks.style_guide ?? ""}\n\n${voiceRefs}`,
       messages: [
         {
           role: "user",
@@ -37,7 +38,9 @@ export async function humanize(
     });
 
     const block = res.content.find((b) => b.type === "text");
-    current = block?.type === "text" ? block.text : current;
+    const next = block?.type === "text" ? block.text : "";
+    // Guarda: só adota a reescrita se ela preservou o formato do roteiro.
+    if (/##\s*ROTEIRO/i.test(next)) current = next;
 
     violations = slopLint(current, ctx.bannedPhrases);
     if (blockCount(violations) === 0) break;

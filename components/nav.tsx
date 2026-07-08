@@ -20,11 +20,23 @@ export default function Nav() {
       <Link href="/sessions" className={linkCls(pathname.startsWith("/sessions"))}>
         Sessões
       </Link>
-      <Link href="/settings/clientes" className={linkCls(pathname.startsWith("/settings"))}>
-        Configurações
+      <Link href="/ensinar" className={linkCls(pathname.startsWith("/ensinar"))}>
+        Ensinar
       </Link>
-      <span className="ml-auto hidden md:block font-mono text-[11px] text-white/35">
-        escritório de roteiristas virais
+      <Link href="/settings/clientes" className={linkCls(pathname.startsWith("/settings"))}>
+        Clientes
+      </Link>
+      <span className="ml-auto flex items-center gap-5">
+        <span className="hidden md:block font-mono text-[11px] text-white/35">
+          escritório de roteiristas virais
+        </span>
+        {pathname !== "/login" && (
+          <form action="/auth/signout" method="post">
+            <button type="submit" className="text-white/45 hover:text-white cursor-pointer">
+              Sair
+            </button>
+          </form>
+        )}
       </span>
     </nav>
   );

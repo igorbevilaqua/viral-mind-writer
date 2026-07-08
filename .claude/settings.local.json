@@ -3,7 +3,37 @@
     "allow": [
       "mcp__claude_ai_Supabase__execute_sql",
       "Bash(gh auth *)",
-      "Bash(gh repo *)"
+      "Bash(gh repo *)",
+      "Bash(grep -i \"tldv\" .env.local .env.example)",
+      "Bash(find . -path ./node_modules -prune -o -iname \"*clientes*\" -print)",
+      "WebSearch",
+      "WebFetch(domain:doc.tldv.io)",
+      "Bash(npx tsc *)",
+      "Bash(npx tsx *)",
+      "mcp__claude_ai_Google_Drive__create_file",
+      "mcp__claude_ai_Google_Drive__read_file_content",
+      "mcp__claude_ai_Google_Drive__get_file_permissions",
+      "Bash(python3 -c \"import openpyxl\")",
+      "Bash(mkdir -p /private/tmp/claude-501/-Users-igorbevilaqua-Projetos-Viral-Mind-Writer/13d56daa-5713-4539-9c4a-61495d10276e/scratchpad/xlsxgen)",
+      "Bash(npm install *)",
+      "Bash(node gen.js)",
+      "Bash(md5 -q /tmp/vm_client_preferences.xlsx.b64)",
+      "Bash(rm -f scripts/_import-jp.ts)",
+      "Bash(gcloud auth *)",
+      "Bash(node -e \"require.resolve\\('googleapis'\\); console.log\\('googleapis present'\\)\")",
+      "Bash(python3 -c \"import googleapiclient; print\\('py google api present'\\)\")",
+      "Bash(python3 -c \"import gspread; print\\('gspread present'\\)\")",
+      "Bash(node -e ' *)",
+      "Bash(find . -type d -name \"sistema-de-roteiro-multiagente\")",
+      "Bash(find . -path ./node_modules -prune -o -type d -iname \"*roteiro*multiagente*\" -print)",
+      "mcp__claude_ai_Supabase__list_projects",
+      "mcp__claude_ai_Supabase__apply_migration",
+      "Bash(npm run *)"
     ]
+  },
+  "mcpServers": {
+    "tldv": {
+      "url": "https://mcp.tldv.io/mcp"
+    }
   }
 }

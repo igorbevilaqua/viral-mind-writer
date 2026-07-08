@@ -1,6 +1,8 @@
 import { anthropic, WRITER_MODEL } from "../anthropic";
+import { agentPrompt, clientInsightBlock, formatNarrativa, taughtBlock } from "./agents";
 import type { GenerationContext, ScriptSections } from "./types";
 
+// Formato final do roteiro montado (usado por revisão e humanização).
 export const OUTPUT_FORMAT = `Responda EXATAMENTE neste formato (headers literais):
 
 ## HEADLINE
@@ -21,13 +23,24 @@ export const OUTPUT_FORMAT = `Responda EXATAMENTE neste formato (headers literai
 (o CTA final, com benefício explícito escrito na própria frase)
 
 ## FONTES
-(uma por linha: cada dado específico do roteiro — número, percentual, data, citação, ranking — e de onde veio; se veio de material fornecido no brief, diga qual)`;
+(uma por linha: cada dado específico do roteiro — número, percentual, data, citação, ranking — e de onde veio, SEMPRE com o link completo (URL) da fonte quando existir; se veio de material fornecido no brief, diga qual)`;
 
+// Formato do roteirista-chefe: ele escreve só o corpo — hook e comando vêm dos especialistas.
+const WRITER_FORMAT = `Responda EXATAMENTE neste formato (headers literais):
+
+## HEADLINE
+(texto de tela exibido no início do vídeo, MÁXIMO 9 palavras, caixa alta, gera curiosidade lida isolada)
+
+## CORPO
+(o corpo do roteiro, começando imediatamente após o hook, pronto para ser lido em voz alta; NÃO escreva o hook nem o CTA)
+
+## FONTES
+(uma por linha: cada dado específico do corpo — número, percentual, data, citação, ranking — e de onde veio, SEMPRE com o link completo (URL) da fonte quando existir — o dossiê traz os links; se veio de material fornecido no brief, diga qual)`;
+
+// Bloco compartilhado da sala: playbooks + estilo + proibições (sem persona — cada agente traz a sua).
 export function buildStaticSystemBlock(ctx: GenerationContext): string {
   const banned = ctx.bannedPhrases.map((b) => `- ${b.label ?? b.pattern}`).join("\n");
-  return `Você é o roteirista-chefe de uma agência brasileira especializada em vídeos curtos virais (Reels/TikTok/Shorts). Você escreve roteiros para serem FALADOS em voz alta por especialistas, em português brasileiro coloquial. Sua escrita é indistinguível da de um roteirista humano experiente.
-
-# PLAYBOOK DE HOOKS
+  return `# PLAYBOOK DE HOOKS
 ${ctx.playbooks.hook ?? "(sem playbook)"}
 
 # PLAYBOOK DE STORYTELLING
@@ -46,6 +59,21 @@ ${banned}`;
 export function buildDynamicSystemBlock(ctx: GenerationContext): string {
   const parts: string[] = [];
 
+  if (ctx.artifacts) {
+    const a = ctx.artifacts;
+    if (a.dossie) parts.push(`# DOSSIÊ DE PESQUISA (fatos verificados em tempo real)\n${a.dossie}`);
+    const n = a.candidatas[a.escolhida];
+    if (n) parts.push(`# NARRATIVA VENCEDORA (escolhida pela sala — execute exatamente esta)\n${formatNarrativa(n)}`);
+    if (a.orientacao_roteiro)
+      parts.push(`# ORIENTAÇÃO DOS DADOS (padrões dos +6 mil vídeos publicados)\n${a.orientacao_roteiro}`);
+  }
+
+  const boasPraticas = clientInsightBlock(ctx, ["geral"], 4);
+  if (boasPraticas) parts.push(`# BOAS PRÁTICAS DESTE CLIENTE (aprendidas dos dados de performance)\n${boasPraticas}`);
+
+  const ensinado = taughtBlock(ctx, ["ritmo", "geral"]);
+  if (ensinado) parts.push(`# APRENDIZADOS ENSINADOS PELO TIME (ritmo e regras gerais — curadoria humana, cumpra)\n${ensinado}`);
+
   if (ctx.clientPrefs) {
     const p = ctx.clientPrefs;
     parts.push(`# RESTRIÇÕES DO CLIENTE "${p.nome}" (INVIOLÁVEIS)
@@ -57,13 +85,6 @@ ${p.tom_de_voz ? `Tom: ${p.tom_de_voz}` : ""}
 ${p.vocabulario_usar.length ? `Preferir vocabulário: ${p.vocabulario_usar.join(", ")}` : ""}
 ${p.temas_preferidos.length ? `Temas preferidos: ${p.temas_preferidos.join(", ")}` : ""}
 ${p.notas_entrevista ? `Notas da entrevista: ${p.notas_entrevista}` : ""}`);
-  }
-
-  if (ctx.insights.length) {
-    parts.push(
-      `# INSIGHTS DE PERFORMANCE (dados reais dos ${">"}6 mil vídeos publicados pela agência)\n` +
-        ctx.insights.map((i) => `## ${i.insight_type} (${i.scope})\n${JSON.stringify(i.payload)}`).join("\n\n")
-    );
   }
 
   if (ctx.fewShot.length) {
@@ -84,7 +105,7 @@ ${p.notas_entrevista ? `Notas da entrevista: ${p.notas_entrevista}` : ""}`);
   if (refs.length) {
     const kindLabel: Record<string, string> = {
       reference_script: "Roteiro de referência",
-      news_link: "Notícia/artigo",
+      news_link: "Comentários do usuário sobre a notícia (o conteúdo dela está no dossiê; estes comentários orientam o ângulo)",
       document: "Documento",
       video_link: "Transcrição de vídeo de referência",
     };
@@ -97,18 +118,34 @@ ${p.notas_entrevista ? `Notas da entrevista: ${p.notas_entrevista}` : ""}`);
   return parts.join("\n\n");
 }
 
-export async function generateDraft(ctx: GenerationContext, onToken: (t: string) => void): Promise<string> {
+export interface WriterOutput {
+  headline: string | null;
+  corpo: string;
+  fontes: string | null;
+}
+
+// 4. Roteirista-chefe: escreve o CORPO executando a narrativa vencedora (streaming).
+// Com `revision`, reescreve a versão anterior atendendo o feedback do usuário.
+export async function generateDraft(
+  ctx: GenerationContext,
+  onToken: (t: string) => void,
+  revision?: { anterior: string; feedback: string }
+): Promise<WriterOutput> {
+  const task = revision
+    ? `Reescreva o corpo do roteiro abaixo atendendo o FEEDBACK DO USUÁRIO (prioridade máxima), mantendo a NARRATIVA VENCEDORA do seu contexto e o brief. Aproveite o que já funciona na versão anterior; mude o que o feedback pedir.\n\nVERSÃO ANTERIOR:\n${revision.anterior}\n\nFEEDBACK DO USUÁRIO:\n${revision.feedback}`
+    : `Escreva o corpo do roteiro executando a NARRATIVA VENCEDORA do seu contexto, sobre o brief abaixo.`;
+
   const stream = anthropic.messages.stream({
     model: WRITER_MODEL,
     max_tokens: 4000,
     system: [
-      { type: "text", text: buildStaticSystemBlock(ctx), cache_control: { type: "ephemeral" } },
+      { type: "text", text: `${agentPrompt("roteirista")}\n\n${buildStaticSystemBlock(ctx)}`, cache_control: { type: "ephemeral" } },
       { type: "text", text: buildDynamicSystemBlock(ctx) },
     ],
     messages: [
       {
         role: "user",
-        content: `Escreva um roteiro viral sobre o brief abaixo. Duração-alvo: 60 a 180 segundos de fala (150 a 430 palavras no corpo do roteiro — fora disso o roteiro é eliminado na revisão).\n\nBRIEF:\n${ctx.prompt}\n\n${OUTPUT_FORMAT}`,
+        content: `${task} Duração-alvo: 60 a 180 segundos de fala (150 a 430 palavras no corpo — fora disso o roteiro é eliminado na revisão).\n\nBRIEF:\n${ctx.prompt}\n\n${WRITER_FORMAT}`,
       },
     ],
   });
@@ -116,7 +153,17 @@ export async function generateDraft(ctx: GenerationContext, onToken: (t: string)
   stream.on("text", onToken);
   const final = await stream.finalMessage();
   const block = final.content.find((b) => b.type === "text");
-  return block?.type === "text" ? block.text : "";
+  const text = block?.type === "text" ? block.text : "";
+
+  const grab = (header: string) => {
+    const m = text.match(new RegExp(`##\\s*${header}\\s*\\n([\\s\\S]*?)(?=\\n##\\s|$)`, "i"));
+    return m ? m[1].trim() : null;
+  };
+  return {
+    headline: grab("HEADLINE"),
+    corpo: grab("CORPO") ?? text.trim(),
+    fontes: grab("FONTES"),
+  };
 }
 
 export function parseSections(text: string): ScriptSections {

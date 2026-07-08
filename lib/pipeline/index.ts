@@ -1,18 +1,26 @@
 import { appDb } from "../db";
 import { loadContext } from "./context";
 import { analyzeModelagem } from "./modelagem";
+import { research, proposeNarratives, rankNarratives, designHook, writeComando } from "./agents";
 import { generateDraft, parseSections } from "./draft";
 import { critiqueAndRewrite } from "./critique";
 import { humanize } from "./humanize";
 import { blockCount } from "./slop-lint";
-import type { PipelineEvent } from "./types";
+import type { PipelineEvent, SessionArtifacts } from "./types";
 
-export async function runPipeline(sessionId: string, emit: (e: PipelineEvent) => void): Promise<void> {
+// Sala de agentes (DAG com 1 negociação):
+// pesquisa (Grok) → storytelling propõe narrativas → dados rankeia → vencedora
+// → roteirista escreve o corpo → hook ∥ comando → revisão → humanização.
+// Artefatos (dossiê/candidatas/ranking) são cacheados em vm_sessions.artifacts:
+// regenerar ou trocar a narrativa (narrativeIndex) não re-paga pesquisa+storytelling.
+export async function runPipeline(
+  sessionId: string,
+  emit: (e: PipelineEvent) => void,
+  opts: { narrativeIndex?: number; feedback?: string } = {}
+): Promise<void> {
   try {
     await appDb.from("vm_sessions").update({ status: "generating" }).eq("id", sessionId);
 
-    // FASE 1 — coleta
-    emit({ type: "phase", phase: "coleta" });
     const ctx = await loadContext(sessionId);
 
     const modelagens = ctx.attachments.filter((a) => a.is_modelagem && a.raw_content);
@@ -23,13 +31,73 @@ export async function runPipeline(sessionId: string, emit: (e: PipelineEvent) =>
       ).filter(Boolean);
     }
 
-    // FASE 2 — rascunho (streaming)
-    emit({ type: "phase", phase: "rascunho" });
-    const draft = await generateDraft(ctx, (t) => emit({ type: "token", text: t }));
+    // ── Pesquisa + narrativas + ranking (só na primeira geração da sessão) ──
+    let artifacts: SessionArtifacts | null = ctx.artifacts;
+    if (!artifacts?.candidatas?.length) {
+      emit({ type: "phase", phase: "pesquisa" });
+      const dossie = await research(ctx);
 
-    // FASE 3 — crítica + humanização
-    emit({ type: "phase", phase: "critica" });
-    const revised = await critiqueAndRewrite(ctx, draft);
+      emit({ type: "phase", phase: "narrativas" });
+      const candidatas = await proposeNarratives(ctx, dossie);
+      const rank = await rankNarratives(ctx, dossie, candidatas);
+      const valid = rank.ranking.filter((r) => candidatas[r.indice]);
+      const vencedora = valid.length ? [...valid].sort((a, b) => b.score - a.score)[0].indice : 0;
+
+      artifacts = {
+        dossie,
+        candidatas,
+        ranking: rank.ranking,
+        escolhida: vencedora,
+        orientacao_roteiro: rank.orientacao_roteiro,
+        orientacao_hook: rank.orientacao_hook,
+      };
+    }
+
+    // Override do usuário: troca a narrativa vencedora e reescreve a partir daqui
+    if (opts.narrativeIndex != null && artifacts.candidatas[opts.narrativeIndex]) {
+      artifacts.escolhida = opts.narrativeIndex;
+    }
+    ctx.artifacts = artifacts;
+    await appDb.from("vm_sessions").update({ artifacts }).eq("id", sessionId);
+    emit({ type: "narrativas", candidatas: artifacts.candidatas, ranking: artifacts.ranking, escolhida: artifacts.escolhida });
+
+    // Reescrita orientada: feedback do usuário + versão anterior como base
+    let revision: { anterior: string; feedback: string } | undefined;
+    if (opts.feedback) {
+      const { data: prev } = await appDb
+        .from("vm_generated_scripts")
+        .select("roteiro, comando")
+        .eq("session_id", sessionId)
+        .order("version", { ascending: false })
+        .limit(1)
+        .maybeSingle();
+      if (prev) {
+        revision = {
+          anterior: `${prev.roteiro}${prev.comando ? `\n\nCOMANDO: ${prev.comando}` : ""}`,
+          feedback: opts.feedback,
+        };
+      }
+    }
+
+    // ── Roteirista-chefe escreve o corpo (streaming) ──
+    emit({ type: "phase", phase: "roteiro" });
+    const { headline, corpo, fontes } = await generateDraft(ctx, (t) => emit({ type: "token", text: t }), revision);
+
+    // ── Hook e comando em paralelo, ambos vendo o roteiro pronto ──
+    emit({ type: "phase", phase: "hook_comando" });
+    const [hookRes, comando] = await Promise.all([designHook(ctx, corpo), writeComando(ctx, corpo)]);
+
+    const assembled = [
+      `## HEADLINE\n${headline ?? ""}`,
+      `## HOOK\n${hookRes.hook}`,
+      `## ROTEIRO\n${hookRes.hook}\n\n${corpo}`,
+      `## VARIACOES_DE_HOOK\n${hookRes.variantes.map((v, i) => `${i + 1}. ${v}`).join("\n")}`,
+      `## COMANDO\n${comando}`,
+      `## FONTES\n${fontes ?? ""}`,
+    ].join("\n\n");
+
+    emit({ type: "phase", phase: "revisao" });
+    const revised = await critiqueAndRewrite(ctx, assembled);
 
     emit({ type: "phase", phase: "humanizacao" });
     const { text: final, violations } = await humanize(ctx, revised);
@@ -42,6 +110,7 @@ export async function runPipeline(sessionId: string, emit: (e: PipelineEvent) =>
       .select("id", { count: "exact", head: true })
       .eq("session_id", sessionId);
 
+    const narrativa = artifacts.candidatas[artifacts.escolhida];
     const { data: saved, error } = await appDb
       .from("vm_generated_scripts")
       .insert({
@@ -56,10 +125,12 @@ export async function runPipeline(sessionId: string, emit: (e: PipelineEvent) =>
         fontes: sections.fontes,
         slop_lint_violations: blockCount(violations),
         pipeline_trace: {
-          draft,
+          assembled,
           revised,
           final,
           violations,
+          narrativa_escolhida: { indice: artifacts.escolhida, titulo: narrativa?.titulo, estrutura: narrativa?.estrutura },
+          hook_racional: hookRes.racional,
           few_shot_origens: ctx.fewShot.map((f) => f.origem),
           modelagem_briefs: ctx.modelagemBriefs,
         },

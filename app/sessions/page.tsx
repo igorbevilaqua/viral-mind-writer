@@ -24,6 +24,11 @@ const STATUS: Record<string, { label: string; cls: string; rowCls: string }> = {
     cls: "text-red-300",
     rowCls: "border-red-500/25 bg-red-500/[.03]",
   },
+  closed: {
+    label: "Encerrada",
+    cls: "text-white/55",
+    rowCls: "border-white/[.08] bg-white/[.015]",
+  },
 };
 
 function StatusIcon({ status }: { status: string }) {
@@ -39,6 +44,13 @@ function StatusIcon({ status }: { status: string }) {
       <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
         <circle cx="8" cy="8" r="6" stroke="currentColor" strokeWidth="1.3" />
         <path d="M8 5v3.5M8 11v.1" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
+      </svg>
+    );
+  if (status === "closed")
+    return (
+      <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+        <rect x="3.5" y="7" width="9" height="6.5" rx="1.5" stroke="currentColor" strokeWidth="1.3" />
+        <path d="M5.5 7V5.5a2.5 2.5 0 0 1 5 0V7" stroke="currentColor" strokeWidth="1.3" />
       </svg>
     );
   return (

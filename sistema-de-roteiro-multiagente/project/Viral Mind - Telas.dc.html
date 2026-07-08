@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;background:#111014;font-family:system-ui,sans-serif}
+@keyframes vmPulse{0%,100%{box-shadow:0 0 0 0 rgba(201,163,92,.45)}50%{box-shadow:0 0 0 7px rgba(201,163,92,0)}}
+@keyframes vmCaret{0%,49%{opacity:1}50%,100%{opacity:0}}
+@keyframes vmOrbit{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.dv-turn{padding:40px 44px 32px;border-bottom:1px solid rgba(255,255,255,.08);scroll-margin-top:16px}
+.dv-thd{display:flex;align-items:baseline;gap:10px;margin:0 0 20px}
+.dv-tid{font:600 10px ui-monospace,Menlo,monospace;padding:3px 7px;background:#c9a35c;color:#161410;border-radius:4px;text-decoration:none}
+.dv-tname{font:600 13px/1.2 system-ui,sans-serif;color:#e8e6e1}
+.dv-opts{display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start}
+.dv-opt{flex:none;display:flex;flex-direction:column;gap:9px;scroll-margin-top:16px}
+.dv-oid{font:600 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(255,255,255,.1);color:#e8e6e1;border-radius:5px;text-decoration:none}
+.dv-olabel{display:flex;align-items:baseline;gap:8px;font:400 11px/1.3 system-ui,sans-serif;color:rgba(255,255,255,.55)}
+.dv-card{max-width:100%;background:#0b0b0f;border:1px solid rgba(255,255,255,.1);border-radius:10px;box-shadow:0 2px 14px rgba(0,0,0,.5);overflow:hidden}
+.dv-opt:target .dv-oid{background:#c9a35c;color:#161410}
+.dv-next{margin:22px 0 0;font:12px/1.5 system-ui,sans-serif;color:rgba(255,255,255,.5)}
+</style>
+</helmet>
+
+<section class="dv-turn" id="t2">
+<div class="dv-thd"><a class="dv-tid" href="#t2">2</a><span class="dv-tname">Layout responsivo — mobile 390px · como <a class="dv-oid" href="#1d">1d</a>, <a class="dv-oid" href="#1a">1a</a> e <a class="dv-oid" href="#1e">1e</a> se adaptam</span></div>
+<div class="dv-opts">
+
+<!-- ============ 2a — HOME MOBILE ============ -->
+<div class="dv-opt" id="2a" data-screen-label="2a Home — mobile">
+<div class="dv-olabel"><a class="dv-oid" href="#2a">2a</a>Home mobile — coluna única, anexos em grade 2×2, ação fixa no rodapé</div>
+<div class="dv-card" style="width:390px">
+<div style="width:390px;background:radial-gradient(ellipse 90% 25% at 50% 0%,rgba(201,163,92,.07),transparent),#0b0b0f;color:#ededf0;font-family:'Geist',system-ui,sans-serif;font-size:14px">
+  <!-- nav mobile -->
+  <div style="display:flex;align-items:center;gap:10px;padding:12px 18px;border-bottom:1px solid rgba(255,255,255,.08)">
+    <svg width="25" height="25" viewBox="0 0 32 32" fill="none" aria-label="Viral Mind"><rect x="1" y="1" width="30" height="30" rx="8.5" fill="#171310" stroke="rgba(201,163,92,.55)"></rect><path d="M23.8 7.2c-6.4.6-11.2 5.2-13.2 12.4l-.9 3.2 3.2-1c6.9-2.1 10.7-7.6 10.9-14.6Z" fill="rgba(201,163,92,.16)" stroke="#c9a35c" stroke-width="1.3" stroke-linejoin="round"></path><path d="M20.8 10.6 11 20.4M10.6 21.9 8.4 24.6" stroke="#c9a35c" stroke-width="1.1" stroke-linecap="round"></path><path d="M25.6 4.4l.7 1.9 1.9.7-1.9.7-.7 1.9-.7-1.9-1.9-.7 1.9-.7.7-1.9Z" fill="#e8dcc3"></path></svg>
+    <span style="font-family:'Cinzel',serif;font-weight:600;font-size:13px;letter-spacing:.14em;color:#e8dcc3">VIRAL MIND</span>
+    <svg style="margin-left:auto" width="18" height="18" viewBox="0 0 16 16" fill="none"><path d="M2.5 4.5h11M2.5 8h11M2.5 11.5h11" stroke="rgba(255,255,255,.6)" stroke-width="1.4" stroke-linecap="round"></path></svg>
+  </div>
+  <div style="padding:30px 18px 20px">
+    <div style="text-align:center">
+      <div style="font-family:'Cinzel',serif;font-size:10px;letter-spacing:.22em;color:#c9a35c">ROTEIRISTAS VIRAIS</div>
+      <h1 style="margin:10px 0 0;font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:500;line-height:1.15;color:#f2efe8">O que vamos viralizar hoje?</h1>
+    </div>
+    <div style="margin-top:24px;border:1px solid rgba(255,255,255,.12);border-radius:16px;background:rgba(255,255,255,.03)">
+      <div style="padding:16px 16px 52px;font-size:15px;line-height:1.6;color:rgba(255,255,255,.35)">Descreva o vídeo: tema, ângulo, formato… <span style="display:inline-block;width:2px;height:18px;background:#c9a35c;vertical-align:text-bottom;animation:vmCaret 1s infinite"></span></div>
+      <div style="display:flex;align-items:center;gap:8px;padding:10px 12px;border-top:1px solid rgba(255,255,255,.07)">
+        <span style="display:inline-flex;align-items:center;gap:7px;padding:8px 13px;border:1px solid rgba(99,102,241,.4);border-radius:10px;font-size:12.5px;color:#a5b4fc;background:rgba(99,102,241,.07)">Dra. Marina<svg width="10" height="10" viewBox="0 0 16 16" fill="none"><path d="M4 6.5 8 10.5 12 6.5" stroke="#a5b4fc" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+        <span style="display:inline-flex;align-items:center;gap:7px;padding:8px 13px;border:1px solid rgba(255,255,255,.14);border-radius:10px;font-size:12.5px;color:rgba(255,255,255,.6)"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M10.5 4.5 5.6 9.4a1.7 1.7 0 1 0 2.4 2.4l5.2-5.2a3 3 0 0 0-4.2-4.2L3.6 7.8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"></path></svg>Anexar</span>
+      </div>
+    </div>
+    <div style="margin-top:20px">
+      <div style="font-family:'Cinzel',serif;font-size:10px;letter-spacing:.18em;color:rgba(255,255,255,.4)">MATERIAIS DE APOIO</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px">
+        <div style="padding:14px;border:1px solid rgba(255,255,255,.1);border-radius:13px;background:rgba(255,255,255,.02);display:flex;align-items:center;gap:10px">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 2h6l3 3v9H4V2Z" stroke="rgba(255,255,255,.6)" stroke-width="1.2" stroke-linejoin="round"></path><path d="M6.5 8h4M6.5 10.5h4M6.5 5.5h1.5" stroke="rgba(255,255,255,.6)" stroke-width="1.2" stroke-linecap="round"></path></svg>
+          <span style="font-size:12.5px;color:rgba(255,255,255,.75)">Roteiro ref.</span>
+        </div>
+        <div style="padding:14px;border:1px solid rgba(255,255,255,.1);border-radius:13px;background:rgba(255,255,255,.02);display:flex;align-items:center;gap:10px">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="10" rx="1.5" stroke="rgba(255,255,255,.6)" stroke-width="1.2"></rect><path d="M4.5 6h4M4.5 8h7M4.5 10h7" stroke="rgba(255,255,255,.6)" stroke-width="1.2" stroke-linecap="round"></path></svg>
+          <span style="font-size:12.5px;color:rgba(255,255,255,.75)">Notícia</span>
+        </div>
+        <div style="padding:14px;border:1px solid rgba(255,255,255,.1);border-radius:13px;background:rgba(255,255,255,.02);display:flex;align-items:center;gap:10px">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 2h8v12H4V2Z" stroke="rgba(255,255,255,.6)" stroke-width="1.2" stroke-linejoin="round"></path><path d="M6 5h4M6 7.5h4M6 10h2.5" stroke="rgba(255,255,255,.6)" stroke-width="1.2" stroke-linecap="round"></path></svg>
+          <span style="font-size:12.5px;color:rgba(255,255,255,.75)">Documento</span>
+        </div>
+        <div style="padding:14px;border:1px solid rgba(245,158,11,.45);border-radius:13px;background:rgba(245,158,11,.06);display:flex;align-items:center;gap:10px">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="3.5" width="9" height="9" rx="1.5" stroke="#fbbf24" stroke-width="1.2"></rect><path d="M11 7.5 14 5.5v5l-3-2Z" stroke="#fbbf24" stroke-width="1.2" stroke-linejoin="round"></path></svg>
+          <span style="font-size:12.5px;color:#fde68a">Vídeo · <span style="font-size:11px">⚡︎</span> Modelagem</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- ação fixa -->
+  <div style="position:sticky;bottom:0;padding:12px 18px 16px;background:linear-gradient(180deg,transparent,#0b0b0f 40%)">
+    <div style="display:flex;align-items:center;justify-content:center;gap:9px;padding:14px;border-radius:13px;background:linear-gradient(180deg,#f2ecdd,#ddceac);color:#161410;font-size:14.5px;font-weight:600;box-shadow:0 0 24px rgba(201,163,92,.22)"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M11 2.5 13.5 5M9.5 4 3 10.5 2.5 13.5 5.5 13 12 6.5 9.5 4Z" stroke="#161410" stroke-width="1.4" stroke-linejoin="round"></path><path d="M13 9.5l.4 1.1 1.1.4-1.1.4-.4 1.1-.4-1.1-1.1-.4 1.1-.4.4-1.1Z" fill="#161410"></path></svg>Conjurar roteiro</div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- ============ 2b — STREAMING MOBILE ============ -->
+<div class="dv-opt" id="2b" data-screen-label="2b Streaming — mobile">
+<div class="dv-olabel"><a class="dv-oid" href="#2b">2b</a>Streaming mobile — fases viram barra compacta com fase atual em destaque</div>
+<div class="dv-card" style="width:390px">
+<div style="width:390px;background:#0b0b0f;color:#ededf0;font-family:'Geist',system-ui,sans-serif;font-size:14px">
+  <div style="display:flex;align-items:center;gap:10px;padding:12px 18px;border-bottom:1px solid rgba(255,255,255,.08)">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3 5 8l5 5" stroke="rgba(255,255,255,.6)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+    <span style="font-size:13px;color:rgba(255,255,255,.55)">Sessões</span>
+    <span style="margin-left:auto;font-family:'Geist Mono',monospace;font-size:11px;color:rgba(255,255,255,.4)">#a3f2c1</span>
+  </div>
+  <div style="padding:20px 18px 28px">
+    <h1 style="margin:0;font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:500;line-height:1.3;color:#f2efe8">"Rotina matinal que salvou meu faturamento"</h1>
+    <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
+      <span style="padding:4px 10px;border:1px solid rgba(99,102,241,.4);border-radius:999px;font-size:11.5px;color:#a5b4fc;background:rgba(99,102,241,.08)">Dra. Marina</span>
+      <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border:1px solid rgba(201,163,92,.45);border-radius:999px;font-size:11.5px;color:#c9a35c;background:rgba(201,163,92,.08)"><span style="width:5px;height:5px;border-radius:50%;background:#c9a35c;animation:vmPulse 1.6s infinite"></span>Gerando</span>
+    </div>
+    <!-- fases compactas -->
+    <div style="margin-top:20px;padding:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:14px">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div style="width:30px;height:30px;border-radius:50%;background:#c9a35c;display:flex;align-items:center;justify-content:center;animation:vmPulse 1.8s infinite;flex:none"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M11 2.5 13.5 5M9.5 4 3 10.5 2.5 13.5 5.5 13 12 6.5 9.5 4Z" stroke="#161410" stroke-width="1.5" stroke-linejoin="round"></path></svg></div>
+        <div style="flex:1">
+          <div style="font-size:13.5px;font-weight:500;color:#e8dcc3">Rascunho</div>
+          <div style="font-size:11.5px;color:rgba(255,255,255,.4)">fase 3 de 6 · ~1 min restante</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:5px;margin-top:14px">
+        <span style="flex:1;height:3px;border-radius:2px;background:#c9a35c"></span>
+        <span style="flex:1;height:3px;border-radius:2px;background:#c9a35c"></span>
+        <span style="flex:1;height:3px;border-radius:2px;background:#c9a35c;box-shadow:0 0 8px rgba(201,163,92,.7)"></span>
+        <span style="flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,.12)"></span>
+        <span style="flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,.12)"></span>
+        <span style="flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,.12)"></span>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:8px;font-size:9.5px;color:rgba(255,255,255,.35)">
+        <span style="color:rgba(201,163,92,.8)">Coleta</span><span style="color:rgba(201,163,92,.8)">Modelagem</span><span style="color:#e8dcc3">Rascunho</span><span>Crítica</span><span>Humaniz.</span><span>Salvando</span>
+      </div>
+    </div>
+    <!-- texto ao vivo -->
+    <div style="margin-top:14px;border:1px solid rgba(201,163,92,.25);border-radius:14px;overflow:hidden;background:rgba(255,255,255,.02)">
+      <div style="display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.07);background:linear-gradient(180deg,rgba(201,163,92,.07),transparent)">
+        <span style="font-family:'Cinzel',serif;font-size:10px;letter-spacing:.16em;color:#c9a35c">TEXTO AO VIVO</span>
+        <span style="margin-left:auto;font-size:11px;color:rgba(255,255,255,.35)">v2</span>
+      </div>
+      <div style="padding:14px 16px;font-family:'Geist Mono',monospace;font-size:12px;line-height:1.75;color:rgba(237,237,240,.85)">
+<div>HOOK: Eu acordava 11h e faturava R$ 3 mil. Mudei UMA coisa e tripliquei em 60 dias.</div>
+<div style="margin-top:10px">CENA 1 — close no rosto:</div>
+<div>"Ninguém te conta isso sobre rotina matinal. Não é sobre acordar às 5h…"</div>
+<div style="margin-top:10px">CENA 2 — b-roll caderno:</div>
+<div>"Eu escrevia três prioridades<span style="display:inline-block;width:8px;height:15px;background:#c9a35c;vertical-align:text-bottom;margin-left:3px;animation:vmCaret 1s infinite"></span></div>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:14px">
+      <span style="padding:7px 14px;border-radius:9px;border:1px solid rgba(255,255,255,.12);font-size:12.5px;color:rgba(255,255,255,.6);background:rgba(255,255,255,.03)">v1</span>
+      <span style="padding:7px 14px;border-radius:9px;border:1px solid rgba(201,163,92,.5);font-size:12.5px;color:#e8dcc3;background:rgba(201,163,92,.1)">v2 · gerando…</span>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- ============ 2c — SESSÕES MOBILE ============ -->
+<div class="dv-opt" id="2c" data-screen-label="2c Sessões — mobile">
+<div class="dv-olabel"><a class="dv-oid" href="#2c">2c</a>Sessões mobile — cards empilhados, status como faixa superior</div>
+<div class="dv-card" style="width:390px">
+<div style="width:390px;background:#0b0b0f;color:#ededf0;font-family:'Geist',system-ui,sans-serif;font-size:14px">
+  <div style="display:flex;align-items:center;gap:10px;padding:12px 18px;border-bottom:1px solid rgba(255,255,255,.08)">
+    <svg width="25" height="25" viewBox="0 0 32 32" fill="none" aria-label="Viral Mind"><rect x="1" y="1" width="30" height="30" rx="8.5" fill="#171310" stroke="rgba(201,163,92,.55)"></rect><path d="M23.8 7.2c-6.4.6-11.2 5.2-13.2 12.4l-.9 3.2 3.2-1c6.9-2.1 10.7-7.6 10.9-14.6Z" fill="rgba(201,163,92,.16)" stroke="#c9a35c" stroke-width="1.3" stroke-linejoin="round"></path><path d="M20.8 10.6 11 20.4M10.6 21.9 8.4 24.6" stroke="#c9a35c" stroke-width="1.1" stroke-linecap="round"></path><path d="M25.6 4.4l.7 1.9 1.9.7-1.9.7-.7 1.9-.7-1.9-1.9-.7 1.9-.7.7-1.9Z" fill="#e8dcc3"></path></svg>
+    <span style="font-family:'Cinzel',serif;font-weight:600;font-size:13px;letter-spacing:.14em;color:#e8dcc3">VIRAL MIND</span>
+    <svg style="margin-left:auto" width="18" height="18" viewBox="0 0 16 16" fill="none"><path d="M2.5 4.5h11M2.5 8h11M2.5 11.5h11" stroke="rgba(255,255,255,.6)" stroke-width="1.4" stroke-linecap="round"></path></svg>
+  </div>
+  <div style="padding:22px 18px 28px">
+    <div style="display:flex;align-items:center;gap:12px">
+      <h1 style="margin:0;font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:500;color:#f2efe8">Sessões</h1>
+      <span style="margin-left:auto;display:inline-flex;align-items:center;gap:7px;padding:9px 15px;border-radius:10px;background:linear-gradient(180deg,#f2ecdd,#ddceac);color:#161410;font-size:12.5px;font-weight:600"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="#161410" stroke-width="1.6" stroke-linecap="round"></path></svg>Nova</span>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:9px;margin-top:18px">
+      <div style="border:1px solid rgba(201,163,92,.3);border-radius:13px;background:rgba(201,163,92,.04);padding:13px 15px">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:#c9a35c"><span style="width:5px;height:5px;border-radius:50%;background:#c9a35c;animation:vmPulse 1.6s infinite"></span>Gerando</span>
+          <span style="margin-left:auto;font-family:'Geist Mono',monospace;font-size:10.5px;color:rgba(255,255,255,.35)">agora</span>
+        </div>
+        <div style="margin-top:8px;font-size:13px;line-height:1.5;color:rgba(237,237,240,.85);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">"Rotina matinal que salvou meu faturamento" — corte para Reels</div>
+        <span style="display:inline-block;margin-top:9px;padding:3px 9px;border:1px solid rgba(99,102,241,.35);border-radius:999px;font-size:10.5px;color:#a5b4fc">Dra. Marina</span>
+      </div>
+      <div style="border:1px solid rgba(255,255,255,.08);border-radius:13px;background:rgba(255,255,255,.02);padding:13px 15px">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:#6ee7b7"><svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 6.5 12 13 4.5" stroke="#6ee7b7" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg>Concluída</span>
+          <span style="margin-left:auto;font-family:'Geist Mono',monospace;font-size:10.5px;color:rgba(255,255,255,.35)">hoje 09:14</span>
+        </div>
+        <div style="margin-top:8px;font-size:13px;line-height:1.5;color:rgba(237,237,240,.85);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">Modelagem do vídeo da concorrente sobre harmonização — versão própria</div>
+        <span style="display:inline-block;margin-top:9px;padding:3px 9px;border:1px solid rgba(99,102,241,.35);border-radius:999px;font-size:10.5px;color:#a5b4fc">Dra. Marina</span>
+      </div>
+      <div style="border:1px solid rgba(255,255,255,.08);border-radius:13px;background:rgba(255,255,255,.02);padding:13px 15px">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:#6ee7b7"><svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 6.5 12 13 4.5" stroke="#6ee7b7" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg>Concluída</span>
+          <span style="margin-left:auto;font-family:'Geist Mono',monospace;font-size:10.5px;color:rgba(255,255,255,.35)">ontem</span>
+        </div>
+        <div style="margin-top:8px;font-size:13px;line-height:1.5;color:rgba(237,237,240,.85);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">Notícia: nova regulamentação de anúncios de saúde — reação em 40s</div>
+        <span style="display:inline-block;margin-top:9px;padding:3px 9px;border:1px solid rgba(16,185,129,.3);border-radius:999px;font-size:10.5px;color:#6ee7b7">Rafa Fit</span>
+      </div>
+      <div style="border:1px solid rgba(239,68,68,.25);border-radius:13px;background:rgba(239,68,68,.03);padding:13px 15px">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:#fca5a5"><svg width="11" height="11" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="#fca5a5" stroke-width="1.3"></circle><path d="M8 5v3.5M8 11v.1" stroke="#fca5a5" stroke-width="1.3" stroke-linecap="round"></path></svg>Erro</span>
+          <span style="margin-left:auto;font-family:'Geist Mono',monospace;font-size:10.5px;color:rgba(255,255,255,.35)">28 jun</span>
+        </div>
+        <div style="margin-top:8px;font-size:13px;line-height:1.5;color:rgba(237,237,240,.7);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">Corte de podcast sobre finanças para casais — timeout na coleta</div>
+        <span style="display:inline-block;margin-top:9px;padding:3px 9px;border:1px solid rgba(16,185,129,.3);border-radius:999px;font-size:10.5px;color:#6ee7b7">Rafa Fit</span>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+</div>
+<p class="dv-next">Regras do responsivo: 1 coluna abaixo de 640px · stepper vira barra de progresso compacta · ação primária fixa no rodapé · grade de anexos 4→2 colunas. Próximos: "mobile do roteiro final (<a class="dv-oid" href="#1b">1b</a>)" · "tablet 768px" · "dashboard de performance".</p>
+</section>
+
+<section class="dv-turn" id="t1">
+<div class="dv-thd"><a class="dv-tid" href="#t1">1</a><span class="dv-tname">Viral Mind — dark místico sutil · dourado envelhecido · Cinzel + Cormorant + Geist</span></div>
+<div class="dv-opts">
+
+<!-- ============ 1a — STREAMING: Trilha de fases ============ -->
+<div class="dv-opt" id="1a" data-screen-label="1a Streaming — Trilha de fases">
+<div class="dv-olabel"><a class="dv-oid" href="#1a">1a</a>Detalhe da sessão — stepper horizontal de fases + texto ao vivo</div>
+<div class="dv-card" style="width:1180px">
+<div style="width:1180px;background:#0b0b0f;color:#ededf0;font-family:'Geist',system-ui,sans-serif;font-size:14px">
+  <!-- nav -->
+  <div style="display:flex;align-items:center;gap:28px;padding:13px 32px;border-bottom:1px solid rgba(255,255,255,.08)">
+    <div style="display:flex;align-items:center;gap:10px">
+      <svg width="27" height="27" viewBox="0 0 32 32" fill="none" aria-label="Viral Mind"><rect x="1" y="1" width="30" height="30" rx="8.5" fill="#171310" stroke="rgba(201,163,92,.55)"></rect><path d="M23.8 7.2c-6.4.6-11.2 5.2-13.2 12.4l-.9 3.2 3.2-1c6.9-2.1 10.7-7.6 10.9-14.6Z" fill="rgba(201,163,92,.16)" stroke="#c9a35c" stroke-width="1.3" stroke-linejoin="round"></path><path d="M20.8 10.6 11 20.4M10.6 21.9 8.4 24.6" stroke="#c9a35c" stroke-width="1.1" stroke-linecap="round"></path><path d="M25.6 4.4l.7 1.9 1.9.7-1.9.7-.7 1.9-.7-1.9-1.9-.7 1.9-.7.7-1.9Z" fill="#e8dcc3"></path></svg>
+      <span style="font-family:'Cinzel',serif;font-weight:600;font-size:14px;letter-spacing:.14em;color:#e8dcc3">VIRAL MIND</span>
+    </div>
+    <div style="display:flex;gap:22px;font-size:13px;color:rgba(255,255,255,.55)">
+      <span style="color:#c9a35c;font-weight:500">Sessões</span><span>Configurações</span>
+    </div>
+    <div style="margin-left:auto;font-family:'Geist Mono',monospace;font-size:11px;color:rgba(255,255,255,.35)">escritório de roteiristas virais</div>
+  </div>
+  <div style="max-width:860px;margin:0 auto;padding:32px 24px 48px">
+    <!-- breadcrumb + header -->
+    <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(255,255,255,.4)">
+      <span>Sessões</span><span style="color:rgba(255,255,255,.25)">/</span><span style="font-family:'Geist Mono',monospace;color:rgba(255,255,255,.6)">#a3f2c1</span>
+    </div>
+    <div style="display:flex;align-items:flex-start;gap:16px;margin-top:14px">
+      <div style="flex:1">
+        <h1 style="margin:0;font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:500;line-height:1.25;color:#f2efe8">"Rotina matinal que salvou meu faturamento" — corte para Reels</h1>
+        <div style="display:flex;gap:10px;margin-top:12px;align-items:center">
+          <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 11px;border:1px solid rgba(99,102,241,.4);border-radius:999px;font-size:12px;color:#a5b4fc;background:rgba(99,102,241,.08)">Cliente · Dra. Marina</span>
+          <span style="display:inline-flex;align-items:center;gap:7px;padding:4px 11px;border:1px solid rgba(201,163,92,.45);border-radius:999px;font-size:12px;color:#c9a35c;background:rgba(201,163,92,.08)"><span style="width:6px;height:6px;border-radius:50%;background:#c9a35c;animation:vmPulse 1.6s infinite"></span>Gerando</span>
+          <span style="font-size:12px;color:rgba(255,255,255,.35)">iniciada há 42s</span>
+        </div>
+      </div>
+    </div>
+    <!-- stepper -->
+    <div style="margin-top:34px;padding:26px 28px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:16px">
+      <div style="display:flex;align-items:center">
+        <!-- fase concluída -->
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;width:96px">
+          <div style="width:30px;height:30px;border-radius:50%;background:rgba(201,163,92,.14);border:1px solid rgba(201,163,92,.6);display:flex;align-items:center;justify-content:center"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 6.5 12 13 4.5" stroke="#c9a35c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+          <span style="font-size:11.5px;color:rgba(255,255,255,.65)">Coleta</span>
+        </div>
+        <div style="flex:1;height:1px;background:linear-gradient(90deg,rgba(201,163,92,.6),rgba(201,163,92,.6));margin:0 2px 24px"></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;width:96px">
+          <div style="width:30px;height:30px;border-radius:50%;background:rgba(201,163,92,.14);border:1px solid rgba(201,163,92,.6);display:flex;align-items:center;justify-content:center"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 6.5 12 13 4.5" stroke="#c9a35c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+          <span style="font-size:11.5px;color:rgba(255,255,255,.65)">Modelagem</span>
+        </div>
+        <div style="flex:1;height:1px;background:linear-gradient(90deg,rgba(201,163,92,.6),rgba(201,163,92,.15));margin:0 2px 24px"></div>
+        <!-- fase ativa -->
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;width:96px">
+          <div style="width:34px;height:34px;border-radius:50%;background:#c9a35c;display:flex;align-items:center;justify-content:center;animation:vmPulse 1.8s infinite;box-shadow:0 0 18px rgba(201,163,92,.35)"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M11 2.5 13.5 5M9.5 4 3 10.5 2.5 13.5 5.5 13 12 6.5 9.5 4Z" stroke="#161410" stroke-width="1.5" stroke-linejoin="round"></path></svg></div>
+          <span style="font-size:11.5px;color:#e8dcc3;font-weight:500">Rascunho</span>
+        </div>
+        <div style="flex:1;height:1px;background:rgba(255,255,255,.12);margin:0 2px 24px"></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;width:96px">
+          <div style="width:30px;height:30px;border-radius:50%;border:1px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center"><span style="width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.25)"></span></div>
+          <span style="font-size:11.5px;color:rgba(255,255,255,.35)">Crítica</span>
+        </div>
+        <div style="flex:1;height:1px;background:rgba(255,255,255,.12);margin:0 2px 24px"></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;width:96px">
+          <div style="width:30px;height:30px;border-radius:50%;border:1px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center"><span style="width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.25)"></span></div>
+          <span style="font-size:11.5px;color:rgba(255,255,255,.35)">Humanização</span>
+        </div>
+        <div style="flex:1;height:1px;background:rgba(255,255,255,.12);margin:0 2px 24px"></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;width:96px">
+          <div style="width:30px;height:30px;border-radius:50%;border:1px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center"><span style="width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.25)"></span></div>
+          <span style="font-size:11.5px;color:rgba(255,255,255,.35)">Salvando</span>
+        </div>
+      </div>
+    </div>
+    <!-- texto ao vivo -->
+    <div style="margin-top:20px;border:1px solid rgba(201,163,92,.25);border-radius:16px;overflow:hidden;background:rgba(255,255,255,.02)">
+      <div style="display:flex;align-items:center;gap:10px;padding:12px 20px;border-bottom:1px solid rgba(255,255,255,.07);background:linear-gradient(180deg,rgba(201,163,92,.07),transparent)">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M11 2.5 13.5 5M9.5 4 3 10.5 2.5 13.5 5.5 13 12 6.5 9.5 4Z" stroke="#c9a35c" stroke-width="1.3" stroke-linejoin="round"></path></svg>
+        <span style="font-family:'Cinzel',serif;font-size:11px;letter-spacing:.16em;color:#c9a35c">TEXTO AO VIVO</span>
+        <span style="font-size:12px;color:rgba(255,255,255,.35)">rascunho · v2</span>
+        <span style="margin-left:auto;font-family:'Geist Mono',monospace;font-size:11px;color:rgba(255,255,255,.3)">1.204 tokens</span>
+      </div>
+      <div style="padding:22px 24px;font-family:'Geist Mono',monospace;font-size:13px;line-height:1.8;color:rgba(237,237,240,.85);max-height:280px;overflow:hidden">
+<div>HOOK: Eu acordava 11h e faturava R$ 3 mil. Mudei UMA coisa e</div>
+<div>tripliquei em 60 dias.</div>
+<div style="margin-top:14px">CENA 1 — close no rosto, luz natural:</div>
+<div>"Ninguém te conta isso sobre rotina matinal. Não é sobre acordar</div>
+<div>às 5h. É sobre o que você faz nos primeiros 20 minutos."</div>
+<div style="margin-top:14px">CENA 2 — b-roll caderno + café:</div>
+<div>"Eu escrevia três prioridades. Só três. E a primeira sempre era<span style="display:inline-block;width:9px;height:17px;background:#c9a35c;vertical-align:text-bottom;margin-left:3px;animation:vmCaret 1s infinite"></span></div>
+      </div>
+    </div>
+    <!-- versões -->
+    <div style="display:flex;gap:8px;margin-top:20px;align-items:center">
+      <span style="padding:7px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.12);font-size:13px;color:rgba(255,255,255,.6);background:rgba(255,255,255,.03)">v1 · concluída</span>
+      <span style="padding:7px 16px;border-radius:10px;border:1px solid rgba(201,163,92,.5);font-size:13px;color:#e8dcc3;background:rgba(201,163,92,.1)">v2 · gerando…</span>
+      <span style="margin-left:auto;font-size:12px;color:rgba(255,255,255,.35)">A geração leva ~2 min</span>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- ============ 1b — STREAMING: Grimório (rail vertical + roteiro final) ============ -->
+<div class="dv-opt" id="1b" data-screen-label="1b Streaming — Grimório">
+<div class="dv-olabel"><a class="dv-oid" href="#1b">1b</a>Detalhe da sessão — rail vertical de fases + card do roteiro final com copiar por seção</div>
+<div class="dv-card" style="width:1180px">
+<div style="width:1180px;background:#0b0b0f;color:#ededf0;font-family:'Geist',system-ui,sans-serif;font-size:14px">
+  <div style="display:flex;align-items:center;gap:28px;padding:13px 32px;border-bottom:1px solid rgba(255,255,255,.08)">
+    <div style="display:flex;align-items:center;gap:10px">
+      <svg width="27" height="27" viewBox="0 0 32 32" fill="none" aria-label="Viral Mind"><rect x="1" y="1" width="30" height="30" rx="8.5" fill="#171310" stroke="rgba(201,163,92,.55)"></rect><path d="M23.8 7.2c-6.4.6-11.2 5.2-13.2 12.4l-.9 3.2 3.2-1c6.9-2.1 10.7-7.6 10.9-14.6Z" fill="rgba(201,163,92,.16)" stroke="#c9a35c" stroke-width="1.3" stroke-linejoin="round"></path><path d="M20.8 10.6 11 20.4M10.6 21.9 8.4 24.6" stroke="#c9a35c" stroke-width="1.1" stroke-linecap="round"></path><path d="M25.6 4.4l.7 1.9 1.9.7-1.9.7-.7 1.9-.7-1.9-1.9-.7 1.9-.7.7-1.9Z" fill="#e8dcc3"></path></svg>
+      <span style="font-family:'Cinzel',serif;font-weight:600;font-size:14px;letter-spacing:.14em;color:#e8dcc3">VIRAL MIND</span>
+    </div>
+    <div style="display:flex;gap:22px;font-size:13px;color:rgba(255,255,255,.55)">
+      <span style="color:#c9a35c;font-weight:500">Sessões</span><span>Configurações</span>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:230px 1fr;gap:0;max-width:1080px;margin:0 auto;padding:32px 24px 48px">
+    <!-- rail -->
+    <div style="border-right:1px solid rgba(255,255,255,.08);padding-right:26px">
+      <div style="font-family:'Cinzel',serif;font-size:10.5px;letter-spacing:.18em;color:rgba(255,255,255,.4);margin-bottom:18px">O RITUAL</div>
+      <div style="display:flex;flex-direction:column;gap:2px">
+        <div style="display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:10px">
+          <span style="font-family:'Cormorant Garamond',serif;font-size:15px;color:rgba(201,163,92,.8);width:16px;text-align:center">I</span>
+          <span style="font-size:13px;color:rgba(255,255,255,.55);flex:1">Coleta</span>
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 6.5 12 13 4.5" stroke="#c9a35c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:10px">
+          <span style="font-family:'Cormorant Garamond',serif;font-size:15px;color:rgba(201,163,92,.8);width:16px;text-align:center">II</span>
+          <span style="font-size:13px;color:rgba(255,255,255,.55);flex:1">Modelagem</span>
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 6.5 12 13 4.5" stroke="#c9a35c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:10px">
+          <span style="font-family:'Cormorant Garamond',serif;font-size:15px;color:rgba(201,163,92,.8);width:16px;text-align:center">III</span>
+          <span style="font-size:13px;color:rgba(255,255,255,.55);flex:1">Rascunho</span>
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 6.5 12 13 4.5" stroke="#c9a35c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:10px">
+          <span style="font-family:'Cormorant Garamond',serif;font-size:15px;color:rgba(201,163,92,.8);width:16px;text-align:center">IV</span>
+          <span style="font-size:13px;color:rgba(255,255,255,.55);flex:1">Crítica</span>
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 6.5 12 13 4.5" stroke="#c9a35c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:10px;background:rgba(201,163,92,.1);border:1px solid rgba(201,163,92,.35)">
+          <span style="font-family:'Cormorant Garamond',serif;font-size:15px;color:#c9a35c;width:16px;text-align:center">V</span>
+          <span style="font-size:13px;color:#e8dcc3;font-weight:500;flex:1">Humanização</span>
+          <span style="width:6px;height:6px;border-radius:50%;background:#c9a35c;animation:vmPulse 1.6s infinite"></span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:10px">
+          <span style="font-family:'Cormorant Garamond',serif;font-size:15px;color:rgba(255,255,255,.3);width:16px;text-align:center">VI</span>
+          <span style="font-size:13px;color:rgba(255,255,255,.35);flex:1">Salvando</span>
+        </div>
+      </div>
+      <div style="margin-top:26px;padding:14px;border:1px solid rgba(245,158,11,.3);border-radius:12px;background:rgba(245,158,11,.06)">
+        <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:#fbbf24;font-weight:500"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M8 2 14.5 13.5H1.5L8 2Z" stroke="#fbbf24" stroke-width="1.3" stroke-linejoin="round"></path><path d="M8 6.5V9.5M8 11.5V11.6" stroke="#fbbf24" stroke-width="1.3" stroke-linecap="round"></path></svg>Slop-lint</div>
+        <div style="font-size:12px;color:rgba(255,255,255,.55);margin-top:6px;line-height:1.5">1 aviso: "não é sobre X, é sobre Y" — frase da lista de vigilância.</div>
+      </div>
+    </div>
+    <!-- conteúdo -->
+    <div style="padding-left:32px">
+      <h1 style="margin:0;font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:500;color:#f2efe8">Roteiro · v2</h1>
+      <div style="display:flex;gap:8px;margin-top:10px">
+        <span style="padding:4px 11px;border:1px solid rgba(99,102,241,.4);border-radius:999px;font-size:12px;color:#a5b4fc;background:rgba(99,102,241,.08)">Dra. Marina</span>
+        <span style="padding:4px 11px;border:1px solid rgba(255,255,255,.12);border-radius:999px;font-size:12px;color:rgba(255,255,255,.5)">v1</span>
+        <span style="padding:4px 11px;border:1px solid rgba(201,163,92,.5);border-radius:999px;font-size:12px;color:#e8dcc3;background:rgba(201,163,92,.1)">v2</span>
+      </div>
+      <!-- card roteiro -->
+      <div style="margin-top:22px;border:1px solid rgba(201,163,92,.3);border-radius:18px;overflow:hidden;background:linear-gradient(180deg,rgba(201,163,92,.05),rgba(255,255,255,.02) 120px)">
+        <div style="padding:20px 26px 18px;border-bottom:1px solid rgba(255,255,255,.07)">
+          <div style="display:flex;align-items:center;gap:10px">
+            <span style="font-family:'Cinzel',serif;font-size:11px;letter-spacing:.18em;color:#c9a35c">HOOK</span>
+            <span style="margin-left:auto;display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border:1px solid rgba(255,255,255,.15);border-radius:8px;font-size:12px;color:rgba(255,255,255,.65)"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><rect x="5" y="5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.2"></rect><path d="M11 5V3.5A1.5 1.5 0 0 0 9.5 2H3.5A1.5 1.5 0 0 0 2 3.5v6A1.5 1.5 0 0 0 3.5 11H5" stroke="currentColor" stroke-width="1.2"></path></svg>Copiar</span>
+          </div>
+          <p style="margin:12px 0 0;font-family:'Cormorant Garamond',serif;font-size:23px;font-weight:500;line-height:1.4;color:#f2efe8">"Eu acordava 11h e faturava R$ 3 mil. Mudei UMA coisa e tripliquei em 60 dias."</p>
+        </div>
+        <div style="padding:20px 26px 18px;border-bottom:1px solid rgba(255,255,255,.07)">
+          <div style="display:flex;align-items:center;gap:10px">
+            <span style="font-family:'Cinzel',serif;font-size:11px;letter-spacing:.18em;color:#c9a35c">ROTEIRO</span>
+            <span style="margin-left:auto;display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border:1px solid rgba(255,255,255,.15);border-radius:8px;font-size:12px;color:rgba(255,255,255,.65)"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><rect x="5" y="5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.2"></rect><path d="M11 5V3.5A1.5 1.5 0 0 0 9.5 2H3.5A1.5 1.5 0 0 0 2 3.5v6A1.5 1.5 0 0 0 3.5 11H5" stroke="currentColor" stroke-width="1.2"></path></svg>Copiar</span>
+          </div>
+          <div style="margin-top:12px;font-size:13.5px;line-height:1.75;color:rgba(237,237,240,.8)">
+            <p style="margin:0"><strong style="color:rgba(255,255,255,.9);font-weight:500">CENA 1 — close, luz natural:</strong> "Ninguém te conta isso sobre rotina matinal. Não é acordar às 5h. É o que você faz nos primeiros 20 minutos."</p>
+            <p style="margin:10px 0 0"><strong style="color:rgba(255,255,255,.9);font-weight:500">CENA 2 — b-roll caderno + café:</strong> "Eu escrevia três prioridades. Só três. A primeira sempre era a que dava dinheiro."</p>
+            <p style="margin:10px 0 0"><strong style="color:rgba(255,255,255,.9);font-weight:500">CENA 3 — volta pro rosto:</strong> "Em 60 dias, meu faturamento saiu de 3 pra 9 mil. Sem acordar mais cedo. Só mudando a ordem."</p>
+          </div>
+        </div>
+        <div style="padding:20px 26px 18px;border-bottom:1px solid rgba(255,255,255,.07)">
+          <div style="display:flex;align-items:center;gap:10px">
+            <span style="font-family:'Cinzel',serif;font-size:11px;letter-spacing:.18em;color:#c9a35c">VARIAÇÕES DE HOOK</span>
+            <span style="margin-left:auto;display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border:1px solid rgba(255,255,255,.15);border-radius:8px;font-size:12px;color:rgba(255,255,255,.65)"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><rect x="5" y="5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.2"></rect><path d="M11 5V3.5A1.5 1.5 0 0 0 9.5 2H3.5A1.5 1.5 0 0 0 2 3.5v6A1.5 1.5 0 0 0 3.5 11H5" stroke="currentColor" stroke-width="1.2"></path></svg>Copiar</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px;margin-top:12px;font-size:13.5px;line-height:1.6;color:rgba(237,237,240,.75)">
+            <div style="display:flex;gap:10px"><span style="font-family:'Cormorant Garamond',serif;color:rgba(201,163,92,.7)">i.</span>"Acordar cedo não me deixou rica. Isso aqui deixou."</div>
+            <div style="display:flex;gap:10px"><span style="font-family:'Cormorant Garamond',serif;color:rgba(201,163,92,.7)">ii.</span>"3 mil por mês acordando 11h. 9 mil mudando 20 minutos."</div>
+            <div style="display:flex;gap:10px"><span style="font-family:'Cormorant Garamond',serif;color:rgba(201,163,92,.7)">iii.</span>"O guru mentiu: rotina matinal não é sobre horário."</div>
+          </div>
+        </div>
+        <div style="padding:20px 26px 22px">
+          <div style="display:flex;align-items:center;gap:10px">
+            <span style="font-family:'Cinzel',serif;font-size:11px;letter-spacing:.18em;color:#c9a35c">COMANDO</span>
+            <span style="margin-left:auto;display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border:1px solid rgba(255,255,255,.15);border-radius:8px;font-size:12px;color:rgba(255,255,255,.65)"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><rect x="5" y="5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.2"></rect><path d="M11 5V3.5A1.5 1.5 0 0 0 9.5 2H3.5A1.5 1.5 0 0 0 2 3.5v6A1.5 1.5 0 0 0 3.5 11H5" stroke="currentColor" stroke-width="1.2"></path></svg>Copiar</span>
+          </div>
+          <p style="margin:12px 0 0;font-size:13.5px;line-height:1.6;color:rgba(237,237,240,.8)">"Comenta ROTINA que eu te mando o template das 3 prioridades."</p>
+        </div>
+      </div>
+      <!-- ações -->
+      <div style="display:flex;gap:10px;margin-top:18px;align-items:center">
+        <span style="display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:#ece5d3;color:#161410;font-size:13.5px;font-weight:600"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M11 2.5 13.5 5M9.5 4 3 10.5 2.5 13.5 5.5 13 12 6.5 9.5 4Z" stroke="#161410" stroke-width="1.4" stroke-linejoin="round"></path></svg>Gerar nova versão</span>
+        <span style="display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;border:1px solid rgba(16,185,129,.4);color:#6ee7b7;font-size:13.5px;background:rgba(16,185,129,.07)"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 6.5 12 13 4.5" stroke="#6ee7b7" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>Aprovar</span>
+        <div style="margin-left:auto;display:flex;gap:4px;align-items:center">
+          <span style="font-size:12px;color:rgba(255,255,255,.4);margin-right:6px">Avaliar:</span>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="#c9a35c"><path d="M8 1.5 10 6l4.8.4-3.6 3.2 1.1 4.7L8 11.8l-4.3 2.5 1.1-4.7L1.2 6.4 6 6 8 1.5Z"></path></svg>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="#c9a35c"><path d="M8 1.5 10 6l4.8.4-3.6 3.2 1.1 4.7L8 11.8l-4.3 2.5 1.1-4.7L1.2 6.4 6 6 8 1.5Z"></path></svg>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="#c9a35c"><path d="M8 1.5 10 6l4.8.4-3.6 3.2 1.1 4.7L8 11.8l-4.3 2.5 1.1-4.7L1.2 6.4 6 6 8 1.5Z"></path></svg>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="#c9a35c"><path d="M8 1.5 10 6l4.8.4-3.6 3.2 1.1 4.7L8 11.8l-4.3 2.5 1.1-4.7L1.2 6.4 6 6 8 1.5Z"></path></svg>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5 10 6l4.8.4-3.6 3.2 1.1 4.7L8 11.8l-4.3 2.5 1.1-4.7L1.2 6.4 6 6 8 1.5Z" stroke="rgba(255,255,255,.3)" stroke-width="1.2"></path></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- ============ 1c — STREAMING: Ritual (dramático centrado) ============ -->
+<div class="dv-opt" id="1c" data-screen-label="1c Streaming — Ritual">
+<div class="dv-olabel"><a class="dv-oid" href="#1c">1c</a>Detalhe da sessão — momento de geração dramático, anel de progresso + fase em destaque</div>
+<div class="dv-card" style="width:1180px">
+<div style="width:1180px;background:radial-gradient(ellipse 60% 45% at 50% 38%,rgba(201,163,92,.07),transparent),#0b0b0f;color:#ededf0;font-family:'Geist',system-ui,sans-serif;font-size:14px">
+  <div style="display:flex;align-items:center;gap:28px;padding:13px 32px;border-bottom:1px solid rgba(255,255,255,.08)">
+    <div style="display:flex;align-items:center;gap:10px">
+      <svg width="27" height="27" viewBox="0 0 32 32" fill="none" aria-label="Viral Mind"><rect x="1" y="1" width="30" height="30" rx="8.5" fill="#171310" stroke="rgba(201,163,92,.55)"></rect><path d="M23.8 7.2c-6.4.6-11.2 5.2-13.2 12.4l-.9 3.2 3.2-1c6.9-2.1 10.7-7.6 10.9-14.6Z" fill="rgba(201,163,92,.16)" stroke="#c9a35c" stroke-width="1.3" stroke-linejoin="round"></path><path d="M20.8 10.6 11 20.4M10.6 21.9 8.4 24.6" stroke="#c9a35c" stroke-width="1.1" stroke-linecap="round"></path><path d="M25.6 4.4l.7 1.9 1.9.7-1.9.7-.7 1.9-.7-1.9-1.9-.7 1.9-.7.7-1.9Z" fill="#e8dcc3"></path></svg>
+      <span style="font-family:'Cinzel',serif;font-weight:600;font-size:14px;letter-spacing:.14em;color:#e8dcc3">VIRAL MIND</span>
+    </div>
+    <div style="display:flex;gap:22px;font-size:13px;color:rgba(255,255,255,.55)">
+      <span style="color:#c9a35c;font-weight:500">Sessões</span><span>Configurações</span>
+    </div>
+  </div>
+  <div style="max-width:760px;margin:0 auto;padding:56px 24px 52px;display:flex;flex-direction:column;align-items:center">
+    <!-- anel -->
+    <div style="position:relative;width:150px;height:150px">
+      <svg width="150" height="150" viewBox="0 0 150 150" style="position:absolute;inset:0">
+        <circle cx="75" cy="75" r="66" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="2"></circle>
+        <circle cx="75" cy="75" r="66" fill="none" stroke="#c9a35c" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="414.7" stroke-dashoffset="207" transform="rotate(-90 75 75)"></circle>
+      </svg>
+      <div style="position:absolute;inset:0;animation:vmOrbit 6s linear infinite"><span style="position:absolute;top:5px;left:50%;margin-left:-4px;width:8px;height:8px;border-radius:50%;background:#e8dcc3;box-shadow:0 0 12px rgba(201,163,92,.9)"></span></div>
+      <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px">
+        <span style="font-family:'Cormorant Garamond',serif;font-size:26px;color:#f2efe8">3<span style="color:rgba(255,255,255,.35);font-size:19px">/6</span></span>
+        <span style="font-size:10.5px;letter-spacing:.14em;color:rgba(255,255,255,.4)">FASES</span>
+      </div>
+    </div>
+    <h1 style="margin:28px 0 0;font-family:'Cormorant Garamond',serif;font-size:44px;font-weight:500;color:#f2efe8;letter-spacing:.01em">Rascunho</h1>
+    <p style="margin:8px 0 0;font-size:13.5px;color:rgba(255,255,255,.45)">O roteirista está escrevendo a primeira versão a partir do corpus e da modelagem.</p>
+    <!-- dots de fases -->
+    <div style="display:flex;gap:26px;margin-top:26px;align-items:center">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px"><span style="width:7px;height:7px;border-radius:50%;background:#c9a35c"></span><span style="font-size:10.5px;color:rgba(255,255,255,.45)">Coleta</span></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px"><span style="width:7px;height:7px;border-radius:50%;background:#c9a35c"></span><span style="font-size:10.5px;color:rgba(255,255,255,.45)">Modelagem</span></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px"><span style="width:9px;height:9px;border-radius:50%;background:#e8dcc3;box-shadow:0 0 10px rgba(201,163,92,.8)"></span><span style="font-size:10.5px;color:#e8dcc3">Rascunho</span></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px"><span style="width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.18)"></span><span style="font-size:10.5px;color:rgba(255,255,255,.3)">Crítica</span></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px"><span style="width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.18)"></span><span style="font-size:10.5px;color:rgba(255,255,255,.3)">Humanização</span></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px"><span style="width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.18)"></span><span style="font-size:10.5px;color:rgba(255,255,255,.3)">Salvando</span></div>
+    </div>
+    <!-- texto ao vivo -->
+    <div style="width:100%;margin-top:36px;border:1px solid rgba(255,255,255,.1);border-top:1px solid rgba(201,163,92,.4);border-radius:16px;background:rgba(255,255,255,.02);overflow:hidden">
+      <div style="padding:18px 22px;font-family:'Geist Mono',monospace;font-size:12.5px;line-height:1.75;color:rgba(237,237,240,.75);position:relative">
+        <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,11,15,.9),transparent 55%);pointer-events:none"></div>
+<div style="color:rgba(237,237,240,.35)">CENA 1 — close no rosto, luz natural:</div>
+<div style="color:rgba(237,237,240,.5)">"Ninguém te conta isso sobre rotina matinal…"</div>
+<div style="margin-top:10px">CENA 2 — b-roll caderno + café:</div>
+<div>"Eu escrevia três prioridades. Só três. E a primeira sempre<span style="display:inline-block;width:8px;height:16px;background:#c9a35c;vertical-align:text-bottom;margin-left:3px;animation:vmCaret 1s infinite"></span></div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- ============ 1d — HOME ============ -->
+<div class="dv-opt" id="1d" data-screen-label="1d Home — criação de roteiro">
+<div class="dv-olabel"><a class="dv-oid" href="#1d">1d</a>Home — criação de roteiro com anexos e modelagem</div>
+<div class="dv-card" style="width:1180px">
+<div style="width:1180px;background:radial-gradient(ellipse 55% 35% at 50% 0%,rgba(201,163,92,.06),transparent),#0b0b0f;color:#ededf0;font-family:'Geist',system-ui,sans-serif;font-size:14px">
+  <div style="display:flex;align-items:center;gap:28px;padding:13px 32px;border-bottom:1px solid rgba(255,255,255,.08)">
+    <div style="display:flex;align-items:center;gap:10px">
+      <svg width="27" height="27" viewBox="0 0 32 32" fill="none" aria-label="Viral Mind"><rect x="1" y="1" width="30" height="30" rx="8.5" fill="#171310" stroke="rgba(201,163,92,.55)"></rect><path d="M23.8 7.2c-6.4.6-11.2 5.2-13.2 12.4l-.9 3.2 3.2-1c6.9-2.1 10.7-7.6 10.9-14.6Z" fill="rgba(201,163,92,.16)" stroke="#c9a35c" stroke-width="1.3" stroke-linejoin="round"></path><path d="M20.8 10.6 11 20.4M10.6 21.9 8.4 24.6" stroke="#c9a35c" stroke-width="1.1" stroke-linecap="round"></path><path d="M25.6 4.4l.7 1.9 1.9.7-1.9.7-.7 1.9-.7-1.9-1.9-.7 1.9-.7.7-1.9Z" fill="#e8dcc3"></path></svg>
+      <span style="font-family:'Cinzel',serif;font-weight:600;font-size:14px;letter-spacing:.14em;color:#e8dcc3">VIRAL MIND</span>
+    </div>
+    <div style="display:flex;gap:22px;font-size:13px;color:rgba(255,255,255,.55)">
+      <span>Sessões</span><span>Configurações</span>
+    </div>
+  </div>
+  <div style="max-width:680px;margin:0 auto;padding:60px 24px 64px">
+    <div style="text-align:center">
+      <div style="font-family:'Cinzel',serif;font-size:11px;letter-spacing:.22em;color:#c9a35c">ESCRITÓRIO DE ROTEIRISTAS VIRAIS</div>
+      <h1 style="margin:14px 0 0;font-family:'Cormorant Garamond',serif;font-size:46px;font-weight:500;line-height:1.15;color:#f2efe8">O que vamos viralizar hoje?</h1>
+      <p style="margin:12px 0 0;font-size:14px;color:rgba(255,255,255,.45)">Roteiros embasados em um corpus de 6 mil vídeos publicados.</p>
+    </div>
+    <!-- prompt -->
+    <div style="margin-top:36px;border:1px solid rgba(255,255,255,.12);border-radius:18px;background:rgba(255,255,255,.03);overflow:hidden">
+      <div style="padding:20px 22px 60px;font-size:15px;line-height:1.6;color:rgba(255,255,255,.35)">Descreva o vídeo: tema, ângulo, formato… <span style="display:inline-block;width:2px;height:18px;background:#c9a35c;vertical-align:text-bottom;animation:vmCaret 1s infinite"></span></div>
+      <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;border-top:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.02)">
+        <span style="display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border:1px solid rgba(99,102,241,.4);border-radius:10px;font-size:12.5px;color:#a5b4fc;background:rgba(99,102,241,.07)"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5.5" r="2.6" stroke="#a5b4fc" stroke-width="1.3"></circle><path d="M2.8 13.5c.9-2.4 2.9-3.6 5.2-3.6s4.3 1.2 5.2 3.6" stroke="#a5b4fc" stroke-width="1.3" stroke-linecap="round"></path></svg>Dra. Marina<svg width="10" height="10" viewBox="0 0 16 16" fill="none"><path d="M4 6.5 8 10.5 12 6.5" stroke="#a5b4fc" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+        <span style="display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border:1px solid rgba(255,255,255,.14);border-radius:10px;font-size:12.5px;color:rgba(255,255,255,.6)"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M10.5 4.5 5.6 9.4a1.7 1.7 0 1 0 2.4 2.4l5.2-5.2a3 3 0 0 0-4.2-4.2L3.6 7.8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"></path></svg>Anexar</span>
+        <span style="margin-left:auto;display:inline-flex;align-items:center;gap:9px;padding:10px 22px;border-radius:11px;background:linear-gradient(180deg,#f2ecdd,#ddceac);color:#161410;font-size:13.5px;font-weight:600;box-shadow:0 0 22px rgba(201,163,92,.2)"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M11 2.5 13.5 5M9.5 4 3 10.5 2.5 13.5 5.5 13 12 6.5 9.5 4Z" stroke="#161410" stroke-width="1.4" stroke-linejoin="round"></path><path d="M13 9.5l.4 1.1 1.1.4-1.1.4-.4 1.1-.4-1.1-1.1-.4 1.1-.4.4-1.1Z" fill="#161410"></path></svg>Conjurar roteiro</span>
+      </div>
+    </div>
+    <!-- anexos -->
+    <div style="margin-top:26px">
+      <div style="display:flex;align-items:baseline;gap:10px">
+        <span style="font-family:'Cinzel',serif;font-size:10.5px;letter-spacing:.18em;color:rgba(255,255,255,.4)">MATERIAIS DE APOIO</span>
+        <span style="font-size:12px;color:rgba(255,255,255,.3)">opcional</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px">
+        <div style="padding:16px 14px;border:1px solid rgba(255,255,255,.1);border-radius:14px;background:rgba(255,255,255,.02);display:flex;flex-direction:column;gap:9px">
+          <svg width="17" height="17" viewBox="0 0 16 16" fill="none"><path d="M4 2h6l3 3v9H4V2Z" stroke="rgba(255,255,255,.6)" stroke-width="1.2" stroke-linejoin="round"></path><path d="M6.5 8h4M6.5 10.5h4M6.5 5.5h1.5" stroke="rgba(255,255,255,.6)" stroke-width="1.2" stroke-linecap="round"></path></svg>
+          <span style="font-size:12.5px;color:rgba(255,255,255,.75)">Roteiro de referência</span>
+        </div>
+        <div style="padding:16px 14px;border:1px solid rgba(255,255,255,.1);border-radius:14px;background:rgba(255,255,255,.02);display:flex;flex-direction:column;gap:9px">
+          <svg width="17" height="17" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="10" rx="1.5" stroke="rgba(255,255,255,.6)" stroke-width="1.2"></rect><path d="M4.5 6h4M4.5 8h7M4.5 10h7" stroke="rgba(255,255,255,.6)" stroke-width="1.2" stroke-linecap="round"></path></svg>
+          <span style="font-size:12.5px;color:rgba(255,255,255,.75)">Notícia</span>
+        </div>
+        <div style="padding:16px 14px;border:1px solid rgba(255,255,255,.1);border-radius:14px;background:rgba(255,255,255,.02);display:flex;flex-direction:column;gap:9px">
+          <svg width="17" height="17" viewBox="0 0 16 16" fill="none"><path d="M4 2h8v12H4V2Z" stroke="rgba(255,255,255,.6)" stroke-width="1.2" stroke-linejoin="round"></path><path d="M6 5h4M6 7.5h4M6 10h2.5" stroke="rgba(255,255,255,.6)" stroke-width="1.2" stroke-linecap="round"></path></svg>
+          <span style="font-size:12.5px;color:rgba(255,255,255,.75)">Documento</span>
+        </div>
+        <div style="padding:16px 14px;border:1px solid rgba(245,158,11,.45);border-radius:14px;background:rgba(245,158,11,.06);display:flex;flex-direction:column;gap:9px;position:relative">
+          <svg width="17" height="17" viewBox="0 0 16 16" fill="none"><rect x="2" y="3.5" width="9" height="9" rx="1.5" stroke="#fbbf24" stroke-width="1.2"></rect><path d="M11 7.5 14 5.5v5l-3-2Z" stroke="#fbbf24" stroke-width="1.2" stroke-linejoin="round"></path></svg>
+          <span style="font-size:12.5px;color:#fde68a">Vídeo</span>
+          <span style="position:absolute;top:10px;right:10px;display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:999px;background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.4);font-size:10.5px;color:#fbbf24;font-weight:500"><svg width="9" height="9" viewBox="0 0 16 16" fill="#fbbf24"><path d="M9 1 3 9.5h4L7 15l6-8.5H9L9 1Z"></path></svg>Modelagem</span>
+        </div>
+      </div>
+      <!-- anexo expandido -->
+      <div style="margin-top:12px;border:1px solid rgba(245,158,11,.35);border-radius:14px;background:rgba(245,158,11,.04);padding:16px 18px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><rect x="2" y="3.5" width="9" height="9" rx="1.5" stroke="#fbbf24" stroke-width="1.2"></rect><path d="M11 7.5 14 5.5v5l-3-2Z" stroke="#fbbf24" stroke-width="1.2" stroke-linejoin="round"></path></svg>
+          <span style="font-size:13px;color:#fde68a;font-weight:500">Vídeo · Modelagem ativa</span>
+          <span style="font-size:12px;color:rgba(255,255,255,.4)">— a estrutura deste vídeo será desconstruída e replicada</span>
+          <svg style="margin-left:auto" width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="rgba(255,255,255,.4)" stroke-width="1.4" stroke-linecap="round"></path></svg>
+        </div>
+        <div style="display:flex;gap:10px;margin-top:12px">
+          <span style="flex:1;padding:9px 14px;border:1px solid rgba(255,255,255,.12);border-radius:10px;font-size:12.5px;color:rgba(255,255,255,.55);font-family:'Geist Mono',monospace">https://instagram.com/reel/Cx91…</span>
+          <span style="flex:1;padding:9px 14px;border:1px solid rgba(255,255,255,.12);border-radius:10px;font-size:12.5px;color:rgba(255,255,255,.35)">Transcrição ou observações…</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- ============ 1e — SESSÕES ============ -->
+<div class="dv-opt" id="1e" data-screen-label="1e Lista de sessões">
+<div class="dv-olabel"><a class="dv-oid" href="#1e">1e</a>Sessões — lista com status e clientes</div>
+<div class="dv-card" style="width:1180px">
+<div style="width:1180px;background:#0b0b0f;color:#ededf0;font-family:'Geist',system-ui,sans-serif;font-size:14px">
+  <div style="display:flex;align-items:center;gap:28px;padding:13px 32px;border-bottom:1px solid rgba(255,255,255,.08)">
+    <div style="display:flex;align-items:center;gap:10px">
+      <svg width="27" height="27" viewBox="0 0 32 32" fill="none" aria-label="Viral Mind"><rect x="1" y="1" width="30" height="30" rx="8.5" fill="#171310" stroke="rgba(201,163,92,.55)"></rect><path d="M23.8 7.2c-6.4.6-11.2 5.2-13.2 12.4l-.9 3.2 3.2-1c6.9-2.1 10.7-7.6 10.9-14.6Z" fill="rgba(201,163,92,.16)" stroke="#c9a35c" stroke-width="1.3" stroke-linejoin="round"></path><path d="M20.8 10.6 11 20.4M10.6 21.9 8.4 24.6" stroke="#c9a35c" stroke-width="1.1" stroke-linecap="round"></path><path d="M25.6 4.4l.7 1.9 1.9.7-1.9.7-.7 1.9-.7-1.9-1.9-.7 1.9-.7.7-1.9Z" fill="#e8dcc3"></path></svg>
+      <span style="font-family:'Cinzel',serif;font-weight:600;font-size:14px;letter-spacing:.14em;color:#e8dcc3">VIRAL MIND</span>
+    </div>
+    <div style="display:flex;gap:22px;font-size:13px;color:rgba(255,255,255,.55)">
+      <span style="color:#c9a35c;font-weight:500">Sessões</span><span>Configurações</span>
+    </div>
+  </div>
+  <div style="max-width:860px;margin:0 auto;padding:40px 24px 56px">
+    <div style="display:flex;align-items:baseline;gap:14px">
+      <h1 style="margin:0;font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:500;color:#f2efe8">Sessões</h1>
+      <span style="font-size:13px;color:rgba(255,255,255,.4)">últimas 100</span>
+      <span style="margin-left:auto;display:inline-flex;align-items:center;gap:8px;padding:9px 18px;border-radius:10px;background:linear-gradient(180deg,#f2ecdd,#ddceac);color:#161410;font-size:13px;font-weight:600"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="#161410" stroke-width="1.6" stroke-linecap="round"></path></svg>Nova sessão</span>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-top:24px">
+      <div style="display:flex;align-items:center;gap:16px;padding:15px 20px;border:1px solid rgba(201,163,92,.3);border-radius:14px;background:rgba(201,163,92,.04)">
+        <span style="display:inline-flex;align-items:center;gap:7px;width:110px;font-size:12px;color:#c9a35c"><span style="width:6px;height:6px;border-radius:50%;background:#c9a35c;animation:vmPulse 1.6s infinite"></span>Gerando</span>
+        <span style="flex:1;font-size:13.5px;color:rgba(237,237,240,.85);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">"Rotina matinal que salvou meu faturamento" — corte para Reels…</span>
+        <span style="padding:3px 10px;border:1px solid rgba(99,102,241,.35);border-radius:999px;font-size:11.5px;color:#a5b4fc">Dra. Marina</span>
+        <span style="width:88px;text-align:right;font-family:'Geist Mono',monospace;font-size:11.5px;color:rgba(255,255,255,.35)">agora</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:16px;padding:15px 20px;border:1px solid rgba(255,255,255,.08);border-radius:14px;background:rgba(255,255,255,.02)">
+        <span style="display:inline-flex;align-items:center;gap:7px;width:110px;font-size:12px;color:#6ee7b7"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 6.5 12 13 4.5" stroke="#6ee7b7" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg>Concluída</span>
+        <span style="flex:1;font-size:13.5px;color:rgba(237,237,240,.85);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Modelagem do vídeo da concorrente sobre harmonização — versão própria…</span>
+        <span style="padding:3px 10px;border:1px solid rgba(99,102,241,.35);border-radius:999px;font-size:11.5px;color:#a5b4fc">Dra. Marina</span>
+        <span style="width:88px;text-align:right;font-family:'Geist Mono',monospace;font-size:11.5px;color:rgba(255,255,255,.35)">hoje 09:14</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:16px;padding:15px 20px;border:1px solid rgba(255,255,255,.08);border-radius:14px;background:rgba(255,255,255,.02)">
+        <span style="display:inline-flex;align-items:center;gap:7px;width:110px;font-size:12px;color:#6ee7b7"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 6.5 12 13 4.5" stroke="#6ee7b7" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg>Concluída</span>
+        <span style="flex:1;font-size:13.5px;color:rgba(237,237,240,.85);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Notícia: nova regulamentação de anúncios de saúde — reação em 40s…</span>
+        <span style="padding:3px 10px;border:1px solid rgba(16,185,129,.3);border-radius:999px;font-size:11.5px;color:#6ee7b7">Rafa Fit</span>
+        <span style="width:88px;text-align:right;font-family:'Geist Mono',monospace;font-size:11.5px;color:rgba(255,255,255,.35)">ontem</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:16px;padding:15px 20px;border:1px solid rgba(255,255,255,.08);border-radius:14px;background:rgba(255,255,255,.02)">
+        <span style="display:inline-flex;align-items:center;gap:7px;width:110px;font-size:12px;color:rgba(255,255,255,.45)"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M4 2h6l3 3v9H4V2Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"></path></svg>Rascunho</span>
+        <span style="flex:1;font-size:13.5px;color:rgba(237,237,240,.85);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Storytime: o cliente que quase desistiu na véspera do resultado…</span>
+        <span style="padding:3px 10px;border:1px solid rgba(99,102,241,.35);border-radius:999px;font-size:11.5px;color:#a5b4fc">Dra. Marina</span>
+        <span style="width:88px;text-align:right;font-family:'Geist Mono',monospace;font-size:11.5px;color:rgba(255,255,255,.35)">ontem</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:16px;padding:15px 20px;border:1px solid rgba(239,68,68,.25);border-radius:14px;background:rgba(239,68,68,.03)">
+        <span style="display:inline-flex;align-items:center;gap:7px;width:110px;font-size:12px;color:#fca5a5"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="#fca5a5" stroke-width="1.3"></circle><path d="M8 5v3.5M8 11v.1" stroke="#fca5a5" stroke-width="1.3" stroke-linecap="round"></path></svg>Erro</span>
+        <span style="flex:1;font-size:13.5px;color:rgba(237,237,240,.7);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Corte de podcast sobre finanças para casais — timeout na coleta…</span>
+        <span style="padding:3px 10px;border:1px solid rgba(16,185,129,.3);border-radius:999px;font-size:11.5px;color:#6ee7b7">Rafa Fit</span>
+        <span style="width:88px;text-align:right;font-family:'Geist Mono',monospace;font-size:11.5px;color:rgba(255,255,255,.35)">28 jun</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:16px;padding:15px 20px;border:1px solid rgba(255,255,255,.08);border-radius:14px;background:rgba(255,255,255,.02)">
+        <span style="display:inline-flex;align-items:center;gap:7px;width:110px;font-size:12px;color:#6ee7b7"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 6.5 12 13 4.5" stroke="#6ee7b7" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg>Concluída</span>
+        <span style="flex:1;font-size:13.5px;color:rgba(237,237,240,.85);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">3 mitos sobre protetor solar que dermatologista nenhum aguenta mais…</span>
+        <span style="padding:3px 10px;border:1px solid rgba(99,102,241,.35);border-radius:999px;font-size:11.5px;color:#a5b4fc">Dra. Marina</span>
+        <span style="width:88px;text-align:right;font-family:'Geist Mono',monospace;font-size:11.5px;color:rgba(255,255,255,.35)">27 jun</span>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- ============ 1f — PREFERÊNCIAS DE CLIENTE ============ -->
+<div class="dv-opt" id="1f" data-screen-label="1f Preferências de cliente">
+<div class="dv-olabel"><a class="dv-oid" href="#1f">1f</a>Preferências de cliente — grimório de cada voz</div>
+<div class="dv-card" style="width:1180px">
+<div style="width:1180px;background:#0b0b0f;color:#ededf0;font-family:'Geist',system-ui,sans-serif;font-size:14px">
+  <div style="display:flex;align-items:center;gap:28px;padding:13px 32px;border-bottom:1px solid rgba(255,255,255,.08)">
+    <div style="display:flex;align-items:center;gap:10px">
+      <svg width="27" height="27" viewBox="0 0 32 32" fill="none" aria-label="Viral Mind"><rect x="1" y="1" width="30" height="30" rx="8.5" fill="#171310" stroke="rgba(201,163,92,.55)"></rect><path d="M23.8 7.2c-6.4.6-11.2 5.2-13.2 12.4l-.9 3.2 3.2-1c6.9-2.1 10.7-7.6 10.9-14.6Z" fill="rgba(201,163,92,.16)" stroke="#c9a35c" stroke-width="1.3" stroke-linejoin="round"></path><path d="M20.8 10.6 11 20.4M10.6 21.9 8.4 24.6" stroke="#c9a35c" stroke-width="1.1" stroke-linecap="round"></path><path d="M25.6 4.4l.7 1.9 1.9.7-1.9.7-.7 1.9-.7-1.9-1.9-.7 1.9-.7.7-1.9Z" fill="#e8dcc3"></path></svg>
+      <span style="font-family:'Cinzel',serif;font-weight:600;font-size:14px;letter-spacing:.14em;color:#e8dcc3">VIRAL MIND</span>
+    </div>
+    <div style="display:flex;gap:22px;font-size:13px;color:rgba(255,255,255,.55)">
+      <span>Sessões</span><span style="color:#c9a35c;font-weight:500">Configurações</span>
+    </div>
+  </div>
+  <div style="max-width:860px;margin:0 auto;padding:40px 24px 56px">
+    <div style="display:flex;align-items:baseline;gap:14px">
+      <h1 style="margin:0;font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:500;color:#f2efe8">Preferências de cliente</h1>
+      <span style="font-size:13px;color:rgba(255,255,255,.4)">a voz de cada um, registrada</span>
+    </div>
+    <!-- cliente expandido -->
+    <div style="margin-top:24px;border:1px solid rgba(201,163,92,.3);border-radius:18px;background:rgba(255,255,255,.02);overflow:hidden">
+      <div style="display:flex;align-items:center;gap:12px;padding:16px 22px;background:linear-gradient(180deg,rgba(201,163,92,.06),transparent)">
+        <span style="width:34px;height:34px;border-radius:10px;background:rgba(99,102,241,.15);border:1px solid rgba(99,102,241,.4);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:16px;color:#a5b4fc">M</span>
+        <div>
+          <div style="font-size:14.5px;font-weight:500;color:#f2efe8">Dra. Marina</div>
+          <div style="font-size:12px;color:rgba(255,255,255,.4)">dermatologia · atualizado há 3 dias</div>
+        </div>
+        <svg style="margin-left:auto" width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M12 10 8 6 4 10" stroke="rgba(255,255,255,.5)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+      </div>
+      <div style="padding:6px 22px 24px;display:grid;grid-template-columns:1fr 1fr;gap:22px 28px">
+        <div>
+          <div style="font-family:'Cinzel',serif;font-size:10.5px;letter-spacing:.18em;color:#fca5a5;margin-bottom:10px">PROIBIÇÕES</div>
+          <div style="display:flex;flex-wrap:wrap;gap:7px">
+            <span style="padding:5px 12px;border:1px solid rgba(239,68,68,.35);border-radius:999px;font-size:12px;color:#fca5a5;background:rgba(239,68,68,.05)">prometer resultado</span>
+            <span style="padding:5px 12px;border:1px solid rgba(239,68,68,.35);border-radius:999px;font-size:12px;color:#fca5a5;background:rgba(239,68,68,.05)">antes/depois sem laudo</span>
+            <span style="padding:5px 12px;border:1px solid rgba(239,68,68,.35);border-radius:999px;font-size:12px;color:#fca5a5;background:rgba(239,68,68,.05)">citar marcas</span>
+          </div>
+        </div>
+        <div>
+          <div style="font-family:'Cinzel',serif;font-size:10.5px;letter-spacing:.18em;color:rgba(255,255,255,.45);margin-bottom:10px">TOM DE VOZ</div>
+          <p style="margin:0;font-size:13px;line-height:1.65;color:rgba(237,237,240,.75)">Autoridade acolhedora. Fala como quem explica pra uma amiga — técnica, mas nunca fria. Humor leve, sem sarcasmo.</p>
+        </div>
+        <div>
+          <div style="font-family:'Cinzel',serif;font-size:10.5px;letter-spacing:.18em;color:rgba(255,255,255,.45);margin-bottom:10px">VOCABULÁRIO — EVITAR</div>
+          <div style="display:flex;flex-wrap:wrap;gap:7px">
+            <span style="padding:5px 12px;border:1px solid rgba(255,255,255,.14);border-radius:999px;font-size:12px;color:rgba(255,255,255,.55);text-decoration:line-through">"milagre"</span>
+            <span style="padding:5px 12px;border:1px solid rgba(255,255,255,.14);border-radius:999px;font-size:12px;color:rgba(255,255,255,.55);text-decoration:line-through">"segredinho"</span>
+            <span style="padding:5px 12px;border:1px solid rgba(255,255,255,.14);border-radius:999px;font-size:12px;color:rgba(255,255,255,.55);text-decoration:line-through">"boto fé"</span>
+          </div>
+        </div>
+        <div>
+          <div style="font-family:'Cinzel',serif;font-size:10.5px;letter-spacing:.18em;color:#c9a35c;margin-bottom:10px">VOCABULÁRIO — PREFERIR</div>
+          <div style="display:flex;flex-wrap:wrap;gap:7px">
+            <span style="padding:5px 12px;border:1px solid rgba(201,163,92,.4);border-radius:999px;font-size:12px;color:#e8dcc3;background:rgba(201,163,92,.06)">"evidência"</span>
+            <span style="padding:5px 12px;border:1px solid rgba(201,163,92,.4);border-radius:999px;font-size:12px;color:#e8dcc3;background:rgba(201,163,92,.06)">"na prática"</span>
+            <span style="padding:5px 12px;border:1px solid rgba(201,163,92,.4);border-radius:999px;font-size:12px;color:#e8dcc3;background:rgba(201,163,92,.06)">"pele real"</span>
+          </div>
+        </div>
+        <div>
+          <div style="font-family:'Cinzel',serif;font-size:10.5px;letter-spacing:.18em;color:rgba(255,255,255,.45);margin-bottom:10px">TEMAS</div>
+          <div style="display:flex;flex-wrap:wrap;gap:7px">
+            <span style="padding:5px 12px;border:1px solid rgba(255,255,255,.14);border-radius:999px;font-size:12px;color:rgba(255,255,255,.65)">skincare baseado em evidência</span>
+            <span style="padding:5px 12px;border:1px solid rgba(255,255,255,.14);border-radius:999px;font-size:12px;color:rgba(255,255,255,.65)">mitos de dermato</span>
+            <span style="padding:5px 12px;border:1px solid rgba(255,255,255,.14);border-radius:999px;font-size:12px;color:rgba(255,255,255,.65)">rotina acessível</span>
+          </div>
+        </div>
+        <div>
+          <div style="font-family:'Cinzel',serif;font-size:10.5px;letter-spacing:.18em;color:rgba(255,255,255,.45);margin-bottom:10px">NOTAS DE ENTREVISTA</div>
+          <p style="margin:0;font-size:13px;line-height:1.65;color:rgba(237,237,240,.6)">Prefere gravar de manhã. Não gosta de dancinhas. Melhor desempenho histórico: vídeos de reação a notícia.</p>
+        </div>
+      </div>
+    </div>
+    <!-- clientes colapsados -->
+    <div style="display:flex;align-items:center;gap:12px;padding:16px 22px;margin-top:10px;border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(255,255,255,.02)">
+      <span style="width:34px;height:34px;border-radius:10px;background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.35);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:16px;color:#6ee7b7">R</span>
+      <div>
+        <div style="font-size:14.5px;font-weight:500;color:rgba(237,237,240,.85)">Rafa Fit</div>
+        <div style="font-size:12px;color:rgba(255,255,255,.4)">fitness · atualizado há 2 semanas</div>
+      </div>
+      <svg style="margin-left:auto" width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="rgba(255,255,255,.5)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;padding:16px 22px;margin-top:8px;border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(255,255,255,.02)">
+      <span style="width:34px;height:34px;border-radius:10px;background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.35);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:16px;color:#fbbf24">C</span>
+      <div>
+        <div style="font-size:14.5px;font-weight:500;color:rgba(237,237,240,.85)">Casal & Cifrão</div>
+        <div style="font-size:12px;color:rgba(255,255,255,.4)">finanças · atualizado há 1 mês</div>
+      </div>
+      <svg style="margin-left:auto" width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="rgba(255,255,255,.5)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+</div>
+<p class="dv-next">Próximos: "mais como <a class="dv-oid" href="#1a">1a</a> mas com o roteiro final de <a class="dv-oid" href="#1b">1b</a> embaixo" · "aplique o estilo escolhido no dashboard de performance" · "mostre a desconstrução da modelagem (fix do JSON cru)"</p>
+</section>
+
+</x-dc>
+</body>
+</html>

@@ -21,9 +21,10 @@ export function slopLint(text: string, phrases: BannedPhrase[]): LintViolation[]
   }
 
   // Heurísticas estruturais
-  const emDashes = (text.match(/—/g) ?? []).length;
-  if (emDashes > 1) {
-    violations.push({ label: `travessões em excesso (${emDashes})`, match: "—", severity: "block" });
+  // Travessão é proibido no texto final (requisito do humanizador) — tolerância zero.
+  const dashes = (text.match(/—|\s–\s/g) ?? []).length;
+  if (dashes > 0) {
+    violations.push({ label: `travessão proibido (${dashes}x)`, match: "—", severity: "block" });
   }
 
   const consecutiveE = text.match(/(^|[.!?]\s+)E\s+[^.!?]+[.!?]\s+E\s/m);
