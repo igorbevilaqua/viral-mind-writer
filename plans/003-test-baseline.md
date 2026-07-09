@@ -4,7 +4,7 @@
 > verification command and confirm the expected result before moving on.
 > If anything in "STOP conditions" occurs, stop and report — do not improvise.
 >
-> **Drift check (run first)**: `git diff --stat 9acaf7f..HEAD -- lib/pipeline/draft.ts lib/pipeline/slop-lint.ts lib/etl.ts package.json`
+> **Drift check (run first)**: `git diff --stat 83efd74..HEAD -- lib/pipeline/draft.ts lib/pipeline/slop-lint.ts lib/etl.ts package.json`
 > On any change, compare "Current state" excerpts against live code; on mismatch, STOP.
 
 ## Status
@@ -14,7 +14,7 @@
 - **Risk**: LOW
 - **Depends on**: none
 - **Category**: tests
-- **Planned at**: commit `9acaf7f`, 2026-07-08
+- **Planned at**: commit `83efd74`, 2026-07-09 (rebaselined após commit concorrente 76d9672)
 
 ## Why this matters
 

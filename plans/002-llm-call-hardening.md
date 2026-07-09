@@ -4,8 +4,10 @@
 > verification command and confirm the expected result before moving on.
 > If anything in "STOP conditions" occurs, stop and report — do not improvise.
 >
-> **Drift check (run first)**: `git diff --stat 9acaf7f..HEAD -- lib/pipeline/agents.ts lib/pipeline/teach.ts lib/pipeline/suggest.ts lib/pipeline/modelagem.ts lib/etl.ts`
+> **Drift check (run first)**: `git diff --stat 83efd74..HEAD -- lib/pipeline/agents.ts lib/pipeline/teach.ts lib/pipeline/suggest.ts lib/pipeline/modelagem.ts lib/etl.ts`
 > On any change, compare the "Current state" excerpts against live code; on mismatch, STOP.
+> (Rebaselined em 83efd74: o commit concorrente 76d9672 mexeu em agents.ts mas os
+> helpers `toolInput`/`toolArray` continuam lá — Step 1 segue válido. teach/suggest/etl/modelagem intactos.)
 
 ## Status
 
@@ -14,7 +16,7 @@
 - **Risk**: LOW
 - **Depends on**: none
 - **Category**: bug
-- **Planned at**: commit `9acaf7f`, 2026-07-08
+- **Planned at**: commit `83efd74`, 2026-07-09 (rebaselined após commit concorrente 76d9672)
 
 ## Why this matters
 

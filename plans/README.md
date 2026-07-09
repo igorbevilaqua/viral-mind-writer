@@ -16,9 +16,9 @@ commitado e os excerpts reconciliados.
 | Plan | Title | Priority | Effort | Depends on | Status |
 |------|-------|----------|--------|------------|--------|
 | 001  | Cron ETL fail-closed | P1 | S | — | DONE (merged 2d169e6) |
-| 004  | DX: .env.example, AGENTS.md, CI, higiene | P2 | S | — | IN PROGRESS (executor) |
-| 003  | Baseline vitest + testes dos parsers | P1 | M | — | TODO |
-| 002  | Blindar chamadas LLM restantes (max_tokens + parser único) | P1 | S | concorrentes commitadas | TODO (aguardando reconciliação) |
+| 004  | DX: .env.example, AGENTS.md, CI, higiene | P2 | S | — | DONE (merged 83efd74) |
+| 003  | Baseline vitest + testes dos parsers | P1 | M | — | IN PROGRESS (executor, rebaselined 83efd74) |
+| 002  | Blindar chamadas LLM restantes (max_tokens + parser único) | P1 | S | concorrentes commitadas ✅ | IN PROGRESS (executor, rebaselined 83efd74) |
 | 005  | Flywheel: ETL atômico + URL unificada | P1 | M | 002, 003 | TODO |
 | 006  | Streaming resiliente (heartbeat, disconnect, sessões presas) | P1 | M | 003, concorrentes | TODO (aguardando reconciliação) |
 | 007  | swapHook seguro + autoria user_id | P2 | S | 005 | TODO |
