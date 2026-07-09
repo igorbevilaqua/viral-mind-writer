@@ -18,7 +18,9 @@ commitado e os excerpts reconciliados.
 | 001  | Cron ETL fail-closed | P1 | S | — | DONE (merged 2d169e6) |
 | 004  | DX: .env.example, AGENTS.md, CI, higiene | P2 | S | — | DONE (merged 83efd74) |
 | 002  | Blindar chamadas LLM restantes (max_tokens + parser único) | P1 | S | concorrentes commitadas ✅ | DONE (merged 14262ca) |
-| 003  | Baseline vitest + testes dos parsers | P1 | M | — | BLOCKED (executor morreu no limite semanal de API; resets 19h São Paulo. Re-despachar depois) |
+| 003  | Baseline vitest + testes dos parsers | P1 | M | — | DONE (merged ee0fc17, pushed) |
+| 005  | Flywheel: ETL atômico (migration 0009) + URL unificada | P1 | M | 002,003 | DONE (merged 1688e28, pushed — ⚠️ migration 0009 pendente de aplicar no banco) |
+| 007  | swapHook seguro + autoria user_id | P2 | S | 005 | IN PROGRESS (executor, rebaselined 1688e28) |
 | 005  | Flywheel: ETL atômico + URL unificada | P1 | M | 002, 003 | TODO |
 | 006  | Streaming resiliente (heartbeat, disconnect, sessões presas) | P1 | M | 003, concorrentes | TODO (aguardando reconciliação) |
 | 007  | swapHook seguro + autoria user_id | P2 | S | 005 | TODO |
