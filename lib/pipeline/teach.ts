@@ -1,6 +1,6 @@
 import { anthropic, ANALYST_MODEL } from "../anthropic";
 import { appDb } from "../db";
-import { agentPrompt } from "./agents";
+import { agentPrompt, toolInput, toolArray } from "./agents";
 
 // Agente Professor: extrai aprendizados generalizáveis de um viral (menu Ensinar).
 // Os aprovados pelo usuário são destilados na sala via loadContext (taught_*).
@@ -59,7 +59,7 @@ export async function extractLearnings(input: {
 
   const res = await anthropic.messages.create({
     model: ANALYST_MODEL,
-    max_tokens: 3000,
+    max_tokens: 8000, // thinking divide o teto — 3000 truncava o tool_use
     tools: [APRENDIZADOS_TOOL],
     tool_choice: { type: "tool", name: "registrar_aprendizados" },
     system: [
@@ -86,20 +86,14 @@ Extraia os aprendizados.`,
   const toolUse = res.content.find((b) => b.type === "tool_use");
   if (!toolUse || toolUse.type !== "tool_use") throw new Error("professor: sem aprendizados estruturados");
 
-  // O modelo às vezes dupla-serializa o campo — normaliza os 3 formatos (mesmo padrão do etl.ts).
-  let a: unknown = (toolUse.input as Record<string, unknown>).aprendizados ?? toolUse.input;
-  if (typeof a === "string") {
-    try {
-      a = JSON.parse(a);
-    } catch {
-      throw new Error("professor: aprendizados ilegíveis");
-    }
-  }
-  if (a && !Array.isArray(a) && typeof a === "object" && Array.isArray((a as { aprendizados?: unknown }).aprendizados)) {
-    a = (a as { aprendizados: unknown }).aprendizados;
-  }
-  if (!Array.isArray(a)) throw new Error("professor: aprendizados fora do formato");
-  return (a as ExtractedLearning[]).filter(
+  const aprendizados = toolArray<ExtractedLearning>(toolInput(toolUse), "aprendizados").filter(
     (l) => l?.titulo && l?.descricao && DIMENSOES.includes(l.dimensao)
   );
+  if (!aprendizados.length) {
+    console.error(
+      `professor vazio — stop_reason=${res.stop_reason} input=${JSON.stringify(toolUse.input).slice(0, 500)}`
+    );
+    throw new Error("professor: nenhum aprendizado válido");
+  }
+  return aprendizados;
 }
