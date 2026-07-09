@@ -1,5 +1,6 @@
 import { anthropic, ANALYST_MODEL } from "../anthropic";
 import { appDb } from "../db";
+import { toolInput } from "./agents";
 import type { Attachment } from "./types";
 
 const ANALISE_TOOL = {
@@ -93,13 +94,21 @@ export async function analyzeModelagem(attachment: Attachment, novoTema: string)
 
   const toolUse = res.content.find((b) => b.type === "tool_use");
   if (!toolUse || toolUse.type !== "tool_use") throw new Error("modelagem: modelo não retornou análise estruturada");
-  const input = toolUse.input as { analysis: unknown; replication_brief: string };
+  const input = toolInput(toolUse);
+  const brief = typeof input.replication_brief === "string" ? input.replication_brief.trim() : "";
+  if (!brief) {
+    console.error(
+      `modelagem vazia — stop_reason=${res.stop_reason} input=${JSON.stringify(toolUse.input).slice(0, 500)}`
+    );
+    // preserva "modelagem falhou nunca derruba a geração": não insere cache, retorna vazio
+    return "";
+  }
 
   await appDb.from("vm_modelagem_analyses").insert({
     attachment_id: attachment.id,
-    analysis: input.analysis,
-    replication_brief: input.replication_brief,
+    analysis: input.analysis ?? null,
+    replication_brief: brief,
   });
 
-  return input.replication_brief;
+  return brief;
 }
