@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { createSession, type NewAttachment } from "@/lib/actions";
 import type { ThemeSuggestion } from "@/lib/pipeline/suggest";
+import { VIDEO_URL_RE } from "@/lib/video-url";
 
 const KIND_LABELS: Record<NewAttachment["kind"], { label: string; placeholder: string }> = {
   reference_script: { label: "Roteiro de referência", placeholder: "Cole o roteiro de referência..." },
@@ -14,8 +15,6 @@ const KIND_LABELS: Record<NewAttachment["kind"], { label: string; placeholder: s
   document: { label: "Documento", placeholder: "O texto extraído do arquivo aparece aqui para revisão — ou cole o conteúdo direto..." },
   video_link: { label: "Vídeo", placeholder: "Cole o link acima para buscar a transcrição — ou cole a transcrição aqui..." },
 };
-
-const VIDEO_URL = /youtube\.com|youtu\.be|instagram\.com|tiktok\.com/i;
 
 // Frases que rotacionam durante a espera de cada fase — a pesquisa é a longa, então tem mais.
 const SUGGEST_MESSAGES: Record<string, string[]> = {
@@ -133,7 +132,7 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
 
   // Busca a transcrição de um link de vídeo (YouTube/Reels/TikTok) e preenche o anexo
   const transcribeLink = async (i: number, url: string, current: string) => {
-    if (!VIDEO_URL.test(url) || current.trim() || extracting !== null) return;
+    if (!VIDEO_URL_RE.test(url) || current.trim() || extracting !== null) return;
     setExtracting(i);
     setExtractError((e) => ({ ...e, [i]: "" }));
     try {

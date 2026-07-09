@@ -1,6 +1,8 @@
 import { appDb, viralData } from "./db";
 import { anthropic, ANALYST_MODEL } from "./anthropic";
 import { agentPrompt, toolInput, toolArray } from "./pipeline/agents";
+import { platformVideoId } from "./video-url";
+import { fmtNum } from "./format";
 
 // ETL semanal: materializa insights do corpus em vm_viral_insights
 // (globais + por cliente, categorizados e pontuados) e sincroniza
@@ -20,9 +22,6 @@ const prettyTipo = (t: string) => {
   const s = t.replace(/_/g, " ").trim();
   return s.charAt(0).toUpperCase() + s.slice(1);
 };
-
-const fmtNum = (n: number) =>
-  n >= 1_000_000 ? `${(n / 1_000_000).toFixed(1)}M` : n >= 1000 ? `${Math.round(n / 1000)}k` : String(Math.round(n));
 
 interface ClientStat {
   categoria: string;
@@ -319,18 +318,16 @@ export async function runWeeklyEtl() {
     });
   }
 
-  await appDb.from("vm_viral_insights").delete().neq("scope", ""); // snapshot completo substitui o anterior
-  const ins = await appDb.from("vm_viral_insights").insert(rows);
-  if (ins.error) throw new Error(`insert insights: ${ins.error.message}`);
+  // Troca atômica via RPC; se a function ainda não foi aplicada no banco (PGRST202),
+  // cai no caminho antigo (não-atômico) com aviso — rollout seguro.
+  const rpc = await appDb.rpc("vm_replace_insights", { _rows: rows });
+  if (rpc.error) {
+    if (rpc.error.code !== "PGRST202") throw new Error(`vm_replace_insights: ${rpc.error.message}`);
+    console.warn("vm_replace_insights ausente — aplicar migration; usando caminho não-atômico");
+    await appDb.from("vm_viral_insights").delete().neq("scope", "");
+    const ins = await appDb.from("vm_viral_insights").insert(rows);
+    if (ins.error) throw new Error(`insert insights: ${ins.error.message}`);
+  }
 
   return { insights: rows.length, clientInsights, scriptsLinked: linked, scriptsSynced: synced };
-}
-
-// Extrai o id do vídeo na plataforma a partir da URL publicada (mesmos padrões do transcribe-link).
-export function platformVideoId(url: string): string | null {
-  const m =
-    url.match(/(?:v=|shorts\/|youtu\.be\/)([\w-]{11})/) ??
-    url.match(/instagram\.com\/(?:reels?|p|tv)\/([A-Za-z0-9_-]+)/) ??
-    url.match(/tiktok\.com\/.*video\/(\d+)/);
-  return m?.[1] ?? null;
 }
