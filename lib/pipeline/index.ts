@@ -147,7 +147,8 @@ export async function runPipeline(
       .single();
     if (error) throw new Error(`falha ao salvar roteiro: ${error.message}`);
 
-    await appDb.from("vm_sessions").update({ status: "done" }).eq("id", sessionId);
+    // limpa erro de tentativas anteriores → a página não abre com a caixa vermelha stale
+    await appDb.from("vm_sessions").update({ status: "done", error_message: null }).eq("id", sessionId);
     emit({ type: "done", scriptId: saved.id });
   } catch (e) {
     const message = e instanceof Error ? e.message : String(e);
