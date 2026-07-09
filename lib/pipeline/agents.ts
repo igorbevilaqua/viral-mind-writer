@@ -43,7 +43,7 @@ export function taughtBlock(ctx: GenerationContext, dimensoes: string[], n = 3):
 // Claude às vezes serializa o input da tool — ou um campo array dele — como string JSON
 // (double-encode). Sem isso, `input.campo.map(...)` estoura "reading 'map' of undefined".
 // Mesmo problema já tratado no ideador (suggest.ts).
-function toolInput(block: { input: unknown }): Record<string, unknown> {
+export function toolInput(block: { input: unknown }): Record<string, unknown> {
   let v: unknown = block.input;
   if (typeof v === "string") {
     try {
@@ -55,7 +55,7 @@ function toolInput(block: { input: unknown }): Record<string, unknown> {
   return v && typeof v === "object" ? (v as Record<string, unknown>) : {};
 }
 
-function toolArray<T>(input: Record<string, unknown>, key: string): T[] {
+export function toolArray<T>(input: Record<string, unknown>, key: string): T[] {
   let v: unknown = input[key];
   if (typeof v === "string") {
     try {
