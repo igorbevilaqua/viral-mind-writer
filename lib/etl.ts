@@ -327,7 +327,7 @@ export async function runWeeklyEtl() {
 }
 
 // Extrai o id do vídeo na plataforma a partir da URL publicada (mesmos padrões do transcribe-link).
-function platformVideoId(url: string): string | null {
+export function platformVideoId(url: string): string | null {
   const m =
     url.match(/(?:v=|shorts\/|youtu\.be\/)([\w-]{11})/) ??
     url.match(/instagram\.com\/(?:reels?|p|tv)\/([A-Za-z0-9_-]+)/) ??
