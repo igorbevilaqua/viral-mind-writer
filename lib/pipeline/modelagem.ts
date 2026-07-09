@@ -78,7 +78,9 @@ export async function analyzeModelagem(attachment: Attachment, novoTema: string)
 
   const res = await anthropic.messages.create({
     model: ANALYST_MODEL,
-    max_tokens: 4000,
+    // análise estruturada rica (desconstrução + brief) via tool forçada; o sonnet-5 pensa
+    // por padrão no mesmo teto. 4000 arriscava truncar o tool_use; 8000 dá folga.
+    max_tokens: 8000,
     tools: [ANALISE_TOOL],
     tool_choice: { type: "tool", name: "registrar_analise" },
     messages: [

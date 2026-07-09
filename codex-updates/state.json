@@ -1,0 +1,47 @@
+{
+  "version": "1.1",
+  "codexUrl": "https://codex.viralmindlabs.com",
+  "pending": [],
+  "lastRelease": {
+    "version": "1.0",
+    "git": "8731951",
+    "productSummary": "Esta primeira versão é sobre confiança: o Codex agora vai do início ao fim sem travar, te mostra o que está fazendo enquanto caça pautas, e organiza tudo numa tela limpa.",
+    "message": "🪄 *Codex — Nova Versão Disponível (v1.0)*\n🔖 Git: 8731951\n\nEsta primeira versão é sobre *confiança*: o Codex agora vai do início ao fim sem travar, te mostra o que está fazendo enquanto caça pautas, e organiza tudo numa tela limpa.\n\n📋 *O que mudou:*\n\n🐛 *Geração de roteiro à prova de falha* — às vezes a resposta da IA vinha \"embrulhada\" e derrubava o roteiro no meio com erro. Agora o Codex tolera isso e *sempre* entrega. Zero roteiro perdido, zero retrabalho.\n\n⚡ *Sugestão de temas com progresso ao vivo* — enquanto o caçador de pautas varre a web e o X, você vê o passo a passo acontecendo na tela. Acabou aquela espera no escuro sem saber se travou.\n\n💅 *Pautas muito mais limpas* — o tema vira um título enxuto e o briefing completo fica recolhível, abrindo só quando você quiser. Adeus ao paredão de texto poluído que tomava a tela.\n\n🔧 *Login por link mágico 100% em produção* — afinamos o fluxo de confirmação (PKCE do Supabase): entrar agora é só clicar no link do e-mail, sem erro.\n\n✨ Para abrir o mundo mágico do storytelling, acesse o CODEX:\n👉 https://codex.viralmindlabs.com\n",
+    "changes": [
+      {
+        "id": "mrcqnnow",
+        "type": "fix",
+        "summary": "Geração de roteiro não trava mais no meio",
+        "detail": "A sala de agentes às vezes recebia a resposta da IA embrulhada e o roteiro quebrava com erro; agora tolera isso e sempre completa.",
+        "commit": "8731951",
+        "addedAt": "2026-07-08T23:58:21.115Z"
+      },
+      {
+        "id": "mrcqnnpq",
+        "type": "improvement",
+        "summary": "Sugestão de temas mostra progresso ao vivo",
+        "detail": "Frases girando durante a varredura de web/X para indicar trabalho em andamento na espera.",
+        "commit": "8731951",
+        "addedAt": "2026-07-08T23:58:21.145Z"
+      },
+      {
+        "id": "mrcqnnql",
+        "type": "improvement",
+        "summary": "Pauta sugerida não polui mais a tela",
+        "detail": "Título limpo (1ª linha) + briefing completo recolhível; a caixa de texto cresce com o conteúdo.",
+        "commit": "8731951",
+        "addedAt": "2026-07-08T23:58:21.175Z"
+      },
+      {
+        "id": "mrcqnnrf",
+        "type": "fix",
+        "summary": "Login por link mágico funcionando em produção",
+        "detail": "Ajuste no fluxo de confirmação (PKCE) do Supabase.",
+        "commit": "8731951",
+        "addedAt": "2026-07-08T23:58:21.205Z"
+      }
+    ],
+    "releasedAt": "2026-07-09T00:01:37.666Z"
+  },
+  "history": []
+}

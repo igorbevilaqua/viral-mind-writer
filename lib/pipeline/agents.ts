@@ -160,7 +160,10 @@ export async function proposeNarratives(ctx: GenerationContext, dossie: string):
 
   const res = await anthropic.messages.create({
     model: ANALYST_MODEL,
-    max_tokens: 3000,
+    // 2-3 narrativas × (7 campos + beats 5-7) é muito JSON; e o sonnet-5 usa thinking
+    // adaptativo por padrão, que divide o mesmo teto de max_tokens. 3000 truncava o
+    // tool_use no meio (stop_reason max_tokens) → candidatas vazias. 8000 dá folga.
+    max_tokens: 8000,
     tools: [NARRATIVAS_TOOL],
     tool_choice: { type: "tool", name: "registrar_narrativas" },
     system: [
@@ -191,7 +194,14 @@ Proponha as narrativas candidatas.`,
   const toolUse = res.content.find((b) => b.type === "tool_use");
   if (!toolUse || toolUse.type !== "tool_use") throw new Error("storytelling: sem narrativas estruturadas");
   const candidatas = toolArray<NarrativaCandidata>(toolInput(toolUse), "candidatas");
-  if (!candidatas.length) throw new Error("storytelling: nenhuma narrativa válida");
+  if (!candidatas.length) {
+    // diagnóstico pra não voltar a ser silencioso: stop_reason (esperado "max_tokens" se truncou)
+    // + um pedaço do input cru pra ver se veio parcial/double-encoded.
+    console.error(
+      `storytelling vazio — stop_reason=${res.stop_reason} input=${JSON.stringify(toolUse.input).slice(0, 500)}`
+    );
+    throw new Error("storytelling: nenhuma narrativa válida");
+  }
   return candidatas;
 }
 
@@ -232,7 +242,9 @@ export async function rankNarratives(
 
   const res = await anthropic.messages.create({
     model: ANALYST_MODEL,
-    max_tokens: 2500,
+    // mesmo risco de truncamento do storytelling: ranking de N candidatas + 2 orientações
+    // longas, dividindo o teto com o thinking adaptativo do sonnet-5. 2500 → 6000.
+    max_tokens: 6000,
     tools: [RANKING_TOOL],
     tool_choice: { type: "tool", name: "registrar_ranking" },
     system: [
@@ -293,7 +305,9 @@ export async function designHook(
 
   const res = await anthropic.messages.create({
     model: WRITER_MODEL,
-    max_tokens: 1500,
+    // fable-5 tem thinking sempre ligado, dividindo o teto de max_tokens com o tool_use.
+    // 1500 truncava o hook+variantes; 4000 dá folga (ver mesmo problema no ideador/storytelling).
+    max_tokens: 4000,
     tools: [HOOK_TOOL],
     tool_choice: { type: "tool", name: "registrar_hook" },
     system: [
@@ -336,7 +350,9 @@ export async function writeComando(ctx: GenerationContext, corpo: string): Promi
   const p = ctx.clientPrefs;
   const res = await anthropic.messages.create({
     model: WRITER_MODEL,
-    max_tokens: 300,
+    // fable-5 pensa sempre (thinking on por padrão, indesligável); 300 era consumido só
+    // pelo thinking e voltava comando vazio. 2000 garante o texto do CTA além do raciocínio.
+    max_tokens: 2000,
     system: [
       {
         type: "text",

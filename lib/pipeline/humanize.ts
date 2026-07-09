@@ -27,7 +27,9 @@ export async function humanize(
 
     const res = await anthropic.messages.create({
       model: WRITER_MODEL,
-      max_tokens: 4000,
+      // reescreve o roteiro inteiro (headline+hook+corpo+variações+comando+fontes) e o
+      // fable-5 pensa sempre no mesmo teto — 4000 arriscava truncar. 8000 dá folga.
+      max_tokens: 8000,
       system: `${agentPrompt("humanizador")}\n\n# GUIA DE ESTILO\n${ctx.playbooks.style_guide ?? ""}\n\n${voiceRefs}`,
       messages: [
         {

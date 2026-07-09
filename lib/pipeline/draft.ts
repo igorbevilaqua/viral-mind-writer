@@ -137,7 +137,9 @@ export async function generateDraft(
 
   const stream = anthropic.messages.stream({
     model: WRITER_MODEL,
-    max_tokens: 4000,
+    // streaming, mas o teto ainda cobre thinking (sempre on no fable-5) + o corpo escrito.
+    // 4000 podia truncar o corpo no meio; 8000 dá folga (streaming evita timeout de HTTP).
+    max_tokens: 8000,
     system: [
       { type: "text", text: `${agentPrompt("roteirista")}\n\n${buildStaticSystemBlock(ctx)}`, cache_control: { type: "ephemeral" } },
       { type: "text", text: buildDynamicSystemBlock(ctx) },

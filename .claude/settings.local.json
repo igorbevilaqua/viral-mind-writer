@@ -28,7 +28,18 @@
       "Bash(find . -path ./node_modules -prune -o -type d -iname \"*roteiro*multiagente*\" -print)",
       "mcp__claude_ai_Supabase__list_projects",
       "mcp__claude_ai_Supabase__apply_migration",
-      "Bash(npm run *)"
+      "Bash(npm run *)",
+      "Bash(node scripts/deploy-hostinger.mjs)",
+      "Bash(rm -f scripts/deploy-hostinger.mjs)",
+      "Bash(node codex-updates/cli.mjs next)",
+      "Bash(node codex-updates/cli.mjs add --type fix --summary \"Geração de roteiro não trava mais no meio\" --detail \"A sala de agentes às vezes recebia a resposta da IA embrulhada e o roteiro quebrava com erro; agora tolera isso e sempre completa.\")",
+      "Bash(node codex-updates/cli.mjs add --type improvement --summary \"Sugestão de temas mostra progresso ao vivo\" --detail \"Frases girando durante a varredura de web/X para indicar trabalho em andamento na espera.\")",
+      "Bash(node codex-updates/cli.mjs add --type improvement --summary \"Pauta sugerida não polui mais a tela\" --detail \"Título limpo \\(1ª linha\\) + briefing completo recolhível; a caixa de texto cresce com o conteúdo.\")",
+      "Bash(node codex-updates/cli.mjs add --type fix --summary \"Login por link mágico funcionando em produção\" --detail \"Ajuste no fluxo de confirmação \\(PKCE\\) do Supabase.\")",
+      "Bash(node codex-updates/cli.mjs commit-release --version 1.0 --git 8731951 --product-summary \"Esta primeira versão é sobre confiança: o Codex agora vai do início ao fim sem travar, te mostra o que está fazendo enquanto caça pautas, e organiza tudo numa tela limpa.\" --message-file \"/private/tmp/claude-501/-Users-igorbevilaqua-Projetos-Viral-Mind-Writer/b51c4c8d-294e-4f5c-bc56-5209562e1660/scratchpad/codex-update-v1.0.txt\")",
+      "Skill(claude-api)",
+      "Bash(cat lib/anthropic.ts)",
+      "Bash(cat lib/grok.ts)"
     ]
   },
   "mcpServers": {
