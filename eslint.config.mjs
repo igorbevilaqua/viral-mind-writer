@@ -12,6 +12,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Artefatos de handoff: untracked do git, mas ainda no disco.
+    "sistema-de-roteiro-multiagente/",
+    "clientes-preferencias.html",
   ]),
 ]);
 
