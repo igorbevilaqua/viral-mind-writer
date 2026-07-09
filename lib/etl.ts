@@ -1,6 +1,6 @@
 import { appDb, viralData } from "./db";
 import { anthropic, ANALYST_MODEL } from "./anthropic";
-import { agentPrompt } from "./pipeline/agents";
+import { agentPrompt, toolInput, toolArray } from "./pipeline/agents";
 
 // ETL semanal: materializa insights do corpus em vm_viral_insights
 // (globais + por cliente, categorizados e pontuados) e sincroniza
@@ -85,7 +85,7 @@ async function generateBoasPraticas(
 ): Promise<{ titulo: string; descricao: string }[]> {
   const res = await anthropic.messages.create({
     model: ANALYST_MODEL,
-    max_tokens: 1200,
+    max_tokens: 4000, // thinking divide o teto — 1200 truncava o tool_use
     tools: [PRATICAS_TOOL],
     tool_choice: { type: "tool", name: "registrar_boas_praticas" },
     system: agentPrompt("dados"),
@@ -105,21 +105,9 @@ IMPORTANTE — dois eixos distintos: viralização (views) é impulsionada por T
   });
   const toolUse = res.content.find((b) => b.type === "tool_use");
   if (!toolUse || toolUse.type !== "tool_use") return [];
-  // O modelo às vezes dupla-serializa o campo (praticas vem como string JSON) — normaliza os 3 formatos.
-  let p: unknown = (toolUse.input as Record<string, unknown>).praticas;
-  if (typeof p === "string") {
-    try {
-      p = JSON.parse(p);
-    } catch {
-      return [];
-    }
-  }
-  if (p && !Array.isArray(p) && typeof p === "object" && Array.isArray((p as { praticas?: unknown }).praticas)) {
-    p = (p as { praticas: unknown }).praticas;
-  }
-  if (!Array.isArray(p)) return [];
-  return (p as { titulo?: string; descricao?: string }[])
-    .filter((x): x is { titulo: string; descricao: string } => !!x?.titulo && !!x?.descricao);
+  return toolArray<{ titulo: string; descricao: string }>(toolInput(toolUse), "praticas").filter(
+    (x): x is { titulo: string; descricao: string } => !!x?.titulo && !!x?.descricao
+  );
 }
 
 // Insights categorizados e pontuados de UM cliente (estatístico via RPC + boas práticas via LLM).

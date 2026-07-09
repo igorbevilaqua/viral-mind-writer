@@ -1,7 +1,7 @@
 import { appDb, viralData } from "../db";
 import { anthropic, ANALYST_MODEL } from "../anthropic";
 import { grokClient, RESEARCH_MODEL } from "../grok";
-import { agentPrompt, clientInsightBlock } from "./agents";
+import { agentPrompt, clientInsightBlock, toolInput, toolArray } from "./agents";
 import type { GenerationContext } from "./types";
 
 // Ideador: sugere temas com alto potencial de viralização para um cliente,
@@ -144,7 +144,7 @@ Traga as oportunidades de pauta.`,
     emit({ type: "phase", phase: "sintese" });
     const res = await anthropic.messages.create({
       model: ANALYST_MODEL,
-      max_tokens: 4000,
+      max_tokens: 6000, // thinking divide o teto — 4000 truncava o tool_use
       tools: [SUGESTOES_TOOL],
       tool_choice: { type: "tool", name: "registrar_sugestoes" },
       system: [{ type: "text", text: agentPrompt("ideador"), cache_control: { type: "ephemeral" } }],
@@ -179,22 +179,15 @@ Proponha as sugestões de tema.`,
 
     const toolUse = res.content.find((b) => b.type === "tool_use");
     if (!toolUse || toolUse.type !== "tool_use") throw new Error("ideador: sem sugestões estruturadas");
-    // normaliza double-encode (o modelo às vezes serializa o array como string JSON)
-    let s: unknown = (toolUse.input as Record<string, unknown>).sugestoes;
-    if (typeof s === "string") {
-      try {
-        s = JSON.parse(s);
-      } catch {
-        s = [];
-      }
-    }
-    if (s && !Array.isArray(s) && typeof s === "object" && Array.isArray((s as { sugestoes?: unknown }).sugestoes)) {
-      s = (s as { sugestoes: unknown }).sugestoes;
-    }
-    const sugestoes = (Array.isArray(s) ? s : []).filter(
+    const sugestoes = toolArray<ThemeSuggestion>(toolInput(toolUse), "sugestoes").filter(
       (x): x is ThemeSuggestion => !!x?.tema && !!x?.angulo_narrativo && Array.isArray(x?.informacoes_de_apoio)
     );
-    if (!sugestoes.length) throw new Error("ideador: nenhuma sugestão válida");
+    if (!sugestoes.length) {
+      console.error(
+        `ideador vazio — stop_reason=${res.stop_reason} input=${JSON.stringify(toolUse.input).slice(0, 500)}`
+      );
+      throw new Error("ideador: nenhuma sugestão válida");
+    }
 
     emit({ type: "done", sugestoes });
   } catch (e) {
