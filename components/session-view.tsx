@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { finalizeSession, markPublished, swapHook } from "@/lib/actions";
+import { finalizeSession, markPublished, swapHook, updateScript, suggestFragment } from "@/lib/actions";
 import type { NarrativaCandidata, RankingItem, SessionArtifacts } from "@/lib/pipeline/types";
 import { BUILD_TAG } from "@/lib/version";
 
@@ -315,6 +315,9 @@ function HookVariants({ scriptId, variants, disabled }: { scriptId: string; vari
 const fmtNum = (n: number) =>
   n >= 1_000_000 ? `${(n / 1_000_000).toFixed(1)}M` : n >= 1000 ? `${Math.round(n / 1000)}k` : String(Math.round(n));
 
+const fullScriptText = (s: Script) =>
+  [s.headline, s.roteiro, s.comando, s.fontes ? `FONTES:\n${s.fontes}` : null].filter(Boolean).join("\n\n");
+
 // Fechamento do flywheel: marcar publicado → ETL casa com o vídeo do corpus →
 // performance real volta como chips e vira insight do agente Dados.
 function PublishBox({ script, perf }: { script: Script; perf: ScriptPerformance | null }) {
@@ -441,6 +444,383 @@ function RewriteBox({ onRewrite }: { onRewrite: (feedback: string) => void }) {
   );
 }
 
+// ── Card do roteiro final: leitura, edição manual inline e "Chame o Bob" ──────
+function ScriptCard({ script, sessionId, disabled }: { script: Script; sessionId: string; disabled: boolean }) {
+  const router = useRouter();
+  const [editing, setEditing] = useState(false);
+  const [draft, setDraft] = useState({
+    headline: script.headline ?? "",
+    hook: script.hook ?? "",
+    roteiro: script.roteiro,
+    comando: script.comando ?? "",
+    fontes: script.fontes ?? "",
+  });
+  const [saving, startSave] = useTransition();
+  const roteiroRef = useRef<HTMLParagraphElement>(null);
+  const [sel, setSel] = useState<{ x: number; y: number; start: number; end: number; trecho: string } | null>(null);
+  const [bob, setBob] = useState<{ start: number; end: number; trecho: string } | null>(null);
+
+  const startEdit = () => {
+    setSel(null);
+    setDraft({
+      headline: script.headline ?? "",
+      hook: script.hook ?? "",
+      roteiro: script.roteiro,
+      comando: script.comando ?? "",
+      fontes: script.fontes ?? "",
+    });
+    setEditing(true);
+  };
+
+  const save = () =>
+    startSave(async () => {
+      await updateScript(script.id, {
+        headline: draft.headline.trim() || null,
+        hook: draft.hook.trim() || null,
+        roteiro: draft.roteiro,
+        comando: draft.comando.trim() || null,
+        fontes: draft.fontes.trim() || null,
+      });
+      setEditing(false);
+      router.refresh();
+    });
+
+  // Seleção dentro do roteiro (nó de texto único) → offsets no string do roteiro.
+  const onSelect = () => {
+    if (editing || disabled) return;
+    const s = window.getSelection();
+    const p = roteiroRef.current;
+    if (!s || s.isCollapsed || s.rangeCount === 0 || !p) return setSel(null);
+    const range = s.getRangeAt(0);
+    // o roteiro é um nó de texto único → offsets = índices no string. Só aceito seleção
+    // contida nesse mesmo nó (senão os offsets não mapeiam pro string e o splice corromperia).
+    const textNode = p.firstChild;
+    if (
+      !textNode ||
+      textNode.nodeType !== Node.TEXT_NODE ||
+      range.startContainer !== textNode ||
+      range.endContainer !== textNode
+    )
+      return setSel(null);
+    const start = Math.min(range.startOffset, range.endOffset);
+    const end = Math.max(range.startOffset, range.endOffset);
+    if (end - start < 2) return setSel(null);
+    const rect = range.getBoundingClientRect();
+    setSel({ x: rect.left + rect.width / 2, y: rect.top, start, end, trecho: script.roteiro.slice(start, end) });
+  };
+
+  const applyBob = (start: number, end: number, replacement: string) =>
+    startSave(async () => {
+      const novo = script.roteiro.slice(0, start) + replacement + script.roteiro.slice(end);
+      await updateScript(script.id, { roteiro: novo });
+      setBob(null);
+      router.refresh();
+    });
+
+  const kicker = "kicker text-gold";
+  const sectionCls = "px-5 sm:px-6 pt-5 pb-4 border-b border-white/[.07]";
+  const taCls =
+    "w-full rounded-[10px] border border-white/[.12] bg-black/20 px-3.5 py-2.5 text-[13.5px] leading-[1.7] outline-none focus:border-gold/40";
+
+  return (
+    <div
+      className="rounded-[18px] border border-gold/30 overflow-hidden relative"
+      style={{ background: "linear-gradient(180deg, rgba(201,163,92,.05), rgba(255,255,255,.02) 120px)" }}
+    >
+      <div className="flex items-center gap-2.5 px-5 sm:px-6 py-3 border-b border-white/[.07] bg-black/20">
+        <span className="kicker text-gold">ROTEIRO COMPLETO</span>
+        {!disabled && !editing && (
+          <button
+            onClick={startEdit}
+            className="inline-flex items-center gap-1.5 rounded-lg border border-white/15 px-3 py-[5px] text-xs text-white/65 hover:border-gold/50 hover:text-cream transition-colors"
+          >
+            <QuillIcon size={12} />
+            Editar
+          </button>
+        )}
+        {editing ? (
+          <div className="ml-auto flex items-center gap-2">
+            <button
+              onClick={() => setEditing(false)}
+              disabled={saving}
+              className="rounded-lg border border-white/15 px-3 py-[5px] text-xs text-white/60 hover:text-white/90 disabled:opacity-40"
+            >
+              Cancelar
+            </button>
+            <button
+              onClick={save}
+              disabled={saving}
+              className="btn-gold rounded-lg px-3.5 py-[5px] text-xs font-semibold disabled:opacity-40"
+            >
+              {saving ? "Salvando..." : "Salvar"}
+            </button>
+          </div>
+        ) : (
+          <CopyBtn text={fullScriptText(script)} label="Copiar tudo" />
+        )}
+      </div>
+
+      {/* HEADLINE */}
+      {(editing || script.headline) && (
+        <section className={sectionCls}>
+          <div className="flex items-center gap-2.5">
+            <span className={kicker}>HEADLINE</span>
+            <span className="text-[11px] text-white/35">texto de tela</span>
+          </div>
+          {editing ? (
+            <textarea
+              value={draft.headline}
+              onChange={(e) => setDraft((d) => ({ ...d, headline: e.target.value }))}
+              rows={2}
+              className={`${taCls} mt-3 uppercase`}
+            />
+          ) : (
+            <p className="font-cinzel text-base sm:text-lg font-semibold tracking-[.06em] leading-snug text-cream mt-3 uppercase">
+              {script.headline}
+            </p>
+          )}
+        </section>
+      )}
+
+      {/* HOOK */}
+      {(editing || script.hook) && (
+        <section className={sectionCls}>
+          <div className="flex items-center gap-2.5">
+            <span className={kicker}>HOOK</span>
+          </div>
+          {editing ? (
+            <textarea
+              value={draft.hook}
+              onChange={(e) => setDraft((d) => ({ ...d, hook: e.target.value }))}
+              rows={3}
+              className={`${taCls} mt-3`}
+            />
+          ) : (
+            <p className="font-display text-xl sm:text-[23px] font-medium leading-[1.4] text-ivory mt-3">
+              &ldquo;{script.hook}&rdquo;
+            </p>
+          )}
+        </section>
+      )}
+
+      {/* ROTEIRO */}
+      <section className={sectionCls}>
+        <div className="flex items-center gap-2.5">
+          <span className={kicker}>ROTEIRO</span>
+          {!disabled && !editing && (
+            <span className="text-[11px] text-white/35">selecione um trecho para chamar o Bob</span>
+          )}
+        </div>
+        {editing ? (
+          <textarea
+            value={draft.roteiro}
+            onChange={(e) => setDraft((d) => ({ ...d, roteiro: e.target.value }))}
+            rows={Math.max(10, draft.roteiro.split("\n").length + 1)}
+            className={`${taCls} mt-3`}
+          />
+        ) : (
+          <p
+            ref={roteiroRef}
+            onMouseUp={onSelect}
+            className="whitespace-pre-wrap text-[13.5px] leading-[1.75] text-[#ededf0]/80 mt-3"
+          >
+            {script.roteiro}
+          </p>
+        )}
+      </section>
+
+      {/* COMANDO */}
+      {(editing || script.comando) && (
+        <section className="px-5 sm:px-6 pt-5 pb-5">
+          <div className="flex items-center gap-2.5">
+            <span className={kicker}>COMANDO</span>
+            <span className="text-[11px] text-white/35">fechamento do roteiro</span>
+          </div>
+          {editing ? (
+            <textarea
+              value={draft.comando}
+              onChange={(e) => setDraft((d) => ({ ...d, comando: e.target.value }))}
+              rows={3}
+              className={`${taCls} mt-3`}
+            />
+          ) : (
+            <p className="text-[13.5px] leading-relaxed text-[#ededf0]/80 mt-3">&ldquo;{script.comando}&rdquo;</p>
+          )}
+        </section>
+      )}
+
+      {/* FONTES */}
+      {(editing || script.fontes) && (
+        <section className="px-5 sm:px-6 pt-4 pb-5 border-t border-white/[.07] bg-black/20">
+          <div className="flex items-center gap-2.5">
+            <span className="kicker text-white/40">FONTES</span>
+            <span className="text-[11px] text-white/30">confira nos links</span>
+          </div>
+          {editing ? (
+            <textarea
+              value={draft.fontes}
+              onChange={(e) => setDraft((d) => ({ ...d, fontes: e.target.value }))}
+              rows={4}
+              className={`${taCls} mt-2.5 font-mono text-[11.5px]`}
+            />
+          ) : (
+            <p className="whitespace-pre-wrap font-mono text-[11.5px] leading-relaxed text-white/50 mt-2.5">
+              <Linkified text={script.fontes!} />
+            </p>
+          )}
+        </section>
+      )}
+
+      {/* botão flutuante "Chame o Bob" ao selecionar trecho */}
+      {sel && (
+        <button
+          onMouseDown={(e) => {
+            e.preventDefault();
+            setBob({ start: sel.start, end: sel.end, trecho: sel.trecho });
+            setSel(null);
+          }}
+          style={{ position: "fixed", left: sel.x, top: sel.y - 42, transform: "translateX(-50%)", zIndex: 40 }}
+          className="btn-gold inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-semibold shadow-lg whitespace-nowrap"
+        >
+          <QuillIcon size={12} color="#161410" />
+          Chame o Bob
+        </button>
+      )}
+
+      {bob && (
+        <BobModal
+          sessionId={sessionId}
+          roteiro={script.roteiro}
+          trecho={bob.trecho}
+          busy={saving}
+          onClose={() => setBob(null)}
+          onAccept={(replacement) => applyBob(bob.start, bob.end, replacement)}
+        />
+      )}
+    </div>
+  );
+}
+
+// Janela flutuante do "Chame o Bob": mostra o trecho, coleta o pedido, gera a sugestão
+// (editável) e oferece Aceitar (aplica no roteiro) ou Recriar (gera outra).
+function BobModal({
+  sessionId,
+  roteiro,
+  trecho,
+  busy,
+  onClose,
+  onAccept,
+}: {
+  sessionId: string;
+  roteiro: string;
+  trecho: string;
+  busy: boolean;
+  onClose: () => void;
+  onAccept: (replacement: string) => void;
+}) {
+  const [instrucao, setInstrucao] = useState("");
+  const [sugestao, setSugestao] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const gerar = async (evitar?: string) => {
+    if (!instrucao.trim()) return;
+    setLoading(true);
+    setError(null);
+    try {
+      const r = await suggestFragment(sessionId, { roteiro, trecho, instrucao: instrucao.trim(), evitar });
+      setSugestao(r);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : String(e));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4"
+      onMouseDown={onClose}
+    >
+      <div
+        onMouseDown={(e) => e.stopPropagation()}
+        className="w-full max-w-[560px] max-h-[85vh] overflow-y-auto rounded-2xl border border-gold/30 bg-[#161410] p-5 sm:p-6 space-y-4 shadow-2xl"
+      >
+        <div className="flex items-center gap-2.5">
+          <QuillIcon size={15} color="#c9a35c" />
+          <span className="kicker text-gold">CHAME O BOB</span>
+          <button onClick={onClose} className="ml-auto text-white/40 hover:text-white/80 text-lg leading-none">
+            ×
+          </button>
+        </div>
+
+        <div>
+          <p className="text-[11px] text-white/40 mb-1.5">Trecho que será substituído</p>
+          <p className="rounded-[10px] border border-white/10 bg-white/[.03] px-3.5 py-2.5 text-[13px] leading-relaxed text-white/70 whitespace-pre-wrap">
+            {trecho}
+          </p>
+        </div>
+
+        <div>
+          <p className="text-[11px] text-white/40 mb-1.5">O que você quer mudar?</p>
+          <textarea
+            value={instrucao}
+            onChange={(e) => setInstrucao(e.target.value)}
+            rows={2}
+            autoFocus
+            placeholder="Ex: deixe mais simples de entender · quero mais emoção nessa parte · encurte"
+            className="w-full rounded-[10px] border border-white/[.12] bg-transparent px-3.5 py-2.5 text-[13px] outline-none placeholder:text-white/35 focus:border-gold/40"
+          />
+        </div>
+
+        {sugestao !== null && (
+          <div>
+            <p className="text-[11px] text-white/40 mb-1.5">Sugestão da sala (edite se quiser)</p>
+            <textarea
+              value={sugestao}
+              onChange={(e) => setSugestao(e.target.value)}
+              rows={Math.max(3, sugestao.split("\n").length + 1)}
+              className="w-full rounded-[10px] border border-gold/25 bg-black/20 px-3.5 py-2.5 text-[13.5px] leading-[1.7] text-cream outline-none focus:border-gold/50"
+            />
+          </div>
+        )}
+
+        {error && <p className="text-xs text-red-300">{error}</p>}
+
+        <div className="flex items-center gap-2.5 flex-wrap">
+          {sugestao === null ? (
+            <button
+              onClick={() => gerar()}
+              disabled={loading || !instrucao.trim()}
+              className="btn-gold inline-flex items-center gap-2 rounded-[10px] px-4 py-2 text-[13px] font-semibold disabled:opacity-40"
+            >
+              <QuillIcon color="#161410" />
+              {loading ? "Gerando..." : "Gerar"}
+            </button>
+          ) : (
+            <>
+              <button
+                onClick={() => onAccept(sugestao)}
+                disabled={busy || !sugestao.trim()}
+                className="btn-gold inline-flex items-center gap-2 rounded-[10px] px-4 py-2 text-[13px] font-semibold disabled:opacity-40"
+              >
+                {busy ? "Aplicando..." : "Aceitar"}
+              </button>
+              <button
+                onClick={() => gerar(sugestao)}
+                disabled={loading}
+                className="inline-flex items-center gap-2 rounded-[10px] border border-white/20 px-4 py-2 text-[13px] text-white/80 hover:border-gold/50 hover:text-cream transition-colors disabled:opacity-40"
+              >
+                {loading ? "Recriando..." : "Recriar"}
+              </button>
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function SessionView({
   session,
   scripts,
@@ -528,8 +908,6 @@ export default function SessionView({
 
   const script = scripts[selected];
   const closed = session.status === "closed";
-  const fullScriptText = (s: Script) =>
-    [s.headline, s.roteiro, s.comando, s.fontes ? `FONTES:\n${s.fontes}` : null].filter(Boolean).join("\n\n");
 
   return (
     <div className="max-w-[860px] mx-auto w-full px-4 sm:px-6 py-8 sm:py-10 space-y-5">
@@ -718,62 +1096,7 @@ export default function SessionView({
             ))}
           </div>
 
-          <div
-            className="rounded-[18px] border border-gold/30 overflow-hidden"
-            style={{ background: "linear-gradient(180deg, rgba(201,163,92,.05), rgba(255,255,255,.02) 120px)" }}
-          >
-            <div className="flex items-center gap-2.5 px-5 sm:px-6 py-3 border-b border-white/[.07] bg-black/20">
-              <span className="kicker text-gold">ROTEIRO COMPLETO</span>
-              <CopyBtn text={fullScriptText(script)} label="Copiar tudo" />
-            </div>
-            {script.headline && (
-              <section className="px-5 sm:px-6 pt-5 pb-4 border-b border-white/[.07]">
-                <div className="flex items-center gap-2.5">
-                  <span className="kicker text-gold">HEADLINE</span>
-                  <span className="text-[11px] text-white/35">texto de tela</span>
-                </div>
-                <p className="font-cinzel text-base sm:text-lg font-semibold tracking-[.06em] leading-snug text-cream mt-3 uppercase">
-                  {script.headline}
-                </p>
-              </section>
-            )}
-            {script.hook && (
-              <section className="px-5 sm:px-6 pt-5 pb-4 border-b border-white/[.07]">
-                <div className="flex items-center gap-2.5">
-                  <span className="kicker text-gold">HOOK</span>
-                </div>
-                <p className="font-display text-xl sm:text-[23px] font-medium leading-[1.4] text-ivory mt-3">
-                  &ldquo;{script.hook}&rdquo;
-                </p>
-              </section>
-            )}
-            <section className="px-5 sm:px-6 pt-5 pb-4 border-b border-white/[.07]">
-              <div className="flex items-center gap-2.5">
-                <span className="kicker text-gold">ROTEIRO</span>
-              </div>
-              <p className="whitespace-pre-wrap text-[13.5px] leading-[1.75] text-[#ededf0]/80 mt-3">{script.roteiro}</p>
-            </section>
-            {script.comando && (
-              <section className="px-5 sm:px-6 pt-5 pb-5">
-                <div className="flex items-center gap-2.5">
-                  <span className="kicker text-gold">COMANDO</span>
-                  <span className="text-[11px] text-white/35">fechamento do roteiro</span>
-                </div>
-                <p className="text-[13.5px] leading-relaxed text-[#ededf0]/80 mt-3">&ldquo;{script.comando}&rdquo;</p>
-              </section>
-            )}
-            {script.fontes && (
-              <section className="px-5 sm:px-6 pt-4 pb-5 border-t border-white/[.07] bg-black/20">
-                <div className="flex items-center gap-2.5">
-                  <span className="kicker text-white/40">FONTES</span>
-                  <span className="text-[11px] text-white/30">confira nos links</span>
-                </div>
-                <p className="whitespace-pre-wrap font-mono text-[11.5px] leading-relaxed text-white/50 mt-2.5">
-                  <Linkified text={script.fontes} />
-                </p>
-              </section>
-            )}
-          </div>
+          <ScriptCard script={script} sessionId={session.id} disabled={closed} />
 
           {!!script.hook_variants?.length && (
             <HookVariants scriptId={script.id} variants={script.hook_variants} disabled={generating || closed} />

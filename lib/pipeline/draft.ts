@@ -12,7 +12,7 @@ export const OUTPUT_FORMAT = `Responda EXATAMENTE neste formato (headers literai
 (o hook falado, 1-3 períodos, seguindo pelo menos 1 MGC)
 
 ## ROTEIRO
-(o roteiro completo, incluindo o hook no início, pronto para ser lido em voz alta)
+(o roteiro falado do início ao fim, começando com o hook — mas SEM o comando/CTA final: ele vai APENAS na seção COMANDO, nunca repetido aqui)
 
 ## VARIACOES_DE_HOOK
 1. (variação 1)
@@ -166,6 +166,21 @@ export async function generateDraft(
     corpo: grab("CORPO") ?? text.trim(),
     fontes: grab("FONTES"),
   };
+}
+
+// O roteiro é "falado do início ao fim" e o comando é o fechamento — os agentes tendem
+// a repetir o CTA no fim do roteiro E na seção COMANDO. Corta a repetição do fim do roteiro.
+export function stripTrailingComando(roteiro: string, comando: string): string {
+  const norm = (s: string) => s.toLowerCase().replace(/[^a-zà-ú0-9]+/gi, " ").trim();
+  const cmd = norm(comando);
+  if (cmd.length < 12) return roteiro; // comando curto demais → risco de falso positivo
+  const blocks = roteiro.split(/\n\s*\n/);
+  while (blocks.length > 1) {
+    const last = norm(blocks[blocks.length - 1]);
+    if (last && (last === cmd || cmd.includes(last) || last.includes(cmd))) blocks.pop();
+    else break;
+  }
+  return blocks.join("\n\n").trimEnd();
 }
 
 export function parseSections(text: string): ScriptSections {

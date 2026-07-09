@@ -3,6 +3,8 @@
 import { appDb } from "./db";
 import { revalidatePath } from "next/cache";
 import { VIDEO_URL_RE } from "./video-url";
+import { dedash } from "./pipeline/slop-lint";
+import { rewriteFragment } from "./pipeline/rewrite-fragment";
 
 export interface NewAttachment {
   kind: "reference_script" | "news_link" | "document" | "video_link";
@@ -171,6 +173,38 @@ export async function markPublished(scriptId: string, url: string) {
     .single();
   if (error) throw new Error(error.message);
   revalidatePath(`/sessions/${data.session_id}`);
+}
+
+// Edição manual do roteiro: salva os campos editados no próprio roteiro (sem nova versão).
+// dedash garante zero travessão de slop mesmo no texto colado/editado à mão.
+export async function updateScript(
+  scriptId: string,
+  patch: { headline?: string | null; hook?: string | null; roteiro?: string; comando?: string | null; fontes?: string | null }
+) {
+  const clean = (v: string | null | undefined) => (typeof v === "string" ? dedash(v) : v);
+  const update: Record<string, string | null> = {};
+  for (const k of ["headline", "hook", "roteiro", "comando", "fontes"] as const) {
+    if (patch[k] !== undefined) update[k] = clean(patch[k]) ?? null;
+  }
+  if (!Object.keys(update).length) return;
+  const { data, error } = await appDb
+    .from("vm_generated_scripts")
+    .update(update)
+    .eq("id", scriptId)
+    .select("session_id")
+    .single();
+  if (error) throw new Error(error.message);
+  revalidatePath(`/sessions/${data.session_id}`);
+}
+
+// "Chame o Bob": a sala gera uma sugestão de substituição para o trecho selecionado.
+// Não persiste nada — o usuário revisa/edita e só então aceita (via updateScript).
+export async function suggestFragment(
+  sessionId: string,
+  input: { roteiro: string; trecho: string; instrucao: string; evitar?: string }
+): Promise<string> {
+  if (!input.trecho.trim() || !input.instrucao.trim()) throw new Error("trecho e pedido são obrigatórios");
+  return rewriteFragment(sessionId, input);
 }
 
 // Troca o hook do roteiro por uma das variações (a antiga vira variação — dá pra desfazer trocando de volta).

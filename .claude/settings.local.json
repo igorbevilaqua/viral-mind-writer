@@ -39,7 +39,9 @@
       "Bash(node codex-updates/cli.mjs commit-release --version 1.0 --git 8731951 --product-summary \"Esta primeira versão é sobre confiança: o Codex agora vai do início ao fim sem travar, te mostra o que está fazendo enquanto caça pautas, e organiza tudo numa tela limpa.\" --message-file \"/private/tmp/claude-501/-Users-igorbevilaqua-Projetos-Viral-Mind-Writer/b51c4c8d-294e-4f5c-bc56-5209562e1660/scratchpad/codex-update-v1.0.txt\")",
       "Skill(claude-api)",
       "Bash(cat lib/anthropic.ts)",
-      "Bash(cat lib/grok.ts)"
+      "Bash(cat lib/grok.ts)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)"
     ]
   },
   "mcpServers": {

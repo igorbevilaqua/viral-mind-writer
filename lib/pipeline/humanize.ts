@@ -1,6 +1,6 @@
 import { anthropic, WRITER_MODEL } from "../anthropic";
 import { agentPrompt } from "./agents";
-import { slopLint, blockCount, type LintViolation } from "./slop-lint";
+import { slopLint, blockCount, dedash, type LintViolation } from "./slop-lint";
 import type { GenerationContext } from "./types";
 import { OUTPUT_FORMAT } from "./draft";
 
@@ -48,5 +48,8 @@ export async function humanize(
     if (blockCount(violations) === 0) break;
   }
 
-  return { text: current, violations };
+  // Varredura determinística final: se o LLM ainda deixou travessão de slop, elimina
+  // (preservando fala de personagem). Recalcula as violações sobre o texto de fato salvo.
+  const cleaned = dedash(current);
+  return { text: cleaned, violations: slopLint(cleaned, ctx.bannedPhrases) };
 }

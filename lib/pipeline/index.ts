@@ -2,10 +2,10 @@ import { appDb } from "../db";
 import { loadContext } from "./context";
 import { analyzeModelagem } from "./modelagem";
 import { research, proposeNarratives, rankNarratives, designHook, writeComando } from "./agents";
-import { generateDraft, parseSections } from "./draft";
+import { generateDraft, parseSections, stripTrailingComando } from "./draft";
 import { critiqueAndRewrite } from "./critique";
 import { humanize } from "./humanize";
-import { blockCount } from "./slop-lint";
+import { blockCount, deepDedash } from "./slop-lint";
 import { APP_VERSION, GIT_SHA } from "../version";
 import type { PipelineEvent, SessionArtifacts } from "./types";
 
@@ -65,6 +65,9 @@ export async function runPipeline(
     if (opts.narrativeIndex != null && artifacts.candidatas[opts.narrativeIndex]) {
       artifacts.escolhida = opts.narrativeIndex;
     }
+    // Zero travessão nos cards (narrativas/dossiê/orientações): saída intermediária
+    // que não passa pelo humanizador. dedash é a garantia determinística.
+    artifacts = deepDedash(artifacts);
     ctx.artifacts = artifacts;
     await appDb.from("vm_sessions").update({ artifacts }).eq("id", sessionId);
     emit({ type: "narrativas", candidatas: artifacts.candidatas, ranking: artifacts.ranking, escolhida: artifacts.escolhida });
@@ -112,6 +115,10 @@ export async function runPipeline(
 
     emit({ type: "phase", phase: "salvando" });
     const sections = parseSections(final);
+    // o comando fica só na seção COMANDO — remove a repetição do fim do roteiro
+    if (sections.comando && sections.roteiro) {
+      sections.roteiro = stripTrailingComando(sections.roteiro, sections.comando);
+    }
 
     const { count } = await appDb
       .from("vm_generated_scripts")

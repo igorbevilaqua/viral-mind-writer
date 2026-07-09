@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { slopLint, blockCount } from "@/lib/pipeline/slop-lint";
+import { slopLint, blockCount, dedash } from "@/lib/pipeline/slop-lint";
 import type { BannedPhrase } from "@/lib/pipeline/types";
 
 describe("slopLint", () => {
@@ -48,6 +48,18 @@ describe("slopLint", () => {
 
   test("texto limpo não gera violações", () => {
     expect(slopLint("Um texto limpo, sem problemas nenhum por aqui.", [])).toEqual([]);
+  });
+
+  test("travessão de fala de personagem é permitido (início de linha e após ':')", () => {
+    expect(slopLint("João disse: —Nunca mais volte aqui.", [])).toEqual([]);
+    expect(slopLint("—Nunca mais volte aqui.", [])).toEqual([]);
+  });
+
+  test("dedash troca travessão de slop por vírgula e preserva fala", () => {
+    expect(dedash("Isso é ótimo — de verdade.")).toBe("Isso é ótimo, de verdade.");
+    expect(dedash("A taxa – que subiu – de novo.")).toBe("A taxa, que subiu, de novo.");
+    expect(dedash("João disse: —Nunca mais volte.")).toBe("João disse: —Nunca mais volte.");
+    expect(slopLint(dedash("Dread — a antecipação — ansiosa."), [])).toEqual([]);
   });
 
   test("blockCount conta apenas violações severity 'block'", () => {

@@ -1,5 +1,21 @@
 import { describe, expect, test } from "vitest";
-import { parseSections } from "@/lib/pipeline/draft";
+import { parseSections, stripTrailingComando } from "@/lib/pipeline/draft";
+
+describe("stripTrailingComando", () => {
+  const comando = "Segue esse perfil pra entender esses dominós antes deles caírem no seu bolso.";
+  test("remove o comando repetido no fim do roteiro", () => {
+    const roteiro = `Aí caiu o primeiro dominó.\n\n${comando}`;
+    expect(stripTrailingComando(roteiro, comando)).toBe("Aí caiu o primeiro dominó.");
+  });
+  test("preserva o roteiro quando não há duplicação", () => {
+    const roteiro = "Aí caiu o primeiro dominó.\n\nE o mercado reagiu.";
+    expect(stripTrailingComando(roteiro, comando)).toBe(roteiro);
+  });
+  test("comando curto demais não dispara falso positivo", () => {
+    const roteiro = "Olha isso.\n\nComenta aí.";
+    expect(stripTrailingComando(roteiro, "Comenta aí.")).toBe(roteiro);
+  });
+});
 
 describe("parseSections", () => {
   test("doc completo com 6 headers extrai e trima todos os campos, incluindo 3 variações sem prefixo numérico", () => {
