@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { finalizeSession, markPublished, swapHook } from "@/lib/actions";
 import type { NarrativaCandidata, RankingItem, SessionArtifacts } from "@/lib/pipeline/types";
+import { BUILD_TAG } from "@/lib/version";
 
 interface Script {
   id: string;
@@ -691,6 +692,10 @@ export default function SessionView({
           <button onClick={() => generate()} className="mt-2 underline text-white/80 hover:text-white">
             Tentar de novo
           </button>
+          {/* auto-identificação do print: versão/git + id da sessão → detalhe fica em vm_sessions.debug */}
+          <p className="mt-3 font-mono text-[10px] text-white/30 select-all">
+            {BUILD_TAG} · sessão {session.id.slice(0, 8)}
+          </p>
         </div>
       )}
 

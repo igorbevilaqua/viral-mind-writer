@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import type Anthropic from "@anthropic-ai/sdk";
 import { anthropic, ANALYST_MODEL, WRITER_MODEL } from "../anthropic";
 import { grokClient, RESEARCH_MODEL } from "../grok";
 import type { ClientInsightPayload, GenerationContext, NarrativaCandidata, RankingItem } from "./types";
@@ -158,51 +159,71 @@ export async function proposeNarratives(ctx: GenerationContext, dossie: string):
   const dadosCliente = clientInsightBlock(ctx, ["storytelling", "tema"], 8);
   const ensinado = taughtBlock(ctx, ["storytelling", "tema"]);
 
-  const res = await anthropic.messages.create({
-    model: ANALYST_MODEL,
-    // 2-3 narrativas × (7 campos + beats 5-7) é muito JSON; e o sonnet-5 usa thinking
-    // adaptativo por padrão, que divide o mesmo teto de max_tokens. 3000 truncava o
-    // tool_use no meio (stop_reason max_tokens) → candidatas vazias. 8000 dá folga.
-    max_tokens: 8000,
-    tools: [NARRATIVAS_TOOL],
-    tool_choice: { type: "tool", name: "registrar_narrativas" },
-    system: [
-      {
-        type: "text",
-        text: `${agentPrompt("storytelling")}\n\n# PLAYBOOK DE STORYTELLING\n${ctx.playbooks.storytelling ?? "(sem playbook)"}`,
-        cache_control: { type: "ephemeral" },
-      },
-    ],
-    messages: [
-      {
-        role: "user",
-        content: `TEMA DO VÍDEO: ${ctx.prompt}
+  const messages = [
+    {
+      role: "user" as const,
+      content: `TEMA DO VÍDEO: ${ctx.prompt}
 
 DOSSIÊ DE PESQUISA:
 ${dossie || "(pesquisa indisponível — proponha narrativas sustentáveis pelo material do usuário)"}
 ${dadosCliente ? `\nO QUE JÁ FUNCIONA PARA ESTE CLIENTE (dados reais, pré-rankeados por performance+recência — evidência forte ao escolher estruturas):\n${dadosCliente}\n` : ""}${ensinado ? `\nAPRENDIZADOS ENSINADOS PELO TIME (curadoria humana de virais analisados — se conflitar com heurística, isto prevalece):\n${ensinado}\n` : ""}${refs ? `\nMATERIAIS FORNECIDOS PELO USUÁRIO:\n${refs}` : ""}${
-          ctx.modelagemBriefs.length
-            ? `\nARQUITETURA-MODELO PEDIDA PELO USUÁRIO (as candidatas devem respeitá-la):\n${ctx.modelagemBriefs.join("\n---\n")}`
-            : ""
-        }
+        ctx.modelagemBriefs.length
+          ? `\nARQUITETURA-MODELO PEDIDA PELO USUÁRIO (as candidatas devem respeitá-la):\n${ctx.modelagemBriefs.join("\n---\n")}`
+          : ""
+      }
 
 Proponha as narrativas candidatas.`,
-      },
-    ],
-  });
+    },
+  ];
+  // 2-3 narrativas × (7 campos + beats 5-7) é muito JSON; e o sonnet-5 usa thinking adaptativo,
+  // que divide o mesmo teto de max_tokens. Se truncar (stop_reason max_tokens), o tool_use vem
+  // parcial → parse falha → candidatas vazias. Tenta com folga e, se truncou mesmo assim, dobra.
+  const call = (maxTokens: number) =>
+    anthropic.messages.create({
+      model: ANALYST_MODEL,
+      max_tokens: maxTokens,
+      tools: [NARRATIVAS_TOOL],
+      tool_choice: { type: "tool", name: "registrar_narrativas" },
+      system: [
+        {
+          type: "text",
+          text: `${agentPrompt("storytelling")}\n\n# PLAYBOOK DE STORYTELLING\n${ctx.playbooks.storytelling ?? "(sem playbook)"}`,
+          cache_control: { type: "ephemeral" },
+        },
+      ],
+      messages,
+    });
 
-  const toolUse = res.content.find((b) => b.type === "tool_use");
-  if (!toolUse || toolUse.type !== "tool_use") throw new Error("storytelling: sem narrativas estruturadas");
-  const candidatas = toolArray<NarrativaCandidata>(toolInput(toolUse), "candidatas");
+  let { candidatas, debug } = extractNarrativas(await call(16000));
+  if (!candidatas.length && debug.stop_reason === "max_tokens") {
+    ({ candidatas, debug } = extractNarrativas(await call(32000)));
+  }
   if (!candidatas.length) {
-    // diagnóstico pra não voltar a ser silencioso: stop_reason (esperado "max_tokens" se truncou)
-    // + um pedaço do input cru pra ver se veio parcial/double-encoded.
-    console.error(
-      `storytelling vazio — stop_reason=${res.stop_reason} input=${JSON.stringify(toolUse.input).slice(0, 500)}`
-    );
-    throw new Error("storytelling: nenhuma narrativa válida");
+    console.error("storytelling vazio", debug);
+    // anexa o diagnóstico ao erro → o pipeline persiste em vm_sessions.debug (ver index.ts)
+    throw Object.assign(new Error("storytelling: nenhuma narrativa válida"), { debug });
   }
   return candidatas;
+}
+
+// Extrai as candidatas do tool_use + um diagnóstico do que veio (pra debug de print de bug).
+function extractNarrativas(res: Anthropic.Message): {
+  candidatas: NarrativaCandidata[];
+  debug: Record<string, unknown>;
+} {
+  const toolUse = res.content.find((b) => b.type === "tool_use");
+  const raw = toolUse && toolUse.type === "tool_use" ? toolUse.input : undefined;
+  const rawStr = typeof raw === "string" ? raw : JSON.stringify(raw ?? "");
+  const debug = {
+    step: "storytelling",
+    stop_reason: res.stop_reason,
+    output_tokens: res.usage?.output_tokens,
+    input_type: typeof raw,
+    input_len: rawStr.length,
+    input_snippet: rawStr.slice(0, 800),
+  };
+  if (!toolUse || toolUse.type !== "tool_use") return { candidatas: [], debug: { ...debug, note: "sem tool_use" } };
+  return { candidatas: toolArray<NarrativaCandidata>(toolInput(toolUse), "candidatas"), debug };
 }
 
 // ── 2. Dados (rankeia narrativas + orienta roteiro e hook) ──────────────────

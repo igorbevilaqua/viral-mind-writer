@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Cinzel, Cormorant_Garamond } from "next/font/google";
 import Nav from "@/components/nav";
+import { BUILD_TAG } from "@/lib/version";
 import "./globals.css";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
@@ -14,7 +15,7 @@ const cormorant = Cormorant_Garamond({
 });
 
 export const metadata: Metadata = {
-  title: "Viral Mind",
+  title: `Viral Mind · ${BUILD_TAG}`,
   description: "Escritório de roteiristas virais",
 };
 

@@ -6,6 +6,7 @@ import { generateDraft, parseSections } from "./draft";
 import { critiqueAndRewrite } from "./critique";
 import { humanize } from "./humanize";
 import { blockCount } from "./slop-lint";
+import { APP_VERSION, GIT_SHA } from "../version";
 import type { PipelineEvent, SessionArtifacts } from "./types";
 
 // Sala de agentes (DAG com 1 negociação):
@@ -18,6 +19,13 @@ export async function runPipeline(
   emit: (e: PipelineEvent) => void,
   opts: { narrativeIndex?: number; feedback?: string } = {}
 ): Promise<void> {
+  // registra a última fase emitida → o catch sabe onde o pipeline morreu (pra debug de print)
+  let currentPhase = "init";
+  const rawEmit = emit;
+  emit = (e) => {
+    if (e.type === "phase") currentPhase = e.phase;
+    rawEmit(e);
+  };
   try {
     await appDb.from("vm_sessions").update({ status: "generating" }).eq("id", sessionId);
 
@@ -143,7 +151,18 @@ export async function runPipeline(
     emit({ type: "done", scriptId: saved.id });
   } catch (e) {
     const message = e instanceof Error ? e.message : String(e);
+    const debug = {
+      phase: currentPhase,
+      version: APP_VERSION,
+      git: GIT_SHA,
+      at: new Date().toISOString(),
+      opts,
+      // diagnóstico específico anexado pelo agente que falhou (ex.: storytelling → stop_reason)
+      ...(e && typeof e === "object" && "debug" in e ? { detail: (e as { debug: unknown }).debug } : {}),
+    };
     await appDb.from("vm_sessions").update({ status: "error", error_message: message }).eq("id", sessionId);
+    // best-effort: se a coluna debug ainda não existir (migração não aplicada), não derruba o erro acima
+    await appDb.from("vm_sessions").update({ debug }).eq("id", sessionId);
     emit({ type: "error", message });
   }
 }

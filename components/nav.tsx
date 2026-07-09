@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Logo from "./logo";
+import { BUILD_TAG } from "@/lib/version";
 
 export default function Nav() {
   const pathname = usePathname();
@@ -29,6 +30,9 @@ export default function Nav() {
       <span className="ml-auto flex items-center gap-5">
         <span className="hidden md:block font-mono text-[11px] text-white/35">
           escritório de roteiristas virais
+        </span>
+        <span className="font-mono text-[10px] text-white/25" title="versão do sistema · git">
+          {BUILD_TAG}
         </span>
         {pathname !== "/login" && (
           <form action="/auth/signout" method="post">
