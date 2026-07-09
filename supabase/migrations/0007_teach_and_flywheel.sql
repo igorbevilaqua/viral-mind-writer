@@ -15,10 +15,11 @@ returns table(crm_script_id uuid, video_id uuid, views bigint,
               compartilhamentos bigint, seguidores_ganhos bigint)
 language sql stable as $$
   select v.crm_script_id, v.id,
-    coalesce(sum(m.views_no_dia),0)::bigint,
+    -- métricas *_no_dia são snapshot acumulado (total até o dia) → total do vídeo = pico (max), não soma
+    coalesce(max(m.views_no_dia),0)::bigint,
     (select r.retencao_hook from metricas_retencao r where r.video_id = v.id order by r.data desc limit 1)::numeric,
     (select r.retencao_final from metricas_retencao r where r.video_id = v.id order by r.data desc limit 1)::numeric,
-    coalesce(sum(m.compartilhamentos_no_dia),0)::bigint,
+    coalesce(max(m.compartilhamentos_no_dia),0)::bigint,
     (select nullif(regexp_replace(r.seguidores_ganhos::text, '[^0-9-]', '', 'g'), '')::bigint
        from metricas_retencao r where r.video_id = v.id order by r.data desc limit 1)
   from videos v

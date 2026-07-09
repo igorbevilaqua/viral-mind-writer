@@ -71,7 +71,8 @@ async function fillNullEmbeddings() {
   }
 }
 
-// Soma de views por vídeo (metricas_diarias é diária), paginando o PostgREST.
+// Views por vídeo, paginando o PostgREST. views_no_dia é snapshot acumulado (total até
+// o dia), não delta → total do vídeo = pico (max), não soma dos dias.
 async function viewsFor(videoIds: string[]): Promise<Map<string, number>> {
   const views = new Map<string, number>();
   for (let from = 0; ; from += 1000) {
@@ -81,7 +82,7 @@ async function viewsFor(videoIds: string[]): Promise<Map<string, number>> {
       .in("video_id", videoIds)
       .range(from, from + 999);
     if (error) throw new Error(`metricas_diarias: ${error.message}`);
-    for (const m of data ?? []) views.set(m.video_id, (views.get(m.video_id) ?? 0) + (m.views_no_dia ?? 0));
+    for (const m of data ?? []) views.set(m.video_id, Math.max(views.get(m.video_id) ?? 0, m.views_no_dia ?? 0));
     if (!data || data.length < 1000) return views;
   }
 }

@@ -40,7 +40,9 @@ matched as ( -- 1 linha por vídeo, com o primeiro tema-alvo que casa
 ),
 scored as ( -- views computadas SÓ para os casados (não para o corpus inteiro)
   select m.*,
-         coalesce((select sum(md.views_no_dia + coalesce(md.fb_views_no_dia, 0))
+         -- views_no_dia/fb_views_no_dia são SNAPSHOT ACUMULADO (total até o dia), não delta →
+         -- total do vídeo = pico do contador (max), NUNCA soma dos dias (inflava ~Ndias× → "389M views").
+         coalesce((select max(md.views_no_dia) + coalesce(max(md.fb_views_no_dia), 0)
                      from metricas_diarias md where md.video_id = m.id), 0) as views
   from matched m
 ),

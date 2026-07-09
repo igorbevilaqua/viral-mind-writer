@@ -17,7 +17,9 @@ with vids as (
 ),
 vviews as (
   select vd.*,
-         coalesce((select sum(md.views_no_dia + coalesce(md.fb_views_no_dia, 0))
+         -- views_no_dia/fb_views_no_dia são SNAPSHOT ACUMULADO (total até o dia), não delta →
+         -- total do vídeo = pico do contador (max), NUNCA soma dos dias (inflava ~Ndias×).
+         coalesce((select max(md.views_no_dia) + coalesce(max(md.fb_views_no_dia), 0)
                      from metricas_diarias md where md.video_id = vd.id), 0) as views,
          (select nullif(regexp_replace(mr.seguidores_ganhos, '[^0-9-]', '', 'g'), '')::bigint
             from metricas_retencao mr where mr.video_id = vd.id
@@ -114,7 +116,9 @@ with vids as (
 ),
 vviews as (
   select vd.*,
-         coalesce((select sum(md.views_no_dia + coalesce(md.fb_views_no_dia, 0))
+         -- views_no_dia/fb_views_no_dia são SNAPSHOT ACUMULADO (total até o dia), não delta →
+         -- total do vídeo = pico do contador (max), NUNCA soma dos dias (inflava ~Ndias×).
+         coalesce((select max(md.views_no_dia) + coalesce(max(md.fb_views_no_dia), 0)
                      from metricas_diarias md where md.video_id = vd.id), 0) as views,
          (select nullif(regexp_replace(mr.seguidores_ganhos, '[^0-9-]', '', 'g'), '')::bigint
             from metricas_retencao mr where mr.video_id = vd.id
