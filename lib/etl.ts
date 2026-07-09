@@ -318,9 +318,16 @@ export async function runWeeklyEtl() {
     });
   }
 
-  await appDb.from("vm_viral_insights").delete().neq("scope", ""); // snapshot completo substitui o anterior
-  const ins = await appDb.from("vm_viral_insights").insert(rows);
-  if (ins.error) throw new Error(`insert insights: ${ins.error.message}`);
+  // Troca atômica via RPC; se a function ainda não foi aplicada no banco (PGRST202),
+  // cai no caminho antigo (não-atômico) com aviso — rollout seguro.
+  const rpc = await appDb.rpc("vm_replace_insights", { _rows: rows });
+  if (rpc.error) {
+    if (rpc.error.code !== "PGRST202") throw new Error(`vm_replace_insights: ${rpc.error.message}`);
+    console.warn("vm_replace_insights ausente — aplicar migration; usando caminho não-atômico");
+    await appDb.from("vm_viral_insights").delete().neq("scope", "");
+    const ins = await appDb.from("vm_viral_insights").insert(rows);
+    if (ins.error) throw new Error(`insert insights: ${ins.error.message}`);
+  }
 
   return { insights: rows.length, clientInsights, scriptsLinked: linked, scriptsSynced: synced };
 }
