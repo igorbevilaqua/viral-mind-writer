@@ -2,6 +2,7 @@
 
 import { appDb } from "./db";
 import { revalidatePath } from "next/cache";
+import { VIDEO_URL_RE } from "./video-url";
 
 export interface NewAttachment {
   kind: "reference_script" | "news_link" | "document" | "video_link";
@@ -160,10 +161,8 @@ export async function addLearning(
 // ── Flywheel: marca o roteiro como publicado; o ETL semanal casa a URL com o
 // vídeo no corpus (videos.crm_script_id) e traz a performance de volta. ──────
 
-const VIDEO_URL = /youtube\.com|youtu\.be|instagram\.com|tiktok\.com/i;
-
 export async function markPublished(scriptId: string, url: string) {
-  if (!VIDEO_URL.test(url)) throw new Error("link não reconhecido (YouTube, Reels ou TikTok)");
+  if (!VIDEO_URL_RE.test(url)) throw new Error("link não reconhecido (YouTube, Reels ou TikTok)");
   const { data, error } = await appDb
     .from("vm_generated_scripts")
     .update({ status: "published", published_url: url.trim(), published_at: new Date().toISOString() })

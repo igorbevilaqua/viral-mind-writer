@@ -1,6 +1,8 @@
 import { appDb, viralData } from "./db";
 import { anthropic, ANALYST_MODEL } from "./anthropic";
 import { agentPrompt, toolInput, toolArray } from "./pipeline/agents";
+import { platformVideoId } from "./video-url";
+import { fmtNum } from "./format";
 
 // ETL semanal: materializa insights do corpus em vm_viral_insights
 // (globais + por cliente, categorizados e pontuados) e sincroniza
@@ -20,9 +22,6 @@ const prettyTipo = (t: string) => {
   const s = t.replace(/_/g, " ").trim();
   return s.charAt(0).toUpperCase() + s.slice(1);
 };
-
-const fmtNum = (n: number) =>
-  n >= 1_000_000 ? `${(n / 1_000_000).toFixed(1)}M` : n >= 1000 ? `${Math.round(n / 1000)}k` : String(Math.round(n));
 
 interface ClientStat {
   categoria: string;
@@ -324,13 +323,4 @@ export async function runWeeklyEtl() {
   if (ins.error) throw new Error(`insert insights: ${ins.error.message}`);
 
   return { insights: rows.length, clientInsights, scriptsLinked: linked, scriptsSynced: synced };
-}
-
-// Extrai o id do vídeo na plataforma a partir da URL publicada (mesmos padrões do transcribe-link).
-export function platformVideoId(url: string): string | null {
-  const m =
-    url.match(/(?:v=|shorts\/|youtu\.be\/)([\w-]{11})/) ??
-    url.match(/instagram\.com\/(?:reels?|p|tv)\/([A-Za-z0-9_-]+)/) ??
-    url.match(/tiktok\.com\/.*video\/(\d+)/);
-  return m?.[1] ?? null;
 }

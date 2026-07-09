@@ -1,12 +1,11 @@
+import { youtubeId } from "@/lib/video-url";
+
 export const maxDuration = 60;
 export const dynamic = "force-dynamic";
 
 // Transcrição automática de links de vídeo.
 // YouTube/Shorts: legendas via innertube (client ANDROID) — sem dependências nem API key.
 // Instagram/TikTok: via Supadata (https://supadata.ai), opcional atrás de SUPADATA_API_KEY.
-
-const YT_ID =
-  /(?:youtube\.com\/(?:watch\?(?:.*&)?v=|shorts\/|live\/|embed\/)|youtu\.be\/)([\w-]{11})/;
 
 function decodeEntities(s: string) {
   return s
@@ -86,7 +85,7 @@ export async function POST(req: Request) {
     return Response.json({ error: "url obrigatória" }, { status: 400 });
 
   try {
-    const ytId = url.match(YT_ID)?.[1];
+    const ytId = youtubeId(url);
     let result;
     if (ytId) result = await transcribeYouTube(ytId);
     else if (/instagram\.com\/(reels?|p|tv)\//.test(url)) result = await transcribeViaSupadata(url, "Instagram");
