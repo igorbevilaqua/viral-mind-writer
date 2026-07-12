@@ -15,9 +15,12 @@ export async function rewriteFragment(
   const res = await anthropic.messages.create({
     model: WRITER_MODEL,
     max_tokens: 2000,
+    // reescrita pontual e bem especificada — effort low corta o custo do fable aqui
+    output_config: { effort: "low" },
     system: [
-      { type: "text", text: `${agentPrompt("roteirista")}\n\n${buildStaticSystemBlock(ctx)}`, cache_control: { type: "ephemeral" } },
-      { type: "text", text: buildDynamicSystemBlock(ctx) },
+      // mesma ordem block1-estático/block2-persona do roteirista → reusa o prefixo cacheado dele
+      { type: "text", text: buildStaticSystemBlock(ctx), cache_control: { type: "ephemeral" } },
+      { type: "text", text: `${agentPrompt("roteirista")}\n\n${buildDynamicSystemBlock(ctx)}` },
     ],
     messages: [
       {

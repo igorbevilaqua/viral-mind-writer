@@ -1,5 +1,6 @@
 import OpenAI from "openai";
 import { appDb, viralData } from "../db";
+import { fmtNum } from "../format";
 import type { Attachment, BannedPhrase, ClientPrefs, GenerationContext } from "./types";
 
 async function embed(text: string): Promise<number[]> {
@@ -13,23 +14,40 @@ async function embed(text: string): Promise<number[]> {
   return res.data[0].embedding;
 }
 
+// Few-shot vencedor: pede 20 por similaridade e fica com os 5 de mais views reais
+// (metadata->>'views' gravado pelo backfill). Nenhum exemplo com views → mantém a
+// ordem de similaridade (fallback). Origem anota as views pro prompt (ex.: "— 2.1M views").
+export function pickTopFewShot(
+  rows: { content?: string | null; metadata?: unknown }[],
+  n = 5
+): { roteiro: string; origem: string }[] {
+  const items = rows
+    .filter((r) => r.content)
+    .map((r) => ({
+      roteiro: r.content as string,
+      views: Number((r.metadata as { views?: unknown } | null)?.views) || 0,
+    }));
+  const ranked = items.some((i) => i.views > 0) ? [...items].sort((a, b) => b.views - a.views) : items;
+  return ranked.slice(0, n).map((i) => ({
+    roteiro: i.roteiro,
+    origem: `roteiro publicado (corpus)${i.views ? ` — ${fmtNum(i.views)} views` : ""}`,
+  }));
+}
+
 async function fetchFewShot(prompt: string, clientId: string | null) {
-  const fewShot: { roteiro: string; origem: string }[] = [];
   try {
     const queryEmbedding = await embed(prompt);
     const corpus = await viralData.rpc("match_documents", {
       query_embedding: queryEmbedding,
-      match_count: 5,
+      match_count: 20, // sobra pra pós-filtrar por performance; threshold inalterado
       match_threshold: 0.3,
     });
-    for (const d of corpus.data ?? []) {
-      if (d.content) fewShot.push({ roteiro: d.content, origem: "roteiro publicado (corpus)" });
-    }
+    void clientId; // ponytail: filtro de few-shot por cliente adiado — entra com match_documents_v2 (WP-C.7)
+    return pickTopFewShot(corpus.data ?? []);
   } catch (e) {
     console.error("few-shot search failed, seguindo sem exemplos vetoriais", e);
+    return [];
   }
-  void clientId; // ponytail: filtro de few-shot por cliente entra quando o corpus tiver embeddings por cliente
-  return fewShot.slice(0, 6);
 }
 
 export async function loadContext(sessionId: string): Promise<GenerationContext> {
@@ -117,5 +135,6 @@ export async function loadContext(sessionId: string): Promise<GenerationContext>
     attachments: (attachments.data ?? []) as Attachment[],
     modelagemBriefs: [],
     artifacts: (session.artifacts as GenerationContext["artifacts"]) ?? null,
+    usageLog: {},
   };
 }

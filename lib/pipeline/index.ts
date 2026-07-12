@@ -1,4 +1,5 @@
 import { appDb } from "../db";
+import { ANALYST_MODEL, recordUsage } from "../anthropic";
 import { guardEmit, STALE_GENERATION_MS } from "../generation";
 import { loadContext } from "./context";
 import { analyzeModelagem } from "./modelagem";
@@ -48,12 +49,21 @@ export async function runPipeline(
 
     const ctx = await loadContext(sessionId);
 
+    // ── Modelagem ∥ pesquisa: independentes — os briefs só são consumidos do
+    // proposeNarratives em diante, então a análise roda em paralelo com o Grok.
     const modelagens = ctx.attachments.filter((a) => a.is_modelagem && a.raw_content);
+    let modelagemP: Promise<string[]> = Promise.resolve([]);
     if (modelagens.length) {
       emit({ type: "phase", phase: "modelagem" });
-      ctx.modelagemBriefs = (
-        await Promise.all(modelagens.map((a) => analyzeModelagem(a, ctx.prompt)))
-      ).filter(Boolean);
+      const t0 = Date.now();
+      modelagemP = Promise.all(modelagens.map((a) => analyzeModelagem(a, ctx.prompt))).then((briefs) => {
+        // ponytail: só duração/modelo — tokens da modelagem exigiriam tocar modelagem.ts (fora do escopo do WP-D)
+        recordUsage(ctx.usageLog, "modelagem", ANALYST_MODEL, Date.now() - t0);
+        return briefs.filter(Boolean);
+      });
+      // Rejeição antes do await (Grok leva 30-90s) seria unhandled e derrubaria o
+      // processo em Node moderno; este handler marca como tratada — o await relança.
+      modelagemP.catch(() => {});
     }
 
     // ── Pesquisa + narrativas + ranking (só na primeira geração da sessão) ──
@@ -61,6 +71,7 @@ export async function runPipeline(
     if (!artifacts?.candidatas?.length) {
       emit({ type: "phase", phase: "pesquisa" });
       const dossie = await research(ctx);
+      ctx.modelagemBriefs = await modelagemP;
 
       emit({ type: "phase", phase: "narrativas" });
       const candidatas = await proposeNarratives(ctx, dossie);
@@ -77,6 +88,9 @@ export async function runPipeline(
         orientacao_hook: rank.orientacao_hook,
       };
     }
+
+    // Regeneração (artifacts cacheados) pula a pesquisa mas o roteirista ainda usa os briefs.
+    ctx.modelagemBriefs = await modelagemP;
 
     // Override do usuário: troca a narrativa vencedora e reescreve a partir daqui
     if (opts.narrativeIndex != null && artifacts.candidatas[opts.narrativeIndex]) {
@@ -171,6 +185,8 @@ export async function runPipeline(
             hook_racional: hookRes.racional,
             few_shot_origens: ctx.fewShot.map((f) => f.origem),
             modelagem_briefs: ctx.modelagemBriefs,
+            // telemetria de custo por fase: tokens (input/output/cache) + duração + modelo
+            usage: ctx.usageLog ?? {},
           },
         })
         .select("id")

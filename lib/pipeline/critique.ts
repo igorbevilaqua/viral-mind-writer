@@ -1,17 +1,21 @@
-import { anthropic, ANALYST_MODEL } from "../anthropic";
+import { ANALYST_MODEL, trackedCreate } from "../anthropic";
 import { agentPrompt } from "./agents";
-import { OUTPUT_FORMAT, buildStaticSystemBlock, buildDynamicSystemBlock } from "./draft";
+import { OUTPUT_FORMAT, buildStaticSystemBlock, buildReviewDynamicBlock } from "./draft";
 import type { GenerationContext } from "./types";
 
 // 7. Sala de revisão multi-chapéu + reescrita em UMA chamada.
 // Os chapéus vivem em agents/revisao.md; o checklist eliminatório vem do playbook.
+// Contexto enxuto: a revisão corrige contra checklist, não imita voz — sem few-shot,
+// sem materiais do usuário, dossiê truncado (buildReviewDynamicBlock).
 export async function critiqueAndRewrite(ctx: GenerationContext, draft: string): Promise<string> {
-  const res = await anthropic.messages.create({
+  const res = await trackedCreate(ctx.usageLog, "revisao", {
     model: ANALYST_MODEL,
     max_tokens: 8000,
     system: [
-      { type: "text", text: `${agentPrompt("revisao")}\n\n${buildStaticSystemBlock(ctx)}`, cache_control: { type: "ephemeral" } },
-      { type: "text", text: buildDynamicSystemBlock(ctx) },
+      // block 1 = estático compartilhado + cache: o modelo é sonnet (cache separado do fable),
+      // mas "gerar nova versão" re-roda a revisão com o mesmo prefixo e reusa a escrita.
+      { type: "text", text: buildStaticSystemBlock(ctx), cache_control: { type: "ephemeral" } },
+      { type: "text", text: `${agentPrompt("revisao")}\n\n${buildReviewDynamicBlock(ctx)}` },
     ],
     messages: [
       {
