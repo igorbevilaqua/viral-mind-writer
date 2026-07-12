@@ -98,6 +98,10 @@ export interface GenerationContext {
   artifacts: SessionArtifacts | null;
   // telemetria de custo por fase — preenchida pelos agentes, persistida em pipeline_trace.usage
   usageLog?: UsageLog;
+  // WP-E.1: fingerprint do conhecimento usado na geração (persistido em pipeline_trace.fingerprint)
+  lessonIds?: string[]; // vm_lesson_learnings.id das lições taught presentes no contexto
+  playbookVersions?: { slug: string; version: number }[];
+  insightRunId?: string | null; // último vm_insight_runs vigente na geração
 }
 
 export interface ScriptSections {

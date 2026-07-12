@@ -4,6 +4,7 @@ import type Anthropic from "@anthropic-ai/sdk";
 import { ANALYST_MODEL, WRITER_MODEL, recordUsage, trackedCreate } from "../anthropic";
 import { grokClient, RESEARCH_MODEL } from "../grok";
 import { fmtNum } from "../format";
+import type { CalibrationPayload } from "../learning-loop";
 import type { ClientInsightPayload, GenerationContext, NarrativaCandidata, RankingItem } from "./types";
 
 // Os prompts dos agentes vivem em agents/*.md — fonte única consumida pelo app e pela skill /goal.
@@ -96,6 +97,15 @@ export function formatInsightsForDados(
     return kept;
   };
 
+  // WP-E.3: calibração previsto×real do próprio Dados — o avaliador vê seu histórico.
+  // Nota curta no topo, fora do orçamento de linhas; amostra insuficiente → omitida.
+  const cal = insights.find((i) => i.insight_type === "calibracao_dados")?.payload as
+    | CalibrationPayload
+    | undefined;
+  if (cal?.resumo && !cal.insuficiente) {
+    parts.push(`## SUA CALIBRAÇÃO HISTÓRICA (previsto×real dos seus rankings anteriores)\n${cal.resumo}`);
+  }
+
   const results = insights
     .filter((i) => i.insight_type === "client_scriptresult")
     .map((i) => i.payload as ScriptResultPayload)
@@ -111,6 +121,7 @@ export function formatInsightsForDados(
   const globals: { type: string; payload: unknown }[] = [];
   for (const i of insights) {
     if (i.insight_type === "client_scriptresult" || i.insight_type === "client_hook_examples") continue;
+    if (i.insight_type === "calibracao_dados") continue; // já injetado como nota no topo
     const p = i.payload as ClientInsightPayload;
     if ((i.insight_type.startsWith("client_") || i.insight_type.startsWith("taught_")) && p?.titulo) {
       grouped.set(i.insight_type, [...(grouped.get(i.insight_type) ?? []), p]);

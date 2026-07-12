@@ -5,6 +5,8 @@ import { revalidatePath } from "next/cache";
 import { platformVideoId } from "./video-url";
 import { dedash } from "./pipeline/slop-lint";
 import { rewriteFragment } from "./pipeline/rewrite-fragment";
+import { extractFromEdit } from "./pipeline/teach";
+import { isSubstantiveEdit } from "./learning-loop";
 
 export interface NewAttachment {
   kind: "reference_script" | "news_link" | "document" | "video_link";
@@ -78,6 +80,48 @@ export async function finalizeSession(
     });
     if (error) throw new Error(error.message);
   }
+
+  // WP-E.4 (plano 010): avaliação alta + edição substantiva = sinal supervisionado.
+  // Professor extrai as diferenças → lição active:false, curadoria humana no /ensinar.
+  // Falha aqui NUNCA bloqueia o encerramento — o feedback já está salvo.
+  if ((form.rating ?? 0) >= 4) {
+    try {
+      const { data: script } = await appDb
+        .from("vm_generated_scripts")
+        .select("roteiro, client_id, pipeline_trace")
+        .eq("id", scriptId)
+        .single();
+      const trace = (script?.pipeline_trace ?? {}) as { roteiro_original?: string };
+      // original = texto que a sala gerou (preservado pelo updateScript na 1ª edição inline)
+      const original = trace.roteiro_original ?? script?.roteiro ?? "";
+      // editada = versão colada no feedback OU o roteiro atual quando houve edição inline
+      const editada = form.edited_version.trim() || (trace.roteiro_original ? script!.roteiro : "");
+      if (original && editada && isSubstantiveEdit(original, editada)) {
+        const learnings = await extractFromEdit({ original, editada, notes: form.notes || undefined });
+        if (learnings.length) {
+          const { data: lesson } = await appDb
+            .from("vm_lessons")
+            .insert({
+              client_id: script!.client_id,
+              source_kind: "edicao",
+              source_title: "Edição humana de roteiro (sessão avaliada)",
+              transcript: editada,
+              context_note: form.notes || null,
+            })
+            .select("id")
+            .single();
+          if (lesson) {
+            await appDb.from("vm_lesson_learnings").insert(
+              learnings.map((l) => ({ ...l, evidencia: l.evidencia ?? null, origem: "edicao", active: false, lesson_id: lesson.id }))
+            );
+          }
+        }
+      }
+    } catch (e) {
+      console.error("aprendizado da edição falhou — feedback salvo mesmo assim", e);
+    }
+  }
+
   const { error: sessErr } = await appDb.from("vm_sessions").update({ status: "closed" }).eq("id", sessionId);
   if (sessErr) throw new Error(sessErr.message);
   revalidatePath(`/sessions/${sessionId}`);
@@ -185,11 +229,32 @@ export async function updateScript(
   patch: { headline?: string | null; hook?: string | null; roteiro?: string; comando?: string | null; fontes?: string | null }
 ) {
   const clean = (v: string | null | undefined) => (typeof v === "string" ? dedash(v) : v);
-  const update: Record<string, string | null> = {};
+  const update: Record<string, unknown> = {};
   for (const k of ["headline", "hook", "roteiro", "comando", "fontes"] as const) {
     if (patch[k] !== undefined) update[k] = clean(patch[k]) ?? null;
   }
   if (!Object.keys(update).length) return;
+  // WP-E.4: a 1ª edição do roteiro preserva o texto gerado pela sala no trace —
+  // o par original→editado alimenta o aprendizado no finalizeSession. Best-effort.
+  if (typeof update.roteiro === "string") {
+    try {
+      const { data: cur } = await appDb
+        .from("vm_generated_scripts")
+        .select("roteiro, pipeline_trace")
+        .eq("id", scriptId)
+        .single();
+      const trace = (cur?.pipeline_trace ?? {}) as { roteiro_original?: string };
+      if (cur && update.roteiro !== cur.roteiro) {
+        update.pipeline_trace = {
+          ...trace,
+          roteiro_original: trace.roteiro_original ?? cur.roteiro, // sempre o texto da sala, nunca de edição anterior
+          edicao_humana: true,
+        };
+      }
+    } catch (e) {
+      console.error("preservação do roteiro original no trace falhou — edição segue", e);
+    }
+  }
   const { data, error } = await appDb
     .from("vm_generated_scripts")
     .update(update)

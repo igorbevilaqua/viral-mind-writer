@@ -187,6 +187,14 @@ export async function runPipeline(
             modelagem_briefs: ctx.modelagemBriefs,
             // telemetria de custo por fase: tokens (input/output/cache) + duração + modelo
             usage: ctx.usageLog ?? {},
+            // WP-E.1: previsto×real — score da vencedora + fingerprint do conhecimento usado;
+            // o ETL maduro (vm_outcomes) fecha o ciclo lendo estes dois campos
+            predicted_score: artifacts.ranking.find((r) => r.indice === artifacts.escolhida)?.score ?? null,
+            fingerprint: {
+              lesson_ids: ctx.lessonIds ?? [],
+              playbook_slugs_versions: ctx.playbookVersions ?? [],
+              insight_run_id: ctx.insightRunId ?? null,
+            },
           },
         })
         .select("id")

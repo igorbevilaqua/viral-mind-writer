@@ -40,14 +40,11 @@ const APRENDIZADOS_TOOL = {
   },
 };
 
-const DIMENSOES: Dimensao[] = ["hook", "storytelling", "tema", "ritmo", "comando", "geral"];
+export const DIMENSOES: Dimensao[] = ["hook", "storytelling", "tema", "ritmo", "comando", "geral"];
 
-export async function extractLearnings(input: {
-  transcript: string;
-  sourceUrl?: string;
-  contextNote?: string;
-  clientNome?: string;
-}): Promise<ExtractedLearning[]> {
+// Chamada compartilhada do Professor (mesmo tool schema/system): o que varia
+// entre "ensinar viral" e "aprender com edição" é só o conteúdo do usuário.
+async function runProfessor(userContent: string): Promise<ExtractedLearning[]> {
   const { data: playbooks } = await appDb
     .from("vm_playbooks")
     .select("slug, content")
@@ -69,18 +66,7 @@ export async function extractLearnings(input: {
         cache_control: { type: "ephemeral" },
       },
     ],
-    messages: [
-      {
-        role: "user",
-        content: `${input.clientNome ? `CLIENTE (nicho de destino dos aprendizados): ${input.clientNome}\n` : ""}${
-          input.sourceUrl ? `FONTE: ${input.sourceUrl}\n` : ""
-        }${input.contextNote ? `NOTA DE CONTEXTO DO USUÁRIO: ${input.contextNote}\n` : ""}
-TRANSCRIÇÃO DO VÍDEO VIRAL:
-${input.transcript.slice(0, 30_000)}
-
-Extraia os aprendizados.`,
-      },
-    ],
+    messages: [{ role: "user", content: userContent }],
   });
 
   const toolUse = res.content.find((b) => b.type === "tool_use");
@@ -96,4 +82,43 @@ Extraia os aprendizados.`,
     throw new Error("professor: nenhum aprendizado válido");
   }
   return aprendizados;
+}
+
+export async function extractLearnings(input: {
+  transcript: string;
+  sourceUrl?: string;
+  contextNote?: string;
+  clientNome?: string;
+}): Promise<ExtractedLearning[]> {
+  return runProfessor(
+    `${input.clientNome ? `CLIENTE (nicho de destino dos aprendizados): ${input.clientNome}\n` : ""}${
+      input.sourceUrl ? `FONTE: ${input.sourceUrl}\n` : ""
+    }${input.contextNote ? `NOTA DE CONTEXTO DO USUÁRIO: ${input.contextNote}\n` : ""}
+TRANSCRIÇÃO DO VÍDEO VIRAL:
+${input.transcript.slice(0, 30_000)}
+
+Extraia os aprendizados.`
+  );
+}
+
+// WP-E.4 (absorve plano 010): aprende com a edição humana — o par sala→humano
+// é o sinal supervisionado mais forte do produto. Extrai só das DIFERENÇAS.
+export async function extractFromEdit(input: {
+  original: string;
+  editada: string;
+  clientNome?: string;
+  notes?: string;
+}): Promise<ExtractedLearning[]> {
+  return runProfessor(
+    `${input.clientNome ? `CLIENTE (nicho de destino dos aprendizados): ${input.clientNome}\n` : ""}Um roteirista humano EDITOU um roteiro produzido pela sala antes de usar.
+As diferenças entre as versões são decisões editoriais deliberadas — extraia o que a sala deveria aprender delas (o que o humano cortou, reforçou, reescreveu e POR QUÊ, quando inferível).
+${input.notes ? `Observações do roteirista: ${input.notes}\n` : ""}
+=== VERSÃO DA SALA ===
+${input.original.slice(0, 15_000)}
+
+=== VERSÃO EDITADA (final humano) ===
+${input.editada.slice(0, 15_000)}
+
+Extraia os aprendizados (só das DIFERENÇAS; ignore o que ficou igual).`
+  );
 }

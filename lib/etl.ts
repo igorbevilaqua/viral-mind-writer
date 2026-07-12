@@ -4,6 +4,7 @@ import { agentPrompt, toolInput, toolArray } from "./pipeline/agents";
 import { platformVideoId } from "./video-url";
 import { fmtNum } from "./format";
 import { maturityGate } from "./etl-gate";
+import { attributeLessons, computeCalibration } from "./learning-loop";
 
 // ETL semanal: materializa insights do corpus em vm_viral_insights
 // (globais + por cliente, categorizados e pontuados) e sincroniza
@@ -238,7 +239,7 @@ export async function runWeeklyEtl() {
   // O vídeo pode entrar no corpus semanas depois da publicação — retenta a cada run até casar.
   const { data: pubScripts } = await appDb
     .from("vm_generated_scripts")
-    .select("id, client_id, headline, hook, published_url, published_at, pipeline_trace")
+    .select("id, session_id, client_id, headline, hook, published_url, published_at, pipeline_trace")
     .eq("status", "published")
     .not("published_url", "is", null);
 
@@ -307,6 +308,16 @@ export async function runWeeklyEtl() {
   // ── Flywheel 3/3: resultado real dos roteiros da sala vira insight do agente Dados
   // (regenerado a cada run junto do snapshot — o wipe abaixo não é problema).
   const mediaByClient = new Map<string, number | null>();
+  // WP-E.2: roteiros maduros viram outcomes (previsto×real + fingerprint) — fonte do aprendizado
+  const outcomeRows: {
+    script_id: string;
+    session_id: string | null;
+    client_id: string | null;
+    predicted_score: number | null;
+    ratio: number | null;
+    verdict: string;
+    fingerprint: unknown;
+  }[] = [];
   for (const p of perfRows) {
     const s = scriptById.get(p.crm_script_id);
     const clientId: string | null = s?.client_id ?? null;
@@ -323,11 +334,26 @@ export async function runWeeklyEtl() {
       const media = mediaByClient.get(clientId);
       if (media) ratio = Math.round((p.views / media) * 100) / 100;
     }
-    const trace = (s?.pipeline_trace ?? {}) as { narrativa_escolhida?: { estrutura?: string } };
+    const trace = (s?.pipeline_trace ?? {}) as {
+      narrativa_escolhida?: { estrutura?: string };
+      predicted_score?: number | null;
+      fingerprint?: unknown;
+    };
     const estrutura = trace.narrativa_escolhida?.estrutura ?? null;
     // Gate de maturidade (plano 012, WP-C.4): <14 dias de publicação = em observação,
     // score neutro e verdict "neutro" — resultado parcial nunca vira anti-padrão.
     const gate = maturityGate(ratio, s?.published_at ?? null);
+    if (gate.maduro && s) {
+      outcomeRows.push({
+        script_id: s.id,
+        session_id: s.session_id ?? null,
+        client_id: clientId,
+        predicted_score: typeof trace.predicted_score === "number" ? trace.predicted_score : null,
+        ratio,
+        verdict: gate.verdict,
+        fingerprint: trace.fingerprint ?? null,
+      });
+    }
     rows.push({
       scope: clientId ? `client:${clientId}` : "global",
       insight_type: "client_scriptresult",
@@ -354,6 +380,98 @@ export async function runWeeklyEtl() {
         score: gate.score, // maduro: ratio ordena (>1 padrão, <1 anti-padrão); em observação: 0
       },
     });
+  }
+
+  // ── WP-E.2/3/5: outcomes maduros → calibração do Dados + atribuição lição×outcome.
+  // Melhor esforço: migration 0015 ausente só gera warning, nunca derruba o ETL.
+  if (outcomeRows.length) {
+    const up = await appDb.from("vm_outcomes").upsert(outcomeRows, { onConflict: "script_id" });
+    if (up.error) console.warn(`vm_outcomes upsert: ${up.error.message} — aplicar migration 0015`);
+  }
+  const { data: outcomes, error: outErr } = await appDb
+    .from("vm_outcomes")
+    .select("predicted_score, ratio, fingerprint");
+  if (outErr) {
+    console.warn(`vm_outcomes select: ${outErr.message} — aplicar migration 0015`);
+  } else {
+    // WP-E.3: calibração previsto×real vira insight global — o Dados vê o próprio histórico.
+    // Com n<5 o payload marca insuficiente:true e o prompt omite a nota (agents.ts).
+    rows.push({
+      scope: "global",
+      insight_type: "calibracao_dados",
+      payload: computeCalibration(
+        (outcomes ?? []).map((o) => ({
+          predicted: o.predicted_score == null ? null : Number(o.predicted_score),
+          ratio: o.ratio == null ? null : Number(o.ratio),
+        }))
+      ),
+    });
+    // WP-E.5: lição presente em ≥2 outcomes com ratio mediano <0.8 → needs_review
+    // (marca para revisão humana no /ensinar — NUNCA desativa sozinho).
+    const flagged = attributeLessons(
+      (outcomes ?? []).map((o) => {
+        const ids = (o.fingerprint as { lesson_ids?: unknown } | null)?.lesson_ids;
+        return {
+          ratio: o.ratio == null ? null : Number(o.ratio),
+          lessonIds: Array.isArray(ids) ? ids.filter((x): x is string => typeof x === "string") : [],
+        };
+      })
+    ).filter((a) => a.needs_review);
+    if (flagged.length) {
+      // ponytail: só liga a flag — desligar (lição reabilitada) é decisão humana no /ensinar
+      const upd = await appDb
+        .from("vm_lesson_learnings")
+        .update({ needs_review: true })
+        .in("id", flagged.map((f) => f.lessonId));
+      if (upd.error) console.warn(`needs_review update: ${upd.error.message} — aplicar migration 0015`);
+    }
+  }
+
+  // ── WP-E.4: vm_script_feedback deixa de ser write-only — rating médio por
+  // estrutura (pipeline_trace.narrativa_escolhida) vira insight client_feedback.
+  try {
+    const { data: fb } = await appDb.from("vm_script_feedback").select("script_id, rating").not("rating", "is", null);
+    if (fb?.length) {
+      const { data: fbScripts } = await appDb
+        .from("vm_generated_scripts")
+        .select("id, client_id, pipeline_trace")
+        .in("id", [...new Set(fb.map((f) => f.script_id))]);
+      const meta = new Map(
+        (fbScripts ?? []).map((sc) => {
+          const t = (sc.pipeline_trace ?? {}) as { narrativa_escolhida?: { estrutura?: string } };
+          return [sc.id, { client: sc.client_id as string | null, estrutura: t.narrativa_escolhida?.estrutura ?? null }];
+        })
+      );
+      const agg = new Map<string, Map<string, number[]>>(); // cliente → estrutura → ratings
+      for (const f of fb) {
+        const m = meta.get(f.script_id);
+        if (!m?.client || !m.estrutura || f.rating == null) continue;
+        const byEstrutura = agg.get(m.client) ?? new Map<string, number[]>();
+        byEstrutura.set(m.estrutura, [...(byEstrutura.get(m.estrutura) ?? []), Number(f.rating)]);
+        agg.set(m.client, byEstrutura);
+      }
+      for (const [clienteId, byEstrutura] of agg) {
+        const estruturas = [...byEstrutura.entries()]
+          .map(([estrutura, ratings]) => ({
+            estrutura,
+            n: ratings.length,
+            rating_medio: Math.round((ratings.reduce((a, b) => a + b, 0) / ratings.length) * 10) / 10,
+          }))
+          .sort((a, b) => b.rating_medio - a.rating_medio);
+        rows.push({
+          scope: `client:${clienteId}`,
+          insight_type: "client_feedback",
+          payload: {
+            titulo: "Avaliação humana por estrutura",
+            descricao: estruturas.map((e) => `${e.estrutura}: ${e.rating_medio}/5 (${e.n})`).join(" · "),
+            estruturas,
+            score: 0,
+          },
+        });
+      }
+    }
+  } catch (e) {
+    console.error("agregação de feedback falhou, seguindo sem client_feedback", e);
   }
 
   // Histórico de runs (plano 012, WP-C.6): grava o array completo ANTES do replace,
