@@ -9,6 +9,22 @@
       "detail": "",
       "commit": "cb3952c",
       "addedAt": "2026-07-12T00:55:43.502Z"
+    },
+    {
+      "id": "mri11atx",
+      "type": "feature",
+      "summary": "Update Autoevolutivo: roteiros guiados por dados reais (exemplos virais, retenção, hooks campeões), ciclo de autoaprimoramento fechado (previsto×real, edições viram lições, curador mensal), pipeline resiliente (não morre com a aba, sem gerações duplicadas), falha de segurança RLS corrigida, ~40-60% menos custo de tokens por roteiro",
+      "detail": "",
+      "commit": "4345ba6",
+      "addedAt": "2026-07-12T16:47:44.673Z"
+    },
+    {
+      "id": "mri11auy",
+      "type": "improvement",
+      "summary": "UX de confiança: evidência real nos cards de ranking, comparação média do cliente vs vídeo publicado, feedback 1-clique, filtros e badges de publicada/views na lista de sessões",
+      "detail": "",
+      "commit": "4345ba6",
+      "addedAt": "2026-07-12T16:47:44.711Z"
     }
   ],
   "lastRelease": {

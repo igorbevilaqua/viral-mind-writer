@@ -28,7 +28,7 @@ commitado e os excerpts reconciliados.
 | 009  | Sync de performance sob demanda | P2 | M | 005, 006, 007 | TODO |
 | 011  | Few-shot ponderado por performance | P3 | S/M | 008 | ABSORVIDO no 012 |
 | 010  | Loop supervisionado (edição→Professor→lição) + captura de decisões | P2 | L | 002, 007 | ABSORVIDO no 012 |
-| 012  | Update CODEX Autoevolutivo (auditoria 2026-07-11; absorve 006/008/010/011) | P1 | L | — | IN PROGRESS |
+| 012  | Update CODEX Autoevolutivo (auditoria 2026-07-11; absorve 006/008/010/011) | P1 | L | — | DONE (ondas 1-4 mergeadas; migrations 0010-0015 aplicadas no banco) |
 
 Status: TODO | IN PROGRESS | DONE | BLOCKED (motivo) | REJECTED (motivo)
 
