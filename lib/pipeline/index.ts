@@ -33,15 +33,14 @@ export async function runPipeline(
   try {
     // Lock otimista: só assume a sessão se ninguém está gerando — ou se a geração
     // anterior está stale (>10min, ou sem timestamp = pré-migration 0010).
+    // Via RPC (migration 0016): PostgREST 13 rejeita or= em PATCH com 42703.
     const staleBefore = new Date(Date.now() - STALE_GENERATION_MS).toISOString();
-    const { data: locked, error: lockErr } = await appDb
-      .from("vm_sessions")
-      .update({ status: "generating", generation_started_at: new Date().toISOString() })
-      .eq("id", sessionId)
-      .or(`status.neq.generating,generation_started_at.is.null,generation_started_at.lt.${staleBefore}`)
-      .select("id");
+    const { data: locked, error: lockErr } = await appDb.rpc("vm_acquire_generation_lock", {
+      p_session_id: sessionId,
+      p_stale_before: staleBefore,
+    });
     if (lockErr) throw new Error(`falha ao iniciar geração: ${lockErr.message}`);
-    if (!locked?.length) {
+    if (!locked) {
       // não passa pelo catch: setar status=error aqui clobberaria a geração em andamento
       emit({ type: "error", message: "Geração já em andamento para esta sessão — acompanhe ou aguarde alguns minutos." });
       return;
