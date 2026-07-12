@@ -3,6 +3,7 @@ import { anthropic, ANALYST_MODEL } from "./anthropic";
 import { agentPrompt, toolInput, toolArray } from "./pipeline/agents";
 import { platformVideoId } from "./video-url";
 import { fmtNum } from "./format";
+import { maturityGate } from "./etl-gate";
 
 // ETL semanal: materializa insights do corpus em vm_viral_insights
 // (globais + por cliente, categorizados e pontuados) e sincroniza
@@ -32,6 +33,7 @@ interface ClientStat {
   recencia_dias: number | null;
   ultimo_uso: string | null;
   performance_ratio: number;
+  recencia_peso: number | null;
   score: number;
 }
 
@@ -124,6 +126,7 @@ async function clientInsightRows(cliente: { id: string; nome: string }): Promise
     recencia_dias: r.recencia_dias == null ? null : Number(r.recencia_dias),
     ultimo_uso: (r.ultimo_uso as string) ?? null,
     performance_ratio: Number(r.performance_ratio),
+    recencia_peso: r.recencia_peso == null ? null : Number(r.recencia_peso),
     score: Number(r.score),
   }));
 
@@ -146,6 +149,9 @@ async function clientInsightRows(cliente: { id: string; nome: string }): Promise
       titulo: `${CAT_TITLE[s.categoria] ?? s.categoria}: ${prettyTipo(s.tipo)}`,
       descricao: descricaoDe(s),
       score: s.score,
+      // performance e recência separadas do score composto (plano 012, WP-C.2)
+      performance: s.performance_ratio,
+      recencia: s.recencia_peso,
       performance_ratio: s.performance_ratio,
       media_views: s.media_views,
       media_seguidores: s.media_seguidores,
@@ -155,6 +161,24 @@ async function clientInsightRows(cliente: { id: string; nome: string }): Promise
       destaque: i === destaqueIdx,
     },
   }));
+
+  // Top 5 hooks LITERAIS do cliente por views (plano 012, WP-C.5) — melhor
+  // esforço: fn ausente (PGRST202, migration 0013 não aplicada) só gera warning.
+  const hooks = await viralData.rpc("vm_client_hook_examples", { p_cliente_id: cliente.id });
+  if (hooks.error) {
+    console.warn(`vm_client_hook_examples(${cliente.nome}): ${hooks.error.message}`);
+  } else if (hooks.data?.length) {
+    rows.push({
+      scope: `client:${cliente.id}`,
+      insight_type: "client_hook_examples",
+      payload: {
+        titulo: "Hooks campeões do cliente (texto literal)",
+        hooks: hooks.data, // [{ hook, views, retencao_hook }]
+        score: 0,
+        destaque: false,
+      },
+    });
+  }
 
   try {
     const praticas = await generateBoasPraticas(cliente, kept);
@@ -172,6 +196,14 @@ async function clientInsightRows(cliente: { id: string; nome: string }): Promise
 }
 
 export async function runWeeklyEtl() {
+  // MV vm_video_stats alimenta as fns vm_* (migration 0013) — refresh antes de tudo.
+  // PGRST202 = migration não aplicada: as fns ainda usam a definição antiga, seguir com warning.
+  const refresh = await viralData.rpc("vm_refresh_video_stats");
+  if (refresh.error) {
+    if (refresh.error.code !== "PGRST202") throw new Error(`vm_refresh_video_stats: ${refresh.error.message}`);
+    console.warn("vm_refresh_video_stats ausente — aplicar migration 0013; seguindo sem refresh da MV");
+  }
+
   const { data: snapshot, error } = await viralData.rpc("vm_insights_snapshot");
   if (error) throw new Error(`vm_insights_snapshot: ${error.message}`);
 
@@ -206,7 +238,7 @@ export async function runWeeklyEtl() {
   // O vídeo pode entrar no corpus semanas depois da publicação — retenta a cada run até casar.
   const { data: pubScripts } = await appDb
     .from("vm_generated_scripts")
-    .select("id, client_id, headline, hook, published_url, pipeline_trace")
+    .select("id, client_id, headline, hook, published_url, published_at, pipeline_trace")
     .eq("status", "published")
     .not("published_url", "is", null);
 
@@ -293,6 +325,9 @@ export async function runWeeklyEtl() {
     }
     const trace = (s?.pipeline_trace ?? {}) as { narrativa_escolhida?: { estrutura?: string } };
     const estrutura = trace.narrativa_escolhida?.estrutura ?? null;
+    // Gate de maturidade (plano 012, WP-C.4): <14 dias de publicação = em observação,
+    // score neutro e verdict "neutro" — resultado parcial nunca vira anti-padrão.
+    const gate = maturityGate(ratio, s?.published_at ?? null);
     rows.push({
       scope: clientId ? `client:${clientId}` : "global",
       insight_type: "client_scriptresult",
@@ -300,6 +335,7 @@ export async function runWeeklyEtl() {
         titulo: `Roteiro publicado: "${s?.headline ?? s?.hook?.slice(0, 60) ?? p.crm_script_id.slice(0, 6)}"`,
         descricao: [
           `${fmtNum(p.views)} views${ratio ? ` (${ratio}x a média do cliente)` : ""}`,
+          gate.em_observacao ? "em observação (<14 dias)" : null,
           estrutura ? `estrutura: ${estrutura}` : null,
           p.retencao_hook != null ? `retenção hook ${Math.round(p.retencao_hook)}%` : null,
           p.seguidores_ganhos ? `+${fmtNum(p.seguidores_ganhos)} seguidores` : null,
@@ -313,9 +349,25 @@ export async function runWeeklyEtl() {
         retencao_hook: p.retencao_hook,
         retencao_final: p.retencao_final,
         seguidores_ganhos: p.seguidores_ganhos,
-        score: ratio ?? 0, // ratio ordena: >1 = padrão confirmado da sala, <1 = anti-padrão
+        verdict: gate.verdict, // repetir (>1.2x maduro) | evitar (<0.8x maduro) | neutro
+        ...(gate.maduro ? { maduro: true } : { em_observacao: true }),
+        score: gate.score, // maduro: ratio ordena (>1 padrão, <1 anti-padrão); em observação: 0
       },
     });
+  }
+
+  // Histórico de runs (plano 012, WP-C.6): grava o array completo ANTES do replace,
+  // retém os 12 mais recentes. Melhor esforço — tabela ausente não derruba o ETL.
+  const runIns = await appDb.from("vm_insight_runs").insert({ rows });
+  if (runIns.error) {
+    console.warn(`vm_insight_runs insert: ${runIns.error.message} — aplicar migration 0014`);
+  } else {
+    const { data: old } = await appDb
+      .from("vm_insight_runs")
+      .select("id")
+      .order("run_at", { ascending: false })
+      .range(12, 1000); // ponytail: além do 12º mais recente = poda
+    if (old?.length) await appDb.from("vm_insight_runs").delete().in("id", old.map((o) => o.id));
   }
 
   // Troca atômica via RPC; se a function ainda não foi aplicada no banco (PGRST202),
