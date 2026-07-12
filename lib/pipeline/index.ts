@@ -1,4 +1,5 @@
 import { appDb } from "../db";
+import { guardEmit, STALE_GENERATION_MS } from "../generation";
 import { loadContext } from "./context";
 import { analyzeModelagem } from "./modelagem";
 import { research, proposeNarratives, rankNarratives, designHook, writeComando } from "./agents";
@@ -21,13 +22,29 @@ export async function runPipeline(
 ): Promise<void> {
   // registra a última fase emitida → o catch sabe onde o pipeline morreu (pra debug de print)
   let currentPhase = "init";
-  const rawEmit = emit;
+  // ponto único de todos os emits: guardado → desconexão do cliente não mata o pipeline,
+  // e o emit({type:"error"}) do catch nunca relança.
+  const rawEmit = guardEmit(emit);
   emit = (e) => {
     if (e.type === "phase") currentPhase = e.phase;
     rawEmit(e);
   };
   try {
-    await appDb.from("vm_sessions").update({ status: "generating" }).eq("id", sessionId);
+    // Lock otimista: só assume a sessão se ninguém está gerando — ou se a geração
+    // anterior está stale (>10min, ou sem timestamp = pré-migration 0010).
+    const staleBefore = new Date(Date.now() - STALE_GENERATION_MS).toISOString();
+    const { data: locked, error: lockErr } = await appDb
+      .from("vm_sessions")
+      .update({ status: "generating", generation_started_at: new Date().toISOString() })
+      .eq("id", sessionId)
+      .or(`status.neq.generating,generation_started_at.is.null,generation_started_at.lt.${staleBefore}`)
+      .select("id");
+    if (lockErr) throw new Error(`falha ao iniciar geração: ${lockErr.message}`);
+    if (!locked?.length) {
+      // não passa pelo catch: setar status=error aqui clobberaria a geração em andamento
+      emit({ type: "error", message: "Geração já em andamento para esta sessão — acompanhe ou aguarde alguns minutos." });
+      return;
+    }
 
     const ctx = await loadContext(sessionId);
 
@@ -120,39 +137,47 @@ export async function runPipeline(
       sections.roteiro = stripTrailingComando(sections.roteiro, sections.comando);
     }
 
-    const { count } = await appDb
-      .from("vm_generated_scripts")
-      .select("id", { count: "exact", head: true })
-      .eq("session_id", sessionId);
-
     const narrativa = artifacts.candidatas[artifacts.escolhida];
-    const { data: saved, error } = await appDb
-      .from("vm_generated_scripts")
-      .insert({
-        session_id: sessionId,
-        client_id: ctx.clientId,
-        version: (count ?? 0) + 1,
-        headline: sections.headline,
-        hook: sections.hook,
-        hook_variants: sections.hookVariants,
-        roteiro: sections.roteiro,
-        comando: sections.comando,
-        fontes: sections.fontes,
-        slop_lint_violations: blockCount(violations),
-        pipeline_trace: {
-          assembled,
-          revised,
-          final,
-          violations,
-          narrativa_escolhida: { indice: artifacts.escolhida, titulo: narrativa?.titulo, estrutura: narrativa?.estrutura },
-          hook_racional: hookRes.racional,
-          few_shot_origens: ctx.fewShot.map((f) => f.origem),
-          modelagem_briefs: ctx.modelagemBriefs,
-        },
-      })
-      .select("id")
-      .single();
-    if (error) throw new Error(`falha ao salvar roteiro: ${error.message}`);
+    // unique (session_id, version): conflito com escrita concorrente → recalcula a version e tenta de novo
+    let saved: { id: string } | null = null;
+    let error: { code?: string; message: string } | null = null;
+    for (let attempt = 0; attempt < 3; attempt++) {
+      const { data: last } = await appDb
+        .from("vm_generated_scripts")
+        .select("version")
+        .eq("session_id", sessionId)
+        .order("version", { ascending: false })
+        .limit(1)
+        .maybeSingle();
+      ({ data: saved, error } = await appDb
+        .from("vm_generated_scripts")
+        .insert({
+          session_id: sessionId,
+          client_id: ctx.clientId,
+          version: (last?.version ?? 0) + 1,
+          headline: sections.headline,
+          hook: sections.hook,
+          hook_variants: sections.hookVariants,
+          roteiro: sections.roteiro,
+          comando: sections.comando,
+          fontes: sections.fontes,
+          slop_lint_violations: blockCount(violations),
+          pipeline_trace: {
+            assembled,
+            revised,
+            final,
+            violations,
+            narrativa_escolhida: { indice: artifacts.escolhida, titulo: narrativa?.titulo, estrutura: narrativa?.estrutura },
+            hook_racional: hookRes.racional,
+            few_shot_origens: ctx.fewShot.map((f) => f.origem),
+            modelagem_briefs: ctx.modelagemBriefs,
+          },
+        })
+        .select("id")
+        .single());
+      if (error?.code !== "23505") break;
+    }
+    if (error || !saved) throw new Error(`falha ao salvar roteiro: ${error?.message ?? "sem retorno"}`);
 
     // limpa erro de tentativas anteriores → a página não abre com a caixa vermelha stale
     await appDb.from("vm_sessions").update({ status: "done", error_message: null }).eq("id", sessionId);

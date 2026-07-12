@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { appDb } from "@/lib/db";
+import { isStaleGeneration } from "@/lib/generation";
 import SessionView from "@/components/session-view";
 
 export const dynamic = "force-dynamic";
@@ -16,7 +17,7 @@ export default async function SessionPage({
 
   const { data: session } = await appDb
     .from("vm_sessions")
-    .select("id, prompt, status, error_message, artifacts, created_at, clientes(nome)")
+    .select("id, prompt, status, error_message, artifacts, generation_started_at, created_at, clientes(nome)")
     .eq("id", id)
     .maybeSingle();
   if (!session) notFound();
@@ -44,6 +45,8 @@ export default async function SessionPage({
     : { data: [] };
 
   const client = Array.isArray(session.clientes) ? session.clientes[0] : session.clientes;
+  // generating >10min = geração morta → erro recuperável (botão de retry volta)
+  const generationStale = isStaleGeneration(session.status, session.generation_started_at);
 
   return (
     <SessionView
@@ -54,6 +57,7 @@ export default async function SessionPage({
         error_message: session.error_message,
         clientNome: client?.nome ?? null,
       }}
+      generationStale={generationStale}
       scripts={scripts ?? []}
       performance={performance ?? []}
       analyses={(analyses ?? []).map((a) => ({ analysis: a.analysis, replication_brief: a.replication_brief }))}
