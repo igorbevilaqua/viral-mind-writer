@@ -61,6 +61,9 @@ export async function runPipeline(
         recordUsage(ctx.usageLog, "modelagem", ANALYST_MODEL, Date.now() - t0);
         return briefs.filter(Boolean);
       });
+      // Rejeição antes do await (Grok leva 30-90s) seria unhandled e derrubaria o
+      // processo em Node moderno; este handler marca como tratada — o await relança.
+      modelagemP.catch(() => {});
     }
 
     // ── Pesquisa + narrativas + ranking (só na primeira geração da sessão) ──
