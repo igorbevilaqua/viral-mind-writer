@@ -40,6 +40,19 @@ describe("platformVideoId", () => {
     expect(platformVideoId("https://example.com/no-match-here")).toBeNull();
   });
 
+  // markPublished valida com platformVideoId: link de perfil (sem id de vídeo) deve falhar.
+  test("perfil do Instagram retorna null", () => {
+    expect(platformVideoId("https://www.instagram.com/algumperfil/")).toBeNull();
+  });
+
+  test("canal do YouTube retorna null", () => {
+    expect(platformVideoId("https://www.youtube.com/@algumcanal")).toBeNull();
+  });
+
+  test("perfil do TikTok retorna null", () => {
+    expect(platformVideoId("https://www.tiktok.com/@algumperfil")).toBeNull();
+  });
+
   test("youtube.com/live/<id> agora é reconhecido (superset do YT_ID do transcribe)", () => {
     expect(platformVideoId("https://www.youtube.com/live/dQw4w9WgXcQ")).toBe("dQw4w9WgXcQ");
   });

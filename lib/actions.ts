@@ -2,7 +2,7 @@
 
 import { appDb } from "./db";
 import { revalidatePath } from "next/cache";
-import { VIDEO_URL_RE } from "./video-url";
+import { platformVideoId } from "./video-url";
 import { dedash } from "./pipeline/slop-lint";
 import { rewriteFragment } from "./pipeline/rewrite-fragment";
 
@@ -164,7 +164,10 @@ export async function addLearning(
 // vídeo no corpus (videos.crm_script_id) e traz a performance de volta. ──────
 
 export async function markPublished(scriptId: string, url: string) {
-  if (!VIDEO_URL_RE.test(url)) throw new Error("link não reconhecido (YouTube, Reels ou TikTok)");
+  // platformVideoId exige o id do vídeo — link de perfil passaria no regex de domínio
+  // e o flywheel nunca casaria com o corpus, silenciosamente.
+  if (!platformVideoId(url))
+    throw new Error("link precisa ser de um vídeo específico (YouTube, Reels ou TikTok), não de perfil");
   const { data, error } = await appDb
     .from("vm_generated_scripts")
     .update({ status: "published", published_url: url.trim(), published_at: new Date().toISOString() })
@@ -220,15 +223,21 @@ export async function swapHook(scriptId: string, variantIndex: number) {
   const novo = variants[variantIndex];
   if (!novo || !s.hook) throw new Error("variação inexistente");
 
-  // o roteiro começa com o hook por construção — troca o primeiro bloco
+  // o roteiro costuma começar com o hook — se blocks[0] divergiu (edição manual),
+  // não sobrescreve conteúdo do usuário: prefixa o hook novo.
   const blocks = (s.roteiro as string).split("\n\n");
-  blocks[0] = novo;
+  if (blocks[0] === s.hook) blocks[0] = novo;
+  else blocks.unshift(novo);
   variants[variantIndex] = s.hook;
 
-  const { error: upErr } = await appDb
+  // update otimista: condiciona ao hook lido — troca concorrente resulta em 0 linhas.
+  const { data: updated, error: upErr } = await appDb
     .from("vm_generated_scripts")
     .update({ hook: novo, hook_variants: variants, roteiro: blocks.join("\n\n") })
-    .eq("id", scriptId);
+    .eq("id", scriptId)
+    .eq("hook", s.hook)
+    .select("id");
   if (upErr) throw new Error(upErr.message);
+  if (!updated?.length) throw new Error("o roteiro mudou enquanto você trocava o hook — recarregue e tente de novo");
   revalidatePath(`/sessions/${s.session_id}`);
 }
