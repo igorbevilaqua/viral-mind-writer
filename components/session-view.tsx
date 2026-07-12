@@ -2,8 +2,10 @@
 
 import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { finalizeSession, markPublished, swapHook, updateScript, suggestFragment } from "@/lib/actions";
+import { finalizeSession, markPublished, quickFeedback, swapHook, updateScript, suggestFragment } from "@/lib/actions";
 import type { NarrativaCandidata, RankingItem, SessionArtifacts } from "@/lib/pipeline/types";
+import type { LintViolation } from "@/lib/pipeline/slop-lint";
+import { fmtNum, fmtRatio, ratioTone } from "@/lib/format";
 import { BUILD_TAG } from "@/lib/version";
 
 interface Script {
@@ -20,6 +22,14 @@ interface Script {
   published_url: string | null;
   published_at: string | null;
   created_at: string;
+  // extraídos de pipeline_trace no server component (WP-F.4/.3)
+  violations: LintViolation[];
+  edicao_humana: boolean;
+}
+
+export interface Baseline {
+  views: number;
+  periodo: "30d" | "geral";
 }
 
 export interface ScriptPerformance {
@@ -151,7 +161,7 @@ function Stepper({ current }: { current: string | null }) {
           </div>
           <div className="flex-1 min-w-0">
             <div className="text-[13.5px] font-medium text-cream">{idx >= 0 ? PHASE_SHORT[PHASES[idx]] : "Preparando"}</div>
-            <div className="text-[11.5px] text-white/40">fase {Math.max(idx + 1, 1)} de {PHASES.length}</div>
+            <div className="text-[12px] text-white/55">fase {Math.max(idx + 1, 1)} de {PHASES.length}</div>
           </div>
         </div>
         <div className="flex gap-1.5 mt-3.5">
@@ -166,7 +176,10 @@ function Stepper({ current }: { current: string | null }) {
         </div>
       </div>
 
-      {idx >= 0 && <p className="text-xs text-white/40 mt-4 text-center sm:text-left">{PHASE_LABELS[PHASES[idx]]}</p>}
+      {/* aria-live sempre montado: leitores de tela anunciam a troca de fase */}
+      <p aria-live="polite" className="text-xs text-white/55 mt-4 text-center sm:text-left">
+        {idx >= 0 ? PHASE_LABELS[PHASES[idx]] : "Preparando a sala de agentes..."}
+      </p>
     </div>
   );
 }
@@ -190,7 +203,7 @@ function NarrativeCards({
     <div>
       <div className="flex items-baseline gap-2.5 mb-3">
         <span className="kicker text-white/40">NARRATIVAS CANDIDATAS</span>
-        <span className="text-xs text-white/30">storytelling propõe · dados rankeiam</span>
+        <span className="text-xs text-white/55">storytelling propõe · dados rankeiam</span>
       </div>
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
         {candidatas.map((n, i) => {
@@ -214,21 +227,40 @@ function NarrativeCards({
                 ) : (
                   <span className="text-[10.5px] text-white/35">candidata {i + 1}</span>
                 )}
-                {r && (
-                  <span className={`ml-auto font-mono text-[12px] ${winner ? "text-gold" : "text-white/50"}`}>
+              </div>
+              {/* score como barra 0-100 — o voto dos dados visível, não um número solto */}
+              {r && (
+                <div className="flex items-center gap-2">
+                  <div className="flex-1 h-[4px] rounded-full bg-white/[.08] overflow-hidden">
+                    <div
+                      className={`h-full rounded-full ${winner ? "bg-gold" : "bg-gold/45"}`}
+                      style={{ width: `${Math.min(Math.max(r.score, 0), 100)}%` }}
+                    />
+                  </div>
+                  <span className={`shrink-0 font-mono text-[11px] ${winner ? "text-gold" : "text-white/50"}`}>
                     {Math.round(r.score)}
                   </span>
-                )}
-              </div>
+                </div>
+              )}
               <div>
                 <p className={`text-[14px] font-medium leading-snug ${winner ? "text-cream" : "text-white/85"}`}>{n.titulo}</p>
                 <p className="text-[11px] text-white/40 mt-1">{n.estrutura}</p>
               </div>
               <p className="text-[12px] leading-relaxed text-white/55">{n.mecanismo_emocional}</p>
-              {r && <p className="text-[11.5px] leading-relaxed text-white/45 italic">“{r.justificativa}”</p>}
+              {r && <p className="text-[12px] leading-relaxed text-white/55 italic">“{r.justificativa}”</p>}
+              {/* WP-F.1: evidência concreta que pesou no score (sessões antigas não têm) */}
+              {!!r?.evidencia?.length && (
+                <ul className="space-y-1">
+                  {r.evidencia.map((e, j) => (
+                    <li key={j} className="text-[12px] leading-snug text-gold/80 border-l-2 border-gold/30 pl-2">
+                      {e}
+                    </li>
+                  ))}
+                </ul>
+              )}
               <details className="mt-auto">
                 <summary className="cursor-pointer text-[11px] text-white/40 select-none hover:text-white/60">beats</summary>
-                <ol className="mt-1.5 space-y-1 text-[11.5px] text-white/55 list-decimal list-inside">
+                <ol className="mt-1.5 space-y-1 text-[12px] text-white/55 list-decimal list-inside">
                   {n.beats.map((b, j) => (
                     <li key={j}>{b}</li>
                   ))}
@@ -284,7 +316,7 @@ function HookVariants({ scriptId, variants, disabled }: { scriptId: string; vari
     <div className="rounded-[18px] border border-white/[.08] bg-white/[.02] px-5 sm:px-6 py-4">
       <div className="flex items-center gap-2.5 flex-wrap">
         <span className="kicker text-gold">VARIAÇÕES DE HOOK</span>
-        {!disabled && <span className="text-[11px] text-white/35">clique para substituir o hook do roteiro</span>}
+        {!disabled && <span className="text-[12px] text-white/55">clique para substituir o hook do roteiro</span>}
       </div>
       <div className="flex flex-col gap-2.5 mt-3">
         {variants.map((v, i) => (
@@ -312,15 +344,12 @@ function HookVariants({ scriptId, variants, disabled }: { scriptId: string; vari
   );
 }
 
-const fmtNum = (n: number) =>
-  n >= 1_000_000 ? `${(n / 1_000_000).toFixed(1)}M` : n >= 1000 ? `${Math.round(n / 1000)}k` : String(Math.round(n));
-
 const fullScriptText = (s: Script) =>
   [s.headline, s.roteiro, s.comando, s.fontes ? `FONTES:\n${s.fontes}` : null].filter(Boolean).join("\n\n");
 
 // Fechamento do flywheel: marcar publicado → ETL casa com o vídeo do corpus →
 // performance real volta como chips e vira insight do agente Dados.
-function PublishBox({ script, perf }: { script: Script; perf: ScriptPerformance | null }) {
+function PublishBox({ script, perf, baseline }: { script: Script; perf: ScriptPerformance | null; baseline: Baseline | null }) {
   const router = useRouter();
   const [url, setUrl] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -331,7 +360,7 @@ function PublishBox({ script, perf }: { script: Script; perf: ScriptPerformance 
       <div className="rounded-2xl border border-white/[.08] bg-white/[.02] p-4 sm:p-5 space-y-3">
         <div className="flex items-baseline gap-2.5 flex-wrap">
           <span className="kicker text-white/40">PUBLICOU ESTE ROTEIRO?</span>
-          <span className="text-xs text-white/30">a performance real volta para cá e ensina a sala</span>
+          <span className="text-xs text-white/55">a performance real volta para cá e ensina a sala</span>
         </div>
         <div className="flex items-center gap-2.5 flex-wrap">
           <input
@@ -379,6 +408,19 @@ function PublishBox({ script, perf }: { script: Script; perf: ScriptPerformance 
         )}
       </div>
       {perf ? (
+        <>
+        {/* WP-F.2: baseline do cliente vs este vídeo — o multiplicador dá a escala do resultado */}
+        {baseline && perf.views != null && (() => {
+          const ratio = perf.views / baseline.views;
+          const tone = ratioTone(ratio);
+          const toneCls = tone === "gold" ? "text-gold" : tone === "amber" ? "text-amber-300" : "text-white/70";
+          return (
+            <p className="text-xs text-white/55">
+              média {baseline.periodo === "30d" ? "30d" : "geral"} do cliente: {fmtNum(baseline.views)} → este vídeo:{" "}
+              {fmtNum(perf.views)} <span className={`font-mono font-semibold ${toneCls}`}>({fmtRatio(ratio)})</span>
+            </p>
+          );
+        })()}
         <div className="flex items-center gap-2 flex-wrap">
           {perf.views != null && (
             <span className="rounded-full border border-gold/35 bg-gold/[.07] px-3 py-1 text-xs text-gold">
@@ -406,6 +448,7 @@ function PublishBox({ script, perf }: { script: Script; perf: ScriptPerformance 
             </span>
           )}
         </div>
+        </>
       ) : (
         <p className="inline-flex items-center gap-2 text-xs text-amber-300">
           <span className="w-1.5 h-1.5 rounded-full bg-amber-300 vm-pulse" />
@@ -423,7 +466,7 @@ function RewriteBox({ onRewrite }: { onRewrite: (feedback: string) => void }) {
     <div className="rounded-2xl border border-white/[.08] bg-white/[.02] p-4 sm:p-5 space-y-3">
       <div className="flex items-baseline gap-2.5 flex-wrap">
         <span className="kicker text-white/40">AJUSTAR O ROTEIRO</span>
-        <span className="text-xs text-white/30">a sala reescreve usando esta versão como base</span>
+        <span className="text-xs text-white/55">a sala reescreve usando esta versão como base</span>
       </div>
       <textarea
         value={text}
@@ -444,8 +487,55 @@ function RewriteBox({ onRewrite }: { onRewrite: (feedback: string) => void }) {
   );
 }
 
+// WP-F.3: 👍/👎 por versão — grava rating 5/1 sem encerrar a sessão; o último clique fica marcado.
+function ThumbBtns({ scriptId, sessionId, rating }: { scriptId: string; sessionId: string; rating: number | null }) {
+  const router = useRouter();
+  const [pending, startTransition] = useTransition();
+  const send = (thumb: "up" | "down") =>
+    startTransition(async () => {
+      await quickFeedback(scriptId, sessionId, thumb);
+      router.refresh();
+    });
+  const btn = (on: boolean) =>
+    `rounded-lg border px-2.5 py-[5px] text-xs transition-colors disabled:opacity-40 ${
+      on ? "border-gold/60 bg-gold/15" : "border-white/15 opacity-70 hover:opacity-100 hover:border-gold/50"
+    }`;
+  return (
+    <span className="inline-flex items-center gap-1.5">
+      <button
+        aria-label="Aprovar esta versão"
+        aria-pressed={rating != null && rating >= 4}
+        disabled={pending}
+        onClick={() => send("up")}
+        className={btn(rating != null && rating >= 4)}
+      >
+        👍
+      </button>
+      <button
+        aria-label="Descartar esta versão"
+        aria-pressed={rating != null && rating <= 2}
+        disabled={pending}
+        onClick={() => send("down")}
+        className={btn(rating != null && rating <= 2)}
+      >
+        👎
+      </button>
+    </span>
+  );
+}
+
 // ── Card do roteiro final: leitura, edição manual inline e "Chame o Bob" ──────
-function ScriptCard({ script, sessionId, disabled }: { script: Script; sessionId: string; disabled: boolean }) {
+function ScriptCard({
+  script,
+  sessionId,
+  disabled,
+  rating,
+}: {
+  script: Script;
+  sessionId: string;
+  disabled: boolean;
+  rating: number | null;
+}) {
   const router = useRouter();
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState({
@@ -529,6 +619,7 @@ function ScriptCard({ script, sessionId, disabled }: { script: Script; sessionId
     >
       <div className="flex items-center gap-2.5 px-5 sm:px-6 py-3 border-b border-white/[.07] bg-black/20">
         <span className="kicker text-gold">ROTEIRO COMPLETO</span>
+        {!editing && <ThumbBtns scriptId={script.id} sessionId={sessionId} rating={rating} />}
         {!disabled && !editing && (
           <button
             onClick={startEdit}
@@ -608,7 +699,7 @@ function ScriptCard({ script, sessionId, disabled }: { script: Script; sessionId
         <div className="flex items-center gap-2.5">
           <span className={kicker}>ROTEIRO</span>
           {!disabled && !editing && (
-            <span className="text-[11px] text-white/35">selecione um trecho para chamar o Bob</span>
+            <span className="text-[12px] text-white/55">selecione um trecho para chamar o Bob</span>
           )}
         </div>
         {editing ? (
@@ -654,7 +745,7 @@ function ScriptCard({ script, sessionId, disabled }: { script: Script; sessionId
         <section className="px-5 sm:px-6 pt-4 pb-5 border-t border-white/[.07] bg-black/20">
           <div className="flex items-center gap-2.5">
             <span className="kicker text-white/40">FONTES</span>
-            <span className="text-[11px] text-white/30">confira nos links</span>
+            <span className="text-[12px] text-white/55">confira nos links</span>
           </div>
           {editing ? (
             <textarea
@@ -718,10 +809,16 @@ function BobModal({
   onClose: () => void;
   onAccept: (replacement: string) => void;
 }) {
+  const dialogRef = useRef<HTMLDialogElement>(null);
   const [instrucao, setInstrucao] = useState("");
   const [sugestao, setSugestao] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // <dialog> nativo (padrão do client-prefs-editor): Esc e backdrop fecham de graça
+  useEffect(() => {
+    dialogRef.current?.showModal();
+  }, []);
 
   const gerar = async (evitar?: string) => {
     if (!instrucao.trim()) return;
@@ -738,31 +835,36 @@ function BobModal({
   };
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4"
-      onMouseDown={onClose}
+    <dialog
+      ref={dialogRef}
+      onClose={onClose}
+      onClick={(e) => {
+        if (e.target === dialogRef.current) dialogRef.current.close();
+      }}
+      className="backdrop:bg-black/60 backdrop:backdrop-blur-sm m-auto w-[min(560px,92vw)] max-h-[85vh] rounded-2xl border border-gold/30 bg-[#161410] text-[#ededf0] p-0 shadow-2xl"
     >
-      <div
-        onMouseDown={(e) => e.stopPropagation()}
-        className="w-full max-w-[560px] max-h-[85vh] overflow-y-auto rounded-2xl border border-gold/30 bg-[#161410] p-5 sm:p-6 space-y-4 shadow-2xl"
-      >
+      <div className="p-5 sm:p-6 space-y-4">
         <div className="flex items-center gap-2.5">
           <QuillIcon size={15} color="#c9a35c" />
           <span className="kicker text-gold">CHAME O BOB</span>
-          <button onClick={onClose} className="ml-auto text-white/40 hover:text-white/80 text-lg leading-none">
+          <button
+            onClick={() => dialogRef.current?.close()}
+            aria-label="Fechar"
+            className="ml-auto text-white/40 hover:text-white/80 text-lg leading-none"
+          >
             ×
           </button>
         </div>
 
         <div>
-          <p className="text-[11px] text-white/40 mb-1.5">Trecho que será substituído</p>
+          <p className="text-[12px] text-white/55 mb-1.5">Trecho que será substituído</p>
           <p className="rounded-[10px] border border-white/10 bg-white/[.03] px-3.5 py-2.5 text-[13px] leading-relaxed text-white/70 whitespace-pre-wrap">
             {trecho}
           </p>
         </div>
 
         <div>
-          <p className="text-[11px] text-white/40 mb-1.5">O que você quer mudar?</p>
+          <p className="text-[12px] text-white/55 mb-1.5">O que você quer mudar?</p>
           <textarea
             value={instrucao}
             onChange={(e) => setInstrucao(e.target.value)}
@@ -775,7 +877,7 @@ function BobModal({
 
         {sugestao !== null && (
           <div>
-            <p className="text-[11px] text-white/40 mb-1.5">Sugestão da sala (edite se quiser)</p>
+            <p className="text-[12px] text-white/55 mb-1.5">Sugestão da sala (edite se quiser)</p>
             <textarea
               value={sugestao}
               onChange={(e) => setSugestao(e.target.value)}
@@ -817,7 +919,57 @@ function BobModal({
           )}
         </div>
       </div>
-    </div>
+    </dialog>
+  );
+}
+
+// Dialog de confirmação nativo — substitui o confirm() do navegador (Esc/backdrop cancelam).
+function ConfirmDialog({
+  message,
+  confirmLabel,
+  onConfirm,
+  onCancel,
+}: {
+  message: string;
+  confirmLabel: string;
+  onConfirm: () => void;
+  onCancel: () => void;
+}) {
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  const confirmed = useRef(false);
+  useEffect(() => {
+    dialogRef.current?.showModal();
+  }, []);
+  return (
+    <dialog
+      ref={dialogRef}
+      onClose={() => (confirmed.current ? onConfirm() : onCancel())}
+      onClick={(e) => {
+        if (e.target === dialogRef.current) dialogRef.current.close();
+      }}
+      className="backdrop:bg-black/60 backdrop:backdrop-blur-sm m-auto w-[min(440px,92vw)] rounded-2xl border border-gold/30 bg-[#161410] text-[#ededf0] p-0 shadow-2xl"
+    >
+      <div className="p-5 sm:p-6 space-y-4">
+        <p className="text-[13.5px] leading-relaxed text-white/80">{message}</p>
+        <div className="flex items-center justify-end gap-2.5">
+          <button
+            onClick={() => dialogRef.current?.close()}
+            className="rounded-[10px] px-4 py-2 text-[13px] text-white/60 hover:text-white hover:bg-white/[.06]"
+          >
+            Cancelar
+          </button>
+          <button
+            onClick={() => {
+              confirmed.current = true;
+              dialogRef.current?.close();
+            }}
+            className="btn-gold rounded-[10px] px-4 py-2 text-[13px] font-semibold"
+          >
+            {confirmLabel}
+          </button>
+        </div>
+      </div>
+    </dialog>
   );
 }
 
@@ -825,6 +977,8 @@ export default function SessionView({
   session,
   scripts,
   performance,
+  baseline,
+  lastRating,
   analyses,
   artifacts,
   autoStart,
@@ -833,6 +987,8 @@ export default function SessionView({
   session: { id: string; prompt: string; status: string; error_message: string | null; clientNome: string | null };
   scripts: Script[];
   performance: ScriptPerformance[];
+  baseline: Baseline | null;
+  lastRating: Record<string, number>;
   analyses: { analysis: unknown; replication_brief: string }[];
   artifacts: SessionArtifacts | null;
   autoStart: boolean;
@@ -847,6 +1003,7 @@ export default function SessionView({
   );
   const [generating, setGenerating] = useState(false);
   const [selected, setSelected] = useState(0);
+  const [confirmPick, setConfirmPick] = useState<number | null>(null);
   const [narrativas, setNarrativas] = useState<SessionArtifacts | null>(artifacts);
   const started = useRef(false);
   const streamRef = useRef<HTMLDivElement>(null);
@@ -1008,10 +1165,11 @@ export default function SessionView({
             Desconstrução da modelagem ({analyses.length})
           </summary>
           {analyses.map((a, i) => (
-            <div key={i} className="mt-3 space-y-2 text-sm">
+            <div key={i} className="mt-3 space-y-3 text-sm">
               <p className="whitespace-pre-wrap text-white/80 leading-relaxed">{a.replication_brief}</p>
+              <AnalysisSections analysis={a.analysis} />
               <details>
-                <summary className="cursor-pointer text-xs text-white/40 select-none">análise completa (JSON)</summary>
+                <summary className="cursor-pointer text-xs text-white/40 select-none">JSON cru</summary>
                 <pre className="mt-2 text-xs bg-black/30 rounded-lg p-3 overflow-x-auto text-white/60">
                   {JSON.stringify(a.analysis, null, 2)}
                 </pre>
@@ -1080,11 +1238,21 @@ export default function SessionView({
           ranking={narrativas.ranking}
           escolhida={narrativas.escolhida}
           disabled={generating || watching || closed}
-          onPick={(i) => {
-            if (confirm("Reescrever o roteiro com esta narrativa? A pesquisa e as candidatas são reaproveitadas; só a escrita é refeita.")) {
-              setNarrativas((prev) => (prev ? { ...prev, escolhida: i } : prev));
-              generate(i);
-            }
+          onPick={setConfirmPick}
+        />
+      )}
+
+      {/* confirmação da troca de narrativa — dialog nativo no lugar do confirm() */}
+      {confirmPick != null && (
+        <ConfirmDialog
+          message="Reescrever o roteiro com esta narrativa? A pesquisa e as candidatas são reaproveitadas; só a escrita é refeita."
+          confirmLabel="Reescrever"
+          onCancel={() => setConfirmPick(null)}
+          onConfirm={() => {
+            const i = confirmPick;
+            setConfirmPick(null);
+            setNarrativas((prev) => (prev ? { ...prev, escolhida: i } : prev));
+            generate(i);
           }}
         />
       )}
@@ -1122,14 +1290,14 @@ export default function SessionView({
             ))}
           </div>
 
-          <ScriptCard script={script} sessionId={session.id} disabled={closed} />
+          <ScriptCard script={script} sessionId={session.id} disabled={closed} rating={lastRating[script.id] ?? null} />
 
           {!!script.hook_variants?.length && (
             <HookVariants scriptId={script.id} variants={script.hook_variants} disabled={generating || watching || closed} />
           )}
 
           {/* visível também com sessão encerrada — a publicação acontece depois */}
-          <PublishBox script={script} perf={performance.find((p) => p.script_id === script.id) ?? null} />
+          <PublishBox script={script} perf={performance.find((p) => p.script_id === script.id) ?? null} baseline={baseline} />
 
 
           {script.slop_lint_violations > 0 && (
@@ -1145,6 +1313,28 @@ export default function SessionView({
                 {script.slop_lint_violations} {script.slop_lint_violations === 1 ? "padrão" : "padrões"} de IA da lista
                 de vigilância detectado{script.slop_lint_violations === 1 ? "" : "s"} no texto.
               </p>
+              {/* WP-F.4: os trechos violados, não só a contagem (trace.violations) */}
+              {script.violations.length > 0 && (
+                <details className="mt-2">
+                  <summary className="cursor-pointer text-[12px] text-white/55 select-none hover:text-white/75">
+                    ver trechos
+                  </summary>
+                  <ul className="mt-1.5 space-y-1">
+                    {script.violations.map((v, i) => (
+                      <li key={i} className="text-[12px] leading-relaxed text-white/60">
+                        <span className="text-amber-300/90">{v.label}</span>
+                        {v.match && (
+                          <>
+                            {" "}
+                            — <span className="font-mono text-[11.5px] text-white/55">&ldquo;{v.match}&rdquo;</span>
+                          </>
+                        )}
+                        {v.severity === "warn" && <span className="text-white/40"> (aviso)</span>}
+                      </li>
+                    ))}
+                  </ul>
+                </details>
+              )}
             </div>
           )}
 
@@ -1159,9 +1349,9 @@ export default function SessionView({
                   <QuillIcon />
                   Gerar nova versão
                 </button>
-                <span className="text-[11.5px] text-white/35">mesma narrativa · pesquisa reaproveitada</span>
+                <span className="text-[12px] text-white/55">mesma narrativa · pesquisa reaproveitada</span>
               </div>
-              <FeedbackForm sessionId={session.id} scriptId={script.id} />
+              <FeedbackForm sessionId={session.id} scriptId={script.id} editedInline={script.edicao_humana} />
             </>
           )}
         </div>
@@ -1180,8 +1370,65 @@ export default function SessionView({
   );
 }
 
+// WP-F.6: analysis (jsonb) como seções legíveis — chave top-level vira título, valores viram texto/lista.
+function AnalysisSections({ analysis }: { analysis: unknown }) {
+  if (!analysis || typeof analysis !== "object" || Array.isArray(analysis)) return null;
+  const pretty = (k: string) => k.replace(/_/g, " ");
+  const line = (v: unknown) => (typeof v === "string" || typeof v === "number" ? String(v) : JSON.stringify(v));
+  const renderVal = (v: unknown) => {
+    if (v == null || v === "") return null;
+    if (Array.isArray(v)) {
+      if (!v.length) return null;
+      return (
+        <ul className="space-y-1 text-[12.5px] leading-relaxed text-white/70 list-disc list-inside">
+          {v.map((it, i) => (
+            <li key={i}>{line(it)}</li>
+          ))}
+        </ul>
+      );
+    }
+    if (typeof v === "object") {
+      return (
+        <div className="space-y-1">
+          {Object.entries(v as Record<string, unknown>).map(([k2, v2]) =>
+            v2 == null || v2 === "" ? null : (
+              <p key={k2} className="text-[12.5px] leading-relaxed text-white/70">
+                <span className="text-white/45">{pretty(k2)}: </span>
+                {line(v2)}
+              </p>
+            )
+          )}
+        </div>
+      );
+    }
+    return <p className="whitespace-pre-wrap text-[12.5px] leading-relaxed text-white/70">{String(v)}</p>;
+  };
+  return (
+    <div className="space-y-3">
+      {Object.entries(analysis as Record<string, unknown>).map(([k, v]) => {
+        const body = renderVal(v);
+        if (!body) return null;
+        return (
+          <div key={k}>
+            <div className="kicker text-amber-300/80 text-[10px] mb-1">{pretty(k)}</div>
+            {body}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 // Finaliza a sessão (vira "Encerrada" na lista); feedback opcional alimenta o aprendizado.
-function FeedbackForm({ sessionId, scriptId }: { sessionId: string; scriptId: string }) {
+function FeedbackForm({
+  sessionId,
+  scriptId,
+  editedInline,
+}: {
+  sessionId: string;
+  scriptId: string;
+  editedInline: boolean;
+}) {
   const router = useRouter();
   const [rating, setRating] = useState<number | null>(null);
   const [notes, setNotes] = useState("");
@@ -1196,7 +1443,7 @@ function FeedbackForm({ sessionId, scriptId }: { sessionId: string; scriptId: st
     <div className="rounded-2xl border border-white/[.08] bg-white/[.02] p-4 sm:p-5 space-y-3">
       <div className="flex items-baseline gap-2.5 flex-wrap">
         <span className="kicker text-white/40">FINALIZAR SESSÃO</span>
-        <span className="text-xs text-white/30">avaliação opcional</span>
+        <span className="text-xs text-white/55">avaliação opcional</span>
       </div>
       <div className="flex items-center gap-1.5 text-sm">
         <span className="text-xs text-white/40 mr-1.5">Avaliar:</span>
@@ -1222,13 +1469,20 @@ function FeedbackForm({ sessionId, scriptId }: { sessionId: string; scriptId: st
         placeholder="Observações (opcional)"
         className="w-full rounded-[10px] border border-white/[.12] bg-transparent px-3.5 py-2.5 text-[13px] outline-none placeholder:text-white/35 focus:border-gold/40"
       />
-      <textarea
-        value={edited}
-        onChange={(e) => setEdited(e.target.value)}
-        rows={3}
-        placeholder="Se você editou o roteiro antes de usar, cole a versão final aqui — é o insumo mais valioso para o sistema aprender."
-        className="w-full rounded-[10px] border border-white/[.12] bg-transparent px-3.5 py-2.5 text-[13px] outline-none placeholder:text-white/35 focus:border-gold/40"
-      />
+      {editedInline ? (
+        // WP-E já preserva o original no trace: a versão editada inline vira a versão final sozinha
+        <p className="text-[12px] leading-relaxed text-white/55 border-l-2 border-gold/30 pl-3">
+          Edição inline detectada — a versão editada será usada automaticamente como versão final no aprendizado.
+        </p>
+      ) : (
+        <textarea
+          value={edited}
+          onChange={(e) => setEdited(e.target.value)}
+          rows={3}
+          placeholder="Se você editou o roteiro antes de usar, cole a versão final aqui — é o insumo mais valioso para o sistema aprender."
+          className="w-full rounded-[10px] border border-white/[.12] bg-transparent px-3.5 py-2.5 text-[13px] outline-none placeholder:text-white/35 focus:border-gold/40"
+        />
+      )}
       <button
         onClick={() =>
           startTransition(async () => {

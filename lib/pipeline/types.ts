@@ -33,6 +33,8 @@ export interface RankingItem {
   indice: number; // posição na lista de candidatas
   score: number; // 0-100
   justificativa: string;
+  // WP-F.1: até 3 dados concretos que pesaram no score (opcional — sessões antigas não têm)
+  evidencia?: string[];
 }
 
 // Cacheado em vm_sessions.artifacts: trocar narrativa / regenerar não re-paga pesquisa+storytelling.

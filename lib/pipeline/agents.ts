@@ -397,6 +397,13 @@ const RANKING_TOOL = {
             indice: { type: "number", description: "índice da candidata na lista recebida (0-based)" },
             score: { type: "number", description: "potencial viral 0-100" },
             justificativa: { type: "string" },
+            evidencia: {
+              type: "array",
+              maxItems: 3,
+              items: { type: "string" },
+              description:
+                "até 3 dados concretos e curtos que pesaram no score, citando números dos insights (ex: 'estrutura A1: 12 usos, mediana 210k views (1.8x)', 'hook curiosidade: retenção 68% vs mediana 61%'). Omita se o score for heurístico.",
+            },
           },
           required: ["indice", "score", "justificativa"],
         },
@@ -445,7 +452,11 @@ Rankeie as candidatas e produza as orientações.`,
   if (!toolUse || toolUse.type !== "tool_use") throw new Error("dados: sem ranking estruturado");
   const input = toolInput(toolUse);
   return {
-    ranking: toolArray<RankingItem>(input, "ranking"),
+    // evidencia normalizada: só array de strings vai pra UI (o modelo pode omitir ou devolver lixo)
+    ranking: toolArray<RankingItem>(input, "ranking").map((r) => ({
+      ...r,
+      evidencia: Array.isArray(r.evidencia) ? r.evidencia.filter((e) => typeof e === "string").slice(0, 3) : undefined,
+    })),
     orientacao_roteiro: String(input.orientacao_roteiro ?? ""),
     orientacao_hook: String(input.orientacao_hook ?? ""),
   };
