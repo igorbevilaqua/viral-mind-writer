@@ -828,6 +828,7 @@ export default function SessionView({
   analyses,
   artifacts,
   autoStart,
+  generationStale,
 }: {
   session: { id: string; prompt: string; status: string; error_message: string | null; clientNome: string | null };
   scripts: Script[];
@@ -835,11 +836,15 @@ export default function SessionView({
   analyses: { analysis: unknown; replication_brief: string }[];
   artifacts: SessionArtifacts | null;
   autoStart: boolean;
+  generationStale: boolean;
 }) {
   const router = useRouter();
   const [phase, setPhase] = useState<string | null>(null);
   const [streamText, setStreamText] = useState("");
-  const [error, setError] = useState<string | null>(session.error_message);
+  const [error, setError] = useState<string | null>(
+    session.error_message ??
+      (generationStale ? "A geração anterior foi interrompida (mais de 10 minutos sem concluir)." : null)
+  );
   const [generating, setGenerating] = useState(false);
   const [selected, setSelected] = useState(0);
   const [narrativas, setNarrativas] = useState<SessionArtifacts | null>(artifacts);
@@ -869,7 +874,12 @@ export default function SessionView({
           buffer = lines.pop() ?? "";
           for (const line of lines) {
             if (!line.startsWith("data: ")) continue;
-            const e = JSON.parse(line.slice(6));
+            let e;
+            try {
+              e = JSON.parse(line.slice(6));
+            } catch {
+              continue; // evento truncado/corrompido não aborta o stream
+            }
             if (e.type === "phase") setPhase(e.phase);
             if (e.type === "narrativas")
               setNarrativas((prev) => ({
@@ -901,6 +911,15 @@ export default function SessionView({
       generate();
     }
   }, [autoStart, generate]);
+
+  // Geração em andamento em outra conexão (montou com status=generating não-stale):
+  // modo "acompanhando" — polling leve até sair de generating, o refresh traz o resultado.
+  const watching = session.status === "generating" && !generationStale && !generating;
+  useEffect(() => {
+    if (!watching) return;
+    const t = setInterval(() => router.refresh(), 5000);
+    return () => clearInterval(t);
+  }, [watching, router]);
 
   useEffect(() => {
     streamRef.current?.scrollTo({ top: streamRef.current.scrollHeight });
@@ -953,7 +972,7 @@ export default function SessionView({
               Cliente · {session.clientNome}
             </span>
           )}
-          {generating && (
+          {(generating || watching) && (
             <span className="inline-flex items-center gap-2 rounded-full border border-gold/45 bg-gold/[.08] px-3 py-1 text-xs text-gold">
               <span className="w-1.5 h-1.5 rounded-full bg-gold vm-pulse" />
               Sala de agentes trabalhando
@@ -1033,6 +1052,13 @@ export default function SessionView({
         </>
       )}
 
+      {/* geração iniciada em outra aba/conexão: acompanha por polling, sem stream */}
+      {watching && (
+        <div className="rounded-2xl border border-gold/25 bg-gold/[.04] px-4 py-3.5 text-[13px] text-white/70">
+          Geração em andamento nesta sessão. Acompanhando — a página atualiza sozinha quando o roteiro ficar pronto.
+        </div>
+      )}
+
       {/* dossiê de pesquisa */}
       {narrativas?.dossie && (
         <details className="rounded-[14px] border border-sky-500/25 bg-sky-500/[.04] px-4 py-3.5">
@@ -1053,7 +1079,7 @@ export default function SessionView({
           candidatas={narrativas.candidatas}
           ranking={narrativas.ranking}
           escolhida={narrativas.escolhida}
-          disabled={generating || closed}
+          disabled={generating || watching || closed}
           onPick={(i) => {
             if (confirm("Reescrever o roteiro com esta narrativa? A pesquisa e as candidatas são reaproveitadas; só a escrita é refeita.")) {
               setNarrativas((prev) => (prev ? { ...prev, escolhida: i } : prev));
@@ -1099,7 +1125,7 @@ export default function SessionView({
           <ScriptCard script={script} sessionId={session.id} disabled={closed} />
 
           {!!script.hook_variants?.length && (
-            <HookVariants scriptId={script.id} variants={script.hook_variants} disabled={generating || closed} />
+            <HookVariants scriptId={script.id} variants={script.hook_variants} disabled={generating || watching || closed} />
           )}
 
           {/* visível também com sessão encerrada — a publicação acontece depois */}
@@ -1122,7 +1148,7 @@ export default function SessionView({
             </div>
           )}
 
-          {!closed && (
+          {!closed && !watching && (
             <>
               <RewriteBox onRewrite={(fb) => generate(undefined, fb)} />
               <div className="flex items-center gap-2.5 flex-wrap">
@@ -1141,7 +1167,7 @@ export default function SessionView({
         </div>
       )}
 
-      {!generating && !script && !error && (
+      {!generating && !watching && !script && !error && (
         <button
           onClick={() => generate()}
           className="btn-gold inline-flex items-center gap-2 rounded-[11px] px-5 py-2.5 text-[13.5px] font-semibold"

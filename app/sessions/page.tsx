@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { appDb } from "@/lib/db";
+import { isStaleGeneration } from "@/lib/generation";
 
 export const dynamic = "force-dynamic";
 
@@ -24,6 +25,12 @@ const STATUS: Record<string, { label: string; cls: string; rowCls: string }> = {
     cls: "text-red-300",
     rowCls: "border-red-500/25 bg-red-500/[.03]",
   },
+  // generating stale (>10min): geração morreu no meio — sem pulse infinito
+  stalled: {
+    label: "Interrompida",
+    cls: "text-amber-300",
+    rowCls: "border-amber-500/25 bg-amber-500/[.03]",
+  },
   closed: {
     label: "Encerrada",
     cls: "text-white/55",
@@ -39,7 +46,7 @@ function StatusIcon({ status }: { status: string }) {
         <path d="M3 8.5 6.5 12 13 4.5" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     );
-  if (status === "error")
+  if (status === "error" || status === "stalled")
     return (
       <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
         <circle cx="8" cy="8" r="6" stroke="currentColor" strokeWidth="1.3" />
@@ -78,7 +85,7 @@ function fmtWhen(iso: string): string {
 export default async function SessionsPage() {
   const { data: sessions } = await appDb
     .from("vm_sessions")
-    .select("id, prompt, status, created_at, clientes(nome)")
+    .select("id, prompt, status, generation_started_at, created_at, clientes(nome)")
     .order("created_at", { ascending: false })
     .limit(100);
 
@@ -101,7 +108,8 @@ export default async function SessionsPage() {
       <div className="flex flex-col gap-2 mt-6">
         {(sessions ?? []).map((s) => {
           const client = Array.isArray(s.clientes) ? s.clientes[0] : s.clientes;
-          const st = STATUS[s.status] ?? STATUS.draft;
+          const status = isStaleGeneration(s.status, s.generation_started_at) ? "stalled" : s.status;
+          const st = STATUS[status] ?? STATUS.draft;
           return (
             <Link
               key={s.id}
@@ -109,7 +117,7 @@ export default async function SessionsPage() {
               className={`flex items-center gap-3 sm:gap-4 rounded-[14px] border px-4 sm:px-5 py-3.5 hover:border-gold/40 transition-colors ${st.rowCls}`}
             >
               <span className={`inline-flex items-center gap-1.5 w-[92px] sm:w-[110px] shrink-0 text-xs ${st.cls}`}>
-                <StatusIcon status={s.status} />
+                <StatusIcon status={status} />
                 {st.label}
               </span>
               <span className="flex-1 min-w-0 truncate text-[13.5px] text-[#ededf0]/85">{s.prompt}</span>
