@@ -1,3 +1,5 @@
+import type { UsageLog } from "../anthropic";
+
 export type PipelineEvent =
   | {
       type: "phase";
@@ -94,6 +96,8 @@ export interface GenerationContext {
   attachments: Attachment[];
   modelagemBriefs: string[];
   artifacts: SessionArtifacts | null;
+  // telemetria de custo por fase — preenchida pelos agentes, persistida em pipeline_trace.usage
+  usageLog?: UsageLog;
 }
 
 export interface ScriptSections {

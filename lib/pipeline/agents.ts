@@ -1,8 +1,9 @@
 import fs from "node:fs";
 import path from "node:path";
 import type Anthropic from "@anthropic-ai/sdk";
-import { anthropic, ANALYST_MODEL, WRITER_MODEL } from "../anthropic";
+import { ANALYST_MODEL, WRITER_MODEL, recordUsage, trackedCreate } from "../anthropic";
 import { grokClient, RESEARCH_MODEL } from "../grok";
+import { fmtNum } from "../format";
 import type { ClientInsightPayload, GenerationContext, NarrativaCandidata, RankingItem } from "./types";
 
 // Os prompts dos agentes vivem em agents/*.md — fonte única consumida pelo app e pela skill /goal.
@@ -38,6 +39,148 @@ export function taughtBlock(ctx: GenerationContext, dimensoes: string[], n = 3):
     .map((i) => i.payload as { titulo: string; descricao: string });
   if (!rows.length) return "";
   return rows.map((r) => `- ${r.titulo} — ${r.descricao}`).join("\n");
+}
+
+// Payload de client_scriptresult (flywheel do ETL). verdict/em_observacao/maduro chegam
+// com o WP-C em paralelo — tratados como opcionais aqui.
+interface ScriptResultPayload {
+  titulo?: string;
+  descricao?: string;
+  estrutura?: string | null;
+  hook?: string | null;
+  views?: number;
+  performance_ratio?: number | null;
+  retencao_hook?: number | null;
+  score?: number;
+  verdict?: string;
+  em_observacao?: boolean;
+  maduro?: boolean;
+}
+
+const num = (v: unknown) => (typeof v === "number" && Number.isFinite(v) ? v : 0);
+
+function scriptResults(ctx: GenerationContext): ScriptResultPayload[] {
+  return ctx.insights
+    .filter((i) => i.insight_type === "client_scriptresult")
+    .map((i) => i.payload as ScriptResultPayload)
+    .filter((p) => p && typeof p === "object")
+    .sort((a, b) => num(b.score) - num(a.score));
+}
+
+function scriptResultLine(p: ScriptResultPayload): string {
+  const flags = [p.em_observacao ? "em observação <14d — não trate como padrão" : null].filter(Boolean);
+  const prefix = p.verdict === "evitar" ? "- EVITE: " : "- ";
+  return `${prefix}${p.titulo ?? "roteiro publicado"} — ${p.descricao ?? ""}${flags.length ? ` [${flags.join("; ")}]` : ""}`;
+}
+
+// Linha curta e segura pra payloads de shape desconhecido (snapshot global do corpus).
+function shortLine(v: unknown, max = 160): string {
+  const s = typeof v === "string" ? v : JSON.stringify(v) ?? "";
+  return s.length > max ? `${s.slice(0, max)}…` : s;
+}
+
+// Insights formatados pro agente Dados — substitui o JSON dump. Blocos por categoria,
+// ordenados por score desc, orçamento global de ~30 linhas de bullet; globais truncados.
+export function formatInsightsForDados(
+  insights: { insight_type: string; scope: string; payload: unknown }[],
+  maxLines = 30
+): string {
+  if (!insights.length) return "(sem insights carregados — avalie por heurística e declare isso)";
+  const parts: string[] = [];
+  let budget = maxLines;
+  // ponytail: orçamento único consumido na ordem das seções — scriptresults primeiro
+  // (evidência mais forte), globais por último podem ser espremidos; por-seção se doer.
+  const take = (lines: string[]) => {
+    const kept = lines.slice(0, Math.max(budget, 0));
+    budget -= kept.length;
+    return kept;
+  };
+
+  const results = insights
+    .filter((i) => i.insight_type === "client_scriptresult")
+    .map((i) => i.payload as ScriptResultPayload)
+    .filter((p) => p && typeof p === "object")
+    .sort((a, b) => num(b.score) - num(a.score));
+  if (results.length) {
+    const lines = take(results.slice(0, 8).map(scriptResultLine));
+    if (lines.length)
+      parts.push(`## RESULTADOS REAIS DESTA SALA (roteiros publicados: repita >1.2x, evite <0.8x maduro)\n${lines.join("\n")}`);
+  }
+
+  const grouped = new Map<string, ClientInsightPayload[]>();
+  const globals: { type: string; payload: unknown }[] = [];
+  for (const i of insights) {
+    if (i.insight_type === "client_scriptresult" || i.insight_type === "client_hook_examples") continue;
+    const p = i.payload as ClientInsightPayload;
+    if ((i.insight_type.startsWith("client_") || i.insight_type.startsWith("taught_")) && p?.titulo) {
+      grouped.set(i.insight_type, [...(grouped.get(i.insight_type) ?? []), p]);
+    } else {
+      globals.push({ type: i.insight_type, payload: i.payload });
+    }
+  }
+  for (const [type, rows] of grouped) {
+    const perf = (r: ClientInsightPayload) => {
+      const bits = [
+        r.performance_ratio != null ? `perf ${r.performance_ratio}x` : null,
+        r.amostra ? `amostra ${r.amostra}` : null,
+      ].filter(Boolean);
+      return bits.length ? ` [${bits.join(", ")}]` : "";
+    };
+    const lines = take(
+      [...rows].sort((a, b) => num(b.score) - num(a.score)).map((r) => `- ${r.titulo} — ${r.descricao}${perf(r)}`)
+    );
+    if (lines.length) parts.push(`## ${type}\n${lines.join("\n")}`);
+  }
+  for (const g of globals) {
+    const arr = Array.isArray(g.payload) ? g.payload : [g.payload];
+    const lines = take(arr.slice(0, 6).map((v) => `- ${shortLine(v)}`)); // top 5-8 itens por lista
+    if (lines.length) parts.push(`## ${g.type} (top ${lines.length} de ${arr.length})\n${lines.join("\n")}`);
+  }
+  return parts.join("\n\n") || "(sem insights carregados — avalie por heurística e declare isso)";
+}
+
+// Roteia client_scriptresult por dimensão: estrutura → storytelling/narrativas; hook → agente de hook.
+// verdict:"evitar" vira linha "EVITE:" explícita (anti-padrão maduro do WP-C).
+export function scriptResultBlock(ctx: GenerationContext, dim: "estrutura" | "hook", n = 6): string {
+  const rows = scriptResults(ctx).filter((p) => p[dim]);
+  if (!rows.length) return "";
+  const line = (p: ScriptResultPayload) => {
+    const bits = [
+      p.views ? `${fmtNum(p.views)} views` : null,
+      p.performance_ratio != null ? `${p.performance_ratio}x a média do cliente` : null,
+      dim === "hook" && p.retencao_hook != null ? `retenção hook ${Math.round(Number(p.retencao_hook))}%` : null,
+      p.em_observacao ? "em observação <14d" : null,
+    ].filter(Boolean);
+    const label = dim === "hook" ? `"${p.hook}"` : String(p.estrutura);
+    return p.verdict === "evitar" ? `- EVITE: ${label} — ${bits.join(", ")}` : `- ${label} — ${bits.join(", ")}`;
+  };
+  const wins = rows.filter((p) => p.verdict !== "evitar").slice(0, n);
+  const avoid = rows.filter((p) => p.verdict === "evitar").slice(0, n);
+  return [...wins, ...avoid].map(line).join("\n");
+}
+
+// Hooks literais campeões do cliente (client_hook_examples, WP-C) — payload flexível:
+// array de itens, {hooks:[...]} ou item único; campos hook/texto/frase + views + retencao_hook.
+export function hookExamplesBlock(ctx: GenerationContext, n = 5): string {
+  type HookItem = { hook?: string; texto?: string; frase?: string; views?: number; retencao_hook?: number | null };
+  const items: HookItem[] = [];
+  for (const i of ctx.insights) {
+    if (i.insight_type !== "client_hook_examples") continue;
+    const p = i.payload as HookItem & { hooks?: HookItem[] };
+    if (Array.isArray(p)) items.push(...(p as HookItem[]));
+    else if (Array.isArray(p?.hooks)) items.push(...p.hooks);
+    else if (p) items.push(p);
+  }
+  return items
+    .map((h) => ({ texto: h.hook ?? h.texto ?? h.frase, views: num(h.views), ret: h.retencao_hook }))
+    .filter((h) => h.texto)
+    .sort((a, b) => b.views - a.views)
+    .slice(0, n)
+    .map(
+      (h) =>
+        `- "${h.texto}"${h.views ? ` — ${fmtNum(h.views)} views` : ""}${h.ret != null ? `, retenção hook ${Math.round(Number(h.ret))}%` : ""}`
+    )
+    .join("\n");
 }
 
 // Claude às vezes serializa o input da tool — ou um campo array dele — como string JSON
@@ -86,6 +229,7 @@ export async function research(ctx: GenerationContext): Promise<string> {
   // Notícias anexadas: o pesquisador abre os links e incorpora os fatos ao dossiê,
   // guiado pelos comentários do usuário sobre cada uma.
   const noticias = ctx.attachments.filter((a) => a.kind === "news_link" && a.url);
+  const t0 = Date.now();
   try {
     const res = await grokClient().responses.create({
       model: RESEARCH_MODEL,
@@ -108,6 +252,9 @@ export async function research(ctx: GenerationContext): Promise<string> {
     // pesquisa nunca derruba a geração — a sala segue com o que o usuário forneceu
     console.error("pesquisa grok falhou, seguindo sem dossiê", e);
     return "";
+  } finally {
+    // Grok: só duração (usage não é compatível com o formato Anthropic)
+    recordUsage(ctx.usageLog, "pesquisa", RESEARCH_MODEL, Date.now() - t0);
   }
 }
 
@@ -158,6 +305,7 @@ export async function proposeNarratives(ctx: GenerationContext, dossie: string):
     .join("\n\n---\n\n");
   const dadosCliente = clientInsightBlock(ctx, ["storytelling", "tema"], 8);
   const ensinado = taughtBlock(ctx, ["storytelling", "tema"]);
+  const resultadosSala = scriptResultBlock(ctx, "estrutura");
 
   const messages = [
     {
@@ -166,7 +314,7 @@ export async function proposeNarratives(ctx: GenerationContext, dossie: string):
 
 DOSSIÊ DE PESQUISA:
 ${dossie || "(pesquisa indisponível — proponha narrativas sustentáveis pelo material do usuário)"}
-${dadosCliente ? `\nO QUE JÁ FUNCIONA PARA ESTE CLIENTE (dados reais, pré-rankeados por performance+recência — evidência forte ao escolher estruturas):\n${dadosCliente}\n` : ""}${ensinado ? `\nAPRENDIZADOS ENSINADOS PELO TIME (curadoria humana de virais analisados — se conflitar com heurística, isto prevalece):\n${ensinado}\n` : ""}${refs ? `\nMATERIAIS FORNECIDOS PELO USUÁRIO:\n${refs}` : ""}${
+${resultadosSala ? `\nRESULTADOS REAIS DESTA SALA (estruturas de roteiros já publicados para este cliente — repita o que performou, evite o marcado como EVITE):\n${resultadosSala}\n` : ""}${dadosCliente ? `\nO QUE JÁ FUNCIONA PARA ESTE CLIENTE (dados reais, pré-rankeados por performance+recência — evidência forte ao escolher estruturas):\n${dadosCliente}\n` : ""}${ensinado ? `\nAPRENDIZADOS ENSINADOS PELO TIME (curadoria humana de virais analisados — se conflitar com heurística, isto prevalece):\n${ensinado}\n` : ""}${refs ? `\nMATERIAIS FORNECIDOS PELO USUÁRIO:\n${refs}` : ""}${
         ctx.modelagemBriefs.length
           ? `\nARQUITETURA-MODELO PEDIDA PELO USUÁRIO (as candidatas devem respeitá-la):\n${ctx.modelagemBriefs.join("\n---\n")}`
           : ""
@@ -178,19 +326,16 @@ Proponha as narrativas candidatas.`,
   // 2-3 narrativas × (7 campos + beats 5-7) é muito JSON; e o sonnet-5 usa thinking adaptativo,
   // que divide o mesmo teto de max_tokens. Se truncar (stop_reason max_tokens), o tool_use vem
   // parcial → parse falha → candidatas vazias. Tenta com folga e, se truncou mesmo assim, dobra.
+  // Sem cache_control: prefixo one-shot — o playbook (~15k tokens) pagaria +25% de escrita
+  // em toda geração pra economizar só no retry raro de truncamento. Regeneração não re-roda
+  // storytelling (artifacts cacheados em vm_sessions).
   const call = (maxTokens: number) =>
-    anthropic.messages.create({
+    trackedCreate(ctx.usageLog, "narrativas", {
       model: ANALYST_MODEL,
       max_tokens: maxTokens,
       tools: [NARRATIVAS_TOOL],
       tool_choice: { type: "tool", name: "registrar_narrativas" },
-      system: [
-        {
-          type: "text",
-          text: `${agentPrompt("storytelling")}\n\n# PLAYBOOK DE STORYTELLING\n${ctx.playbooks.storytelling ?? "(sem playbook)"}`,
-          cache_control: { type: "ephemeral" },
-        },
-      ],
+      system: `${agentPrompt("storytelling")}\n\n# PLAYBOOK DE STORYTELLING\n${ctx.playbooks.storytelling ?? "(sem playbook)"}`,
       messages,
     });
 
@@ -257,24 +402,18 @@ export async function rankNarratives(
   dossie: string,
   candidatas: NarrativaCandidata[]
 ): Promise<{ ranking: RankingItem[]; orientacao_roteiro: string; orientacao_hook: string }> {
-  const insights = ctx.insights.length
-    ? ctx.insights.map((i) => `## ${i.insight_type} (${i.scope})\n${JSON.stringify(i.payload)}`).join("\n\n")
-    : "(sem insights carregados — avalie por heurística e declare isso)";
+  // Blocos formatados no lugar do JSON dump (payloads inteiros custavam milhares de tokens).
+  const insights = formatInsightsForDados(ctx.insights);
 
-  const res = await anthropic.messages.create({
+  // Sem cache_control: one-shot por geração (regenerar reusa artifacts, não re-roda o Dados).
+  const res = await trackedCreate(ctx.usageLog, "ranking", {
     model: ANALYST_MODEL,
     // mesmo risco de truncamento do storytelling: ranking de N candidatas + 2 orientações
     // longas, dividindo o teto com o thinking adaptativo do sonnet-5. 2500 → 6000.
     max_tokens: 6000,
     tools: [RANKING_TOOL],
     tool_choice: { type: "tool", name: "registrar_ranking" },
-    system: [
-      {
-        type: "text",
-        text: `${agentPrompt("dados")}\n\n# INSIGHTS DE PERFORMANCE (dados reais dos +6 mil vídeos)\n${insights}`,
-        cache_control: { type: "ephemeral" },
-      },
-    ],
+    system: `${agentPrompt("dados")}\n\n# INSIGHTS DE PERFORMANCE (dados reais dos +6 mil vídeos)\n${insights}`,
     messages: [
       {
         role: "user",
@@ -323,38 +462,50 @@ export async function designHook(
   const a = ctx.artifacts!;
   const n = a.candidatas[a.escolhida];
   const banned = ctx.bannedPhrases.map((b) => `- ${b.label ?? b.pattern}`).join("\n");
+  const hookCampeoes = hookExamplesBlock(ctx);
+  const resultadosHook = scriptResultBlock(ctx, "hook");
 
-  const res = await anthropic.messages.create({
-    model: WRITER_MODEL,
-    // fable-5 tem thinking sempre ligado, dividindo o teto de max_tokens com o tool_use.
-    // 1500 truncava o hook+variantes; 4000 dá folga (ver mesmo problema no ideador/storytelling).
-    max_tokens: 4000,
-    tools: [HOOK_TOOL],
-    tool_choice: { type: "tool", name: "registrar_hook" },
-    system: [
-      {
-        type: "text",
-        text: `${agentPrompt("hook")}\n\n# PLAYBOOK DE HOOKS\n${ctx.playbooks.hook ?? "(sem playbook)"}\n\n# GUIA DE ESTILO\n${ctx.playbooks.style_guide ?? ""}\n\n# PADRÕES PROIBIDOS\n${banned}`,
-        cache_control: { type: "ephemeral" },
-      },
-    ],
-    messages: [
-      {
-        role: "user",
-        content: `NARRATIVA VENCEDORA:
+  const res = await trackedCreate(
+    ctx.usageLog,
+    "hook",
+    {
+      model: WRITER_MODEL,
+      // fable-5 tem thinking sempre ligado, dividindo o teto de max_tokens com o tool_use.
+      // 1500 truncava o hook+variantes; 4000 dá folga (ver mesmo problema no ideador/storytelling).
+      max_tokens: 4000,
+      tools: [HOOK_TOOL],
+      tool_choice: { type: "tool", name: "registrar_hook" },
+      // block 1 estático + cache: as tools entram no prefixo antes do system, então o hook não
+      // compartilha cache com os outros agentes — mas "gerar nova versão" re-roda o hook com o
+      // mesmo prefixo e reusa. Persona no block 2, fora do trecho cacheado que muda menos.
+      system: [
+        {
+          type: "text",
+          text: `# PLAYBOOK DE HOOKS\n${ctx.playbooks.hook ?? "(sem playbook)"}\n\n# GUIA DE ESTILO\n${ctx.playbooks.style_guide ?? ""}\n\n# PADRÕES PROIBIDOS\n${banned}`,
+          cache_control: { type: "ephemeral" },
+        },
+        { type: "text", text: agentPrompt("hook") },
+      ],
+      messages: [
+        {
+          role: "user",
+          content: `NARRATIVA VENCEDORA:
 ${formatNarrativa(n)}
 
 ORIENTAÇÃO DOS DADOS SOBRE HOOKS:
 ${a.orientacao_hook || "(sem orientação)"}
-${clientInsightBlock(ctx, ["hook"]) ? `\nHOOKS QUE JÁ FUNCIONARAM PARA ESTE CLIENTE (pré-rankeados por performance+recência):\n${clientInsightBlock(ctx, ["hook"])}` : ""}${taughtBlock(ctx, ["hook"]) ? `\nAPRENDIZADOS DE HOOK ENSINADOS PELO TIME (curadoria humana — prevalecem sobre padrões do corpus em conflito):\n${taughtBlock(ctx, ["hook"])}` : ""}
+${hookCampeoes ? `\nHOOKS CAMPEÕES DESTE CLIENTE (literais — a primeira frase real dos vídeos de mais views; use como referência de registro, nunca copie):\n${hookCampeoes}` : ""}${resultadosHook ? `\nHOOKS DE ROTEIROS DESTA SALA JÁ PUBLICADOS (resultado real — evite o marcado como EVITE):\n${resultadosHook}` : ""}${clientInsightBlock(ctx, ["hook"]) ? `\nHOOKS QUE JÁ FUNCIONARAM PARA ESTE CLIENTE (pré-rankeados por performance+recência):\n${clientInsightBlock(ctx, ["hook"])}` : ""}${taughtBlock(ctx, ["hook"]) ? `\nAPRENDIZADOS DE HOOK ENSINADOS PELO TIME (curadoria humana — prevalecem sobre padrões do corpus em conflito):\n${taughtBlock(ctx, ["hook"])}` : ""}
 
 CORPO DO ROTEIRO (o hook precisa emendar na primeira frase e ser pago pelo final):
 ${corpo}
 
 Desenhe o hook.`,
-      },
-    ],
-  });
+        },
+      ],
+    },
+    // hook escolhe entre padrões já dados no contexto — medium basta, high só encarecia
+    "medium"
+  );
 
   const toolUse = res.content.find((b) => b.type === "tool_use");
   if (!toolUse || toolUse.type !== "tool_use") throw new Error("hook: sem saída estruturada");
@@ -369,19 +520,18 @@ Desenhe o hook.`,
 // ── 6. Comando (CTA) ─────────────────────────────────────────────────────────
 export async function writeComando(ctx: GenerationContext, corpo: string): Promise<string> {
   const p = ctx.clientPrefs;
-  const res = await anthropic.messages.create({
-    model: WRITER_MODEL,
-    // fable-5 pensa sempre (thinking on por padrão, indesligável); 300 era consumido só
-    // pelo thinking e voltava comando vazio. 2000 garante o texto do CTA além do raciocínio.
-    max_tokens: 2000,
-    system: [
-      {
-        type: "text",
-        text: `${agentPrompt("comando")}\n\n# PLAYBOOK DE COMANDOS\n${ctx.playbooks.comando ?? "(sem playbook)"}`,
-        cache_control: { type: "ephemeral" },
-      },
-    ],
-    messages: [
+  // CTA é fórmula curta sobre padrões dados no contexto: ANALYST_MODEL + effort low bastam
+  // (era WRITER_MODEL/fable, ~3x o preço, pra 2-3 frases). Sem cache_control: prompt pequeno
+  // (provavelmente abaixo do mínimo cacheável) e agora no modelo barato — write premium não paga.
+  const res = await trackedCreate(
+    ctx.usageLog,
+    "comando",
+    {
+      model: ANALYST_MODEL,
+      // thinking adaptativo divide o mesmo teto; 2000 garante o texto do CTA além do raciocínio.
+      max_tokens: 2000,
+      system: `${agentPrompt("comando")}\n\n# PLAYBOOK DE COMANDOS\n${ctx.playbooks.comando ?? "(sem playbook)"}`,
+      messages: [
       {
         role: "user",
         content: `${p ? `CLIENTE: ${p.nome}${p.tom_de_voz ? ` | Tom: ${p.tom_de_voz}` : ""}${p.notas_entrevista ? `\nNotas: ${p.notas_entrevista.slice(0, 800)}` : ""}\n\n` : ""}${
@@ -396,9 +546,11 @@ export async function writeComando(ctx: GenerationContext, corpo: string): Promi
 ${corpo.slice(-1200)}
 
 Escreva o comando.`,
-      },
-    ],
-  });
+        },
+      ],
+    },
+    "low"
+  );
 
   const block = res.content.find((b) => b.type === "text");
   return block?.type === "text" ? block.text.trim() : "";

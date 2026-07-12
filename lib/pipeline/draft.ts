@@ -1,4 +1,4 @@
-import { anthropic, WRITER_MODEL } from "../anthropic";
+import { anthropic, WRITER_MODEL, recordUsage } from "../anthropic";
 import { agentPrompt, clientInsightBlock, formatNarrativa, taughtBlock } from "./agents";
 import type { GenerationContext, ScriptSections } from "./types";
 
@@ -38,13 +38,12 @@ const WRITER_FORMAT = `Responda EXATAMENTE neste formato (headers literais):
 (uma por linha: cada dado específico do corpo — número, percentual, data, citação, ranking — e de onde veio, SEMPRE com o link completo (URL) da fonte quando existir — o dossiê traz os links; se veio de material fornecido no brief, diga qual)`;
 
 // Bloco compartilhado da sala: playbooks + estilo + proibições (sem persona — cada agente traz a sua).
+// Dieta do playbook: o PLAYBOOK DE STORYTELLING (~52KB) saiu daqui — a estrutura é decisão do
+// agente storytelling; o roteirista recebe só o trecho da estrutura vencedora (buildDynamicSystemBlock).
 export function buildStaticSystemBlock(ctx: GenerationContext): string {
   const banned = ctx.bannedPhrases.map((b) => `- ${b.label ?? b.pattern}`).join("\n");
   return `# PLAYBOOK DE HOOKS
 ${ctx.playbooks.hook ?? "(sem playbook)"}
-
-# PLAYBOOK DE STORYTELLING
-${ctx.playbooks.storytelling ?? "(sem playbook)"}
 
 # PLAYBOOK DE COMANDO/CTA
 ${ctx.playbooks.comando ?? "(sem playbook)"}
@@ -56,6 +55,40 @@ ${ctx.playbooks.style_guide ?? ""}
 ${banned}`;
 }
 
+// Extrai do playbook de storytelling só a seção da estrutura vencedora, por heading "## ".
+// Match por código ("A1") ou nome ("Jornada do Herói"); não achou → "" e o roteirista segue
+// só com a narrativa formatada (que já carrega estrutura e beats).
+export function extractPlaybookSection(playbook: string | undefined, estrutura: string | undefined): string {
+  if (!playbook || !estrutura) return "";
+  const dot = estrutura.indexOf(".");
+  const code = (dot > 0 ? estrutura.slice(0, dot) : "").trim();
+  const nome = (dot > 0 ? estrutura.slice(dot + 1) : estrutura).trim().toLowerCase();
+  const escape = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const sections = playbook.split(/\n(?=##\s)/);
+  const hit = sections.find((s) => {
+    const heading = (s.split("\n")[0] ?? "").trim();
+    if (!heading.startsWith("##")) return false;
+    if (code && new RegExp(`(^|[^\\w])${escape(code)}([^\\w]|$)`).test(heading)) return true;
+    return Boolean(nome) && heading.toLowerCase().includes(nome);
+  });
+  return hit?.trim() ?? "";
+}
+
+// Restrições/voz do cliente — usado no bloco dinâmico completo e na variante enxuta da revisão.
+function clientPrefsBlock(ctx: GenerationContext): string {
+  if (!ctx.clientPrefs) return "";
+  const p = ctx.clientPrefs;
+  return `# RESTRIÇÕES DO CLIENTE "${p.nome}" (INVIOLÁVEIS)
+${p.proibicoes.length ? `PROIBIDO: ${p.proibicoes.join("; ")}` : "(sem proibições registradas)"}
+${p.vocabulario_evitar.length ? `Nunca usar as palavras: ${p.vocabulario_evitar.join(", ")}` : ""}
+
+# VOZ DO CLIENTE
+${p.tom_de_voz ? `Tom: ${p.tom_de_voz}` : ""}
+${p.vocabulario_usar.length ? `Preferir vocabulário: ${p.vocabulario_usar.join(", ")}` : ""}
+${p.temas_preferidos.length ? `Temas preferidos: ${p.temas_preferidos.join(", ")}` : ""}
+${p.notas_entrevista ? `Notas da entrevista: ${p.notas_entrevista}` : ""}`;
+}
+
 export function buildDynamicSystemBlock(ctx: GenerationContext): string {
   const parts: string[] = [];
 
@@ -63,7 +96,12 @@ export function buildDynamicSystemBlock(ctx: GenerationContext): string {
     const a = ctx.artifacts;
     if (a.dossie) parts.push(`# DOSSIÊ DE PESQUISA (fatos verificados em tempo real)\n${a.dossie}`);
     const n = a.candidatas[a.escolhida];
-    if (n) parts.push(`# NARRATIVA VENCEDORA (escolhida pela sala — execute exatamente esta)\n${formatNarrativa(n)}`);
+    if (n) {
+      parts.push(`# NARRATIVA VENCEDORA (escolhida pela sala — execute exatamente esta)\n${formatNarrativa(n)}`);
+      // dieta do playbook: só o trecho da estrutura vencedora chega ao roteirista
+      const trecho = extractPlaybookSection(ctx.playbooks.storytelling, n.estrutura);
+      if (trecho) parts.push(`# ESTRUTURA "${n.estrutura}" (trecho do playbook — siga esta arquitetura)\n${trecho}`);
+    }
     if (a.orientacao_roteiro)
       parts.push(`# ORIENTAÇÃO DOS DADOS (padrões dos +6 mil vídeos publicados)\n${a.orientacao_roteiro}`);
   }
@@ -74,18 +112,8 @@ export function buildDynamicSystemBlock(ctx: GenerationContext): string {
   const ensinado = taughtBlock(ctx, ["ritmo", "geral"]);
   if (ensinado) parts.push(`# APRENDIZADOS ENSINADOS PELO TIME (ritmo e regras gerais — curadoria humana, cumpra)\n${ensinado}`);
 
-  if (ctx.clientPrefs) {
-    const p = ctx.clientPrefs;
-    parts.push(`# RESTRIÇÕES DO CLIENTE "${p.nome}" (INVIOLÁVEIS)
-${p.proibicoes.length ? `PROIBIDO: ${p.proibicoes.join("; ")}` : "(sem proibições registradas)"}
-${p.vocabulario_evitar.length ? `Nunca usar as palavras: ${p.vocabulario_evitar.join(", ")}` : ""}
-
-# VOZ DO CLIENTE
-${p.tom_de_voz ? `Tom: ${p.tom_de_voz}` : ""}
-${p.vocabulario_usar.length ? `Preferir vocabulário: ${p.vocabulario_usar.join(", ")}` : ""}
-${p.temas_preferidos.length ? `Temas preferidos: ${p.temas_preferidos.join(", ")}` : ""}
-${p.notas_entrevista ? `Notas da entrevista: ${p.notas_entrevista}` : ""}`);
-  }
+  const prefs = clientPrefsBlock(ctx);
+  if (prefs) parts.push(prefs);
 
   if (ctx.fewShot.length) {
     parts.push(
@@ -118,6 +146,23 @@ ${p.notas_entrevista ? `Notas da entrevista: ${p.notas_entrevista}` : ""}`);
   return parts.join("\n\n");
 }
 
+// Variante enxuta pro agente de revisão: ele corrige contra checklist, não imita voz —
+// dispensa few-shot, materiais do usuário e briefs de modelagem; dossiê truncado a ~2000 chars.
+export function buildReviewDynamicBlock(ctx: GenerationContext): string {
+  const parts: string[] = [];
+  if (ctx.artifacts) {
+    const a = ctx.artifacts;
+    const n = a.candidatas[a.escolhida];
+    if (n) parts.push(`# NARRATIVA VENCEDORA (o roteiro deve executar exatamente esta)\n${formatNarrativa(n)}`);
+    if (a.orientacao_roteiro)
+      parts.push(`# ORIENTAÇÃO DOS DADOS (padrões dos +6 mil vídeos publicados)\n${a.orientacao_roteiro}`);
+    if (a.dossie) parts.push(`# DOSSIÊ DE PESQUISA (resumo — confira fatos citados)\n${a.dossie.slice(0, 2000)}`);
+  }
+  const prefs = clientPrefsBlock(ctx);
+  if (prefs) parts.push(prefs);
+  return parts.join("\n\n");
+}
+
 export interface WriterOutput {
   headline: string | null;
   corpo: string;
@@ -135,14 +180,19 @@ export async function generateDraft(
     ? `Reescreva o corpo do roteiro abaixo atendendo o FEEDBACK DO USUÁRIO (prioridade máxima), mantendo a NARRATIVA VENCEDORA do seu contexto e o brief. Aproveite o que já funciona na versão anterior; mude o que o feedback pedir.\n\nVERSÃO ANTERIOR:\n${revision.anterior}\n\nFEEDBACK DO USUÁRIO:\n${revision.feedback}`
     : `Escreva o corpo do roteiro executando a NARRATIVA VENCEDORA do seu contexto, sobre o brief abaixo.`;
 
+  const t0 = Date.now();
   const stream = anthropic.messages.stream({
     model: WRITER_MODEL,
     // streaming, mas o teto ainda cobre thinking (sempre on no fable-5) + o corpo escrito.
     // 4000 podia truncar o corpo no meio; 8000 dá folga (streaming evita timeout de HTTP).
+    // effort mantém o default (high): o draft é a peça de qualidade da geração.
     max_tokens: 8000,
     system: [
-      { type: "text", text: `${agentPrompt("roteirista")}\n\n${buildStaticSystemBlock(ctx)}`, cache_control: { type: "ephemeral" } },
-      { type: "text", text: buildDynamicSystemBlock(ctx) },
+      // block 1 = estático idêntico compartilhado (cacheado): humanizador e rewriteFragment usam
+      // o MESMO block 1 no MESMO modelo (fable) → leem este prefixo com ~90% de desconto.
+      // Persona no block 2, fora do cache, pra não fragmentar o prefixo por agente.
+      { type: "text", text: buildStaticSystemBlock(ctx), cache_control: { type: "ephemeral" } },
+      { type: "text", text: `${agentPrompt("roteirista")}\n\n${buildDynamicSystemBlock(ctx)}` },
     ],
     messages: [
       {
@@ -154,6 +204,7 @@ export async function generateDraft(
 
   stream.on("text", onToken);
   const final = await stream.finalMessage();
+  recordUsage(ctx.usageLog, "roteiro", WRITER_MODEL, Date.now() - t0, final.usage);
   const block = final.content.find((b) => b.type === "text");
   const text = block?.type === "text" ? block.text : "";
 
