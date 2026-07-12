@@ -22,12 +22,13 @@ commitado e os excerpts reconciliados.
 | 005  | Flywheel: ETL atômico (migration 0009) + URL unificada | P1 | M | 002,003 | DONE (merged 1688e28, pushed — ⚠️ migration 0009 pendente de aplicar no banco) |
 | 007  | swapHook seguro + autoria user_id | P2 | S | 005 | IN PROGRESS (executor, rebaselined 1688e28) |
 | 005  | Flywheel: ETL atômico + URL unificada | P1 | M | 002, 003 | TODO |
-| 006  | Streaming resiliente (heartbeat, disconnect, sessões presas) | P1 | M | 003, concorrentes | TODO (aguardando reconciliação) |
+| 006  | Streaming resiliente (heartbeat, disconnect, sessões presas) | P1 | M | 003, concorrentes | ABSORVIDO no 012 (WP-A) |
 | 007  | swapHook seguro + autoria user_id | P2 | S | 005 | TODO |
-| 008  | Eficiência de tokens (effort, cache, paralelização, dieta) | P1 | M | 003, 006, concorrentes | TODO (aguardando reconciliação) |
+| 008  | Eficiência de tokens (effort, cache, paralelização, dieta) | P1 | M | 003, 006, concorrentes | ABSORVIDO no 012 (WP-D) |
 | 009  | Sync de performance sob demanda | P2 | M | 005, 006, 007 | TODO |
-| 011  | Few-shot ponderado por performance | P3 | S/M | 008 | TODO |
-| 010  | Loop supervisionado (edição→Professor→lição) + captura de decisões | P2 | L | 002, 007 | TODO |
+| 011  | Few-shot ponderado por performance | P3 | S/M | 008 | ABSORVIDO no 012 |
+| 010  | Loop supervisionado (edição→Professor→lição) + captura de decisões | P2 | L | 002, 007 | ABSORVIDO no 012 |
+| 012  | Update CODEX Autoevolutivo (auditoria 2026-07-11; absorve 006/008/010/011) | P1 | L | — | IN PROGRESS |
 
 Status: TODO | IN PROGRESS | DONE | BLOCKED (motivo) | REJECTED (motivo)
 
