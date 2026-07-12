@@ -222,6 +222,16 @@ export async function markPublished(scriptId: string, url: string) {
   revalidatePath(`/sessions/${data.session_id}`);
 }
 
+// WP-F.3: feedback 1-clique por versão — 👍 grava rating 5, 👎 grava 1, sem encerrar a sessão.
+// Cada clique insere uma linha nova; a UI mostra o rating mais recente por script.
+export async function quickFeedback(scriptId: string, sessionId: string, thumb: "up" | "down") {
+  const { error } = await appDb
+    .from("vm_script_feedback")
+    .insert({ script_id: scriptId, rating: thumb === "up" ? 5 : 1 });
+  if (error) throw new Error(error.message);
+  revalidatePath(`/sessions/${sessionId}`);
+}
+
 // Edição manual do roteiro: salva os campos editados no próprio roteiro (sem nova versão).
 // dedash garante zero travessão de slop mesmo no texto colado/editado à mão.
 export async function updateScript(
