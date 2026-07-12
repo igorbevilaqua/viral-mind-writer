@@ -12,8 +12,9 @@ interface Learning {
   titulo: string;
   descricao: string;
   evidencia: string | null;
-  origem: "extraido" | "manual";
+  origem: "extraido" | "manual" | "edicao" | "curador";
   active: boolean;
+  needs_review?: boolean; // WP-E.5: flopou em ≥2 roteiros publicados — revisão humana
 }
 
 function LearningRow({ l }: { l: Learning }) {
@@ -41,6 +42,11 @@ function LearningRow({ l }: { l: Learning }) {
           {DIMENSAO_LABEL[l.dimensao]}
         </span>
         {l.origem === "manual" && <span className="text-[10.5px] text-white/35">manual</span>}
+        {l.needs_review && (
+          <span className="rounded-full border border-amber-500/40 bg-amber-500/[.08] px-2.5 py-0.5 text-[10.5px] text-amber-300">
+            ⚠ revisar: flopou em roteiros publicados (≥2×)
+          </span>
+        )}
         <span className="ml-auto flex items-center gap-2">
           {!editing && (
             <button

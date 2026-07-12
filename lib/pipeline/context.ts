@@ -58,9 +58,9 @@ export async function loadContext(sessionId: string): Promise<GenerationContext>
     .single();
   if (error || !session) throw new Error(`sessão não encontrada: ${error?.message}`);
 
-  const [attachments, playbooksRes, bannedRes, prefsRes, fewShot] = await Promise.all([
+  const [attachments, playbooksRes, bannedRes, prefsRes, fewShot, lastRun] = await Promise.all([
     appDb.from("vm_attachments").select("id, kind, is_modelagem, url, raw_content").eq("session_id", sessionId),
-    appDb.from("vm_playbooks").select("slug, content").eq("active", true),
+    appDb.from("vm_playbooks").select("slug, content, version").eq("active", true),
     appDb.from("vm_banned_phrases").select("pattern, label, severity").eq("active", true),
     session.client_id
       ? appDb
@@ -70,6 +70,9 @@ export async function loadContext(sessionId: string): Promise<GenerationContext>
           .maybeSingle()
       : Promise.resolve({ data: null }),
     fetchFewShot(session.prompt, session.client_id),
+    // WP-E.1: id do run de insights vigente entra no fingerprint do roteiro.
+    // Tabela vazia/ausente (migration 0014 não aplicada) → null, sem erro.
+    appDb.from("vm_insight_runs").select("id").order("run_at", { ascending: false }).limit(1).maybeSingle(),
   ]);
 
   // Falha de query aqui gerava roteiro silenciosamente SEM materiais/playbooks/banned.
@@ -80,6 +83,8 @@ export async function loadContext(sessionId: string): Promise<GenerationContext>
 
   const playbooks: Record<string, string> = {};
   for (const p of playbooksRes.data ?? []) playbooks[p.slug] = p.content;
+  // WP-E.1: slug+version dos playbooks usados — parte do fingerprint do roteiro
+  const playbookVersions = (playbooksRes.data ?? []).map((p) => ({ slug: p.slug, version: Number(p.version) || 0 }));
 
   let clientPrefs: ClientPrefs | null = null;
   const prefs = prefsRes.data as (Omit<ClientPrefs, "nome"> & { viral_data_cliente_id: string | null; clientes: { nome: string } | { nome: string }[] | null }) | null;
@@ -100,10 +105,11 @@ export async function loadContext(sessionId: string): Promise<GenerationContext>
   // Aprendizados ensinados (menu Ensinar): entram como pseudo-insights taught_<dimensao>,
   // roteados por dimensão nos agentes via taughtBlock. Curadoria humana: prevalecem em conflito.
   const taught: { insight_type: string; scope: string; payload: unknown }[] = [];
+  const lessonIds: string[] = []; // WP-E.1: ids das lições que entraram no contexto (fingerprint)
   try {
     const { data } = await appDb
       .from("vm_lesson_learnings")
-      .select("dimensao, titulo, descricao, created_at, vm_lessons!inner(client_id)")
+      .select("id, dimensao, titulo, descricao, created_at, vm_lessons!inner(client_id)")
       .eq("active", true)
       .order("created_at", { ascending: false });
     const rows = (data ?? [])
@@ -112,6 +118,7 @@ export async function loadContext(sessionId: string): Promise<GenerationContext>
       // client-scoped antes de global; dentro do grupo, mais novos primeiro (já ordenado)
       .sort((a, b) => Number(!!b.lessonClient) - Number(!!a.lessonClient))
       .slice(0, 12); // orçamento de contexto do agente Dados
+    lessonIds.push(...rows.map((t) => t.id));
     taught.push(
       ...rows.map((t) => ({
         insight_type: `taught_${t.dimensao}`,
@@ -136,5 +143,8 @@ export async function loadContext(sessionId: string): Promise<GenerationContext>
     modelagemBriefs: [],
     artifacts: (session.artifacts as GenerationContext["artifacts"]) ?? null,
     usageLog: {},
+    lessonIds,
+    playbookVersions,
+    insightRunId: lastRun.data?.id ?? null,
   };
 }

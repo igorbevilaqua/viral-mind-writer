@@ -15,7 +15,7 @@ export default async function LessonPage({ params }: { params: Promise<{ id: str
 
   const { data: learnings } = await appDb
     .from("vm_lesson_learnings")
-    .select("id, dimensao, titulo, descricao, evidencia, origem, active")
+    .select("id, dimensao, titulo, descricao, evidencia, origem, active, needs_review")
     .eq("lesson_id", id)
     .order("created_at");
 
