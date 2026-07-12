@@ -1,6 +1,6 @@
 export default function Logo({ size = 27 }: { size?: number }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 32 32" fill="none" aria-label="Viral Mind">
+    <svg width={size} height={size} viewBox="0 0 32 32" fill="none" aria-label="CODEX - Viral Mind">
       <rect x="1" y="1" width="30" height="30" rx="8.5" fill="#171310" stroke="rgba(201,163,92,.55)" />
       <path
         d="M23.8 7.2c-6.4.6-11.2 5.2-13.2 12.4l-.9 3.2 3.2-1c6.9-2.1 10.7-7.6 10.9-14.6Z"

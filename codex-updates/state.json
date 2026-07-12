@@ -1,7 +1,16 @@
 {
   "version": "1.1",
   "codexUrl": "https://codex.viralmindlabs.com",
-  "pending": [],
+  "pending": [
+    {
+      "id": "mrh30zup",
+      "type": "improvement",
+      "summary": "Sistema renomeado para CODEX - Viral Mind (nav, login, título da aba e pasta do projeto)",
+      "detail": "",
+      "commit": "cb3952c",
+      "addedAt": "2026-07-12T00:55:43.502Z"
+    }
+  ],
   "lastRelease": {
     "version": "1.0",
     "git": "8731951",

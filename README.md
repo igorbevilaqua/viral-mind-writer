@@ -1,4 +1,4 @@
-# Viral Mind v2
+# CODEX - Viral Mind (v2)
 
 Escritório de roteiristas virais movido pelos dados de +6 mil vídeos publicados.
 

@@ -19,7 +19,7 @@ export default async function LoginPage({
         <div className="flex items-center gap-2.5 mb-6">
           <Logo />
           <span className="font-cinzel font-semibold text-cream text-sm tracking-[.14em]">
-            VIRAL MIND
+            CODEX - VIRAL MIND
           </span>
         </div>
 

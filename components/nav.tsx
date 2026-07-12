@@ -15,7 +15,7 @@ export default function Nav() {
       <Link href="/" className="flex items-center gap-2.5">
         <Logo />
         <span className="font-cinzel font-semibold text-cream text-[13px] sm:text-sm tracking-[.14em]">
-          VIRAL MIND
+          CODEX - VIRAL MIND
         </span>
       </Link>
       <Link href="/sessions" className={linkCls(pathname.startsWith("/sessions"))}>

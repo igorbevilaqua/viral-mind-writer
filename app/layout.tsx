@@ -15,7 +15,7 @@ const cormorant = Cormorant_Garamond({
 });
 
 export const metadata: Metadata = {
-  title: `Viral Mind · ${BUILD_TAG}`,
+  title: `CODEX - Viral Mind · ${BUILD_TAG}`,
   description: "Escritório de roteiristas virais",
 };
 
