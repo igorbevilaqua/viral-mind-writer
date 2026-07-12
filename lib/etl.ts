@@ -323,10 +323,17 @@ export async function runWeeklyEtl() {
   const rpc = await appDb.rpc("vm_replace_insights", { _rows: rows });
   if (rpc.error) {
     if (rpc.error.code !== "PGRST202") throw new Error(`vm_replace_insights: ${rpc.error.message}`);
-    console.warn("vm_replace_insights ausente — aplicar migration; usando caminho não-atômico");
-    await appDb.from("vm_viral_insights").delete().neq("scope", "");
+    console.warn("vm_replace_insights ausente — aplicar migration 0009; usando caminho não-atômico");
+    // Nunca deletar sem rows validados: run com 0 insights esvaziaria a tabela em silêncio.
+    if (!rows.length) throw new Error("ETL produziu 0 insights — abortando replace não-atômico");
+    const del = await appDb.from("vm_viral_insights").delete().neq("scope", "");
+    if (del.error) throw new Error(`delete insights: ${del.error.message}`);
     const ins = await appDb.from("vm_viral_insights").insert(rows);
-    if (ins.error) throw new Error(`insert insights: ${ins.error.message}`);
+    if (ins.error) {
+      // delete já rodou: sem os insights o pipeline degrada até o próximo run — gritar alto.
+      console.error("CRÍTICO: vm_viral_insights deletada e insert falhou — tabela vazia até o próximo run bem-sucedido", ins.error);
+      throw new Error(`insert insights (pós-delete!): ${ins.error.message}`);
+    }
   }
 
   return { insights: rows.length, clientInsights, scriptsLinked: linked, scriptsSynced: synced };

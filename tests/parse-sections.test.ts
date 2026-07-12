@@ -15,6 +15,17 @@ describe("stripTrailingComando", () => {
     const roteiro = "Olha isso.\n\nComenta aí.";
     expect(stripTrailingComando(roteiro, "Comenta aí.")).toBe(roteiro);
   });
+  test("bloco final curto legítimo contido no comando é preservado", () => {
+    // "seu bolso" está contido no comando, mas é curto demais (< 12 após normalizar)
+    const roteiro = "Aí caiu o primeiro dominó.\n\nseu bolso";
+    expect(stripTrailingComando(roteiro, comando)).toBe(roteiro);
+  });
+  test("remove no máximo 1 bloco mesmo com vários finais contidos no comando", () => {
+    const roteiro = `Aí caiu o primeiro dominó.\n\nSegue esse perfil pra entender\n\n${comando}`;
+    expect(stripTrailingComando(roteiro, comando)).toBe(
+      "Aí caiu o primeiro dominó.\n\nSegue esse perfil pra entender"
+    );
+  });
 });
 
 describe("parseSections", () => {

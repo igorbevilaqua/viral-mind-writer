@@ -54,6 +54,12 @@ export async function loadContext(sessionId: string): Promise<GenerationContext>
     fetchFewShot(session.prompt, session.client_id),
   ]);
 
+  // Falha de query aqui gerava roteiro silenciosamente SEM materiais/playbooks/banned.
+  // Lançar é o certo: o catch do pipeline persiste e exibe o erro ao usuário.
+  if (attachments.error) throw new Error(`falha ao carregar anexos: ${attachments.error.message}`);
+  if (playbooksRes.error) throw new Error(`falha ao carregar playbooks: ${playbooksRes.error.message}`);
+  if (bannedRes.error) throw new Error(`falha ao carregar frases banidas: ${bannedRes.error.message}`);
+
   const playbooks: Record<string, string> = {};
   for (const p of playbooksRes.data ?? []) playbooks[p.slug] = p.content;
 
@@ -67,10 +73,11 @@ export async function loadContext(sessionId: string): Promise<GenerationContext>
   // Insights: globais + do cliente (pós-consolidação, client_id JÁ é o id no corpus)
   const scopes = ["global"];
   if (session.client_id) scopes.push(`client:${session.client_id}`);
-  const { data: insights } = await appDb
+  const { data: insights, error: insightsErr } = await appDb
     .from("vm_viral_insights")
     .select("insight_type, scope, payload")
     .in("scope", scopes);
+  if (insightsErr) throw new Error(`falha ao carregar insights: ${insightsErr.message}`);
 
   // Aprendizados ensinados (menu Ensinar): entram como pseudo-insights taught_<dimensao>,
   // roteados por dimensão nos agentes via taughtBlock. Curadoria humana: prevalecem em conflito.

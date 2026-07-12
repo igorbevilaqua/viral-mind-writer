@@ -175,10 +175,11 @@ export function stripTrailingComando(roteiro: string, comando: string): string {
   const cmd = norm(comando);
   if (cmd.length < 12) return roteiro; // comando curto demais → risco de falso positivo
   const blocks = roteiro.split(/\n\s*\n/);
-  while (blocks.length > 1) {
+  // No máximo 1 bloco, e só se o último for longo o bastante — o while antigo
+  // comia múltiplos blocos finais curtos legítimos contidos no comando.
+  if (blocks.length > 1) {
     const last = norm(blocks[blocks.length - 1]);
-    if (last && (last === cmd || cmd.includes(last) || last.includes(cmd))) blocks.pop();
-    else break;
+    if (last.length >= 12 && (last === cmd || cmd.includes(last) || last.includes(cmd))) blocks.pop();
   }
   return blocks.join("\n\n").trimEnd();
 }
