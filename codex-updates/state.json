@@ -25,6 +25,22 @@
       "detail": "",
       "commit": "4345ba6",
       "addedAt": "2026-07-12T16:47:44.711Z"
+    },
+    {
+      "id": "mrjdpq6k",
+      "type": "improvement",
+      "summary": "Sugestões de tema agora priorizam vídeos de produção VM",
+      "detail": "O ideador dá peso principal a hits que são roteiros nossos publicados (marcados como produção VM no corpus), em vez de tratar qualquer vídeo viral igual.",
+      "commit": "0517710",
+      "addedAt": "2026-07-13T15:30:25.882Z"
+    },
+    {
+      "id": "mrjdpq7o",
+      "type": "feature",
+      "summary": "Painel do cliente: clique em qualquer tema/estrutura/hook/comando para ver os vídeos",
+      "detail": "Na seção DADOS, cada linha das listas abre uma janela com os vídeos que compõem aquele grupo — com link direto, plataforma, data, views e selo VM quando é produção nossa.",
+      "commit": "0517710",
+      "addedAt": "2026-07-13T15:30:25.920Z"
     }
   ],
   "lastRelease": {

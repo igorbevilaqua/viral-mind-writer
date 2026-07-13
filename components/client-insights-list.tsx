@@ -1,6 +1,11 @@
+"use client";
+
 // Lista de insights do cliente — materializada semanalmente pelo ETL em vm_viral_insights.
 // Rankeada por score (performance + recência + relevância); o mais forte vem destacado no topo.
+// Cards de tema/storytelling/hook/comando são clicáveis: abrem o dialog com os
+// vídeos que compuseram o insight (class-videos-dialog).
 import type { ClientInsightPayload } from "@/lib/pipeline/types";
+import { useClassVideosDialog, type ClassDim } from "./class-videos-dialog";
 
 export interface InsightRowView {
   insight_type: string;
@@ -15,13 +20,22 @@ const CAT_BADGE: Record<string, { label: string; cls: string }> = {
   client_comando: { label: "Comando", cls: "border-emerald-500/40 bg-emerald-500/[.08] text-emerald-300" },
 };
 
+const CAT_DIM: Record<string, ClassDim> = {
+  client_tema: "tema",
+  client_storytelling: "storytelling",
+  client_hook: "hook",
+  client_comando: "comando",
+};
+
 function relDays(iso?: string | null) {
   if (!iso) return null;
   const days = Math.round((Date.now() - new Date(iso).getTime()) / 86400000);
   return days < 1 ? "hoje" : `há ${days} ${days === 1 ? "dia" : "dias"}`;
 }
 
-export default function ClientInsightsList({ insights }: { insights: InsightRowView[] }) {
+export default function ClientInsightsList({ insights, clientId }: { insights: InsightRowView[]; clientId: string }) {
+  const { open, dialog } = useClassVideosDialog(clientId);
+
   const stats = insights
     .filter((i) => i.insight_type !== "client_geral" && i.payload?.titulo)
     .sort((a, b) => (b.payload.score ?? 0) - (a.payload.score ?? 0));
@@ -41,19 +55,23 @@ export default function ClientInsightsList({ insights }: { insights: InsightRowV
 
   return (
     <div className="space-y-3">
-      {computedAt && <p className="text-[11px] text-white/30">extraídos {relDays(computedAt)} · atualização automática semanal</p>}
+      {computedAt && <p className="text-[11px] text-white/30">extraídos {relDays(computedAt)} · atualização automática semanal · clique para ver os vídeos</p>}
 
       <div className="space-y-2.5">
         {stats.map((ins, i) => {
           const p = ins.payload;
           const badge = CAT_BADGE[ins.insight_type] ?? { label: ins.insight_type, cls: "border-white/20 text-white/60" };
           const destaque = !!p.destaque;
+          const dim = CAT_DIM[ins.insight_type];
+          const clickable = !!dim && !!p.tipo;
+          const Card: "button" | "div" = clickable ? "button" : "div";
           return (
-            <div
+            <Card
               key={i}
-              className={`rounded-[14px] border px-4 py-3.5 ${
+              {...(clickable ? { type: "button" as const, onClick: () => open(dim, p.tipo!), title: "Ver vídeos deste insight" } : {})}
+              className={`block w-full text-left rounded-[14px] border px-4 py-3.5 ${
                 destaque ? "border-gold/60 bg-gold/[.07]" : "border-white/[.08] bg-white/[.02]"
-              }`}
+              } ${clickable ? "cursor-pointer hover:border-gold/40 transition-colors" : ""}`}
             >
               <div className="flex items-center gap-2 flex-wrap">
                 {destaque && (
@@ -71,7 +89,7 @@ export default function ClientInsightsList({ insights }: { insights: InsightRowV
               </div>
               <p className={`mt-2 text-[14px] font-medium ${destaque ? "text-cream" : "text-white/85"}`}>{p.titulo}</p>
               <p className="mt-1 text-[12.5px] leading-relaxed text-white/55">{p.descricao}</p>
-            </div>
+            </Card>
           );
         })}
       </div>
@@ -92,6 +110,8 @@ export default function ClientInsightsList({ insights }: { insights: InsightRowV
           </div>
         </div>
       )}
+
+      {dialog}
     </div>
   );
 }

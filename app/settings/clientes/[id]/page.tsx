@@ -58,7 +58,7 @@ export default async function ClienteDetailPage({ params }: { params: Promise<{ 
           <span className="kicker text-white/45">INSIGHTS</span>
           <span className="text-xs text-white/30">o que está funcionando · alimenta o gerador de roteiros</span>
         </div>
-        <ClientInsightsList insights={(insights ?? []) as InsightRowView[]} />
+        <ClientInsightsList insights={(insights ?? []) as InsightRowView[]} clientId={id} />
       </section>
     </div>
   );
