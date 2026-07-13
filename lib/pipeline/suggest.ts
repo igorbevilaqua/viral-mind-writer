@@ -32,6 +32,7 @@ interface CrossHit {
   data_publicacao: string;
   storytelling_tipo: string | null;
   hook_tipo: string | null;
+  vm_script: boolean;
 }
 
 const SUGESTOES_TOOL = {
@@ -157,13 +158,14 @@ ${prefs?.proibicoes?.length ? `PROIBIÇÕES (INVIOLÁVEIS): ${prefs.proibicoes.j
 1. PADRÕES VALIDADOS DO CLIENTE (pré-rankeados por performance + recência):
 ${validados || "(sem insights materializados — rode o ETL; aposte no nicho declarado)"}
 
-2. HITS DE CLIENTES AFINS (mesmos temas, views comprovadas — arquiteturas reaproveitáveis):
+2. HITS DE CLIENTES AFINS (mesmos temas, views comprovadas — arquiteturas reaproveitáveis;
+itens PRODUÇÃO VM são roteiros nossos publicados — dê peso principal a esses padrões):
 ${
   hits.length
     ? hits
         .map(
           (h) =>
-            `- [${h.tema}] "${h.titulo}" (${h.cliente_origem}, ${Math.round(h.views / 1_000_000)}M views, ${h.data_publicacao})${h.storytelling_tipo ? ` · estrutura: ${h.storytelling_tipo}` : ""}${h.hook_tipo ? ` · hook: ${h.hook_tipo}` : ""}${h.assunto ? `\n  assunto: ${h.assunto.slice(0, 200)}` : ""}`
+            `- [${h.tema}]${h.vm_script ? " [PRODUÇÃO VM]" : ""} "${h.titulo}" (${h.cliente_origem}, ${Math.round(h.views / 1_000_000)}M views, ${h.data_publicacao})${h.storytelling_tipo ? ` · estrutura: ${h.storytelling_tipo}` : ""}${h.hook_tipo ? ` · hook: ${h.hook_tipo}` : ""}${h.assunto ? `\n  assunto: ${h.assunto.slice(0, 200)}` : ""}`
         )
         .join("\n")
     : "(nenhum hit cruzado encontrado)"

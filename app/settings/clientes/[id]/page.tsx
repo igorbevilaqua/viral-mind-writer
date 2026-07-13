@@ -50,7 +50,7 @@ export default async function ClienteDetailPage({ params }: { params: Promise<{ 
           <span className="kicker text-white/45">DADOS</span>
           <span className="text-xs text-white/30">ao vivo, direto do corpus</span>
         </div>
-        {panel ? <ClientDataPanel panel={panel} /> : <p className="text-[13px] text-white/40">Sem dados no corpus para este cliente.</p>}
+        {panel ? <ClientDataPanel panel={panel} clientId={id} /> : <p className="text-[13px] text-white/40">Sem dados no corpus para este cliente.</p>}
       </section>
 
       <section>

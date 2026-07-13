@@ -1,6 +1,6 @@
 "use server";
 
-import { appDb } from "./db";
+import { appDb, viralData } from "./db";
 import { revalidatePath } from "next/cache";
 import { platformVideoId } from "./video-url";
 import { dedash } from "./pipeline/slop-lint";
@@ -63,6 +63,32 @@ export async function savePreferences(clientId: string, form: {
   });
   if (error) throw new Error(error.message);
   revalidatePath("/settings/clientes");
+}
+
+export interface ClassVideo {
+  titulo: string | null;
+  link_video: string | null;
+  views: number;
+  data_publicacao: string | null;
+  plataforma: string | null;
+  vm_script: boolean;
+}
+
+// Drill-down do painel do cliente: vídeos (com link) que compõem uma linha
+// de tema/storytelling/hook/comando (RPC vm_client_class_videos, migration 0017).
+export async function getClassVideos(
+  clientId: string,
+  dim: "tema" | "storytelling" | "hook" | "comando",
+  tipo: string
+): Promise<ClassVideo[]> {
+  const { data, error } = await viralData.rpc("vm_client_class_videos", {
+    p_cliente_id: clientId,
+    p_dim: dim,
+    p_tipo: tipo,
+    p_limit: 20,
+  });
+  if (error) throw new Error(error.message);
+  return (data ?? []) as ClassVideo[];
 }
 
 // Finaliza a sessão: registra o feedback (se houver) e encerra ("closed" → "Encerrada" na lista).
