@@ -1,23 +1,17 @@
 "use server";
 
-import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { isAllowedEmail } from "@/lib/allowed-emails";
 
-export async function sendMagicLink(formData: FormData) {
+// Auth centralizada no Painel VML (adm.viralmindlabs.com): login por senha.
+// Acesso é checado pelo middleware via hub.permissoes; usuários/senhas são geridos no painel.
+export async function signIn(formData: FormData) {
   const email = String(formData.get("email") ?? "").trim().toLowerCase();
+  const password = String(formData.get("password") ?? "");
 
-  // Fora da allowlist: não envia nada, mas responde igual (não revela quem tem acesso).
-  if (!email || !isAllowedEmail(email)) redirect("/login?sent=1");
-
-  const origin = (await headers()).get("origin") ?? "";
   const supabase = await createClient();
-  const { error } = await supabase.auth.signInWithOtp({
-    email,
-    options: { emailRedirectTo: `${origin}/auth/confirm` },
-  });
+  const { error } = await supabase.auth.signInWithPassword({ email, password });
+  if (error) redirect("/login?error=credenciais");
 
-  if (error) redirect("/login?error=send");
-  redirect("/login?sent=1");
+  redirect("/");
 }

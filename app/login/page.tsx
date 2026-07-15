@@ -1,17 +1,17 @@
 import Logo from "@/components/logo";
-import { sendMagicLink } from "./actions";
+import { signIn } from "./actions";
 
 const ERROR_MESSAGES: Record<string, string> = {
-  send: "Não foi possível enviar o link. Tente novamente em instantes.",
-  link: "Link inválido ou expirado. Peça um novo abaixo.",
+  credenciais: "Email ou senha inválidos.",
+  link: "Link inválido ou expirado.",
 };
 
 export default async function LoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{ sent?: string; error?: string }>;
+  searchParams: Promise<{ error?: string }>;
 }) {
-  const { sent, error } = await searchParams;
+  const { error } = await searchParams;
 
   return (
     <div className="flex-1 flex items-center justify-center px-5 py-16">
@@ -25,39 +25,40 @@ export default async function LoginPage({
 
         <p className="kicker text-gold mb-2">ACESSO</p>
 
-        {sent ? (
-          <p className="text-[13px] leading-relaxed text-white/70">
-            Se o email tiver acesso, um link de entrada foi enviado. Confira sua caixa de
-            entrada e abra o link neste navegador.
+        {error && (
+          <p className="text-[13px] text-red-400/90 mb-4">
+            {ERROR_MESSAGES[error] ?? "Algo deu errado. Tente novamente."}
           </p>
-        ) : (
-          <>
-            <p className="text-[13px] leading-relaxed text-white/55 mb-5">
-              Informe seu email para receber um link mágico de acesso.
-            </p>
-            {error && (
-              <p className="text-[13px] text-red-400/90 mb-4">
-                {ERROR_MESSAGES[error] ?? "Algo deu errado. Tente novamente."}
-              </p>
-            )}
-            <form action={sendMagicLink} className="flex flex-col gap-3">
-              <input
-                type="email"
-                name="email"
-                required
-                autoFocus
-                placeholder="voce@vmedialabs.com.br"
-                className="w-full rounded-[10px] border border-white/[.12] bg-transparent px-3.5 py-2.5 text-[13px] leading-relaxed outline-none placeholder:text-white/30 focus:border-gold/40"
-              />
-              <button
-                type="submit"
-                className="btn-gold rounded-[10px] px-5 py-2.5 text-[13px] font-medium"
-              >
-                Enviar link de acesso
-              </button>
-            </form>
-          </>
         )}
+        <form action={signIn} className="flex flex-col gap-3">
+          <input
+            type="email"
+            name="email"
+            required
+            autoFocus
+            placeholder="voce@vmedialabs.com.br"
+            className="w-full rounded-[10px] border border-white/[.12] bg-transparent px-3.5 py-2.5 text-[13px] leading-relaxed outline-none placeholder:text-white/30 focus:border-gold/40"
+          />
+          <input
+            type="password"
+            name="password"
+            required
+            placeholder="Senha"
+            className="w-full rounded-[10px] border border-white/[.12] bg-transparent px-3.5 py-2.5 text-[13px] leading-relaxed outline-none placeholder:text-white/30 focus:border-gold/40"
+          />
+          <button
+            type="submit"
+            className="btn-gold rounded-[10px] px-5 py-2.5 text-[13px] font-medium"
+          >
+            Entrar
+          </button>
+        </form>
+        <a
+          href="https://adm.viralmindlabs.com/esqueci-senha"
+          className="mt-4 block text-[12px] text-white/40 hover:text-white/70"
+        >
+          Esqueci minha senha
+        </a>
       </div>
     </div>
   );
