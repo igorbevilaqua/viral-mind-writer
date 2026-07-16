@@ -4,7 +4,7 @@ import { describe, expect, it, vi } from "vitest";
 // porque só testamos a função pura pickTopFewShot.
 vi.mock("@/lib/db", () => ({ appDb: {}, viralData: {} }));
 import { formatInsightsForDados, hookExamplesBlock, scriptResultBlock } from "@/lib/pipeline/agents";
-import { extractPlaybookSection } from "@/lib/pipeline/draft";
+import { extractPlaybookSection, playbookIndex } from "@/lib/pipeline/draft";
 import { pickTopFewShot } from "@/lib/pipeline/context";
 import { excerptAround } from "@/lib/pipeline/humanize";
 import type { GenerationContext } from "@/lib/pipeline/types";
@@ -188,6 +188,40 @@ beats da lista`;
     expect(extractPlaybookSection(playbook, "Z9. Inexistente")).toBe("");
     expect(extractPlaybookSection(undefined, "A1. Jornada")).toBe("");
     expect(extractPlaybookSection(playbook, undefined)).toBe("");
+  });
+});
+
+describe("playbookIndex", () => {
+  const playbook = `# PLAYBOOK
+
+intro geral
+
+## A1. Jornada do Herói
+O que é
+descrição da jornada
+linha 3
+linha 4
+linha 5
+linha 6
+linha 8 não entra
+Quando usar
+
+## A2. Contraste Brutal
+O que é
+descrição do contraste`;
+
+  it("condensa cada seção em heading + primeiras linhas, descartando a intro", () => {
+    const out = playbookIndex(playbook);
+    expect(out).toContain("## A1. Jornada do Herói");
+    expect(out).toContain("descrição da jornada");
+    expect(out).toContain("## A2. Contraste Brutal");
+    expect(out).not.toContain("intro geral");
+    expect(out).not.toContain("linha 8 não entra");
+  });
+
+  it("playbook ausente ou sem headings → vazio", () => {
+    expect(playbookIndex(undefined)).toBe("");
+    expect(playbookIndex("# Só título\ntexto plano sem seções")).toBe("");
   });
 });
 

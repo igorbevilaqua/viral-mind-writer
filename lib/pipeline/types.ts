@@ -88,6 +88,7 @@ export interface ClientInsightPayload {
 
 export interface GenerationContext {
   sessionId: string;
+  userId: string | null; // vm_sessions.user_id — dono da sessão (telemetria do hub)
   prompt: string;
   clientId: string | null;
   clientPrefs: ClientPrefs | null;

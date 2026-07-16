@@ -53,7 +53,7 @@ async function fetchFewShot(prompt: string, clientId: string | null) {
 export async function loadContext(sessionId: string): Promise<GenerationContext> {
   const { data: session, error } = await appDb
     .from("vm_sessions")
-    .select("id, prompt, client_id, artifacts")
+    .select("id, user_id, prompt, client_id, artifacts")
     .eq("id", sessionId)
     .single();
   if (error || !session) throw new Error(`sessão não encontrada: ${error?.message}`);
@@ -132,6 +132,7 @@ export async function loadContext(sessionId: string): Promise<GenerationContext>
 
   return {
     sessionId,
+    userId: session.user_id ?? null,
     prompt: session.prompt,
     clientId: session.client_id,
     clientPrefs,

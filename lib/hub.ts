@@ -31,19 +31,33 @@ export async function getPapel(): Promise<Papel | null> {
   return (data as Papel | null) ?? null;
 }
 
+// user_id do usuário logado (null = anônimo). Curto-vivo: só em server actions/rotas
+// onde os cookies são confiáveis — NUNCA dentro do stream de geração (lá o user_id vem
+// de vm_sessions.user_id, sem depender de cookies() num contexto que já respondeu).
+export async function currentUserId(): Promise<string | null> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  return user?.id ?? null;
+}
+
 // Registra atividade em hub.atividades (app='writer') via service role.
 // Best-effort: nunca lança — telemetria não pode derrubar o fluxo principal.
-export async function registrarAtividade(evento: string, payload?: Record<string, unknown>) {
+// sessaoId = vm_sessions.id → o cockpit liga o evento ao contexto rico da sessão.
+// A identidade (userId/sessaoId) é passada pelo chamador; antes resolvíamos o user
+// via cookies() aqui dentro, o que estourava no contexto do stream SSE e engolia tudo.
+export async function registrarAtividade(
+  evento: string,
+  opts: { sessaoId?: string | null; userId?: string | null; payload?: Record<string, unknown> } = {}
+) {
   try {
-    const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
     const { error } = await appDb.rpc("hub_registrar_atividade", {
-      p_user_id: user?.id ?? null,
+      p_user_id: opts.userId ?? null,
       p_app: "writer",
       p_evento: evento,
-      p_payload: payload ?? null,
+      p_payload: opts.payload ?? null,
+      p_sessao_id: opts.sessaoId ?? null,
     });
     if (error) throw new Error(error.message);
   } catch (e) {

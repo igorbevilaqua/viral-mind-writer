@@ -74,6 +74,17 @@ export function extractPlaybookSection(playbook: string | undefined, estrutura: 
   return hit?.trim() ?? "";
 }
 
+// Índice condensado do playbook (heading "## " + primeiras linhas de cada seção) —
+// vocabulário suficiente pra classificar sem pagar o playbook inteiro no contexto.
+export function playbookIndex(playbook: string | undefined): string {
+  if (!playbook) return "";
+  return playbook
+    .split(/\n(?=##\s)/)
+    .filter((s) => s.startsWith("##"))
+    .map((s) => s.split("\n").slice(0, 7).join("\n").trim())
+    .join("\n\n");
+}
+
 // Restrições/voz do cliente — usado no bloco dinâmico completo e na variante enxuta da revisão.
 function clientPrefsBlock(ctx: GenerationContext): string {
   if (!ctx.clientPrefs) return "";
@@ -147,9 +158,16 @@ export function buildDynamicSystemBlock(ctx: GenerationContext): string {
 }
 
 // Variante enxuta pro agente de revisão: ele corrige contra checklist, não imita voz —
-// dispensa few-shot, materiais do usuário e briefs de modelagem; dossiê truncado a ~2000 chars.
+// dispensa few-shot e materiais do usuário; dossiê truncado a ~2000 chars. Briefs de
+// modelagem entram: fidelidade à arquitetura-modelo é item eliminatório da revisão.
 export function buildReviewDynamicBlock(ctx: GenerationContext): string {
   const parts: string[] = [];
+  if (ctx.modelagemBriefs.length) {
+    parts.push(
+      `# ARQUITETURA-MODELO (o usuário pediu modelagem — item ELIMINATÓRIO: verifique se o roteiro segue esta arquitetura de hook, beats e arco; aponte e corrija desvios)\n` +
+        ctx.modelagemBriefs.join("\n\n---\n\n")
+    );
+  }
   if (ctx.artifacts) {
     const a = ctx.artifacts;
     const n = a.candidatas[a.escolhida];

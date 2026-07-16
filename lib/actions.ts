@@ -7,6 +7,8 @@ import { dedash } from "./pipeline/slop-lint";
 import { rewriteFragment } from "./pipeline/rewrite-fragment";
 import { extractFromEdit } from "./pipeline/teach";
 import { isSubstantiveEdit } from "./learning-loop";
+import { registrarAtividade, currentUserId } from "./hub";
+import { createClient } from "./supabase/server";
 
 export interface NewAttachment {
   kind: "reference_script" | "news_link" | "document" | "video_link";
@@ -20,9 +22,10 @@ export async function createSession(input: {
   clientId: string | null;
   attachments: NewAttachment[];
 }): Promise<string> {
+  const userId = await currentUserId();
   const { data: session, error } = await appDb
     .from("vm_sessions")
-    .insert({ prompt: input.prompt, client_id: input.clientId })
+    .insert({ prompt: input.prompt, client_id: input.clientId, user_id: userId })
     .select("id")
     .single();
   if (error) throw new Error(error.message);
@@ -39,6 +42,11 @@ export async function createSession(input: {
     );
     if (attErr) throw new Error(attErr.message);
   }
+  await registrarAtividade("inicio", {
+    sessaoId: session.id,
+    userId,
+    payload: { topico: input.prompt, client_id: input.clientId },
+  });
   return session.id;
 }
 
@@ -194,6 +202,10 @@ export async function saveLesson(input: {
       .insert(input.learnings.map((l) => ({ ...l, lesson_id: lesson.id })));
     if (lrnErr) throw new Error(lrnErr.message);
   }
+  await registrarAtividade("sessao_ensino_concluida", {
+    userId: await currentUserId(),
+    payload: { lesson_id: lesson.id, client_id: input.clientId, learnings: input.learnings.length },
+  });
   revalidatePath("/ensinar");
   return lesson.id;
 }
@@ -298,7 +310,27 @@ export async function updateScript(
     .select("session_id")
     .single();
   if (error) throw new Error(error.message);
+  await registrarAtividade("roteiro_salvo", {
+    sessaoId: data.session_id,
+    userId: await currentUserId(),
+    payload: { script_id: scriptId },
+  });
   revalidatePath(`/sessions/${data.session_id}`);
+}
+
+// "Reportar problema" (menu da sessão) → hub.bugs via RPC hub_reportar_bug.
+// Client AUTENTICADO (anon key + cookies), não service role: a RPC grava auth.uid()
+// como quem reportou, então precisa da sessão do usuário — não do appDb.
+export async function reportarProblema(sessionId: string, descricao: string): Promise<void> {
+  const texto = descricao.trim();
+  if (!texto) throw new Error("descreva o problema antes de enviar");
+  const supabase = await createClient();
+  const { error } = await supabase.rpc("hub_reportar_bug", {
+    p_sessao_id: sessionId,
+    p_app: "writer",
+    p_descricao: texto,
+  });
+  if (error) throw new Error(error.message);
 }
 
 // "Chame o Bob": a sala gera uma sugestão de substituição para o trecho selecionado.

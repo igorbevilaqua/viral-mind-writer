@@ -18,6 +18,14 @@ export interface FaseUsage {
 }
 export type UsageLog = Record<string, FaseUsage>;
 
+// Liga um usageLog à sessão/usuário → recordUsage emite um evento 'llm' no hub por
+// chamada de LLM. Chave Symbol: não aparece em Object.keys nem em JSON.stringify, então
+// não polui o pipeline_trace.usage (que serializa o mesmo objeto).
+const HUB_CTX = Symbol("vm.hubCtx");
+export function bindUsageLog(log: UsageLog, ctx: { sessaoId: string; userId: string | null }): void {
+  (log as unknown as Record<symbol, unknown>)[HUB_CTX] = ctx;
+}
+
 // Acumula usage/duração numa fase — retries e chamadas paralelas somam na mesma chave.
 // Grok não expõe usage compatível: chame sem `usage` (registra só duração/modelo).
 export function recordUsage(
@@ -49,6 +57,19 @@ export function recordUsage(
   f.output_tokens += usage?.output_tokens ?? 0;
   f.cache_creation_input_tokens += usage?.cache_creation_input_tokens ?? 0;
   f.cache_read_input_tokens += usage?.cache_read_input_tokens ?? 0;
+
+  // Telemetria por chamada de LLM (best-effort, fire-and-forget — registrarAtividade nunca lança).
+  const hub = (log as unknown as Record<symbol, unknown>)[HUB_CTX] as
+    | { sessaoId: string; userId: string | null }
+    | undefined;
+  if (hub) {
+    // import dinâmico: mantém hub.ts (e o lib/db.ts que ele carrega) fora do grafo de
+    // módulos das funções puras daqui — senão testes sem env quebram só de importar.
+    const payload = { fase, modelo: model, tokens_in: usage?.input_tokens ?? 0, tokens_out: usage?.output_tokens ?? 0, ms };
+    void import("./hub")
+      .then((m) => m.registrarAtividade("llm", { sessaoId: hub.sessaoId, userId: hub.userId, payload }))
+      .catch(() => {});
+  }
 }
 
 export type Effort = "low" | "medium" | "high";

@@ -41,6 +41,30 @@
       "detail": "Na seção DADOS, cada linha das listas abre uma janela com os vídeos que compõem aquele grupo — com link direto, plataforma, data, views e selo VM quando é produção nossa.",
       "commit": "0517710",
       "addedAt": "2026-07-13T15:30:25.920Z"
+    },
+    {
+      "id": "mrje2yib",
+      "type": "feature",
+      "summary": "Insights do cliente clicáveis: veja os vídeos que geraram cada insight",
+      "detail": "Na seção INSIGHTS, clicar num card de tema/storytelling/hook/comando abre a janela com os vídeos que compuseram aquele insight — link direto, plataforma, data, views e selo VM.",
+      "commit": "9c9524a",
+      "addedAt": "2026-07-13T15:40:43.204Z"
+    },
+    {
+      "id": "mrma2a4d",
+      "type": "improvement",
+      "summary": "Modelagem fundamentada em dados: análise do vídeo de referência agora classifica hook e estrutura com o vocabulário dos playbooks e, se o vídeo está no corpus, ancora nas métricas reais (views/retenção); revisor verifica fidelidade à arquitetura-modelo; corrigido bug que impedia o roteirista de receber o capítulo da estrutura vencedora do playbook; transcrição do YouTube com fallback automático via Supadata",
+      "detail": "",
+      "commit": "9c9524a",
+      "addedAt": "2026-07-15T16:11:31.665Z"
+    },
+    {
+      "id": "mrmb0hhn",
+      "type": "improvement",
+      "summary": "Transcrição de vídeo consulta o corpus primeiro: vídeo que já está na base retorna o roteiro na hora, de graça — Supadata (Reels/TikTok fora da base) só é usada quando necessário, poupando a cota do plano gratuito",
+      "detail": "",
+      "commit": "9c9524a",
+      "addedAt": "2026-07-15T16:38:07.513Z"
     }
   ],
   "lastRelease": {

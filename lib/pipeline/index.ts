@@ -1,5 +1,5 @@
 import { appDb } from "../db";
-import { ANALYST_MODEL, recordUsage } from "../anthropic";
+import { ANALYST_MODEL, recordUsage, bindUsageLog } from "../anthropic";
 import { guardEmit, STALE_GENERATION_MS } from "../generation";
 import { loadContext } from "./context";
 import { analyzeModelagem } from "./modelagem";
@@ -9,6 +9,7 @@ import { critiqueAndRewrite } from "./critique";
 import { humanize } from "./humanize";
 import { blockCount, deepDedash } from "./slop-lint";
 import { APP_VERSION, GIT_SHA } from "../version";
+import { registrarAtividade } from "../hub";
 import type { PipelineEvent, SessionArtifacts } from "./types";
 
 // Sala de agentes (DAG com 1 negociação):
@@ -23,11 +24,16 @@ export async function runPipeline(
 ): Promise<void> {
   // registra a última fase emitida → o catch sabe onde o pipeline morreu (pra debug de print)
   let currentPhase = "init";
+  // user_id da sessão (vm_sessions.user_id): preenchido após loadContext, usado na telemetria do hub
+  let hubUser: string | null = null;
   // ponto único de todos os emits: guardado → desconexão do cliente não mata o pipeline,
-  // e o emit({type:"error"}) do catch nunca relança.
+  // e o emit({type:"error"}) do catch nunca relança. Cada troca de fase vira um evento no hub.
   const rawEmit = guardEmit(emit);
   emit = (e) => {
-    if (e.type === "phase") currentPhase = e.phase;
+    if (e.type === "phase") {
+      currentPhase = e.phase;
+      void registrarAtividade(e.phase, { sessaoId: sessionId, userId: hubUser, payload: { etapa: e.phase } });
+    }
     rawEmit(e);
   };
   try {
@@ -47,6 +53,9 @@ export async function runPipeline(
     }
 
     const ctx = await loadContext(sessionId);
+    hubUser = ctx.userId;
+    // liga o usageLog à sessão → cada chamada de LLM emite um evento 'llm' no hub
+    if (ctx.usageLog) bindUsageLog(ctx.usageLog, { sessaoId: sessionId, userId: ctx.userId });
 
     // ── Modelagem ∥ pesquisa: independentes — os briefs só são consumidos do
     // proposeNarratives em diante, então a análise roda em paralelo com o Grok.
@@ -55,7 +64,7 @@ export async function runPipeline(
     if (modelagens.length) {
       emit({ type: "phase", phase: "modelagem" });
       const t0 = Date.now();
-      modelagemP = Promise.all(modelagens.map((a) => analyzeModelagem(a, ctx.prompt))).then((briefs) => {
+      modelagemP = Promise.all(modelagens.map((a) => analyzeModelagem(a, ctx))).then((briefs) => {
         // ponytail: só duração/modelo — tokens da modelagem exigiriam tocar modelagem.ts (fora do escopo do WP-D)
         recordUsage(ctx.usageLog, "modelagem", ANALYST_MODEL, Date.now() - t0);
         return briefs.filter(Boolean);
@@ -204,6 +213,7 @@ export async function runPipeline(
 
     // limpa erro de tentativas anteriores → a página não abre com a caixa vermelha stale
     await appDb.from("vm_sessions").update({ status: "done", error_message: null }).eq("id", sessionId);
+    await registrarAtividade("roteiro_gerado", { sessaoId: sessionId, userId: hubUser, payload: { script_id: saved.id } });
     emit({ type: "done", scriptId: saved.id });
   } catch (e) {
     const message = e instanceof Error ? e.message : String(e);
@@ -219,6 +229,7 @@ export async function runPipeline(
     await appDb.from("vm_sessions").update({ status: "error", error_message: message }).eq("id", sessionId);
     // best-effort: se a coluna debug ainda não existir (migração não aplicada), não derruba o erro acima
     await appDb.from("vm_sessions").update({ debug }).eq("id", sessionId);
+    await registrarAtividade("erro", { sessaoId: sessionId, userId: hubUser, payload: { error_message: message, etapa: currentPhase } });
     emit({ type: "error", message });
   }
 }

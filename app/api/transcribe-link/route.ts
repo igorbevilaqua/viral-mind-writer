@@ -1,4 +1,5 @@
-import { youtubeId } from "@/lib/video-url";
+import { platformVideoId, youtubeId } from "@/lib/video-url";
+import { viralData } from "@/lib/db";
 
 export const maxDuration = 60;
 export const dynamic = "force-dynamic";
@@ -79,6 +80,27 @@ async function transcribeViaSupadata(url: string, platform: string) {
   return { title: undefined, text: data.content.trim() };
 }
 
+// Vídeo já no nosso corpus → o roteiro do banco É a transcrição: instantâneo, grátis,
+// e poupa a cota da Supadata (plano gratuito). Falha aqui só cai pra transcrição externa.
+async function fromCorpus(url: string) {
+  const pid = platformVideoId(url);
+  if (!pid) return null;
+  try {
+    const { data } = await viralData
+      .from("videos")
+      .select("titulo, roteiro")
+      .or(`link_video.ilike.%${pid}%,plataform_id.eq.${pid}`)
+      .not("roteiro", "is", null)
+      .limit(1)
+      .maybeSingle();
+    if (!data?.roteiro?.trim()) return null;
+    return { title: (data.titulo as string | null) ?? undefined, text: data.roteiro.trim() };
+  } catch (e) {
+    console.error("lookup no corpus falhou (seguindo pra transcrição externa)", url, e);
+    return null;
+  }
+}
+
 export async function POST(req: Request) {
   const { url } = await req.json().catch(() => ({}));
   if (typeof url !== "string" || !url.trim())
@@ -86,15 +108,25 @@ export async function POST(req: Request) {
 
   try {
     const ytId = youtubeId(url);
-    let result;
-    if (ytId) result = await transcribeYouTube(ytId);
-    else if (/instagram\.com\/(reels?|p|tv)\//.test(url)) result = await transcribeViaSupadata(url, "Instagram");
-    else if (/tiktok\.com\//.test(url)) result = await transcribeViaSupadata(url, "TikTok");
-    else
-      return Response.json(
-        { error: "link não reconhecido — suporto YouTube/Shorts, Instagram Reels e TikTok" },
-        { status: 422 }
-      );
+    let result = await fromCorpus(url);
+    if (!result) {
+      if (ytId) {
+        try {
+          result = await transcribeYouTube(ytId);
+        } catch (e) {
+          // sem key o erro original do innertube é mais informativo que "configure SUPADATA_API_KEY"
+          if (!process.env.SUPADATA_API_KEY) throw e;
+          console.error("innertube falhou, tentando Supadata", url, e);
+          result = await transcribeViaSupadata(url, "YouTube");
+        }
+      } else if (/instagram\.com\/(reels?|p|tv)\//.test(url)) result = await transcribeViaSupadata(url, "Instagram");
+      else if (/tiktok\.com\//.test(url)) result = await transcribeViaSupadata(url, "TikTok");
+      else
+        return Response.json(
+          { error: "link não reconhecido — suporto YouTube/Shorts, Instagram Reels e TikTok" },
+          { status: 422 }
+        );
+    }
 
     return Response.json({ title: result.title, text: result.text.slice(0, 100_000) });
   } catch (e) {
