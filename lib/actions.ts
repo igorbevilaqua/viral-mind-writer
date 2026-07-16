@@ -321,7 +321,7 @@ export async function updateScript(
 // "Reportar problema" (menu da sessão) → hub.bugs via RPC hub_reportar_bug.
 // Client AUTENTICADO (anon key + cookies), não service role: a RPC grava auth.uid()
 // como quem reportou, então precisa da sessão do usuário — não do appDb.
-export async function reportarProblema(sessionId: string, descricao: string): Promise<void> {
+export async function reportarProblema(sessionId: string | null, descricao: string): Promise<void> {
   const texto = descricao.trim();
   if (!texto) throw new Error("descreva o problema antes de enviar");
   const supabase = await createClient();

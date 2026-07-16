@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Logo from "./logo";
+import ReportProblem from "./report-problem";
 import { BUILD_TAG } from "@/lib/version";
 
 export default function Nav() {
@@ -34,6 +35,7 @@ export default function Nav() {
         <span className="font-mono text-[10px] text-white/25" title="versão do sistema · git">
           {BUILD_TAG}
         </span>
+        {pathname !== "/login" && <ReportProblem />}
         {pathname !== "/login" && (
           <form action="/auth/signout" method="post">
             <button type="submit" className="text-white/45 hover:text-white cursor-pointer">
