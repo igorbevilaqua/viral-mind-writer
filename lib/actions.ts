@@ -321,14 +321,37 @@ export async function updateScript(
 // "Reportar problema" (menu da sessão) → hub.bugs via RPC hub_reportar_bug.
 // Client AUTENTICADO (anon key + cookies), não service role: a RPC grava auth.uid()
 // como quem reportou, então precisa da sessão do usuário — não do appDb.
-export async function reportarProblema(sessionId: string | null, descricao: string): Promise<void> {
+const IMG_EXT: Record<string, string> = {
+  "image/png": "png",
+  "image/jpeg": "jpg",
+  "image/webp": "webp",
+  "image/gif": "gif",
+};
+
+export async function reportarProblema(
+  sessionId: string | null,
+  descricao: string,
+  imagem?: File | null
+): Promise<void> {
   const texto = descricao.trim();
   if (!texto) throw new Error("descreva o problema antes de enviar");
   const supabase = await createClient();
+
+  let imagemPath: string | null = null;
+  if (imagem && imagem.size > 0) {
+    const path = `writer/${crypto.randomUUID()}.${IMG_EXT[imagem.type] ?? "png"}`;
+    const { error: upErr } = await supabase.storage
+      .from("bug-prints")
+      .upload(path, imagem, { contentType: imagem.type });
+    if (upErr) throw new Error(`falha ao subir o print: ${upErr.message}`);
+    imagemPath = path;
+  }
+
   const { error } = await supabase.rpc("hub_reportar_bug", {
     p_sessao_id: sessionId,
     p_app: "writer",
     p_descricao: texto,
+    p_imagem_path: imagemPath,
   });
   if (error) throw new Error(error.message);
 }
