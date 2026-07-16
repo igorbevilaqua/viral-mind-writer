@@ -481,8 +481,11 @@ export async function designHook(
   ctx: GenerationContext,
   corpo: string
 ): Promise<{ hook: string; variantes: string[]; racional: string }> {
-  const a = ctx.artifacts!;
-  const n = a.candidatas[a.escolhida];
+  // Modo adaptação não tem narrativa vencedora: a arquitetura vem dos briefs de modelagem.
+  const a = ctx.artifacts;
+  const n = a ? a.candidatas[a.escolhida] : null;
+  const narrativaBloco = n ? formatNarrativa(n) : ctx.modelagemBriefs.join("\n\n---\n\n");
+  const orientacaoHook = a?.orientacao_hook || "(sem orientação)";
   const banned = ctx.bannedPhrases.map((b) => `- ${b.label ?? b.pattern}`).join("\n");
   const hookCampeoes = hookExamplesBlock(ctx);
   const resultadosHook = scriptResultBlock(ctx, "hook");
@@ -512,10 +515,10 @@ export async function designHook(
         {
           role: "user",
           content: `NARRATIVA VENCEDORA:
-${formatNarrativa(n)}
+${narrativaBloco}
 
 ORIENTAÇÃO DOS DADOS SOBRE HOOKS:
-${a.orientacao_hook || "(sem orientação)"}
+${orientacaoHook}
 ${hookCampeoes ? `\nHOOKS CAMPEÕES DESTE CLIENTE (literais — a primeira frase real dos vídeos de mais views; use como referência de registro, nunca copie):\n${hookCampeoes}` : ""}${resultadosHook ? `\nHOOKS DE ROTEIROS DESTA SALA JÁ PUBLICADOS (resultado real — evite o marcado como EVITE):\n${resultadosHook}` : ""}${clientInsightBlock(ctx, ["hook"]) ? `\nHOOKS QUE JÁ FUNCIONARAM PARA ESTE CLIENTE (pré-rankeados por performance+recência):\n${clientInsightBlock(ctx, ["hook"])}` : ""}${taughtBlock(ctx, ["hook"]) ? `\nAPRENDIZADOS DE HOOK ENSINADOS PELO TIME (curadoria humana — prevalecem sobre padrões do corpus em conflito):\n${taughtBlock(ctx, ["hook"])}` : ""}
 
 CORPO DO ROTEIRO (o hook precisa emendar na primeira frase e ser pago pelo final):

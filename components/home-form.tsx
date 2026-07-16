@@ -4,7 +4,6 @@ import { useEffect, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { createSession, type NewAttachment } from "@/lib/actions";
 import type { ThemeSuggestion } from "@/lib/pipeline/suggest";
-import { VIDEO_URL_RE } from "@/lib/video-url";
 
 const KIND_LABELS: Record<NewAttachment["kind"], { label: string; placeholder: string }> = {
   reference_script: { label: "Roteiro de referência", placeholder: "Cole o roteiro de referência..." },
@@ -12,8 +11,8 @@ const KIND_LABELS: Record<NewAttachment["kind"], { label: string; placeholder: s
     label: "Notícia",
     placeholder: "Comentários sobre a notícia: ângulo desejado, o que destacar, o que evitar... (considerados na produção do roteiro)",
   },
-  document: { label: "Documento", placeholder: "O texto extraído do arquivo aparece aqui para revisão — ou cole o conteúdo direto..." },
-  video_link: { label: "Vídeo", placeholder: "Cole o link acima para buscar a transcrição — ou cole a transcrição aqui..." },
+  document: { label: "Documento", placeholder: "O texto extraído do arquivo aparece aqui para revisão, ou cole o conteúdo direto..." },
+  video_link: { label: "Vídeo", placeholder: "Opcional: cole a transcrição do vídeo aqui. Se deixar em branco, buscamos ao conjurar." },
 };
 
 // Frases que rotacionam durante a espera de cada fase — a pesquisa é a longa, então tem mais.
@@ -130,27 +129,6 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
     }
   };
 
-  // Busca a transcrição de um link de vídeo (YouTube/Reels/TikTok) e preenche o anexo
-  const transcribeLink = async (i: number, url: string, current: string) => {
-    if (!VIDEO_URL_RE.test(url) || current.trim() || extracting !== null) return;
-    setExtracting(i);
-    setExtractError((e) => ({ ...e, [i]: "" }));
-    try {
-      const res = await fetch("/api/transcribe-link", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error ?? "falha na transcrição");
-      update(i, { raw_content: data.title ? `${data.title}\n\n${data.text}` : data.text });
-    } catch (e) {
-      setExtractError((x) => ({ ...x, [i]: e instanceof Error ? e.message : String(e) }));
-    } finally {
-      setExtracting(null);
-    }
-  };
-
   // Ideador: pesquisa + dados do cliente → sugestões de tema com alto potencial
   const suggest = async () => {
     if (!clientId || suggestPhase) return;
@@ -199,8 +177,12 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  // Modelagem de vídeo com link já basta pra conjurar: sem tema, adaptamos/otimizamos o próprio vídeo.
+  const hasVideoModelagem = attachments.some((a) => a.kind === "video_link" && a.is_modelagem && a.url.trim());
+  const canSubmit = !!prompt.trim() || hasVideoModelagem;
+
   const submit = () => {
-    if (!prompt.trim()) return;
+    if (!canSubmit) return;
     startTransition(async () => {
       const id = await createSession({
         prompt: prompt.trim(),
@@ -254,7 +236,7 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
           </button>
           <button
             onClick={submit}
-            disabled={pending || !prompt.trim()}
+            disabled={pending || !canSubmit}
             className="btn-gold ml-auto inline-flex items-center gap-2 rounded-[11px] px-5 py-2.5 text-[13.5px] font-semibold disabled:opacity-40"
           >
             <QuillIcon dark />
@@ -413,7 +395,7 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
             </div>
             {a.is_modelagem && (
               <p className="text-xs text-white/40">
-                — a estrutura, emoções e elementos virais deste material serão desconstruídos e replicados no seu tema
+                A estrutura, emoções e elementos virais deste material serão desconstruídos e replicados no seu tema
               </p>
             )}
             <div className="flex flex-col gap-2.5">
@@ -421,7 +403,6 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
                 <input
                   value={a.url}
                   onChange={(e) => update(i, { url: e.target.value })}
-                  onBlur={() => a.kind === "video_link" && transcribeLink(i, a.url, a.raw_content)}
                   placeholder={
                     a.kind === "news_link" ? "Link da notícia (obrigatório)" : "Link do vídeo (YouTube/Shorts, Reels, TikTok)"
                   }
@@ -444,14 +425,11 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
                   {extracting === i
                     ? "Extraindo texto..."
                     : a.url
-                      ? `${a.url} — trocar arquivo`
+                      ? `${a.url} · trocar arquivo`
                       : "Enviar arquivo (.pdf, .docx, .txt, .html, .xlsx, .pptx)"}
                 </label>
               )}
-              {a.kind === "video_link" && extracting === i && (
-                <p className="text-xs text-gold/70">Buscando transcrição do vídeo...</p>
-              )}
-              {(a.kind === "document" || a.kind === "video_link") && extractError[i] && (
+              {a.kind === "document" && extractError[i] && (
                 <p className="text-xs text-red-300">{extractError[i]}</p>
               )}
               <textarea

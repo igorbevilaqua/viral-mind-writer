@@ -42,7 +42,10 @@ const WRITER_FORMAT = `Responda EXATAMENTE neste formato (headers literais):
 // agente storytelling; o roteirista recebe só o trecho da estrutura vencedora (buildDynamicSystemBlock).
 export function buildStaticSystemBlock(ctx: GenerationContext): string {
   const banned = ctx.bannedPhrases.map((b) => `- ${b.label ?? b.pattern}`).join("\n");
-  return `# PLAYBOOK DE HOOKS
+  return `# IDIOMA (INEGOCIÁVEL)
+Todo texto de saída — roteiro, hook, headline, comando, variações — SEMPRE em português do Brasil, qualquer que seja o idioma dos materiais de referência ou da transcrição.
+
+# PLAYBOOK DE HOOKS
 ${ctx.playbooks.hook ?? "(sem playbook)"}
 
 # PLAYBOOK DE COMANDO/CTA
@@ -192,11 +195,14 @@ export interface WriterOutput {
 export async function generateDraft(
   ctx: GenerationContext,
   onToken: (t: string) => void,
-  revision?: { anterior: string; feedback: string }
+  revision?: { anterior: string; feedback: string },
+  adaptation?: { transcript: string }
 ): Promise<WriterOutput> {
   const task = revision
     ? `Reescreva o corpo do roteiro abaixo atendendo o FEEDBACK DO USUÁRIO (prioridade máxima), mantendo a NARRATIVA VENCEDORA do seu contexto e o brief. Aproveite o que já funciona na versão anterior; mude o que o feedback pedir.\n\nVERSÃO ANTERIOR:\n${revision.anterior}\n\nFEEDBACK DO USUÁRIO:\n${revision.feedback}`
-    : `Escreva o corpo do roteiro executando a NARRATIVA VENCEDORA do seu contexto, sobre o brief abaixo.`;
+    : adaptation
+      ? `Adapte e OTIMIZE o roteiro original abaixo, produzindo o corpo de um roteiro em português do Brasil. Siga a ESTRUTURA-MODELO do seu contexto (a arquitetura, o hook, os beats e o arco que fizeram este vídeo funcionar). Mantenha o mesmo tema e os argumentos do original, mas melhore ritmo, clareza e força. NÃO copie o texto literal nem traduza palavra a palavra — reescreva com naturalidade.\n\nROTEIRO ORIGINAL:\n${adaptation.transcript.slice(0, 12000)}`
+      : `Escreva o corpo do roteiro executando a NARRATIVA VENCEDORA do seu contexto, sobre o brief abaixo.`;
 
   const t0 = Date.now();
   const stream = anthropic.messages.stream({
@@ -215,7 +221,9 @@ export async function generateDraft(
     messages: [
       {
         role: "user",
-        content: `${task} Duração-alvo: 60 a 180 segundos de fala (150 a 430 palavras no corpo — fora disso o roteiro é eliminado na revisão).\n\nBRIEF:\n${ctx.prompt}\n\n${WRITER_FORMAT}`,
+        content: `${task} Duração-alvo: 60 a 180 segundos de fala (150 a 430 palavras no corpo — fora disso o roteiro é eliminado na revisão).${
+          ctx.prompt.trim() ? `\n\nBRIEF:\n${ctx.prompt}` : ""
+        }\n\n${WRITER_FORMAT}`,
       },
     ],
   });

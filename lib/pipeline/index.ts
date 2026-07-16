@@ -59,7 +59,13 @@ export async function runPipeline(
 
     // ── Modelagem ∥ pesquisa: independentes — os briefs só são consumidos do
     // proposeNarratives em diante, então a análise roda em paralelo com o Grok.
-    const modelagens = ctx.attachments.filter((a) => a.is_modelagem && a.raw_content);
+    // Modelagem roda com transcrição colada OU só com o link (busca a transcrição ao conjurar).
+    const modelagens = ctx.attachments.filter(
+      (a) => a.is_modelagem && (a.raw_content || (a.kind === "video_link" && a.url))
+    );
+    // Sem tema digitado + modelagem de vídeo = adaptar/otimizar o próprio roteiro (PT-BR):
+    // pula pesquisa/narrativas e vai direto transcrição → desconstrução → roteiro.
+    const adaptation = !ctx.prompt.trim() && modelagens.length > 0;
     let modelagemP: Promise<string[]> = Promise.resolve([]);
     if (modelagens.length) {
       emit({ type: "phase", phase: "modelagem" });
@@ -76,7 +82,7 @@ export async function runPipeline(
 
     // ── Pesquisa + narrativas + ranking (só na primeira geração da sessão) ──
     let artifacts: SessionArtifacts | null = ctx.artifacts;
-    if (!artifacts?.candidatas?.length) {
+    if (!adaptation && !artifacts?.candidatas?.length) {
       emit({ type: "phase", phase: "pesquisa" });
       const dossie = await research(ctx);
       ctx.modelagemBriefs = await modelagemP;
@@ -100,16 +106,28 @@ export async function runPipeline(
     // Regeneração (artifacts cacheados) pula a pesquisa mas o roteirista ainda usa os briefs.
     ctx.modelagemBriefs = await modelagemP;
 
-    // Override do usuário: troca a narrativa vencedora e reescreve a partir daqui
-    if (opts.narrativeIndex != null && artifacts.candidatas[opts.narrativeIndex]) {
-      artifacts.escolhida = opts.narrativeIndex;
+    // Adaptação sem tema depende 100% da transcrição do vídeo — se ela não veio (link sem
+    // legenda, sem SUPADATA_API_KEY, plataforma não suportada), falha claro em vez de gerar vazio.
+    if (adaptation && !modelagens[0].raw_content?.trim()) {
+      throw new Error(
+        "Não consegui obter a transcrição do vídeo. Cole a transcrição no campo do vídeo, ou digite um tema, e conjure de novo."
+      );
     }
-    // Zero travessão nos cards (narrativas/dossiê/orientações): saída intermediária
-    // que não passa pelo humanizador. dedash é a garantia determinística.
-    artifacts = deepDedash(artifacts);
-    ctx.artifacts = artifacts;
-    await appDb.from("vm_sessions").update({ artifacts }).eq("id", sessionId);
-    emit({ type: "narrativas", candidatas: artifacts.candidatas, ranking: artifacts.ranking, escolhida: artifacts.escolhida });
+
+    // Modo adaptação não tem narrativas/dossiê: a "narrativa" é a arquitetura do próprio vídeo,
+    // que já viaja nos modelagemBriefs. Pula todo o bloco de artefatos.
+    if (!adaptation && artifacts) {
+      // Override do usuário: troca a narrativa vencedora e reescreve a partir daqui
+      if (opts.narrativeIndex != null && artifacts.candidatas[opts.narrativeIndex]) {
+        artifacts.escolhida = opts.narrativeIndex;
+      }
+      // Zero travessão nos cards (narrativas/dossiê/orientações): saída intermediária
+      // que não passa pelo humanizador. dedash é a garantia determinística.
+      artifacts = deepDedash(artifacts);
+      ctx.artifacts = artifacts;
+      await appDb.from("vm_sessions").update({ artifacts }).eq("id", sessionId);
+      emit({ type: "narrativas", candidatas: artifacts.candidatas, ranking: artifacts.ranking, escolhida: artifacts.escolhida });
+    }
 
     // Reescrita orientada: feedback do usuário + versão anterior como base
     let revision: { anterior: string; feedback: string } | undefined;
@@ -131,7 +149,8 @@ export async function runPipeline(
 
     // ── Roteirista-chefe escreve o corpo (streaming) ──
     emit({ type: "phase", phase: "roteiro" });
-    const { headline, corpo, fontes } = await generateDraft(ctx, (t) => emit({ type: "token", text: t }), revision);
+    const adapt = adaptation ? { transcript: modelagens[0].raw_content ?? "" } : undefined;
+    const { headline, corpo, fontes } = await generateDraft(ctx, (t) => emit({ type: "token", text: t }), revision, adapt);
 
     // ── Hook e comando em paralelo, ambos vendo o roteiro pronto ──
     emit({ type: "phase", phase: "hook_comando" });
@@ -159,7 +178,7 @@ export async function runPipeline(
       sections.roteiro = stripTrailingComando(sections.roteiro, sections.comando);
     }
 
-    const narrativa = artifacts.candidatas[artifacts.escolhida];
+    const narrativa = artifacts ? (artifacts.candidatas[artifacts.escolhida] ?? null) : null;
     // unique (session_id, version): conflito com escrita concorrente → recalcula a version e tenta de novo
     let saved: { id: string } | null = null;
     let error: { code?: string; message: string } | null = null;
@@ -189,7 +208,7 @@ export async function runPipeline(
             revised,
             final,
             violations,
-            narrativa_escolhida: { indice: artifacts.escolhida, titulo: narrativa?.titulo, estrutura: narrativa?.estrutura },
+            narrativa_escolhida: { indice: artifacts?.escolhida ?? null, titulo: narrativa?.titulo, estrutura: narrativa?.estrutura },
             hook_racional: hookRes.racional,
             few_shot_origens: ctx.fewShot.map((f) => f.origem),
             modelagem_briefs: ctx.modelagemBriefs,
@@ -197,7 +216,7 @@ export async function runPipeline(
             usage: ctx.usageLog ?? {},
             // WP-E.1: previsto×real — score da vencedora + fingerprint do conhecimento usado;
             // o ETL maduro (vm_outcomes) fecha o ciclo lendo estes dois campos
-            predicted_score: artifacts.ranking.find((r) => r.indice === artifacts.escolhida)?.score ?? null,
+            predicted_score: artifacts?.ranking.find((r) => r.indice === artifacts!.escolhida)?.score ?? null,
             fingerprint: {
               lesson_ids: ctx.lessonIds ?? [],
               playbook_slugs_versions: ctx.playbookVersions ?? [],

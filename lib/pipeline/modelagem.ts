@@ -1,6 +1,7 @@
 import { anthropic, ANALYST_MODEL } from "../anthropic";
 import { appDb, viralData } from "../db";
 import { platformVideoId } from "../video-url";
+import { fetchTranscript } from "../transcribe";
 import { toolInput } from "./agents";
 import { playbookIndex } from "./draft";
 import type { Attachment, GenerationContext } from "./types";
@@ -133,6 +134,16 @@ async function lookupCorpus(attachment: Attachment): Promise<{ promptBlock: stri
 }
 
 export async function analyzeModelagem(attachment: Attachment, ctx: GenerationContext): Promise<string> {
+  // Só o link foi colado (sem transcrição manual): busca a transcrição agora, ao conjurar —
+  // não mais ao colar o link. Falha aqui só remove a modelagem, nunca derruba a geração.
+  if (!attachment.raw_content?.trim() && attachment.kind === "video_link" && attachment.url) {
+    try {
+      const { title, text } = await fetchTranscript(attachment.url);
+      attachment.raw_content = title ? `${title}\n\n${text}` : text; // visível ao roteirista adiante
+    } catch (e) {
+      console.error("modelagem: transcrição do link falhou (seguindo sem modelagem)", attachment.url, e);
+    }
+  }
   const transcript = attachment.raw_content?.trim();
   if (!transcript) return "";
 
@@ -166,7 +177,11 @@ export async function analyzeModelagem(attachment: Attachment, ctx: GenerationCo
     messages: [
       {
         role: "user",
-        content: `Você é um analista de vídeos virais. Desconstrua o vídeo abaixo: estrutura em beats, arco emocional, argumentos, pacing, hook e CTA, e os elementos que o fizeram viralizar. Classifique hook e estrutura usando EXATAMENTE o vocabulário dos playbooks fornecidos. Depois escreva o replication_brief: instruções para um roteirista replicar essa ARQUITETURA (jamais o texto literal) adaptada ao tema: "${ctx.prompt}".${taxonomia}${corpus.promptBlock}\n\nTRANSCRIÇÃO:\n${transcript}`,
+        content: `Você é um analista de vídeos virais. Desconstrua o vídeo abaixo: estrutura em beats, arco emocional, argumentos, pacing, hook e CTA, e os elementos que o fizeram viralizar. Classifique hook e estrutura usando EXATAMENTE o vocabulário dos playbooks fornecidos. Depois escreva o replication_brief: instruções para um roteirista ${
+          ctx.prompt.trim()
+            ? `replicar essa ARQUITETURA (jamais o texto literal) adaptada ao tema: "${ctx.prompt}"`
+            : `produzir uma versão adaptada e otimizada do MESMO roteiro em português do Brasil — preserve tema, argumentos e a ARQUITETURA que funcionou, mas melhore hook, ritmo e clareza (jamais copie o texto literal)`
+        }.${taxonomia}${corpus.promptBlock}\n\nTRANSCRIÇÃO:\n${transcript}`,
       },
     ],
   });

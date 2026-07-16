@@ -35,6 +35,7 @@ export function pickTopFewShot(
 }
 
 async function fetchFewShot(prompt: string, clientId: string | null) {
+  if (!prompt.trim()) return []; // adaptação sem tema: nada pra embutir; embeddings rejeita string vazia
   try {
     const queryEmbedding = await embed(prompt);
     const corpus = await viralData.rpc("match_documents", {
