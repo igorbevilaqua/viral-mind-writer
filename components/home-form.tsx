@@ -177,9 +177,10 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // Modelagem de vídeo com link já basta pra conjurar: sem tema, adaptamos/otimizamos o próprio vídeo.
-  const hasVideoModelagem = attachments.some((a) => a.kind === "video_link" && a.is_modelagem && a.url.trim());
-  const canSubmit = !!prompt.trim() || hasVideoModelagem;
+  // Um anexo sozinho já basta pra conjurar (sem tema): notícia com link, documento/roteiro
+  // com conteúdo, vídeo com link. Mesmo critério do filtro do submit — fonte única.
+  const isUsable = (a: NewAttachment) => (a.kind === "news_link" ? a.url.trim() : a.raw_content.trim() || a.url.trim());
+  const canSubmit = !!prompt.trim() || attachments.some(isUsable);
 
   const submit = () => {
     if (!canSubmit) return;
@@ -187,10 +188,7 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
       const id = await createSession({
         prompt: prompt.trim(),
         clientId: clientId || null,
-        // notícia exige link; os demais entram com texto ou link
-        attachments: attachments.filter((a) =>
-          a.kind === "news_link" ? a.url.trim() : a.raw_content.trim() || a.url.trim()
-        ),
+        attachments: attachments.filter(isUsable),
       });
       router.push(`/sessions/${id}?start=1`);
     });

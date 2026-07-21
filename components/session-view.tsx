@@ -747,7 +747,9 @@ function ScriptCard({
   const [sel, setSel] = useState<{ x: number; y: number; start: number; end: number; trecho: string } | null>(null);
   const [bob, setBob] = useState<{ start: number; end: number; trecho: string } | null>(null);
   // Bob inline na edição (completar/reescrever/pesquisar) — insere no draft, não persiste.
-  const [bobInline, setBobInline] = useState<{ start: number; end: number; trecho: string } | null>(null);
+  const [bobInline, setBobInline] = useState<{ start: number; end: number; trecho: string; slash?: boolean } | null>(null);
+  // Botão flutuante "Chamar o Bob" ao selecionar texto no textarea (modo edição).
+  const [taSel, setTaSel] = useState<{ x: number; y: number; start: number; end: number } | null>(null);
 
   const startEdit = () => {
     setSel(null);
@@ -806,23 +808,48 @@ function ScriptCard({
       router.refresh();
     });
 
-  // Abre o Bob inline na posição/seleção atual do textarea do roteiro.
-  const openBobInline = (ta: HTMLTextAreaElement | null) => {
-    const start = ta?.selectionStart ?? draft.roteiro.length;
-    const end = ta?.selectionEnd ?? start;
-    setBobInline({ start, end, trecho: draft.roteiro.slice(start, end) });
+  // Abre o Bob inline. `explicit` fixa a seleção (botão flutuante), senão lê o cursor.
+  const openBobInline = (
+    ta: HTMLTextAreaElement | null,
+    slash = false,
+    explicit?: { start: number; end: number }
+  ) => {
+    const start = explicit?.start ?? ta?.selectionStart ?? draft.roteiro.length;
+    const end = explicit?.end ?? ta?.selectionEnd ?? start;
+    setBobInline({ start, end, trecho: draft.roteiro.slice(start, end), slash });
+    setTaSel(null);
   };
 
-  // Atalho: "/" no início da linha ou após espaço abre o Bob (a "/" não é digitada).
+  // Seleção no textarea → botão flutuante ancorado onde o mouse soltou (sem geometria de caret).
+  const onRoteiroMouseUp = (e: React.MouseEvent<HTMLTextAreaElement>) => {
+    const ta = e.currentTarget;
+    const start = ta.selectionStart ?? 0;
+    const end = ta.selectionEnd ?? 0;
+    if (end - start >= 2) setTaSel({ x: e.clientX, y: e.clientY, start, end });
+    else setTaSel(null);
+  };
+
+  // Atalho: "/" chama o Bob no cursor (a "/" não é digitada). Ao cancelar, a "/" é
+  // restaurada — assim casos legítimos ("24/7", "e/ou") não perdem o caractere.
   const onRoteiroKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key !== "/" || bobInline) return;
-    const ta = e.currentTarget;
-    const pos = ta.selectionStart ?? 0;
-    const prev = pos === 0 ? "\n" : draft.roteiro[pos - 1];
-    if (prev === "\n" || prev === " ") {
-      e.preventDefault();
-      openBobInline(ta);
+    e.preventDefault();
+    openBobInline(e.currentTarget, true);
+  };
+
+  const cancelBobInline = () => {
+    if (bobInline?.slash) {
+      const at = Math.min(bobInline.start, draft.roteiro.length);
+      setDraft((d) => ({ ...d, roteiro: d.roteiro.slice(0, at) + "/" + d.roteiro.slice(at) }));
+      requestAnimationFrame(() => {
+        const ta = roteiroTaRef.current;
+        if (ta) {
+          ta.focus();
+          ta.selectionStart = ta.selectionEnd = at + 1;
+        }
+      });
     }
+    setBobInline(null);
   };
 
   // Insere a sugestão do Bob no draft. Guard anti-drift: se a seleção não bate mais
@@ -945,7 +972,7 @@ function ScriptCard({
                 Bob
               </button>
               <span className="text-[11px] text-white/35">
-                selecione um trecho, ou digite <kbd className="font-mono text-white/55">/</kbd> pra chamar o Bob no cursor
+                digite <kbd className="font-mono text-white/55">/</kbd> ou selecione um trecho pra chamar o Bob
               </span>
             </>
           )}
@@ -954,8 +981,12 @@ function ScriptCard({
           <textarea
             ref={roteiroTaRef}
             value={draft.roteiro}
-            onChange={(e) => setDraft((d) => ({ ...d, roteiro: e.target.value }))}
+            onChange={(e) => {
+              setTaSel(null);
+              setDraft((d) => ({ ...d, roteiro: e.target.value }));
+            }}
             onKeyDown={onRoteiroKeyDown}
+            onMouseUp={onRoteiroMouseUp}
             rows={Math.max(10, draft.roteiro.split("\n").length + 1)}
             className={`${taCls} mt-3`}
           />
@@ -968,12 +999,25 @@ function ScriptCard({
             {script.roteiro}
           </p>
         )}
+        {editing && taSel && !bobInline && (
+          <button
+            onMouseDown={(e) => {
+              e.preventDefault();
+              openBobInline(roteiroTaRef.current, false, { start: taSel.start, end: taSel.end });
+            }}
+            style={{ position: "fixed", left: taSel.x, top: taSel.y - 42, transform: "translateX(-50%)", zIndex: 40 }}
+            className="btn-gold inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-semibold shadow-lg whitespace-nowrap"
+          >
+            <QuillIcon size={12} color="#161410" />
+            Chamar o Bob
+          </button>
+        )}
         {editing && bobInline && (
           <BobInlinePanel
             sessionId={sessionId}
             roteiro={draft.roteiro}
             sel={bobInline}
-            onCancel={() => setBobInline(null)}
+            onCancel={cancelBobInline}
             onApply={applyBobInline}
           />
         )}
