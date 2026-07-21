@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { finalizeSession, markPublished, quickFeedback, swapHook, updateScript, suggestFragment, bobAssistAction } from "@/lib/actions";
+import { finalizeSession, markPublished, quickFeedback, swapHook, updateScript, suggestFragment } from "@/lib/actions";
 import type { BobModo } from "@/lib/pipeline/bob";
 import { spliceRoteiro, mergeFontes } from "@/lib/bob-edit";
 import type { NarrativaCandidata, RankingItem, SessionArtifacts } from "@/lib/pipeline/types";
@@ -566,6 +566,14 @@ function ThumbBtns({ scriptId, sessionId, rating }: { scriptId: string; sessionI
   );
 }
 
+// Mensagens de status honestas por fase (rotacionam durante a espera; custo zero).
+// Descrevem o que a fase real faz — na "pesquisando" a 1ª linha é a busca de verdade.
+const BOB_STATUS: Record<string, string[]> = {
+  pensando: ["Lendo seu pedido e o contexto do roteiro..."],
+  pesquisando: ["Conferindo fontes recentes...", "Separando os dados concretos e as datas..."],
+  escrevendo: ["Escrevendo na voz do cliente...", "Ajustando ritmo e emenda com o texto ao redor..."],
+};
+
 // Bob inline (edição manual): dockado abaixo do textarea. O contexto decide o modo —
 // sem seleção completa no cursor, com seleção reescreve o trecho. Pesquisa na web
 // sozinho quando o pedido exige um dado externo. Accept/recriar insere no draft.
@@ -587,26 +595,72 @@ function BobInlinePanel({
   const [sugestao, setSugestao] = useState<{ texto: string; fonte?: string } | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [status, setStatus] = useState<{ phase: string; query?: string } | null>(null);
+  const [msgIdx, setMsgIdx] = useState(0);
+  const phase = status?.phase;
 
+  // Rotaciona as frases da fase atual (o índice é zerado ao trocar de fase, no stream).
+  useEffect(() => {
+    if (!phase) return;
+    const id = setInterval(() => setMsgIdx((i) => i + 1), 2200);
+    return () => clearInterval(id);
+  }, [phase]);
+
+  const statusMsg = (() => {
+    if (!status) return "";
+    const base = status.phase === "pesquisando" && status.query ? [`Pesquisando: ${status.query}`] : [];
+    const msgs = [...base, ...(BOB_STATUS[status.phase] ?? ["Gerando..."])];
+    return msgs[msgIdx % msgs.length];
+  })();
+
+  // Progresso real via stream: as fases (pensando/pesquisando/escrevendo) chegam do /api/bob.
   const gerar = async (evitar?: string) => {
     if (!instrucao.trim()) return;
     setLoading(true);
     setError(null);
+    setMsgIdx(0);
+    setStatus({ phase: "pensando" });
     try {
-      const r = await bobAssistAction(sessionId, {
-        modo,
-        roteiro,
-        antes: roteiro.slice(0, sel.start),
-        depois: roteiro.slice(sel.end),
-        trecho: sel.trecho,
-        instrucao: instrucao.trim(),
-        evitar,
+      const res = await fetch("/api/bob", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          sessionId,
+          modo,
+          roteiro,
+          antes: roteiro.slice(0, sel.start),
+          depois: roteiro.slice(sel.end),
+          trecho: sel.trecho,
+          instrucao: instrucao.trim(),
+          evitar,
+        }),
       });
-      setSugestao(r);
+      if (!res.body) throw new Error(res.ok ? "sem stream" : await res.text());
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
+      for (;;) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split("\n\n");
+        buffer = lines.pop() ?? "";
+        for (const line of lines) {
+          if (!line.startsWith("data: ")) continue;
+          const e = JSON.parse(line.slice(6));
+          if (e.type === "phase") {
+            setMsgIdx(0);
+            setStatus({ phase: e.phase, query: e.query });
+          }
+          if (e.type === "done") setSugestao({ texto: e.texto, fonte: e.fonte });
+          if (e.type === "error") setError(e.message);
+        }
+      }
     } catch (e) {
       setError(e instanceof Error ? e.message : String(e));
     } finally {
       setLoading(false);
+      setStatus(null);
     }
   };
 
@@ -654,6 +708,15 @@ function BobInlinePanel({
           {sugestao.fonte && (
             <p className="mt-1.5 text-[11px] text-white/40 break-all">fonte (vai pro campo FONTES): {sugestao.fonte.replace(/\n/g, " · ")}</p>
           )}
+        </div>
+      )}
+
+      {loading && statusMsg && (
+        <div className="flex items-center gap-2.5 text-[12.5px] text-white/70">
+          <span className="w-1.5 h-1.5 rounded-full bg-gold vm-pulse shrink-0" />
+          <span key={statusMsg} className="vm-fade-in break-words">
+            {statusMsg}
+          </span>
         </div>
       )}
 

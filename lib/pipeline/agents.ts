@@ -6,6 +6,7 @@ import { grokClient, RESEARCH_MODEL } from "../grok";
 import { fmtNum } from "../format";
 import type { CalibrationPayload } from "../learning-loop";
 import type { ClientInsightPayload, GenerationContext, NarrativaCandidata, RankingItem } from "./types";
+import { deepDedash } from "./slop-lint";
 
 // Os prompts dos agentes vivem em agents/*.md — fonte única consumida pelo app e pela skill /goal.
 const promptCache = new Map<string, string>();
@@ -206,7 +207,10 @@ export function toolInput(block: { input: unknown }): Record<string, unknown> {
       v = {};
     }
   }
-  return v && typeof v === "object" ? (v as Record<string, unknown>) : {};
+  // Chokepoint único de toda saída estruturada dos agentes (sugestão, professor,
+  // curador, ETL, modelagem, ranking, variantes...). dedash aqui = zero travessão
+  // no sistema inteiro, seja o texto exibido ou persistido. Tolerância zero.
+  return v && typeof v === "object" ? deepDedash(v as Record<string, unknown>) : {};
 }
 
 export function toolArray<T>(input: Record<string, unknown>, key: string): T[] {

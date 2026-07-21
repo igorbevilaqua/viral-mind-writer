@@ -7,6 +7,7 @@ import { loadContext } from "./context";
 import { dedash } from "./slop-lint";
 
 export type BobModo = "completar" | "reescrever";
+export type BobPhase = "pensando" | "pesquisando" | "escrevendo";
 
 export interface BobInput {
   modo: BobModo;
@@ -47,7 +48,12 @@ async function grokPesquisa(query: string): Promise<{ texto: string; fontes: str
 // Bob na edição manual: completa no cursor ou reescreve a seleção — na voz do cliente,
 // com o contexto da sala (mesmo prefixo cacheado do roteirista) e pesquisando na web
 // quando o pedido exigir. Retorna o texto a encaixar e as fontes usadas (→ FONTES).
-export async function bobAssist(sessionId: string, input: BobInput): Promise<{ texto: string; fonte?: string }> {
+export async function bobAssist(
+  sessionId: string,
+  input: BobInput,
+  onPhase?: (e: { phase: BobPhase; query?: string }) => void
+): Promise<{ texto: string; fonte?: string }> {
+  onPhase?.({ phase: "pensando" });
   const ctx = await loadContext(sessionId);
 
   const posicao = `ROTEIRO EM EDIÇÃO (contexto — NÃO reescreva; ⟦AQUI⟧ marca onde seu texto entra):
@@ -97,6 +103,7 @@ ${input.instrucao}`;
     const toolUse = res.content.find((b): b is Anthropic.ToolUseBlock => b.type === "tool_use");
     if (toolUse && toolUse.name === "pesquisar_web") {
       const query = (toolUse.input as { query?: string }).query ?? input.instrucao;
+      onPhase?.({ phase: "pesquisando", query });
       let resultado = "(a pesquisa não retornou dados — não invente números)";
       try {
         const r = await grokPesquisa(query);
@@ -105,6 +112,7 @@ ${input.instrucao}`;
       } catch (e) {
         console.error("pesquisa do Bob falhou, seguindo sem dados frescos", e);
       }
+      onPhase?.({ phase: "escrevendo" });
       messages.push({ role: "assistant", content: res.content });
       messages.push({ role: "user", content: [{ type: "tool_result", tool_use_id: toolUse.id, content: resultado }] });
       continue;
