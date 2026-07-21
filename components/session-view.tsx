@@ -2,7 +2,9 @@
 
 import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { finalizeSession, markPublished, quickFeedback, swapHook, updateScript, suggestFragment } from "@/lib/actions";
+import { finalizeSession, markPublished, quickFeedback, swapHook, updateScript, suggestFragment, bobAssistAction } from "@/lib/actions";
+import type { BobModo } from "@/lib/pipeline/bob";
+import { spliceRoteiro, mergeFontes } from "@/lib/bob-edit";
 import type { NarrativaCandidata, RankingItem, SessionArtifacts } from "@/lib/pipeline/types";
 import type { LintViolation } from "@/lib/pipeline/slop-lint";
 import { fmtNum, fmtRatio, ratioTone } from "@/lib/format";
@@ -564,6 +566,160 @@ function ThumbBtns({ scriptId, sessionId, rating }: { scriptId: string; sessionI
   );
 }
 
+// Bob inline (edição manual): dockado abaixo do textarea. Completa no cursor,
+// reescreve a seleção ou pesquisa e insere — accept/recriar, insere no draft.
+const BOB_MODOS: { key: BobModo; label: string; hint: string }[] = [
+  { key: "completar", label: "Completar", hint: "escreve no cursor seguindo sua orientação" },
+  { key: "reescrever", label: "Reescrever seleção", hint: "troca o trecho selecionado" },
+  { key: "pesquisar", label: "Pesquisar e inserir", hint: "busca o dado na web e escreve na voz do cliente" },
+];
+
+function BobInlinePanel({
+  sessionId,
+  roteiro,
+  sel,
+  onCancel,
+  onApply,
+}: {
+  sessionId: string;
+  roteiro: string;
+  sel: { start: number; end: number; trecho: string };
+  onCancel: () => void;
+  onApply: (texto: string, fonte?: string) => void;
+}) {
+  const [modo, setModo] = useState<BobModo>(sel.trecho ? "reescrever" : "completar");
+  const [instrucao, setInstrucao] = useState("");
+  const [sugestao, setSugestao] = useState<{ texto: string; fonte?: string } | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const gerar = async (evitar?: string) => {
+    if (!instrucao.trim()) return;
+    if (modo === "reescrever" && !sel.trecho.trim()) return setError("selecione um trecho para reescrever");
+    setLoading(true);
+    setError(null);
+    try {
+      const r = await bobAssistAction(sessionId, {
+        modo,
+        roteiro,
+        antes: roteiro.slice(0, sel.start),
+        depois: roteiro.slice(sel.end),
+        trecho: sel.trecho,
+        instrucao: instrucao.trim(),
+        evitar,
+      });
+      setSugestao(r);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : String(e));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="mt-3 rounded-[12px] border border-gold/30 bg-black/30 p-4 space-y-3">
+      <div className="flex items-center gap-2">
+        <QuillIcon size={13} color="#c9a35c" />
+        <span className="kicker text-gold">BOB</span>
+        <span className="text-[11px] text-white/40">
+          {sel.trecho ? `trecho: "${sel.trecho.slice(0, 60)}${sel.trecho.length > 60 ? "…" : ""}"` : "inserindo na posição do cursor"}
+        </span>
+        <button onClick={onCancel} aria-label="Fechar" className="ml-auto text-white/40 hover:text-white/80 text-lg leading-none">
+          ×
+        </button>
+      </div>
+
+      <div className="flex flex-wrap gap-1.5">
+        {BOB_MODOS.map((m) => {
+          const disabled = m.key === "reescrever" && !sel.trecho;
+          return (
+            <button
+              key={m.key}
+              onClick={() => setModo(m.key)}
+              disabled={disabled}
+              title={m.hint}
+              className={`rounded-lg border px-3 py-[5px] text-xs transition-colors disabled:opacity-30 ${
+                modo === m.key ? "border-gold/60 bg-gold/15 text-cream" : "border-white/15 text-white/60 hover:border-gold/40"
+              }`}
+            >
+              {m.label}
+            </button>
+          );
+        })}
+      </div>
+
+      <textarea
+        value={instrucao}
+        onChange={(e) => setInstrucao(e.target.value)}
+        rows={2}
+        autoFocus
+        onKeyDown={(e) => {
+          if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) gerar();
+          if (e.key === "Escape") onCancel();
+        }}
+        placeholder={
+          modo === "pesquisar"
+            ? "Ex: o número de obesos na China · a inflação dos EUA em 2024"
+            : modo === "reescrever"
+              ? "Ex: deixe mais simples · quero mais emoção · encurte"
+              : "Ex: complete essa linha com um dado de impacto · adicione uma virada aqui"
+        }
+        className="w-full rounded-[10px] border border-white/[.12] bg-transparent px-3.5 py-2.5 text-[13px] outline-none placeholder:text-white/35 focus:border-gold/40"
+      />
+
+      {sugestao !== null && (
+        <div>
+          <p className="text-[12px] text-white/55 mb-1.5">Sugestão da sala (edite se quiser)</p>
+          <textarea
+            value={sugestao.texto}
+            onChange={(e) => setSugestao((s) => (s ? { ...s, texto: e.target.value } : s))}
+            rows={Math.max(3, sugestao.texto.split("\n").length + 1)}
+            className="w-full rounded-[10px] border border-gold/25 bg-black/20 px-3.5 py-2.5 text-[13.5px] leading-[1.7] text-cream outline-none focus:border-gold/50"
+          />
+          {sugestao.fonte && (
+            <p className="mt-1.5 text-[11px] text-white/40 break-all">fonte (vai pro campo FONTES): {sugestao.fonte.replace(/\n/g, " · ")}</p>
+          )}
+        </div>
+      )}
+
+      {error && <p className="text-xs text-red-300">{error}</p>}
+
+      <div className="flex items-center gap-2.5 flex-wrap">
+        {sugestao === null ? (
+          <button
+            onClick={() => gerar()}
+            disabled={loading || !instrucao.trim()}
+            className="btn-gold inline-flex items-center gap-2 rounded-[10px] px-4 py-2 text-[13px] font-semibold disabled:opacity-40"
+          >
+            <QuillIcon color="#161410" />
+            {loading ? (modo === "pesquisar" ? "Pesquisando..." : "Gerando...") : "Gerar"}
+          </button>
+        ) : (
+          <>
+            <button
+              onClick={() => onApply(sugestao.texto, sugestao.fonte)}
+              disabled={!sugestao.texto.trim()}
+              className="btn-gold inline-flex items-center gap-2 rounded-[10px] px-4 py-2 text-[13px] font-semibold disabled:opacity-40"
+            >
+              {sel.trecho && modo === "reescrever" ? "Substituir" : "Inserir"}
+            </button>
+            <button
+              onClick={() => gerar(sugestao.texto)}
+              disabled={loading}
+              className="inline-flex items-center gap-2 rounded-[10px] border border-white/20 px-4 py-2 text-[13px] text-white/80 hover:border-gold/50 hover:text-cream transition-colors disabled:opacity-40"
+            >
+              {loading ? "Recriando..." : "Recriar"}
+            </button>
+          </>
+        )}
+        <button onClick={onCancel} className="text-[13px] text-white/45 hover:text-white/80 px-2">
+          Cancelar
+        </button>
+      </div>
+    </div>
+  );
+}
+
 // ── Card do roteiro final: leitura, edição manual inline e "Chame o Bob" ──────
 function ScriptCard({
   script,
@@ -587,8 +743,11 @@ function ScriptCard({
   });
   const [saving, startSave] = useTransition();
   const roteiroRef = useRef<HTMLParagraphElement>(null);
+  const roteiroTaRef = useRef<HTMLTextAreaElement>(null);
   const [sel, setSel] = useState<{ x: number; y: number; start: number; end: number; trecho: string } | null>(null);
   const [bob, setBob] = useState<{ start: number; end: number; trecho: string } | null>(null);
+  // Bob inline na edição (completar/reescrever/pesquisar) — insere no draft, não persiste.
+  const [bobInline, setBobInline] = useState<{ start: number; end: number; trecho: string } | null>(null);
 
   const startEdit = () => {
     setSel(null);
@@ -646,6 +805,37 @@ function ScriptCard({
       setBob(null);
       router.refresh();
     });
+
+  // Abre o Bob inline na posição/seleção atual do textarea do roteiro.
+  const openBobInline = (ta: HTMLTextAreaElement | null) => {
+    const start = ta?.selectionStart ?? draft.roteiro.length;
+    const end = ta?.selectionEnd ?? start;
+    setBobInline({ start, end, trecho: draft.roteiro.slice(start, end) });
+  };
+
+  // Atalho: "/" no início da linha ou após espaço abre o Bob (a "/" não é digitada).
+  const onRoteiroKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key !== "/" || bobInline) return;
+    const ta = e.currentTarget;
+    const pos = ta.selectionStart ?? 0;
+    const prev = pos === 0 ? "\n" : draft.roteiro[pos - 1];
+    if (prev === "\n" || prev === " ") {
+      e.preventDefault();
+      openBobInline(ta);
+    }
+  };
+
+  // Insere a sugestão do Bob no draft. Guard anti-drift: se a seleção não bate mais
+  // (usuário mexeu no texto), insere no lugar em vez de substituir — nunca corrompe.
+  const applyBobInline = (texto: string, fonte?: string) => {
+    if (!bobInline) return;
+    setDraft((d) => ({
+      ...d,
+      roteiro: spliceRoteiro(d.roteiro, bobInline, texto),
+      fontes: fonte ? mergeFontes(d.fontes, fonte) : d.fontes,
+    }));
+    setBobInline(null);
+  };
 
   const kicker = "kicker text-gold";
   const sectionCls = "px-5 sm:px-6 pt-5 pb-4 border-b border-white/[.07]";
@@ -744,11 +934,28 @@ function ScriptCard({
           {!disabled && !editing && (
             <span className="text-[12px] text-white/55">selecione um trecho para chamar o Bob</span>
           )}
+          {editing && (
+            <>
+              <button
+                type="button"
+                onClick={() => openBobInline(roteiroTaRef.current)}
+                className="inline-flex items-center gap-1.5 rounded-lg border border-white/15 px-2.5 py-[3px] text-[11px] text-white/65 hover:border-gold/50 hover:text-cream transition-colors"
+              >
+                <QuillIcon size={11} />
+                Bob
+              </button>
+              <span className="text-[11px] text-white/35">
+                selecione um trecho, ou digite <kbd className="font-mono text-white/55">/</kbd> pra chamar o Bob no cursor
+              </span>
+            </>
+          )}
         </div>
         {editing ? (
           <textarea
+            ref={roteiroTaRef}
             value={draft.roteiro}
             onChange={(e) => setDraft((d) => ({ ...d, roteiro: e.target.value }))}
+            onKeyDown={onRoteiroKeyDown}
             rows={Math.max(10, draft.roteiro.split("\n").length + 1)}
             className={`${taCls} mt-3`}
           />
@@ -760,6 +967,15 @@ function ScriptCard({
           >
             {script.roteiro}
           </p>
+        )}
+        {editing && bobInline && (
+          <BobInlinePanel
+            sessionId={sessionId}
+            roteiro={draft.roteiro}
+            sel={bobInline}
+            onCancel={() => setBobInline(null)}
+            onApply={applyBobInline}
+          />
         )}
       </section>
 

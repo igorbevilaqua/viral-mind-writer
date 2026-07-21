@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { platformVideoId } from "./video-url";
 import { dedash } from "./pipeline/slop-lint";
 import { rewriteFragment } from "./pipeline/rewrite-fragment";
+import { bobAssist, type BobInput } from "./pipeline/bob";
 import { extractFromEdit } from "./pipeline/teach";
 import { isSubstantiveEdit } from "./learning-loop";
 import { registrarAtividade, currentUserId } from "./hub";
@@ -358,6 +359,14 @@ export async function reportarProblema(
 
 // "Chame o Bob": a sala gera uma sugestão de substituição para o trecho selecionado.
 // Não persiste nada — o usuário revisa/edita e só então aceita (via updateScript).
+// Bob na edição manual (completar/reescrever/pesquisar). Retorna texto + fonte;
+// a inserção no draft acontece no client (não persiste até o usuário Salvar).
+export async function bobAssistAction(sessionId: string, input: BobInput): Promise<{ texto: string; fonte?: string }> {
+  if (!input.instrucao.trim()) throw new Error("diga o que o Bob deve fazer");
+  if (input.modo === "reescrever" && !input.trecho?.trim()) throw new Error("selecione um trecho para reescrever");
+  return bobAssist(sessionId, input);
+}
+
 export async function suggestFragment(
   sessionId: string,
   input: { roteiro: string; trecho: string; instrucao: string; evitar?: string }
