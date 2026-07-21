@@ -566,14 +566,9 @@ function ThumbBtns({ scriptId, sessionId, rating }: { scriptId: string; sessionI
   );
 }
 
-// Bob inline (edição manual): dockado abaixo do textarea. Completa no cursor,
-// reescreve a seleção ou pesquisa e insere — accept/recriar, insere no draft.
-const BOB_MODOS: { key: BobModo; label: string; hint: string }[] = [
-  { key: "completar", label: "Completar", hint: "escreve no cursor seguindo sua orientação" },
-  { key: "reescrever", label: "Reescrever seleção", hint: "troca o trecho selecionado" },
-  { key: "pesquisar", label: "Pesquisar e inserir", hint: "busca o dado na web e escreve na voz do cliente" },
-];
-
+// Bob inline (edição manual): dockado abaixo do textarea. O contexto decide o modo —
+// sem seleção completa no cursor, com seleção reescreve o trecho. Pesquisa na web
+// sozinho quando o pedido exige um dado externo. Accept/recriar insere no draft.
 function BobInlinePanel({
   sessionId,
   roteiro,
@@ -587,7 +582,7 @@ function BobInlinePanel({
   onCancel: () => void;
   onApply: (texto: string, fonte?: string) => void;
 }) {
-  const [modo, setModo] = useState<BobModo>(sel.trecho ? "reescrever" : "completar");
+  const modo: BobModo = sel.trecho ? "reescrever" : "completar";
   const [instrucao, setInstrucao] = useState("");
   const [sugestao, setSugestao] = useState<{ texto: string; fonte?: string } | null>(null);
   const [loading, setLoading] = useState(false);
@@ -595,7 +590,6 @@ function BobInlinePanel({
 
   const gerar = async (evitar?: string) => {
     if (!instrucao.trim()) return;
-    if (modo === "reescrever" && !sel.trecho.trim()) return setError("selecione um trecho para reescrever");
     setLoading(true);
     setError(null);
     try {
@@ -622,30 +616,13 @@ function BobInlinePanel({
         <QuillIcon size={13} color="#c9a35c" />
         <span className="kicker text-gold">BOB</span>
         <span className="text-[11px] text-white/40">
-          {sel.trecho ? `trecho: "${sel.trecho.slice(0, 60)}${sel.trecho.length > 60 ? "…" : ""}"` : "inserindo na posição do cursor"}
+          {sel.trecho
+            ? `reescrevendo: "${sel.trecho.slice(0, 60)}${sel.trecho.length > 60 ? "…" : ""}"`
+            : "inserindo na posição do cursor"}
         </span>
         <button onClick={onCancel} aria-label="Fechar" className="ml-auto text-white/40 hover:text-white/80 text-lg leading-none">
           ×
         </button>
-      </div>
-
-      <div className="flex flex-wrap gap-1.5">
-        {BOB_MODOS.map((m) => {
-          const disabled = m.key === "reescrever" && !sel.trecho;
-          return (
-            <button
-              key={m.key}
-              onClick={() => setModo(m.key)}
-              disabled={disabled}
-              title={m.hint}
-              className={`rounded-lg border px-3 py-[5px] text-xs transition-colors disabled:opacity-30 ${
-                modo === m.key ? "border-gold/60 bg-gold/15 text-cream" : "border-white/15 text-white/60 hover:border-gold/40"
-              }`}
-            >
-              {m.label}
-            </button>
-          );
-        })}
       </div>
 
       <textarea
@@ -658,11 +635,9 @@ function BobInlinePanel({
           if (e.key === "Escape") onCancel();
         }}
         placeholder={
-          modo === "pesquisar"
-            ? "Ex: o número de obesos na China · a inflação dos EUA em 2024"
-            : modo === "reescrever"
-              ? "Ex: deixe mais simples · quero mais emoção · encurte"
-              : "Ex: complete essa linha com um dado de impacto · adicione uma virada aqui"
+          sel.trecho
+            ? "O que mudar no trecho? Ex: deixe mais simples · encurte · cite o dado de obesidade na China"
+            : "O que escrever aqui? Ex: complete conectando com o impacto no Brasil · adicione a inflação de 2024"
         }
         className="w-full rounded-[10px] border border-white/[.12] bg-transparent px-3.5 py-2.5 text-[13px] outline-none placeholder:text-white/35 focus:border-gold/40"
       />
@@ -692,7 +667,7 @@ function BobInlinePanel({
             className="btn-gold inline-flex items-center gap-2 rounded-[10px] px-4 py-2 text-[13px] font-semibold disabled:opacity-40"
           >
             <QuillIcon color="#161410" />
-            {loading ? (modo === "pesquisar" ? "Pesquisando..." : "Gerando...") : "Gerar"}
+            {loading ? "Gerando..." : "Gerar"}
           </button>
         ) : (
           <>
@@ -701,7 +676,7 @@ function BobInlinePanel({
               disabled={!sugestao.texto.trim()}
               className="btn-gold inline-flex items-center gap-2 rounded-[10px] px-4 py-2 text-[13px] font-semibold disabled:opacity-40"
             >
-              {sel.trecho && modo === "reescrever" ? "Substituir" : "Inserir"}
+              {sel.trecho ? "Substituir" : "Inserir"}
             </button>
             <button
               onClick={() => gerar(sugestao.texto)}
@@ -746,7 +721,7 @@ function ScriptCard({
   const roteiroTaRef = useRef<HTMLTextAreaElement>(null);
   const [sel, setSel] = useState<{ x: number; y: number; start: number; end: number; trecho: string } | null>(null);
   const [bob, setBob] = useState<{ start: number; end: number; trecho: string } | null>(null);
-  // Bob inline na edição (completar/reescrever/pesquisar) — insere no draft, não persiste.
+  // Bob inline na edição (completa no cursor / reescreve a seleção) — insere no draft, não persiste.
   const [bobInline, setBobInline] = useState<{ start: number; end: number; trecho: string; slash?: boolean } | null>(null);
   // Botão flutuante "Chamar o Bob" ao selecionar texto no textarea (modo edição).
   const [taSel, setTaSel] = useState<{ x: number; y: number; start: number; end: number } | null>(null);
