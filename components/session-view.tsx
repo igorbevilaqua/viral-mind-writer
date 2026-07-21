@@ -101,6 +101,30 @@ function CopyBtn({ text, label = "Copiar" }: { text: string; label?: string }) {
   );
 }
 
+// Copia a URL pública de leitura do roteiro (token = uuid do script).
+function ShareBtn({ scriptId }: { scriptId: string }) {
+  const [copied, setCopied] = useState(false);
+  return (
+    <button
+      onClick={() => {
+        navigator.clipboard.writeText(`${window.location.origin}/r/${scriptId}`);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 1500);
+      }}
+      title="Copiar link de leitura (acesso sem login, só leitura)"
+      className="inline-flex items-center gap-1.5 rounded-lg border border-white/15 px-3 py-[5px] text-xs text-white/65 hover:border-gold/50 hover:text-cream transition-colors"
+    >
+      <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+        <path d="M6 8.5 10 5.5M6 7.5l4 3" stroke="currentColor" strokeWidth="1.2" />
+        <circle cx="4" cy="8" r="2" stroke="currentColor" strokeWidth="1.2" />
+        <circle cx="12" cy="4" r="2" stroke="currentColor" strokeWidth="1.2" />
+        <circle cx="12" cy="12" r="2" stroke="currentColor" strokeWidth="1.2" />
+      </svg>
+      {copied ? "Link copiado ✓" : "Compartilhar"}
+    </button>
+  );
+}
+
 function Stepper({ current }: { current: string | null }) {
   const idx = current ? PHASES.indexOf(current as (typeof PHASES)[number]) : -1;
   return (
@@ -191,20 +215,36 @@ function NarrativeCards({
   escolhida,
   disabled,
   onPick,
+  collapsible,
 }: {
   candidatas: NarrativaCandidata[];
   ranking: RankingItem[];
   escolhida: number;
   disabled: boolean;
   onPick: (i: number) => void;
+  collapsible?: boolean; // roteiro pronto: negociação encerrada, pode recolher
 }) {
   const scoreOf = (i: number) => ranking.find((r) => r.indice === i);
+  const Wrapper = collapsible ? "details" : "div";
+  const Header = collapsible ? "summary" : "div";
   return (
-    <div>
-      <div className="flex items-baseline gap-2.5 mb-3">
+    // roteiro pronto → <details> recolhido por padrão; senão <div> sempre aberto
+    <Wrapper className={collapsible ? "group" : undefined}>
+      <Header className={`flex items-baseline gap-2.5 mb-3${collapsible ? " cursor-pointer select-none" : ""}`}>
+        {collapsible && (
+          <svg
+            width="10"
+            height="10"
+            viewBox="0 0 16 16"
+            fill="none"
+            className="self-center text-white/40 transition-transform group-open:rotate-90"
+          >
+            <path d="M6 4l4 4-4 4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        )}
         <span className="kicker text-white/40">NARRATIVAS CANDIDATAS</span>
         <span className="text-xs text-white/55">storytelling propõe · dados rankeiam</span>
-      </div>
+      </Header>
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
         {candidatas.map((n, i) => {
           const r = scoreOf(i);
@@ -278,7 +318,7 @@ function NarrativeCards({
           );
         })}
       </div>
-    </div>
+    </Wrapper>
   );
 }
 
@@ -647,7 +687,10 @@ function ScriptCard({
             </button>
           </div>
         ) : (
-          <CopyBtn text={fullScriptText(script)} label="Copiar tudo" />
+          <div className="ml-auto flex items-center gap-2">
+            <ShareBtn scriptId={script.id} />
+            <CopyBtn text={fullScriptText(script)} label="Copiar tudo" />
+          </div>
         )}
       </div>
 
@@ -1239,6 +1282,7 @@ export default function SessionView({
           escolhida={narrativas.escolhida}
           disabled={generating || watching || closed}
           onPick={setConfirmPick}
+          collapsible={!generating && !!script}
         />
       )}
 

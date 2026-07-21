@@ -8,6 +8,8 @@ import { BUILD_TAG } from "@/lib/version";
 
 export default function Nav() {
   const pathname = usePathname();
+  // Rota pública de leitura não mostra a navegação interna do app.
+  if (pathname.startsWith("/r/")) return null;
   const linkCls = (active: boolean) =>
     active ? "text-gold font-medium" : "text-white/55 hover:text-white";
 

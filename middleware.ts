@@ -2,8 +2,9 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import { HUB_COOKIE, HUB_COOKIE_TTL_S, assinarPermissao, verificarPermissao } from "@/lib/hub-cookie";
 
-// Rotas sem sessão: login, callbacks de auth e o cron (protegido por CRON_SECRET na própria rota).
-const PUBLIC_PATHS = ["/login", "/auth", "/api/cron"];
+// Rotas sem sessão: login, callbacks de auth, cron (CRON_SECRET na própria rota)
+// e /r (roteiro compartilhado, somente leitura por uuid).
+const PUBLIC_PATHS = ["/login", "/auth", "/api/cron", "/r"];
 
 export async function middleware(request: NextRequest) {
   let response = NextResponse.next({ request });
