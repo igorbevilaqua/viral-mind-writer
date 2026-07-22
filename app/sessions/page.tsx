@@ -148,6 +148,26 @@ export default async function SessionsPage({
     ? await appDb.from("vm_script_performance").select("script_id, views").in("script_id", scriptIds)
     : { data: [] as { script_id: string; views: number | null }[] };
 
+  // Sessão conjurada só de material tem prompt vazio → título na lista viria em branco.
+  // Fallback: headline do roteiro gerado (versão mais recente por sessão).
+  const semPromptIds = (sessions ?? []).filter((s) => !s.prompt?.trim()).map((s) => s.id);
+  const { data: heads } = semPromptIds.length
+    ? await appDb
+        .from("vm_generated_scripts")
+        .select("session_id, headline, version")
+        .in("session_id", semPromptIds)
+        .order("version", { ascending: false })
+    : { data: [] as { session_id: string; headline: string | null; version: number }[] };
+  const headlineBySession = new Map<string, string>();
+  for (const h of heads ?? []) {
+    if (h.headline?.trim() && !headlineBySession.has(h.session_id)) headlineBySession.set(h.session_id, h.headline.trim());
+  }
+  // Sessão de modelagem (adaptar/otimizar um vídeo) → prefixo "Modelagem:" no título.
+  const { data: modAtts } = semPromptIds.length
+    ? await appDb.from("vm_attachments").select("session_id").eq("is_modelagem", true).in("session_id", semPromptIds)
+    : { data: [] as { session_id: string }[] };
+  const modelagemSessions = new Set((modAtts ?? []).map((a) => a.session_id));
+
   const viewsByScript = new Map<string, number>();
   for (const p of perf ?? []) {
     if (p.views != null) viewsByScript.set(p.script_id, (viewsByScript.get(p.script_id) ?? 0) + p.views);
@@ -234,7 +254,15 @@ export default async function SessionsPage({
                 <StatusIcon status={s.effStatus} />
                 {st.label}
               </span>
-              <span className="flex-1 min-w-0 truncate text-[13.5px] text-[#ededf0]/85">{s.prompt}</span>
+              <span className="flex-1 min-w-0 truncate text-[13.5px] text-[#ededf0]/85">
+                {s.prompt?.trim() ||
+                  (() => {
+                    const head = headlineBySession.get(s.id);
+                    const mod = modelagemSessions.has(s.id);
+                    if (head) return mod ? `Modelagem: ${head}` : head;
+                    return <span className="text-white/40 italic">{mod ? "Modelagem" : "Roteiro a partir de material"}</span>;
+                  })()}
+              </span>
               {s.published && (
                 <span className="shrink-0 inline-flex items-center gap-1.5 rounded-full border border-gold/40 bg-gold/[.08] px-2.5 py-[3px] text-[11px] font-medium text-gold">
                   publicada

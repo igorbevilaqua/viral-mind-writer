@@ -23,7 +23,7 @@ export default async function SessionPage({
     .maybeSingle();
   if (!session) notFound();
 
-  const [{ data: scripts }, { data: analyses }] = await Promise.all([
+  const [{ data: scripts }, { data: analyses }, { data: clients }] = await Promise.all([
     appDb
       .from("vm_generated_scripts")
       .select(
@@ -35,6 +35,7 @@ export default async function SessionPage({
       .from("vm_modelagem_analyses")
       .select("analysis, replication_brief, vm_attachments!inner(session_id)")
       .eq("vm_attachments.session_id", id),
+    appDb.from("clientes").select("id, nome").eq("ativo", true).order("nome"),
   ]);
 
   const scriptIds = (scripts ?? []).map((s) => s.id);
@@ -96,6 +97,8 @@ export default async function SessionPage({
         error_message: session.error_message,
         clientNome: client?.nome ?? null,
       }}
+      clientId={session.client_id ?? null}
+      clients={clients ?? []}
       generationStale={generationStale}
       scripts={scriptsView}
       performance={performance ?? []}

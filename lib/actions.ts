@@ -358,6 +358,14 @@ export async function reportarProblema(
 
 // "Chame o Bob": a sala gera uma sugestão de substituição para o trecho selecionado.
 // Não persiste nada — o usuário revisa/edita e só então aceita (via updateScript).
+// Atribui/corrige o cliente de uma sessão já criada (resgata sessão criada sem cliente).
+export async function updateSessionClient(sessionId: string, clientId: string | null) {
+  const { error } = await appDb.from("vm_sessions").update({ client_id: clientId }).eq("id", sessionId);
+  if (error) throw new Error(error.message);
+  revalidatePath(`/sessions/${sessionId}`);
+  revalidatePath("/sessions");
+}
+
 export async function suggestFragment(
   sessionId: string,
   input: { roteiro: string; trecho: string; instrucao: string; evitar?: string }

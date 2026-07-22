@@ -32,6 +32,27 @@ const PESQUISAR_TOOL: Anthropic.Tool = {
   },
 };
 
+// As fontes da web voltam como annotations url_citation no output — não confiáveis
+// só no texto. Lê as citations de verdade e usa o regex do texto como reforço.
+function citationUrls(res: unknown): string[] {
+  const urls: string[] = [];
+  const output = (res as { output?: unknown[] })?.output;
+  if (!Array.isArray(output)) return urls;
+  for (const item of output) {
+    const content = (item as { content?: unknown[] })?.content;
+    if (!Array.isArray(content)) continue;
+    for (const c of content) {
+      const anns = (c as { annotations?: unknown[] })?.annotations;
+      if (!Array.isArray(anns)) continue;
+      for (const a of anns) {
+        const ann = a as { type?: string; url?: string };
+        if (ann.type === "url_citation" && ann.url) urls.push(ann.url);
+      }
+    }
+  }
+  return urls;
+}
+
 async function grokPesquisa(query: string): Promise<{ texto: string; fontes: string[] }> {
   const res = await grokClient().responses.create({
     model: RESEARCH_MODEL,
@@ -41,7 +62,7 @@ async function grokPesquisa(query: string): Promise<{ texto: string; fontes: str
     tools: [{ type: "web_search" }] as never,
   });
   const texto = res.output_text ?? "";
-  const fontes = [...new Set(texto.match(/https?:\/\/[^\s)\]]+/g) ?? [])];
+  const fontes = [...new Set([...citationUrls(res), ...(texto.match(/https?:\/\/[^\s)\]]+/g) ?? [])])];
   return { texto, fontes };
 }
 

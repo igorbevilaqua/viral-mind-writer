@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { finalizeSession, markPublished, quickFeedback, swapHook, updateScript, suggestFragment } from "@/lib/actions";
+import { finalizeSession, markPublished, quickFeedback, swapHook, updateScript, suggestFragment, updateSessionClient } from "@/lib/actions";
 import type { BobModo } from "@/lib/pipeline/bob";
 import { spliceRoteiro, mergeFontes } from "@/lib/bob-edit";
 import type { NarrativaCandidata, RankingItem, SessionArtifacts } from "@/lib/pipeline/types";
@@ -1314,8 +1314,49 @@ function ConfirmDialog({
   );
 }
 
+// Seletor de cliente da sessão: atribui/corrige o cliente (resgata sessão sem cliente).
+function ClientPicker({
+  sessionId,
+  clientId,
+  clients,
+}: {
+  sessionId: string;
+  clientId: string | null;
+  clients: { id: string; nome: string }[];
+}) {
+  const router = useRouter();
+  const [pending, start] = useTransition();
+  return (
+    <label className="inline-flex items-center gap-1.5 rounded-full border border-indigo-500/40 bg-indigo-500/[.08] pl-3 pr-2 py-1 text-xs text-indigo-300">
+      Cliente ·
+      <select
+        value={clientId ?? ""}
+        disabled={pending}
+        onChange={(e) =>
+          start(async () => {
+            await updateSessionClient(sessionId, e.target.value || null);
+            router.refresh();
+          })
+        }
+        className="bg-transparent text-indigo-300 outline-none cursor-pointer disabled:opacity-50"
+      >
+        <option value="" className="bg-neutral-900 text-white">
+          Sem cliente
+        </option>
+        {clients.map((c) => (
+          <option key={c.id} value={c.id} className="bg-neutral-900 text-white">
+            {c.nome}
+          </option>
+        ))}
+      </select>
+    </label>
+  );
+}
+
 export default function SessionView({
   session,
+  clientId,
+  clients,
   scripts,
   performance,
   baseline,
@@ -1326,6 +1367,8 @@ export default function SessionView({
   generationStale,
 }: {
   session: { id: string; prompt: string; status: string; error_message: string | null; clientNome: string | null };
+  clientId: string | null;
+  clients: { id: string; nome: string }[];
   scripts: Script[];
   performance: ScriptPerformance[];
   baseline: Baseline | null;
@@ -1465,11 +1508,7 @@ export default function SessionView({
           );
         })()}
         <div className="flex items-center gap-2.5 mt-3 flex-wrap">
-          {session.clientNome && (
-            <span className="rounded-full border border-indigo-500/40 bg-indigo-500/[.08] px-3 py-1 text-xs text-indigo-300">
-              Cliente · {session.clientNome}
-            </span>
-          )}
+          <ClientPicker sessionId={session.id} clientId={clientId} clients={clients} />
           {(generating || watching) && (
             <span className="inline-flex items-center gap-2 rounded-full border border-gold/45 bg-gold/[.08] px-3 py-1 text-xs text-gold">
               <span className="w-1.5 h-1.5 rounded-full bg-gold vm-pulse" />

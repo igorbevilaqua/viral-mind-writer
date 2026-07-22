@@ -53,7 +53,7 @@ export default function PublicScript({ script }: { script: PublicScriptData }) {
     <div className="mx-auto w-full max-w-3xl px-4 sm:px-6 py-8 sm:py-12">
       <div className="flex items-center gap-3 mb-5">
         <span className="font-cinzel font-semibold text-cream text-sm tracking-[.14em]">CODEX · VIRAL MIND</span>
-        <span className="text-[11px] text-white/35">roteiro compartilhado — somente leitura</span>
+        <span className="text-[11px] text-white/35">roteiro compartilhado · somente leitura</span>
       </div>
 
       <div
