@@ -21,7 +21,7 @@ O Codex é o produto (https://codex.viralmindlabs.com). Esta skill orquestra o C
 
 Cabeçalho (formato exato, preencha version + git):
 ```
-🪄 *Codex — Nova Versão Disponível (v<version>)*
+🪄 *Codex: Nova Versão Disponível (v<version>)*
 🔖 Git: <git>
 ```
 Linha em branco, depois um RESUMO de produto curto (2-3 linhas no máximo, linguagem simples que um sócio não-técnico entende de primeira — "o que há de novo no produto" numa frase). Registro do resumo (ilustrativo, NÃO copie): "Agora o Codex é capaz de produzir roteiros em lote, além de ter resolvido o problema dos travessões."
