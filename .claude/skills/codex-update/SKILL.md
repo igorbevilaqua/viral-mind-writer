@@ -9,7 +9,7 @@ O Codex é o produto (https://codex.viralmindlabs.com). Esta skill orquestra o C
 
 ## Fluxo (executar na ordem)
 
-1. Rode `node codex-updates/cli.mjs next` e parseie o JSON de saída.
+1. Rode `node codex-updates/cli.mjs next` e parseie o JSON de saída. As `entries` são EXATAMENTE as atualizações ainda não incluídas em nenhuma mensagem gerada antes (o `commit-release` limpa o pending a cada release), então a mensagem sempre traz só o que é novo desde o último anúncio.
 2. Se `empty === true` → avise que ainda não há nada novo para anunciar e PARE.
 3. Se `repeat === true` → apresente `message` VERBATIM (não recomponha, não reescreva). Explique que é idêntica à última porque nada novo entrou desde então. Ainda assim pergunte se quer enviar. NÃO chame `commit-release` neste caso.
 4. Caso contrário (há mudanças pendentes, `repeat === false` e `empty === false`) → COMPONHA a mensagem a partir de `entries`, `version`, `git` e `codexUrl` usando o FORMATO + TOM abaixo. Apresente ao usuário e PEÇA confirmação.
@@ -35,12 +35,13 @@ Um bullet por entrada de `entries`, com emoji conforme `type`:
 - `fix` → 🐛 ou 🔧
 - `improvement` → ⚡ ou 💅
 
-Cada bullet: mais liberdade técnica (pode citar termos técnicos), MAS sempre contextualize o benefício para quem não é técnico; uma a duas linhas curtas. O tom deve AGREGAR VALOR — quase vendendo, sem perder o lado técnico: sinalize discretamente o esforço por trás, cite uma possibilidade concreta de uso e/ou contraste com a dor de NÃO ter aquilo. Sem verborragia; é WhatsApp.
+Cada bullet: mais liberdade técnica (pode citar termos técnicos), MAS sempre contextualize o benefício para quem não é técnico; uma a duas linhas curtas. O tom deve AGREGAR VALOR, quase vendendo, sem perder o lado técnico: sinalize discretamente o esforço por trás, cite uma possibilidade concreta de uso e/ou contraste com a dor de NÃO ter aquilo. O técnico entra para passar percepção de valor e de esforço, nunca para complicar. Sem verborragia; é WhatsApp.
 
-Rodapé (SEMPRE termine exatamente assim, com o link em linha própria):
+REGRA DE OURO DE ESTILO: NUNCA use travessão (—) em nenhum ponto da mensagem. Use vírgula, dois-pontos, parênteses ou ponto. Se uma entrada de `entries` vier com travessão no texto, reescreva sem ele ao compor o bullet.
+
+Rodapé (SEMPRE termine exatamente com esta linha, o link junto):
 ```
-✨ Para abrir o mundo mágico do storytelling, acesse o CODEX:
-👉 <codexUrl>
+👉 Acesse agora em <codexUrl>
 ```
 
 ## Registrando mudanças
