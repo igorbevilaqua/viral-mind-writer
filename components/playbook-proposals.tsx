@@ -21,7 +21,7 @@ export default function PlaybookProposals({ propostas }: { propostas: Proposta[]
       <div className="kicker text-gold tracking-[.22em]">PROPOSTAS DE PLAYBOOK (HOOK)</div>
       <p className="mt-1.5 text-[13px] text-white/50">
         O curador propôs uma nova versão do playbook de hooks a partir dos resultados reais dos mecanismos. Revise antes
-        de ativar — nada entra na sala sem você.
+        de ativar. Nada entra na sala sem você.
       </p>
       <div className="flex flex-col gap-2 mt-3">
         {propostas.map((p) => (

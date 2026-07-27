@@ -1,18 +1,22 @@
-// Cold-start da calibração (Fatia 1): cria pares de hooks REAIS do corpus (mesmo
-// cliente, mecanismos diferentes) a partir de vm_hook_classifications. Custo zero,
-// dá o que calibrar no dia 1 antes de o harvest da geração acumular.
-// Rodar: npx tsx --env-file=.env.local scripts/seed-calibration.ts [--por-cliente N]
+// Cold-start da calibração (Fatia 1): pares MESMO TEMA, mecanismos diferentes. Pega um
+// hook real de alta performance e gera uma alternativa do MESMO assunto com outro
+// mecanismo (dois hooks reais nunca são do mesmo tema). Assim a comparação é sobre o
+// mecanismo, não sobre o assunto. Custo: 1 chamada de LLM por par (one-time).
+// Rodar: npx tsx --env-file=.env.local scripts/seed-calibration.ts [--por-cliente N] [--max M]
 import { appDb, viralData } from "../lib/db";
+import { dedash } from "../lib/pipeline/slop-lint";
+import { generateMechanismAlternative } from "../lib/calibration-probe";
 import type { CalibOption } from "../lib/calibration";
 
 const nIdx = process.argv.indexOf("--por-cliente");
-const POR_CLIENTE = nIdx >= 0 ? Number(process.argv[nIdx + 1]) : 6;
+const POR_CLIENTE = nIdx >= 0 ? Number(process.argv[nIdx + 1]) : 3;
+const mIdx = process.argv.indexOf("--max");
+const MAX = mIdx >= 0 ? Number(process.argv[mIdx + 1]) : 60;
 
-const opt = (hook: string, mecanismo: string): CalibOption => ({
-  texto: hook,
-  mecanismo,
-  atributos: { comprimento: hook.length > 120 ? "longo" : "curto" },
-});
+const opt = (hook: string, mecanismo: string): CalibOption => {
+  const texto = dedash(hook);
+  return { texto, mecanismo, atributos: { comprimento: texto.length > 120 ? "longo" : "curto" } };
+};
 
 async function main() {
   const { data: cls, error } = await appDb.from("vm_hook_classifications").select("video_id, mecanismos");
@@ -36,29 +40,42 @@ async function main() {
     for (const s of stats.data ?? []) cliByVideo.set(s.video_id, { cliente: s.cliente_id ?? null, views: Number(s.views_total) || 0 });
   }
 
-  // por cliente: melhor hook (por views) de cada mecanismo
-  const porCliente = new Map<string, Map<string, { hook: string; views: number }>>();
+  // seeds: os melhores hooks reais por cliente (dedupe por texto), até POR_CLIENTE cada
+  const porCliente = new Map<string, { hook: string; mec: string; views: number }[]>();
   for (const c of cls) {
     const hook = hookById.get(c.video_id);
     const meta = cliByVideo.get(c.video_id);
     const mec = Array.isArray(c.mecanismos) ? (c.mecanismos as string[])[0] : null;
     if (!hook || !meta?.cliente || !mec || mec === "Outro") continue;
-    const byMec = porCliente.get(meta.cliente) ?? new Map();
-    const cur = byMec.get(mec);
-    if (!cur || meta.views > cur.views) byMec.set(mec, { hook, views: meta.views });
-    porCliente.set(meta.cliente, byMec);
+    porCliente.set(meta.cliente, [...(porCliente.get(meta.cliente) ?? []), { hook, mec, views: meta.views }]);
   }
+  const seeds: { hook: string; mec: string; clientId: string }[] = [];
+  for (const [cliente, lista] of porCliente) {
+    const vistos = new Set<string>();
+    const top = lista.sort((a, b) => b.views - a.views).filter((x) => !vistos.has(x.hook) && vistos.add(x.hook)).slice(0, POR_CLIENTE);
+    for (const s of top) seeds.push({ hook: s.hook, mec: s.mec, clientId: cliente });
+  }
+  const alvo = seeds.slice(0, MAX); // cap global (seeds já vêm intercalados por cliente)
 
-  const pares: { dimension: string; client_id: string; axis: string; option_a: CalibOption; option_b: CalibOption; source: string }[] = [];
-  for (const [cliente, byMec] of porCliente) {
-    const mecs = [...byMec.entries()].sort((a, b) => b[1].views - a[1].views); // mecanismos por views do melhor hook
-    for (let i = 0; i + 1 < mecs.length && pares.length < 10_000; i += 2) {
-      if (pares.filter((p) => p.client_id === cliente).length >= POR_CLIENTE) break;
-      const [ma, a] = mecs[i];
-      const [mb, b] = mecs[i + 1];
-      pares.push({ dimension: "hook", client_id: cliente, axis: "mecanismo", option_a: opt(a.hook, ma), option_b: opt(b.hook, mb), source: "corpus" });
+  // gera a alternativa MESMO TEMA (LLM), com pool de concorrência
+  type Par = { dimension: string; client_id: string; axis: string; option_a: CalibOption; option_b: CalibOption; source: string };
+  const pares: Par[] = [];
+  let idx = 0, feitos = 0;
+  async function worker() {
+    for (;;) {
+      const i = idx++;
+      if (i >= alvo.length) return;
+      const s = alvo[i];
+      try {
+        const alt = await generateMechanismAlternative(dedash(s.hook), s.mec);
+        if (alt) pares.push({ dimension: "hook", client_id: s.clientId, axis: "mecanismo", option_a: opt(s.hook, s.mec), option_b: opt(alt.variante, alt.mecanismo), source: "corpus" });
+      } catch (e) {
+        console.error("alternativa falhou, pulando", e);
+      }
+      if (++feitos % 10 === 0) console.log(`gerados ${feitos}/${alvo.length}`);
     }
   }
+  await Promise.all(Array.from({ length: Math.min(5, alvo.length) }, worker));
 
   // idempotente: limpa os corpus antigos (regeneráveis) antes de inserir
   await appDb.from("vm_calibration_pairs").delete().eq("source", "corpus").eq("dimension", "hook");
@@ -66,7 +83,7 @@ async function main() {
     const { error: insErr } = await appDb.from("vm_calibration_pairs").insert(pares.slice(i, i + 500));
     if (insErr) throw new Error(`insert pairs: ${insErr.message}`);
   }
-  console.log(`${pares.length} pares de corpus criados (${porCliente.size} clientes, até ${POR_CLIENTE}/cliente)`);
+  console.log(`${pares.length} pares de corpus (mesmo tema, mecanismos diferentes) criados de ${alvo.length} hooks-semente`);
 }
 
 main().then(() => process.exit(0)).catch((e) => { console.error(e); process.exit(1); });

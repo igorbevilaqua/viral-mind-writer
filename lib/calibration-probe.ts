@@ -4,7 +4,48 @@
 import { appDb } from "./db";
 import { anthropic, WRITER_MODEL } from "./anthropic";
 import { toolInput } from "./pipeline/agents";
+import { dedash } from "./pipeline/slop-lint";
+import { HOOK_MECHANISMS } from "./pipeline/hook-mechanisms";
 import type { CalibAxis } from "./calibration";
+
+// Cold-start same-theme: reescreve um hook REAL mantendo EXATAMENTE o tema/fato/personagem
+// mas trocando o MECANISMO de curiosidade. Assim o par compara mecanismo, não assunto
+// (dois hooks reais nunca são do mesmo tema; um hook por vídeo). Retorna a variante + o
+// mecanismo dela, ou null.
+export async function generateMechanismAlternative(
+  hook: string,
+  mecanismoOriginal: string
+): Promise<{ variante: string; mecanismo: string } | null> {
+  const outros = HOOK_MECHANISMS.filter((m) => m !== mecanismoOriginal && m !== "Outro");
+  const res = await anthropic.messages.create({
+    model: WRITER_MODEL,
+    max_tokens: 1500,
+    tools: [
+      {
+        name: "registrar_alternativa",
+        description: "Registra a variante do hook com mecanismo diferente e o nome do mecanismo usado.",
+        input_schema: {
+          type: "object" as const,
+          properties: {
+            mecanismo: { type: "string", enum: outros as unknown as string[], description: "o mecanismo de curiosidade da variante (diferente do original)" },
+            variante: { type: "string", description: "o hook reescrito, MESMO tema/fato/personagem, mecanismo diferente" },
+          },
+          required: ["mecanismo", "variante"],
+        },
+      },
+    ],
+    tool_choice: { type: "tool", name: "registrar_alternativa" },
+    system: "Você é especialista em hooks virais. Reescreva o hook mantendo EXATAMENTE o mesmo tema, fato central e personagem, mudando só o MECANISMO de curiosidade (outro gatilho). Falado, natural. Nada de travessão.",
+    messages: [{ role: "user", content: `HOOK ORIGINAL (mecanismo: ${mecanismoOriginal}):\n${hook}\n\nReescreva com um mecanismo diferente, o mesmo assunto.` }],
+  });
+  const tu = res.content.find((b) => b.type === "tool_use");
+  if (!tu || tu.type !== "tool_use") return null;
+  const input = toolInput(tu);
+  const variante = dedash(String(input.variante ?? "").trim());
+  const mecanismo = String(input.mecanismo ?? "");
+  if (!variante || !mecanismo || mecanismo === mecanismoOriginal) return null;
+  return { variante, mecanismo };
+}
 
 const PROBE_AXES: CalibAxis[] = ["comprimento", "personagem", "especificidade"];
 
@@ -52,7 +93,7 @@ async function generateProbe(hook: string, axis: CalibAxis): Promise<{
   const toolUse = res.content.find((b) => b.type === "tool_use");
   if (!toolUse || toolUse.type !== "tool_use") return null;
   const input = toolInput(toolUse);
-  const variante = String(input.variante ?? "").trim();
+  const variante = dedash(String(input.variante ?? "").trim());
   const ao = String(input.atributo_original ?? "");
   const av = String(input.atributo_variante ?? "");
   if (!variante || !ao || !av || ao === av) return null;

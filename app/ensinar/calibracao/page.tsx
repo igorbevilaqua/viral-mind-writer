@@ -16,7 +16,7 @@ export default async function CalibracaoPage() {
       <h1 className="mt-3 font-display text-3xl sm:text-[32px] font-medium text-ivory">Calibração de hooks</h1>
       <p className="mt-1.5 text-[13px] text-white/50">
         Escolha o hook mais forte em cada par. Suas escolhas viram preferência do time e passam a orientar o agente de
-        hook e o Bob — a performance real dos vídeos ainda tem a palavra final.
+        hook e o Bob. A performance real dos vídeos ainda tem a palavra final.
       </p>
       <CalibrationGame inicial={inicial} />
     </div>

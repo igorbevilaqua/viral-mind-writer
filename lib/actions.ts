@@ -441,7 +441,8 @@ export async function getNextCalibrationPair(clientId: string | null): Promise<C
   const eixos = [...new Set(disponiveis.map((p) => p.axis))];
   const eixo = eixos[Math.floor(Math.random() * eixos.length)];
   const p = disponiveis.find((x) => x.axis === eixo) ?? disponiveis[0];
-  const txt = (o: unknown) => String((o as { texto?: string })?.texto ?? "");
+  // dedash defensivo: hooks do corpus têm travessão; o sistema nunca exibe travessão.
+  const txt = (o: unknown) => dedash(String((o as { texto?: string })?.texto ?? ""));
   return { id: p.id, a: txt(p.option_a), b: txt(p.option_b), restantes: disponiveis.length };
 }
 

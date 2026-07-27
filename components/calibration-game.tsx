@@ -102,7 +102,7 @@ export default function CalibrationGame({ inicial }: { inicial: CalibPairView | 
           disabled={ocupado}
           className="rounded-[10px] border border-white/12 px-4 py-2 text-[12.5px] text-white/55 hover:border-white/25 hover:text-white/75 disabled:opacity-60"
         >
-          Pular (espaço) — não sei dizer
+          Pular (espaço), não sei dizer
         </button>
       </div>
     </div>
