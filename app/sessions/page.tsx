@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { appDb } from "@/lib/db";
+import { writerScope } from "@/lib/hub";
 import { fmtNum } from "@/lib/format";
 import { isStaleGeneration } from "@/lib/generation";
 
@@ -121,12 +122,15 @@ export default async function SessionsPage({
   searchParams: Promise<{ cliente?: string; status?: string }>;
 }) {
   const { cliente, status: statusParam } = await searchParams;
+  const { isAdmin, userId } = await writerScope();
 
   let sessionsQuery = appDb
     .from("vm_sessions")
     .select("id, prompt, status, generation_started_at, created_at, client_id, clientes(nome)")
     .order("created_at", { ascending: false })
     .limit(100);
+  // Usuário comum só vê as próprias sessões; adm vê todas. (middleware garante userId != null)
+  if (!isAdmin) sessionsQuery = sessionsQuery.eq("user_id", userId ?? "");
   if (cliente) sessionsQuery = sessionsQuery.eq("client_id", cliente);
 
   const [{ data: sessions }, { data: clients }] = await Promise.all([

@@ -31,6 +31,13 @@ export async function getPapel(): Promise<Papel | null> {
   return (data as Papel | null) ?? null;
 }
 
+// Escopo de visibilidade das sessões: adm vê todas, usuário só as próprias.
+// Reúne papel + user_id resolvidos em paralelo. `isAdmin` = única definição de "adm".
+export async function writerScope(): Promise<{ isAdmin: boolean; userId: string | null }> {
+  const [papel, userId] = await Promise.all([getPapel(), currentUserId()]);
+  return { isAdmin: papel === "adm", userId };
+}
+
 // user_id do usuário logado (null = anônimo). Curto-vivo: só em server actions/rotas
 // onde os cookies são confiáveis — NUNCA dentro do stream de geração (lá o user_id vem
 // de vm_sessions.user_id, sem depender de cookies() num contexto que já respondeu).

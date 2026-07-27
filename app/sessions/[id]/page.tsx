@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { appDb, viralData } from "@/lib/db";
+import { writerScope } from "@/lib/hub";
 import { isStaleGeneration } from "@/lib/generation";
 import type { LintViolation } from "@/lib/pipeline/slop-lint";
 import SessionView from "@/components/session-view";
@@ -16,12 +17,15 @@ export default async function SessionPage({
   const { id } = await params;
   const { start } = await searchParams;
 
+  const { isAdmin, userId } = await writerScope();
   const { data: session } = await appDb
     .from("vm_sessions")
-    .select("id, prompt, status, error_message, artifacts, generation_started_at, created_at, client_id, clientes(nome)")
+    .select("id, prompt, status, error_message, artifacts, generation_started_at, created_at, client_id, user_id, clientes(nome)")
     .eq("id", id)
     .maybeSingle();
   if (!session) notFound();
+  // Usuário comum só abre as próprias sessões; adm abre qualquer uma. notFound() não vaza existência.
+  if (!isAdmin && session.user_id !== userId) notFound();
 
   const [{ data: scripts }, { data: analyses }, { data: clients }] = await Promise.all([
     appDb
