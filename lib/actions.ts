@@ -9,6 +9,7 @@ import { extractFromEdit } from "./pipeline/teach";
 import { isSubstantiveEdit } from "./learning-loop";
 import { registrarAtividade, currentUserId } from "./hub";
 import { createClient } from "./supabase/server";
+import { runProbeTopup } from "./calibration-probe";
 
 export interface NewAttachment {
   kind: "reference_script" | "news_link" | "document" | "video_link";
@@ -404,4 +405,81 @@ export async function swapHook(scriptId: string, variantIndex: number) {
   if (upErr) throw new Error(upErr.message);
   if (!updated?.length) throw new Error("o roteiro mudou enquanto você trocava o hook — recarregue e tente de novo");
   revalidatePath(`/sessions/${s.session_id}`);
+}
+
+// ── Calibração de hooks (RLHF-lite par-a-par) ────────────────────────────────
+export interface CalibPairView {
+  id: string;
+  a: string; // texto do hook A (comparação CEGA — não revelamos mecanismo p/ não enviesar)
+  b: string;
+  restantes: number;
+}
+
+// Próximo par pendente que ESTE usuário ainda não votou (escopo do cliente + global).
+// Rotação de eixos (Fatia 2) entra na ordenação; aqui os mais novos primeiro.
+export async function getNextCalibrationPair(clientId: string | null): Promise<CalibPairView | null> {
+  const userId = await currentUserId();
+  const { data: voted } = await appDb.from("vm_calibration_votes").select("pair_id").eq("user_id", userId ?? "");
+  const votados = new Set((voted ?? []).map((v) => v.pair_id));
+
+  let q = appDb
+    .from("vm_calibration_pairs")
+    .select("id, option_a, option_b, client_id, axis, source")
+    .eq("dimension", "hook")
+    .order("source", { ascending: true }) // 'corpus' < 'generation' < 'probe' — varia a origem
+    .order("created_at", { ascending: false })
+    .limit(200);
+  // com cliente: só os dele + globais; sem cliente ("geral"): qualquer par pendente
+  // (a atribuição usa o client_id do próprio par, então continua correta).
+  if (clientId) q = q.or(`client_id.eq.${clientId},client_id.is.null`);
+  const { data: pairs, error } = await q;
+  if (error) throw new Error(error.message);
+
+  const disponiveis = (pairs ?? []).filter((p) => !votados.has(p.id));
+  if (!disponiveis.length) return null;
+  // rotação de eixos: sorteia um eixo entre os disponíveis para alternar a estratégia
+  const eixos = [...new Set(disponiveis.map((p) => p.axis))];
+  const eixo = eixos[Math.floor(Math.random() * eixos.length)];
+  const p = disponiveis.find((x) => x.axis === eixo) ?? disponiveis[0];
+  const txt = (o: unknown) => String((o as { texto?: string })?.texto ?? "");
+  return { id: p.id, a: txt(p.option_a), b: txt(p.option_b), restantes: disponiveis.length };
+}
+
+// Registra o voto (1 por usuário por par; re-voto atualiza). winner: 'a' | 'b' | 'skip'.
+export async function submitCalibrationVote(
+  pairId: string,
+  winner: "a" | "b" | "skip",
+  clientId: string | null
+): Promise<CalibPairView | null> {
+  const userId = await currentUserId();
+  const { error } = await appDb
+    .from("vm_calibration_votes")
+    .upsert({ pair_id: pairId, user_id: userId, winner }, { onConflict: "pair_id,user_id" });
+  if (error) throw new Error(error.message);
+  return getNextCalibrationPair(clientId);
+}
+
+// Fatia 2: aprofundamento sob demanda. A UI chama isto (sem esperar) quando a fila
+// esvazia — gera probes em background para a próxima sessão, sem travar o swipe.
+export async function requestMoreProbes(): Promise<void> {
+  try {
+    await runProbeTopup(3);
+  } catch (e) {
+    console.error("topup de probes falhou", e);
+  }
+}
+
+// Promove uma versão PROPOSTA de playbook (Fase 4) para ativa. Portão humano no /ensinar.
+export async function promoteHookPlaybook(version: number) {
+  await appDb.from("vm_playbooks").update({ active: false }).eq("slug", "hook");
+  const { error } = await appDb.from("vm_playbooks").update({ active: true }).eq("slug", "hook").eq("version", version);
+  if (error) throw new Error(error.message);
+  revalidatePath("/ensinar");
+}
+
+// Descarta uma proposta (versão inativa) que o time não quer.
+export async function dismissHookPlaybook(version: number) {
+  const { error } = await appDb.from("vm_playbooks").delete().eq("slug", "hook").eq("version", version).eq("active", false);
+  if (error) throw new Error(error.message);
+  revalidatePath("/ensinar");
 }

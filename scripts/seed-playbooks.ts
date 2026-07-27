@@ -1,15 +1,19 @@
 // Sobe playbooks/*.md para vm_playbooks (nome do arquivo = slug).
 // Cria nova versão ativa e desativa as anteriores do mesmo slug.
-// Rodar da raiz do projeto: npx tsx --env-file=.env.local scripts/seed-playbooks.ts
+// Rodar da raiz do projeto: npx tsx --env-file=.env.local scripts/seed-playbooks.ts [--slug NOME]
+//   --slug NOME  sobe só esse playbook (não toca nos outros slugs)
 import { readFileSync, readdirSync } from "node:fs";
 import { join, basename } from "node:path";
 import { appDb } from "../lib/db";
 
 const dir = join(process.cwd(), "playbooks");
+const slugIdx = process.argv.indexOf("--slug");
+const ONLY_SLUG = slugIdx >= 0 ? process.argv[slugIdx + 1] : null;
 
 async function main() {
   for (const file of readdirSync(dir).filter((f) => f.endsWith(".md"))) {
     const slug = basename(file, ".md");
+    if (ONLY_SLUG && slug !== ONLY_SLUG) continue;
     // \u0000 vem de PDFs exportados e o Postgres rejeita em colunas text
     const content = readFileSync(join(dir, file), "utf8").replace(/\u0000/g, "");
 

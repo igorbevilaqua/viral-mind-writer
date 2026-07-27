@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { appDb } from "@/lib/db";
+import PlaybookProposals, { type Proposta } from "@/components/playbook-proposals";
 
 export const dynamic = "force-dynamic";
 
@@ -8,14 +9,21 @@ function fmtWhen(iso: string): string {
 }
 
 export default async function EnsinarPage() {
-  const [{ data: allLessons }, { data: learnings }] = await Promise.all([
+  const [{ data: allLessons }, { data: learnings }, { data: playbooks }] = await Promise.all([
     appDb
       .from("vm_lessons")
       .select("id, source_kind, source_title, source_url, transcript, created_at, clientes(nome)")
       .order("created_at", { ascending: false })
       .limit(100),
     appDb.from("vm_lesson_learnings").select("lesson_id, active"),
+    appDb.from("vm_playbooks").select("version, content, active, created_at").eq("slug", "hook").order("version", { ascending: false }),
   ]);
+
+  // propostas do curador (Fase 4) = versões inativas ACIMA da ativa (as antigas ficam abaixo)
+  const ativaVer = (playbooks ?? []).find((p) => p.active)?.version ?? 0;
+  const propostas: Proposta[] = (playbooks ?? [])
+    .filter((p) => !p.active && p.version > ativaVer)
+    .map((p) => ({ version: p.version, content: p.content, created_at: p.created_at }));
 
   const counts = new Map<string, { total: number; ativos: number }>();
   for (const l of learnings ?? []) {
@@ -40,16 +48,26 @@ export default async function EnsinarPage() {
         <span className="text-[13px] text-white/40">
           aprendizados de virais analisados — os ativos influenciam a sala de agentes
         </span>
-        <Link
-          href="/ensinar/nova"
-          className="btn-gold ml-auto inline-flex items-center gap-2 rounded-[10px] px-4 py-2 text-[13px] font-semibold"
-        >
-          <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
-            <path d="M8 3v10M3 8h10" stroke="#161410" strokeWidth="1.6" strokeLinecap="round" />
-          </svg>
-          Ensinar novo viral
-        </Link>
+        <div className="ml-auto flex items-center gap-2">
+          <Link
+            href="/ensinar/calibracao"
+            className="inline-flex items-center gap-2 rounded-[10px] border border-gold/35 px-4 py-2 text-[13px] font-semibold text-gold/90 hover:border-gold/60 hover:bg-gold/[.05] transition-colors"
+          >
+            🎯 Calibração de hooks
+          </Link>
+          <Link
+            href="/ensinar/nova"
+            className="btn-gold inline-flex items-center gap-2 rounded-[10px] px-4 py-2 text-[13px] font-semibold"
+          >
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
+              <path d="M8 3v10M3 8h10" stroke="#161410" strokeWidth="1.6" strokeLinecap="round" />
+            </svg>
+            Ensinar novo viral
+          </Link>
+        </div>
       </div>
+
+      <PlaybookProposals propostas={propostas} />
 
       {derived.length > 0 && (
         <section className="mt-8">

@@ -2,12 +2,14 @@ import { appDb } from "./db";
 import { anthropic, ANALYST_MODEL } from "./anthropic";
 import { agentPrompt, toolInput, toolArray } from "./pipeline/agents";
 import { DIMENSOES, type Dimensao } from "./pipeline/teach";
+import { hookMechanismOutcomes } from "./learning-loop";
 
 // Curador mensal (plano 012, WP-E.6): lê winners/losers de vm_outcomes + lições
 // já ativas e propõe até 3 lições novas — SEMPRE active:false, curadoria humana
 // no /ensinar. Regra de ouro: nenhum conhecimento entra na sala sem aprovação.
-// Upgrade path (fora desta rodada): propor nova versão de playbook active:false
-// via trilho vm_playbooks.version quando houver volume de outcomes.
+// runHookPlaybookCurator (Fase 4) estende isso ao trilho vm_playbooks.version:
+// propõe nova versão do playbook de hook (active:false) a partir do desempenho real
+// dos mecanismos na própria sala. Promoção = decisão humana (scripts/promote-playbook.ts).
 
 const CURADOR_TOOL = {
   name: "propor_licoes",
@@ -138,4 +140,92 @@ ${jaEnsinado || "(nenhuma)"}`;
   );
   if (ins.error) return { ran: true, proposed: 0, reason: ins.error.message };
   return { ran: true, proposed: licoes.length };
+}
+
+// ── Fase 4: curador do playbook de hook ──────────────────────────────────────
+const PLAYBOOK_TOOL = {
+  name: "registrar_playbook",
+  description: "Registra a versão revisada COMPLETA do playbook de hooks (markdown).",
+  input_schema: {
+    type: "object" as const,
+    properties: {
+      content: { type: "string", description: "o playbook inteiro revisado, em markdown, pronto para substituir o atual" },
+      resumo_mudancas: { type: "string", description: "1-3 frases: o que mudou e o dado que justifica" },
+    },
+    required: ["content", "resumo_mudancas"],
+  },
+};
+
+export interface HookCuratorResult {
+  ran: boolean;
+  proposed: number; // 1 = nova versão active:false criada; 0 = nada
+  version?: number;
+  reason?: string;
+}
+
+// Propõe (NUNCA ativa) uma nova versão do playbook de hook a partir do desempenho
+// real dos mecanismos na sala. Roda no máx 1x/30 dias (guarda = created_at da última
+// versão do slug hook, o que também evita propor logo após um humano versionar).
+export async function runHookPlaybookCurator(): Promise<HookCuratorResult> {
+  const { data: latest, error: pbErr } = await appDb
+    .from("vm_playbooks")
+    .select("version, content, created_at")
+    .eq("slug", "hook")
+    .order("version", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+  if (pbErr) return { ran: false, proposed: 0, reason: `vm_playbooks: ${pbErr.message}` };
+  if (!latest) return { ran: false, proposed: 0, reason: "sem playbook de hook base" };
+  if (Date.now() - Date.parse(latest.created_at) < 30 * 86_400_000) {
+    return { ran: false, proposed: 0, reason: "playbook de hook versionado há menos de 30 dias" };
+  }
+
+  // outcomes maduros + mecanismo do hook (pipeline_trace.hook_mecanismo, gravado na Fase 3)
+  const { data: outcomes, error: outErr } = await appDb.from("vm_outcomes").select("script_id, ratio").not("ratio", "is", null);
+  if (outErr) return { ran: false, proposed: 0, reason: `vm_outcomes: ${outErr.message}` };
+  if ((outcomes ?? []).length < 6) return { ran: false, proposed: 0, reason: "outcomes maduros insuficientes (<6)" };
+
+  const { data: scripts } = await appDb
+    .from("vm_generated_scripts")
+    .select("id, pipeline_trace")
+    .in("id", (outcomes ?? []).map((o) => o.script_id));
+  const mecById = new Map(
+    (scripts ?? []).map((s) => [s.id, (s.pipeline_trace as { hook_mecanismo?: string } | null)?.hook_mecanismo ?? null])
+  );
+  const mecOutcomes = hookMechanismOutcomes(
+    (outcomes ?? []).map((o) => ({ ratio: o.ratio == null ? null : Number(o.ratio), mecanismo: mecById.get(o.script_id) ?? null }))
+  );
+  const acionavel = mecOutcomes.filter((m) => m.verdict !== "neutro");
+  if (!acionavel.length) {
+    return { ran: true, proposed: 0, reason: "nenhum mecanismo com sinal claro (>1.2 ou <0.8) na sala ainda" };
+  }
+
+  // digest para o analista revisar o playbook
+  const digest = mecOutcomes
+    .map((m) => `- ${m.mecanismo}: ratio mediano ${m.ratio_mediano}x em ${m.n} roteiros → ${m.verdict}`)
+    .join("\n");
+  const res = await anthropic.messages.create({
+    model: ANALYST_MODEL,
+    max_tokens: 8000, // playbook inteiro + thinking dividem o teto
+    tools: [PLAYBOOK_TOOL],
+    tool_choice: { type: "tool", name: "registrar_playbook" },
+    system: agentPrompt("professor"),
+    messages: [
+      {
+        role: "user",
+        content: `PLAYBOOK DE HOOKS ATUAL:\n${latest.content}\n\nDESEMPENHO REAL DOS MECANISMOS NESTA SALA (ratio = views / média do cliente; roteiros maduros ≥14d):\n${digest}\n\nProduza a versão REVISADA COMPLETA do playbook: promova os mecanismos com verdict "promover" (suba na ordem, reforce), rebaixe/mova para anti-padrão os com "derrubar", e PRESERVE o resto do conteúdo, estrutura e exemplos. Não invente números. Nada de travessão.`,
+      },
+    ],
+  });
+  const toolUse = res.content.find((b) => b.type === "tool_use");
+  if (!toolUse || toolUse.type !== "tool_use") return { ran: true, proposed: 0, reason: "curador sem saída estruturada" };
+  const input = toolInput(toolUse); // deepDedash: garante zero travessão no conteúdo persistido
+  const content = String(input.content ?? "").trim();
+  if (content.length < 500) return { ran: true, proposed: 0, reason: "playbook proposto curto demais, descartado" };
+
+  const version = (Number(latest.version) || 0) + 1;
+  // active:false SEMPRE — promoção é decisão humana (scripts/promote-playbook.ts)
+  const { error: insErr } = await appDb.from("vm_playbooks").insert({ slug: "hook", version, content, active: false });
+  if (insErr) return { ran: true, proposed: 0, reason: `insert playbook: ${insErr.message}` };
+  return { ran: true, proposed: 1, version };
 }

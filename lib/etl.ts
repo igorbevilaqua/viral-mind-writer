@@ -4,7 +4,8 @@ import { agentPrompt, toolInput, toolArray } from "./pipeline/agents";
 import { platformVideoId } from "./video-url";
 import { fmtNum } from "./format";
 import { maturityGate } from "./etl-gate";
-import { attributeLessons, computeCalibration } from "./learning-loop";
+import { attributeLessons, computeCalibration, rankHookMechanisms } from "./learning-loop";
+import { aggregatePreferences, axisValue, type CalibAxis, type CalibOption } from "./calibration";
 
 // ETL semanal: materializa insights do corpus em vm_viral_insights
 // (globais + por cliente, categorizados e pontuados) e sincroniza
@@ -196,6 +197,77 @@ async function clientInsightRows(cliente: { id: string; nome: string }): Promise
   return rows;
 }
 
+// Fase 2: ranking de mecanismos de hook por cliente + global, a partir das
+// classificações canônicas (vm_hook_classifications) casadas com o cliente do vídeo.
+// Melhor esforço: tabela vazia/ausente → nenhum row, ETL segue.
+const MEC_PRETTY: Record<string, string> = {}; // mecanismos já vêm com nome limpo do playbook
+async function hookMechanismRankingRows(): Promise<InsightRow[]> {
+  const { data: cls, error } = await appDb.from("vm_hook_classifications").select("video_id, mecanismos");
+  if (error) {
+    console.warn(`vm_hook_classifications: ${error.message} — aplicar migration 0020; sem ranking de hook`);
+    return [];
+  }
+  if (!cls?.length) return [];
+
+  // cliente de cada vídeo classificado (paginado; vm_video_stats tem cliente_id)
+  const clienteByVideo = new Map<string, string | null>();
+  const ids = cls.map((c) => c.video_id);
+  for (let i = 0; i < ids.length; i += 1000) {
+    const { data } = await viralData.from("vm_video_stats").select("video_id, cliente_id").in("video_id", ids.slice(i, i + 1000));
+    for (const s of data ?? []) clienteByVideo.set(s.video_id, s.cliente_id ?? null);
+  }
+
+  const rows = cls.map((c) => ({
+    mecanismos: Array.isArray(c.mecanismos) ? (c.mecanismos as string[]) : [],
+    clienteId: clienteByVideo.get(c.video_id) ?? null,
+  }));
+  return rankHookMechanisms(rows).map(({ scope, total, ranking }) => ({
+    scope,
+    insight_type: "hook_mechanism_ranking",
+    payload: {
+      titulo: "Mecanismos de hook que mais aparecem nos vencedores",
+      total_analisado: total,
+      ranking: ranking.map((r) => ({ mecanismo: MEC_PRETTY[r.mecanismo] ?? r.mecanismo, n: r.n, share: r.share })),
+      score: 0,
+      destaque: false,
+    },
+  }));
+}
+
+// Fatia 1: agrega os votos de calibração em preferências confiáveis (Wilson) por
+// escopo/eixo → insight pref_hook (gosto do time, distinto da performance real).
+async function preferenceInsightRows(): Promise<InsightRow[]> {
+  const [votesRes, pairsRes] = await Promise.all([
+    appDb.from("vm_calibration_votes").select("pair_id, winner").in("winner", ["a", "b"]),
+    appDb.from("vm_calibration_pairs").select("id, axis, option_a, option_b, client_id").eq("dimension", "hook"),
+  ]);
+  if (votesRes.error || pairsRes.error) {
+    console.warn(`calibração indisponível (${votesRes.error?.message ?? pairsRes.error?.message}) — aplicar migration 0021`);
+    return [];
+  }
+  const pairById = new Map((pairsRes.data ?? []).map((p) => [p.id, p]));
+  const rows = (votesRes.data ?? [])
+    .map((v) => {
+      const p = pairById.get(v.pair_id);
+      if (!p) return null;
+      const axis = p.axis as CalibAxis;
+      const win = (v.winner === "a" ? p.option_a : p.option_b) as CalibOption;
+      const lose = (v.winner === "a" ? p.option_b : p.option_a) as CalibOption;
+      return { clientId: p.client_id as string | null, axis, winnerValue: axisValue(win, axis), loserValue: axisValue(lose, axis) };
+    })
+    .filter((x): x is NonNullable<typeof x> => !!x);
+  if (!rows.length) return [];
+
+  const stats = aggregatePreferences(rows);
+  const byScope = new Map<string, typeof stats>();
+  for (const s of stats) byScope.set(s.scope, [...(byScope.get(s.scope) ?? []), s]);
+  return [...byScope.entries()].map(([scope, itens]) => ({
+    scope,
+    insight_type: "pref_hook",
+    payload: { titulo: "Preferências de hook do time (gosto, não performance)", itens, score: 0, destaque: false },
+  }));
+}
+
 export async function runWeeklyEtl() {
   // MV vm_video_stats alimenta as fns vm_* (migration 0013) — refresh antes de tudo.
   // PGRST202 = migration não aplicada: as fns ainda usam a definição antiga, seguir com warning.
@@ -233,6 +305,19 @@ export async function runWeeklyEtl() {
       clientInsights += r.length;
       rows.push(...r);
     }
+  }
+
+  // Ranking de mecanismos de hook (Fase 2): global + por cliente, dos vencedores classificados.
+  try {
+    rows.push(...(await hookMechanismRankingRows()));
+  } catch (e) {
+    console.error("ranking de mecanismos de hook falhou, seguindo sem", e);
+  }
+  // Preferências de calibração (Fatia 1): votos → pref_hook por escopo.
+  try {
+    rows.push(...(await preferenceInsightRows()));
+  } catch (e) {
+    console.error("preferências de calibração falharam, seguindo sem", e);
   }
 
   // ── Flywheel 1/3: casa roteiros marcados como publicados com o vídeo no corpus.

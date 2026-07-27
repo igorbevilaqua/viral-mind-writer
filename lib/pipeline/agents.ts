@@ -7,6 +7,7 @@ import { fmtNum } from "../format";
 import type { CalibrationPayload } from "../learning-loop";
 import type { ClientInsightPayload, GenerationContext, NarrativaCandidata, RankingItem } from "./types";
 import { deepDedash } from "./slop-lint";
+import { HOOK_MECHANISMS, HOOK_FORMATS, selectHook, type HookCandidate } from "./hook-mechanisms";
 
 // Os prompts dos agentes vivem em agents/*.md — fonte única consumida pelo app e pela skill /goal.
 const promptCache = new Map<string, string>();
@@ -193,6 +194,55 @@ export function hookExamplesBlock(ctx: GenerationContext, n = 5): string {
         `- "${h.texto}"${h.views ? ` — ${fmtNum(h.views)} views` : ""}${h.ret != null ? `, retenção hook ${Math.round(Number(h.ret))}%` : ""}`
     )
     .join("\n");
+}
+
+// Ranking de mecanismos de hook (Fase 2, insight hook_mechanism_ranking do ETL): os
+// mecanismos que mais caracterizam os hooks VENCEDORES deste cliente (ou global como
+// fallback). É o sinal que garante a repetição dos padrões comprovados a cada geração.
+export interface HookRank { mecanismo: string; n: number; share: number }
+export function hookMechanismRanking(ctx: GenerationContext): { doCliente: boolean; ranking: HookRank[] } | null {
+  const rows = ctx.insights.filter((i) => i.insight_type === "hook_mechanism_ranking");
+  if (!rows.length) return null;
+  const chosen = rows.find((i) => i.scope.startsWith("client:")) ?? rows[0]; // cliente tem precedência
+  const payload = chosen.payload as { ranking?: HookRank[] };
+  const ranking = Array.isArray(payload?.ranking) ? payload.ranking : [];
+  if (!ranking.length) return null;
+  return { doCliente: chosen.scope.startsWith("client:"), ranking };
+}
+
+export function hookMechanismBlock(ctx: GenerationContext): string {
+  const r = hookMechanismRanking(ctx);
+  if (!r) return "";
+  const escopo = r.doCliente ? "deste cliente" : "no geral (corpus)";
+  return (
+    `Mecanismos mais presentes nos hooks vencedores ${escopo} (aposte no topo; use um deles no principal):\n` +
+    r.ranking.map((x) => `- ${x.mecanismo} — ${Math.round(x.share * 100)}% dos vencedores`).join("\n")
+  );
+}
+
+// Preferências do time coletadas na calibração (insight pref_hook). GOSTO humano —
+// guia a escrita, mas a performance real (ranking/scriptresult) prevalece em conflito.
+type PrefItem = { axis: string; valor: string; winrate: number; n: number; confianca: number };
+function prefLabel(it: PrefItem): string {
+  switch (it.axis) {
+    case "mecanismo": return `mecanismo ${it.valor}`;
+    case "comprimento": return `hooks ${it.valor}s`;
+    case "personagem": return it.valor === "cita" ? "citar uma personalidade" : "não citar personalidade";
+    case "especificidade": return it.valor === "especifico" ? "números/detalhes específicos" : "sem número específico";
+    case "abertura": return `abertura em ${it.valor}`;
+    default: return `${it.axis}: ${it.valor}`;
+  }
+}
+export function hookPreferenceBlock(ctx: GenerationContext): string {
+  const rows = ctx.insights.filter((i) => i.insight_type === "pref_hook");
+  if (!rows.length) return "";
+  const chosen = rows.find((i) => i.scope.startsWith("client:")) ?? rows[0];
+  const itens = ((chosen.payload as { itens?: PrefItem[] })?.itens ?? []).filter((i) => i?.valor);
+  if (!itens.length) return "";
+  return (
+    "Preferências do time na calibração (gosto humano; a performance medida ainda manda em conflito):\n" +
+    itens.map((it) => `- prefere ${prefLabel(it)} (${Math.round(it.winrate * 100)}%, n=${it.n})`).join("\n")
+  );
 }
 
 // Claude às vezes serializa o input da tool — ou um campo array dele — como string JSON
@@ -467,24 +517,41 @@ Rankeie as candidatas e produza as orientações.`,
 }
 
 // ── 5. Hook (projetado sobre o roteiro pronto + narrativa + dados) ──────────
+// Fase 3: em vez de 1 hook final, o modelo devolve N CANDIDATOS rotulados por mecanismo
+// (taxonomia canônica) e formato. A seleção do principal + 3 variantes acontece em CÓDIGO
+// (selectHook), guiada pelo ranking de mecanismos vencedores — garante a repetição do
+// padrão comprovado sem depender do autojulgamento do modelo.
 const HOOK_TOOL = {
-  name: "registrar_hook",
-  description: "Registra o hook principal, as variações e o racional.",
+  name: "registrar_hooks",
+  description: "Registra candidatos a hook, cada um rotulado com seu mecanismo e formato.",
   input_schema: {
     type: "object" as const,
     properties: {
-      hook: { type: "string" },
-      variantes: { type: "array", minItems: 3, maxItems: 3, items: { type: "string" } },
-      racional: { type: "string" },
+      candidatos: {
+        type: "array",
+        minItems: 4,
+        maxItems: 6,
+        description: "4 a 6 candidatos a hook, cobrindo mecanismos DISTINTOS entre si.",
+        items: {
+          type: "object",
+          properties: {
+            hook: { type: "string", description: "1 a 3 períodos, falado, emenda na 1ª frase do corpo" },
+            mecanismo: { type: "string", enum: HOOK_MECHANISMS as unknown as string[], description: "o mecanismo de curiosidade dominante deste hook" },
+            formato: { type: "string", enum: HOOK_FORMATS as unknown as string[], description: "'Personagem Central' se gira em torno de uma pessoa; 'Visual' se depende do que se vê; senão 'Nenhum'" },
+            racional: { type: "string", description: "1 frase: por que este mecanismo vence para esta narrativa" },
+          },
+          required: ["hook", "mecanismo", "formato"],
+        },
+      },
     },
-    required: ["hook", "variantes", "racional"],
+    required: ["candidatos"],
   },
 };
 
 export async function designHook(
   ctx: GenerationContext,
   corpo: string
-): Promise<{ hook: string; variantes: string[]; racional: string }> {
+): Promise<{ hook: string; variantes: string[]; racional: string; mecanismo: string; formato: string; mecanismosVariantes: string[]; candidatos: HookCandidate[] }> {
   // Modo adaptação não tem narrativa vencedora: a arquitetura vem dos briefs de modelagem.
   const a = ctx.artifacts;
   const n = a ? a.candidatas[a.escolhida] : null;
@@ -493,6 +560,8 @@ export async function designHook(
   const banned = ctx.bannedPhrases.map((b) => `- ${b.label ?? b.pattern}`).join("\n");
   const hookCampeoes = hookExamplesBlock(ctx);
   const resultadosHook = scriptResultBlock(ctx, "hook");
+  const rankingMecanismos = hookMechanismBlock(ctx);
+  const preferencias = hookPreferenceBlock(ctx);
 
   const res = await trackedCreate(
     ctx.usageLog,
@@ -503,7 +572,7 @@ export async function designHook(
       // 1500 truncava o hook+variantes; 4000 dá folga (ver mesmo problema no ideador/storytelling).
       max_tokens: 4000,
       tools: [HOOK_TOOL],
-      tool_choice: { type: "tool", name: "registrar_hook" },
+      tool_choice: { type: "tool", name: "registrar_hooks" },
       // block 1 estático + cache: as tools entram no prefixo antes do system, então o hook não
       // compartilha cache com os outros agentes — mas "gerar nova versão" re-roda o hook com o
       // mesmo prefixo e reusa. Persona no block 2, fora do trecho cacheado que muda menos.
@@ -523,12 +592,12 @@ ${narrativaBloco}
 
 ORIENTAÇÃO DOS DADOS SOBRE HOOKS:
 ${orientacaoHook}
-${hookCampeoes ? `\nHOOKS CAMPEÕES DESTE CLIENTE (literais — a primeira frase real dos vídeos de mais views; use como referência de registro, nunca copie):\n${hookCampeoes}` : ""}${resultadosHook ? `\nHOOKS DE ROTEIROS DESTA SALA JÁ PUBLICADOS (resultado real — evite o marcado como EVITE):\n${resultadosHook}` : ""}${clientInsightBlock(ctx, ["hook"]) ? `\nHOOKS QUE JÁ FUNCIONARAM PARA ESTE CLIENTE (pré-rankeados por performance+recência):\n${clientInsightBlock(ctx, ["hook"])}` : ""}${taughtBlock(ctx, ["hook"]) ? `\nAPRENDIZADOS DE HOOK ENSINADOS PELO TIME (curadoria humana — prevalecem sobre padrões do corpus em conflito):\n${taughtBlock(ctx, ["hook"])}` : ""}
+${rankingMecanismos ? `\n${rankingMecanismos}` : ""}${preferencias ? `\n${preferencias}` : ""}${hookCampeoes ? `\nHOOKS CAMPEÕES DESTE CLIENTE (literais — a primeira frase real dos vídeos de mais views; use como referência de registro, nunca copie):\n${hookCampeoes}` : ""}${resultadosHook ? `\nHOOKS DE ROTEIROS DESTA SALA JÁ PUBLICADOS (resultado real — evite o marcado como EVITE):\n${resultadosHook}` : ""}${clientInsightBlock(ctx, ["hook"]) ? `\nHOOKS QUE JÁ FUNCIONARAM PARA ESTE CLIENTE (pré-rankeados por performance+recência):\n${clientInsightBlock(ctx, ["hook"])}` : ""}${taughtBlock(ctx, ["hook"]) ? `\nAPRENDIZADOS DE HOOK ENSINADOS PELO TIME (curadoria humana — prevalecem sobre padrões do corpus em conflito):\n${taughtBlock(ctx, ["hook"])}` : ""}
 
 CORPO DO ROTEIRO (o hook precisa emendar na primeira frase e ser pago pelo final):
 ${corpo}
 
-Desenhe o hook.`,
+Gere de 4 a 6 candidatos a hook, cada um com um MECANISMO DISTINTO da taxonomia, rotulando mecanismo e formato. Priorize os mecanismos do topo do ranking. A seleção do principal e das variantes é feita depois pelos dados.`,
         },
       ],
     },
@@ -538,11 +607,29 @@ Desenhe o hook.`,
 
   const toolUse = res.content.find((b) => b.type === "tool_use");
   if (!toolUse || toolUse.type !== "tool_use") throw new Error("hook: sem saída estruturada");
-  const input = toolInput(toolUse);
+  const candidatos = toolArray<HookCandidate>(toolInput(toolUse), "candidatos").filter((c) => c?.hook?.trim());
+  if (!candidatos.length) throw new Error("hook: nenhum candidato válido");
+
+  // seleção guiada pelos dados: share do mecanismo no ranking de vencedores (cliente > global)
+  const rank = hookMechanismRanking(ctx);
+  const rankShare = new Map((rank?.ranking ?? []).map((r) => [r.mecanismo, r.share]));
+  const escolha = selectHook(candidatos, rankShare);
+  if (!escolha) throw new Error("hook: seleção vazia");
+  const { principal, variantes } = escolha;
+
+  // racional: o do modelo + a justificativa de dados da escolha
+  const notaDados = rank
+    ? ` Mecanismo "${principal.mecanismo}" priorizado pelo ranking de vencedores ${rank.doCliente ? "do cliente" : "geral"}.`
+    : "";
   return {
-    hook: String(input.hook ?? ""),
-    variantes: toolArray<string>(input, "variantes"),
-    racional: String(input.racional ?? ""),
+    hook: principal.hook,
+    variantes: variantes.map((v) => v.hook),
+    racional: `${principal.racional ?? ""}${notaDados}`.trim(),
+    mecanismo: principal.mecanismo,
+    formato: principal.formato ?? "Nenhum",
+    mecanismosVariantes: variantes.map((v) => v.mecanismo),
+    // principal + variantes, na ordem de seleção → material grátis de calibração (harvest)
+    candidatos: [principal, ...variantes],
   };
 }
 

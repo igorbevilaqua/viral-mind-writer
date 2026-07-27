@@ -78,6 +78,81 @@ export function computeCalibration(
   return { n, correlacao_direcional: correlacao, vies, resumo };
 }
 
+// ── Fase 2: ranking de mecanismos de hook por escopo ─────────────────────────
+// A partir das classificações canônicas dos hooks de ALTA PERFORMANCE (vm_hook_classifications,
+// só entram vencedores), rankeia por FREQUÊNCIA o mecanismo que caracteriza os vencedores de
+// cada cliente + global. Frequência entre vencedores = "aposte neste mecanismo aqui".
+export interface HookMecRank {
+  mecanismo: string;
+  n: number;
+  share: number; // fração dos hooks vencedores do escopo que usam este mecanismo
+}
+
+export function rankHookMechanisms(
+  rows: { mecanismos: string[]; clienteId: string | null }[],
+  minSample = 8,
+  topK = 6
+): { scope: string; total: number; ranking: HookMecRank[] }[] {
+  // agrupa por escopo: "global" (todos) + "client:<id>" (cada cliente)
+  const buckets = new Map<string, { mecanismos: string[] }[]>();
+  const push = (scope: string, r: { mecanismos: string[] }) => buckets.set(scope, [...(buckets.get(scope) ?? []), r]);
+  for (const r of rows) {
+    push("global", r);
+    if (r.clienteId) push(`client:${r.clienteId}`, r);
+  }
+
+  const out: { scope: string; total: number; ranking: HookMecRank[] }[] = [];
+  for (const [scope, list] of buckets) {
+    if (list.length < minSample) continue; // amostra insuficiente: não emite ranking ruidoso
+    const count = new Map<string, number>();
+    for (const r of list) for (const m of new Set(r.mecanismos)) count.set(m, (count.get(m) ?? 0) + 1);
+    const ranking = [...count.entries()]
+      .map(([mecanismo, n]) => ({ mecanismo, n, share: Math.round((n / list.length) * 100) / 100 }))
+      .sort((a, b) => b.n - a.n)
+      .slice(0, topK);
+    out.push({ scope, total: list.length, ranking });
+  }
+  return out;
+}
+
+// ── Fase 4: performance dos mecanismos de hook NA PRÓPRIA SALA ───────────────
+// Junta os outcomes maduros (ratio real) com o mecanismo do hook gravado no
+// pipeline_trace (Fase 3). É o feedback mais direto que existe: mecanismo com
+// ratio mediano >1.2 é padrão a promover no playbook; <0.8 é anti-padrão.
+export interface HookMecOutcome {
+  mecanismo: string;
+  n: number;
+  ratio_mediano: number;
+  verdict: "promover" | "derrubar" | "neutro";
+}
+export function hookMechanismOutcomes(
+  outcomes: { ratio: number | null | undefined; mecanismo: string | null | undefined }[],
+  minPorMecanismo = 3
+): HookMecOutcome[] {
+  const byMec = new Map<string, number[]>();
+  for (const o of outcomes) {
+    if (!o.mecanismo || typeof o.ratio !== "number" || !Number.isFinite(o.ratio)) continue;
+    byMec.set(o.mecanismo, [...(byMec.get(o.mecanismo) ?? []), o.ratio]);
+  }
+  const med = (a: number[]) => {
+    const s = [...a].sort((x, y) => x - y);
+    const m = Math.floor(s.length / 2);
+    return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2;
+  };
+  return [...byMec.entries()]
+    .filter(([, r]) => r.length >= minPorMecanismo)
+    .map(([mecanismo, r]) => {
+      const ratio = Math.round(med(r) * 100) / 100;
+      return {
+        mecanismo,
+        n: r.length,
+        ratio_mediano: ratio,
+        verdict: ratio > 1.2 ? ("promover" as const) : ratio < 0.8 ? ("derrubar" as const) : ("neutro" as const),
+      };
+    })
+    .sort((a, b) => b.ratio_mediano - a.ratio_mediano);
+}
+
 // ── WP-E.5: atribuição lição×outcome ─────────────────────────────────────────
 
 export interface LessonAttribution {

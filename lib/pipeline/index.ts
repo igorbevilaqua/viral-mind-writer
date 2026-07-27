@@ -4,6 +4,7 @@ import { guardEmit, STALE_GENERATION_MS } from "../generation";
 import { loadContext } from "./context";
 import { analyzeModelagem } from "./modelagem";
 import { research, proposeNarratives, rankNarratives, designHook, writeComando } from "./agents";
+import { pairFromCandidates } from "../calibration";
 import { generateDraft, parseSections, stripTrailingComando } from "./draft";
 import { critiqueAndRewrite } from "./critique";
 import { humanize } from "./humanize";
@@ -210,6 +211,10 @@ export async function runPipeline(
             violations,
             narrativa_escolhida: { indice: artifacts?.escolhida ?? null, titulo: narrativa?.titulo, estrutura: narrativa?.estrutura },
             hook_racional: hookRes.racional,
+            // Fase 3: mecanismo do hook (taxonomia canônica) → o flywheel atribui ratio × mecanismo
+            hook_mecanismo: hookRes.mecanismo,
+            hook_formato: hookRes.formato,
+            hook_mecanismos_variantes: hookRes.mecanismosVariantes,
             few_shot_origens: ctx.fewShot.map((f) => f.origem),
             modelagem_briefs: ctx.modelagemBriefs,
             // telemetria de custo por fase: tokens (input/output/cache) + duração + modelo
@@ -232,6 +237,16 @@ export async function runPipeline(
 
     // limpa erro de tentativas anteriores → a página não abre com a caixa vermelha stale
     await appDb.from("vm_sessions").update({ status: "done", error_message: null }).eq("id", sessionId);
+
+    // Harvest de calibração (grátis): o par "escolhido vs vice de outro mecanismo" entra
+    // na fila para o time confirmar/corrigir a decisão do agente. Best-effort — nunca derruba.
+    try {
+      const par = pairFromCandidates(hookRes.candidatos, ctx.clientId);
+      if (par) await appDb.from("vm_calibration_pairs").insert(par);
+    } catch (e) {
+      console.error("harvest de calibração falhou, seguindo", e);
+    }
+
     await registrarAtividade("roteiro_gerado", { sessaoId: sessionId, userId: hubUser, payload: { script_id: saved.id } });
     emit({ type: "done", scriptId: saved.id });
   } catch (e) {

@@ -1,7 +1,7 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { anthropic, WRITER_MODEL } from "../anthropic";
 import { grokClient, RESEARCH_MODEL } from "../grok";
-import { agentPrompt } from "./agents";
+import { agentPrompt, hookMechanismBlock, hookPreferenceBlock } from "./agents";
 import { buildStaticSystemBlock, buildDynamicSystemBlock } from "./draft";
 import { loadContext } from "./context";
 import { dedash } from "./slop-lint";
@@ -102,6 +102,13 @@ ${input.instrucao}`;
   }
 
   if (input.evitar) userMsg += `\n\nA sugestão anterior abaixo foi recusada — gere uma DIFERENTE:\n${input.evitar}`;
+
+  // Bob bom em hook: se a edição é na ABERTURA (onde vive o hook), injeta a orientação
+  // de dados (ranking de mecanismos + preferências do time) — compacta, sem o playbook inteiro.
+  if (input.antes.trim().length < 160) {
+    const guia = [hookMechanismBlock(ctx), hookPreferenceBlock(ctx)].filter(Boolean).join("\n\n");
+    if (guia) userMsg += `\n\nVocê está editando a ABERTURA (o hook). Oriente-se por estes dados:\n${guia}`;
+  }
 
   const messages: Anthropic.MessageParam[] = [{ role: "user", content: userMsg }];
   const fontes = new Set<string>();

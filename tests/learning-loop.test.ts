@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { attributeLessons, changedRatio, computeCalibration, isSubstantiveEdit } from "@/lib/learning-loop";
+import { attributeLessons, changedRatio, computeCalibration, isSubstantiveEdit, rankHookMechanisms, hookMechanismOutcomes } from "@/lib/learning-loop";
 
 // WP-E: funções puras do ciclo de autoaprimoramento (plano 012, onda 3)
 
@@ -117,5 +117,68 @@ describe("attributeLessons", () => {
 
   it("sem outcomes com ratio → vazio", () => {
     expect(attributeLessons([{ ratio: undefined, lessonIds: ["a"] }])).toEqual([]);
+  });
+});
+
+describe("rankHookMechanisms", () => {
+  const mk = (mecs: string[], cli: string | null) => ({ mecanismos: mecs, clienteId: cli });
+
+  it("rankeia por frequência e computa share por escopo", () => {
+    const rows = [
+      ...Array.from({ length: 6 }, () => mk(["Contraste Extremo"], "c1")),
+      ...Array.from({ length: 4 }, () => mk(["Revelação Secreta"], "c1")),
+    ];
+    const out = rankHookMechanisms(rows, 8, 6);
+    const global = out.find((o) => o.scope === "global")!;
+    expect(global.total).toBe(10);
+    expect(global.ranking[0]).toEqual({ mecanismo: "Contraste Extremo", n: 6, share: 0.6 });
+    expect(global.ranking[1].mecanismo).toBe("Revelação Secreta");
+    // cliente c1 tem o mesmo perfil
+    expect(out.find((o) => o.scope === "client:c1")).toBeTruthy();
+  });
+
+  it("escopo abaixo de minSample não emite ranking", () => {
+    const out = rankHookMechanisms([mk(["Urgência"], "c9"), mk(["Urgência"], "c9")], 8, 6);
+    expect(out.find((o) => o.scope === "client:c9")).toBeUndefined();
+    expect(out.find((o) => o.scope === "global")).toBeUndefined(); // 2 < 8
+  });
+
+  it("mecanismos repetidos no mesmo hook contam uma vez", () => {
+    const rows = Array.from({ length: 8 }, () => mk(["Contraste Extremo", "Contraste Extremo"], null));
+    const global = rankHookMechanisms(rows, 8, 6).find((o) => o.scope === "global")!;
+    expect(global.ranking[0].n).toBe(8);
+  });
+});
+
+describe("hookMechanismOutcomes", () => {
+  it("classifica mecanismo por ratio mediano da sala", () => {
+    const out = hookMechanismOutcomes(
+      [
+        { ratio: 1.5, mecanismo: "Contraste Extremo" },
+        { ratio: 1.3, mecanismo: "Contraste Extremo" },
+        { ratio: 1.4, mecanismo: "Contraste Extremo" },
+        { ratio: 0.5, mecanismo: "Urgência" },
+        { ratio: 0.6, mecanismo: "Urgência" },
+        { ratio: 0.7, mecanismo: "Urgência" },
+      ],
+      3
+    );
+    const ce = out.find((o) => o.mecanismo === "Contraste Extremo")!;
+    const urg = out.find((o) => o.mecanismo === "Urgência")!;
+    expect(ce.verdict).toBe("promover"); // mediana 1.4 > 1.2
+    expect(urg.verdict).toBe("derrubar"); // mediana 0.6 < 0.8
+    expect(out[0].mecanismo).toBe("Contraste Extremo"); // ordenado por ratio desc
+  });
+
+  it("ignora mecanismos abaixo do mínimo de amostra e ratios/mecanismo inválidos", () => {
+    const out = hookMechanismOutcomes(
+      [
+        { ratio: 2, mecanismo: "Superlativo" }, // só 1 → abaixo do mínimo
+        { ratio: null, mecanismo: "Revelação Secreta" },
+        { ratio: 1, mecanismo: null },
+      ],
+      3
+    );
+    expect(out).toEqual([]);
   });
 });

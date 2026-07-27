@@ -49,3 +49,6 @@ hostingerconfig.claude.json*
 # artefatos sem papel no build (mockups/handoff)
 clientes-preferencias.html
 sistema-de-roteiro-multiagente/project/
+
+# leaderboard de análise de hooks (regenerável via scripts/analyze-hooks.ts)
+hooks-analysis.json
