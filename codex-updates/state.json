@@ -1,7 +1,16 @@
 {
   "version": "1.2",
   "codexUrl": "https://codex.viralmindlabs.com",
-  "pending": [],
+  "pending": [
+    {
+      "id": "ms3smajn",
+      "type": "fix",
+      "summary": "Calibração de hooks: comparações agora são do mesmo tema e sem travessão",
+      "detail": "Antes o cold-start pareava hooks de assuntos diferentes (não dava pra comparar direito) e os textos vinham com travessão. Agora cada par é a mesma história com dois mecanismos diferentes, e o sistema nunca exibe travessão.",
+      "commit": "aa2b00a",
+      "addedAt": "2026-07-27T22:23:03.410Z"
+    }
+  ],
   "lastRelease": {
     "version": "1.1",
     "git": "7c6e45d",
