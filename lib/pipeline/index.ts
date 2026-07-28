@@ -7,6 +7,7 @@ import { research, proposeNarratives, rankNarratives, designHook, writeComando }
 import { pairFromCandidates } from "../calibration";
 import { generateDraft, parseSections, stripTrailingComando } from "./draft";
 import { critiqueAndRewrite } from "./critique";
+import { extractFromCorrection } from "./teach";
 import { humanize } from "./humanize";
 import { blockCount, deepDedash } from "./slop-lint";
 import { APP_VERSION, GIT_SHA } from "../version";
@@ -249,6 +250,42 @@ export async function runPipeline(
 
     await registrarAtividade("roteiro_gerado", { sessaoId: sessionId, userId: hubUser, payload: { script_id: saved.id } });
     emit({ type: "done", scriptId: saved.id });
+
+    // Correção da sala → aprendizado. O PEDIDO do usuário (caixa "AJUSTAR O ROTEIRO")
+    // é sinal supervisionado; o Professor destila em lições active:false pra curadoria
+    // no /ensinar (mesma máquina da edição/viral). client_id escopa regras de cliente.
+    // APÓS o done e em try isolado: não atrasa a entrega nem derruba a geração já emitida.
+    if (opts.feedback && revision) {
+      try {
+        const depois = `${sections.roteiro}${sections.comando ? `\n\nCOMANDO: ${sections.comando}` : ""}`;
+        const learnings = await extractFromCorrection({
+          pedido: opts.feedback,
+          antes: revision.anterior,
+          depois,
+          clientNome: ctx.clientPrefs?.nome,
+        });
+        if (learnings.length) {
+          const { data: lesson } = await appDb
+            .from("vm_lessons")
+            .insert({
+              client_id: ctx.clientId,
+              source_kind: "correcao",
+              source_title: "Correção na sala (pedido do usuário)",
+              transcript: depois,
+              context_note: opts.feedback,
+            })
+            .select("id")
+            .single();
+          if (lesson) {
+            await appDb.from("vm_lesson_learnings").insert(
+              learnings.map((l) => ({ ...l, evidencia: l.evidencia ?? null, origem: "correcao", active: false, lesson_id: lesson.id }))
+            );
+          }
+        }
+      } catch (e) {
+        console.error("aprendizado da correção falhou — roteiro entregue mesmo assim", e);
+      }
+    }
   } catch (e) {
     const message = e instanceof Error ? e.message : String(e);
     const debug = {

@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 import { platformVideoId } from "./video-url";
 import { dedash } from "./pipeline/slop-lint";
 import { rewriteFragment } from "./pipeline/rewrite-fragment";
-import { extractFromEdit } from "./pipeline/teach";
+import { extractFromEdit, extractFromNotes } from "./pipeline/teach";
 import { isSubstantiveEdit } from "./learning-loop";
 import { registrarAtividade, currentUserId } from "./hub";
 import { createClient } from "./supabase/server";
@@ -116,45 +116,61 @@ export async function finalizeSession(
     if (error) throw new Error(error.message);
   }
 
-  // WP-E.4 (plano 010): avaliação alta + edição substantiva = sinal supervisionado.
-  // Professor extrai as diferenças → lição active:false, curadoria humana no /ensinar.
+  // Aprendizado supervisionado no encerramento → lição active:false, curadoria no /ensinar.
   // Falha aqui NUNCA bloqueia o encerramento — o feedback já está salvo.
-  if ((form.rating ?? 0) >= 4) {
-    try {
-      const { data: script } = await appDb
-        .from("vm_generated_scripts")
-        .select("roteiro, client_id, pipeline_trace")
-        .eq("id", scriptId)
-        .single();
-      const trace = (script?.pipeline_trace ?? {}) as { roteiro_original?: string };
-      // original = texto que a sala gerou (preservado pelo updateScript na 1ª edição inline)
-      const original = trace.roteiro_original ?? script?.roteiro ?? "";
-      // editada = versão colada no feedback OU o roteiro atual quando houve edição inline
-      const editada = form.edited_version.trim() || (trace.roteiro_original ? script!.roteiro : "");
-      if (original && editada && isSubstantiveEdit(original, editada)) {
-        const learnings = await extractFromEdit({ original, editada, notes: form.notes || undefined });
-        if (learnings.length) {
-          const { data: lesson } = await appDb
-            .from("vm_lessons")
-            .insert({
-              client_id: script!.client_id,
-              source_kind: "edicao",
-              source_title: "Edição humana de roteiro (sessão avaliada)",
-              transcript: editada,
-              context_note: form.notes || null,
-            })
-            .select("id")
-            .single();
-          if (lesson) {
-            await appDb.from("vm_lesson_learnings").insert(
-              learnings.map((l) => ({ ...l, evidencia: l.evidencia ?? null, origem: "edicao", active: false, lesson_id: lesson.id }))
-            );
-          }
-        }
-      }
-    } catch (e) {
-      console.error("aprendizado da edição falhou — feedback salvo mesmo assim", e);
+  //  a) rating>=4 + edição substantiva: aprende do par sala→humano (a nota entra como contexto);
+  //  b) senão, se houver observação escrita: aprende do próprio comentário — independe do rating,
+  //     porque nota crítica com avaliação baixa costuma ser o feedback mais valioso.
+  try {
+    const { data: script } = await appDb
+      .from("vm_generated_scripts")
+      .select("roteiro, client_id, pipeline_trace")
+      .eq("id", scriptId)
+      .single();
+    const trace = (script?.pipeline_trace ?? {}) as { roteiro_original?: string };
+    // original = texto que a sala gerou (preservado pelo updateScript na 1ª edição inline)
+    const original = trace.roteiro_original ?? script?.roteiro ?? "";
+    // editada = versão colada no feedback OU o roteiro atual quando houve edição inline
+    const editada = form.edited_version.trim() || (trace.roteiro_original ? script!.roteiro : "");
+    const notes = form.notes?.trim() ?? "";
+
+    let learnings: Awaited<ReturnType<typeof extractFromEdit>> = [];
+    let source_kind = "edicao";
+    let source_title = "Edição humana de roteiro (sessão avaliada)";
+    let origem = "edicao";
+    let transcript = editada;
+
+    if ((form.rating ?? 0) >= 4 && original && editada && isSubstantiveEdit(original, editada)) {
+      learnings = await extractFromEdit({ original, editada, notes: notes || undefined });
+    } else if (notes.length >= 15) {
+      // ponytail: piso de 15 chars descarta "ok"/"bom"; suba se aparecer ruído
+      learnings = await extractFromNotes({ nota: notes, roteiro: editada || original });
+      source_kind = "correcao";
+      source_title = "Observação ao finalizar sessão";
+      origem = "correcao";
+      transcript = editada || original || notes;
     }
+
+    if (learnings.length) {
+      const { data: lesson } = await appDb
+        .from("vm_lessons")
+        .insert({
+          client_id: script!.client_id,
+          source_kind,
+          source_title,
+          transcript,
+          context_note: notes || null,
+        })
+        .select("id")
+        .single();
+      if (lesson) {
+        await appDb.from("vm_lesson_learnings").insert(
+          learnings.map((l) => ({ ...l, evidencia: l.evidencia ?? null, origem, active: false, lesson_id: lesson.id }))
+        );
+      }
+    }
+  } catch (e) {
+    console.error("aprendizado do encerramento falhou — feedback salvo mesmo assim", e);
   }
 
   const { error: sessErr } = await appDb.from("vm_sessions").update({ status: "closed" }).eq("id", sessionId);

@@ -44,7 +44,18 @@ export const DIMENSOES: Dimensao[] = ["hook", "storytelling", "tema", "ritmo", "
 
 // Chamada compartilhada do Professor (mesmo tool schema/system): o que varia
 // entre "ensinar viral" e "aprender com edição" é só o conteúdo do usuário.
-async function runProfessor(userContent: string): Promise<ExtractedLearning[]> {
+// minItems: viral rende 4-8; uma correção pontual rende 1-3 — forçar 4 faria o
+// Professor inventar aprendizados que o pedido não sustenta.
+async function runProfessor(userContent: string, minItems = 4): Promise<ExtractedLearning[]> {
+  const tool = {
+    ...APRENDIZADOS_TOOL,
+    input_schema: {
+      ...APRENDIZADOS_TOOL.input_schema,
+      properties: {
+        aprendizados: { ...APRENDIZADOS_TOOL.input_schema.properties.aprendizados, minItems },
+      },
+    },
+  };
   const { data: playbooks } = await appDb
     .from("vm_playbooks")
     .select("slug, content")
@@ -57,7 +68,7 @@ async function runProfessor(userContent: string): Promise<ExtractedLearning[]> {
   const res = await anthropic.messages.create({
     model: ANALYST_MODEL,
     max_tokens: 8000, // thinking divide o teto — 3000 truncava o tool_use
-    tools: [APRENDIZADOS_TOOL],
+    tools: [tool],
     tool_choice: { type: "tool", name: "registrar_aprendizados" },
     system: [
       {
@@ -120,5 +131,63 @@ ${input.original.slice(0, 15_000)}
 ${input.editada.slice(0, 15_000)}
 
 Extraia os aprendizados (só das DIFERENÇAS; ignore o que ficou igual).`
+  );
+}
+
+// Correção na sala (caixa "AJUSTAR O ROTEIRO"): o usuário PEDIU uma mudança e às
+// vezes explica a motivação. O PEDIDO é o sinal supervisionado — mais forte quando
+// vem com o "porquê". antes→depois entram só como evidência da aplicação.
+export async function extractFromCorrection(input: {
+  pedido: string;
+  antes: string;
+  depois: string;
+  clientNome?: string;
+}): Promise<ExtractedLearning[]> {
+  return runProfessor(
+    `${input.clientNome ? `CLIENTE (destino do aprendizado): ${input.clientNome}\n` : ""}Um roteirista humano PEDIU uma CORREÇÃO num roteiro que a sala gerou. O PEDIDO é uma decisão editorial deliberada — o sinal mais forte. Extraia o que a sala deve aprender pra NÃO repetir o problema em roteiros futuros, generalizando o princípio quando fizer sentido.
+
+Regras:
+- Priorize a MOTIVAÇÃO do pedido quando ela aparecer (o "porquê") — é o aprendizado mais valioso.
+- Se for regra específica deste cliente (ex.: "nunca fale mal de juízes"), registre como regra do cliente, não como princípio global.
+- Classifique na dimensão certa (hook, comando, storytelling, tema, ritmo, geral).
+- Extraia SÓ o que o pedido sustenta. 1 aprendizado sólido vale mais que vários inventados. NÃO invente.
+- Use o antes→depois apenas como evidência de como a correção foi aplicada.
+
+PEDIDO DO USUÁRIO:
+${input.pedido}
+
+=== ROTEIRO ANTES ===
+${input.antes.slice(0, 12_000)}
+
+=== ROTEIRO DEPOIS (já corrigido) ===
+${input.depois.slice(0, 12_000)}`,
+    1
+  );
+}
+
+// Observação ao finalizar a sessão (campo "notes"): não há par antes→depois, só o
+// comentário do humano sobre o roteiro. É contexto/motivação puro — o sinal que o
+// produto mais valoriza. O roteiro entra como referência do que a observação comenta.
+export async function extractFromNotes(input: {
+  nota: string;
+  roteiro: string;
+  clientNome?: string;
+}): Promise<ExtractedLearning[]> {
+  return runProfessor(
+    `${input.clientNome ? `CLIENTE (destino do aprendizado): ${input.clientNome}\n` : ""}Ao finalizar uma sessão, um roteirista humano deixou uma OBSERVAÇÃO sobre o roteiro que a sala gerou. É feedback deliberado — extraia o que a sala deve aprender pra melhorar roteiros futuros.
+
+Regras:
+- A observação é o sinal. Capture a MOTIVAÇÃO/"porquê" quando aparecer — é o mais valioso.
+- Se for regra específica deste cliente (ex.: "nunca fale mal de juízes"), registre como regra do cliente, não como princípio global.
+- Classifique na dimensão certa (hook, comando, storytelling, tema, ritmo, geral).
+- Extraia SÓ o que a observação sustenta. 1 aprendizado sólido vale mais que vários inventados. NÃO invente.
+- O roteiro abaixo é só referência do que a observação comenta.
+
+OBSERVAÇÃO DO ROTEIRISTA:
+${input.nota}
+
+=== ROTEIRO (referência) ===
+${input.roteiro.slice(0, 12_000)}`,
+    1
   );
 }
