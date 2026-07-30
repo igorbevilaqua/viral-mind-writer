@@ -392,8 +392,12 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
               </button>
             </div>
             {a.is_modelagem && (
+              // Sem tema digitado a sala trabalha o assunto do próprio vídeo — dizer
+              // "no seu tema" aqui seria mentira, e era a única pista que o usuário tinha.
               <p className="text-xs text-white/40">
-                A estrutura, emoções e elementos virais deste material serão desconstruídos e replicados no seu tema
+                {prompt.trim()
+                  ? "A estrutura, emoções e elementos virais deste material serão desconstruídos e replicados no seu tema"
+                  : "Sem tema: a sala mantém o assunto deste vídeo, mas ataca por um ângulo novo — com os fatos dele conferidos antes"}
               </p>
             )}
             <div className="flex flex-col gap-2.5">
