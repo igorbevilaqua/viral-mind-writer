@@ -289,6 +289,12 @@ function NarrativeCards({
                 <p className="text-[11px] text-white/40 mt-1">{n.estrutura}</p>
               </div>
               <p className="text-[12px] leading-relaxed text-white/55">{n.mecanismo_emocional}</p>
+              {/* o gancho é o que deixa a escolha entre candidatas óbvia em 2 segundos */}
+              {n.gancho_potencial && (
+                <p className="text-[12.5px] leading-snug text-cream/75 border-l-2 border-white/15 pl-2">
+                  {n.gancho_potencial}
+                </p>
+              )}
               {r && <p className="text-[12px] leading-relaxed text-white/55 italic">“{r.justificativa}”</p>}
               {/* WP-F.1: evidência concreta que pesou no score (sessões antigas não têm) */}
               {!!r?.evidencia?.length && (
@@ -1751,11 +1757,32 @@ export default function SessionView({
   );
 }
 
+// Títulos das seções da autópsia: o usuário precisa ler "o que NÃO vamos copiar",
+// não "nao transferivel". Chave desconhecida cai no fallback (pretty).
+const ANALYSIS_LABELS: Record<string, string> = {
+  compreensao: "o que este vídeo entregou à audiência",
+  diagnostico: "onde ele é forte e onde é fraco",
+  esqueleto: "o que vamos reaproveitar (a mecânica)",
+  nao_transferivel: "o que NÃO vamos copiar (não se repete)",
+  timing: "quanto do resultado veio da janela temporal",
+};
+
 // WP-F.6: analysis (jsonb) como seções legíveis — chave top-level vira título, valores viram texto/lista.
 function AnalysisSections({ analysis }: { analysis: unknown }) {
   if (!analysis || typeof analysis !== "object" || Array.isArray(analysis)) return null;
-  const pretty = (k: string) => k.replace(/_/g, " ");
-  const line = (v: unknown) => (typeof v === "string" || typeof v === "number" ? String(v) : JSON.stringify(v));
+  const pretty = (k: string) => ANALYSIS_LABELS[k] ?? k.replace(/_/g, " ");
+  // objeto dentro de lista (beats, loops, camadas do diagnóstico) vira "a · b · c" —
+  // JSON.stringify aqui devolvia chaves e aspas na cara do usuário.
+  const line = (v: unknown): string => {
+    if (typeof v === "string" || typeof v === "number") return String(v);
+    if (v && typeof v === "object" && !Array.isArray(v)) {
+      return Object.values(v as Record<string, unknown>)
+        .filter((x) => x != null && x !== "")
+        .map((x) => (typeof x === "object" ? JSON.stringify(x) : String(x)))
+        .join(" · ");
+    }
+    return JSON.stringify(v);
+  };
   const renderVal = (v: unknown) => {
     if (v == null || v === "") return null;
     if (Array.isArray(v)) {

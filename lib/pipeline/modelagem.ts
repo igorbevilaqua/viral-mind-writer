@@ -1,75 +1,164 @@
-import { anthropic, ANALYST_MODEL } from "../anthropic";
+import { ANALYST_MODEL, trackedCreate } from "../anthropic";
 import { appDb, viralData } from "../db";
 import { platformVideoId } from "../video-url";
 import { fetchTranscript } from "../transcribe";
-import { toolInput } from "./agents";
-import { playbookIndex } from "./draft";
-import type { Attachment, GenerationContext } from "./types";
+import { clientInsightBlock, scriptResultBlock, taughtBlock, toolInput } from "./agents";
+import { clientPrefsBlock, playbookIndex } from "./draft";
+import { composeBrief } from "./modelagem-brief";
+import type { Attachment, GenerationContext, ModelagemAnalysis } from "./types";
 
-const ANALISE_TOOL = {
-  name: "registrar_analise",
-  description: "Registra a desconstrução estrutural de um vídeo viral e o brief de replicação.",
-  input_schema: {
-    type: "object" as const,
-    properties: {
-      analysis: {
-        type: "object",
-        properties: {
-          estrutura_narrativa: {
-            type: "string",
-            description:
-              "Código + nome EXATOS da estrutura do playbook que este vídeo usa, ex 'A1. Jornada do Herói'. Se nenhuma casa bem, a mais próxima + ressalva curta.",
-          },
-          hook: {
-            type: "object",
-            properties: {
-              texto: { type: "string" },
-              tipo: { type: "string", description: "nome EXATO de um tipo/MGC do PLAYBOOK DE HOOKS" },
-              mecanismo: { type: "string", description: "princípio do playbook em ação: curiosidade, relevância, impacto..." },
-              duracao_estimada_s: { type: "number" },
-            },
-            required: ["texto", "tipo", "mecanismo"],
-          },
-          beats: {
-            type: "array",
-            items: {
-              type: "object",
-              properties: {
-                ordem: { type: "number" },
-                funcao: { type: "string", description: "setup|tensão|virada|prova|payoff" },
-                resumo: { type: "string" },
-                emocao: { type: "string" },
-                duracao_estimada_s: { type: "number" },
-              },
-              required: ["ordem", "funcao", "resumo", "emocao"],
-            },
-          },
-          arco_emocional: { type: "array", items: { type: "string" } },
-          argumentos: { type: "array", items: { type: "string" } },
-          pacing: {
-            type: "object",
-            properties: {
-              onde_acelera: { type: "string" },
-              onde_respira: { type: "string" },
-            },
-          },
-          cta: {
-            type: "object",
-            properties: { texto: { type: "string" }, tipo: { type: "string" }, posicao: { type: "string" } },
-          },
-          elementos_virais: { type: "array", items: { type: "string" } },
+// A modelagem extrai o MECANISMO do sucesso, nunca o conteúdo: o esqueleto é a parte
+// que viaja para outro tema/rosto/semana. Campos que descreviam o que o vídeo DIZ
+// (beats.resumo, argumentos, hook.texto) saíram de propósito — eram a origem da cópia.
+function modelagemTool(comTema: boolean) {
+  const props: Record<string, unknown> = {
+    compreensao: {
+      type: "object",
+      description:
+        "Do que o vídeo trata e por que a audiência se sentiu recompensada. Esta metade PODE citar conteúdo — ela existe para a sala entender o material, e não chega ao roteirista.",
+      properties: {
+        tema: { type: "string", description: "o assunto do vídeo em 1 frase concreta" },
+        argumento_central: {
+          type: "string",
+          description: "a tese que o vídeo defende, em 1-2 frases. O que ele quer que o espectador passe a acreditar.",
         },
-        required: ["estrutura_narrativa", "hook", "beats", "arco_emocional", "argumentos", "elementos_virais"],
+        promessa_da_abertura: { type: "string", description: "o que a abertura promete que o vídeo vai entregar" },
+        recompensa: {
+          type: "string",
+          description:
+            "O PRÊMIO que o espectador leva embora depois de assistir: o que ele entendeu, sentiu ou ganhou. Descreva o TIPO de recompensa em termos transferíveis (ex: 'a sensação de ter enxergado um golpe em que todo mundo cai'), não o conteúdo específico — este campo vai para o roteirista como alvo a bater.",
+        },
+        motor_comentario: {
+          type: "string",
+          description: "o que o vídeo faz que provoca comentário (discordância, identificação, pergunta deixada no ar)",
+        },
+        motor_compartilhamento: {
+          type: "string",
+          description: "por que alguém mandaria isso para outra pessoa (utilidade, prova de tese, indignação, status)",
+        },
+        alegacoes: {
+          type: "array",
+          items: { type: "string" },
+          description:
+            "Cada afirmação factual verificável do vídeo (número, data, causalidade, superlativo), uma por item, como o vídeo a enuncia. Vira a lista de checagem da pesquisa.",
+        },
       },
-      replication_brief: {
-        type: "string",
-        description:
-          "Brief em prosa, imperativo, dizendo como replicar a ARQUITETURA (nunca o texto) adaptada ao novo tema.",
-      },
+      required: [
+        "tema",
+        "argumento_central",
+        "promessa_da_abertura",
+        "recompensa",
+        "motor_comentario",
+        "motor_compartilhamento",
+        "alegacoes",
+      ],
     },
-    required: ["analysis", "replication_brief"],
-  },
-};
+    diagnostico: {
+      type: "object",
+      properties: {
+        gargalo: { type: "string", enum: ["tema", "hook", "narrativa", "comando"] },
+        onde_superamos: { type: "string", description: "1 frase: como uma versão nossa explora esse gargalo" },
+        por_camada: {
+          type: "array",
+          minItems: 4,
+          maxItems: 4,
+          items: {
+            type: "object",
+            properties: {
+              camada: { type: "string", enum: ["tema", "hook", "narrativa", "comando"] },
+              evidencia: { type: "string", description: "frase LITERAL da transcrição que sustenta a leitura" },
+              leitura: { type: "string", description: "por que funciona ou falha, em 1 frase" },
+            },
+            required: ["camada", "evidencia", "leitura"],
+          },
+        },
+      },
+      required: ["gargalo", "onde_superamos", "por_camada"],
+    },
+    esqueleto: {
+      type: "object",
+      description: "A arquitetura transferível. LIVRE DE CONTEÚDO: sem tema, nome, número, marca ou frase do original.",
+      properties: {
+        estrutura_narrativa: {
+          type: "string",
+          description: "Código + nome EXATOS do playbook, ex 'A1. Jornada do Herói'. Nenhuma casa bem → a mais próxima + ressalva curta.",
+        },
+        hook: {
+          type: "object",
+          properties: {
+            tipo: { type: "string", description: "nome EXATO de um tipo/MGC do PLAYBOOK DE HOOKS" },
+            mecanismo: { type: "string", description: "o gatilho em ação: curiosidade, dissonância, relevância pessoal..." },
+            funcao: { type: "string", description: "o que a abertura PRECISA fazer, em termos de efeito — não o que ela diz" },
+          },
+          required: ["tipo", "mecanismo", "funcao"],
+        },
+        beats: {
+          type: "array",
+          minItems: 3,
+          items: {
+            type: "object",
+            properties: {
+              ordem: { type: "number" },
+              funcao: { type: "string", description: "setup|tensão|virada|prova|payoff" },
+              mecanismo_de_atencao: { type: "string", description: "o que segura o espectador NESTE beat" },
+              emocao: { type: "string" },
+              seg: { type: "number", description: "duração estimada em segundos" },
+            },
+            required: ["ordem", "funcao", "mecanismo_de_atencao", "emocao"],
+          },
+        },
+        loops_abertos: {
+          type: "array",
+          items: {
+            type: "object",
+            properties: {
+              o_que_fica_pendente: { type: "string", description: "a pergunta não respondida, em forma genérica" },
+              fecha_em_qual_beat: { type: "number" },
+            },
+            required: ["o_que_fica_pendente", "fecha_em_qual_beat"],
+          },
+        },
+        escalada: { type: "string", description: "como os stakes sobem do início ao fim" },
+        comando: {
+          type: "object",
+          properties: { tipo: { type: "string" }, gatilho: { type: "string" }, posicao: { type: "string" } },
+        },
+      },
+      required: ["estrutura_narrativa", "hook", "beats", "escalada"],
+    },
+    nao_transferivel: {
+      type: "array",
+      items: { type: "string" },
+      description:
+        "O que do sucesso NÃO viaja para outro tema/rosto/semana: trend do momento, celebridade, rosto já conhecido, janela de notícia, autoridade pessoal do criador.",
+    },
+    timing: {
+      type: "object",
+      properties: {
+        classe: { type: "string", enum: ["breaking", "trending", "ciclico", "perene"] },
+        contribuicao_pct: { type: "number", description: "0-100: quanto do resultado veio da janela temporal" },
+      },
+      required: ["classe", "contribuicao_pct"],
+    },
+  };
+
+  // Com tema digitado, a compreensão do assunto do vídeo é ruído: o roteiro é sobre
+  // OUTRA coisa e só a mecânica transfere. Sem tema, ela é o insumo da pesquisa dirigida
+  // e da proposta de ângulos — e paga o próprio custo.
+  if (comTema) delete props.compreensao;
+
+  return {
+    name: "registrar_modelagem",
+    description: "Registra a autópsia de um vídeo viral: o que ele entregou à audiência e a mecânica que fez isso funcionar.",
+    input_schema: {
+      type: "object" as const,
+      properties: props,
+      required: comTema
+        ? ["diagnostico", "esqueleto", "nao_transferivel", "timing"]
+        : ["compreensao", "diagnostico", "esqueleto", "nao_transferivel", "timing"],
+    },
+  };
+}
 
 type ClassJson = Record<string, { classificacoes?: { tipo: string; confianca: string }[] }> | null;
 
@@ -123,9 +212,10 @@ async function lookupCorpus(attachment: Attachment): Promise<{ promptBlock: stri
       promptBlock:
         `\n\n# DADOS REAIS DESTE VÍDEO (existe no nosso corpus — ancore a análise NELES, não especule)\n` +
         `${met ? `${met}\n` : ""}${cls ? `Classificações já feitas (confiança alta): ${cls}\n` : ""}` +
-        `Retenção de hook alta = o mecanismo do hook comprovadamente funciona: preserve-o no brief. ` +
-        `Retenção final baixa = aponte onde o arco perde gás e corrija na replicação. ` +
-        `Se sua classificação divergir da existente, justifique.`,
+        `Onde existe métrica medida, ela MANDA: não dê nota nem opinião sobre uma camada que já tem número. ` +
+        `Retenção de hook alta = o mecanismo do hook comprovadamente funciona: preserve-o no esqueleto. ` +
+        `Retenção final baixa = o gargalo provavelmente é narrativa. ` +
+        `Se sua leitura divergir da classificação existente, justifique.`,
     };
   } catch (e) {
     console.error("modelagem: lookup no corpus falhou (seguindo sem métricas)", attachment.url, e);
@@ -133,22 +223,51 @@ async function lookupCorpus(attachment: Attachment): Promise<{ promptBlock: stri
   }
 }
 
-export async function analyzeModelagem(attachment: Attachment, ctx: GenerationContext): Promise<string> {
-  // Só o link foi colado (sem transcrição manual): busca a transcrição agora, ao conjurar —
-  // não mais ao colar o link. Falha aqui só remove a modelagem, nunca derruba a geração.
+// O que a casa já sabe sobre ESTE cliente: vetos primeiro (eliminam ângulo antes de nascer),
+// depois o que performou. Sem cliente na sessão, o bloco inteiro some.
+function clienteBlock(ctx: GenerationContext): string {
+  const prefs = clientPrefsBlock(ctx);
+  const performou = clientInsightBlock(ctx, ["tema", "storytelling", "hook"], 5);
+  const publicados = scriptResultBlock(ctx, "estrutura");
+  const ensinado = taughtBlock(ctx, ["storytelling", "tema"]);
+  const parts = [
+    prefs,
+    performou && `# O QUE JÁ PERFORMOU PARA ESTE CLIENTE (dados reais, pré-rankeados)\n${performou}`,
+    publicados && `# ROTEIROS DESTA SALA JÁ PUBLICADOS (performance medida — 'EVITE' é anti-padrão confirmado)\n${publicados}`,
+    ensinado &&
+      `# APRENDIZADOS ENSINADOS PELO TIME (curadoria humana — em conflito com heurística, isto prevalece)\n${ensinado}`,
+  ].filter(Boolean);
+  return parts.length ? `\n\n${parts.join("\n\n")}` : "";
+}
+
+export interface ModelagemResult {
+  brief: string;
+  analysis: ModelagemAnalysis;
+}
+
+// Só o link foi colado (sem transcrição manual): busca a transcrição agora, ao conjurar —
+// não mais ao colar o link. Idempotente (mutação no attachment) e best-effort: falha aqui
+// só remove a modelagem, nunca derruba a geração. Sem tema, o pipeline chama isto ANTES de
+// tudo — modelagem e pesquisa precisam da transcrição ao mesmo tempo, em paralelo.
+export async function ensureTranscript(attachment: Attachment): Promise<string> {
   if (!attachment.raw_content?.trim() && attachment.kind === "video_link" && attachment.url) {
     try {
       const { title, text } = await fetchTranscript(attachment.url);
-      attachment.raw_content = title ? `${title}\n\n${text}` : text; // visível ao roteirista adiante
+      attachment.raw_content = title ? `${title}\n\n${text}` : text;
     } catch (e) {
       console.error("modelagem: transcrição do link falhou (seguindo sem modelagem)", attachment.url, e);
     }
   }
-  const transcript = attachment.raw_content?.trim();
-  if (!transcript) return "";
+  return attachment.raw_content?.trim() ?? "";
+}
+
+export async function analyzeModelagem(attachment: Attachment, ctx: GenerationContext): Promise<ModelagemResult> {
+  const vazio: ModelagemResult = { brief: "", analysis: {} };
+  const transcript = await ensureTranscript(attachment);
+  if (!transcript) return vazio;
 
   // Anexo já analisado (ex: "Gerar nova versão") → reusa em vez de pagar outra chamada.
-  // Briefs antigos (sem estrutura_narrativa no analysis) re-analisam uma vez no formato novo.
+  // Análises no formato antigo (sem `esqueleto`) re-analisam uma vez no formato novo.
   const { data: cached } = await appDb
     .from("vm_modelagem_analyses")
     .select("replication_brief, analysis")
@@ -156,9 +275,10 @@ export async function analyzeModelagem(attachment: Attachment, ctx: GenerationCo
     .order("created_at", { ascending: false })
     .limit(1)
     .maybeSingle();
-  if (cached?.replication_brief && (cached.analysis as { estrutura_narrativa?: string } | null)?.estrutura_narrativa)
-    return cached.replication_brief;
+  if (cached?.replication_brief && (cached.analysis as { esqueleto?: unknown } | null)?.esqueleto)
+    return { brief: cached.replication_brief, analysis: cached.analysis as ModelagemAnalysis };
 
+  const comTema = Boolean(ctx.prompt.trim());
   const corpus = await lookupCorpus(attachment);
   const storyIndex = playbookIndex(ctx.playbooks.storytelling);
   const taxonomia =
@@ -167,53 +287,55 @@ export async function analyzeModelagem(attachment: Attachment, ctx: GenerationCo
       ? `\n\n# ESTRUTURAS NARRATIVAS DO PLAYBOOK (classifique em estrutura_narrativa com código + nome EXATOS)\n${storyIndex}`
       : "");
 
-  const res = await anthropic.messages.create({
+  const missao = comTema
+    ? `Um roteirista vai usar essa arquitetura para escrever sobre outro tema: "${ctx.prompt}". Extraia o que TRANSFERE para lá.`
+    : `Não há tema novo: a sala vai publicar sobre o MESMO assunto deste vídeo, por um ângulo diferente e melhor. ` +
+      `Por isso você entrega DUAS metades. Em compreensao, entenda o material a fundo — do que trata, que tese defende, ` +
+      `e principalmente qual RECOMPENSA o espectador levou embora (é ela que faz alguém compartilhar, não a informação em si). ` +
+      `Liste também cada alegação factual, porque um pesquisador vai checar uma a uma antes de qualquer coisa entrar no nosso roteiro. ` +
+      `Em esqueleto, a mecânica pura. Quem vai propor os ângulos novos é outro agente, depois da pesquisa — o seu trabalho é ` +
+      `entregar a ele o entendimento completo, não a ideia pronta.`;
+
+  const res = await trackedCreate(ctx.usageLog, "modelagem", {
     model: ANALYST_MODEL,
-    // análise estruturada rica (desconstrução + brief) via tool forçada; o sonnet-5 pensa
-    // por padrão no mesmo teto. 4000 arriscava truncar o tool_use; 8000 dá folga.
+    // análise estruturada via tool forçada; o sonnet-5 pensa por padrão no mesmo teto.
+    // 8000 dá folga para o tool_use não truncar.
     max_tokens: 8000,
-    tools: [ANALISE_TOOL],
-    tool_choice: { type: "tool", name: "registrar_analise" },
+    tools: [modelagemTool(comTema)],
+    tool_choice: { type: "tool", name: "registrar_modelagem" },
     messages: [
       {
         role: "user",
-        content: `Você é um analista de vídeos virais. Desconstrua o vídeo abaixo: estrutura em beats, arco emocional, argumentos, pacing, hook e CTA, e os elementos que o fizeram viralizar. Classifique hook e estrutura usando EXATAMENTE o vocabulário dos playbooks fornecidos. Depois escreva o replication_brief: instruções para um roteirista ${
-          ctx.prompt.trim()
-            ? `replicar essa ARQUITETURA (jamais o texto literal) adaptada ao tema: "${ctx.prompt}"`
-            : `produzir uma versão adaptada e otimizada do MESMO roteiro em português do Brasil — preserve tema, argumentos e a ARQUITETURA que funcionou, mas melhore hook, ritmo e clareza (jamais copie o texto literal)`
-        }.${taxonomia}${corpus.promptBlock}\n\nTRANSCRIÇÃO:\n${transcript}`,
+        content:
+          `Você é um analista forense de vídeos virais. Desconstrua o vídeo abaixo para descobrir POR QUE ele funcionou — ` +
+          `o mecanismo, não o conteúdo.\n\n` +
+          `PROIBIÇÃO CENTRAL: é PROIBIDO citar no esqueleto qualquer tema, nome, número, marca ou frase do original. ` +
+          `Se um campo só puder ser preenchido citando o conteúdo, você não extraiu o mecanismo — extraia de novo. ` +
+          `(A única exceção é o campo evidencia do diagnóstico, que existe justamente para citar a frase literal.)\n\n` +
+          `Separe o que TRANSFERE do que era circunstância: trend, celebridade, rosto conhecido ou janela de notícia ` +
+          `não se replicam e vão em nao_transferivel.\n\n${missao}` +
+          `${taxonomia}${clienteBlock(ctx)}${corpus.promptBlock}\n\nTRANSCRIÇÃO:\n${transcript}`,
       },
     ],
   });
 
   const toolUse = res.content.find((b) => b.type === "tool_use");
   if (!toolUse || toolUse.type !== "tool_use") throw new Error("modelagem: modelo não retornou análise estruturada");
-  const input = toolInput(toolUse);
-  const brief = typeof input.replication_brief === "string" ? input.replication_brief.trim() : "";
-  if (!brief) {
+  const analysis = toolInput(toolUse) as ModelagemAnalysis;
+  const composed = composeBrief(analysis, corpus.resumoMetricas);
+  if (!composed) {
     console.error(
       `modelagem vazia — stop_reason=${res.stop_reason} input=${JSON.stringify(toolUse.input).slice(0, 500)}`
     );
     // preserva "modelagem falhou nunca derruba a geração": não insere cache, retorna vazio
-    return "";
+    return vazio;
   }
-
-  // Header de classificação viaja junto no brief (string) — narrativas, draft e crítico o veem sem mudança de tipo.
-  const a = input.analysis as { estrutura_narrativa?: string; hook?: { tipo?: string; mecanismo?: string } } | undefined;
-  const header = [
-    a?.estrutura_narrativa && `ESTRUTURA-BASE: ${a.estrutura_narrativa}`,
-    a?.hook?.tipo && `HOOK: ${a.hook.tipo}${a.hook.mecanismo ? ` (${a.hook.mecanismo})` : ""}`,
-    corpus.resumoMetricas && `MÉTRICAS REAIS: ${corpus.resumoMetricas}`,
-  ]
-    .filter(Boolean)
-    .join(" | ");
-  const composed = header ? `${header}\n\n${brief}` : brief;
 
   await appDb.from("vm_modelagem_analyses").insert({
     attachment_id: attachment.id,
-    analysis: input.analysis ?? null,
+    analysis,
     replication_brief: composed,
   });
 
-  return composed;
+  return { brief: composed, analysis };
 }

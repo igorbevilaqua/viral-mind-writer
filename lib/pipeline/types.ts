@@ -47,6 +47,44 @@ export interface SessionArtifacts {
   orientacao_hook: string;
 }
 
+// Saída da autópsia do vídeo (vm_modelagem_analyses.analysis), em duas metades com
+// destinos DIFERENTES:
+//
+// `compreensao` = do que o vídeo trata e por que a audiência foi recompensada. Carrega
+//   conteúdo, então alimenta só a SALA (pesquisa dirigida e proposta de ângulos) — nunca
+//   o roteirista, que é por onde a cópia voltava. Exceção: `recompensa` e os dois motores
+//   de engajamento viajam no brief, como ALVO a bater (são tipo de prêmio, não conteúdo).
+//
+// `esqueleto` = a mecânica transferível, por contrato livre de conteúdo. Vai ao roteirista.
+export interface ModelagemCompreensao {
+  tema: string;
+  argumento_central: string;
+  promessa_da_abertura: string;
+  recompensa: string;
+  motor_comentario: string;
+  motor_compartilhamento: string;
+  alegacoes?: string[];
+}
+
+export interface ModelagemAnalysis {
+  compreensao?: ModelagemCompreensao;
+  diagnostico?: {
+    gargalo?: string;
+    onde_superamos?: string;
+    por_camada?: { camada: string; evidencia: string; leitura: string }[];
+  };
+  esqueleto?: {
+    estrutura_narrativa?: string;
+    hook?: { tipo?: string; mecanismo?: string; funcao?: string };
+    beats?: { ordem: number; funcao: string; mecanismo_de_atencao: string; emocao: string; seg?: number }[];
+    loops_abertos?: { o_que_fica_pendente: string; fecha_em_qual_beat: number }[];
+    escalada?: string;
+    comando?: { tipo?: string; gatilho?: string; posicao?: string };
+  };
+  nao_transferivel?: string[];
+  timing?: { classe?: string; contribuicao_pct?: number };
+}
+
 export interface Attachment {
   id: string;
   kind: "reference_script" | "news_link" | "document" | "video_link";
