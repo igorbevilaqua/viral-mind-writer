@@ -1,13 +1,17 @@
-import type { ModelagemAnalysis, NarrativaCandidata } from "./types";
+import type { ModelagemAnalysis } from "./types";
 
 // O brief de replicação é COMPOSTO EM CÓDIGO, não escrito pelo modelo: só campos do
 // `esqueleto` entram, então é estruturalmente impossível vazar uma frase do vídeo
 // original para o roteirista. Fica fora de modelagem.ts (que carrega lib/db) para ser
 // função pura testável — a asserção anti-cópia vive em tests/modelagem-brief.test.ts.
 //
-// NUNCA incluir aqui: `diagnostico.por_camada[].evidencia` (é citação literal do
-// original) e `angulos` (viajam como narrativas candidatas, não como arquitetura).
-const BRIEF_MAX = 1200;
+// De `compreensao` só saem RECOMPENSA e os dois motores de engajamento — são tipo de
+// prêmio, não conteúdo, e o roteirista precisa deles como alvo a bater.
+// NUNCA incluir aqui: `compreensao.tema`, `compreensao.argumento_central`,
+// `compreensao.promessa_da_abertura`, `compreensao.alegacoes` (conteúdo do original, que
+// alimenta só a pesquisa e a proposta de ângulos) e `diagnostico.por_camada[].evidencia`
+// (citação literal). É por esses campos que a cópia voltava.
+const BRIEF_MAX = 1400;
 
 export function composeBrief(a: ModelagemAnalysis, resumoMetricas = ""): string {
   const e = a.esqueleto;
@@ -33,7 +37,12 @@ export function composeBrief(a: ModelagemAnalysis, resumoMetricas = ""): string 
       }`
     : "";
 
+  const c = a.compreensao;
   const corpo = [
+    c?.recompensa &&
+      `RECOMPENSA A ENTREGAR (o espectador precisa sair com isto — iguale ou supere): ${c.recompensa}`,
+    c?.motor_comentario && `O que provoca comentário: ${c.motor_comentario}`,
+    c?.motor_compartilhamento && `O que faz compartilhar: ${c.motor_compartilhamento}`,
     "ARQUITETURA A REPLICAR (a mecânica, jamais o texto):",
     `Abertura: ${e.hook.funcao ?? e.hook.mecanismo}`,
     beats && `Beats:\n${beats}`,
@@ -52,22 +61,19 @@ export function composeBrief(a: ModelagemAnalysis, resumoMetricas = ""): string 
   return full.length <= BRIEF_MAX ? full : `${full.slice(0, BRIEF_MAX).trimEnd()}…`;
 }
 
-// Sem tema digitado, os ângulos propostos pela modelagem SÃO as narrativas candidatas:
-// mesmo assunto do vídeo, pergunta nova. Executam a arquitetura extraída (os beats vêm do
-// esqueleto), então o agente de Dados rankeia e a UI de cards funciona sem mudança.
-export function angulosParaCandidatas(a: ModelagemAnalysis): NarrativaCandidata[] {
-  const beats = (a.esqueleto?.beats ?? []).map((b) => `${b.funcao} — ${b.mecanismo_de_atencao} [${b.emocao}]`);
-  return (a.angulos ?? [])
-    .filter((ang) => ang?.conceito && ang.hook_pronto)
-    .map((ang) => ({
-      titulo: ang.conceito,
-      estrutura: a.esqueleto?.estrutura_narrativa ?? "",
-      personagem: ang.personagem,
-      conflito: ang.conflito,
-      mecanismo_emocional: ang.emocao_dominante,
-      // formatNarrativa exige beats; sem esqueleto utilizável, o arco do ângulo vira o beat único
-      beats: beats.length ? beats : [ang.arco],
-      gancho_potencial: ang.hook_pronto,
-      porque_funciona: `${ang.porque_supera} | Pergunta nova: ${ang.pergunta_nova} | Amplificador BR: ${ang.amplificador_br} | Cliente: ${ang.compativel_com_cliente}`,
-    }));
+// A metade que fica DENTRO da sala: entendimento do material para a pesquisa dirigida e
+// para o agente de storytelling propor ângulos novos. Não vai ao roteirista.
+export function compreensaoBlock(a: ModelagemAnalysis): string {
+  const c = a.compreensao;
+  if (!c?.tema) return "";
+  return [
+    `TEMA DO VÍDEO ORIGINAL: ${c.tema}`,
+    c.argumento_central && `ÂNGULO QUE O ORIGINAL USOU (não repita — ataque por outro): ${c.argumento_central}`,
+    c.promessa_da_abertura && `PROMESSA DA ABERTURA DELE: ${c.promessa_da_abertura}`,
+    c.recompensa && `RECOMPENSA QUE ELE ENTREGOU (a nossa versão precisa igualar ou superar): ${c.recompensa}`,
+    c.motor_comentario && `POR QUE COMENTAM: ${c.motor_comentario}`,
+    c.motor_compartilhamento && `POR QUE COMPARTILHAM: ${c.motor_compartilhamento}`,
+  ]
+    .filter(Boolean)
+    .join("\n");
 }

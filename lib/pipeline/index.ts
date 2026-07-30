@@ -3,7 +3,7 @@ import { bindUsageLog } from "../anthropic";
 import { guardEmit, STALE_GENERATION_MS } from "../generation";
 import { loadContext } from "./context";
 import { analyzeModelagem, ensureTranscript, type ModelagemResult } from "./modelagem";
-import { angulosParaCandidatas } from "./modelagem-brief";
+import { compreensaoBlock } from "./modelagem-brief";
 import { research, proposeNarratives, rankNarratives, designHook, writeComando } from "./agents";
 import { pairFromCandidates } from "../calibration";
 import { generateDraft, parseSections, stripTrailingComando } from "./draft";
@@ -92,25 +92,32 @@ export async function runPipeline(
     // ── Pesquisa + narrativas + ranking (só na primeira geração da sessão) ──
     let artifacts: SessionArtifacts | null = ctx.artifacts;
     if (!artifacts?.candidatas?.length) {
-      emit({ type: "phase", phase: "pesquisa" });
-      // Adaptação: o pesquisador recebe a transcrição e volta com "## CHECAGEM" das
-      // alegações do vídeo + munição que o original não usou.
-      const dossieP = research(ctx, adaptation ? modelagens[0].raw_content! : undefined);
-      const [resultados, dossie] = await Promise.all([modelagemP, dossieP]);
+      // Sem tema, a ordem importa: a autópsia primeiro, porque é ela que diz ao pesquisador
+      // QUAL tese testar e QUAIS alegações checar. Pesquisa cega enriquece no escuro e
+      // deixa os ângulos sem lastro factual — que é justamente o que a casa desclassifica.
+      // Com tema, os dois são independentes e seguem em paralelo (o Grok leva 30-90s).
+      let resultados: ModelagemResult[];
+      let dossie: string;
+      let compreensao = "";
+      if (adaptation) {
+        resultados = await modelagemP;
+        compreensao = compreensaoBlock(resultados[0]?.analysis ?? {});
+        emit({ type: "phase", phase: "pesquisa" });
+        dossie = await research(ctx, {
+          transcricao: modelagens[0].raw_content!,
+          compreensao: resultados[0]?.analysis.compreensao,
+        });
+      } else {
+        emit({ type: "phase", phase: "pesquisa" });
+        const dossieP = research(ctx);
+        [resultados, dossie] = await Promise.all([modelagemP, dossieP]);
+      }
       ctx.modelagemBriefs = resultados.map((r) => r.brief).filter(Boolean);
 
       emit({ type: "phase", phase: "narrativas" });
-      // Sem tema, os ângulos da modelagem SÃO as candidatas (mesmo assunto, pergunta nova);
-      // com tema, quem propõe é o storytelling. Nos dois casos o Dados rankeia e a UI de
-      // cards deixa o usuário trocar o vencedor.
-      const candidatas = adaptation
-        ? resultados.flatMap((r) => angulosParaCandidatas(r.analysis))
-        : await proposeNarratives(ctx, dossie);
-      if (!candidatas.length) {
-        throw new Error(
-          "A modelagem não produziu ângulos para este vídeo. Tente de novo, ou digite um tema para a sala trabalhar."
-        );
-      }
+      // Nos dois modos quem propõe ângulo é o storytelling, com o dossiê como lastro.
+      // Sem tema ele recebe a compreensão do vídeo e a ordem de NÃO repetir o ângulo dele.
+      const candidatas = await proposeNarratives(ctx, dossie, compreensao || undefined);
       const rank = await rankNarratives(ctx, dossie, candidatas);
       const valid = rank.ranking.filter((r) => candidatas[r.indice]);
       const vencedora = valid.length ? [...valid].sort((a, b) => b.score - a.score)[0].indice : 0;

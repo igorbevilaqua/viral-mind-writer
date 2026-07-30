@@ -12,6 +12,47 @@ import type { Attachment, GenerationContext, ModelagemAnalysis } from "./types";
 // (beats.resumo, argumentos, hook.texto) saíram de propósito — eram a origem da cópia.
 function modelagemTool(comTema: boolean) {
   const props: Record<string, unknown> = {
+    compreensao: {
+      type: "object",
+      description:
+        "Do que o vídeo trata e por que a audiência se sentiu recompensada. Esta metade PODE citar conteúdo — ela existe para a sala entender o material, e não chega ao roteirista.",
+      properties: {
+        tema: { type: "string", description: "o assunto do vídeo em 1 frase concreta" },
+        argumento_central: {
+          type: "string",
+          description: "a tese que o vídeo defende, em 1-2 frases. O que ele quer que o espectador passe a acreditar.",
+        },
+        promessa_da_abertura: { type: "string", description: "o que a abertura promete que o vídeo vai entregar" },
+        recompensa: {
+          type: "string",
+          description:
+            "O PRÊMIO que o espectador leva embora depois de assistir: o que ele entendeu, sentiu ou ganhou. Descreva o TIPO de recompensa em termos transferíveis (ex: 'a sensação de ter enxergado um golpe em que todo mundo cai'), não o conteúdo específico — este campo vai para o roteirista como alvo a bater.",
+        },
+        motor_comentario: {
+          type: "string",
+          description: "o que o vídeo faz que provoca comentário (discordância, identificação, pergunta deixada no ar)",
+        },
+        motor_compartilhamento: {
+          type: "string",
+          description: "por que alguém mandaria isso para outra pessoa (utilidade, prova de tese, indignação, status)",
+        },
+        alegacoes: {
+          type: "array",
+          items: { type: "string" },
+          description:
+            "Cada afirmação factual verificável do vídeo (número, data, causalidade, superlativo), uma por item, como o vídeo a enuncia. Vira a lista de checagem da pesquisa.",
+        },
+      },
+      required: [
+        "tema",
+        "argumento_central",
+        "promessa_da_abertura",
+        "recompensa",
+        "motor_comentario",
+        "motor_compartilhamento",
+        "alegacoes",
+      ],
+    },
     diagnostico: {
       type: "object",
       properties: {
@@ -101,57 +142,20 @@ function modelagemTool(comTema: boolean) {
     },
   };
 
-  // Ângulos só quando NÃO há tema digitado: nesse modo eles são as narrativas candidatas.
-  // Com tema, quem propõe narrativas é o agente storytelling — pedir ângulos aqui seria
-  // pagar ~600 tokens de saída que ninguém consome.
-  if (!comTema) {
-    props.angulos = {
-      type: "array",
-      minItems: 3,
-      maxItems: 3,
-      description: "3 ângulos NOVOS sobre o MESMO tema do vídeo, cada um capaz de superar o original.",
-      items: {
-        type: "object",
-        properties: {
-          conceito: { type: "string", description: "o ângulo em 1 frase" },
-          pergunta_nova: { type: "string", description: "a pergunta que ESTE ângulo faz e o original não fez" },
-          personagem: { type: "string", description: "quem carrega a história neste ângulo (pessoa, empresa, país, o próprio espectador)" },
-          conflito: { type: "string", description: "a tensão central deste ângulo" },
-          emocao_dominante: { type: "string", description: "uma só, OBRIGATORIAMENTE diferente da dos outros dois ângulos" },
-          amplificador_br: { type: "string", description: "o gancho cultural brasileiro ativado" },
-          hook_pronto: { type: "string", description: "8-15 palavras em português BR natural, pronto para gravar" },
-          arco: { type: "string", description: "hook → setup → escalada → payoff, em 3-4 frases" },
-          porque_supera: { type: "string", description: "que mecanismo de atenção este ângulo aciona que o original não acionou" },
-          compativel_com_cliente: {
-            type: "string",
-            description: "por que este ângulo cabe (ou não) nas restrições e no histórico do cliente. Sem dados do cliente, diga isso.",
-          },
-        },
-        required: [
-          "conceito",
-          "pergunta_nova",
-          "personagem",
-          "conflito",
-          "emocao_dominante",
-          "amplificador_br",
-          "hook_pronto",
-          "arco",
-          "porque_supera",
-          "compativel_com_cliente",
-        ],
-      },
-    };
-  }
+  // Com tema digitado, a compreensão do assunto do vídeo é ruído: o roteiro é sobre
+  // OUTRA coisa e só a mecânica transfere. Sem tema, ela é o insumo da pesquisa dirigida
+  // e da proposta de ângulos — e paga o próprio custo.
+  if (comTema) delete props.compreensao;
 
   return {
     name: "registrar_modelagem",
-    description: "Registra o mecanismo transferível de um vídeo viral e os ângulos capazes de superá-lo.",
+    description: "Registra a autópsia de um vídeo viral: o que ele entregou à audiência e a mecânica que fez isso funcionar.",
     input_schema: {
       type: "object" as const,
       properties: props,
       required: comTema
         ? ["diagnostico", "esqueleto", "nao_transferivel", "timing"]
-        : ["diagnostico", "esqueleto", "nao_transferivel", "timing", "angulos"],
+        : ["compreensao", "diagnostico", "esqueleto", "nao_transferivel", "timing"],
     },
   };
 }
@@ -285,9 +289,12 @@ export async function analyzeModelagem(attachment: Attachment, ctx: GenerationCo
 
   const missao = comTema
     ? `Um roteirista vai usar essa arquitetura para escrever sobre outro tema: "${ctx.prompt}". Extraia o que TRANSFERE para lá.`
-    : `Não há tema novo: vamos escrever sobre o MESMO tema deste vídeo, por um ângulo diferente e melhor. ` +
-      `Além do esqueleto, proponha 3 ângulos NOVOS sobre esse mesmo tema — cada um fazendo uma pergunta que o original não fez, ` +
-      `com emoções dominantes obrigatoriamente diferentes entre si, e priorizando ângulos que funcionem a qualquer momento (perenes).`;
+    : `Não há tema novo: a sala vai publicar sobre o MESMO assunto deste vídeo, por um ângulo diferente e melhor. ` +
+      `Por isso você entrega DUAS metades. Em compreensao, entenda o material a fundo — do que trata, que tese defende, ` +
+      `e principalmente qual RECOMPENSA o espectador levou embora (é ela que faz alguém compartilhar, não a informação em si). ` +
+      `Liste também cada alegação factual, porque um pesquisador vai checar uma a uma antes de qualquer coisa entrar no nosso roteiro. ` +
+      `Em esqueleto, a mecânica pura. Quem vai propor os ângulos novos é outro agente, depois da pesquisa — o seu trabalho é ` +
+      `entregar a ele o entendimento completo, não a ideia pronta.`;
 
   const res = await trackedCreate(ctx.usageLog, "modelagem", {
     model: ANALYST_MODEL,

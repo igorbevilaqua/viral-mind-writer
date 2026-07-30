@@ -5,7 +5,13 @@ import { ANALYST_MODEL, WRITER_MODEL, recordUsage, trackedCreate } from "../anth
 import { grokClient, RESEARCH_MODEL } from "../grok";
 import { fmtNum } from "../format";
 import type { CalibrationPayload } from "../learning-loop";
-import type { ClientInsightPayload, GenerationContext, NarrativaCandidata, RankingItem } from "./types";
+import type {
+  ClientInsightPayload,
+  GenerationContext,
+  ModelagemCompreensao,
+  NarrativaCandidata,
+  RankingItem,
+} from "./types";
 import { deepDedash } from "./slop-lint";
 import fontesAutoritativas from "./fontes-autoritativas.json";
 import { HOOK_MECHANISMS, HOOK_FORMATS, selectHook, type HookCandidate } from "./hook-mechanisms";
@@ -293,33 +299,48 @@ GANCHO POTENCIAL: ${n.gancho_potencial}`;
 // Missão extra quando não há tema digitado: o "tema" é o do vídeo modelado, então o
 // pesquisador checa o que ele alegou (nada entra como fato nosso sem confirmação) e traz
 // munição que o original não usou. Sem isto, o roteiro sai 100% da palavra do vídeo.
-function checagemBlock(transcricao: string): string {
+function checagemBlock(adapt: { transcricao: string; compreensao?: ModelagemCompreensao }): string {
   // o json tem `_comentario` (string) junto dos tiers — só arrays interessam aqui
   const tiers: Record<string, unknown> = fontesAutoritativas;
   const lista = (t: string) => {
     const v = tiers[t];
     return Array.isArray(v) ? v.slice(0, 14).join(", ") : "";
   };
-  return `NÃO HÁ TEMA DIGITADO. Vamos publicar sobre o MESMO assunto do vídeo abaixo, por um ângulo novo e melhor.
+  const c = adapt.compreensao;
+  const alvo = c
+    ? `TEMA: ${c.tema}\nTESE DO VÍDEO (é ela que você vai testar e municiar): ${c.argumento_central}\nRECOMPENSA QUE O ORIGINAL ENTREGOU (a nossa versão precisa superar): ${c.recompensa}`
+    : "";
+  const listaAlegacoes = c?.alegacoes?.length
+    ? `\n\nALEGAÇÕES EXTRAÍDAS DO VÍDEO (cheque TODAS, uma por linha na seção CHECAGEM):\n${c.alegacoes.map((a) => `- ${a}`).join("\n")}`
+    : "";
+
+  return `NÃO HÁ TEMA DIGITADO. Vamos publicar sobre o MESMO assunto do vídeo abaixo, por um ângulo novo e melhor — a autópsia dele já foi feita e está aqui.
+
+${alvo}${listaAlegacoes}
+
 Sua missão tem DUAS partes, além do dossiê normal:
 
-A) SEÇÃO "## CHECAGEM" (obrigatória, primeira do dossiê) — extraia cada AFIRMAÇÃO FACTUAL do vídeo (número, data, causalidade, superlativo) e verifique uma a uma. Uma linha por afirmação, exatamente neste formato:
-- [confirmado|contestado|nao_verificavel] a afirmação — fonte (URL + data)
-Regra: afirmação não confirmada NÃO pode virar afirmação nossa. Marque sem dó — "nao_verificavel" é resposta legítima e preferível a inventar confirmação.
+A) SEÇÃO "## CHECAGEM" (obrigatória, primeira do dossiê) — verifique cada alegação, uma a uma. Uma linha por alegação, exatamente neste formato:
+- [confirmado|contestado|nao_verificavel] a alegação — fonte (URL + data)
+Se a lista acima vier vazia, extraia você mesmo as afirmações factuais do vídeo (número, data, causalidade, superlativo). Afirmação não confirmada NÃO pode virar afirmação nossa. Marque sem dó: "nao_verificavel" é resposta legítima e muito melhor que inventar confirmação.
 
-B) MUNIÇÃO NOVA — o que o vídeo NÃO usou e deixaria a nossa versão mais forte:
-- dados contraintuitivos que desmintam o senso comum sobre o assunto;
+B) MUNIÇÃO NOVA — o que o vídeo NÃO usou e deixaria a nossa versão mais forte que a dele:
+- dados contraintuitivos que desmintam o senso comum sobre o assunto, e o que EN­FRAQUECE a tese acima (contra-argumento com fonte é ouro: é o que permite um ângulo novo);
 - comparações em ESCALA HUMANA BRASILEIRA (R$, salários mínimos, tempo de trabalho, preço de coisas do cotidiano) que façam o número ser sentido, não só lido;
-- fatos que despertem emoção (injustiça, perda, ascensão) com fonte.
+- curiosidades e fatos que despertem emoção (injustiça, perda, ascensão), com fonte;
+- o que mudou sobre o assunto DEPOIS deste vídeo.
 
-HIERARQUIA DE FONTES (mais forte primeiro): tier 1 (primárias/institucionais) ${lista("tier_1")}. tier 2 (jornalismo com histórico) ${lista("tier_2")}. tier 3 (confirmação cruzada de data/contexto, fraco para números finos e superlativos) ${lista("tier_3")}. Confirmação só em tier 3 → marque como "nao_verificavel" se for número fino ou superlativo.
+HIERARQUIA DE FONTES (mais forte primeiro): tier 1 (primárias/institucionais) ${lista("tier_1")}. tier 2 (jornalismo com histórico) ${lista("tier_2")}. tier 3 (confirmação cruzada de data/contexto, fraco para números finos e superlativos) ${lista("tier_3")}. Confirmação só em tier 3 → marque "nao_verificavel" se for número fino ou superlativo.
 
 TRANSCRIÇÃO DO VÍDEO:
-${transcricao.slice(0, 12000)}`;
+${adapt.transcricao.slice(0, 12000)}`;
 }
 
 // ── 1. Pesquisador (Grok + busca em tempo real) ─────────────────────────────
-export async function research(ctx: GenerationContext, transcricaoParaChecar?: string): Promise<string> {
+export async function research(
+  ctx: GenerationContext,
+  adapt?: { transcricao: string; compreensao?: ModelagemCompreensao }
+): Promise<string> {
   // Notícias anexadas: o pesquisador abre os links e incorpora os fatos ao dossiê,
   // guiado pelos comentários do usuário sobre cada uma.
   const noticias = ctx.attachments.filter((a) => a.kind === "news_link" && a.url);
@@ -328,7 +349,7 @@ export async function research(ctx: GenerationContext, transcricaoParaChecar?: s
     const res = await grokClient().responses.create({
       model: RESEARCH_MODEL,
       instructions: agentPrompt("pesquisador"),
-      input: `${transcricaoParaChecar ? `${checagemBlock(transcricaoParaChecar)}\n\n` : `TEMA DO VÍDEO: ${ctx.prompt}`}${
+      input: `${adapt ? `${checagemBlock(adapt)}\n\n` : `TEMA DO VÍDEO: ${ctx.prompt}`}${
         ctx.clientPrefs
           ? `\nCLIENTE: ${ctx.clientPrefs.nome}${ctx.clientPrefs.temas_preferidos.length ? ` (nicho: ${ctx.clientPrefs.temas_preferidos.join(", ")})` : ""}`
           : ""
@@ -392,7 +413,14 @@ const NARRATIVAS_TOOL = {
   },
 };
 
-export async function proposeNarratives(ctx: GenerationContext, dossie: string): Promise<NarrativaCandidata[]> {
+export async function proposeNarratives(
+  ctx: GenerationContext,
+  dossie: string,
+  // Sem tema digitado: o "tema" é o do vídeo modelado e as candidatas são os ângulos NOVOS
+  // sobre ele. Vem da autópsia (compreensaoBlock) — o storytelling é quem propõe ângulo
+  // nesta casa, e aqui ele já tem o dossiê checado como lastro.
+  compreensao?: string
+): Promise<NarrativaCandidata[]> {
   const refs = ctx.attachments
     .filter((a) => !a.is_modelagem && a.raw_content)
     .map((a) => a.raw_content!.slice(0, 3000))
@@ -404,7 +432,11 @@ export async function proposeNarratives(ctx: GenerationContext, dossie: string):
   const messages = [
     {
       role: "user" as const,
-      content: `TEMA DO VÍDEO: ${ctx.prompt}
+      content: `${
+        compreensao
+          ? `MODELAGEM DE VÍDEO SEM TEMA DIGITADO — a autópsia do vídeo de referência está abaixo. Vamos publicar sobre o MESMO assunto, mas cada candidata deve atacar por um ÂNGULO DIFERENTE do que o original usou: pergunta nova que ele não fez, mecanismo emocional distinto entre as candidatas. Copiar o ângulo do original é desclassificação. A recompensa entregue por ele é o piso, não o teto.\n\n${compreensao}`
+          : `TEMA DO VÍDEO: ${ctx.prompt}`
+      }
 
 DOSSIÊ DE PESQUISA:
 ${dossie || "(pesquisa indisponível — proponha narrativas sustentáveis pelo material do usuário)"}

@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { angulosParaCandidatas, composeBrief } from "@/lib/pipeline/modelagem-brief";
+import { composeBrief, compreensaoBlock } from "@/lib/pipeline/modelagem-brief";
 import type { ModelagemAnalysis } from "@/lib/pipeline/types";
 
 // Regressão da queixa "o roteiro sai como cópia do vídeo modelado": o brief que chega
@@ -16,6 +16,15 @@ const CONTEUDO_PLANTADO = [
 ];
 
 const analysis: ModelagemAnalysis = {
+  compreensao: {
+    tema: "o lucro do Nubank em 2026",
+    argumento_central: "David Vélez construiu um banco que lucra R$ 4.7 bilhões cobrando do lojista, não de você",
+    promessa_da_abertura: "o banco que quebrou a bolsa americana",
+    recompensa: "a sensação de ter enxergado quem paga a conta de um benefício que parecia de graça",
+    motor_comentario: "acusa um hábito que quase todo espectador tem, e ele quer se defender",
+    motor_compartilhamento: "serve de prova numa discussão que a pessoa já teve",
+    alegacoes: ["o lucro foi de R$ 4.7 bilhões em 2026", "é o maior banco digital do mundo"],
+  },
   diagnostico: {
     gargalo: "comando",
     onde_superamos: "o original não pede nada ao espectador; a nossa versão fecha com pedido de compartilhamento",
@@ -48,20 +57,6 @@ const analysis: ModelagemAnalysis = {
   },
   nao_transferivel: ["autoridade do criador no nicho de finanças", "janela de notícia do balanço trimestral"],
   timing: { classe: "trending", contribuicao_pct: 40 },
-  angulos: [
-    {
-      conceito: "o custo invisível do crédito fácil",
-      pergunta_nova: "quem paga a conta do seu cashback?",
-      personagem: "o cliente que acha que está no lucro",
-      conflito: "quem lucra com o benefício que parece de graça",
-      emocao_dominante: "indignação",
-      amplificador_br: "custo de vida",
-      hook_pronto: "ninguém te contou que seu cartão financia isso",
-      arco: "hook, setup, escalada, payoff",
-      porque_supera: "transfere o vilão do banco para o sistema",
-      compativel_com_cliente: "cabe: cliente já performou em educação financeira",
-    },
-  ],
 };
 
 describe("composeBrief", () => {
@@ -82,6 +77,16 @@ describe("composeBrief", () => {
     expect(brief).toContain("Views: 2100000");
   });
 
+  test("leva a recompensa como alvo, mas não o tema nem a tese do original", () => {
+    expect(brief).toContain("RECOMPENSA A ENTREGAR");
+    expect(brief).toContain("enxergado quem paga a conta");
+    expect(brief).toContain("O que faz compartilhar:");
+    // o que a sala usa mas o roteirista não pode ver
+    expect(brief).not.toContain("o lucro do Nubank");
+    expect(brief).not.toContain("cobrando do lojista");
+    expect(brief).not.toContain("maior banco digital do mundo");
+  });
+
   test("respeita o teto de tamanho", () => {
     const gordo: ModelagemAnalysis = {
       ...analysis,
@@ -95,7 +100,7 @@ describe("composeBrief", () => {
         })),
       },
     };
-    expect(composeBrief(gordo).length).toBeLessThanOrEqual(1201); // 1200 + reticência
+    expect(composeBrief(gordo).length).toBeLessThanOrEqual(1401); // BRIEF_MAX + reticência
   });
 
   test("análise sem esqueleto utilizável devolve vazio (a geração segue sem modelagem)", () => {
@@ -104,25 +109,16 @@ describe("composeBrief", () => {
   });
 });
 
-describe("angulosParaCandidatas", () => {
-  test("ângulo vira narrativa candidata executando a arquitetura extraída", () => {
-    const [c] = angulosParaCandidatas(analysis);
-    expect(c.titulo).toBe("o custo invisível do crédito fácil");
-    expect(c.estrutura).toBe("B1. Davi e Golias");
-    expect(c.mecanismo_emocional).toBe("indignação");
-    expect(c.gancho_potencial).toBe("ninguém te contou que seu cartão financia isso");
-    // beats vêm do esqueleto do original — mesma arquitetura, ângulo novo
-    expect(c.beats).toHaveLength(3);
-    expect(c.beats[1]).toContain("revela o custo escondido");
-    expect(c.porque_funciona).toContain("Pergunta nova:");
+describe("compreensaoBlock", () => {
+  test("entrega à sala o que o roteirista não pode ver", () => {
+    const bloco = compreensaoBlock(analysis);
+    expect(bloco).toContain("o lucro do Nubank");
+    expect(bloco).toContain("cobrando do lojista");
+    expect(bloco).toContain("ataque por outro"); // ordem explícita de não repetir o ângulo
+    expect(bloco).toContain("RECOMPENSA");
   });
 
-  test("sem ângulos (modo com tema) devolve lista vazia", () => {
-    expect(angulosParaCandidatas({ ...analysis, angulos: undefined })).toEqual([]);
-  });
-
-  test("ângulo sem hook pronto é descartado — o card ficaria inútil", () => {
-    const capenga = { ...analysis.angulos![0], hook_pronto: "" };
-    expect(angulosParaCandidatas({ ...analysis, angulos: [capenga] })).toEqual([]);
+  test("sem compreensão (modo com tema) devolve vazio", () => {
+    expect(compreensaoBlock({ ...analysis, compreensao: undefined })).toBe("");
   });
 });
