@@ -1,5 +1,5 @@
 import { appDb } from "../db";
-import { ANALYST_MODEL, recordUsage, bindUsageLog } from "../anthropic";
+import { bindUsageLog } from "../anthropic";
 import { guardEmit, STALE_GENERATION_MS } from "../generation";
 import { loadContext } from "./context";
 import { analyzeModelagem } from "./modelagem";
@@ -71,12 +71,8 @@ export async function runPipeline(
     let modelagemP: Promise<string[]> = Promise.resolve([]);
     if (modelagens.length) {
       emit({ type: "phase", phase: "modelagem" });
-      const t0 = Date.now();
-      modelagemP = Promise.all(modelagens.map((a) => analyzeModelagem(a, ctx))).then((briefs) => {
-        // ponytail: só duração/modelo — tokens da modelagem exigiriam tocar modelagem.ts (fora do escopo do WP-D)
-        recordUsage(ctx.usageLog, "modelagem", ANALYST_MODEL, Date.now() - t0);
-        return briefs.filter(Boolean);
-      });
+      // usage/duração agora vêm do trackedCreate dentro de analyzeModelagem (tokens inclusive)
+      modelagemP = Promise.all(modelagens.map((a) => analyzeModelagem(a, ctx))).then((briefs) => briefs.filter(Boolean));
       // Rejeição antes do await (Grok leva 30-90s) seria unhandled e derrubaria o
       // processo em Node moderno; este handler marca como tratada — o await relança.
       modelagemP.catch(() => {});

@@ -47,6 +47,39 @@ export interface SessionArtifacts {
   orientacao_hook: string;
 }
 
+// Saída da modelagem (vm_modelagem_analyses.analysis). O `esqueleto` é a parte
+// transferível — por contrato, livre de qualquer conteúdo do vídeo original.
+// `angulos` só existe quando não há tema digitado (viram as narrativas candidatas).
+export interface ModelagemAngulo {
+  conceito: string;
+  pergunta_nova: string;
+  emocao_dominante: string;
+  amplificador_br: string;
+  hook_pronto: string;
+  arco: string;
+  porque_supera: string;
+  compativel_com_cliente: string;
+}
+
+export interface ModelagemAnalysis {
+  diagnostico?: {
+    gargalo?: string;
+    onde_superamos?: string;
+    por_camada?: { camada: string; evidencia: string; leitura: string }[];
+  };
+  esqueleto?: {
+    estrutura_narrativa?: string;
+    hook?: { tipo?: string; mecanismo?: string; funcao?: string };
+    beats?: { ordem: number; funcao: string; mecanismo_de_atencao: string; emocao: string; seg?: number }[];
+    loops_abertos?: { o_que_fica_pendente: string; fecha_em_qual_beat: number }[];
+    escalada?: string;
+    comando?: { tipo?: string; gatilho?: string; posicao?: string };
+  };
+  nao_transferivel?: string[];
+  timing?: { classe?: string; contribuicao_pct?: number };
+  angulos?: ModelagemAngulo[];
+}
+
 export interface Attachment {
   id: string;
   kind: "reference_script" | "news_link" | "document" | "video_link";

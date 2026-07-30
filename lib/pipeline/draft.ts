@@ -88,8 +88,9 @@ export function playbookIndex(playbook: string | undefined): string {
     .join("\n\n");
 }
 
-// Restrições/voz do cliente — usado no bloco dinâmico completo e na variante enxuta da revisão.
-function clientPrefsBlock(ctx: GenerationContext): string {
+// Restrições/voz do cliente — usado no bloco dinâmico completo, na variante enxuta
+// da revisão e na modelagem (onde vira veto: ângulo incompatível nem chega a nascer).
+export function clientPrefsBlock(ctx: GenerationContext): string {
   if (!ctx.clientPrefs) return "";
   const p = ctx.clientPrefs;
   return `# RESTRIÇÕES DO CLIENTE "${p.nome}" (INVIOLÁVEIS)
