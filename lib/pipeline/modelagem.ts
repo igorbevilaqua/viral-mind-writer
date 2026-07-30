@@ -115,6 +115,8 @@ function modelagemTool(comTema: boolean) {
         properties: {
           conceito: { type: "string", description: "o ângulo em 1 frase" },
           pergunta_nova: { type: "string", description: "a pergunta que ESTE ângulo faz e o original não fez" },
+          personagem: { type: "string", description: "quem carrega a história neste ângulo (pessoa, empresa, país, o próprio espectador)" },
+          conflito: { type: "string", description: "a tensão central deste ângulo" },
           emocao_dominante: { type: "string", description: "uma só, OBRIGATORIAMENTE diferente da dos outros dois ângulos" },
           amplificador_br: { type: "string", description: "o gancho cultural brasileiro ativado" },
           hook_pronto: { type: "string", description: "8-15 palavras em português BR natural, pronto para gravar" },
@@ -128,6 +130,8 @@ function modelagemTool(comTema: boolean) {
         required: [
           "conceito",
           "pergunta_nova",
+          "personagem",
+          "conflito",
           "emocao_dominante",
           "amplificador_br",
           "hook_pronto",
@@ -232,19 +236,31 @@ function clienteBlock(ctx: GenerationContext): string {
   return parts.length ? `\n\n${parts.join("\n\n")}` : "";
 }
 
-export async function analyzeModelagem(attachment: Attachment, ctx: GenerationContext): Promise<string> {
-  // Só o link foi colado (sem transcrição manual): busca a transcrição agora, ao conjurar —
-  // não mais ao colar o link. Falha aqui só remove a modelagem, nunca derruba a geração.
+export interface ModelagemResult {
+  brief: string;
+  analysis: ModelagemAnalysis;
+}
+
+// Só o link foi colado (sem transcrição manual): busca a transcrição agora, ao conjurar —
+// não mais ao colar o link. Idempotente (mutação no attachment) e best-effort: falha aqui
+// só remove a modelagem, nunca derruba a geração. Sem tema, o pipeline chama isto ANTES de
+// tudo — modelagem e pesquisa precisam da transcrição ao mesmo tempo, em paralelo.
+export async function ensureTranscript(attachment: Attachment): Promise<string> {
   if (!attachment.raw_content?.trim() && attachment.kind === "video_link" && attachment.url) {
     try {
       const { title, text } = await fetchTranscript(attachment.url);
-      attachment.raw_content = title ? `${title}\n\n${text}` : text; // visível ao roteirista adiante
+      attachment.raw_content = title ? `${title}\n\n${text}` : text;
     } catch (e) {
       console.error("modelagem: transcrição do link falhou (seguindo sem modelagem)", attachment.url, e);
     }
   }
-  const transcript = attachment.raw_content?.trim();
-  if (!transcript) return "";
+  return attachment.raw_content?.trim() ?? "";
+}
+
+export async function analyzeModelagem(attachment: Attachment, ctx: GenerationContext): Promise<ModelagemResult> {
+  const vazio: ModelagemResult = { brief: "", analysis: {} };
+  const transcript = await ensureTranscript(attachment);
+  if (!transcript) return vazio;
 
   // Anexo já analisado (ex: "Gerar nova versão") → reusa em vez de pagar outra chamada.
   // Análises no formato antigo (sem `esqueleto`) re-analisam uma vez no formato novo.
@@ -256,7 +272,7 @@ export async function analyzeModelagem(attachment: Attachment, ctx: GenerationCo
     .limit(1)
     .maybeSingle();
   if (cached?.replication_brief && (cached.analysis as { esqueleto?: unknown } | null)?.esqueleto)
-    return cached.replication_brief;
+    return { brief: cached.replication_brief, analysis: cached.analysis as ModelagemAnalysis };
 
   const comTema = Boolean(ctx.prompt.trim());
   const corpus = await lookupCorpus(attachment);
@@ -305,7 +321,7 @@ export async function analyzeModelagem(attachment: Attachment, ctx: GenerationCo
       `modelagem vazia — stop_reason=${res.stop_reason} input=${JSON.stringify(toolUse.input).slice(0, 500)}`
     );
     // preserva "modelagem falhou nunca derruba a geração": não insere cache, retorna vazio
-    return "";
+    return vazio;
   }
 
   await appDb.from("vm_modelagem_analyses").insert({
@@ -314,5 +330,5 @@ export async function analyzeModelagem(attachment: Attachment, ctx: GenerationCo
     replication_brief: composed,
   });
 
-  return composed;
+  return { brief: composed, analysis };
 }

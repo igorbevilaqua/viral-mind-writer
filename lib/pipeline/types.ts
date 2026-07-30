@@ -53,6 +53,8 @@ export interface SessionArtifacts {
 export interface ModelagemAngulo {
   conceito: string;
   pergunta_nova: string;
+  personagem: string;
+  conflito: string;
   emocao_dominante: string;
   amplificador_br: string;
   hook_pronto: string;

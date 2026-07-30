@@ -2,7 +2,8 @@ import { appDb } from "../db";
 import { bindUsageLog } from "../anthropic";
 import { guardEmit, STALE_GENERATION_MS } from "../generation";
 import { loadContext } from "./context";
-import { analyzeModelagem } from "./modelagem";
+import { analyzeModelagem, ensureTranscript, type ModelagemResult } from "./modelagem";
+import { angulosParaCandidatas } from "./modelagem-brief";
 import { research, proposeNarratives, rankNarratives, designHook, writeComando } from "./agents";
 import { pairFromCandidates } from "../calibration";
 import { generateDraft, parseSections, stripTrailingComando } from "./draft";
@@ -65,14 +66,24 @@ export async function runPipeline(
     const modelagens = ctx.attachments.filter(
       (a) => a.is_modelagem && (a.raw_content || (a.kind === "video_link" && a.url))
     );
-    // Sem tema digitado + modelagem de vídeo = adaptar/otimizar o próprio roteiro (PT-BR):
-    // pula pesquisa/narrativas e vai direto transcrição → desconstrução → roteiro.
+    // Sem tema digitado + modelagem de vídeo = MESMO assunto do vídeo, ângulo novo:
+    // a modelagem propõe 3 ângulos que viram as narrativas candidatas, e a pesquisa
+    // checa o que o vídeo alegou em vez de aceitar a palavra dele.
     const adaptation = !ctx.prompt.trim() && modelagens.length > 0;
-    let modelagemP: Promise<string[]> = Promise.resolve([]);
+
+    // Sem tema, TUDO depende da transcrição — garanta antes de pagar qualquer LLM,
+    // e antes de disparar modelagem e pesquisa (que a consomem em paralelo).
+    if (adaptation && !(await ensureTranscript(modelagens[0]))) {
+      throw new Error(
+        "Não consegui obter a transcrição do vídeo. Cole a transcrição no campo do vídeo, ou digite um tema, e conjure de novo."
+      );
+    }
+
+    let modelagemP: Promise<ModelagemResult[]> = Promise.resolve([]);
     if (modelagens.length) {
       emit({ type: "phase", phase: "modelagem" });
       // usage/duração agora vêm do trackedCreate dentro de analyzeModelagem (tokens inclusive)
-      modelagemP = Promise.all(modelagens.map((a) => analyzeModelagem(a, ctx))).then((briefs) => briefs.filter(Boolean));
+      modelagemP = Promise.all(modelagens.map((a) => analyzeModelagem(a, ctx)));
       // Rejeição antes do await (Grok leva 30-90s) seria unhandled e derrubaria o
       // processo em Node moderno; este handler marca como tratada — o await relança.
       modelagemP.catch(() => {});
@@ -80,13 +91,26 @@ export async function runPipeline(
 
     // ── Pesquisa + narrativas + ranking (só na primeira geração da sessão) ──
     let artifacts: SessionArtifacts | null = ctx.artifacts;
-    if (!adaptation && !artifacts?.candidatas?.length) {
+    if (!artifacts?.candidatas?.length) {
       emit({ type: "phase", phase: "pesquisa" });
-      const dossie = await research(ctx);
-      ctx.modelagemBriefs = await modelagemP;
+      // Adaptação: o pesquisador recebe a transcrição e volta com "## CHECAGEM" das
+      // alegações do vídeo + munição que o original não usou.
+      const dossieP = research(ctx, adaptation ? modelagens[0].raw_content! : undefined);
+      const [resultados, dossie] = await Promise.all([modelagemP, dossieP]);
+      ctx.modelagemBriefs = resultados.map((r) => r.brief).filter(Boolean);
 
       emit({ type: "phase", phase: "narrativas" });
-      const candidatas = await proposeNarratives(ctx, dossie);
+      // Sem tema, os ângulos da modelagem SÃO as candidatas (mesmo assunto, pergunta nova);
+      // com tema, quem propõe é o storytelling. Nos dois casos o Dados rankeia e a UI de
+      // cards deixa o usuário trocar o vencedor.
+      const candidatas = adaptation
+        ? resultados.flatMap((r) => angulosParaCandidatas(r.analysis))
+        : await proposeNarratives(ctx, dossie);
+      if (!candidatas.length) {
+        throw new Error(
+          "A modelagem não produziu ângulos para este vídeo. Tente de novo, ou digite um tema para a sala trabalhar."
+        );
+      }
       const rank = await rankNarratives(ctx, dossie, candidatas);
       const valid = rank.ranking.filter((r) => candidatas[r.indice]);
       const vencedora = valid.length ? [...valid].sort((a, b) => b.score - a.score)[0].indice : 0;
@@ -102,19 +126,9 @@ export async function runPipeline(
     }
 
     // Regeneração (artifacts cacheados) pula a pesquisa mas o roteirista ainda usa os briefs.
-    ctx.modelagemBriefs = await modelagemP;
+    ctx.modelagemBriefs = (await modelagemP).map((r) => r.brief).filter(Boolean);
 
-    // Adaptação sem tema depende 100% da transcrição do vídeo — se ela não veio (link sem
-    // legenda, sem SUPADATA_API_KEY, plataforma não suportada), falha claro em vez de gerar vazio.
-    if (adaptation && !modelagens[0].raw_content?.trim()) {
-      throw new Error(
-        "Não consegui obter a transcrição do vídeo. Cole a transcrição no campo do vídeo, ou digite um tema, e conjure de novo."
-      );
-    }
-
-    // Modo adaptação não tem narrativas/dossiê: a "narrativa" é a arquitetura do próprio vídeo,
-    // que já viaja nos modelagemBriefs. Pula todo o bloco de artefatos.
-    if (!adaptation && artifacts) {
+    if (artifacts) {
       // Override do usuário: troca a narrativa vencedora e reescreve a partir daqui
       if (opts.narrativeIndex != null && artifacts.candidatas[opts.narrativeIndex]) {
         artifacts.escolhida = opts.narrativeIndex;
@@ -147,8 +161,7 @@ export async function runPipeline(
 
     // ── Roteirista-chefe escreve o corpo (streaming) ──
     emit({ type: "phase", phase: "roteiro" });
-    const adapt = adaptation ? { transcript: modelagens[0].raw_content ?? "" } : undefined;
-    const { headline, corpo, fontes } = await generateDraft(ctx, (t) => emit({ type: "token", text: t }), revision, adapt);
+    const { headline, corpo, fontes } = await generateDraft(ctx, (t) => emit({ type: "token", text: t }), revision);
 
     // ── Hook e comando em paralelo, ambos vendo o roteiro pronto ──
     emit({ type: "phase", phase: "hook_comando" });

@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { parseSections, stripTrailingComando } from "@/lib/pipeline/draft";
+import { checagemSection, parseSections, stripTrailingComando } from "@/lib/pipeline/draft";
 
 describe("stripTrailingComando", () => {
   const comando = "Segue esse perfil pra entender esses dominós antes deles caírem no seu bolso.";
@@ -94,5 +94,32 @@ Corpo sem variacoes
 `;
 
     expect(parseSections(doc).hookVariants).toEqual([]);
+  });
+});
+
+describe("checagemSection", () => {
+  const dossie = `## CHECAGEM
+- [confirmado] o lucro foi de R$ 4.7 bi — https://ri.exemplo.com (2026-02-10)
+- [nao_verificavel] "maior banco digital do mundo" — sem fonte primária
+
+## FATOS E NÚMEROS
+- outra coisa qualquer`;
+
+  test("extrai a seção inteira e para no próximo heading", () => {
+    const s = checagemSection(dossie);
+    expect(s).toContain("[confirmado]");
+    expect(s).toContain("[nao_verificavel]");
+    expect(s).not.toContain("FATOS E NÚMEROS");
+    expect(s).not.toContain("outra coisa qualquer");
+  });
+
+  test("dossiê sem checagem (modo com tema) devolve vazio", () => {
+    expect(checagemSection("## FATOS E NÚMEROS\n- nada aqui")).toBe("");
+    expect(checagemSection(undefined)).toBe("");
+  });
+
+  test("trunca checagem degenerada", () => {
+    const gordo = `## CHECAGEM\n${"- [confirmado] linha comprida o suficiente\n".repeat(500)}`;
+    expect(checagemSection(gordo).length).toBeLessThanOrEqual(4001);
   });
 });

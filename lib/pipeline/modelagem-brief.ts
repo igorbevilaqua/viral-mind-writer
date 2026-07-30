@@ -1,4 +1,4 @@
-import type { ModelagemAnalysis } from "./types";
+import type { ModelagemAnalysis, NarrativaCandidata } from "./types";
 
 // O brief de replicação é COMPOSTO EM CÓDIGO, não escrito pelo modelo: só campos do
 // `esqueleto` entram, então é estruturalmente impossível vazar uma frase do vídeo
@@ -50,4 +50,24 @@ export function composeBrief(a: ModelagemAnalysis, resumoMetricas = ""): string 
 
   const full = `${header}\n\n${corpo}`;
   return full.length <= BRIEF_MAX ? full : `${full.slice(0, BRIEF_MAX).trimEnd()}…`;
+}
+
+// Sem tema digitado, os ângulos propostos pela modelagem SÃO as narrativas candidatas:
+// mesmo assunto do vídeo, pergunta nova. Executam a arquitetura extraída (os beats vêm do
+// esqueleto), então o agente de Dados rankeia e a UI de cards funciona sem mudança.
+export function angulosParaCandidatas(a: ModelagemAnalysis): NarrativaCandidata[] {
+  const beats = (a.esqueleto?.beats ?? []).map((b) => `${b.funcao} — ${b.mecanismo_de_atencao} [${b.emocao}]`);
+  return (a.angulos ?? [])
+    .filter((ang) => ang?.conceito && ang.hook_pronto)
+    .map((ang) => ({
+      titulo: ang.conceito,
+      estrutura: a.esqueleto?.estrutura_narrativa ?? "",
+      personagem: ang.personagem,
+      conflito: ang.conflito,
+      mecanismo_emocional: ang.emocao_dominante,
+      // formatNarrativa exige beats; sem esqueleto utilizável, o arco do ângulo vira o beat único
+      beats: beats.length ? beats : [ang.arco],
+      gancho_potencial: ang.hook_pronto,
+      porque_funciona: `${ang.porque_supera} | Pergunta nova: ${ang.pergunta_nova} | Amplificador BR: ${ang.amplificador_br} | Cliente: ${ang.compativel_com_cliente}`,
+    }));
 }

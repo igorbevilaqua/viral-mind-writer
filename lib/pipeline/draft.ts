@@ -77,6 +77,18 @@ export function extractPlaybookSection(playbook: string | undefined, estrutura: 
   return hit?.trim() ?? "";
 }
 
+// Extrai a seção "## CHECAGEM" do dossiê (só existe em modelagem sem tema: o pesquisador
+// verifica ali cada alegação do vídeo original). Vai inteira ao revisor — truncar a checagem
+// é o mesmo que não checar. Teto de segurança pra dossiê degenerado.
+export function checagemSection(dossie: string | undefined, max = 4000): string {
+  if (!dossie) return "";
+  // `(?![\s\S])` e não `$`: com a flag `m` o `$` casaria o fim da PRIMEIRA linha e
+  // devolveria só a primeira alegação — checagem truncada é o mesmo que não checar.
+  const m = dossie.match(/^#{1,3}\s*CHECAGEM\b[^\n]*\n([\s\S]*?)(?=\n#{1,3}\s|(?![\s\S]))/im);
+  const corpo = m?.[1]?.trim() ?? "";
+  return corpo.length <= max ? corpo : `${corpo.slice(0, max).trimEnd()}…`;
+}
+
 // Índice condensado do playbook (heading "## " + primeiras linhas de cada seção) —
 // vocabulário suficiente pra classificar sem pagar o playbook inteiro no contexto.
 export function playbookIndex(playbook: string | undefined): string {
@@ -178,6 +190,15 @@ export function buildReviewDynamicBlock(ctx: GenerationContext): string {
     if (n) parts.push(`# NARRATIVA VENCEDORA (o roteiro deve executar exatamente esta)\n${formatNarrativa(n)}`);
     if (a.orientacao_roteiro)
       parts.push(`# ORIENTAÇÃO DOS DADOS (padrões dos +6 mil vídeos publicados)\n${a.orientacao_roteiro}`);
+    // A checagem vai INTEIRA e antes do dossiê truncado: é com ela que o revisor consegue
+    // aplicar a PRECISÃO FACTUAL do checklist (que já é eliminatória). Cortada, é inútil.
+    const checagem = checagemSection(a.dossie);
+    if (checagem)
+      parts.push(
+        `# CHECAGEM DAS ALEGAÇÕES DO VÍDEO MODELADO (ELIMINATÓRIO)\n` +
+          `Afirmação marcada como "contestado" ou "nao_verificavel" NÃO pode aparecer no roteiro como fato nosso — ` +
+          `ou sai, ou é atribuída explicitamente ("segundo o vídeo original"). Corrija.\n${checagem}`
+      );
     if (a.dossie) parts.push(`# DOSSIÊ DE PESQUISA (resumo — confira fatos citados)\n${a.dossie.slice(0, 2000)}`);
   }
   const prefs = clientPrefsBlock(ctx);
@@ -196,14 +217,15 @@ export interface WriterOutput {
 export async function generateDraft(
   ctx: GenerationContext,
   onToken: (t: string) => void,
-  revision?: { anterior: string; feedback: string },
-  adaptation?: { transcript: string }
+  revision?: { anterior: string; feedback: string }
 ): Promise<WriterOutput> {
   const task = revision
     ? `Reescreva o corpo do roteiro abaixo atendendo o FEEDBACK DO USUÁRIO (prioridade máxima), mantendo a NARRATIVA VENCEDORA do seu contexto e o brief. Aproveite o que já funciona na versão anterior; mude o que o feedback pedir.\n\nVERSÃO ANTERIOR:\n${revision.anterior}\n\nFEEDBACK DO USUÁRIO:\n${revision.feedback}`
-    : adaptation
-      ? `Adapte e OTIMIZE o roteiro original abaixo, produzindo o corpo de um roteiro em português do Brasil. Siga a ESTRUTURA-MODELO do seu contexto (a arquitetura, o hook, os beats e o arco que fizeram este vídeo funcionar). Mantenha o mesmo tema e os argumentos do original, mas melhore ritmo, clareza e força. NÃO copie o texto literal nem traduza palavra a palavra — reescreva com naturalidade.\n\nROTEIRO ORIGINAL:\n${adaptation.transcript.slice(0, 12000)}`
-      : `Escreva o corpo do roteiro executando a NARRATIVA VENCEDORA do seu contexto, sobre o brief abaixo.`;
+    : ctx.prompt.trim()
+      ? `Escreva o corpo do roteiro executando a NARRATIVA VENCEDORA do seu contexto, sobre o brief abaixo.`
+      : // Modelagem sem tema: o assunto é o do vídeo analisado, mas o ângulo é NOVO e o texto
+        // original não chega aqui de propósito — a narrativa vencedora e o dossiê bastam.
+        `Escreva o corpo do roteiro executando a NARRATIVA VENCEDORA do seu contexto. Ela ataca o assunto por um ângulo próprio: execute ESSE ângulo, não o do vídeo que foi analisado. Você NÃO tem o texto original em mãos — e não precisa dele: use os fatos do DOSSIÊ (confira a seção CHECAGEM antes de afirmar qualquer coisa) e a arquitetura da ESTRUTURA-MODELO.`;
 
   const t0 = Date.now();
   const stream = anthropic.messages.stream({

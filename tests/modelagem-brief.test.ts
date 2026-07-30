@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { composeBrief } from "@/lib/pipeline/modelagem-brief";
+import { angulosParaCandidatas, composeBrief } from "@/lib/pipeline/modelagem-brief";
 import type { ModelagemAnalysis } from "@/lib/pipeline/types";
 
 // Regressão da queixa "o roteiro sai como cópia do vídeo modelado": o brief que chega
@@ -52,6 +52,8 @@ const analysis: ModelagemAnalysis = {
     {
       conceito: "o custo invisível do crédito fácil",
       pergunta_nova: "quem paga a conta do seu cashback?",
+      personagem: "o cliente que acha que está no lucro",
+      conflito: "quem lucra com o benefício que parece de graça",
       emocao_dominante: "indignação",
       amplificador_br: "custo de vida",
       hook_pronto: "ninguém te contou que seu cartão financia isso",
@@ -99,5 +101,28 @@ describe("composeBrief", () => {
   test("análise sem esqueleto utilizável devolve vazio (a geração segue sem modelagem)", () => {
     expect(composeBrief({})).toBe("");
     expect(composeBrief({ esqueleto: { estrutura_narrativa: "B1. Davi e Golias" } })).toBe("");
+  });
+});
+
+describe("angulosParaCandidatas", () => {
+  test("ângulo vira narrativa candidata executando a arquitetura extraída", () => {
+    const [c] = angulosParaCandidatas(analysis);
+    expect(c.titulo).toBe("o custo invisível do crédito fácil");
+    expect(c.estrutura).toBe("B1. Davi e Golias");
+    expect(c.mecanismo_emocional).toBe("indignação");
+    expect(c.gancho_potencial).toBe("ninguém te contou que seu cartão financia isso");
+    // beats vêm do esqueleto do original — mesma arquitetura, ângulo novo
+    expect(c.beats).toHaveLength(3);
+    expect(c.beats[1]).toContain("revela o custo escondido");
+    expect(c.porque_funciona).toContain("Pergunta nova:");
+  });
+
+  test("sem ângulos (modo com tema) devolve lista vazia", () => {
+    expect(angulosParaCandidatas({ ...analysis, angulos: undefined })).toEqual([]);
+  });
+
+  test("ângulo sem hook pronto é descartado — o card ficaria inútil", () => {
+    const capenga = { ...analysis.angulos![0], hook_pronto: "" };
+    expect(angulosParaCandidatas({ ...analysis, angulos: [capenga] })).toEqual([]);
   });
 });

@@ -7,6 +7,7 @@ import { fmtNum } from "../format";
 import type { CalibrationPayload } from "../learning-loop";
 import type { ClientInsightPayload, GenerationContext, NarrativaCandidata, RankingItem } from "./types";
 import { deepDedash } from "./slop-lint";
+import fontesAutoritativas from "./fontes-autoritativas.json";
 import { HOOK_MECHANISMS, HOOK_FORMATS, selectHook, type HookCandidate } from "./hook-mechanisms";
 
 // Os prompts dos agentes vivem em agents/*.md — fonte única consumida pelo app e pela skill /goal.
@@ -289,8 +290,36 @@ ${n.beats.map((b, i) => `${i + 1}. ${b}`).join("\n")}
 GANCHO POTENCIAL: ${n.gancho_potencial}`;
 }
 
+// Missão extra quando não há tema digitado: o "tema" é o do vídeo modelado, então o
+// pesquisador checa o que ele alegou (nada entra como fato nosso sem confirmação) e traz
+// munição que o original não usou. Sem isto, o roteiro sai 100% da palavra do vídeo.
+function checagemBlock(transcricao: string): string {
+  // o json tem `_comentario` (string) junto dos tiers — só arrays interessam aqui
+  const tiers: Record<string, unknown> = fontesAutoritativas;
+  const lista = (t: string) => {
+    const v = tiers[t];
+    return Array.isArray(v) ? v.slice(0, 14).join(", ") : "";
+  };
+  return `NÃO HÁ TEMA DIGITADO. Vamos publicar sobre o MESMO assunto do vídeo abaixo, por um ângulo novo e melhor.
+Sua missão tem DUAS partes, além do dossiê normal:
+
+A) SEÇÃO "## CHECAGEM" (obrigatória, primeira do dossiê) — extraia cada AFIRMAÇÃO FACTUAL do vídeo (número, data, causalidade, superlativo) e verifique uma a uma. Uma linha por afirmação, exatamente neste formato:
+- [confirmado|contestado|nao_verificavel] a afirmação — fonte (URL + data)
+Regra: afirmação não confirmada NÃO pode virar afirmação nossa. Marque sem dó — "nao_verificavel" é resposta legítima e preferível a inventar confirmação.
+
+B) MUNIÇÃO NOVA — o que o vídeo NÃO usou e deixaria a nossa versão mais forte:
+- dados contraintuitivos que desmintam o senso comum sobre o assunto;
+- comparações em ESCALA HUMANA BRASILEIRA (R$, salários mínimos, tempo de trabalho, preço de coisas do cotidiano) que façam o número ser sentido, não só lido;
+- fatos que despertem emoção (injustiça, perda, ascensão) com fonte.
+
+HIERARQUIA DE FONTES (mais forte primeiro): tier 1 (primárias/institucionais) ${lista("tier_1")}. tier 2 (jornalismo com histórico) ${lista("tier_2")}. tier 3 (confirmação cruzada de data/contexto, fraco para números finos e superlativos) ${lista("tier_3")}. Confirmação só em tier 3 → marque como "nao_verificavel" se for número fino ou superlativo.
+
+TRANSCRIÇÃO DO VÍDEO:
+${transcricao.slice(0, 12000)}`;
+}
+
 // ── 1. Pesquisador (Grok + busca em tempo real) ─────────────────────────────
-export async function research(ctx: GenerationContext): Promise<string> {
+export async function research(ctx: GenerationContext, transcricaoParaChecar?: string): Promise<string> {
   // Notícias anexadas: o pesquisador abre os links e incorpora os fatos ao dossiê,
   // guiado pelos comentários do usuário sobre cada uma.
   const noticias = ctx.attachments.filter((a) => a.kind === "news_link" && a.url);
@@ -299,7 +328,7 @@ export async function research(ctx: GenerationContext): Promise<string> {
     const res = await grokClient().responses.create({
       model: RESEARCH_MODEL,
       instructions: agentPrompt("pesquisador"),
-      input: `TEMA DO VÍDEO: ${ctx.prompt}${
+      input: `${transcricaoParaChecar ? `${checagemBlock(transcricaoParaChecar)}\n\n` : `TEMA DO VÍDEO: ${ctx.prompt}`}${
         ctx.clientPrefs
           ? `\nCLIENTE: ${ctx.clientPrefs.nome}${ctx.clientPrefs.temas_preferidos.length ? ` (nicho: ${ctx.clientPrefs.temas_preferidos.join(", ")})` : ""}`
           : ""
@@ -489,7 +518,7 @@ export async function rankNarratives(
     messages: [
       {
         role: "user",
-        content: `TEMA: ${ctx.prompt}${ctx.clientPrefs ? `\nCLIENTE: ${ctx.clientPrefs.nome}` : ""}
+        content: `TEMA: ${ctx.prompt || "(sem tema digitado — é uma modelagem de vídeo: o assunto é o do vídeo original e cada candidata ataca por um ângulo diferente)"}${ctx.clientPrefs ? `\nCLIENTE: ${ctx.clientPrefs.nome}` : ""}
 
 NARRATIVAS CANDIDATAS:
 ${candidatas.map((n, i) => `[${i}]\n${formatNarrativa(n)}\nPor que funciona (storytelling): ${n.porque_funciona}`).join("\n\n")}
