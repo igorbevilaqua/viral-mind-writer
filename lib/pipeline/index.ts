@@ -71,17 +71,24 @@ export async function runPipeline(
     // checa o que o vídeo alegou em vez de aceitar a palavra dele.
     const adaptation = !ctx.prompt.trim() && modelagens.length > 0;
 
+    // A fase entra ANTES da busca da transcrição: ela pode levar segundos e falhar, e sem
+    // emitir nada aqui a tela fica muda até o erro aparecer do nada (debug.phase="init").
+    if (modelagens.length) emit({ type: "phase", phase: "modelagem" });
+
     // Sem tema, TUDO depende da transcrição — garanta antes de pagar qualquer LLM,
     // e antes de disparar modelagem e pesquisa (que a consomem em paralelo).
-    if (adaptation && !(await ensureTranscript(modelagens[0]))) {
-      throw new Error(
-        "Não consegui obter a transcrição do vídeo. Cole a transcrição no campo do vídeo, ou digite um tema, e conjure de novo."
-      );
+    if (adaptation) {
+      const { text, erro } = await ensureTranscript(modelagens[0]);
+      if (!text) {
+        throw new Error(
+          `Não consegui obter a transcrição do vídeo${erro ? `: ${erro}` : ""}. ` +
+            `Cole a transcrição no campo do vídeo, ou digite um tema, e conjure de novo.`
+        );
+      }
     }
 
     let modelagemP: Promise<ModelagemResult[]> = Promise.resolve([]);
     if (modelagens.length) {
-      emit({ type: "phase", phase: "modelagem" });
       // usage/duração agora vêm do trackedCreate dentro de analyzeModelagem (tokens inclusive)
       modelagemP = Promise.all(modelagens.map((a) => analyzeModelagem(a, ctx)));
       // Rejeição antes do await (Grok leva 30-90s) seria unhandled e derrubaria o

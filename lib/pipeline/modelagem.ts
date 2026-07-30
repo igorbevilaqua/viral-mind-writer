@@ -246,24 +246,28 @@ export interface ModelagemResult {
 }
 
 // Só o link foi colado (sem transcrição manual): busca a transcrição agora, ao conjurar —
-// não mais ao colar o link. Idempotente (mutação no attachment) e best-effort: falha aqui
-// só remove a modelagem, nunca derruba a geração. Sem tema, o pipeline chama isto ANTES de
-// tudo — modelagem e pesquisa precisam da transcrição ao mesmo tempo, em paralelo.
-export async function ensureTranscript(attachment: Attachment): Promise<string> {
+// não mais ao colar o link. Idempotente (mutação no attachment). Sem tema, o pipeline chama
+// isto ANTES de tudo — modelagem e pesquisa precisam da transcrição ao mesmo tempo.
+// Devolve o motivo da falha em vez de só engolir: com tema a modelagem é opcional e o motivo
+// vira log, mas sem tema a geração morre aqui e o usuário precisa saber o que fazer
+// (configurar chave? colar a transcrição? o link não é suportado?).
+export async function ensureTranscript(attachment: Attachment): Promise<{ text: string; erro: string | null }> {
+  let erro: string | null = null;
   if (!attachment.raw_content?.trim() && attachment.kind === "video_link" && attachment.url) {
     try {
       const { title, text } = await fetchTranscript(attachment.url);
       attachment.raw_content = title ? `${title}\n\n${text}` : text;
     } catch (e) {
-      console.error("modelagem: transcrição do link falhou (seguindo sem modelagem)", attachment.url, e);
+      erro = e instanceof Error ? e.message : String(e);
+      console.error("modelagem: transcrição do link falhou", attachment.url, e);
     }
   }
-  return attachment.raw_content?.trim() ?? "";
+  return { text: attachment.raw_content?.trim() ?? "", erro };
 }
 
 export async function analyzeModelagem(attachment: Attachment, ctx: GenerationContext): Promise<ModelagemResult> {
   const vazio: ModelagemResult = { brief: "", analysis: {} };
-  const transcript = await ensureTranscript(attachment);
+  const { text: transcript } = await ensureTranscript(attachment);
   if (!transcript) return vazio;
 
   // Anexo já analisado (ex: "Gerar nova versão") → reusa em vez de pagar outra chamada.

@@ -57,8 +57,8 @@ const PHASE_SHORT: Record<string, string> = {
 };
 
 const PHASE_LABELS: Record<string, string> = {
-  pesquisa: "Agente pesquisador vasculhando a web e o X em tempo real...",
-  modelagem: "Desconstruindo o material de modelagem...",
+  pesquisa: "Agente pesquisador vasculhando a web e o X em tempo real, conferindo cada alegação do vídeo...",
+  modelagem: "Buscando a transcrição e fazendo a autópsia do vídeo: o que funcionou e por quê...",
   narrativas: "Storytelling propõe narrativas; o agente de dados rankeia pelo histórico de +6 mil vídeos...",
   roteiro: "Roteirista-chefe executando a narrativa vencedora...",
   hook_comando: "Especialistas desenhando o hook e o comando sobre o roteiro pronto...",
