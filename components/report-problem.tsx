@@ -24,15 +24,19 @@ export default function ReportProblem() {
     setPreview(null);
   };
 
+  const usarImagem = (file: File) => {
+    if (preview) URL.revokeObjectURL(preview);
+    setImagem(file);
+    setPreview(URL.createObjectURL(file));
+  };
+
   // Colar print: pega a primeira imagem do clipboard (Ctrl/Cmd+V).
   const onPaste = (e: React.ClipboardEvent) => {
     const item = Array.from(e.clipboardData.items).find((i) => i.type.startsWith("image/"));
     const file = item?.getAsFile();
     if (!file) return;
     e.preventDefault();
-    if (preview) URL.revokeObjectURL(preview);
-    setImagem(file);
-    setPreview(URL.createObjectURL(file));
+    usarImagem(file);
   };
 
   const enviar = () =>
@@ -56,20 +60,21 @@ export default function ReportProblem() {
           setError(null);
           dialogRef.current?.showModal();
         }}
-        className="inline-flex items-center gap-1.5 text-white/55 hover:text-white cursor-pointer"
+        aria-label="Reportar problema"
+        className="inline-flex items-center gap-1.5 text-white/55 hover:text-white cursor-pointer p-1 -m-1"
       >
-        <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+        <svg className="w-[17px] h-[17px] sm:w-3 sm:h-3" viewBox="0 0 16 16" fill="none">
           <circle cx="8" cy="8" r="6.25" stroke="currentColor" strokeWidth="1.3" />
           <path d="M8 4.8v3.6M8 10.8v.1" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
         </svg>
-        Reportar problema
+        <span className="hidden sm:inline">Reportar problema</span>
       </button>
       <dialog
         ref={dialogRef}
         onClick={(e) => {
           if (e.target === dialogRef.current) dialogRef.current.close();
         }}
-        className="backdrop:bg-black/60 backdrop:backdrop-blur-sm m-auto w-[min(480px,92vw)] rounded-2xl border border-gold/30 bg-[#161410] text-[#ededf0] p-0 shadow-2xl"
+        className="backdrop:bg-black/60 backdrop:backdrop-blur-sm m-auto w-[min(480px,92vw)] max-h-[85dvh] overflow-y-auto rounded-2xl border border-gold/30 bg-[#161410] text-[#ededf0] p-0 shadow-2xl"
       >
         <div className="p-5 sm:p-6 space-y-4">
           <div className="flex items-center gap-2.5">
@@ -109,7 +114,24 @@ export default function ReportProblem() {
                   </button>
                 </div>
               ) : (
-                <p className="text-[11px] text-white/35">Cole um print com Ctrl+V (opcional).</p>
+                // No celular não existe PrtSc/Ctrl+V: o print vem da galeria ou da câmera.
+                <label className="inline-flex items-center gap-2 cursor-pointer rounded-[10px] border border-white/[.14] px-3.5 py-2 text-[12.5px] text-white/60 hover:border-gold/40 hover:text-white/85 transition-colors">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={(e) => {
+                      const f = e.target.files?.[0];
+                      if (f) usarImagem(f);
+                    }}
+                  />
+                  <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
+                    <rect x="2" y="4" width="12" height="9" rx="1.5" stroke="currentColor" strokeWidth="1.2" />
+                    <circle cx="8" cy="8.5" r="2.2" stroke="currentColor" strokeWidth="1.2" />
+                    <path d="M5.5 4l1-1.5h3l1 1.5" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" />
+                  </svg>
+                  Anexar print <span className="hidden sm:inline text-white/35">(ou cole com Ctrl+V)</span>
+                </label>
               )}
               {error && <p className="text-xs text-red-300">{error}</p>}
               <button

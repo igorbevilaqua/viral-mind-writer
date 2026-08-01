@@ -51,7 +51,7 @@ function LearningRow({ l }: { l: Learning }) {
           {!editing && (
             <button
               onClick={() => setEditing(true)}
-              className="text-[11.5px] text-white/45 hover:text-white/80"
+              className="text-[11.5px] text-white/45 hover:text-white/80 p-1.5 -m-1.5"
             >
               editar
             </button>

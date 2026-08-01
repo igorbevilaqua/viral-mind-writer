@@ -75,7 +75,10 @@ export default function CalibrationGame({ inicial }: { inicial: CalibPairView | 
     >
       <div className="flex items-center justify-between">
         <span className="text-[11px] uppercase tracking-[.18em] text-white/40">Opção {lado.toUpperCase()}</span>
-        <span className="rounded-md border border-white/15 px-2 py-[2px] font-mono text-[11px] text-white/55">{teclas}</span>
+        {/* atalho de teclado não existe no celular — só ocupa espaço */}
+        <span className="hidden sm:inline rounded-md border border-white/15 px-2 py-[2px] font-mono text-[11px] text-white/55">
+          {teclas}
+        </span>
       </div>
       <p className="mt-3 text-[15px] leading-snug text-[#ededf0]">{texto}</p>
     </button>
@@ -100,9 +103,9 @@ export default function CalibrationGame({ inicial }: { inicial: CalibPairView | 
         <button
           onClick={() => votar("skip")}
           disabled={ocupado}
-          className="rounded-[10px] border border-white/12 px-4 py-2 text-[12.5px] text-white/55 hover:border-white/25 hover:text-white/75 disabled:opacity-60"
+          className="rounded-[10px] border border-white/12 px-4 py-2.5 text-[12.5px] text-white/55 hover:border-white/25 hover:text-white/75 disabled:opacity-60"
         >
-          Pular (espaço), não sei dizer
+          Pular<span className="hidden sm:inline"> (espaço)</span>, não sei dizer
         </button>
       </div>
     </div>

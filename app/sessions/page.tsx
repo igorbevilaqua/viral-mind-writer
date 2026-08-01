@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { appDb } from "@/lib/db";
 import { writerScope } from "@/lib/hub";
-import { fmtNum } from "@/lib/format";
+import { fmtNum, fmtWhen } from "@/lib/format";
 import { isStaleGeneration } from "@/lib/generation";
 
 export const dynamic = "force-dynamic";
@@ -76,21 +76,6 @@ function StatusIcon({ status }: { status: string }) {
       <path d="M4 2h6l3 3v9H4V2Z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" />
     </svg>
   );
-}
-
-function fmtWhen(iso: string): string {
-  const d = new Date(iso);
-  const now = new Date();
-  const sameDay = d.toDateString() === now.toDateString();
-  if (sameDay) {
-    const mins = (now.getTime() - d.getTime()) / 60000;
-    if (mins < 5) return "agora";
-    return `hoje ${d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}`;
-  }
-  const yesterday = new Date(now);
-  yesterday.setDate(now.getDate() - 1);
-  if (d.toDateString() === yesterday.toDateString()) return "ontem";
-  return d.toLocaleDateString("pt-BR", { day: "2-digit", month: "short" }).replace(".", "");
 }
 
 function chipHref(cliente: string | undefined, status: string | undefined): string {
@@ -254,18 +239,27 @@ export default async function SessionsPage({
                 s.published ? "border-gold/30 bg-gold/[.03]" : st.rowCls
               }`}
             >
-              <span className={`inline-flex items-center gap-1.5 w-[92px] sm:w-[110px] shrink-0 text-xs ${st.cls}`}>
+              <span className={`inline-flex items-center gap-1.5 sm:w-[110px] shrink-0 text-xs ${st.cls}`}>
                 <StatusIcon status={s.effStatus} />
-                {st.label}
+                <span className="hidden sm:inline">{st.label}</span>
               </span>
-              <span className="flex-1 min-w-0 truncate text-[13.5px] text-[#ededf0]/85">
-                {s.prompt?.trim() ||
-                  (() => {
-                    const head = headlineBySession.get(s.id);
-                    const mod = modelagemSessions.has(s.id);
-                    if (head) return mod ? `Modelagem: ${head}` : head;
-                    return <span className="text-white/40 italic">{mod ? "Modelagem" : "Roteiro a partir de material"}</span>;
-                  })()}
+              {/* celular: título em cima, meta (status · cliente · data) embaixo — o
+                  rótulo de status em coluna fixa comia metade da largura útil */}
+              <span className="flex-1 min-w-0">
+                <span className="block truncate text-[13.5px] text-[#ededf0]/85">
+                  {s.prompt?.trim() ||
+                    (() => {
+                      const head = headlineBySession.get(s.id);
+                      const mod = modelagemSessions.has(s.id);
+                      if (head) return mod ? `Modelagem: ${head}` : head;
+                      return <span className="text-white/40 italic">{mod ? "Modelagem" : "Roteiro a partir de material"}</span>;
+                    })()}
+                </span>
+                <span className="sm:hidden flex items-center gap-2 mt-1 text-[11px] text-white/35">
+                  <span className={st.cls}>{st.label}</span>
+                  {client && <span className="truncate text-indigo-300/80">· {client.nome}</span>}
+                  <span className="ml-auto shrink-0 font-mono">{fmtWhen(s.created_at)}</span>
+                </span>
               </span>
               {s.published && (
                 <span className="shrink-0 inline-flex items-center gap-1.5 rounded-full border border-gold/40 bg-gold/[.08] px-2.5 py-[3px] text-[11px] font-medium text-gold">

@@ -109,9 +109,9 @@ export default function ClientPrefsEditor({
         onClick={(e) => {
           if (e.target === dialogRef.current) close();
         }}
-        className="backdrop:bg-black/70 backdrop:backdrop-blur-sm m-auto w-[min(1080px,95vw)] max-h-[92vh] open:flex flex-col rounded-[20px] border border-gold/30 bg-[#141416] text-[#ededf0] p-0"
+        className="backdrop:bg-black/70 backdrop:backdrop-blur-sm m-auto w-[min(1080px,95vw)] max-h-[92dvh] open:flex flex-col rounded-[20px] border border-gold/30 bg-[#141416] text-[#ededf0] p-0"
       >
-        <div className="flex items-center gap-3 px-7 py-5 border-b border-white/[.08] bg-gradient-to-b from-gold/[.06] to-transparent">
+        <div className="flex items-center gap-3 px-5 sm:px-7 py-5 border-b border-white/[.08] bg-gradient-to-b from-gold/[.06] to-transparent">
           <Avatar av={av} nome={client.nome} />
           <div className="min-w-0">
             <div className="text-[15px] font-medium">{client.nome}</div>
@@ -130,7 +130,7 @@ export default function ClientPrefsEditor({
         </div>
 
         {editing ? (
-          <div className="flex-1 overflow-y-auto px-7 py-6 grid gap-x-7 gap-y-5 sm:grid-cols-2 text-sm content-start">
+          <div className="flex-1 overflow-y-auto px-5 sm:px-7 py-6 grid gap-x-7 gap-y-5 sm:grid-cols-2 text-sm content-start">
             <Field label="PROIBIÇÕES" labelCls="text-red-300">
               <textarea value={form.proibicoes} onChange={set("proibicoes")} rows={3} className={inputCls} placeholder="ex: prometer resultado" />
             </Field>
@@ -152,7 +152,7 @@ export default function ClientPrefsEditor({
             <p className="sm:col-span-2 text-xs text-white/35 -mt-1">Uma linha por item nas listas. Tudo aqui entra como restrição inviolável nos roteiros.</p>
           </div>
         ) : (
-          <div className="flex-1 overflow-y-auto px-7 py-6 grid gap-x-9 gap-y-7 sm:grid-cols-2 content-start">
+          <div className="flex-1 overflow-y-auto px-5 sm:px-7 py-6 grid gap-x-9 gap-y-7 sm:grid-cols-2 content-start">
             {!hasPrefs && <p className="text-white/40 text-sm sm:col-span-2">Nenhuma preferência registrada ainda.</p>}
             <Section label="PROIBIÇÕES" labelCls="text-red-300" show={proibicoes.length > 0}>
               <Chips items={proibicoes} variant="danger" />
@@ -175,7 +175,7 @@ export default function ClientPrefsEditor({
           </div>
         )}
 
-        <div className="flex items-center gap-3 px-7 py-4 border-t border-white/[.08]">
+        <div className="flex items-center gap-3 px-5 sm:px-7 py-4 border-t border-white/[.08]">
           {editing ? (
             <>
               <button

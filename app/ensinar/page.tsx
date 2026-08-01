@@ -1,12 +1,9 @@
 import Link from "next/link";
 import { appDb } from "@/lib/db";
 import PlaybookProposals, { type Proposta } from "@/components/playbook-proposals";
+import { fmtDay } from "@/lib/format";
 
 export const dynamic = "force-dynamic";
-
-function fmtWhen(iso: string): string {
-  return new Date(iso).toLocaleDateString("pt-BR", { day: "2-digit", month: "short" }).replace(".", "");
-}
 
 export default async function EnsinarPage() {
   const [{ data: allLessons }, { data: learnings }, { data: playbooks }] = await Promise.all([
@@ -48,7 +45,7 @@ export default async function EnsinarPage() {
         <span className="text-[13px] text-white/40">
           aprendizados de virais analisados — os ativos influenciam a sala de agentes
         </span>
-        <div className="ml-auto flex items-center gap-2">
+        <div className="w-full sm:w-auto sm:ml-auto flex items-center gap-2 flex-wrap">
           <Link
             href="/ensinar/calibracao"
             className="inline-flex items-center gap-2 rounded-[10px] border border-gold/35 px-4 py-2 text-[13px] font-semibold text-gold/90 hover:border-gold/60 hover:bg-gold/[.05] transition-colors"
@@ -89,16 +86,24 @@ export default async function EnsinarPage() {
                   href={`/ensinar/${l.id}`}
                   className="flex items-center gap-3 sm:gap-4 rounded-[14px] border border-gold/25 bg-gold/[.03] px-4 sm:px-5 py-3.5 hover:border-gold/50 transition-colors"
                 >
-                  <span className="shrink-0 rounded-full border border-gold/35 px-2.5 py-[3px] text-[10.5px] text-gold/85">
+                  <span className="hidden sm:inline-block shrink-0 rounded-full border border-gold/35 px-2.5 py-[3px] text-[10.5px] text-gold/85">
                     {l.source_kind === "edicao" ? "das suas edições" : "curador"}
                   </span>
-                  <span className="flex-1 min-w-0 truncate text-[13.5px] text-[#ededf0]/85">{titulo}</span>
+                  {/* celular: título em cima, chips embaixo — em linha única estouravam */}
+                  <span className="flex-1 min-w-0">
+                    <span className="block truncate text-[13.5px] text-[#ededf0]/85">{titulo}</span>
+                    <span className="sm:hidden flex items-center gap-2 mt-1 text-[11px] text-white/40">
+                      <span className="text-gold/85">{l.source_kind === "edicao" ? "das suas edições" : "curador"}</span>
+                      {pend > 0 && <span className="text-amber-300">· {pend} pendente{pend > 1 ? "s" : ""}</span>}
+                      <span className="ml-auto shrink-0">{c.ativos}/{c.total} ativos</span>
+                    </span>
+                  </span>
                   {pend > 0 && (
-                    <span className="shrink-0 rounded-full border border-amber-500/40 bg-amber-500/[.08] px-2.5 py-[3px] text-[11px] text-amber-300">
+                    <span className="hidden sm:inline-block shrink-0 rounded-full border border-amber-500/40 bg-amber-500/[.08] px-2.5 py-[3px] text-[11px] text-amber-300">
                       {pend} pendente{pend > 1 ? "s" : ""}
                     </span>
                   )}
-                  <span className="shrink-0 rounded-full border border-white/15 px-2.5 py-[3px] text-[11px] text-white/55">
+                  <span className="hidden sm:inline-block shrink-0 rounded-full border border-white/15 px-2.5 py-[3px] text-[11px] text-white/55">
                     {c.ativos}/{c.total} ativos
                   </span>
                   <span
@@ -109,7 +114,7 @@ export default async function EnsinarPage() {
                     {client?.nome ?? "Global"}
                   </span>
                   <span className="hidden sm:block w-[60px] shrink-0 text-right font-mono text-[11.5px] text-white/35">
-                    {fmtWhen(l.created_at)}
+                    {fmtDay(l.created_at)}
                   </span>
                 </Link>
               );
@@ -135,8 +140,15 @@ export default async function EnsinarPage() {
                   <path d="M4 6.5V11c0 .8 1.8 2 4 2s4-1.2 4-2V6.5" stroke="currentColor" strokeWidth="1.2" />
                 </svg>
               </span>
-              <span className="flex-1 min-w-0 truncate text-[13.5px] text-[#ededf0]/85">{titulo}</span>
-              <span className="shrink-0 rounded-full border border-white/15 px-2.5 py-[3px] text-[11px] text-white/55">
+              <span className="flex-1 min-w-0">
+                <span className="block truncate text-[13.5px] text-[#ededf0]/85">{titulo}</span>
+                <span className="sm:hidden flex items-center gap-2 mt-1 text-[11px] text-white/40">
+                  <span className={client ? "text-indigo-300/80" : "text-gold/80"}>{client?.nome ?? "Global"}</span>
+                  <span className="ml-auto shrink-0">{c.ativos}/{c.total} ativos</span>
+                  <span className="shrink-0 font-mono">{fmtDay(l.created_at)}</span>
+                </span>
+              </span>
+              <span className="hidden sm:inline-block shrink-0 rounded-full border border-white/15 px-2.5 py-[3px] text-[11px] text-white/55">
                 {c.ativos}/{c.total} ativos
               </span>
               <span
@@ -149,7 +161,7 @@ export default async function EnsinarPage() {
                 {client?.nome ?? "Global"}
               </span>
               <span className="hidden sm:block w-[60px] shrink-0 text-right font-mono text-[11.5px] text-white/35">
-                {fmtWhen(l.created_at)}
+                {fmtDay(l.created_at)}
               </span>
             </Link>
           );

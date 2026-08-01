@@ -92,7 +92,7 @@ function CopyBtn({ text, label = "Copiar" }: { text: string; label?: string }) {
         setCopied(true);
         setTimeout(() => setCopied(false), 1500);
       }}
-      className="ml-auto inline-flex items-center gap-1.5 rounded-lg border border-white/15 px-3 py-[5px] text-xs text-white/65 hover:border-gold/50 hover:text-cream transition-colors"
+      className="ml-auto inline-flex items-center gap-1.5 rounded-lg border border-white/15 px-3 py-2 sm:py-[5px] text-xs text-white/65 hover:border-gold/50 hover:text-cream transition-colors"
     >
       <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
         <rect x="5" y="5" width="9" height="9" rx="1.5" stroke="currentColor" strokeWidth="1.2" />
@@ -114,7 +114,7 @@ function ShareBtn({ scriptId }: { scriptId: string }) {
         setTimeout(() => setCopied(false), 1500);
       }}
       title="Copiar link de leitura (acesso sem login, só leitura)"
-      className="inline-flex items-center gap-1.5 rounded-lg border border-white/15 px-3 py-[5px] text-xs text-white/65 hover:border-gold/50 hover:text-cream transition-colors"
+      className="inline-flex items-center gap-1.5 rounded-lg border border-white/15 px-3 py-2 sm:py-[5px] text-xs text-white/65 hover:border-gold/50 hover:text-cream transition-colors"
     >
       <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
         <path d="M6 8.5 10 5.5M6 7.5l4 3" stroke="currentColor" strokeWidth="1.2" />
@@ -393,7 +393,7 @@ function HookVariants({ scriptId, variants, disabled }: { scriptId: string; vari
 }
 
 const fullScriptText = (s: Script) =>
-  [s.headline, s.roteiro, s.comando, s.fontes ? `FONTES:\n${s.fontes}` : null].filter(Boolean).join("\n\n");
+  [s.headline, s.hook, s.roteiro, s.comando, s.fontes ? `FONTES:\n${s.fontes}` : null].filter(Boolean).join("\n\n");
 
 // Fechamento do flywheel: marcar publicado → ETL casa com o vídeo do corpus →
 // performance real volta como chips e vira insight do agente Dados.
@@ -415,7 +415,7 @@ function PublishBox({ script, perf, baseline }: { script: Script; perf: ScriptPe
             value={url}
             onChange={(e) => setUrl(e.target.value)}
             placeholder="Link do vídeo publicado (YouTube/Shorts, Reels, TikTok)"
-            className="flex-1 min-w-[240px] rounded-[10px] border border-white/[.12] bg-transparent px-3.5 py-2.5 font-mono text-[12.5px] outline-none placeholder:text-white/30 focus:border-gold/40"
+            className="w-full sm:w-auto sm:flex-1 sm:min-w-[240px] rounded-[10px] border border-white/[.12] bg-transparent px-3.5 py-2.5 font-mono text-[12.5px] outline-none placeholder:text-white/30 focus:border-gold/40"
           />
           <button
             onClick={() =>
@@ -430,7 +430,7 @@ function PublishBox({ script, perf, baseline }: { script: Script; perf: ScriptPe
               })
             }
             disabled={pending || !url.trim()}
-            className="btn-gold rounded-[10px] px-4 py-2.5 text-[13px] font-semibold disabled:opacity-40"
+            className="btn-gold w-full sm:w-auto rounded-[10px] px-4 py-3 sm:py-2.5 text-[13px] font-semibold disabled:opacity-40"
           >
             {pending ? "Marcando..." : "Marcar como publicado"}
           </button>
@@ -545,7 +545,7 @@ function ThumbBtns({ scriptId, sessionId, rating }: { scriptId: string; sessionI
       router.refresh();
     });
   const btn = (on: boolean) =>
-    `rounded-lg border px-2.5 py-[5px] text-xs transition-colors disabled:opacity-40 ${
+    `rounded-lg border px-3 py-1.5 sm:py-[5px] text-xs transition-colors disabled:opacity-40 ${
       on ? "border-gold/60 bg-gold/15" : "border-white/15 opacity-70 hover:opacity-100 hover:border-gold/50"
     }`;
   return (
@@ -821,28 +821,52 @@ function ScriptCard({
     });
 
   // Seleção dentro do roteiro (nó de texto único) → offsets no string do roteiro.
-  const onSelect = () => {
+  // Ouvir `selectionchange` no documento (em vez de onMouseUp no <p>) faz o "Chame o
+  // Bob" funcionar no TOQUE: no celular não há mouseup ao arrastar as alças de seleção,
+  // então o botão simplesmente nunca aparecia — o recurso era inalcançável no celular.
+  useEffect(() => {
     if (editing || disabled) return;
-    const s = window.getSelection();
-    const p = roteiroRef.current;
-    if (!s || s.isCollapsed || s.rangeCount === 0 || !p) return setSel(null);
-    const range = s.getRangeAt(0);
-    // o roteiro é um nó de texto único → offsets = índices no string. Só aceito seleção
-    // contida nesse mesmo nó (senão os offsets não mapeiam pro string e o splice corromperia).
-    const textNode = p.firstChild;
-    if (
-      !textNode ||
-      textNode.nodeType !== Node.TEXT_NODE ||
-      range.startContainer !== textNode ||
-      range.endContainer !== textNode
-    )
-      return setSel(null);
-    const start = Math.min(range.startOffset, range.endOffset);
-    const end = Math.max(range.startOffset, range.endOffset);
-    if (end - start < 2) return setSel(null);
-    const rect = range.getBoundingClientRect();
-    setSel({ x: rect.left + rect.width / 2, y: rect.top, start, end, trecho: script.roteiro.slice(start, end) });
-  };
+    let t: ReturnType<typeof setTimeout>;
+    const ler = () => {
+      const s = window.getSelection();
+      const p = roteiroRef.current;
+      if (!s || s.isCollapsed || s.rangeCount === 0 || !p) return setSel(null);
+      const range = s.getRangeAt(0);
+      // o roteiro é um nó de texto único → offsets = índices no string. Só aceito seleção
+      // contida nesse mesmo nó (senão os offsets não mapeiam pro string e o splice corromperia).
+      const textNode = p.firstChild;
+      if (
+        !textNode ||
+        textNode.nodeType !== Node.TEXT_NODE ||
+        range.startContainer !== textNode ||
+        range.endContainer !== textNode
+      )
+        return setSel(null);
+      const start = Math.min(range.startOffset, range.endOffset);
+      const end = Math.max(range.startOffset, range.endOffset);
+      if (end - start < 2) return setSel(null);
+      const rect = range.getBoundingClientRect();
+      // acima da seleção; sem espaço no topo (ou com o menu nativo do iOS ali), vai abaixo.
+      const acima = rect.top > 100;
+      setSel({
+        x: Math.min(Math.max(rect.left + rect.width / 2, 90), window.innerWidth - 90),
+        y: acima ? rect.top - 44 : rect.bottom + 12,
+        start,
+        end,
+        trecho: script.roteiro.slice(start, end),
+      });
+    };
+    // debounce: o evento dispara a cada pixel do arrasto e a cada ajuste de alça
+    const onChange = () => {
+      clearTimeout(t);
+      t = setTimeout(ler, 150);
+    };
+    document.addEventListener("selectionchange", onChange);
+    return () => {
+      clearTimeout(t);
+      document.removeEventListener("selectionchange", onChange);
+    };
+  }, [editing, disabled, script.roteiro]);
 
   const applyBob = (start: number, end: number, replacement: string) =>
     startSave(async () => {
@@ -914,17 +938,21 @@ function ScriptCard({
     "w-full rounded-[10px] border border-white/[.12] bg-black/20 px-3.5 py-2.5 text-[13.5px] leading-[1.7] outline-none focus:border-gold/40";
 
   return (
+    // overflow-clip (não -hidden): recorta o canto arredondado sem virar container de
+    // rolagem — é o que deixa o cabeçalho sticky funcionar em relação à viewport.
     <div
-      className="rounded-[18px] border border-gold/30 overflow-hidden relative"
+      className="rounded-[18px] border border-gold/30 overflow-clip relative"
       style={{ background: "linear-gradient(180deg, rgba(201,163,92,.05), rgba(255,255,255,.02) 120px)" }}
     >
-      <div className="flex items-center gap-2.5 px-5 sm:px-6 py-3 border-b border-white/[.07] bg-black/20">
+      {/* sticky abaixo do nav (52px): num roteiro longo, Salvar/Cancelar e Copiar ficam
+          sempre à mão no celular em vez de a 3 telas de distância, lá no topo do card */}
+      <div className="sticky top-[52px] z-20 flex flex-wrap items-center gap-2.5 px-5 sm:px-6 py-3 border-b border-white/[.07] bg-[#131110]/95 backdrop-blur-sm">
         <span className="kicker text-gold">ROTEIRO COMPLETO</span>
         {!editing && <ThumbBtns scriptId={script.id} sessionId={sessionId} rating={rating} />}
         {!disabled && !editing && (
           <button
             onClick={startEdit}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-white/15 px-3 py-[5px] text-xs text-white/65 hover:border-gold/50 hover:text-cream transition-colors"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-white/15 px-3 py-2 sm:py-[5px] text-xs text-white/65 hover:border-gold/50 hover:text-cream transition-colors"
           >
             <QuillIcon size={12} />
             Editar
@@ -998,25 +1026,32 @@ function ScriptCard({
         </section>
       )}
 
-      {/* ROTEIRO */}
+      {/* DESENVOLVIMENTO (o roteiro sem o hook — o hook vive na seção acima) */}
       <section className={sectionCls}>
-        <div className="flex items-center gap-2.5">
-          <span className={kicker}>ROTEIRO</span>
+        <div className="flex flex-wrap items-center gap-2.5">
+          <span className={kicker}>DESENVOLVIMENTO</span>
           {!disabled && !editing && (
             <span className="text-[12px] text-white/55">selecione um trecho para chamar o Bob</span>
           )}
           {editing && (
             <>
+              {/* preventDefault mantém foco e seleção do textarea ao tocar/clicar —
+                  é assim que o Bob sabe qual trecho reescrever (no celular não há "/") */}
               <button
                 type="button"
+                onMouseDown={(e) => e.preventDefault()}
                 onClick={() => openBobInline(roteiroTaRef.current)}
-                className="inline-flex items-center gap-1.5 rounded-lg border border-white/15 px-2.5 py-[3px] text-[11px] text-white/65 hover:border-gold/50 hover:text-cream transition-colors"
+                className="inline-flex items-center gap-1.5 rounded-lg border border-white/15 px-3 py-1.5 sm:py-[3px] text-[11px] text-white/65 hover:border-gold/50 hover:text-cream transition-colors"
               >
                 <QuillIcon size={11} />
                 Bob
               </button>
               <span className="text-[11px] text-white/35">
-                digite <kbd className="font-mono text-white/55">/</kbd> ou selecione um trecho pra chamar o Bob
+                selecione um trecho e toque em Bob
+                <span className="hidden sm:inline">
+                  {" "}
+                  · ou digite <kbd className="font-mono text-white/55">/</kbd>
+                </span>
               </span>
             </>
           )}
@@ -1037,8 +1072,7 @@ function ScriptCard({
         ) : (
           <p
             ref={roteiroRef}
-            onMouseUp={onSelect}
-            className="whitespace-pre-wrap text-[13.5px] leading-[1.75] text-[#ededf0]/80 mt-3"
+            className="whitespace-pre-wrap text-[14px] sm:text-[13.5px] leading-[1.75] text-[#ededf0]/80 mt-3"
           >
             {script.roteiro}
           </p>
@@ -1109,7 +1143,9 @@ function ScriptCard({
         </section>
       )}
 
-      {/* botão flutuante "Chame o Bob" ao selecionar trecho */}
+      {/* botão flutuante "Chame o Bob" ao selecionar trecho.
+          touchstart com preventDefault: o toque não colapsa a seleção nem gera clique
+          fantasma — sem isso o botão sumia antes de o toque virar clique no celular. */}
       {sel && (
         <button
           onMouseDown={(e) => {
@@ -1117,8 +1153,13 @@ function ScriptCard({
             setBob({ start: sel.start, end: sel.end, trecho: sel.trecho });
             setSel(null);
           }}
-          style={{ position: "fixed", left: sel.x, top: sel.y - 42, transform: "translateX(-50%)", zIndex: 40 }}
-          className="btn-gold inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-semibold shadow-lg whitespace-nowrap"
+          onTouchStart={(e) => {
+            e.preventDefault();
+            setBob({ start: sel.start, end: sel.end, trecho: sel.trecho });
+            setSel(null);
+          }}
+          style={{ position: "fixed", left: sel.x, top: sel.y, transform: "translateX(-50%)", zIndex: 40 }}
+          className="btn-gold inline-flex items-center gap-1.5 rounded-full px-4 py-2.5 text-xs font-semibold shadow-lg whitespace-nowrap"
         >
           <QuillIcon size={12} color="#161410" />
           Chame o Bob
@@ -1188,7 +1229,7 @@ function BobModal({
       onClick={(e) => {
         if (e.target === dialogRef.current) dialogRef.current.close();
       }}
-      className="backdrop:bg-black/60 backdrop:backdrop-blur-sm m-auto w-[min(560px,92vw)] max-h-[85vh] rounded-2xl border border-gold/30 bg-[#161410] text-[#ededf0] p-0 shadow-2xl"
+      className="backdrop:bg-black/60 backdrop:backdrop-blur-sm m-auto w-[min(560px,92vw)] max-h-[85dvh] overflow-y-auto rounded-2xl border border-gold/30 bg-[#161410] text-[#ededf0] p-0 shadow-2xl"
     >
       <div className="p-5 sm:p-6 space-y-4">
         <div className="flex items-center gap-2.5">
@@ -1856,10 +1897,10 @@ function FeedbackForm({
       <div className="flex items-center gap-1.5 text-sm">
         <span className="text-xs text-white/40 mr-1.5">Avaliar:</span>
         {[1, 2, 3, 4, 5].map((n) => (
-          <button key={n} onClick={() => setRating(n)} aria-label={`${n} estrelas`}>
+          <button key={n} onClick={() => setRating(n)} aria-label={`${n} estrelas`} className="p-1.5 -m-0.5">
             <svg
-              width="17"
-              height="17"
+              width="21"
+              height="21"
               viewBox="0 0 16 16"
               fill={rating && n <= rating ? "#c9a35c" : "none"}
               stroke={rating && n <= rating ? "none" : "rgba(255,255,255,.3)"}

@@ -1,6 +1,6 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Cinzel, Cormorant_Garamond } from "next/font/google";
-import Nav from "@/components/nav";
+import Nav, { MobileTabs } from "@/components/nav";
 import { BUILD_TAG } from "@/lib/version";
 import "./globals.css";
 
@@ -19,6 +19,14 @@ export const metadata: Metadata = {
   description: "Escritório de roteiristas virais",
 };
 
+// viewportFit=cover + safe-area nas barras: no iPhone o app usa a tela toda sem
+// esbarrar no notch/indicador. themeColor pinta a barra do navegador de preto.
+export const viewport: Viewport = {
+  themeColor: "#0b0b0f",
+  colorScheme: "dark",
+  viewportFit: "cover",
+};
+
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html
@@ -28,6 +36,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body className="min-h-full flex flex-col">
         <Nav />
         <main className="flex-1 flex flex-col">{children}</main>
+        <MobileTabs />
       </body>
     </html>
   );

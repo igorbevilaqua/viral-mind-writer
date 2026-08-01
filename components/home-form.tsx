@@ -98,11 +98,12 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
   }, [suggestPhase]);
 
   // Textarea que cresce com o conteúdo (sugestão aceita pode ser longa) até um teto, aí rola.
+  // No celular o teto é a tela, não 340px fixos — senão o campo cobre o botão de conjurar.
   useEffect(() => {
     const el = promptRef.current;
     if (!el) return;
     el.style.height = "auto";
-    el.style.height = `${Math.min(el.scrollHeight, 340)}px`;
+    el.style.height = `${Math.min(el.scrollHeight, Math.max(140, Math.min(340, window.innerHeight * 0.4)))}px`;
   }, [prompt]);
 
   const addAttachment = (kind: NewAttachment["kind"]) =>
@@ -225,7 +226,7 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
             onClick={suggest}
             disabled={!clientId || !!suggestPhase}
             title={clientId ? "Sugerir temas com alto potencial para este cliente" : "Selecione um cliente para sugerir temas"}
-            className="inline-flex items-center gap-1.5 rounded-[10px] border border-gold/35 bg-gold/[.06] px-3.5 py-2 text-[12.5px] text-gold disabled:opacity-35 disabled:cursor-not-allowed hover:bg-gold/[.12] transition-colors"
+            className="inline-flex items-center justify-center gap-1.5 rounded-[10px] border border-gold/35 bg-gold/[.06] px-3.5 py-2.5 text-[12.5px] text-gold disabled:opacity-35 disabled:cursor-not-allowed hover:bg-gold/[.12] transition-colors"
           >
             <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor">
               <path d="M8 1.5l1.4 3.6 3.6 1.4-3.6 1.4L8 11.5 6.6 7.9 3 6.5l3.6-1.4L8 1.5ZM13 10l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7L13 10Z" />
@@ -235,7 +236,7 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
           <button
             onClick={submit}
             disabled={pending || !canSubmit}
-            className="btn-gold ml-auto inline-flex items-center gap-2 rounded-[11px] px-5 py-2.5 text-[13.5px] font-semibold disabled:opacity-40"
+            className="btn-gold w-full sm:w-auto sm:ml-auto inline-flex items-center justify-center gap-2 rounded-[11px] px-5 py-3 sm:py-2.5 text-[13.5px] font-semibold disabled:opacity-40"
           >
             <QuillIcon dark />
             {pending ? "Conjurando..." : "Conjurar roteiro"}

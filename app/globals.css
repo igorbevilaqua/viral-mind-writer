@@ -21,6 +21,26 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-geist-sans), system-ui, sans-serif;
+  /* iOS infla o texto sozinho ao girar pra paisagem */
+  -webkit-text-size-adjust: 100%;
+}
+
+/* iOS Safari dá zoom automático ao focar campo com fonte < 16px — e NÃO volta sozinho,
+   deixando o app preso torto. É a causa nº 1 de "não dá pra usar no celular".
+   !important porque as utilities do Tailwind (text-[13px]) ganham por especificidade. */
+@media (max-width: 639px) {
+  textarea,
+  select,
+  input:not([type]),
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="url"],
+  input[type="search"],
+  input[type="tel"],
+  input[type="number"] {
+    font-size: 16px !important;
+  }
 }
 
 /* rótulos em versalete dourado (Cinzel) usados em todas as telas */

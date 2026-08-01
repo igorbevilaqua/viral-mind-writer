@@ -46,9 +46,9 @@ export function useClassVideosDialog(clientId: string) {
       onClick={(e) => {
         if (e.target === dialogRef.current) dialogRef.current?.close();
       }}
-      className="backdrop:bg-black/70 backdrop:backdrop-blur-sm m-auto w-[min(680px,95vw)] max-h-[80vh] open:flex flex-col rounded-[20px] border border-gold/30 bg-[#141416] text-[#ededf0] p-0"
+      className="backdrop:bg-black/70 backdrop:backdrop-blur-sm m-auto w-[min(680px,95vw)] max-h-[80dvh] open:flex flex-col rounded-[20px] border border-gold/30 bg-[#141416] text-[#ededf0] p-0"
     >
-      <div className="flex items-center gap-3 px-6 py-4 border-b border-white/[.08] bg-gradient-to-b from-gold/[.06] to-transparent">
+      <div className="flex items-center gap-3 px-4 sm:px-6 py-4 border-b border-white/[.08] bg-gradient-to-b from-gold/[.06] to-transparent">
         <div className="min-w-0">
           <div className="kicker text-gold text-[10px]">EXEMPLOS · {sel?.dim.toUpperCase()}</div>
           <div className="text-[15px] font-medium truncate">{sel ? pretty(sel.tipo) : ""}</div>
@@ -65,7 +65,7 @@ export function useClassVideosDialog(clientId: string) {
         </button>
       </div>
 
-      <div className="flex-1 overflow-y-auto px-6 py-4">
+      <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-4">
         {erro ? (
           <p className="text-[13px] text-red-300">{erro}</p>
         ) : videos === null ? (
@@ -75,7 +75,7 @@ export function useClassVideosDialog(clientId: string) {
         ) : (
           <div className="space-y-1">
             {videos.map((v, i) => (
-              <div key={i} className="flex items-baseline gap-2.5 text-[13px] rounded-md px-2 py-1.5 -mx-2 hover:bg-white/[.04]">
+              <div key={i} className="flex items-baseline gap-2.5 text-[13px] rounded-md px-2 py-2 -mx-2 hover:bg-white/[.04]">
                 <span className="min-w-0 truncate">
                   {v.link_video ? (
                     <a
@@ -95,7 +95,7 @@ export function useClassVideosDialog(clientId: string) {
                     VM
                   </span>
                 )}
-                {v.plataforma && <span className="shrink-0 text-[10.5px] text-white/35">{v.plataforma}</span>}
+                {v.plataforma && <span className="hidden sm:inline shrink-0 text-[10.5px] text-white/35">{v.plataforma}</span>}
                 <span className="ml-auto shrink-0 font-mono text-[11px] text-white/40">
                   {v.data_publicacao ? new Date(v.data_publicacao + "T12:00:00").toLocaleDateString("pt-BR") : ""}
                 </span>
