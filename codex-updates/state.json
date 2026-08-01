@@ -1,47 +1,47 @@
 {
-  "version": "1.4",
+  "version": "1.5",
   "codexUrl": "https://codex.viralmindlabs.com",
   "pending": [],
   "lastRelease": {
-    "version": "1.3",
-    "git": "4274e17",
-    "productSummary": "Modelar um vídeo deixou de gerar uma cópia dele: o Codex faz a autópsia do viral, entende por que funcionou, confere os fatos e escreve um roteiro novo sobre o mesmo assunto por um ângulo melhor.",
-    "message": "🪄 *Codex: Nova Versão Disponível (v1.3)*\n🔖 Git: 4274e17\n\nModelar um vídeo deixou de gerar uma cópia dele. Agora o Codex faz uma autópsia do vídeo, entende por que ele funcionou, confere os fatos e escreve um roteiro novo sobre o mesmo assunto, por um ângulo melhor.\n\n📋 *O que mudou:*\n\n🚀 *Modelagem agora cria, não copia.* A autópsia separa o que fez o vídeo prender atenção (o tipo de tensão da abertura, o que segura cada trecho, o que fica em aberto até o final) da recompensa que o espectador levou embora. O roteirista não recebe mais a transcrição original, ele escreve em cima do ângulo vencedor escolhido pelos dados. Na prática: você cola um viral e recebe um concorrente dele, não uma versão reescrita.\n\n✨ *Os fatos do vídeo passam pelo pente fino.* Nesse modo não existia pesquisa nenhuma, o roteiro saía inteiro na palavra do vídeo (se ele mentiu, a gente repetia com a nossa cara). Agora cada alegação é verificada e classificada com fonte, e o que não se confirma não vira afirmação nossa. A pesquisa ainda volta com munição que o original não usou: contra-argumento, curiosidade e comparação em escala brasileira (R$, salário mínimo, tempo de trabalho).\n\n⚡ *A análise agora sabe para quem estamos escrevendo.* Antes o vídeo era analisado no vácuo e podia sugerir um caminho que batia numa proibição do cliente. Agora ela enxerga os vetos, o vocabulário barrado, o que já performou para aquele cliente e os aprendizados que o time ensinou.\n\n💅 *Dá para escolher o ângulo em dois segundos.* Cada candidata mostra o gancho pronto, a desconstrução ganhou seções legíveis (\"o que vamos reaproveitar\", \"o que NÃO vamos copiar\") no lugar de JSON cru, e a tela avisa quando a sala vai manter o assunto do vídeo em vez de aplicar no seu tema.\n\n👉 Acesse agora em https://codex.viralmindlabs.com\n",
+    "version": "1.4",
+    "git": "fdd6cdd",
+    "productSummary": "O Codex agora funciona no celular de verdade: conjurar, acompanhar a geração e ajustar com o Bob direto do telefone.",
+    "message": "🪄 *Codex: Nova Versão Disponível (v1.4)*\n🔖 Git: fdd6cdd\n\nO Codex agora funciona no celular de verdade. Dá para conjurar um roteiro, acompanhar a sala de agentes e ajustar o texto com o Bob direto do telefone, sem zoom travado e sem a tela escorrendo para o lado.\n\n📋 *O que mudou:*\n\n⚡ *O app inteiro foi refeito para o celular.* Os menus viraram uma barra de abas no rodapé, na altura do polegar. As listas de sessões e lições passaram a mostrar o título em cima e status, cliente e data embaixo, no lugar de colunas espremidas. O cabeçalho do roteiro ficou fixo enquanto você rola, então Salvar e Copiar nunca mais ficam a três telas de distância. E acabou o zoom automático do iPhone ao tocar em qualquer campo, que era justamente o que deixava a tela presa torta e obrigava a esperar chegar no computador.\n\n🔧 *\"Chame o Bob\" passou a funcionar no toque.* O botão dependia de um clique de mouse, então no celular ele simplesmente nunca aparecia: selecionar um trecho e pedir um ajuste era impossível fora do desktop. Agora a seleção por toque abre o Bob normalmente, com o botão sempre dentro da tela.\n\n🐛 *O hook parou de aparecer duas vezes.* Ele era gravado no campo dele e também como primeiro parágrafo do roteiro, então trocar a variação de hook mexia só em uma das cópias e as duas iam divergindo. Agora existe uma fonte única, e os roteiros que já estavam salvos foram corrigidos no banco.\n\n🔧 *Datas no horário de Brasília.* O servidor roda em UTC, então \"hoje\" começava às 21h e a lista de sessões mostrava tudo 3 horas adiantado. Agora sai no fuso de São Paulo.\n\n👉 Acesse agora em https://codex.viralmindlabs.com\n",
     "changes": [
       {
-        "id": "ms7t4lts",
-        "type": "feature",
-        "summary": "Modelagem sem tema deixa de copiar o vídeo e passa a criar um ângulo novo sobre o mesmo assunto",
-        "detail": "A autópsia do vídeo extrai a mecânica que prendeu a atenção (tipo de tensão da abertura, o que segura cada beat, loops abertos, escalada) e a recompensa que o espectador levou embora. O roteirista não recebe mais a transcrição original: ele escreve sobre o ângulo vencedor escolhido pelos dados.",
-        "commit": "4274e17",
-        "addedAt": "2026-07-30T17:48:22.528Z"
-      },
-      {
-        "id": "ms7t4luo",
-        "type": "feature",
-        "summary": "Os fatos do vídeo modelado passam a ser conferidos antes de virar roteiro, e a pesquisa traz munição nova",
-        "detail": "Nesse modo não existia pesquisa nenhuma: o roteiro saía 100% da palavra do vídeo. Agora cada alegação é verificada (confirmado, contestado ou não verificável, com fonte e hierarquia de confiabilidade) e o que não confirma não vira afirmação nossa. A pesquisa também busca contra-argumento, curiosidade e comparação em escala brasileira (R$, salário mínimo, tempo de trabalho).",
-        "commit": "aba256c",
-        "addedAt": "2026-07-30T17:48:22.560Z"
-      },
-      {
-        "id": "ms7t4lva",
+        "id": "msalerev",
         "type": "improvement",
-        "summary": "A modelagem passou a conhecer o cliente: proibições, vocabulário vetado e o que já performou para ele",
-        "detail": "Antes a análise do vídeo era feita no vácuo e podia sugerir uma arquitetura que violava restrição do cliente. Agora ela vê os vetos, os insights de performance, os roteiros já publicados com resultado medido e os aprendizados ensinados pelo time.",
-        "commit": "2ff25b0",
-        "addedAt": "2026-07-30T17:48:22.582Z"
+        "summary": "App inteiro utilizável no celular",
+        "detail": "nav vira barra de abas no rodapé, fim do zoom do iOS ao focar campo, listas e cards em duas alturas, cabeçalho do roteiro sticky, alvos de toque maiores, anexar print pela câmera",
+        "commit": "fdd6cdd",
+        "addedAt": "2026-08-01T16:35:37.940Z"
       },
       {
-        "id": "ms7t4lvw",
-        "type": "improvement",
-        "summary": "A sessão mostra o gancho de cada narrativa e explica o que será reaproveitado do vídeo e o que não será copiado",
-        "detail": "Os cards de candidata passam a exibir o gancho pronto, a desconstrução ganhou títulos legíveis no lugar de JSON cru, e a home avisa que sem tema a sala mantém o assunto do vídeo com ângulo novo (antes a legenda dizia replicados no seu tema mesmo sem tema).",
-        "commit": "4274e17",
-        "addedAt": "2026-07-30T17:48:22.604Z"
+        "id": "msalerfy",
+        "type": "fix",
+        "summary": "Chame o Bob funciona no toque",
+        "detail": "dependia de mouseup, que não existe ao selecionar texto no celular",
+        "commit": "fdd6cdd",
+        "addedAt": "2026-08-01T16:35:37.977Z"
+      },
+      {
+        "id": "msalergu",
+        "type": "fix",
+        "summary": "Hook não aparece mais duplicado no roteiro",
+        "detail": "coluna hook virou fonte única; migration 0022 corrige os roteiros antigos",
+        "commit": "fdd6cdd",
+        "addedAt": "2026-08-01T16:35:38.009Z"
+      },
+      {
+        "id": "msalerhs",
+        "type": "fix",
+        "summary": "Datas no fuso de São Paulo",
+        "detail": "servidor roda em UTC e hoje virava às 21h",
+        "commit": "fdd6cdd",
+        "addedAt": "2026-08-01T16:35:38.043Z"
       }
     ],
-    "releasedAt": "2026-07-30T17:48:54.322Z"
+    "releasedAt": "2026-08-01T16:36:57.123Z"
   },
   "history": [
     {
@@ -214,6 +214,47 @@
         }
       ],
       "releasedAt": "2026-07-28T21:03:17.043Z"
+    },
+    {
+      "version": "1.3",
+      "git": "4274e17",
+      "productSummary": "Modelar um vídeo deixou de gerar uma cópia dele: o Codex faz a autópsia do viral, entende por que funcionou, confere os fatos e escreve um roteiro novo sobre o mesmo assunto por um ângulo melhor.",
+      "message": "🪄 *Codex: Nova Versão Disponível (v1.3)*\n🔖 Git: 4274e17\n\nModelar um vídeo deixou de gerar uma cópia dele. Agora o Codex faz uma autópsia do vídeo, entende por que ele funcionou, confere os fatos e escreve um roteiro novo sobre o mesmo assunto, por um ângulo melhor.\n\n📋 *O que mudou:*\n\n🚀 *Modelagem agora cria, não copia.* A autópsia separa o que fez o vídeo prender atenção (o tipo de tensão da abertura, o que segura cada trecho, o que fica em aberto até o final) da recompensa que o espectador levou embora. O roteirista não recebe mais a transcrição original, ele escreve em cima do ângulo vencedor escolhido pelos dados. Na prática: você cola um viral e recebe um concorrente dele, não uma versão reescrita.\n\n✨ *Os fatos do vídeo passam pelo pente fino.* Nesse modo não existia pesquisa nenhuma, o roteiro saía inteiro na palavra do vídeo (se ele mentiu, a gente repetia com a nossa cara). Agora cada alegação é verificada e classificada com fonte, e o que não se confirma não vira afirmação nossa. A pesquisa ainda volta com munição que o original não usou: contra-argumento, curiosidade e comparação em escala brasileira (R$, salário mínimo, tempo de trabalho).\n\n⚡ *A análise agora sabe para quem estamos escrevendo.* Antes o vídeo era analisado no vácuo e podia sugerir um caminho que batia numa proibição do cliente. Agora ela enxerga os vetos, o vocabulário barrado, o que já performou para aquele cliente e os aprendizados que o time ensinou.\n\n💅 *Dá para escolher o ângulo em dois segundos.* Cada candidata mostra o gancho pronto, a desconstrução ganhou seções legíveis (\"o que vamos reaproveitar\", \"o que NÃO vamos copiar\") no lugar de JSON cru, e a tela avisa quando a sala vai manter o assunto do vídeo em vez de aplicar no seu tema.\n\n👉 Acesse agora em https://codex.viralmindlabs.com\n",
+      "changes": [
+        {
+          "id": "ms7t4lts",
+          "type": "feature",
+          "summary": "Modelagem sem tema deixa de copiar o vídeo e passa a criar um ângulo novo sobre o mesmo assunto",
+          "detail": "A autópsia do vídeo extrai a mecânica que prendeu a atenção (tipo de tensão da abertura, o que segura cada beat, loops abertos, escalada) e a recompensa que o espectador levou embora. O roteirista não recebe mais a transcrição original: ele escreve sobre o ângulo vencedor escolhido pelos dados.",
+          "commit": "4274e17",
+          "addedAt": "2026-07-30T17:48:22.528Z"
+        },
+        {
+          "id": "ms7t4luo",
+          "type": "feature",
+          "summary": "Os fatos do vídeo modelado passam a ser conferidos antes de virar roteiro, e a pesquisa traz munição nova",
+          "detail": "Nesse modo não existia pesquisa nenhuma: o roteiro saía 100% da palavra do vídeo. Agora cada alegação é verificada (confirmado, contestado ou não verificável, com fonte e hierarquia de confiabilidade) e o que não confirma não vira afirmação nossa. A pesquisa também busca contra-argumento, curiosidade e comparação em escala brasileira (R$, salário mínimo, tempo de trabalho).",
+          "commit": "aba256c",
+          "addedAt": "2026-07-30T17:48:22.560Z"
+        },
+        {
+          "id": "ms7t4lva",
+          "type": "improvement",
+          "summary": "A modelagem passou a conhecer o cliente: proibições, vocabulário vetado e o que já performou para ele",
+          "detail": "Antes a análise do vídeo era feita no vácuo e podia sugerir uma arquitetura que violava restrição do cliente. Agora ela vê os vetos, os insights de performance, os roteiros já publicados com resultado medido e os aprendizados ensinados pelo time.",
+          "commit": "2ff25b0",
+          "addedAt": "2026-07-30T17:48:22.582Z"
+        },
+        {
+          "id": "ms7t4lvw",
+          "type": "improvement",
+          "summary": "A sessão mostra o gancho de cada narrativa e explica o que será reaproveitado do vídeo e o que não será copiado",
+          "detail": "Os cards de candidata passam a exibir o gancho pronto, a desconstrução ganhou títulos legíveis no lugar de JSON cru, e a home avisa que sem tema a sala mantém o assunto do vídeo com ângulo novo (antes a legenda dizia replicados no seu tema mesmo sem tema).",
+          "commit": "4274e17",
+          "addedAt": "2026-07-30T17:48:22.604Z"
+        }
+      ],
+      "releasedAt": "2026-07-30T17:48:54.322Z"
     }
   ]
 }
