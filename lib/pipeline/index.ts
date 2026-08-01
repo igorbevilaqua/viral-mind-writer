@@ -6,7 +6,7 @@ import { analyzeModelagem, ensureTranscript, type ModelagemResult } from "./mode
 import { compreensaoBlock } from "./modelagem-brief";
 import { research, proposeNarratives, rankNarratives, designHook, writeComando } from "./agents";
 import { pairFromCandidates } from "../calibration";
-import { generateDraft, parseSections, stripTrailingComando } from "./draft";
+import { generateDraft, parseSections, stripLeadingHook, stripTrailingComando } from "./draft";
 import { critiqueAndRewrite } from "./critique";
 import { extractFromCorrection } from "./teach";
 import { humanize } from "./humanize";
@@ -160,14 +160,15 @@ export async function runPipeline(
     if (opts.feedback) {
       const { data: prev } = await appDb
         .from("vm_generated_scripts")
-        .select("roteiro, comando")
+        .select("hook, roteiro, comando")
         .eq("session_id", sessionId)
         .order("version", { ascending: false })
         .limit(1)
         .maybeSingle();
       if (prev) {
         revision = {
-          anterior: `${prev.roteiro}${prev.comando ? `\n\nCOMANDO: ${prev.comando}` : ""}`,
+          // hook vem da coluna (não está mais dentro do roteiro) — a reescrita precisa dele
+          anterior: `${prev.hook ? `${prev.hook}\n\n` : ""}${prev.roteiro}${prev.comando ? `\n\nCOMANDO: ${prev.comando}` : ""}`,
           feedback: opts.feedback,
         };
       }
@@ -202,6 +203,8 @@ export async function runPipeline(
     if (sections.comando && sections.roteiro) {
       sections.roteiro = stripTrailingComando(sections.roteiro, sections.comando);
     }
+    // e o hook fica só na coluna `hook` — o roteiro salvo é o desenvolvimento
+    if (sections.roteiro) sections.roteiro = stripLeadingHook(sections.roteiro, sections.hook);
 
     const narrativa = artifacts ? (artifacts.candidatas[artifacts.escolhida] ?? null) : null;
     // unique (session_id, version): conflito com escrita concorrente → recalcula a version e tenta de novo
@@ -280,7 +283,7 @@ export async function runPipeline(
     // APÓS o done e em try isolado: não atrasa a entrega nem derruba a geração já emitida.
     if (opts.feedback && revision) {
       try {
-        const depois = `${sections.roteiro}${sections.comando ? `\n\nCOMANDO: ${sections.comando}` : ""}`;
+        const depois = `${sections.hook ? `${sections.hook}\n\n` : ""}${sections.roteiro}${sections.comando ? `\n\nCOMANDO: ${sections.comando}` : ""}`;
         const learnings = await extractFromCorrection({
           pedido: opts.feedback,
           antes: revision.anterior,

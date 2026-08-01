@@ -14,7 +14,7 @@ interface PublicScriptData {
 }
 
 const fullText = (s: PublicScriptData) =>
-  [s.headline, s.roteiro, s.comando, s.fontes ? `FONTES:\n${s.fontes}` : null].filter(Boolean).join("\n\n");
+  [s.headline, s.hook, s.roteiro, s.comando, s.fontes ? `FONTES:\n${s.fontes}` : null].filter(Boolean).join("\n\n");
 
 function CopyBtn({ text, label = "Copiar" }: { text: string; label?: string }) {
   const [copied, setCopied] = useState(false);
@@ -84,7 +84,7 @@ export default function PublicScript({ script }: { script: PublicScriptData }) {
         )}
 
         <section className="px-5 sm:px-6 pt-5 pb-5">
-          <span className="kicker text-white/40">ROTEIRO</span>
+          <span className="kicker text-white/40">DESENVOLVIMENTO</span>
           <p className="whitespace-pre-wrap text-[13.5px] leading-[1.75] text-[#ededf0]/80 mt-3">{script.roteiro}</p>
         </section>
 

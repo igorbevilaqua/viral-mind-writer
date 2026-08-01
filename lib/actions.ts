@@ -395,7 +395,7 @@ export async function suggestFragment(
 export async function swapHook(scriptId: string, variantIndex: number) {
   const { data: s, error } = await appDb
     .from("vm_generated_scripts")
-    .select("session_id, hook, hook_variants, roteiro")
+    .select("session_id, hook, hook_variants")
     .eq("id", scriptId)
     .single();
   if (error || !s) throw new Error(error?.message ?? "roteiro não encontrado");
@@ -404,17 +404,12 @@ export async function swapHook(scriptId: string, variantIndex: number) {
   const novo = variants[variantIndex];
   if (!novo || !s.hook) throw new Error("variação inexistente");
 
-  // o roteiro costuma começar com o hook — se blocks[0] divergiu (edição manual),
-  // não sobrescreve conteúdo do usuário: prefixa o hook novo.
-  const blocks = (s.roteiro as string).split("\n\n");
-  if (blocks[0] === s.hook) blocks[0] = novo;
-  else blocks.unshift(novo);
   variants[variantIndex] = s.hook;
 
   // update otimista: condiciona ao hook lido — troca concorrente resulta em 0 linhas.
   const { data: updated, error: upErr } = await appDb
     .from("vm_generated_scripts")
-    .update({ hook: novo, hook_variants: variants, roteiro: blocks.join("\n\n") })
+    .update({ hook: novo, hook_variants: variants })
     .eq("id", scriptId)
     .eq("hook", s.hook)
     .select("id");

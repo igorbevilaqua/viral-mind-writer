@@ -1,5 +1,33 @@
 import { describe, expect, test } from "vitest";
-import { checagemSection, parseSections, stripTrailingComando } from "@/lib/pipeline/draft";
+import { checagemSection, parseSections, stripLeadingHook, stripTrailingComando } from "@/lib/pipeline/draft";
+
+// o hook abre o ROTEIRO no documento montado, mas é salvo só na coluna `hook`
+describe("stripLeadingHook", () => {
+  const hook = "Existe um documento do Palmeiras que deveria ser estudado em faculdade.";
+
+  test("corta o 1º bloco quando ele é o hook", () => {
+    expect(stripLeadingHook(`${hook}\n\nE ele foi publicado no meio de uma polêmica.`, hook)).toBe(
+      "E ele foi publicado no meio de uma polêmica."
+    );
+  });
+
+  test("aceita diferença só de pontuação/aspas (a revisão mexe nisso)", () => {
+    expect(stripLeadingHook(`"${hook}"\n\nCorpo aqui.`, hook)).toBe("Corpo aqui.");
+  });
+
+  test("hook divergente de verdade não corta nada do corpo", () => {
+    const roteiro = "Em 2019 o clube mudou de estratégia e ninguém percebeu.\n\nCorpo aqui.";
+    expect(stripLeadingHook(roteiro, hook)).toBe(roteiro);
+  });
+
+  test("bloco único fica intacto (cortar esvaziaria o roteiro)", () => {
+    expect(stripLeadingHook(hook, hook)).toBe(hook);
+  });
+
+  test("sem hook, devolve o roteiro", () => {
+    expect(stripLeadingHook("Corpo.\n\nMais corpo.", null)).toBe("Corpo.\n\nMais corpo.");
+  });
+});
 
 describe("stripTrailingComando", () => {
   const comando = "Segue esse perfil pra entender esses dominós antes deles caírem no seu bolso.";

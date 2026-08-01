@@ -284,6 +284,23 @@ export function stripTrailingComando(roteiro: string, comando: string): string {
   return blocks.join("\n\n").trimEnd();
 }
 
+// No documento montado o hook ABRE a seção ROTEIRO — revisão e humanização precisam ver a
+// emenda hook→corpo. Mas salvar as duas cópias mostrava o hook duas vezes na tela e deixava
+// as duas divergirem (editar só o campo HOOK não mexia na cópia de dentro do roteiro).
+// A coluna `hook` é a fonte única; o roteiro guarda só o desenvolvimento.
+export function stripLeadingHook(roteiro: string, hook: string | null): string {
+  if (!hook) return roteiro;
+  const norm = (s: string) => s.toLowerCase().replace(/[^a-zà-ú0-9]+/gi, " ").trim();
+  const blocks = roteiro.split(/\n\s*\n/);
+  if (blocks.length < 2) return roteiro; // um bloco só: cortar esvaziaria o roteiro
+  const first = norm(blocks[0]);
+  const h = norm(hook);
+  if (first.length < 12) return roteiro; // curto demais → risco de falso positivo
+  // divergiu de verdade → não corta: hook repetido é menos grave que parágrafo do corpo perdido
+  if (first === h || h.includes(first) || first.includes(h)) blocks.shift();
+  return blocks.join("\n\n").trimStart();
+}
+
 export function parseSections(text: string): ScriptSections {
   const grab = (header: string) => {
     const m = text.match(new RegExp(`##\\s*${header}\\s*\\n([\\s\\S]*?)(?=\\n##\\s|$)`, "i"));

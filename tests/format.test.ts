@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { fmtNum, fmtRatio, ratioTone } from "@/lib/format";
+import { fmtDay, fmtNum, fmtRatio, fmtWhen, ratioTone } from "@/lib/format";
 
 describe("fmtNum", () => {
   test("abaixo de mil: número exato", () => {
@@ -16,6 +16,32 @@ describe("fmtNum", () => {
 
   test("zero", () => {
     expect(fmtNum(0)).toBe("0");
+  });
+});
+
+// fuso: horários vêm em UTC do Postgres e devem sair em America/Sao_Paulo (-3),
+// independente do TZ do processo (Vercel roda em UTC)
+describe("fmtWhen / fmtDay em São Paulo", () => {
+  test("hora exibida é a de São Paulo, não UTC", () => {
+    // 2026-07-31T23:30Z = 20:30 em SP, mesmo dia
+    expect(fmtWhen("2026-07-31T23:30:00Z", new Date("2026-07-31T23:50:00Z"))).toBe("hoje 20:30");
+  });
+
+  test("00:30Z ainda é 'hoje 21:30' do dia anterior em SP", () => {
+    expect(fmtWhen("2026-08-01T00:30:00Z", new Date("2026-08-01T02:00:00Z"))).toBe("hoje 21:30");
+  });
+
+  test("virada de dia é às 03:00Z (meia-noite em SP)", () => {
+    expect(fmtWhen("2026-08-01T02:00:00Z", new Date("2026-08-01T04:00:00Z"))).toBe("ontem");
+  });
+
+  test("menos de 5 min é 'agora'", () => {
+    expect(fmtWhen("2026-07-31T12:00:00Z", new Date("2026-07-31T12:03:00Z"))).toBe("agora");
+  });
+
+  test("mais antigo: dia/mês no fuso de SP", () => {
+    // 2026-08-01T01:00Z = 31/jul 22:00 em SP
+    expect(fmtDay("2026-08-01T01:00:00Z")).toBe("31 de jul");
   });
 });
 
