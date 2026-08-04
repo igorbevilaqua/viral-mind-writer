@@ -11,7 +11,7 @@ export type ClassDim = "tema" | "storytelling" | "hook" | "comando";
 
 export const fmt = (n: number | null | undefined) =>
   n == null
-    ? "—"
+    ? "-"
     : n >= 1_000_000
       ? `${(n / 1_000_000).toFixed(1)}M`
       : n >= 1000

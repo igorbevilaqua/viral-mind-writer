@@ -299,7 +299,7 @@ export default async function SessionsPage({
             <p className="text-white/45 text-sm">
               {hasFilter
                 ? "Nenhuma sessão com esses filtros."
-                : "Nenhuma sessão ainda. Comece com um prompt — a sala de agentes pesquisa o corpus e escreve o roteiro."}
+                : "Nenhuma sessão ainda. Comece com um prompt: a sala de agentes pesquisa o corpus e escreve o roteiro."}
             </p>
             <div className="mt-4 flex items-center justify-center gap-3">
               {hasFilter && (

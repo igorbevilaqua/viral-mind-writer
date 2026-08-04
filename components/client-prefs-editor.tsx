@@ -137,10 +137,10 @@ export default function ClientPrefsEditor({
             <Field label="TOM DE VOZ">
               <textarea value={form.tom_de_voz} onChange={set("tom_de_voz")} rows={3} className={inputCls} placeholder="ex: autoridade acolhedora, técnica mas nunca fria" />
             </Field>
-            <Field label="VOCABULÁRIO — EVITAR">
+            <Field label="VOCABULÁRIO: EVITAR">
               <textarea value={form.vocabulario_evitar} onChange={set("vocabulario_evitar")} rows={3} className={inputCls} placeholder={'ex: "milagre"'} />
             </Field>
-            <Field label="VOCABULÁRIO — PREFERIR" labelCls="text-gold">
+            <Field label="VOCABULÁRIO: PREFERIR" labelCls="text-gold">
               <textarea value={form.vocabulario_usar} onChange={set("vocabulario_usar")} rows={3} className={inputCls} placeholder={'ex: "evidência"'} />
             </Field>
             <Field label="TEMAS" span2>
@@ -160,10 +160,10 @@ export default function ClientPrefsEditor({
             <Section label="TOM DE VOZ" show={!!prefs?.tom_de_voz}>
               <Prose>{prefs?.tom_de_voz}</Prose>
             </Section>
-            <Section label="VOCABULÁRIO — EVITAR" show={evitar.length > 0}>
+            <Section label="VOCABULÁRIO: EVITAR" show={evitar.length > 0}>
               <Chips items={evitar} variant="strike" />
             </Section>
-            <Section label="VOCABULÁRIO — PREFERIR" labelCls="text-gold" show={usar.length > 0}>
+            <Section label="VOCABULÁRIO: PREFERIR" labelCls="text-gold" show={usar.length > 0}>
               <Chips items={usar} variant="gold" />
             </Section>
             <Section label="TEMAS" show={temas.length > 0}>

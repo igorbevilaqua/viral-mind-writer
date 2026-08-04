@@ -638,7 +638,7 @@ function PublishBox({ script, perf, baseline }: { script: Script; perf: ScriptPe
       ) : (
         <p className="inline-flex items-center gap-2 text-xs text-amber-300">
           <span className="w-1.5 h-1.5 rounded-full bg-amber-300 vm-pulse" />
-          Aguardando métricas — sincroniza toda segunda, quando o vídeo entrar no corpus.
+          Aguardando métricas: sincroniza toda segunda, quando o vídeo entrar no corpus.
         </p>
       )}
     </div>
@@ -1786,7 +1786,7 @@ export default function SessionView({
           )}
           {phase && phase !== "roteiro" && streamText && (
             <p className="text-xs text-white/40">
-              O corpo acima está com os especialistas de hook, comando e revisão — a versão final aparece já já.
+              O corpo acima está com os especialistas de hook, comando e revisão. A versão final aparece já já.
             </p>
           )}
         </>
@@ -1795,7 +1795,7 @@ export default function SessionView({
       {/* geração iniciada em outra aba/conexão: acompanha por polling, sem stream */}
       {watching && (
         <div className="rounded-2xl border border-gold/25 bg-gold/[.04] px-4 py-3.5 text-[13px] text-white/70">
-          Geração em andamento nesta sessão. Acompanhando — a página atualiza sozinha quando o roteiro ficar pronto.
+          Geração em andamento nesta sessão. Acompanhando: a página atualiza sozinha quando o roteiro ficar pronto.
         </div>
       )}
 
@@ -1932,7 +1932,7 @@ export default function SessionView({
                         {v.match && (
                           <>
                             {" "}
-                            — <span className="font-mono text-[11.5px] text-white/55">&ldquo;{v.match}&rdquo;</span>
+                            · <span className="font-mono text-[11.5px] text-white/55">&ldquo;{v.match}&rdquo;</span>
                           </>
                         )}
                         {v.severity === "warn" && <span className="text-white/40"> (aviso)</span>}
@@ -2099,14 +2099,14 @@ function FeedbackForm({
       {editedInline ? (
         // WP-E já preserva o original no trace: a versão editada inline vira a versão final sozinha
         <p className="text-[12px] leading-relaxed text-white/55 border-l-2 border-gold/30 pl-3">
-          Edição inline detectada — a versão editada será usada automaticamente como versão final no aprendizado.
+          Edição inline detectada: a versão editada será usada automaticamente como versão final no aprendizado.
         </p>
       ) : (
         <textarea
           value={edited}
           onChange={(e) => setEdited(e.target.value)}
           rows={3}
-          placeholder="Se você editou o roteiro antes de usar, cole a versão final aqui — é o insumo mais valioso para o sistema aprender."
+          placeholder="Se você editou o roteiro antes de usar, cole a versão final aqui, é o insumo mais valioso para o sistema aprender."
           className="w-full rounded-[10px] border border-white/[.12] bg-transparent px-3.5 py-2.5 text-[13px] outline-none placeholder:text-white/35 focus:border-gold/40"
         />
       )}

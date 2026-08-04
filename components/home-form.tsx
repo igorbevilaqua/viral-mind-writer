@@ -219,7 +219,7 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
             sem nenhum modelo tocá-la. Em branco, o sistema a define antes de pesquisar. */}
         <div className="px-5 pb-3 pt-1 border-t border-white/[.05]">
           <label className="block text-[11px] uppercase tracking-wider text-white/35 mb-1.5">
-            Premissa <span className="normal-case tracking-normal text-white/25">(opcional — o que o vídeo afirma)</span>
+            Premissa <span className="normal-case tracking-normal text-white/25">(opcional: o que o vídeo afirma)</span>
           </label>
           <textarea
             value={premissa}
@@ -231,7 +231,7 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
           <p className="text-[11px] text-white/25">
             {premissa.trim()
               ? "A sala vai seguir esta premissa literalmente: narrativa, pesquisa e hook servem a ela."
-              : "Em branco, a sala define a premissa antes de pesquisar — e mostra qual foi."}
+              : "Em branco, a sala define a premissa antes de pesquisar, e mostra qual foi."}
           </p>
         </div>
         <div className="flex items-center gap-2.5 px-3.5 py-3 border-t border-white/[.07] bg-white/[.02] flex-wrap">
@@ -425,7 +425,7 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
               <p className="text-xs text-white/40">
                 {prompt.trim()
                   ? "A estrutura, emoções e elementos virais deste material serão desconstruídos e replicados no seu tema"
-                  : "Sem tema: a sala mantém o assunto deste vídeo, mas ataca por um ângulo novo — com os fatos dele conferidos antes"}
+                  : "Sem tema: a sala mantém o assunto e a tese deste vídeo, e escreve uma versão melhor, com os fatos dele conferidos antes"}
               </p>
             )}
             <div className="flex flex-col gap-2.5">

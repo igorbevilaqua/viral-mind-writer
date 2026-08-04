@@ -14,7 +14,7 @@ A premissa é o **argumento central** do vídeo, em 1 ou 2 frases afirmativas. �
 ## Testes que a premissa precisa passar
 
 1. **Contestável.** Alguém razoável pode discordar. Se ninguém pode discordar, não é premissa, é descrição.
-2. **Afirmativa.** Diz o que É. Nunca formule pela negação ("não é X, é Y") — isso é vício de escrita de IA e está proibido no guia de estilo.
+2. **Afirmativa.** Diz o que É. Nunca formule pela negação ("não é X, é Y"), isso é vício de escrita de IA e está proibido no guia de estilo.
 3. **Sustentável em 60-180 segundos.** Uma tese que exige aula de 20 minutos não serve. Se é grande demais, escolha a fatia mais forte.
 4. **Uma só.** Duas teses num vídeo curto viram nenhuma.
 5. **Consequência clara.** Precisa haver um "e por isso…" que atinja o espectador. Tese verdadeira e irrelevante não vira vídeo.
@@ -22,9 +22,9 @@ A premissa é o **argumento central** do vídeo, em 1 ou 2 frases afirmativas. �
 ## Como escolher entre teses possíveis
 
 Prefira, nesta ordem:
-1. A que tem **ângulo contraintuitivo** — contraria o que o senso comum acredita. É a que rende hook.
-2. A que **atinge o espectador** — muda algo no bolso, no trabalho, na percepção dele.
-3. A que o **material fornecido sustenta** — tese sem lastro factual é desclassificada na revisão.
+1. A que tem **ângulo contraintuitivo**: contraria o que o senso comum acredita. É a que rende hook.
+2. A que **atinge o espectador**: muda algo no bolso, no trabalho, na percepção dele.
+3. A que o **material fornecido sustenta**: tese sem lastro factual é desclassificada na revisão.
 
 Se o material do usuário já contém uma tese explícita, ela vence: seu trabalho é enunciá-la com precisão, não substituí-la por uma sua.
 

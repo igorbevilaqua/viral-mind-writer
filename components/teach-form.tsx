@@ -162,7 +162,7 @@ export default function TeachForm({ clients }: { clients: { id: string; nome: st
           rows={sourceKind === "texto" ? 8 : 4}
           placeholder={
             sourceKind === "video_link"
-              ? "A transcrição aparece aqui — ou cole manualmente..."
+              ? "A transcrição aparece aqui, ou cole manualmente..."
               : "Cole o roteiro viral completo..."
           }
           className="w-full rounded-[10px] border border-white/[.12] bg-transparent px-3.5 py-2.5 text-[12.5px] resize-y outline-none placeholder:text-white/35 focus:border-gold/40 disabled:opacity-60"
@@ -176,7 +176,7 @@ export default function TeachForm({ clients }: { clients: { id: string; nome: st
             className="rounded-[10px] border border-indigo-500/40 bg-indigo-500/[.07] px-3.5 py-2 text-[12.5px] text-indigo-300 outline-none cursor-pointer disabled:opacity-60"
           >
             <option value="" className="bg-neutral-900 text-white">
-              Global — vale para todos
+              Global: vale para todos
             </option>
             {clients.map((c) => (
               <option key={c.id} value={c.id} className="bg-neutral-900 text-white">

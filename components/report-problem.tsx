@@ -88,7 +88,7 @@ export default function ReportProblem() {
             </button>
           </div>
           {sent ? (
-            <p className="text-sm text-emerald-300">Recebido — a equipe vê isso no cockpit. Obrigado!</p>
+            <p className="text-sm text-emerald-300">Recebido! A equipe vê isso no cockpit. Obrigado!</p>
           ) : (
             <>
               <textarea

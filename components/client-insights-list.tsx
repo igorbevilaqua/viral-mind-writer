@@ -47,7 +47,7 @@ export default function ClientInsightsList({ insights, clientId }: { insights: I
   if (!stats.length && !gerais.length) {
     return (
       <p className="text-[13px] text-white/40">
-        Ainda sem insights materializados para este cliente — eles são extraídos automaticamente toda segunda-feira pelo
+        Ainda sem insights materializados para este cliente: eles são extraídos automaticamente toda segunda-feira pelo
         ETL (ou rode <code className="text-white/60">npm run etl</code>).
       </p>
     );

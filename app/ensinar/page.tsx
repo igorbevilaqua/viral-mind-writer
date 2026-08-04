@@ -43,7 +43,7 @@ export default async function EnsinarPage() {
       <div className="flex items-baseline gap-3.5 flex-wrap">
         <h1 className="font-display text-3xl sm:text-[34px] font-medium text-ivory">Ensinar</h1>
         <span className="text-[13px] text-white/40">
-          aprendizados de virais analisados — os ativos influenciam a sala de agentes
+          aprendizados de virais analisados: os ativos influenciam a sala de agentes
         </span>
         <div className="w-full sm:w-auto sm:ml-auto flex items-center gap-2 flex-wrap">
           <Link
@@ -71,8 +71,8 @@ export default async function EnsinarPage() {
           <div className="kicker text-gold tracking-[.22em]">O QUE A SALA APRENDEU COM VOCÊ</div>
           <p className="mt-1.5 text-[13px] text-white/50">
             {pendentes > 0
-              ? `A sala propôs ${pendentes} aprendizado${pendentes > 1 ? "s" : ""} a partir das suas edições e dos resultados publicados — revise e ative.`
-              : "Aprendizados derivados das suas edições e dos resultados publicados — todos revisados."}
+              ? `A sala propôs ${pendentes} aprendizado${pendentes > 1 ? "s" : ""} a partir das suas edições e dos resultados publicados. Revise e ative.`
+              : "Aprendizados derivados das suas edições e dos resultados publicados, todos revisados."}
           </p>
           <div className="flex flex-col gap-2 mt-3">
             {derived.map((l) => {
@@ -168,7 +168,7 @@ export default async function EnsinarPage() {
         })}
         {!lessons.length && (
           <p className="text-white/40 text-sm">
-            Nenhuma lição ainda. Ensine o sistema com um vídeo viral ou roteiro campeão — os aprendizados aprovados
+            Nenhuma lição ainda. Ensine o sistema com um vídeo viral ou roteiro campeão: os aprendizados aprovados
             passam a orientar os agentes nas próximas gerações.
           </p>
         )}
