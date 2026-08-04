@@ -78,6 +78,10 @@ function QuillIcon({ dark }: { dark?: boolean }) {
 export default function HomeForm({ clients }: { clients: { id: string; nome: string }[] }) {
   const router = useRouter();
   const [prompt, setPrompt] = useState("");
+  // Premissa é OPCIONAL: preenchida, é adotada literalmente e nenhum modelo a reescreve; vazia,
+  // o pipeline a resolve (extrai da modelagem e pede confirmação, ou deriva do tema). O gate
+  // "nenhum roteiro sem premissa" vive no pipeline, não aqui — o formulário não é pedágio.
+  const [premissa, setPremissa] = useState("");
   const [clientId, setClientId] = useState("");
   const [attachments, setAttachments] = useState<NewAttachment[]>([]);
   const [pending, startTransition] = useTransition();
@@ -168,6 +172,9 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
   };
 
   const applyTheme = (s: ThemeSuggestion) => {
+    // A premissa sugerida vai para o campo dela, não para o brief: assim ela entra como tese
+    // ADOTADA (nenhum modelo a rederiva) e o usuário pode editá-la antes de conjurar.
+    if (s.premissa?.trim()) setPremissa(s.premissa.trim());
     setPrompt(
       `${s.tema}\n\nÂNGULO NARRATIVO: ${s.angulo_narrativo}\nABORDAGEM: ${s.forma_abordagem}${
         s.estrutura_sugerida ? `\nESTRUTURA SUGERIDA: ${s.estrutura_sugerida}` : ""
@@ -188,6 +195,7 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
     startTransition(async () => {
       const id = await createSession({
         prompt: prompt.trim(),
+        premissa: premissa.trim(),
         clientId: clientId || null,
         attachments: attachments.filter(isUsable),
       });
@@ -207,6 +215,25 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
           placeholder="Descreva o vídeo: tema, ângulo, formato…"
           className="w-full bg-transparent resize-none outline-none px-5 pt-5 pb-2 text-[15px] leading-relaxed placeholder:text-white/35 overflow-y-auto"
         />
+        {/* Premissa: o argumento que o vídeo defende. Preenchida, atravessa o pipeline inteiro
+            sem nenhum modelo tocá-la. Em branco, o sistema a define antes de pesquisar. */}
+        <div className="px-5 pb-3 pt-1 border-t border-white/[.05]">
+          <label className="block text-[11px] uppercase tracking-wider text-white/35 mb-1.5">
+            Premissa <span className="normal-case tracking-normal text-white/25">(opcional — o que o vídeo afirma)</span>
+          </label>
+          <textarea
+            value={premissa}
+            onChange={(e) => setPremissa(e.target.value)}
+            rows={2}
+            placeholder="1 ou 2 frases afirmativas. Ex: cada ataque público do Milei é peça de uma negociação comercial que já estava em curso."
+            className="w-full bg-transparent resize-none outline-none text-[13.5px] leading-relaxed placeholder:text-white/25 overflow-y-auto"
+          />
+          <p className="text-[11px] text-white/25">
+            {premissa.trim()
+              ? "A sala vai seguir esta premissa literalmente: narrativa, pesquisa e hook servem a ela."
+              : "Em branco, a sala define a premissa antes de pesquisar — e mostra qual foi."}
+          </p>
+        </div>
         <div className="flex items-center gap-2.5 px-3.5 py-3 border-t border-white/[.07] bg-white/[.02] flex-wrap">
           <select
             value={clientId}

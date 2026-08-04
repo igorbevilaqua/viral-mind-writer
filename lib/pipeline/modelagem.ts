@@ -293,12 +293,19 @@ export async function analyzeModelagem(attachment: Attachment, ctx: GenerationCo
 
   const missao = comTema
     ? `Um roteirista vai usar essa arquitetura para escrever sobre outro tema: "${ctx.prompt}". Extraia o que TRANSFERE para lá.`
-    : `Não há tema novo: a sala vai publicar sobre o MESMO assunto deste vídeo, por um ângulo diferente e melhor. ` +
-      `Por isso você entrega DUAS metades. Em compreensao, entenda o material a fundo — do que trata, que tese defende, ` +
-      `e principalmente qual RECOMPENSA o espectador levou embora (é ela que faz alguém compartilhar, não a informação em si). ` +
-      `Liste também cada alegação factual, porque um pesquisador vai checar uma a uma antes de qualquer coisa entrar no nosso roteiro. ` +
-      `Em esqueleto, a mecânica pura. Quem vai propor os ângulos novos é outro agente, depois da pesquisa — o seu trabalho é ` +
-      `entregar a ele o entendimento completo, não a ideia pronta.`;
+    : `Não há tema novo: a sala vai publicar sobre o MESMO assunto deste vídeo, defendendo a MESMA TESE, ` +
+      `numa versão melhor executada. Não é para fugir do ângulo dele — é para vencê-lo no próprio ângulo. ` +
+      `Por isso o campo argumento_central é o mais importante da sua análise: é ele que vira a PREMISSA do nosso ` +
+      `roteiro, e o usuário vai confirmá-lo antes de qualquer linha ser escrita. Enuncie a tese com precisão, ` +
+      `em 1-2 frases afirmativas (nunca pela negação, "não é X, é Y" é vício proibido na casa). ` +
+      `Em compreensao, entenda o material a fundo — do que trata, que tese defende, e principalmente qual ` +
+      `RECOMPENSA o espectador levou embora (é ela que faz alguém compartilhar, não a informação em si): a nossa ` +
+      `versão precisa provocar o MESMO sentimento, e se possível mais forte. ` +
+      `Liste também cada alegação factual, porque um pesquisador vai checar uma a uma antes de qualquer coisa entrar ` +
+      `no nosso roteiro — nós não herdamos a palavra dele, nós confirmamos ou descartamos. ` +
+      `Em esqueleto, a mecânica pura, incluindo a curva emocional beat a beat. ` +
+      `Em diagnostico.gargalo, seja preciso: é a camada onde o original era mais fraco, e é exatamente ali que ` +
+      `a nossa versão tem que ganhar dele.`;
 
   const res = await trackedCreate(ctx.usageLog, "modelagem", {
     model: ANALYST_MODEL,

@@ -10,10 +10,17 @@ import { generateDraft, parseSections, stripLeadingHook, stripTrailingComando } 
 import { critiqueAndRewrite } from "./critique";
 import { extractFromCorrection } from "./teach";
 import { humanize } from "./humanize";
-import { blockCount, deepDedash } from "./slop-lint";
+import { derivePremissa } from "./premissa";
+import { blockCount, dedash, deepDedash } from "./slop-lint";
 import { APP_VERSION, GIT_SHA } from "../version";
 import { registrarAtividade } from "../hub";
 import type { PipelineEvent, SessionArtifacts } from "./types";
+
+// Piso de serviço à premissa para uma candidata ser elegível a vencer. Abaixo disso a narrativa
+// pode ser boa de views e ainda assim defender mal a tese — e o roteiro sai sem fio condutor.
+// ponytail: número redondo escolhido a dedo. Se o Dados calibrar mal essa escala (todas as
+// candidatas em 80+, ou todas abaixo), o passo seguinte é medir e ajustar, não somar pesos.
+const SERVICO_PREMISSA_MIN = 50;
 
 // Sala de agentes (DAG com 1 negociação):
 // pesquisa (Grok) → storytelling propõe narrativas → dados rankeia → vencedora
@@ -96,6 +103,57 @@ export async function runPipeline(
       modelagemP.catch(() => {});
     }
 
+    // ── PREMISSA: 3 fontes, 1 slot. Nenhuma narrativa nasce sem ela. ──
+    // Resolvida ANTES da pesquisa de propósito: é a premissa que diz ao pesquisador o que
+    // procurar. Pesquisar o tema solto e só depois inventar a tese era a inversão que deixava
+    // o dossiê genérico e o roteirista sem fio condutor.
+    // Precedência: digitada pelo usuário > extraída da modelagem (com confirmação) > derivada.
+    let premissa = ctx.premissa;
+    if (premissa) {
+      // Digitada: adotada VERBATIM. O nó de derivação nem roda — sem modelo no caminho, não
+      // existe deriva possível. É a única garantia dura do sistema.
+      ctx.premissaOrigem ??= "digitada";
+    } else if (adaptation && !ctx.artifacts?.candidatas?.length) {
+      // Modelagem SEM tema: a tese é a DO ORIGINAL (compreensao.argumento_central) e o usuário
+      // confirma antes de escrever. O run termina aqui; confirmarPremissa dispara o run 2, que
+      // reusa artifacts. Duas execuções normais no lugar de uma suspensa.
+      // Só na primeira geração: sessão legada com candidatas já feitas não fica travada.
+      // Com tema digitado NÃO entra aqui: ali o assunto é outro, a tese do vídeo modelado seria
+      // ruído (a autópsia nem extrai `compreensao`), e a premissa vem do tema. Isso também
+      // preserva o paralelismo modelagem ∥ pesquisa, que um await aqui mataria.
+      const extraida = (await modelagemP)[0]?.analysis.compreensao?.argumento_central?.trim();
+      if (extraida) {
+        const sugerida = dedash(extraida);
+        await appDb
+          .from("vm_sessions")
+          .update({
+            status: "aguardando_premissa",
+            artifacts: { ...(ctx.artifacts ?? {}), premissa_sugerida: sugerida },
+          })
+          .eq("id", sessionId);
+        await registrarAtividade("premissa_pendente", { sessaoId: sessionId, userId: hubUser });
+        emit({ type: "premissa_pendente", sugerida });
+        return;
+      }
+    }
+
+    if (!premissa) {
+      // Nem digitada nem extraível: o sistema produz a tese a partir do tema. É o caminho que
+      // fecha a regra "nenhum roteiro sem premissa" sem transformar o formulário em pedágio.
+      emit({ type: "phase", phase: "premissa" });
+      const derivada = await derivePremissa(ctx);
+      premissa = derivada.premissa;
+      ctx.premissaOrigem = "derivada";
+      ctx.premissaProvas = derivada.o_que_provaria;
+      ctx.premissaContraintuitivo = derivada.angulo_contraintuitivo;
+      await appDb
+        .from("vm_sessions")
+        .update({ premissa, premissa_origem: "derivada" })
+        .eq("id", sessionId);
+    }
+    // Congelada: daqui pra frente todo agente lê ctx.premissa via premissaBlock(), a mesma string.
+    ctx.premissa = premissa;
+
     // ── Pesquisa + narrativas + ranking (só na primeira geração da sessão) ──
     let artifacts: SessionArtifacts | null = ctx.artifacts;
     if (!artifacts?.candidatas?.length) {
@@ -127,7 +185,18 @@ export async function runPipeline(
       const candidatas = await proposeNarratives(ctx, dossie, compreensao || undefined);
       const rank = await rankNarratives(ctx, dossie, candidatas);
       const valid = rank.ranking.filter((r) => candidatas[r.indice]);
-      const vencedora = valid.length ? [...valid].sort((a, b) => b.score - a.score)[0].indice : 0;
+      // Dois eixos, hierarquia clara: servir a premissa é RESTRIÇÃO, viralizar é o critério.
+      // Candidata que sustenta mal a tese está fora por viral que seja — era exatamente esse o
+      // furo de antes, quando o único eixo era `score` de views. Entre as que servem, ganha a
+      // mais viral. Se nenhuma passa do piso, ganha a que menos mal serve, nunca a mais viral.
+      // `?? 100` mantém rankings pré-Etapa C (sem o campo) elegíveis.
+      const servem = valid.filter((r) => (r.servico_a_premissa ?? 100) >= SERVICO_PREMISSA_MIN);
+      const pool = servem.length ? servem : valid;
+      const vencedora = pool.length
+        ? [...pool].sort((a, b) =>
+            servem.length ? b.score - a.score : (b.servico_a_premissa ?? 0) - (a.servico_a_premissa ?? 0)
+          )[0].indice
+        : 0;
 
       artifacts = {
         dossie,
@@ -136,7 +205,14 @@ export async function runPipeline(
         escolhida: vencedora,
         orientacao_roteiro: rank.orientacao_roteiro,
         orientacao_hook: rank.orientacao_hook,
+        premissa_provas: ctx.premissaProvas,
+        premissa_contraintuitivo: ctx.premissaContraintuitivo,
       };
+    } else {
+      // Regeneração: a premissa vem de vm_sessions (coluna), mas provas/contraintuitivo ficaram
+      // nos artifacts — restaura pra o hook e a pesquisa não perderem a pauta.
+      ctx.premissaProvas ??= ctx.artifacts?.premissa_provas;
+      ctx.premissaContraintuitivo ??= ctx.artifacts?.premissa_contraintuitivo;
     }
 
     // Regeneração (artifacts cacheados) pula a pesquisa mas o roteirista ainda usa os briefs.

@@ -5,6 +5,11 @@ Checklist
 PARTE 01
 Checklist Objetivo
 Use este bloco para revisar. Qualquer item nao atendido elimina o roteiro.
+PREMISSA
+n O roteiro sustenta a premissa declarada no contexto, do inicio ao fim
+n A abertura chama atencao PARA a premissa, o meio a prova, o fim entrega a consequencia dela
+n Nao existe tese concorrente nem diluicao em "por um lado, por outro"
+n Todo fato presente serve a premissa (fato interessante que nao serve a ela sai)
 FORMATO
 n O roteiro tem entre 150 e 430 palavras
 RELEVANCIA
@@ -18,6 +23,10 @@ n O roteiro inicia com um hook de 1 a 3 periodos seguindo pelo menos 1 MGC
 n O hook esta livre de linguagem introdutoria generica
 COESAO NARRATIVA
 n Os paragrafos possuem conexao logica entre si, seguindo estrutura de causa e consequencia
+n Nenhuma frase solta: cada item esta amarrado ao anterior por conectivo dito em voz alta, nunca so pela virgula
+n Nenhuma antitese do tipo "nao e X, e Y" (nem com ponto, plural ou pronome no meio): a tese e afirmada direto
+n Nenhuma pergunta curta usada como transicao ("O resultado?"): a transicao e falada por inteiro
+n O roteiro cabe na boca: se uma frase so funciona porque o olho reconstroi o que falta, ela esta errada
 COMANDO
 n O roteiro contem um COMANDO ao final
 n O COMANDO inclui um beneficio explicito escrito na propria frase

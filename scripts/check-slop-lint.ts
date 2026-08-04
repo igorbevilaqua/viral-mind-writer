@@ -9,9 +9,10 @@ const phrases = [
   { pattern: "(regex[inválida", label: "quebrada", severity: "block" as const },
 ];
 
-// detecta clichês
+// detecta clichês. 3 blocks: a banlist pega "não é X, é Y" e "é brutal", e o detector de
+// FIGURA pega a mesma antítese por forma — redundância proposital, a banlist é por string.
 const bad = slopLint("Não é sobre dinheiro, é sobre liberdade. O resultado é brutal.", phrases);
-assert.equal(blockCount(bad), 2, `esperava 2 blocks, veio ${blockCount(bad)}`);
+assert.equal(blockCount(bad), 3, `esperava 3 blocks, veio ${blockCount(bad)}`);
 
 // texto limpo passa
 const clean = slopLint("O banco cobra 3% ao mês e ninguém percebe. Olha o extrato de março.", phrases);
@@ -42,5 +43,25 @@ assert.equal(blockCount(slopLint(dedash("A taxa — que ninguém viu — subiu."
 
 // regex inválida cadastrada não derruba o lint
 assert.ok(Array.isArray(slopLint("qualquer texto", phrases)));
+
+// ── Eixo da elipse: as fugas que a banlist por string não pegava ──
+// (texto real de vm_generated_scripts entregue com slop_lint_violations = 0)
+const fugaPlural = "Os xingamentos não são um ataque de raiva. Aquilo é um plano.";
+assert.equal(blockCount(slopLint(fugaPlural, phrases)), 1, "plural + ponto + pronome deve acusar");
+const fugaPonto = "E quem paga essa conta não é presidente nenhum. É a gente.";
+assert.equal(blockCount(slopLint(fugaPonto, phrases)), 1, "fuga pela pontuação deve acusar");
+// negação sem assertiva pareada é legítima
+assert.equal(blockCount(slopLint("Essa relação não é explicada na mídia.", phrases)), 0);
+
+assert.equal(blockCount(slopLint("O desfecho disso?", phrases)), 1, "pivô nominal deve acusar");
+assert.equal(blockCount(slopLint("Você consegue entender a revolta?", phrases)), 0, "pergunta real passa");
+
+const parataxe = "Esse é o Rio de Janeiro, carros na rua, garotos jogando bola, bandidos circulando.";
+assert.equal(blockCount(slopLint(parataxe, phrases)), 1, "parataxe deve acusar");
+const subordinado =
+  "Esse é o Rio de Janeiro, cidade em que de um lado você vê carros na rua, de outro garoto jogando bola, mas se der bobeira, bandidos estão circulando.";
+assert.equal(blockCount(slopLint(subordinado, phrases)), 0, "conectivo salva a mesma ideia");
+// lista de nomes próprios é enumeração legítima, não o defeito
+assert.equal(blockCount(slopLint("Argentina, El Salvador, Equador, Peru, Chile.", phrases)), 0);
 
 console.log("slop-lint ok");

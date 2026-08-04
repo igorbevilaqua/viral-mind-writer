@@ -2,7 +2,17 @@
 
 import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { finalizeSession, markPublished, quickFeedback, swapHook, updateScript, suggestFragment, updateSessionClient } from "@/lib/actions";
+import {
+  finalizeSession,
+  markPublished,
+  quickFeedback,
+  swapHook,
+  updateScript,
+  suggestFragment,
+  updateSessionClient,
+  confirmarPremissa,
+  updatePremissa,
+} from "@/lib/actions";
 import type { BobModo } from "@/lib/pipeline/bob";
 import { spliceRoteiro, mergeFontes } from "@/lib/bob-edit";
 import type { NarrativaCandidata, RankingItem, SessionArtifacts } from "@/lib/pipeline/types";
@@ -43,9 +53,10 @@ export interface ScriptPerformance {
   seguidores_ganhos: number | null;
 }
 
-const PHASES = ["pesquisa", "modelagem", "narrativas", "roteiro", "hook_comando", "revisao", "humanizacao", "salvando"] as const;
+const PHASES = ["premissa", "pesquisa", "modelagem", "narrativas", "roteiro", "hook_comando", "revisao", "humanizacao", "salvando"] as const;
 
 const PHASE_SHORT: Record<string, string> = {
+  premissa: "Premissa",
   pesquisa: "Pesquisa",
   modelagem: "Modelagem",
   narrativas: "Narrativas",
@@ -57,6 +68,7 @@ const PHASE_SHORT: Record<string, string> = {
 };
 
 const PHASE_LABELS: Record<string, string> = {
+  premissa: "Editor-chefe definindo a premissa: qual é a tese que este vídeo vai defender...",
   pesquisa: "Agente pesquisador vasculhando a web e o X em tempo real, conferindo cada alegação do vídeo...",
   modelagem: "Buscando a transcrição e fazendo a autópsia do vídeo: o que funcionou e por quê...",
   narrativas: "Storytelling propõe narrativas; o agente de dados rankeia pelo histórico de +6 mil vídeos...",
@@ -66,6 +78,117 @@ const PHASE_LABELS: Record<string, string> = {
   humanizacao: "Passe final de naturalidade...",
   salvando: "Salvando...",
 };
+
+// Painel da premissa: o fio condutor do roteiro, visível e editável.
+// Dois modos. `pendente` = modo modelagem, o run 1 extraiu a tese do vídeo original e PAROU —
+// nada é escrito antes de o usuário confirmar. Sem `pendente` = tese vigente, com opção de
+// corrigir (o que descarta as narrativas: narrativa antiga sob tese nova é justamente o defeito
+// que a premissa existe pra impedir).
+function PremissaBox({
+  premissa,
+  origem,
+  pendente,
+  disabled,
+  onConfirm,
+  onUpdate,
+}: {
+  premissa: string;
+  origem: string | null;
+  pendente: boolean;
+  disabled: boolean;
+  onConfirm: (texto: string) => void;
+  onUpdate: (texto: string) => void;
+}) {
+  // Estado inicializado da prop e ressincronizado por `key` no ponto de uso (a sugestão só chega
+  // depois do run 1): remontar é mais simples e mais seguro que espelhar prop em effect, e
+  // preserva o que o usuário está digitando enquanto a premissa não muda.
+  const [editing, setEditing] = useState(pendente);
+  const [texto, setTexto] = useState(premissa);
+  const [pending, startTransition] = useTransition();
+
+  const ORIGEM_LABEL: Record<string, string> = {
+    digitada: "definida por você",
+    modelagem: "extraída do vídeo modelado e confirmada por você",
+    derivada: "definida pela sala a partir do tema",
+  };
+
+  const salvar = () =>
+    startTransition(async () => {
+      if (pendente) onConfirm(texto.trim());
+      else onUpdate(texto.trim());
+      setEditing(false);
+    });
+
+  const tone = pendente ? "border-gold/40 bg-gold/[.05]" : "border-violet-500/25 bg-violet-500/[.04]";
+
+  return (
+    <div className={`rounded-[14px] border ${tone} px-4 py-3.5`}>
+      <div className="flex items-center justify-between gap-2 flex-wrap">
+        <span className={`text-[13px] font-medium ${pendente ? "text-gold" : "text-violet-300"}`}>
+          {pendente ? "Confirme a premissa antes de escrever" : "Premissa"}
+        </span>
+        {!pendente && !editing && (
+          <div className="flex items-center gap-2.5">
+            {origem && <span className="text-[11px] text-white/30">{ORIGEM_LABEL[origem] ?? origem}</span>}
+            <button
+              onClick={() => setEditing(true)}
+              disabled={disabled}
+              className="text-[11.5px] text-white/45 underline hover:text-white/80 disabled:opacity-30"
+            >
+              corrigir
+            </button>
+          </div>
+        )}
+      </div>
+
+      {pendente && (
+        <p className="mt-1.5 text-[12px] leading-relaxed text-white/50">
+          Esta é a tese que o vídeo original defende. A nossa versão vai sustentar a MESMA premissa, com argumento
+          mais forte, mais prova, hook mais claro e conclusão melhor. Edite se quiser ajustar o recorte.
+        </p>
+      )}
+
+      {editing ? (
+        <div className="mt-2.5">
+          <textarea
+            value={texto}
+            onChange={(e) => setTexto(e.target.value)}
+            rows={3}
+            placeholder="1 ou 2 frases afirmativas: o que o espectador passa a acreditar."
+            className="w-full rounded-[10px] border border-white/[.12] bg-white/[.03] px-3 py-2.5 text-[13.5px] leading-relaxed outline-none focus:border-white/25 resize-none placeholder:text-white/25"
+          />
+          <div className="mt-2 flex items-center gap-2 flex-wrap">
+            <button
+              onClick={salvar}
+              disabled={!texto.trim() || pending || disabled}
+              className="btn-gold inline-flex items-center gap-1.5 rounded-[10px] px-4 py-2 text-[12.5px] font-semibold disabled:opacity-40"
+            >
+              {pending ? "..." : pendente ? "Confirmar e escrever" : "Salvar e refazer narrativa"}
+            </button>
+            {!pendente && (
+              <button
+                onClick={() => {
+                  setTexto(premissa);
+                  setEditing(false);
+                }}
+                className="text-[12px] text-white/45 hover:text-white/80"
+              >
+                cancelar
+              </button>
+            )}
+            {!pendente && (
+              <span className="text-[11px] text-white/30">
+                trocar a premissa descarta as narrativas e refaz a escolha
+              </span>
+            )}
+          </div>
+        </div>
+      ) : (
+        <p className="mt-2 whitespace-pre-wrap text-[13.5px] leading-relaxed text-white/80">{premissa}</p>
+      )}
+    </div>
+  );
+}
 
 function QuillIcon({ size = 14, color = "currentColor" }: { size?: number; color?: string }) {
   return (
@@ -245,7 +368,7 @@ function NarrativeCards({
           </svg>
         )}
         <span className="kicker text-white/40">NARRATIVAS CANDIDATAS</span>
-        <span className="text-xs text-white/55">storytelling propõe · dados rankeiam</span>
+        <span className="text-xs text-white/55">caminhos diferentes para a mesma premissa</span>
       </Header>
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
         {candidatas.map((n, i) => {
@@ -281,6 +404,21 @@ function NarrativeCards({
                   </div>
                   <span className={`shrink-0 font-mono text-[11px] ${winner ? "text-gold" : "text-white/50"}`}>
                     {Math.round(r.score)}
+                  </span>
+                </div>
+              )}
+              {/* 2º eixo: serviço à premissa. É RESTRIÇÃO na escolha (piso 50), não desempate —
+                  mostrar separado deixa visível quando uma candidata é viral mas defende mal a tese. */}
+              {r?.servico_a_premissa != null && (
+                <div className="flex items-center gap-2" title="Quanto esta narrativa sustenta a premissa (0-100)">
+                  <div className="flex-1 h-[4px] rounded-full bg-white/[.08] overflow-hidden">
+                    <div
+                      className="h-full rounded-full bg-violet-400/70"
+                      style={{ width: `${Math.min(Math.max(r.servico_a_premissa, 0), 100)}%` }}
+                    />
+                  </div>
+                  <span className="shrink-0 font-mono text-[11px] text-violet-300/80">
+                    {Math.round(r.servico_a_premissa)}
                   </span>
                 </div>
               )}
@@ -1413,7 +1551,15 @@ export default function SessionView({
   autoStart,
   generationStale,
 }: {
-  session: { id: string; prompt: string; status: string; error_message: string | null; clientNome: string | null };
+  session: {
+    id: string;
+    prompt: string;
+    premissa: string | null;
+    premissa_origem: string | null;
+    status: string;
+    error_message: string | null;
+    clientNome: string | null;
+  };
   clientId: string | null;
   clients: { id: string; nome: string }[];
   scripts: Script[];
@@ -1436,6 +1582,12 @@ export default function SessionView({
   const [selected, setSelected] = useState(0);
   const [confirmPick, setConfirmPick] = useState<number | null>(null);
   const [narrativas, setNarrativas] = useState<SessionArtifacts | null>(artifacts);
+  // Premissa vigente e a pendente de confirmação (modo modelagem). A pendente pode vir do
+  // evento SSE do run 1 OU dos artifacts, quando a página é reaberta com status aguardando_premissa.
+  const [premissa, setPremissa] = useState(session.premissa ?? "");
+  const [premissaPendente, setPremissaPendente] = useState(
+    session.status === "aguardando_premissa" ? (artifacts?.premissa_sugerida ?? "") : ""
+  );
   const started = useRef(false);
   const streamRef = useRef<HTMLDivElement>(null);
 
@@ -1478,6 +1630,9 @@ export default function SessionView({
                 ranking: e.ranking,
                 escolhida: e.escolhida,
               }));
+            // Pausa do modo modelagem: o pipeline extraiu a tese do original e parou aqui.
+            // Nada mais é escrito até confirmarPremissa disparar o run 2.
+            if (e.type === "premissa_pendente") setPremissaPendente(e.sugerida);
             if (e.type === "token") setStreamText((t) => t + e.text);
             if (e.type === "error") setError(e.message);
             if (e.type === "done") router.refresh();
@@ -1642,6 +1797,29 @@ export default function SessionView({
         <div className="rounded-2xl border border-gold/25 bg-gold/[.04] px-4 py-3.5 text-[13px] text-white/70">
           Geração em andamento nesta sessão. Acompanhando — a página atualiza sozinha quando o roteiro ficar pronto.
         </div>
+      )}
+
+      {/* premissa — o fio condutor. Pendente (modelagem) tem prioridade sobre a vigente. */}
+      {(premissaPendente || premissa) && (
+        <PremissaBox
+          key={premissaPendente || premissa}
+          premissa={premissaPendente || premissa}
+          origem={session.premissa_origem}
+          pendente={!!premissaPendente}
+          disabled={generating || watching || closed}
+          onConfirm={async (texto) => {
+            await confirmarPremissa(session.id, texto);
+            setPremissa(texto);
+            setPremissaPendente("");
+            generate(); // run 2: reusa os artifacts e segue da pesquisa em diante
+          }}
+          onUpdate={async (texto) => {
+            await updatePremissa(session.id, texto);
+            setPremissa(texto);
+            setNarrativas(null); // narrativas foram descartadas no servidor
+            generate();
+          }}
+        />
       )}
 
       {/* dossiê de pesquisa */}

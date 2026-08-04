@@ -9,6 +9,7 @@
     "lint": "eslint",
     "etl": "tsx --env-file=.env.local scripts/run-etl.ts",
     "check": "tsx scripts/check-slop-lint.ts",
+    "style-report": "tsx --env-file=.env.local scripts/style-report.ts",
     "test": "vitest run"
   },
   "dependencies": {

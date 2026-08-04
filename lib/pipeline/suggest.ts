@@ -9,6 +9,9 @@ import type { GenerationContext } from "./types";
 
 export interface ThemeSuggestion {
   tema: string;
+  // A tese que o vídeo defenderia, 1-2 frases. Vai direto para o campo Premissa do formulário
+  // quando o usuário aplica o tema — é a segunda das três fontes de premissa do sistema.
+  premissa: string;
   angulo_narrativo: string;
   forma_abordagem: string;
   estrutura_sugerida: string;
@@ -49,6 +52,13 @@ const SUGESTOES_TOOL = {
           type: "object",
           properties: {
             tema: { type: "string" },
+            premissa: {
+              type: "string",
+              description:
+                "A TESE que este vídeo defenderia, em 1-2 frases AFIRMATIVAS: o que o espectador " +
+                "passa a acreditar ao final. Não é o assunto, é a afirmação sobre o assunto, e " +
+                "precisa ser contestável. Nunca formule pela negação ('não é X, é Y').",
+            },
             angulo_narrativo: { type: "string" },
             forma_abordagem: { type: "string" },
             estrutura_sugerida: { type: "string" },
@@ -67,6 +77,7 @@ const SUGESTOES_TOOL = {
           },
           required: [
             "tema",
+            "premissa",
             "angulo_narrativo",
             "forma_abordagem",
             "estrutura_sugerida",

@@ -2,17 +2,21 @@ import { describe, expect, test } from "vitest";
 import { composeBrief, compreensaoBlock } from "@/lib/pipeline/modelagem-brief";
 import type { ModelagemAnalysis } from "@/lib/pipeline/types";
 
-// Regressão da queixa "o roteiro sai como cópia do vídeo modelado": o brief que chega
-// ao roteirista não pode carregar NADA do conteúdo do vídeo original — só a mecânica.
-// Os campos que contêm conteúdo (evidencia literal, ângulos com hook pronto) estão
-// plantados de propósito com marcadores que não podem aparecer na saída.
-const CONTEUDO_PLANTADO = [
-  "Nubank",
-  "R$ 4.7 bilhões",
-  "David Vélez",
-  "2026",
-  "o banco que quebrou a bolsa americana",
+// Regressão anti-cópia. A fronteira MUDOU (Etapa D): a missão da modelagem passou a ser extrair
+// a TESE do original e escrever uma versão melhor dela, então a tese e o assunto atravessam de
+// propósito. O que continua barrado é o TEXTO: frase literal da transcrição (`por_camada.evidencia`),
+// as alegações como o vídeo as enuncia (existem para a pesquisa CHECAR) e a promessa da abertura
+// (é o hook dele quase literal — o nosso nasce da premissa).
+// Fronteira nova: ideia atravessa, redação não.
+const TEXTO_LITERAL_PROIBIDO = [
+  // frases literais plantadas em por_camada[].evidencia
+  "David Vélez começou numa garagem",
   "ninguém te contou que seu cartão financia isso",
+  "o Nubank lucrou R$ 4.7 bilhões em 2026",
+  // promessa da abertura = hook do original
+  "o banco que quebrou a bolsa americana",
+  // alegações como o vídeo as enuncia
+  "é o maior banco digital do mundo",
 ];
 
 const analysis: ModelagemAnalysis = {
@@ -62,8 +66,8 @@ const analysis: ModelagemAnalysis = {
 describe("composeBrief", () => {
   const brief = composeBrief(analysis, "Views: 2100000 | Retenção hook: 88%");
 
-  test("não vaza nenhum conteúdo do vídeo original", () => {
-    for (const trecho of CONTEUDO_PLANTADO) {
+  test("não vaza NENHUMA frase literal do vídeo original", () => {
+    for (const trecho of TEXTO_LITERAL_PROIBIDO) {
       expect(brief).not.toContain(trecho);
     }
   });
@@ -73,18 +77,26 @@ describe("composeBrief", () => {
     expect(brief).toContain("Contraste Extremo");
     expect(brief).toContain("revela o custo escondido");
     expect(brief).toContain("NÃO REPLICAR");
-    expect(brief).toContain("GARGALO DO ORIGINAL: comando");
+    expect(brief).toContain("ONDE O ORIGINAL ERA MAIS FRACO (é aqui que a nossa versão ganha dele): comando");
     expect(brief).toContain("Views: 2100000");
   });
 
-  test("leva a recompensa como alvo, mas não o tema nem a tese do original", () => {
+  test("a TESE do original atravessa — é a premissa que a nossa versão sustenta", () => {
+    expect(brief).toContain("TESE DO ORIGINAL");
+    expect(brief).toContain("cobrando do lojista"); // o argumento central, agora permitido
+    expect(brief).toContain("ASSUNTO: o lucro do Nubank em 2026");
+  });
+
+  test("leva a recompensa e os motores como alvo emocional a igualar ou superar", () => {
     expect(brief).toContain("RECOMPENSA A ENTREGAR");
+    expect(brief).toContain("iguale ou supere");
     expect(brief).toContain("enxergado quem paga a conta");
-    expect(brief).toContain("O que faz compartilhar:");
-    // o que a sala usa mas o roteirista não pode ver
-    expect(brief).not.toContain("o lucro do Nubank");
-    expect(brief).not.toContain("cobrando do lojista");
-    expect(brief).not.toContain("maior banco digital do mundo");
+    expect(brief).toContain("O que faz compartilhar");
+  });
+
+  test("a curva emocional beat a beat atravessa (replicar o sentimento, não só a estrutura)", () => {
+    expect(brief).toContain("indignação");
+    expect(brief).toContain("satisfação");
   });
 
   test("respeita o teto de tamanho", () => {
@@ -100,7 +112,7 @@ describe("composeBrief", () => {
         })),
       },
     };
-    expect(composeBrief(gordo).length).toBeLessThanOrEqual(1401); // BRIEF_MAX + reticência
+    expect(composeBrief(gordo).length).toBeLessThanOrEqual(2801); // BRIEF_MAX + reticência
   });
 
   test("análise sem esqueleto utilizável devolve vazio (a geração segue sem modelagem)", () => {
@@ -110,12 +122,15 @@ describe("composeBrief", () => {
 });
 
 describe("compreensaoBlock", () => {
-  test("entrega à sala o que o roteirista não pode ver", () => {
+  test("manda DEFENDER a tese do original, não fugir dela", () => {
     const bloco = compreensaoBlock(analysis);
     expect(bloco).toContain("o lucro do Nubank");
     expect(bloco).toContain("cobrando do lojista");
-    expect(bloco).toContain("ataque por outro"); // ordem explícita de não repetir o ângulo
+    expect(bloco).toContain("É ESTA QUE VAMOS DEFENDER, MELHOR");
+    expect(bloco).toContain("Não troque a tese por outra");
     expect(bloco).toContain("RECOMPENSA");
+    // a instrução antiga (fugir do ângulo do original) foi revertida de propósito
+    expect(bloco).not.toContain("ataque por outro");
   });
 
   test("sem compreensão (modo com tema) devolve vazio", () => {

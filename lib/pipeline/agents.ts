@@ -287,7 +287,7 @@ export function toolArray<T>(input: Record<string, unknown>, key: string): T[] {
 
 export function formatNarrativa(n: NarrativaCandidata): string {
   return `TÍTULO: ${n.titulo}
-ESTRUTURA: ${n.estrutura}
+ESTRUTURA: ${n.estrutura}${n.como_serve_a_premissa ? `\nCOMO SERVE A PREMISSA: ${n.como_serve_a_premissa}` : ""}
 PERSONAGEM: ${n.personagem}
 CONFLITO: ${n.conflito}
 MECANISMO EMOCIONAL: ${n.mecanismo_emocional}
@@ -308,7 +308,7 @@ function checagemBlock(adapt: { transcricao: string; compreensao?: ModelagemComp
   };
   const c = adapt.compreensao;
   const alvo = c
-    ? `TEMA: ${c.tema}\nTESE DO VÍDEO (é ela que você vai testar e municiar): ${c.argumento_central}\nRECOMPENSA QUE O ORIGINAL ENTREGOU (a nossa versão precisa superar): ${c.recompensa}`
+    ? `TEMA: ${c.tema}\nTESE DO VÍDEO — É A NOSSA TAMBÉM, e é ela que você vai testar e municiar: ${c.argumento_central}\nRECOMPENSA QUE O ORIGINAL ENTREGOU (a nossa versão precisa superar): ${c.recompensa}`
     : "";
   const listaAlegacoes = c?.alegacoes?.length
     ? `\n\nALEGAÇÕES EXTRAÍDAS DO VÍDEO (cheque TODAS, uma por linha na seção CHECAGEM):\n${c.alegacoes.map((a) => `- ${a}`).join("\n")}`
@@ -325,7 +325,8 @@ A) SEÇÃO "## CHECAGEM" (obrigatória, primeira do dossiê) — verifique cada 
 Se a lista acima vier vazia, extraia você mesmo as afirmações factuais do vídeo (número, data, causalidade, superlativo). Afirmação não confirmada NÃO pode virar afirmação nossa. Marque sem dó: "nao_verificavel" é resposta legítima e muito melhor que inventar confirmação.
 
 B) MUNIÇÃO NOVA — o que o vídeo NÃO usou e deixaria a nossa versão mais forte que a dele:
-- dados contraintuitivos que desmintam o senso comum sobre o assunto, e o que EN­FRAQUECE a tese acima (contra-argumento com fonte é ouro: é o que permite um ângulo novo);
+- dados contraintuitivos que desmintam o senso comum sobre o assunto e REFORCEM a tese acima (é ela que vamos defender, melhor que o original);
+- o melhor contra-argumento contra a tese, com fonte: não para trocarmos de tese, mas para não sermos desmentidos — se a evidência realmente derruba a tese, diga isso com clareza, é informação crítica;
 - comparações em ESCALA HUMANA BRASILEIRA (R$, salários mínimos, tempo de trabalho, preço de coisas do cotidiano) que façam o número ser sentido, não só lido;
 - curiosidades e fatos que despertem emoção (injustiça, perda, ascensão), com fonte;
 - o que mudou sobre o assunto DEPOIS deste vídeo.
@@ -334,6 +335,40 @@ HIERARQUIA DE FONTES (mais forte primeiro): tier 1 (primárias/institucionais) $
 
 TRANSCRIÇÃO DO VÍDEO:
 ${adapt.transcricao.slice(0, 12000)}`;
+}
+
+// ── Premissa: os três blocos que a levam aos agentes ────────────────────────
+// Mora aqui, junto dos outros formatadores de bloco (clientInsightBlock, taughtBlock,
+// formatNarrativa...), porque este módulo está ABAIXO de draft.ts no grafo de imports e os dois
+// precisam do bloco. Em premissa.ts fecharia ciclo.
+
+// O bloco literal da premissa. Texto IDÊNTICO em todos os agentes de propósito: é o que garante
+// que ninguém receba uma paráfrase e siga uma tese ligeiramente diferente da dos outros.
+// A premissa é resolvida uma vez no topo do pipeline e congelada em vm_sessions.premissa.
+export function premissaBlock(ctx: GenerationContext): string {
+  const p = (ctx.premissa ?? "").trim();
+  if (!p) return "";
+  return `# PREMISSA (o fio condutor — INEGOCIÁVEL)
+${p}
+
+Esta é a afirmação que o vídeo defende, e tudo serve a ela: a abertura chama atenção PARA ela, o desenvolvimento a sustenta com prova, o fechamento entrega a CONSEQUÊNCIA dela. Não introduza tese concorrente e não a dilua em "por um lado, por outro". Fato que não serve a esta premissa fica fora, por interessante que seja.`;
+}
+
+// A pesquisa SERVE a premissa: ela busca o que confirma e enriquece uma tese específica, em vez
+// de varrer o tema no escuro. É por isso que o nó da premissa roda antes desta chamada.
+// `o_que_provaria` (quando a premissa foi derivada) é literalmente a pauta de busca.
+function premissaPautaBlock(ctx: GenerationContext): string {
+  const p = (ctx.premissa ?? "").trim();
+  if (!p) return "";
+  const provas = ctx.premissaProvas?.length
+    ? `\nEVIDÊNCIA QUE SUSTENTARIA A PREMISSA (é isto que você procura, prioridade máxima):\n${ctx.premissaProvas
+        .map((s) => `- ${s}`)
+        .join("\n")}`
+    : "";
+  const contra = ctx.premissaContraintuitivo
+    ? `\nCRENÇA DO SENSO COMUM QUE A PREMISSA CONTRARIA: ${ctx.premissaContraintuitivo}\nTraga dado que sustente a contrariedade, e também o melhor contra-argumento com fonte.`
+    : "";
+  return `\n\nPREMISSA DO VÍDEO (o dossiê existe para sustentar ESTA afirmação):\n${p}${provas}${contra}\nFato que não conversa com a premissa é ruído: não encha o dossiê com ele. Se a evidência CONTRARIA a premissa, diga isso explicitamente — é informação crítica, não fracasso da busca.`;
 }
 
 // ── 1. Pesquisador (Grok + busca em tempo real) ─────────────────────────────
@@ -349,7 +384,7 @@ export async function research(
     const res = await grokClient().responses.create({
       model: RESEARCH_MODEL,
       instructions: agentPrompt("pesquisador"),
-      input: `${adapt ? `${checagemBlock(adapt)}\n\n` : `TEMA DO VÍDEO: ${ctx.prompt}`}${
+      input: `${adapt ? `${checagemBlock(adapt)}\n\n` : `TEMA DO VÍDEO: ${ctx.prompt}`}${premissaPautaBlock(ctx)}${
         ctx.clientPrefs
           ? `\nCLIENTE: ${ctx.clientPrefs.nome}${ctx.clientPrefs.temas_preferidos.length ? ` (nicho: ${ctx.clientPrefs.temas_preferidos.join(", ")})` : ""}`
           : ""
@@ -376,7 +411,7 @@ export async function research(
 // ── 3. Storytelling (propõe narrativas candidatas) ──────────────────────────
 const NARRATIVAS_TOOL = {
   name: "registrar_narrativas",
-  description: "Registra as narrativas candidatas propostas para o tema.",
+  description: "Registra as narrativas candidatas que sustentam a premissa.",
   input_schema: {
     type: "object" as const,
     properties: {
@@ -384,21 +419,39 @@ const NARRATIVAS_TOOL = {
         type: "array",
         minItems: 2,
         maxItems: 3,
+        description:
+          "2 a 3 arquiteturas DIFERENTES para sustentar a MESMA premissa. O que varia entre elas é " +
+          "o caminho narrativo, nunca a tese: candidata que defende outra tese é inválida.",
         items: {
           type: "object",
           properties: {
             titulo: { type: "string" },
             estrutura: { type: "string", description: "código + nome no playbook, ex: 'A1. Jornada do Herói'" },
+            como_serve_a_premissa: {
+              type: "string",
+              description:
+                "1-2 frases: por que ESTA arquitetura é a melhor forma de fazer o espectador acreditar " +
+                "na premissa. Onde chama atenção para a tese, onde a prova, que consequência entrega.",
+            },
             personagem: { type: "string" },
             conflito: { type: "string" },
             mecanismo_emocional: { type: "string" },
-            beats: { type: "array", minItems: 5, maxItems: 7, items: { type: "string" } },
+            beats: {
+              type: "array",
+              minItems: 5,
+              maxItems: 7,
+              items: { type: "string" },
+              description:
+                "5 a 7 beats ancorados em fato do dossiê, na progressão atenção → desenvolvimento → " +
+                "consequência DA PREMISSA.",
+            },
             gancho_potencial: { type: "string" },
             porque_funciona: { type: "string" },
           },
           required: [
             "titulo",
             "estrutura",
+            "como_serve_a_premissa",
             "personagem",
             "conflito",
             "mecanismo_emocional",
@@ -416,9 +469,9 @@ const NARRATIVAS_TOOL = {
 export async function proposeNarratives(
   ctx: GenerationContext,
   dossie: string,
-  // Sem tema digitado: o "tema" é o do vídeo modelado e as candidatas são os ângulos NOVOS
-  // sobre ele. Vem da autópsia (compreensaoBlock) — o storytelling é quem propõe ângulo
-  // nesta casa, e aqui ele já tem o dossiê checado como lastro.
+  // Sem tema digitado: o assunto E a tese são os do vídeo modelado (a premissa já foi
+  // confirmada pelo usuário). As candidatas são arquiteturas diferentes para sustentar essa
+  // MESMA tese melhor que o original — não ângulos alternativos a ela.
   compreensao?: string
 ): Promise<NarrativaCandidata[]> {
   const refs = ctx.attachments
@@ -432,9 +485,9 @@ export async function proposeNarratives(
   const messages = [
     {
       role: "user" as const,
-      content: `${
+      content: `${premissaBlock(ctx)}${premissaBlock(ctx) ? "\n\n" : ""}${
         compreensao
-          ? `MODELAGEM DE VÍDEO SEM TEMA DIGITADO — a autópsia do vídeo de referência está abaixo. Vamos publicar sobre o MESMO assunto, mas cada candidata deve atacar por um ÂNGULO DIFERENTE do que o original usou: pergunta nova que ele não fez, mecanismo emocional distinto entre as candidatas. Copiar o ângulo do original é desclassificação. A recompensa entregue por ele é o piso, não o teto.\n\n${compreensao}`
+          ? `MODELAGEM DE VÍDEO SEM TEMA DIGITADO — a autópsia do vídeo de referência está abaixo. Vamos publicar sobre o MESMO assunto defendendo a MESMA TESE (a premissa acima saiu dela e foi confirmada pelo usuário), numa execução melhor. Cada candidata é um CAMINHO NARRATIVO diferente para sustentar essa tese, não uma tese alternativa: trocar o argumento é desclassificação. A recompensa emocional entregue pelo original é o piso, não o teto.\n\n${compreensao}`
           : `TEMA DO VÍDEO: ${ctx.prompt}`
       }
 
@@ -511,6 +564,15 @@ const RANKING_TOOL = {
           properties: {
             indice: { type: "number", description: "índice da candidata na lista recebida (0-based)" },
             score: { type: "number", description: "potencial viral 0-100" },
+            servico_a_premissa: {
+              type: "number",
+              description:
+                "0-100: quão bem ESTA arquitetura faz o espectador acreditar na premissa. Eixo " +
+                "SEPARADO do potencial viral: uma narrativa com histórico ótimo que sustenta mal a " +
+                "tese pontua alto em viral e baixo aqui. Avalie os três serviços — a abertura chama " +
+                "atenção PARA a premissa, o meio a prova, o fim entrega a consequência dela — e se os " +
+                "beats têm lastro no dossiê para isso.",
+            },
             justificativa: { type: "string" },
             evidencia: {
               type: "array",
@@ -520,7 +582,7 @@ const RANKING_TOOL = {
                 "até 3 dados concretos e curtos que pesaram no score, citando números dos insights (ex: 'estrutura A1: 12 usos, mediana 210k views (1.8x)', 'hook curiosidade: retenção 68% vs mediana 61%'). Omita se o score for heurístico.",
             },
           },
-          required: ["indice", "score", "justificativa"],
+          required: ["indice", "score", "servico_a_premissa", "justificativa"],
         },
       },
       orientacao_roteiro: { type: "string", description: "3-5 diretrizes concretas para o roteirista" },
@@ -575,6 +637,18 @@ Rankeie as candidatas e produza as orientações.`,
     orientacao_roteiro: String(input.orientacao_roteiro ?? ""),
     orientacao_hook: String(input.orientacao_hook ?? ""),
   };
+}
+
+// Premissa para o hook. Quando ela tem ângulo contraintuitivo, é ELA a matéria-prima natural do
+// hook: a promessa mais forte que existe é "o que você acredita sobre isso está errado". O hook
+// continua sendo desenhado sobre o corpo pronto, mas agora sabe qual afirmação está vendendo.
+function premissaHookBlock(ctx: GenerationContext): string {
+  const p = (ctx.premissa ?? "").trim();
+  if (!p) return "";
+  const contra = ctx.premissaContraintuitivo
+    ? `\nO SENSO COMUM QUE ELA CONTRARIA: ${ctx.premissaContraintuitivo}\nEste contraste é a fonte de hook mais forte disponível: pelo menos 1 candidato deve explorá-lo.`
+    : "";
+  return `PREMISSA DO VÍDEO (é ela que o hook precisa fazer o espectador querer ver defendida):\n${p}${contra}\nO hook abre curiosidade SOBRE a premissa. Não prometa assunto diferente do que o roteiro sustenta.\n\n`;
 }
 
 // ── 5. Hook (projetado sobre o roteiro pronto + narrativa + dados) ──────────
@@ -648,7 +722,7 @@ export async function designHook(
       messages: [
         {
           role: "user",
-          content: `NARRATIVA VENCEDORA:
+          content: `${premissaHookBlock(ctx)}NARRATIVA VENCEDORA:
 ${narrativaBloco}
 
 ORIENTAÇÃO DOS DADOS SOBRE HOOKS:

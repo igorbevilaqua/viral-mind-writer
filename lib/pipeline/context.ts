@@ -54,7 +54,7 @@ async function fetchFewShot(prompt: string, clientId: string | null) {
 export async function loadContext(sessionId: string): Promise<GenerationContext> {
   const { data: session, error } = await appDb
     .from("vm_sessions")
-    .select("id, user_id, prompt, client_id, artifacts")
+    .select("id, user_id, prompt, client_id, artifacts, premissa, premissa_origem")
     .eq("id", sessionId)
     .single();
   if (error || !session) throw new Error(`sessão não encontrada: ${error?.message}`);
@@ -62,7 +62,7 @@ export async function loadContext(sessionId: string): Promise<GenerationContext>
   const [attachments, playbooksRes, bannedRes, prefsRes, fewShot, lastRun] = await Promise.all([
     appDb.from("vm_attachments").select("id, kind, is_modelagem, url, raw_content").eq("session_id", sessionId),
     appDb.from("vm_playbooks").select("slug, content, version").eq("active", true),
-    appDb.from("vm_banned_phrases").select("pattern, label, severity").eq("active", true),
+    appDb.from("vm_banned_phrases").select("pattern, label, severity, motivo").eq("active", true),
     session.client_id
       ? appDb
           .from("vm_client_preferences")
@@ -135,6 +135,8 @@ export async function loadContext(sessionId: string): Promise<GenerationContext>
     sessionId,
     userId: session.user_id ?? null,
     prompt: session.prompt,
+    premissa: (session.premissa ?? "").trim(),
+    premissaOrigem: (session.premissa_origem ?? null) as GenerationContext["premissaOrigem"],
     clientId: session.client_id,
     clientPrefs,
     playbooks,

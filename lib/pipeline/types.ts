@@ -4,6 +4,7 @@ export type PipelineEvent =
   | {
       type: "phase";
       phase:
+        | "premissa"
         | "pesquisa"
         | "modelagem"
         | "narrativas"
@@ -14,6 +15,9 @@ export type PipelineEvent =
         | "salvando";
     }
   | { type: "narrativas"; candidatas: NarrativaCandidata[]; ranking: RankingItem[]; escolhida: number }
+  // Modo modelagem: a autópsia extraiu a tese do original e o pipeline PAROU aqui. O usuário
+  // confirma/edita e o run 2 segue reusando os artifacts. Ver runPipeline.
+  | { type: "premissa_pendente"; sugerida: string }
   | { type: "token"; text: string }
   | { type: "done"; scriptId: string }
   | { type: "error"; message: string };
@@ -21,6 +25,9 @@ export type PipelineEvent =
 export interface NarrativaCandidata {
   titulo: string;
   estrutura: string; // código + nome no playbook, ex: "A1. Jornada do Herói"
+  // Por que esta arquitetura sustenta a premissa. Todas as candidatas defendem a MESMA tese —
+  // o que varia é o caminho. Opcional: sessões geradas antes da Etapa B não têm.
+  como_serve_a_premissa?: string;
   personagem: string;
   conflito: string;
   mecanismo_emocional: string;
@@ -31,7 +38,10 @@ export interface NarrativaCandidata {
 
 export interface RankingItem {
   indice: number; // posição na lista de candidatas
-  score: number; // 0-100
+  score: number; // 0-100 — potencial viral (views)
+  // 0-100 — quão bem a arquitetura sustenta a premissa. Eixo separado do viral, e usado como
+  // RESTRIÇÃO na escolha da vencedora, não como desempate. Opcional: rankings pré-Etapa C não têm.
+  servico_a_premissa?: number;
   justificativa: string;
   // WP-F.1: até 3 dados concretos que pesaram no score (opcional — sessões antigas não têm)
   evidencia?: string[];
@@ -45,6 +55,12 @@ export interface SessionArtifacts {
   escolhida: number; // índice em candidatas
   orientacao_roteiro: string;
   orientacao_hook: string;
+  // Tese extraída da modelagem aguardando confirmação do usuário (run 1 do modo modelagem).
+  // Confirmada, vira vm_sessions.premissa e este campo deixa de importar.
+  premissa_sugerida?: string;
+  // O que a premissa precisa provar → pauta de busca do pesquisador (derivePremissa).
+  premissa_provas?: string[];
+  premissa_contraintuitivo?: string | null;
 }
 
 // Saída da autópsia do vídeo (vm_modelagem_analyses.analysis), em duas metades com
@@ -107,6 +123,10 @@ export interface BannedPhrase {
   pattern: string;
   label: string | null;
   severity: "block" | "warn";
+  // Por que a regra existe (migration 0023). Vai ao prompt junto da regra: sem o motivo o
+  // modelo não estende a proibição para variantes não cadastradas — foi assim que
+  // "não são X. Aquilo é Y" escapou de uma banlist que já tinha "não é X, é Y".
+  motivo?: string | null;
 }
 
 // Payload dos insights por cliente materializados pelo ETL (insight_type client_*)
@@ -128,6 +148,14 @@ export interface GenerationContext {
   sessionId: string;
   userId: string | null; // vm_sessions.user_id — dono da sessão (telemetria do hub)
   prompt: string;
+  // A tese que o vídeo defende. Resolvida no topo do pipeline e congelada: todo agente recebe
+  // esta MESMA string via premissaBlock(). Vazia só antes da resolução.
+  premissa: string;
+  premissaOrigem: "digitada" | "modelagem" | "derivada" | null;
+  // Só existem quando a premissa foi DERIVADA (o nó devolve os dois junto com a tese):
+  // as provas viram a pauta de busca do pesquisador, o contraintuitivo alimenta o hook.
+  premissaProvas?: string[];
+  premissaContraintuitivo?: string | null;
   clientId: string | null;
   clientPrefs: ClientPrefs | null;
   playbooks: Record<string, string>; // slug -> markdown

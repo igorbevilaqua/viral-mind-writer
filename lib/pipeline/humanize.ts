@@ -80,7 +80,14 @@ export async function humanize(
         messages: [
           {
             role: "user",
-            content: `Um roteiro já humanizado ainda viola regras de estilo APENAS nos trechos abaixo. Para cada item, reescreva SÓ o texto marcado como [TRECHO: …], mantendo o sentido, a voz e extensão parecida, sem violar nenhuma regra — a substituição precisa encaixar exatamente no lugar do trecho. NÃO reescreva o roteiro. Responda EXATAMENTE uma linha por item, no formato "N. <texto substituto>", e nada mais.\n\n${lista}`,
+            content: `Um roteiro já humanizado ainda viola regras de estilo APENAS nos trechos abaixo. Para cada item, reescreva SÓ o texto marcado como [TRECHO: …].
+
+REGRA CENTRAL: elimine a CONSTRUÇÃO, não a palavra. Trocar sinônimo, pontuação ou número mantendo a mesma forma NÃO resolve — a forma é o problema. Reescreva a frase por inteiro:
+- negação seguida de assertiva ("não é X, é Y" / "não são X. Aquilo é Y") → afirme direto o que É, sem passar pela negação.
+- pergunta curta usada como transição ("O resultado?") → diga a transição falando: "E adivinha o que aconteceu depois", "E a consequência disso ninguém esperava".
+- itens justapostos por vírgula ("carros na rua, garotos jogando bola") → amarre com conectivo e verbo: "de um lado você vê X, de outro Y, mas se der bobeira Z".
+
+O roteiro é LIDO EM VOZ ALTA: se a frase só funciona porque o olho reconstrói o que falta, ela está errada. A substituição PODE e costuma ficar mais longa que o trecho original — subordinar custa palavras, e isso é esperado, não um problema. Mantenha o sentido e a voz. NÃO reescreva o resto do roteiro. Responda EXATAMENTE uma linha por item, no formato "N. <texto substituto>", e nada mais.\n\n${lista}`,
           },
         ],
       },

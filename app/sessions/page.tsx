@@ -22,6 +22,13 @@ const STATUS: Record<string, { label: string; cls: string; rowCls: string }> = {
     cls: "text-white/45",
     rowCls: "border-white/[.08] bg-white/[.02]",
   },
+  // Modelagem: tese extraída do original, esperando confirmação humana antes de escrever.
+  // É ação pendente do usuário, então destaca como a geração destaca.
+  aguardando_premissa: {
+    label: "Confirmar premissa",
+    cls: "text-gold",
+    rowCls: "border-gold/30 bg-gold/[.04]",
+  },
   error: {
     label: "Erro",
     cls: "text-red-300",
@@ -51,6 +58,15 @@ const STATUS_FILTERS: { key: string; label: string }[] = [
 
 function StatusIcon({ status }: { status: string }) {
   if (status === "generating") return <span className="w-1.5 h-1.5 rounded-full bg-gold vm-pulse" />;
+  // Modo modelagem: a tese do original foi extraída e o pipeline espera confirmação humana.
+  // Sem ícone próprio a sessão parecia rascunho abandonado na lista.
+  if (status === "aguardando_premissa")
+    return (
+      <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+        <circle cx="8" cy="8" r="6" stroke="currentColor" strokeWidth="1.3" />
+        <path d="M8 5.5v3M8 10.8v.1" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+      </svg>
+    );
   if (status === "done")
     return (
       <svg width="12" height="12" viewBox="0 0 16 16" fill="none">

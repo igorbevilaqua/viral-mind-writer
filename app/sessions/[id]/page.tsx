@@ -20,7 +20,9 @@ export default async function SessionPage({
   const { isAdmin, userId } = await writerScope();
   const { data: session } = await appDb
     .from("vm_sessions")
-    .select("id, prompt, status, error_message, artifacts, generation_started_at, created_at, client_id, user_id, clientes(nome)")
+    .select(
+      "id, prompt, premissa, premissa_origem, status, error_message, artifacts, generation_started_at, created_at, client_id, user_id, clientes(nome)"
+    )
     .eq("id", id)
     .maybeSingle();
   if (!session) notFound();
@@ -97,6 +99,8 @@ export default async function SessionPage({
       session={{
         id: session.id,
         prompt: session.prompt,
+        premissa: session.premissa ?? null,
+        premissa_origem: session.premissa_origem ?? null,
         status: session.status,
         error_message: session.error_message,
         clientNome: client?.nome ?? null,

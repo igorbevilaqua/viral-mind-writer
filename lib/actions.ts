@@ -20,13 +20,23 @@ export interface NewAttachment {
 
 export async function createSession(input: {
   prompt: string;
+  premissa?: string;
   clientId: string | null;
   attachments: NewAttachment[];
 }): Promise<string> {
   const userId = await currentUserId();
+  // Premissa digitada é adotada VERBATIM (origem 'digitada'): o nó de derivação nem roda, então
+  // nenhum modelo reescreve a tese do usuário. Vazia → o pipeline resolve (modelagem ou derivação).
+  const premissa = input.premissa?.trim() || null;
   const { data: session, error } = await appDb
     .from("vm_sessions")
-    .insert({ prompt: input.prompt, client_id: input.clientId, user_id: userId })
+    .insert({
+      prompt: input.prompt,
+      premissa,
+      premissa_origem: premissa ? "digitada" : null,
+      client_id: input.clientId,
+      user_id: userId,
+    })
     .select("id")
     .single();
   if (error) throw new Error(error.message);
@@ -375,6 +385,48 @@ export async function reportarProblema(
 
 // "Chame o Bob": a sala gera uma sugestão de substituição para o trecho selecionado.
 // Não persiste nada — o usuário revisa/edita e só então aceita (via updateScript).
+// Confirma a premissa extraída do vídeo modelado (status 'aguardando_premissa' → 'draft').
+// É a única pausa interativa do pipeline, e ela existe sem motor de pause/resume: o run 1
+// gravou a sugestão em artifacts e parou; este action grava a tese confirmada e devolve o
+// controle, e o cliente dispara o run 2, que reusa os artifacts como qualquer regeneração.
+export async function confirmarPremissa(sessionId: string, premissa: string) {
+  const texto = premissa.trim();
+  if (!texto) throw new Error("a premissa não pode ficar vazia — nenhum roteiro é gerado sem ela");
+  const { error } = await appDb
+    .from("vm_sessions")
+    .update({
+      premissa: dedash(texto),
+      // Editada na confirmação ou aceita como veio, o usuário é o autor final da tese.
+      premissa_origem: "modelagem",
+      status: "draft",
+      error_message: null,
+    })
+    .eq("id", sessionId);
+  if (error) throw new Error(error.message);
+  revalidatePath(`/sessions/${sessionId}`);
+}
+
+// Corrige a premissa de uma sessão já gerada. Muda a tese → a narrativa precisa ser refeita,
+// então limpa as candidatas cacheadas: manter narrativa antiga sob tese nova é o defeito que
+// a Etapa B existe pra impedir.
+export async function updatePremissa(sessionId: string, premissa: string) {
+  const texto = premissa.trim();
+  if (!texto) throw new Error("a premissa não pode ficar vazia");
+  const { data: s } = await appDb.from("vm_sessions").select("artifacts").eq("id", sessionId).single();
+  const artifacts = (s?.artifacts ?? null) as Record<string, unknown> | null;
+  const { error } = await appDb
+    .from("vm_sessions")
+    .update({
+      premissa: dedash(texto),
+      premissa_origem: "digitada",
+      // preserva o dossiê (a pesquisa continua útil), descarta narrativas e ranking
+      artifacts: artifacts ? { dossie: artifacts.dossie ?? "" } : null,
+    })
+    .eq("id", sessionId);
+  if (error) throw new Error(error.message);
+  revalidatePath(`/sessions/${sessionId}`);
+}
+
 // Atribui/corrige o cliente de uma sessão já criada (resgata sessão criada sem cliente).
 export async function updateSessionClient(sessionId: string, clientId: string | null) {
   const { error } = await appDb.from("vm_sessions").update({ client_id: clientId }).eq("id", sessionId);

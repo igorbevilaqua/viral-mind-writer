@@ -33,8 +33,139 @@ export function slopLint(text: string, phrases: BannedPhrase[]): LintViolation[]
     violations.push({ label: "frases consecutivas começando com 'E'", match: consecutiveE[0].slice(0, 60), severity: "warn" });
   }
 
+  // EIXO DA ELIPSE (ver comentário em ELLIPSIS_FIGURES): três figuras que omitem
+  // material gramatical que um falante seria obrigado a pronunciar. São de FORMA, não de
+  // frase — por isso vivem em código e não na banlist do banco (que é por string).
+  for (const fig of ELLIPSIS_FIGURES) {
+    for (const match of fig.find(text)) {
+      violations.push({ label: fig.label, match, severity: "block" });
+    }
+  }
+
   return violations;
 }
+
+// ── Eixo da elipse ─────────────────────────────────────────────────────────────
+// O roteiro é LIDO EM VOZ ALTA. Estas três construções são compressão TIPOGRÁFICA:
+// legítimas no texto escrito, porque o olho reconstrói o que falta; impossíveis na fala,
+// porque a boca não tem o que dizer. Cada uma omite uma peça diferente:
+//   antítese          → omite o MOTIVO      (afirma uma relação sem argumentá-la)
+//   pergunta elíptica → omite a ORAÇÃO      (o "?" carrega o trabalho)
+//   parataxe          → omite o CONECTIVO   (a vírgula carrega a relação)
+// Detectar por regex de FRASE (banlist do banco) não resolve: o modelo muta a superfície
+// até a regex parar de casar e preserva a figura — foi assim que
+// "não são um ataque de raiva. Aquilo é um plano" passou com lint zerado.
+
+// `\b` do JS é ASCII: depois de "é" ou "não" ele NUNCA casa (letra acentuada não é \w),
+// e foi por aí que a primeira versão deste detector não pegou nada. Fim-de-palavra aqui é
+// "não vem outra letra em seguida".
+const FIM = "(?![a-zà-úA-ZÀ-Ú])";
+// Verbos de ligação/estado nas duas metades da antítese.
+const COPULA = "é|são|sao|foi|era|eram|está|esta|estão|estao|significa";
+// Primeira metade: a negação. Inclui as perífrases que fazem o mesmo trabalho.
+const NEG = `n[ãa]o\\s+(?:${COPULA}|se\\s+trata|passa\\s+de)${FIM}`;
+// Segunda metade: a assertiva. O pronome interposto ("… . Aquilo é …") é a evasão mais
+// comum do detector ingênuo, então entra explicitamente como opcional.
+const ASSERT = `(?:(?:e|mas)\\s+sim${FIM}|(?:(?:isso|aquilo|isto|ele|ela|eles|elas)\\s+)?(?:${COPULA})${FIM})`;
+// Separador: vírgula/ponto-e-vírgula/dois-pontos OU fim de frase. Aceitar o ponto é o que
+// pega a fuga por pontuação ("não é presidente nenhum. É a gente").
+const SEP = `(?:[,;:]\\s*|\\.\\s+)`;
+// Quantificador lazy: casa o separador MAIS PRÓXIMO, que é a figura mais apertada.
+const ANTITESE = new RegExp(`${NEG}[^.!?;:]{1,70}?${SEP}${ASSERT}`, "gi");
+
+// Aberturas legítimas de pergunta curta. Três famílias, todas implicando um verbo na frase:
+// interrogativo ("Onde elas caçam?"), sujeito explícito ("Você consegue entender a revolta?")
+// e verbo que endereça o espectador ("Sabe o que aconteceu?"). Fora disso, pergunta curta é
+// pivô NOMINAL — "O desfecho disso?", "Resultado?", "O problema?" — e é o que acusamos.
+// `FIM` no lugar de `\b` pelo mesmo motivo da antítese: "você", "alguém" e "será" terminam em
+// letra acentuada, e `\b` do JS é ASCII — com `\b` a lista inteira falhava silenciosamente.
+const PERGUNTA_LEGITIMA = new RegExp(
+  `^(?:e\\s+)?(?:como|onde|quando|quem|qual|quais|quanto|quantos|quanta|quantas|por\\s?que|porqu[êe]|o\\s+que|cad[êe]|ser[áa]|voc[êe]s?|tu|a\\s+gente|ele|ela|eles|elas|isso|algu[ée]m|ningu[ée]m|nada|tudo|sabe|sabia|adivinha|imagina|lembra|viu|percebe|repara|acredita|consegue|d[áa]|faz|tem)${FIM}`,
+  "i"
+);
+
+// Conectivos que tornam a relação entre itens DITA em vez de implícita na vírgula.
+// A presença de qualquer um deles num trecho enumerado é o que separa a versão ruim
+// ("carros na rua, garotos jogando bola, bandidos circulando") da boa
+// ("de um lado você vê carros na rua, de outro garoto jogando bola, mas se der bobeira…").
+const CONECTIVOS =
+  /\b(?:que|porque|mas|então|quando|onde|enquanto|embora|apesar|se|por\s?isso|já\s+que|de\s+um\s+lado|por\s+outro|de\s+outro|ou\s+seja|inclusive|sendo\s+que|de\s+modo\s+que|assim\s+como|ao\s+passo\s+que|logo|portanto|até\s+que|sem\s+que|em\s+vez\s+de|tipo|al[ée]m\s+de|junto\s+com|depois\s+de|antes\s+de|gra[çc]as\s+a)\b/i;
+
+// Segmento curto o bastante pra ser um item de lista, não uma oração desenvolvida.
+const SEG_MAX = 35;
+const MIN_ITENS = 3;
+// Teto da frase acusada por parataxe: acima disso o trecho substituído literalmente ficaria
+// grande demais pra o passe cirúrgico devolver uma linha só com segurança.
+const FRASE_MAX = 240;
+
+// Item que caracteriza parataxe: sintagma DESCRITIVO curto — 2+ palavras, alguma em minúscula
+// ("carros na rua", "garotos jogando bola", "bandidos circulando"). Enumeração de nomes
+// próprios ("Argentina, El Salvador, Equador") ou de palavras soltas ("presidente, vice,
+// ministros") é lista legítima e fala natural — não é o defeito, e acusá-la mandaria o
+// reescritor destruir uma lista correta.
+function ehFragmentoSolto(item: string): boolean {
+  const limpo = item.replace(/[.!?]+$/, "").trim();
+  if (limpo.length > SEG_MAX) return false;
+  const palavras = limpo.split(/\s+/);
+  if (palavras.length < 2) return false;
+  return palavras.some((p) => /^[a-zà-ú]/.test(p));
+}
+
+interface EllipsisFigure {
+  label: string;
+  find: (text: string) => string[];
+}
+
+const ELLIPSIS_FIGURES: EllipsisFigure[] = [
+  {
+    label: "antítese (negação seguida de assertiva) — afirme direto o que É",
+    find: (text) => (text.match(ANTITESE) ?? []).map((m) => m.trim()),
+  },
+  {
+    label: "pergunta elíptica usada como transição — diga a transição falando",
+    find: (text) => {
+      const out: string[] = [];
+      // Pergunta que começa depois de fim de frase (ou do início do texto), até o "?".
+      for (const m of text.matchAll(/(?:^|[.!?]\s+|\n)([A-ZÀ-Ú][^.!?\n]{0,40}\?)/g)) {
+        const q = m[1].trim();
+        const palavras = q.replace(/\?$/, "").trim().split(/\s+/).length;
+        if (palavras <= 5 && !PERGUNTA_LEGITIMA.test(q)) out.push(q);
+      }
+      return out;
+    },
+  },
+  {
+    label: "enumeração paratática (itens justapostos por vírgula) — amarre com conectivo e verbo",
+    find: (text) => {
+      const out: string[] = [];
+      // Uma frase por vez: a parataxe é um fenômeno intra-frase.
+      for (const frase of text.split(/(?<=[.!?])\s+|\n+/)) {
+        // A seção FONTES é uma lista de citações ("Veículo, 12/03/2026, https://…") — vírgulas
+        // demais por natureza, e mandar uma fonte pro reescritor mutilaria a referência.
+        // Header markdown também não é prosa.
+        if (/https?:\/\/|\d{1,2}\/\d{1,2}\/\d{2,4}|^#{1,3}\s/.test(frase)) continue;
+        const partes = frase.split(/\s*[,;]\s*/);
+        if (partes.length < MIN_ITENS + 1) continue; // 1ª parte é a matriz, não item
+        // Corrida de itens soltos: começa na 2ª parte (a 1ª carrega o sujeito/verbo).
+        const itens = partes.slice(1).filter((p) => p.length > 0);
+        if (itens.length < MIN_ITENS) continue;
+        if (itens.filter(ehFragmentoSolto).length < MIN_ITENS) continue;
+        // ponytail: heurística de precisão — só acusa se NENHUM conectivo aparece na frase
+        // inteira. Um "que"/"mas"/"de outro" já significa que a relação foi dita, e a frase
+        // sai da mira mesmo que seja longa. Se um dia escapar parataxe COM conectivo
+        // decorativo, o passo seguinte é exigir conectivo por item, não no total.
+        if (CONECTIVOS.test(frase)) continue;
+        const alvo = frase.trim();
+        // O `match` é substituído LITERALMENTE pelo passe cirúrgico (humanize.ts), então
+        // precisa ser a frase inteira: devolver um prefixo truncado trocaria o começo e
+        // deixaria a cauda órfã. Frase absurdamente longa (sem pontuação) sai da mira.
+        if (alvo.length > FRASE_MAX) continue;
+        out.push(alvo);
+      }
+      return out;
+    },
+  },
+];
 
 export const blockCount = (v: LintViolation[]) => v.filter((x) => x.severity === "block").length;
 
