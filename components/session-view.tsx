@@ -67,6 +67,14 @@ const PHASE_SHORT: Record<string, string> = {
   salvando: "Salvando",
 };
 
+// Modelagem por roteiro colado não tem link nenhum (o conteúdo está em raw_content), então a
+// linha "Modelado de" precisa dizer de onde veio sem prometer um link que não existe.
+const MODELAGEM_SEM_LINK: Record<string, string> = {
+  reference_script: "roteiro de referência colado no formulário",
+  video_link: "vídeo sem link (transcrição colada)",
+  document: "documento enviado",
+};
+
 const PHASE_LABELS: Record<string, string> = {
   premissa: "Editor-chefe definindo a premissa: qual é a tese que este vídeo vai defender...",
   pesquisa: "Agente pesquisador vasculhando a web e o X em tempo real, conferindo cada alegação do vídeo...",
@@ -1547,6 +1555,7 @@ export default function SessionView({
   baseline,
   lastRating,
   analyses,
+  modelagens,
   artifacts,
   autoStart,
   generationStale,
@@ -1567,6 +1576,8 @@ export default function SessionView({
   baseline: Baseline | null;
   lastRating: Record<string, number>;
   analyses: { analysis: unknown; replication_brief: string }[];
+  // Anexos marcados como modelagem: a origem do conteúdo que este roteiro está superando.
+  modelagens: { kind: string; url: string | null }[];
   artifacts: SessionArtifacts | null;
   autoStart: boolean;
   generationStale: boolean;
@@ -1736,6 +1747,33 @@ export default function SessionView({
           )}
         </div>
       </div>
+
+      {/* origem da modelagem: de onde veio o conteúdo que esta versão está superando */}
+      {modelagens.length > 0 && (
+        <div className="rounded-[14px] border border-amber-500/25 bg-amber-500/[.04] px-4 py-3">
+          <div className="flex items-baseline gap-2 flex-wrap">
+            <span className="text-[12px] text-amber-300/90 font-medium shrink-0">Modelado de:</span>
+            <div className="flex flex-col gap-1 min-w-0">
+              {modelagens.map((m, i) => (
+                <div key={i} className="text-[12.5px] min-w-0">
+                  {m.url ? (
+                    <a
+                      href={m.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-white/70 underline decoration-white/25 hover:text-white break-all"
+                    >
+                      {m.url}
+                    </a>
+                  ) : (
+                    <span className="text-white/45">{MODELAGEM_SEM_LINK[m.kind] ?? "material colado no formulário"}</span>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* modelagem */}
       {analyses.length > 0 && (

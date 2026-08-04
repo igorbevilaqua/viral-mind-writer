@@ -29,7 +29,7 @@ export default async function SessionPage({
   // Usuário comum só abre as próprias sessões; adm abre qualquer uma. notFound() não vaza existência.
   if (!isAdmin && session.user_id !== userId) notFound();
 
-  const [{ data: scripts }, { data: analyses }, { data: clients }] = await Promise.all([
+  const [{ data: scripts }, { data: analyses }, { data: clients }, { data: modelagens }] = await Promise.all([
     appDb
       .from("vm_generated_scripts")
       .select(
@@ -42,6 +42,10 @@ export default async function SessionPage({
       .select("analysis, replication_brief, vm_attachments!inner(session_id)")
       .eq("vm_attachments.session_id", id),
     appDb.from("clientes").select("id, nome").eq("ativo", true).order("nome"),
+    // Origem da modelagem. Vem de vm_attachments e não do join de vm_modelagem_analyses porque
+    // o anexo existe desde a criação da sessão: a linha "Modelado de" aparece antes da autópsia
+    // rodar, e continua aparecendo se ela falhar.
+    appDb.from("vm_attachments").select("kind, url").eq("session_id", id).eq("is_modelagem", true),
   ]);
 
   const scriptIds = (scripts ?? []).map((s) => s.id);
@@ -113,6 +117,7 @@ export default async function SessionPage({
       baseline={baseline}
       lastRating={lastRating}
       analyses={(analyses ?? []).map((a) => ({ analysis: a.analysis, replication_brief: a.replication_brief }))}
+      modelagens={modelagens ?? []}
       artifacts={session.artifacts ?? null}
       autoStart={start === "1" && session.status === "draft"}
     />
