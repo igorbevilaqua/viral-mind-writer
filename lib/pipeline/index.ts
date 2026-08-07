@@ -216,7 +216,9 @@ export async function runPipeline(
     }
 
     // Regeneração (artifacts cacheados) pula a pesquisa mas o roteirista ainda usa os briefs.
-    ctx.modelagemBriefs = (await modelagemP).map((r) => r.brief).filter(Boolean);
+    const modelagens_ = await modelagemP;
+    ctx.modelagemBriefs = modelagens_.map((r) => r.brief).filter(Boolean);
+    ctx.modelagemHooks = modelagens_.map((r) => r.analysis?.esqueleto?.hook).filter(Boolean);
 
     if (artifacts) {
       // Override do usuário: troca a narrativa vencedora e reescreve a partir daqui

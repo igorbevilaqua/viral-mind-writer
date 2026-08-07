@@ -14,7 +14,8 @@ import type {
 } from "./types";
 import { deepDedash } from "./slop-lint";
 import fontesAutoritativas from "./fontes-autoritativas.json";
-import { HOOK_MECHANISMS, HOOK_FORMATS, selectHook, type HookCandidate } from "./hook-mechanisms";
+import { HOOK_MECHANISMS, HOOK_FORMATS, filtrarCandidatos, selectHook, type HookCandidate } from "./hook-mechanisms";
+import { clientPrefsBlock } from "./draft";
 
 // Os prompts dos agentes vivem em agents/*.md — fonte única consumida pelo app e pela skill /goal.
 const promptCache = new Map<string, string>();
@@ -651,6 +652,26 @@ function premissaHookBlock(ctx: GenerationContext): string {
   return `PREMISSA DO VÍDEO (é ela que o hook precisa fazer o espectador querer ver defendida):\n${p}${contra}\nO hook abre curiosidade SOBRE a premissa. Não prometa assunto diferente do que o roteiro sustenta.\n\n`;
 }
 
+// Hook do vídeo modelado. Antes só atravessava dentro do brief, e o brief só chega ao hook no
+// modo adaptação (linha do narrativaBloco abaixo) — com narrativa vencedora, a autópsia da
+// abertura era jogada fora. O que se replica é o FATOR de curiosidade, nunca o texto dele.
+function modelagemHookBlock(ctx: GenerationContext): string {
+  const hooks = (ctx.modelagemHooks ?? []).filter((h) => h?.fator_de_curiosidade || h?.funcao);
+  if (!hooks.length) return "";
+  const linhas = hooks
+    .map((h) =>
+      [
+        h!.tipo && `Mecanismo: ${h!.tipo}`,
+        h!.fator_de_curiosidade && `Fator: ${h!.fator_de_curiosidade}`,
+        h!.funcao && `Função da abertura: ${h!.funcao}`,
+      ]
+        .filter(Boolean)
+        .join(" | ")
+    )
+    .join("\n");
+  return `\nHOOK DO VÍDEO MODELADO (o que fez a curiosidade nascer — replique o FATOR sobre o NOSSO assunto, nunca o texto):\n${linhas}\nPelo menos 1 candidato deve reabrir essa mesma lacuna.\n`;
+}
+
 // ── 5. Hook (projetado sobre o roteiro pronto + narrativa + dados) ──────────
 // Fase 3: em vez de 1 hook final, o modelo devolve N CANDIDATOS rotulados por mecanismo
 // (taxonomia canônica) e formato. A seleção do principal + 3 variantes acontece em CÓDIGO
@@ -664,13 +685,15 @@ const HOOK_TOOL = {
     properties: {
       candidatos: {
         type: "array",
-        minItems: 4,
+        // 5 e não 4: filtrarCandidatos descarta os reprovados nos critérios de eliminação, e
+        // a seleção precisa de 4 sobreviventes (1 principal + 3 variantes). O 5º é a folga.
+        minItems: 5,
         maxItems: 6,
-        description: "4 a 6 candidatos a hook, cobrindo mecanismos DISTINTOS entre si.",
+        description: "5 a 6 candidatos a hook, cobrindo mecanismos DISTINTOS entre si.",
         items: {
           type: "object",
           properties: {
-            hook: { type: "string", description: "1 a 3 períodos, falado, emenda na 1ª frase do corpo" },
+            hook: { type: "string", description: "2 a 4 frases faladas (a maioria com DUAS), emenda na 1ª frase do corpo" },
             mecanismo: { type: "string", enum: HOOK_MECHANISMS as unknown as string[], description: "o mecanismo de curiosidade dominante deste hook" },
             formato: { type: "string", enum: HOOK_FORMATS as unknown as string[], description: "'Personagem Central' se gira em torno de uma pessoa; 'Visual' se depende do que se vê; senão 'Nenhum'" },
             racional: { type: "string", description: "1 frase: por que este mecanismo vence para esta narrativa" },
@@ -697,6 +720,8 @@ export async function designHook(
   const resultadosHook = scriptResultBlock(ctx, "hook");
   const rankingMecanismos = hookMechanismBlock(ctx);
   const preferencias = hookPreferenceBlock(ctx);
+  // O hook era o ÚNICO agente da sala cego às proibições e ao tom de voz do cliente.
+  const prefsCliente = clientPrefsBlock(ctx);
 
   const res = await trackedCreate(
     ctx.usageLog,
@@ -722,9 +747,9 @@ export async function designHook(
       messages: [
         {
           role: "user",
-          content: `${premissaHookBlock(ctx)}NARRATIVA VENCEDORA:
+          content: `${prefsCliente ? `${prefsCliente}\n\n` : ""}${premissaHookBlock(ctx)}NARRATIVA VENCEDORA:
 ${narrativaBloco}
-
+${modelagemHookBlock(ctx)}
 ORIENTAÇÃO DOS DADOS SOBRE HOOKS:
 ${orientacaoHook}
 ${rankingMecanismos ? `\n${rankingMecanismos}` : ""}${preferencias ? `\n${preferencias}` : ""}${hookCampeoes ? `\nHOOKS CAMPEÕES DESTE CLIENTE (literais — a primeira frase real dos vídeos de mais views; use como referência de registro, nunca copie):\n${hookCampeoes}` : ""}${resultadosHook ? `\nHOOKS DE ROTEIROS DESTA SALA JÁ PUBLICADOS (resultado real — evite o marcado como EVITE):\n${resultadosHook}` : ""}${clientInsightBlock(ctx, ["hook"]) ? `\nHOOKS QUE JÁ FUNCIONARAM PARA ESTE CLIENTE (pré-rankeados por performance+recência):\n${clientInsightBlock(ctx, ["hook"])}` : ""}${taughtBlock(ctx, ["hook"]) ? `\nAPRENDIZADOS DE HOOK ENSINADOS PELO TIME (curadoria humana — prevalecem sobre padrões do corpus em conflito):\n${taughtBlock(ctx, ["hook"])}` : ""}
@@ -732,18 +757,29 @@ ${rankingMecanismos ? `\n${rankingMecanismos}` : ""}${preferencias ? `\n${prefer
 CORPO DO ROTEIRO (o hook precisa emendar na primeira frase e ser pago pelo final):
 ${corpo}
 
-Gere de 4 a 6 candidatos a hook, cada um com um MECANISMO DISTINTO da taxonomia, rotulando mecanismo e formato. Priorize os mecanismos do topo do ranking. A seleção do principal e das variantes é feita depois pelos dados.`,
+Gere de 5 a 6 candidatos a hook, cada um com um MECANISMO DISTINTO da taxonomia, rotulando mecanismo e formato. Priorize os mecanismos do topo do ranking. Antes de registrar cada um, passe pelo self-check de 3 testes (curiosidade, impacto, simplicidade) e reescreva o que reprovar. A seleção do principal e das variantes é feita depois pelos dados.`,
         },
       ],
     },
-    // hook escolhe entre padrões já dados no contexto — medium basta, high só encarecia
-    "medium"
+    // subiu de medium: o agente deixou de só escolher entre padrões dados e passou a JULGAR
+    // cada candidato no self-check de 3 testes. É a fase de maior alavancagem do pipeline.
+    "high"
   );
 
   const toolUse = res.content.find((b) => b.type === "tool_use");
   if (!toolUse || toolUse.type !== "tool_use") throw new Error("hook: sem saída estruturada");
-  const candidatos = toolArray<HookCandidate>(toolInput(toolUse), "candidatos").filter((c) => c?.hook?.trim());
-  if (!candidatos.length) throw new Error("hook: nenhum candidato válido");
+  const brutos = toolArray<HookCandidate>(toolInput(toolUse), "candidatos").filter((c) => c?.hook?.trim());
+  if (!brutos.length) throw new Error("hook: nenhum candidato válido");
+
+  // critérios de eliminação em código, ANTES da seleção: sem isso um candidato reprovado
+  // (saudação genérica, travessão, 6 frases) vira o hook principal só por ter o mecanismo
+  // mais bem ranqueado. Fail-soft: nunca esvazia a lista.
+  const { candidatos, descartados } = filtrarCandidatos(brutos);
+  if (descartados.length)
+    console.warn(
+      `hook: ${descartados.length} candidato(s) reprovados nos critérios de eliminação — ` +
+        descartados.map((d) => `"${d.hook.slice(0, 60)}" (${d.motivos.join(", ")})`).join(" | ")
+    );
 
   // seleção guiada pelos dados: share do mecanismo no ranking de vencedores (cliente > global)
   const rank = hookMechanismRanking(ctx);

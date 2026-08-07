@@ -9,7 +9,7 @@ export const OUTPUT_FORMAT = `Responda EXATAMENTE neste formato (headers literai
 (texto de tela exibido no início do vídeo, MÁXIMO 9 palavras, caixa alta, gera curiosidade lida isolada — não é o primeiro parágrafo do roteiro)
 
 ## HOOK
-(o hook falado, 1-3 períodos, seguindo pelo menos 1 MGC)
+(o hook falado, 2 a 4 frases (a maioria com duas), seguindo pelo menos 1 MGC)
 
 ## ROTEIRO
 (o roteiro falado do início ao fim, começando com o hook — mas SEM o comando/CTA final: ele vai APENAS na seção COMANDO, nunca repetido aqui)

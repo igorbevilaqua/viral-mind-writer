@@ -30,6 +30,8 @@ export function composeBrief(a: ModelagemAnalysis, resumoMetricas = ""): string 
   const header = [
     `ESTRUTURA-BASE: ${e.estrutura_narrativa}`,
     `HOOK: ${e.hook.tipo}${e.hook.mecanismo ? ` (${e.hook.mecanismo})` : ""}`,
+    // o FATOR é o que se replica; o rótulo acima só diz de qual gaveta ele saiu
+    e.hook.fator_de_curiosidade && `CURIOSIDADE QUE A ABERTURA ABRIU: ${e.hook.fator_de_curiosidade}`,
     resumoMetricas && `MÉTRICAS REAIS: ${resumoMetricas}`,
   ]
     .filter(Boolean)

@@ -19,8 +19,10 @@ n O roteiro contem uma Headline declarada que sera exibida no inicio do video
 n A Headline tem no maximo 9 palavras
 n A Headline gera curiosidade ou impacto quando lida de forma isolada (MGC)
 HOOK
-n O roteiro inicia com um hook de 1 a 3 periodos seguindo pelo menos 1 MGC
+n O roteiro inicia com um hook de 2 a 4 frases, a maioria com duas, seguindo pelo menos 1 MGC
 n O hook esta livre de linguagem introdutoria generica
+n O hook usa palavras simples: uma pessoa comum entende ouvindo uma unica vez
+n O hook nao tem travessao nem ponto e virgula
 COESAO NARRATIVA
 n Os paragrafos possuem conexao logica entre si, seguindo estrutura de causa e consequencia
 n Nenhuma frase solta: cada item esta amarrado ao anterior por conectivo dito em voz alta, nunca so pela virgula
@@ -78,39 +80,41 @@ Teste: se essa frase aparecesse sozinha no feed, alguem pararia para ver?
 l Reprovada: Entenda como funciona o mercado financeiro
 HOOK — MGC
 MGC — Mecanismos Geradores de Curiosidade (minimo 1)
-Contraste extremo ver exemplo
-— Ontem era bilionario. Hoje esta preso.
-Afirmacao contraintuitiva ver exemplo
-— Em breve, so vai ser gordo quem quiser.
-Personalidade ou entidade controversa ver exemplo
-— O Elon Musk declarou guerra aos EUA.
-Urgencia ver exemplo
-— Urgente: o Ira iniciou a contagem regressiva.
-Alerta ver exemplo
-— Pare agora de usar o ChatGPT.
-Revelacao proibida ou misteriosa ver exemplo
-— O que os bancos nao te contam sobre a poupanca.
-Numero especifico e improvavel ver exemplo
-— Essa empresa faliu em exatamente 11 dias.
-Inversao de heroi e vilao ver exemplo
-— O homem mais odiado do Brasil salvou 40 mil empregos.
-Consequencia desproporcional ver exemplo
-— Uma unica frase destruiu a maior empresa do pais.
-
-Prova social ver exemplo
-— Tem muita gente surpresa com a ultima atitude do homem mais rico do mundo.
-Tempo comprimido
-— Em 72 horas, ele perdeu tudo que construiu em 20 anos.
-Escassez de acesso
-— So 3% dos brasileiros sabem como funciona isso.
-Identidade ameacada ver exemplo
-— Se voce acha que esta economizando dinheiro, esta errado.
-Conflito declarado
-— A guerra entre o Banco Central e os brasileiros que estao ficando milionarios.
-Hook nao verbal ver exemplo
-— Aponta para algo criando a expectativa do contraponto.
+Taxonomia canonica: a MESMA do Playbook de Hooks. Nao invente rotulo fora desta lista.
+Contraste Extremo
+: Ontem era bilionario. Hoje esta preso.
+Revelacao Secreta
+: O que os bancos nao te contam sobre a poupanca.
+Conflito Declarado
+: A guerra entre o Banco Central e os brasileiros que estao ficando milionarios.
+Ultra Especificidade
+: Essa empresa faliu em exatamente 11 dias.
+Elemento Controverso
+: O homem mais odiado do Brasil salvou 40 mil empregos.
+Superlativo
+: A empresa mais valiosa do mundo emitiu um alerta que ninguem queria ouvir.
+Desafio de Crenca
+: Em breve, so vai ser gordo quem quiser.
+Vies de Ilegalidade
+: A tecnica proibida que os vendedores usam para entrar na sua mente.
+Vies de Negatividade
+: O erro fatal que 90% dos investidores cometem antes da crise.
+Apelo a Autoridade
+: Psicologos estao em choque com o que esse teste revelou.
+Apelo Historico
+: O que aconteceu na ultima semana jamais sera esquecido.
+Ordem Contra-intuitiva
+: Pare agora de usar o ChatGPT.
+Urgencia (tempero, nunca driver unico)
+: Urgente: o Ira iniciou a contagem regressiva.
+Apelo a Maioria
+: 9 a cada 10 medicos apontam 1 unico comportamento como o mais perigoso.
+Apelo ao Esforco
+: Ja li 350 livros de investimentos e essas foram as 10 licoes mais importantes.
+Formato (embalagem, NAO substitui o mecanismo): Personagem Central, Visual, Nenhum.
 Essencia: qualquer estranhamento suficiente para impedir o scroll.
 Otimizacao — especificidade: 'ganhou muito dinheiro' < 'lucrou R$ 12 milhoes'
+Otimizacao — simplicidade: se exige esforco para entender ouvindo uma vez, esta errado
 Ausencia de Linguagem Generica
 — Se a primeira frase poderia abrir qualquer video fi eliminado
 l "Ola, hoje vamos falar sobre..."

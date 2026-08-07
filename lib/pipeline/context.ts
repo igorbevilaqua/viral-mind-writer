@@ -145,6 +145,7 @@ export async function loadContext(sessionId: string): Promise<GenerationContext>
     fewShot,
     attachments: (attachments.data ?? []) as Attachment[],
     modelagemBriefs: [],
+    modelagemHooks: [],
     artifacts: (session.artifacts as GenerationContext["artifacts"]) ?? null,
     usageLog: {},
     lessonIds,

@@ -91,7 +91,7 @@ export interface ModelagemAnalysis {
   };
   esqueleto?: {
     estrutura_narrativa?: string;
-    hook?: { tipo?: string; mecanismo?: string; funcao?: string };
+    hook?: { tipo?: string; fator_de_curiosidade?: string; mecanismo?: string; funcao?: string };
     beats?: { ordem: number; funcao: string; mecanismo_de_atencao: string; emocao: string; seg?: number }[];
     loops_abertos?: { o_que_fica_pendente: string; fecha_em_qual_beat: number }[];
     escalada?: string;
@@ -164,6 +164,9 @@ export interface GenerationContext {
   fewShot: { roteiro: string; origem: string }[];
   attachments: Attachment[];
   modelagemBriefs: string[];
+  // O brief só chega ao designHook no modo adaptação (sem narrativa vencedora). O fator de
+  // curiosidade do vídeo modelado tem que chegar SEMPRE — é a matéria-prima do hook.
+  modelagemHooks: NonNullable<ModelagemAnalysis["esqueleto"]>["hook"][];
   artifacts: SessionArtifacts | null;
   // telemetria de custo por fase — preenchida pelos agentes, persistida em pipeline_trace.usage
   usageLog?: UsageLog;

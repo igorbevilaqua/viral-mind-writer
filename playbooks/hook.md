@@ -129,9 +129,38 @@ Regra prática: **um mecanismo base (Contraste/Revelação/Conflito) mais um amp
 Muito acima das demais: **"ninguém"** (69x), o motor da Revelação Secreta. Depois: nunca (17),
 segredo (7), descobriu (6), revelou (4), perturbador (3), escondido/oculto/urgente/proibido.
 
+# Comprimento
+
+**2 a 4 frases faladas, a maioria com DUAS.** Duas é o formato natural: a primeira arma, a
+segunda vira. Quatro é teto absoluto, não meta.
+
+Frase que precisa de vírgula para respirar deve virar duas frases. Quase sempre melhora.
+
+# Simplicidade (o critério que mais reprova hook bom no papel)
+
+O espectador ouve a frase UMA vez, rolando o feed, sem contexto. Palavra que ele precisa
+processar é palavra que já custou o vídeo. Complexidade e abstração são os inimigos da
+relevância; simplicidade e concretude são os aliados.
+
+Escreva com as palavras que ele usa:
+- Fraco: "Diversas corporações brasileiras enfrentam um cenário de insolvência iminente."
+- Forte: "A Rede Globo emitiu o alerta. Empresas que você ama estão com os dias contados."
+- Fraco: "A relevância da persistência no processo de realização pessoal."
+- Forte: "Essa mãe vivia de ajuda do governo. Hoje é bilionária pelo que escreveu num papel."
+
+A complexidade é exceção, legítima em três casos: apresentar um conceito que não tem sinônimo
+simples · sustentar a modelagem de um vídeo que funcionou justamente pelo termo · causar
+estranheza deliberada (a palavra fora do lugar que faz parar). Fora disso, é defeito.
+
+Teste: uma pessoa comum, ouvindo essa frase uma única vez enquanto rola o feed, entende na
+hora? Se você está em dúvida, a resposta é não.
+
 # Anti-padrões (o que evita desclassificação)
 - Hook que promete o que o corpo não paga: desclassificado.
 - Urgência ou Negatividade como driver único e repetido.
 - Abstração/genérico ("a importância de nunca desistir") no lugar do concreto.
 - Confundir formato com mecanismo: "esse cara…" sem um mecanismo real por trás é só um sujeito.
 - Clichê de IA e travessão: tolerância zero.
+- Abertura genérica que serviria a qualquer vídeo: "olá", "e aí pessoal", "você sabia que",
+  "nesse vídeo", "hoje vou te mostrar", "presta atenção". Eliminação automática.
+- Apresentar o TEMA em vez do IMPACTO.

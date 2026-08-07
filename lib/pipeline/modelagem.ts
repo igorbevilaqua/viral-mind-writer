@@ -5,6 +5,7 @@ import { fetchTranscript } from "../transcribe";
 import { clientInsightBlock, scriptResultBlock, taughtBlock, toolInput } from "./agents";
 import { clientPrefsBlock, playbookIndex } from "./draft";
 import { composeBrief } from "./modelagem-brief";
+import { HOOK_MECHANISMS } from "./hook-mechanisms";
 import type { Attachment, GenerationContext, ModelagemAnalysis } from "./types";
 
 // A modelagem extrai o MECANISMO do sucesso, nunca o conteúdo: o esqueleto é a parte
@@ -83,14 +84,26 @@ function modelagemTool(comTema: boolean) {
           type: "string",
           description: "Código + nome EXATOS do playbook, ex 'A1. Jornada do Herói'. Nenhuma casa bem → a mais próxima + ressalva curta.",
         },
+        // O que o hook precisa extrair do original é o FATOR que gerou a curiosidade — a
+        // lacuna aberta na cabeça do espectador — e não o rótulo do mecanismo. O rótulo diz
+        // qual gaveta; o fator é o que se replica sobre outro assunto.
         hook: {
           type: "object",
           properties: {
-            tipo: { type: "string", description: "nome EXATO de um tipo/MGC do PLAYBOOK DE HOOKS" },
+            tipo: {
+              type: "string",
+              enum: HOOK_MECHANISMS as unknown as string[],
+              description: "o MGC dominante da abertura, na taxonomia canônica do PLAYBOOK DE HOOKS",
+            },
+            fator_de_curiosidade: {
+              type: "string",
+              description:
+                "a lacuna EXATA que a abertura abriu: a pergunta que o espectador precisou responder e não conseguiu sozinho. Em forma genérica, SEM o tema, nome, marca ou número do original.",
+            },
             mecanismo: { type: "string", description: "o gatilho em ação: curiosidade, dissonância, relevância pessoal..." },
             funcao: { type: "string", description: "o que a abertura PRECISA fazer, em termos de efeito — não o que ela diz" },
           },
-          required: ["tipo", "mecanismo", "funcao"],
+          required: ["tipo", "fator_de_curiosidade", "mecanismo", "funcao"],
         },
         beats: {
           type: "array",

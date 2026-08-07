@@ -36,6 +36,72 @@ export interface HookCandidate {
   formato?: string;
   racional?: string;
 }
+
+// ── Critérios de eliminação (guarda determinística) ──────────────────────────
+// Os mesmos critérios estão em agents/hook.md, mas prompt não é garantia: o modelo já
+// ignora "nada de travessão" de vez em quando (é por isso que o slop-lint existe). Aqui
+// eles viram código, aplicado ANTES da seleção — candidato reprovado não pode virar o hook
+// principal só por ter o mecanismo mais bem ranqueado.
+//
+// `\b` do JS é ASCII e NUNCA casa depois de letra acentuada ("você", "atenção") — a mesma
+// armadilha documentada em slop-lint.ts. Por isso os limites aqui são explícitos: início de
+// string para as saudações, e nada de \b depois de palavra acentuada.
+const ABERTURAS_MORTAS: [RegExp, string][] = [
+  // fim-de-palavra aqui é "não vem outra letra em seguida" — \b não serve depois de "olá"/"aí"
+  [/^\s*(ol[áa]|oi|e a[íi]|fala|salve|bem[- ]?vindos?)(?![a-zà-ÿ])/i, "saudação"],
+  [/voc[êe] sabia que/i, "'você sabia que'"],
+  [/n(esse|este) v[íi]deo/i, "'nesse vídeo'"],
+  [/hoje (eu )?vou (te )?(mostrar|contar|falar|ensinar)/i, "'hoje vou te mostrar'"],
+  [/hoje (n[óo]s )?vamos falar/i, "'hoje vamos falar'"],
+  [/presta[r]? aten[çc][ãa]o/i, "'presta atenção'"],
+  [/^\s*(nesse|neste) v[íi]deo/i, "abertura genérica"],
+];
+
+const MAX_FRASES = 4;
+
+// Conta períodos falados. O lookaround impede que o ponto DENTRO de um número quebre a
+// contagem — "R$ 12.457,32" é uma frase só, e Ultra Especificidade vive desses números.
+export function contarFrases(hook: string): number {
+  return hook
+    .split(/(?<![0-9])[.!?]+(?![0-9])/)
+    .filter((f) => f.trim().length > 0).length;
+}
+
+// Devolve os motivos de reprovação. Vazio = passou.
+export function hookLint(hook: string): string[] {
+  const motivos: string[] = [];
+  const t = (hook ?? "").trim();
+  if (!t) return ["vazio"];
+  for (const [re, label] of ABERTURAS_MORTAS) if (re.test(t)) motivos.push(`abertura morta: ${label}`);
+  if (/[—–]/.test(t)) motivos.push("travessão");
+  if (/;/.test(t)) motivos.push("ponto e vírgula");
+  const n = contarFrases(t);
+  if (n > MAX_FRASES) motivos.push(`${n} frases (máximo ${MAX_FRASES})`);
+  return motivos;
+}
+
+// Fail-soft por design: o hook nunca derruba a geração. Se a filtragem deixar menos do que
+// selectHook precisa (1 principal + 3 variantes), os reprovados voltam ATRÁS dos aprovados —
+// a ordem é o que empurra os ruins para o fim da fila de variantes, não para fora.
+export function filtrarCandidatos(
+  candidatos: HookCandidate[],
+  minimo = 4
+): { candidatos: HookCandidate[]; descartados: { hook: string; motivos: string[] }[] } {
+  const aprovados: HookCandidate[] = [];
+  const reprovados: HookCandidate[] = [];
+  const descartados: { hook: string; motivos: string[] }[] = [];
+  for (const c of candidatos) {
+    const motivos = hookLint(c.hook);
+    if (motivos.length) {
+      reprovados.push(c);
+      descartados.push({ hook: c.hook, motivos });
+    } else {
+      aprovados.push(c);
+    }
+  }
+  if (aprovados.length >= minimo) return { candidatos: aprovados, descartados };
+  return { candidatos: [...aprovados, ...reprovados], descartados };
+}
 export function selectHook(
   candidatos: HookCandidate[],
   rankShare: Map<string, number>,
