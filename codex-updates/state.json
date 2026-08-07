@@ -1,7 +1,16 @@
 {
   "version": "1.6",
   "codexUrl": "https://codex.viralmindlabs.com",
-  "pending": [],
+  "pending": [
+    {
+      "id": "msf4py0d",
+      "type": "improvement",
+      "summary": "Sessão de modelagem mostra de onde o roteiro foi modelado, com link",
+      "detail": "Quando o roteiro nasce da modelagem de um vídeo, a tela da sessão passa a exibir 'Modelado de' com o link do conteúdo original, clicável. Serve para comparar a nossa versão com a que serviu de referência sem precisar caçar o link no histórico.",
+      "commit": "c55cacf",
+      "addedAt": "2026-08-04T20:47:17.115Z"
+    }
+  ],
   "lastRelease": {
     "version": "1.5",
     "git": "98fc870",
