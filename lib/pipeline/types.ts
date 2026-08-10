@@ -158,6 +158,10 @@ export interface GenerationContext {
   premissaContraintuitivo?: string | null;
   clientId: string | null;
   clientPrefs: ClientPrefs | null;
+  // A sessão pediu modelagem. Quem manda no roteiro passa a ser o vídeo modelado, não o
+  // repertório do cliente: os insights/lições escopados a ele nem são carregados (context.ts)
+  // e o cliente entra só como veto + identidade (clientPrefsBlock em draft.ts).
+  modoModelagem: boolean;
   playbooks: Record<string, string>; // slug -> markdown
   bannedPhrases: BannedPhrase[];
   insights: { insight_type: string; scope: string; payload: unknown }[];

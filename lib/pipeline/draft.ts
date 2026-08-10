@@ -23,7 +23,16 @@ export const OUTPUT_FORMAT = `Responda EXATAMENTE neste formato (headers literai
 (o CTA final, com benefício explícito escrito na própria frase)
 
 ## FONTES
-(uma por linha: cada dado específico do roteiro — número, percentual, data, citação, ranking — e de onde veio, SEMPRE com o link completo (URL) da fonte quando existir; se veio de material fornecido no brief, diga qual)`;
+(SÓ o nome da fonte e o link, nada mais. Um bloco por fonte: o nome do veículo ou instituição numa linha, o link completo (URL) na linha seguinte, e uma linha em branco antes da próxima fonte.
+NUNCA escreva o dado, o número ou a manchete junto. NUNCA diga de que seção do dossiê veio. Nada depois do link.
+O dossiê NÃO é fonte: cite o veículo ou instituição original que ele aponta, com o link dele.
+Fonte que veio de material do brief e não tem URL entra só com o nome.
+Exemplo:
+Harris Poll
+https://theharrispoll.com/exemplo
+
+New York Times
+https://nytimes.com/exemplo)`;
 
 // Formato do roteirista-chefe: ele escreve só o corpo — hook e comando vêm dos especialistas.
 const WRITER_FORMAT = `Responda EXATAMENTE neste formato (headers literais):
@@ -35,7 +44,16 @@ const WRITER_FORMAT = `Responda EXATAMENTE neste formato (headers literais):
 (o corpo do roteiro, começando imediatamente após o hook, pronto para ser lido em voz alta; NÃO escreva o hook nem o CTA)
 
 ## FONTES
-(uma por linha: cada dado específico do corpo — número, percentual, data, citação, ranking — e de onde veio, SEMPRE com o link completo (URL) da fonte quando existir — o dossiê traz os links; se veio de material fornecido no brief, diga qual)`;
+(SÓ o nome da fonte e o link, nada mais. Um bloco por fonte: o nome do veículo ou instituição numa linha, o link completo (URL) na linha seguinte, e uma linha em branco antes da próxima fonte. O dossiê traz os links.
+NUNCA escreva o dado, o número ou a manchete junto. NUNCA diga de que seção do dossiê veio. Nada depois do link.
+O dossiê NÃO é fonte: cite o veículo ou instituição original que ele aponta, com o link dele.
+Fonte que veio de material do brief e não tem URL entra só com o nome.
+Exemplo:
+Harris Poll
+https://theharrispoll.com/exemplo
+
+New York Times
+https://nytimes.com/exemplo)`;
 
 // Bloco compartilhado da sala: playbooks + estilo + proibições (sem persona — cada agente traz a sua).
 // Dieta do playbook: o PLAYBOOK DE STORYTELLING (~52KB) saiu daqui — a estrutura é decisão do
@@ -115,11 +133,35 @@ export function playbookIndex(playbook: string | undefined): string {
     .join("\n\n");
 }
 
+// Modo modelagem: o roteiro persegue o vídeo modelado, e o cliente deixa de ser referência de
+// voz/tema — escrever "no tom dele, sobre os temas dele" era a interferência que descaracterizava
+// a modelagem. Sobram exatamente duas licenças, e o texto insiste no default de NÃO mexer:
+// o veto (proibições, inviolável) e um ajuste de autoridade só com alta confiança.
+// A identidade sai de temas_preferidos — sem ela, a licença 2 nem é oferecida.
+function clientModelagemBlock(p: NonNullable<GenerationContext["clientPrefs"]>): string {
+  const veto = [
+    p.proibicoes.length ? `PROIBIDO: ${p.proibicoes.join("; ")}` : "(sem proibições registradas)",
+    p.vocabulario_evitar.length ? `Nunca usar as palavras: ${p.vocabulario_evitar.join(", ")}` : "",
+  ]
+    .filter(Boolean)
+    .join("\n");
+  const autoridade = p.temas_preferidos.length
+    ? `\n\n2. AUTORIDADE (licença estreita) — o cliente é referência em: ${p.temas_preferidos.join(", ")}.
+Só quando você tiver ALTA CONFIANÇA de que uma informação específica desse campo enriquece o roteiro E aumenta a autoridade percebida dele, faça um ajuste PONTUAL (uma frase, um dado, um exemplo). Na dúvida, não ajuste — o default é não mexer. Nunca troque a tese, o ângulo, a estrutura ou o registro por causa disso, e nunca invente experiência pessoal, cliente ou caso dele.`
+    : "";
+  return `# CLIENTE "${p.nome}" — INTERFERÊNCIA MÍNIMA (o usuário pediu MODELAGEM)
+Escreva como se NÃO houvesse cliente selecionado: quem dita tese, ângulo, estrutura, tom e vocabulário é o vídeo modelado, não o histórico do cliente. Duas exceções, e só elas:
+
+1. RESTRIÇÕES DO CLIENTE (INVIOLÁVEIS) — se algo do roteiro cair aqui, adapte ou remova em silêncio, sem comentar a mudança no texto.
+${veto}${autoridade}`;
+}
+
 // Restrições/voz do cliente — usado no bloco dinâmico completo, na variante enxuta
 // da revisão e na modelagem (onde vira veto: ângulo incompatível nem chega a nascer).
 export function clientPrefsBlock(ctx: GenerationContext): string {
   if (!ctx.clientPrefs) return "";
   const p = ctx.clientPrefs;
+  if (ctx.modoModelagem) return clientModelagemBlock(p);
   return `# RESTRIÇÕES DO CLIENTE "${p.nome}" (INVIOLÁVEIS)
 ${p.proibicoes.length ? `PROIBIDO: ${p.proibicoes.join("; ")}` : "(sem proibições registradas)"}
 ${p.vocabulario_evitar.length ? `Nunca usar as palavras: ${p.vocabulario_evitar.join(", ")}` : ""}

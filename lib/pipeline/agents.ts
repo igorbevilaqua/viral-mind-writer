@@ -386,7 +386,9 @@ export async function research(
       model: RESEARCH_MODEL,
       instructions: agentPrompt("pesquisador"),
       input: `${adapt ? `${checagemBlock(adapt)}\n\n` : `TEMA DO VÍDEO: ${ctx.prompt}`}${premissaPautaBlock(ctx)}${
-        ctx.clientPrefs
+        // Em modelagem o nicho do cliente enviesava a busca pro campo dele em vez do
+        // assunto do vídeo modelado — o dossiê é do vídeo, não do cliente.
+        ctx.clientPrefs && !ctx.modoModelagem
           ? `\nCLIENTE: ${ctx.clientPrefs.nome}${ctx.clientPrefs.temas_preferidos.length ? ` (nicho: ${ctx.clientPrefs.temas_preferidos.join(", ")})` : ""}`
           : ""
       }${
@@ -613,7 +615,7 @@ export async function rankNarratives(
     messages: [
       {
         role: "user",
-        content: `TEMA: ${ctx.prompt || "(sem tema digitado — é uma modelagem de vídeo: o assunto é o do vídeo original e cada candidata ataca por um ângulo diferente)"}${ctx.clientPrefs ? `\nCLIENTE: ${ctx.clientPrefs.nome}` : ""}
+        content: `TEMA: ${ctx.prompt || "(sem tema digitado — é uma modelagem de vídeo: o assunto é o do vídeo original e cada candidata ataca por um ângulo diferente)"}${ctx.clientPrefs && !ctx.modoModelagem ? `\nCLIENTE: ${ctx.clientPrefs.nome}` : ""}
 
 NARRATIVAS CANDIDATAS:
 ${candidatas.map((n, i) => `[${i}]\n${formatNarrativa(n)}\nPor que funciona (storytelling): ${n.porque_funciona}`).join("\n\n")}
@@ -807,6 +809,14 @@ Gere de 5 a 6 candidatos a hook, cada um com um MECANISMO DISTINTO da taxonomia,
 // ── 6. Comando (CTA) ─────────────────────────────────────────────────────────
 export async function writeComando(ctx: GenerationContext, corpo: string): Promise<string> {
   const p = ctx.clientPrefs;
+  // Em modelagem o comando é o ÚNICO lugar onde o cliente aparece de propósito: é ele que
+  // converte a audiência do vídeo modelado em seguidor. Tom e notas de entrevista ficam de
+  // fora (voz é do vídeo modelado); as proibições entram porque o CTA também é roteiro.
+  const clienteBloco = !p
+    ? ""
+    : ctx.modoModelagem
+      ? `${clientPrefsBlock(ctx)}\n\nO CTA é para o cliente acima: cite o nome "${p.nome}" na própria frase e convide o espectador a SEGUI-LO para continuar recebendo conteúdo como este. O benefício explícito continua obrigatório.\n\n`
+      : `CLIENTE: ${p.nome}${p.tom_de_voz ? ` | Tom: ${p.tom_de_voz}` : ""}${p.notas_entrevista ? `\nNotas: ${p.notas_entrevista.slice(0, 800)}` : ""}\n\n`;
   // CTA é fórmula curta sobre padrões dados no contexto: ANALYST_MODEL + effort low bastam
   // (era WRITER_MODEL/fable, ~3x o preço, pra 2-3 frases). Sem cache_control: prompt pequeno
   // (provavelmente abaixo do mínimo cacheável) e agora no modelo barato — write premium não paga.
@@ -821,7 +831,7 @@ export async function writeComando(ctx: GenerationContext, corpo: string): Promi
       messages: [
       {
         role: "user",
-        content: `${p ? `CLIENTE: ${p.nome}${p.tom_de_voz ? ` | Tom: ${p.tom_de_voz}` : ""}${p.notas_entrevista ? `\nNotas: ${p.notas_entrevista.slice(0, 800)}` : ""}\n\n` : ""}${
+        content: `${clienteBloco}${
           clientInsightBlock(ctx, ["comando"])
             ? `COMANDOS QUE JÁ CONVERTERAM PARA ESTE CLIENTE (pré-rankeados por seguidores ganhos):\n${clientInsightBlock(ctx, ["comando"])}\n\n`
             : ""

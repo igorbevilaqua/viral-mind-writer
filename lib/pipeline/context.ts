@@ -94,9 +94,15 @@ export async function loadContext(sessionId: string): Promise<GenerationContext>
     clientPrefs = { ...prefs, nome: clientRel?.nome ?? "cliente" };
   }
 
+  // Modelagem pedida: o alvo é o vídeo modelado. O que o cliente já fez (hooks campeões,
+  // estruturas que performaram, lições dele) puxava o roteiro de volta pro repertório da casa —
+  // era essa a interferência. Em modo modelagem esse material NÃO entra: o cliente sobrevive
+  // só como veto e identidade (clientPrefsBlock). Insight/lição global continua valendo.
+  const modoModelagem = (attachments.data ?? []).some((a) => a.is_modelagem);
+
   // Insights: globais + do cliente (pós-consolidação, client_id JÁ é o id no corpus)
   const scopes = ["global"];
-  if (session.client_id) scopes.push(`client:${session.client_id}`);
+  if (session.client_id && !modoModelagem) scopes.push(`client:${session.client_id}`);
   const { data: insights, error: insightsErr } = await appDb
     .from("vm_viral_insights")
     .select("insight_type, scope, payload")
@@ -115,7 +121,7 @@ export async function loadContext(sessionId: string): Promise<GenerationContext>
       .order("created_at", { ascending: false });
     const rows = (data ?? [])
       .map((t) => ({ ...t, lessonClient: (Array.isArray(t.vm_lessons) ? t.vm_lessons[0] : t.vm_lessons)?.client_id ?? null }))
-      .filter((t) => t.lessonClient === null || t.lessonClient === session.client_id)
+      .filter((t) => t.lessonClient === null || (!modoModelagem && t.lessonClient === session.client_id))
       // client-scoped antes de global; dentro do grupo, mais novos primeiro (já ordenado)
       .sort((a, b) => Number(!!b.lessonClient) - Number(!!a.lessonClient))
       .slice(0, 12); // orçamento de contexto do agente Dados
@@ -139,6 +145,7 @@ export async function loadContext(sessionId: string): Promise<GenerationContext>
     premissaOrigem: (session.premissa_origem ?? null) as GenerationContext["premissaOrigem"],
     clientId: session.client_id,
     clientPrefs,
+    modoModelagem,
     playbooks,
     bannedPhrases: (bannedRes.data ?? []) as BannedPhrase[],
     insights: [...(insights ?? []), ...taught],
