@@ -15,9 +15,11 @@ export function spliceRoteiro(
 }
 
 // Anexa fontes novas ao campo FONTES sem duplicar URLs já presentes.
+// Linha em branco entre os blocos: no formato do campo cada fonte é "nome\nlink", então
+// anexar com \n simples faria o URL do Bob parecer o link da última fonte da lista.
 export function mergeFontes(atual: string, novas: string): string {
   const existentes = new Set(atual.match(/https?:\/\/[^\s)\]]+/g) ?? []);
   const add = novas.split("\n").filter((u) => u && !existentes.has(u));
   if (!add.length) return atual;
-  return (atual.trim() ? atual.trimEnd() + "\n" : "") + add.join("\n");
+  return (atual.trim() ? atual.trimEnd() + "\n\n" : "") + add.join("\n\n");
 }

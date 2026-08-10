@@ -31,7 +31,13 @@ describe("mergeFontes", () => {
     expect(mergeFontes("https://a.com", "https://a.com")).toBe("https://a.com");
   });
 
-  test("anexa a nova preservando a existente", () => {
-    expect(mergeFontes("https://a.com", "https://b.com")).toBe("https://a.com\nhttps://b.com");
+  test("anexa a nova preservando a existente, separada por linha em branco", () => {
+    expect(mergeFontes("https://a.com", "https://b.com")).toBe("https://a.com\n\nhttps://b.com");
+  });
+
+  test("não gruda o URL novo no bloco 'nome\\nlink' da última fonte", () => {
+    expect(mergeFontes("Harris Poll\nhttps://a.com", "https://b.com")).toBe(
+      "Harris Poll\nhttps://a.com\n\nhttps://b.com"
+    );
   });
 });
