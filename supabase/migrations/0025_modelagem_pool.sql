@@ -85,11 +85,13 @@ alter table vm_client_preferences
   add column if not exists search_queries_em timestamptz;
 
 -- A semente dessas queries tem DUAS camadas, e a segunda não é opcional: preferência
--- declarada não basta. `temas_preferidos` está nulo na maior parte da base (Pedro Elero
--- e Ricardo Schumacher não têm sequer linha nesta tabela), então derivar query só de
--- preferência entrega query vazia justamente para quem mais precisa. O corpus do próprio
--- cliente é fonte de primeira classe, com peso maior no que performou acima da média
--- DELE — performance_ratio (lib/etl.ts:53-55), baseline por cliente e não global.
+-- declarada não basta. Medido em 2026-08-13: 6 dos 30 clientes ativos não têm linha nesta
+-- tabela (Igor Bevilaqua, Caio Lima, Café com Ferri, Renato Mendes, Túlio Lichenstein,
+-- Leonardo Martins) — e 4 desses também não têm nenhuma linha em vm_video_stats, ou seja
+-- corpus sem views. Derivar query só de preferência entrega query vazia justamente para
+-- quem mais precisa. O corpus do próprio cliente é fonte de primeira classe, com peso
+-- maior no que performou acima da média DELE — performance_ratio (lib/etl.ts:53-55),
+-- baseline por cliente e não global.
 comment on column vm_client_preferences.search_queries is
   'Buscas em linguagem natural (8-10), derivadas de corpus do cliente + temas_preferidos. Cache; ver plano 014 §WP-2.';
 
