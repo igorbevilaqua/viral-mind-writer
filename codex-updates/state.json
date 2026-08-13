@@ -1,39 +1,31 @@
 {
-  "version": "1.7",
+  "version": "1.8",
   "codexUrl": "https://codex.viralmindlabs.com",
   "pending": [],
   "lastRelease": {
-    "version": "1.6",
-    "git": "95a78cd",
-    "productSummary": "Hooks mais curtos e simples, com autoteste e barreiras por código; modelagem passou a replicar o fator de curiosidade da abertura, não só o rótulo do mecanismo.",
-    "message": "🪄 *Codex: Nova Versão Disponível (v1.6)*\n🔖 Git: 95a78cd\n\nEssa versão mexeu onde mais dói: os 3 primeiros segundos. Os hooks ficaram mais curtos, mais simples e sem abertura de vídeo genérico. E quando a gente modela um viral, o Codex agora entende o que gerou a curiosidade lá, não só o rótulo.\n\n📋 *O que mudou:*\n\n⚡ *Hooks mais simples, mais curtos e sem enrolação*\nO especialista de hooks ganhou régua nova: 2 a 4 frases (a maioria com duas) e palavras que se entendem ouvindo uma vez só, rolando o feed. Antes de entregar, ele mesmo testa cada opção em curiosidade, impacto e simplicidade. E aquelas aberturas que matam vídeo (\"você sabia que\", \"nesse vídeo\", \"presta atenção\"), travessão e frase comprida agora são barrados por código, não é mais só um pedido no prompt que o modelo às vezes ignorava.\n\n💅 *O hook agora respeita as regras do cliente*\nCuriosamente, o especialista de hooks era o único da sala que não recebia as proibições e o tom de voz do cliente. Ele escrevia às cegas. Agora recebe, e a primeira frase do vídeo já nasce dentro das regras.\n\n⚡ *Modelagem entende o que gerou a curiosidade, não só o nome do mecanismo*\nAo modelar um viral, o Codex passou a extrair o fator de curiosidade da abertura: a lacuna exata que ficou aberta na cabeça de quem assistiu, em formato reaproveitável para qualquer assunto. Antes essa análise era jogada fora na maioria das gerações, só sobrevivia quando o roteiro era adaptação direta. Agora ela chega no hook sempre.\n\n💅 *Dá para ver de onde o roteiro foi modelado*\nQuando o roteiro nasce da modelagem de um vídeo, a sessão mostra \"Modelado de\" com o link do original, clicável. Comparar a nossa versão com a referência virou um clique, sem caçar link no histórico.\n\n👉 Acesse agora em https://codex.viralmindlabs.com\n",
+    "version": "1.7",
+    "git": "3662002",
+    "productSummary": "Sugerir tema passa a entregar, junto de cada pauta, um vídeo externo que já performou e pode virar modelagem em um clique; o hit de outro cliente da casa também ganhou o link do original.",
+    "message": "🪄 *Codex: Nova Versão Disponível (v1.7)*\n🔖 Git: 3662002\n\nSugerir tema parou de entregar só a ideia. Agora cada pauta pode vir com um vídeo real que já estourou lá fora, pronto para virar modelagem em um clique.\n\n📋 *O que mudou:*\n\n✨ *O tema chega com um viral de fora junto*\nCada sugestão pode vir acompanhada de um vídeo real de outro perfil, com autor, views e a informação de o assunto ser perene ou morrer em duas semanas. Um segundo botão aplica o tema e já anexa o vídeo como modelagem, sem caçar link em lugar nenhum. E o critério de escolha não é views: um vídeo com 1.556 seguidores fazendo 316 mil views ganha de um com 763 mil seguidores fazendo 9 milhões, porque nesse caso o mérito está no vídeo e não na audiência herdada. Quem ordena isso é código, não o modelo.\n\n💅 *O hit de outro cliente também vira modelagem em um clique*\nQuando a pauta nasce de um vídeo que já funcionou para outro cliente da casa, o card passa a carregar o link do original. Aplicar o tema com aquele vídeo anexado virou um clique, em vez de procurar o link no histórico.\n\n👉 Acesse agora em https://codex.viralmindlabs.com\n",
     "changes": [
       {
-        "id": "msf4py0d",
-        "type": "improvement",
-        "summary": "Sessão de modelagem mostra de onde o roteiro foi modelado, com link",
-        "detail": "Quando o roteiro nasce da modelagem de um vídeo, a tela da sessão passa a exibir 'Modelado de' com o link do conteúdo original, clicável. Serve para comparar a nossa versão com a que serviu de referência sem precisar caçar o link no histórico.",
-        "commit": "c55cacf",
-        "addedAt": "2026-08-04T20:47:17.115Z"
+        "id": "mss043fg",
+        "type": "feature",
+        "summary": "Sugerir tema passa a vir com um vídeo externo que já performou",
+        "detail": "Cada tema sugerido pode vir acompanhado de um vídeo real de fora da casa que estourou a própria audiência, com autor, views, quantas vezes passou da audiência do perfil e se o assunto é perene ou morre em duas semanas. Um segundo botão aplica o tema e já anexa o vídeo como modelagem, sem precisar caçar link. A escolha é por quanto o vídeo superou o próprio perfil, não por views absolutas: um vídeo com 1.556 seguidores fazendo 316 mil views ganha de um com 763 mil seguidores fazendo 9 milhões.",
+        "commit": "3662002",
+        "addedAt": "2026-08-13T20:59:19.530Z"
       },
       {
-        "id": "msj2f37d",
+        "id": "mss043gk",
         "type": "improvement",
-        "summary": "Hooks mais simples, mais curtos e sem abertura genérica",
-        "detail": "O especialista de hooks passou a trabalhar com uma régua nova: 2 a 4 frases (a maioria com duas), palavras simples que se entendem ouvindo uma única vez, e um autoteste de curiosidade, impacto e simplicidade antes de registrar cada candidato. Aberturas genéricas do tipo 'você sabia que' ou 'nesse vídeo', travessão e frase longa demais agora são barrados por código, não só pedidos no prompt. O agente também passou a enxergar as proibições e o tom de voz do cliente, que antes ele era o único da sala a não receber.",
-        "commit": "baf748d",
-        "addedAt": "2026-08-07T14:53:56.102Z"
-      },
-      {
-        "id": "msj2f38d",
-        "type": "improvement",
-        "summary": "Modelagem replica o que gerou a curiosidade, não só o rótulo do hook",
-        "detail": "Ao modelar um vídeo, o sistema agora extrai o fator de curiosidade da abertura: a lacuna exata que ficou aberta na cabeça de quem assistiu, em forma genérica e reaproveitável. Esse fator chega ao especialista de hooks em toda geração, e não só quando o roteiro é uma adaptação direta. Antes a análise da abertura era descartada na maioria dos casos.",
-        "commit": "baf748d",
-        "addedAt": "2026-08-07T14:53:56.137Z"
+        "summary": "O hit de outro cliente também vira modelagem em um clique",
+        "detail": "Quando a sugestão nasce de um vídeo que já funcionou para outro cliente da casa, o card passa a carregar o link do original, então dá para aplicar o tema já com aquele vídeo anexado como modelagem. Antes só apareciam título e views e o link tinha que ser caçado à mão.",
+        "commit": "3662002",
+        "addedAt": "2026-08-13T20:59:19.566Z"
       }
     ],
-    "releasedAt": "2026-08-07T14:54:29.808Z"
+    "releasedAt": "2026-08-13T21:01:16.826Z"
   },
   "history": [
     {
@@ -329,6 +321,39 @@
         }
       ],
       "releasedAt": "2026-08-04T20:02:20.058Z"
+    },
+    {
+      "version": "1.6",
+      "git": "95a78cd",
+      "productSummary": "Hooks mais curtos e simples, com autoteste e barreiras por código; modelagem passou a replicar o fator de curiosidade da abertura, não só o rótulo do mecanismo.",
+      "message": "🪄 *Codex: Nova Versão Disponível (v1.6)*\n🔖 Git: 95a78cd\n\nEssa versão mexeu onde mais dói: os 3 primeiros segundos. Os hooks ficaram mais curtos, mais simples e sem abertura de vídeo genérico. E quando a gente modela um viral, o Codex agora entende o que gerou a curiosidade lá, não só o rótulo.\n\n📋 *O que mudou:*\n\n⚡ *Hooks mais simples, mais curtos e sem enrolação*\nO especialista de hooks ganhou régua nova: 2 a 4 frases (a maioria com duas) e palavras que se entendem ouvindo uma vez só, rolando o feed. Antes de entregar, ele mesmo testa cada opção em curiosidade, impacto e simplicidade. E aquelas aberturas que matam vídeo (\"você sabia que\", \"nesse vídeo\", \"presta atenção\"), travessão e frase comprida agora são barrados por código, não é mais só um pedido no prompt que o modelo às vezes ignorava.\n\n💅 *O hook agora respeita as regras do cliente*\nCuriosamente, o especialista de hooks era o único da sala que não recebia as proibições e o tom de voz do cliente. Ele escrevia às cegas. Agora recebe, e a primeira frase do vídeo já nasce dentro das regras.\n\n⚡ *Modelagem entende o que gerou a curiosidade, não só o nome do mecanismo*\nAo modelar um viral, o Codex passou a extrair o fator de curiosidade da abertura: a lacuna exata que ficou aberta na cabeça de quem assistiu, em formato reaproveitável para qualquer assunto. Antes essa análise era jogada fora na maioria das gerações, só sobrevivia quando o roteiro era adaptação direta. Agora ela chega no hook sempre.\n\n💅 *Dá para ver de onde o roteiro foi modelado*\nQuando o roteiro nasce da modelagem de um vídeo, a sessão mostra \"Modelado de\" com o link do original, clicável. Comparar a nossa versão com a referência virou um clique, sem caçar link no histórico.\n\n👉 Acesse agora em https://codex.viralmindlabs.com\n",
+      "changes": [
+        {
+          "id": "msf4py0d",
+          "type": "improvement",
+          "summary": "Sessão de modelagem mostra de onde o roteiro foi modelado, com link",
+          "detail": "Quando o roteiro nasce da modelagem de um vídeo, a tela da sessão passa a exibir 'Modelado de' com o link do conteúdo original, clicável. Serve para comparar a nossa versão com a que serviu de referência sem precisar caçar o link no histórico.",
+          "commit": "c55cacf",
+          "addedAt": "2026-08-04T20:47:17.115Z"
+        },
+        {
+          "id": "msj2f37d",
+          "type": "improvement",
+          "summary": "Hooks mais simples, mais curtos e sem abertura genérica",
+          "detail": "O especialista de hooks passou a trabalhar com uma régua nova: 2 a 4 frases (a maioria com duas), palavras simples que se entendem ouvindo uma única vez, e um autoteste de curiosidade, impacto e simplicidade antes de registrar cada candidato. Aberturas genéricas do tipo 'você sabia que' ou 'nesse vídeo', travessão e frase longa demais agora são barrados por código, não só pedidos no prompt. O agente também passou a enxergar as proibições e o tom de voz do cliente, que antes ele era o único da sala a não receber.",
+          "commit": "baf748d",
+          "addedAt": "2026-08-07T14:53:56.102Z"
+        },
+        {
+          "id": "msj2f38d",
+          "type": "improvement",
+          "summary": "Modelagem replica o que gerou a curiosidade, não só o rótulo do hook",
+          "detail": "Ao modelar um vídeo, o sistema agora extrai o fator de curiosidade da abertura: a lacuna exata que ficou aberta na cabeça de quem assistiu, em forma genérica e reaproveitável. Esse fator chega ao especialista de hooks em toda geração, e não só quando o roteiro é uma adaptação direta. Antes a análise da abertura era descartada na maioria dos casos.",
+          "commit": "baf748d",
+          "addedAt": "2026-08-07T14:53:56.137Z"
+        }
+      ],
+      "releasedAt": "2026-08-07T14:54:29.808Z"
     }
   ]
 }
