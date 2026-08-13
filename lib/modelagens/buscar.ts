@@ -28,6 +28,9 @@ export interface Candidato {
   shares: number;
   comments: number;
   som_id: string | null; // sinal de trend (só TikTok)
+  /** Queries que trouxeram este item nesta rodada — vira `descoberto_por` no pool, que é a
+   *  chave de reaproveitamento: busca repetida não paga crédito de novo. */
+  queries?: string[];
 }
 
 export interface BuscaOpts {
@@ -221,7 +224,14 @@ export async function buscarCandidatos(queries: string[], opts: BuscaOpts = {}):
         });
         return;
       }
-      for (const c of r.value) porChave.set(`${c.plataforma}:${c.plataform_id}`, c);
+      for (const c of r.value) {
+        const chave = `${c.plataforma}:${c.plataform_id}`;
+        // O mesmo vídeo volta em queries diferentes (e o TikTok repete entre páginas):
+        // acumula a atribuição em vez de sobrescrever.
+        const anterior = porChave.get(chave);
+        c.queries = [...new Set([...(anterior?.queries ?? []), lote[j].query])];
+        porChave.set(chave, c);
+      }
     });
   }
 

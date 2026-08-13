@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { createSession, type NewAttachment } from "@/lib/actions";
+import { fmtNum, fmtRatio } from "@/lib/format";
 import type { ThemeSuggestion } from "@/lib/pipeline/suggest";
 
 const KIND_LABELS: Record<NewAttachment["kind"], { label: string; placeholder: string }> = {
@@ -20,6 +21,11 @@ const SUGGEST_MESSAGES: Record<string, string[]> = {
   dados: [
     "Lendo dados, preferências e hits de clientes afins...",
     "Cruzando padrões validados por performance e recência...",
+  ],
+  caca: [
+    "Caçando vídeos que já performaram fora da casa...",
+    "Medindo quanto cada vídeo estourou a própria audiência...",
+    "Separando o que é perene do que morre em duas semanas...",
   ],
   pesquisa: [
     "Caçador de pautas varrendo a web e o X em tempo real...",
@@ -171,7 +177,9 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
     }
   };
 
-  const applyTheme = (s: ThemeSuggestion) => {
+  // modelagemUrl preenchida = aplica o tema E anexa o vídeo como modelagem. Daí em diante é o
+  // pipeline de sempre (transcrição + autópsia acontecem na conjuração, não aqui).
+  const applyTheme = (s: ThemeSuggestion, modelagemUrl?: string | null) => {
     // A premissa sugerida vai para o campo dela, não para o brief: assim ela entra como tese
     // ADOTADA (nenhum modelo a rederiva) e o usuário pode editá-la antes de conjurar.
     if (s.premissa?.trim()) setPremissa(s.premissa.trim());
@@ -182,6 +190,11 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
         .map((f) => `- ${f}`)
         .join("\n")}`
     );
+    if (modelagemUrl)
+      setAttachments((a) =>
+        // Clique repetido no mesmo card não empilha o mesmo vídeo duas vezes.
+        a.some((x) => x.url === modelagemUrl) ? a : [...a, { kind: "video_link", is_modelagem: true, url: modelagemUrl, raw_content: "" }]
+      );
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -298,17 +311,32 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
             <span className="text-xs text-white/30">dados validados × pesquisa de agora · da aposta mais forte à mais fraca</span>
           </div>
           <div className="space-y-3 mt-3">
-            {sugestoes.map((s, i) => (
+            {sugestoes.map((s, i) => {
+              // Modelagem em um clique: o vídeo externo caçado ou, na falta dele, o hit interno
+              // (que só tem URL depois da migration 0026).
+              const modelagemUrl = s.modelagem_sugerida?.url ?? s.reaproveitado_de?.url ?? null;
+              return (
               <div key={i} className="rounded-[14px] border border-white/10 bg-white/[.02] p-4 hover:border-gold/30 transition-colors">
                 <div className="flex items-start gap-2.5 flex-wrap">
                   <span className="font-display text-gold/70 text-lg leading-none mt-0.5">{i + 1}.</span>
                   <p className="flex-1 min-w-0 text-[14.5px] font-medium text-cream leading-snug">{s.tema}</p>
-                  <button
-                    onClick={() => applyTheme(s)}
-                    className="btn-gold shrink-0 rounded-[9px] px-3.5 py-1.5 text-[12px] font-semibold"
-                  >
-                    Usar este tema
-                  </button>
+                  <div className="flex shrink-0 gap-1.5">
+                    <button
+                      onClick={() => applyTheme(s)}
+                      className="btn-gold rounded-[9px] px-3.5 py-1.5 text-[12px] font-semibold"
+                    >
+                      Usar este tema
+                    </button>
+                    {modelagemUrl && (
+                      <button
+                        onClick={() => applyTheme(s, modelagemUrl)}
+                        title="Aplica o tema e anexa o vídeo como modelagem"
+                        className="rounded-[9px] border border-gold/40 bg-gold/[.07] px-3 py-1.5 text-[12px] font-semibold text-gold hover:bg-gold/[.13] transition-colors"
+                      >
+                        usar com modelagem
+                      </button>
+                    )}
+                  </div>
                 </div>
                 <div className="flex flex-wrap gap-1.5 mt-2.5">
                   {s.estrutura_sugerida && (
@@ -327,6 +355,19 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
                         : `${Math.round(s.reaproveitado_de.views / 1000)}k`}{" "}
                       views
                     </span>
+                  )}
+                  {s.modelagem_sugerida && (
+                    <a
+                      href={s.modelagem_sugerida.url}
+                      target="_blank"
+                      rel="noreferrer"
+                      title={`abrir no ${s.modelagem_sugerida.plataforma}`}
+                      className="rounded-full border border-sky-500/35 bg-sky-500/[.07] px-2.5 py-0.5 text-[10.5px] text-sky-300 hover:bg-sky-500/[.14] transition-colors"
+                    >
+                      ▶ @{s.modelagem_sugerida.autor} · {fmtNum(s.modelagem_sugerida.views)} views ·{" "}
+                      {fmtRatio(s.modelagem_sugerida.ratio)} a audiência
+                      {s.modelagem_sugerida.timing_classe ? ` · ${s.modelagem_sugerida.timing_classe}` : ""}
+                    </a>
                   )}
                 </div>
                 <p className="text-[12.5px] leading-relaxed text-white/65 mt-2.5">
@@ -347,7 +388,8 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
                   </ul>
                 </details>
               </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       )}
