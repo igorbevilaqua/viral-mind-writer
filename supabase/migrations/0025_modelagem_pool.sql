@@ -73,6 +73,26 @@ create index if not exists vm_modelagem_pool_timing_views_idx
 create index if not exists vm_modelagem_pool_embedding_idx
   on vm_modelagem_pool using hnsw (embedding vector_cosine_ops);
 
+-- ─────────────────────────────────────────────────────────────────────────────
+-- Queries de busca por cliente (WP-2). Ficam aqui, e não numa migration própria,
+-- porque sem elas a tabela acima não tem como ser alimentada — é o mesmo passo.
+--
+-- Gerar query a cada busca é desperdício: o nicho de um cliente muda em meses, não em
+-- minutos. Regenera quando `search_queries_em` passa de 7 dias ou quando `updated_at`
+-- das preferências é mais recente.
+alter table vm_client_preferences
+  add column if not exists search_queries text[] not null default '{}',
+  add column if not exists search_queries_em timestamptz;
+
+-- A semente dessas queries tem DUAS camadas, e a segunda não é opcional: preferência
+-- declarada não basta. `temas_preferidos` está nulo na maior parte da base (Pedro Elero
+-- e Ricardo Schumacher não têm sequer linha nesta tabela), então derivar query só de
+-- preferência entrega query vazia justamente para quem mais precisa. O corpus do próprio
+-- cliente é fonte de primeira classe, com peso maior no que performou acima da média
+-- DELE — performance_ratio (lib/etl.ts:53-55), baseline por cliente e não global.
+comment on column vm_client_preferences.search_queries is
+  'Buscas em linguagem natural (8-10), derivadas de corpus do cliente + temas_preferidos. Cache; ver plano 014 §WP-2.';
+
 -- RLS habilitada e SEM policy = acesso exclusivo do service role (que ignora RLS),
 -- mesmo padrão da 0011. Não é formalidade: o Radar Viral lê este mesmo banco físico com
 -- a anon key, e uma tabela nova sem RLS ficaria legível por qualquer authenticated via
