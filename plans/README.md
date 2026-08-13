@@ -29,6 +29,8 @@ commitado e os excerpts reconciliados.
 | 011  | Few-shot ponderado por performance | P3 | S/M | 008 | ABSORVIDO no 012 |
 | 010  | Loop supervisionado (edição→Professor→lição) + captura de decisões | P2 | L | 002, 007 | ABSORVIDO no 012 |
 | 012  | Update CODEX Autoevolutivo (auditoria 2026-07-11; absorve 006/008/010/011) | P1 | L | — | DONE (ondas 1-4 mergeadas; migrations 0010-0015 aplicadas no banco) |
+| 013  | Modelagem: de cópia para superação do original | P1 | L | — | DONE (merged 68e6411, v1.3) |
+| 014  | Modelagens externas na sugestão de temas | P1 | M | 013 | TODO (Fase 0 validada 2026-08-13: dado aprovado; YouTube fora do v1) |
 
 Status: TODO | IN PROGRESS | DONE | BLOCKED (motivo) | REJECTED (motivo)
 
