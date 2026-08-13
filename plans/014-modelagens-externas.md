@@ -30,13 +30,29 @@ Atualizado em 2026-08-13. Baseline `b229a96`, nada commitado ainda.
 | WP-1 (`lib/modelagens/buscar.ts`) | ✅ escrito e **exercitado contra a API real** (12 créditos, nicho tributário) |
 | WP-3 (`lib/modelagens/rank.ts`) + teste | ✅ escrito, 12 testes offline sobre a fixture |
 | WP-4 — arquivo `0025_modelagem_pool.sql` | ✅ escrito |
-| WP-4 — migration **aplicada no banco** | ❌ **pendente** — o operador aplica via Supabase MCP |
-| WP-2, WP-5, WP-6 | ❌ nada escrito |
+| WP-4 — migration **aplicada no banco** | ✅ **aplicada** em 2026-08-13 (24 colunas no pool, RLS on / 0 policies, 4 índices, +2 colunas em `vm_client_preferences`) |
+| WP-2 (`lib/modelagens/queries.ts` + `agents/cacador-modelagens.md`) | ✅ escrito, 12 testes offline em `tests/queries-modelagens.test.ts`, **caminho de IO exercitado de verdade** em Caio Lima e Café com Ferri (10 queries cada, 2 chamadas Sonnet) |
+| WP-5 (`lib/modelagens/cacar.ts` + fase `caca` no `suggest.ts`) | ✅ escrito, 5 testes em `tests/associar-modelagens.test.ts`; upsert do pool validado contra o banco (sem crédito) |
+| WP-6 (card + botão "usar com modelagem") | ✅ escrito |
+| `0026_cross_client_hits_url.sql` (URL do hit interno) | ⏳ escrita, **não aplicada** — sem ela o hit interno só não ganha botão |
+| Caça ponta a ponta com a API real | ❌ **nunca rodou** — exige crédito ScrapeCreators (ver §0.1) |
 
 Nada em `lib/modelagens/` é importado por `app/`, `components/` ou `lib/` ainda: até o
 WP-5 o pacote é código morto em produção, e o deploy não depende da migration.
 
-**Próximo passo**: aplicar a `0025` → WP-2 (depende da migration) → WP-5 → WP-6.
+## 0.1 O que falta para liberar (não é código)
+
+1. **Trocar a `SCRAPECREATORS_API_KEY` pela conta do coletor** (`.env.local` + painel
+   Hostinger). A conta temporária tem 66 créditos e o WP-5 gasta ~20 por clique em pool
+   frio: **3 cliques e a caça morre em silêncio** no meio de uma sugestão. O `buscar.ts`
+   loga abaixo de 2.000 justamente para isso não passar batido.
+2. **Aplicar a `0026`** — só então o hit interno ganha o botão de modelagem.
+3. **Primeiro clique real em "Sugerir tema"** com a chave nova: é o único teste que a
+   fixture não substitui, porque exercita busca paga + classificação em lote + upsert no
+   pool na mesma requisição, dentro dos 120s da rota. Rodar em 1 cliente e conferir no
+   banco (`select count(*) from vm_modelagem_pool`) antes de liberar para o time.
+4. **Armadilha #12 ainda em aberto**: transcrição de vídeo em ES/EN nunca foi exercitada.
+   Verificar uma vez, manualmente, ao escolher a primeira modelagem estrangeira.
 
 A fixture torna WP-3 desenvolvível **sem gastar um crédito sequer**: são as respostas
 reais já normalizadas, incluindo os 137 itens de YouTube sem autor/data/duração (o
@@ -256,11 +272,26 @@ alter table vm_client_preferences
 
 ### A semente tem duas camadas — preferências NÃO bastam
 
-Decisão do usuário (2026-08-13), confirmada por medição: `temas_preferidos` está **nulo**
-tanto em Pedro Elero quanto em Ricardo Schumacher — nenhum dos dois tem sequer linha em
-`vm_client_preferences`. Derivar query só de preferência entrega query vazia justamente
-para quem mais precisa. **O corpus não é fallback de emergência, é fonte de primeira
-classe**, e as duas camadas se somam:
+Decisão do usuário (2026-08-13). A medição no banco corrigiu **quem** é o caso difícil:
+Pedro Elero e Ricardo Schumacher *têm* linha em `vm_client_preferences`, com
+`temas_preferidos` cheio (5 e 6 temas) — não são eles. Quem não tem são **6 dos 30
+clientes ativos**, e 4 deles são pior que o previsto:
+
+| cliente | vídeos | linhas em `vm_video_stats` | prefs |
+|---|---|---|---|
+| Igor Bevilaqua | 135 | 102 | ✗ |
+| Caio Lima | 79 | 72 | ✗ |
+| Café com Ferri | 132 | **0** | ✗ |
+| Renato Mendes | 69 | **0** | ✗ |
+| Túlio Lichenstein | 22 | **0** | ✗ |
+| Leonardo Martins | 4 | **0** | ✗ |
+
+Ou seja: Caio Lima e Igor Bevilaqua são o teste de "corpus sozinho gera query utilizável";
+Café com Ferri é o caso que o plano não previu — corpus com título e categoria mas **sem
+uma linha de métrica**, onde `performance_ratio` não existe para vídeo nenhum e a camada 1
+tem que degradar para título + categoria sem quebrar. Derivar query só de preferência
+entrega query vazia justamente para quem mais precisa. **O corpus não é fallback de
+emergência, é fonte de primeira classe**, e as duas camadas se somam:
 
 1. **Corpus do próprio cliente, com peso maior no que performou acima da média DELE.**
    Não inventar métrica: `performance_ratio` já é exatamente isso — "Nx a média do
@@ -281,6 +312,24 @@ linguagem natural**, não hashtags:
 
 Regenera se `search_queries_em` tem mais de 7 dias ou `updated_at` das prefs é mais
 recente. Prompt em `agents/cacador-modelagens.md` (convenção AGENTS.md §5).
+
+### Duas sujeiras do corpus que a semente tem que filtrar (medidas, não supostas)
+
+1. **Título do corpus é lixo com frequência, e justo no topo.** Os três vídeos mais vistos
+   do Caio Lima se chamam `TODO` (2,8M views), `not_found` (760k) e `TE DÁ` (40k) — sem
+   filtro, a primeira busca gerada seria por "not_found". Aplicado o mesmo critério que o
+   `vm_cross_client_hits` já usa no SQL (`length >= 15` + prefixos-lixo), e nesse cliente a
+   semente passa a se apoiar mais em `categorias` do que em título.
+2. **`categorias` convive em duas formas na mesma base, às vezes no mesmo cliente**: rótulo
+   puro (`"NEGÓCIOS"`) e JSON em string (`{"rank":1,"nome":"MARKETING"}`). Mesma extração
+   do `substring` de 0013/0018, agora também em TS. Sem ela, o tema recorrente do cliente
+   viraria a palavra `rank`.
+
+E um detalhe de cache que se autossabota: escrever `search_queries` numa linha **nova** faz
+`updated_at` (o `now()` do banco) nascer alguns ms depois de `search_queries_em` (o
+`new Date()` do app), então a regra "prefs mais recentes que o cache" invalidaria o cache
+que acabou de ser escrito e cada busca pagaria uma chamada de LLM. Daí a margem de 60s na
+comparação (`precisaRegenerar`, com teste próprio).
 
 ## WP-3 — Ranking (`lib/modelagens/rank.ts`, função pura)
 
