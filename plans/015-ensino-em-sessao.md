@@ -248,9 +248,18 @@ crítica por chapéu. Passa a retornar `{ revised, critica }`. A guarda de fail-
 (reescrita truncada devolve o `draft`) permanece; nesse caminho `critica` vai junto mesmo assim,
 porque ela explica por que a revisão falhou.
 
-Teto passa a ser **por destinatário (8)**, não global (12). Com 0 lições ativas hoje ele não vincula
-tão cedo. Quando vincular, o excedente é gravado em
-`proveniencia.blocos.<agente>.licoes_excedidas` e exibido em `/ensinar`.
+O teto deixa de ser duplo (global 12 + por agente 3) e passa a ser **só por destinatário**,
+**mantido em 3** — o valor que já roda em produção.
+
+Manter 3 é deliberado: esta peça promete que o roteamento novo não muda comportamento, e a Task 1
+tem teste de equivalência para provar. Mexer no teto na mesma leva introduziria uma segunda
+variável — se a qualidade do roteiro mudar depois do merge, não haveria como distinguir o efeito do
+roteamento do efeito do teto. Além disso, com 0 lições ativas, qualquer valor novo seria escolhido
+no escuro; 3 pelo menos é o que está em produção hoje.
+
+Quando o teto começar a vincular, o excedente é gravado em
+`proveniencia.licoes_excedidas` e exibido em `/ensinar`. É esse número que justifica subir o teto
+depois, sozinho, como mudança isolada e mensurável.
 
 **Não se constrói UI de gestão de fila nesta peça** — constrói-se quando o teto deixar de ser
 teórico. O requisito aqui é apenas que o corte nunca seja silencioso.
@@ -598,9 +607,15 @@ describe("taughtBlock por destinatário", () => {
     expect(taughtBlock(ctx([{ titulo: "A", destinatarios: ["hook"] }]), "comando")).toBe("");
   });
 
-  test("respeita o teto por destinatário", () => {
+  test("respeita o teto por destinatário (3, igual a hoje)", () => {
     const muitas = Array.from({ length: 12 }, (_, i) => ({ titulo: `L${i}`, destinatarios: ["hook"] }));
-    expect(taughtBlock(ctx(muitas), "hook", 8).split("\n")).toHaveLength(8);
+    expect(taughtBlock(ctx(muitas), "hook").split("\n")).toHaveLength(3);
+  });
+
+  test("excedente é registrado, nunca cortado em silêncio", () => {
+    const c = ctx(Array.from({ length: 12 }, (_, i) => ({ titulo: `L${i}`, destinatarios: ["hook"] })));
+    taughtBlock(c, "hook");
+    expect((c as { licoesExcedidas?: Record<string, number> }).licoesExcedidas?.hook).toBe(9);
   });
 
   // Invariante que impede a falha silenciosa de voltar por uma porta nova.
@@ -654,7 +669,9 @@ taught.push(...rows.map((t) => ({
 ```ts
 import { type Destinatario } from "./destinatarios";
 
-export function taughtBlock(ctx: GenerationContext, agente: Destinatario, n = 8): string {
+// n = 3 é o teto de hoje, mantido de propósito: esta mudança é de ROTEAMENTO, não de volume.
+// Subir o teto é mudança separada, justificada por licoes_excedidas no trace.
+export function taughtBlock(ctx: GenerationContext, agente: Destinatario, n = 3): string {
   const rows = ctx.insights
     .filter((i) => i.insight_type === "taught")
     .map((i) => i.payload as { titulo: string; descricao: string; destinatarios?: string[] })
