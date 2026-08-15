@@ -33,6 +33,7 @@ commitado e os excerpts reconciliados.
 | 014  | Modelagens externas na sugestão de temas | P1 | M | 013 | TODO (Fase 0 validada 2026-08-13: dado aprovado; YouTube fora do v1) |
 | 015  | Ensino em sessão: explicar, mudar, ensinar (2.0, peça 1/4 — carrega a espinha) | P1 | L | — | SPEC (design aprovado 2026-08-15; aguarda plano de implementação) |
 | 016  | Escrita: material antes, veredito depois (2.0, peça 2/4 — estudos, grandeza, eco numérico) | P1 | M | 015 | SPEC (escrito 2026-08-15; aguarda plano de implementação) |
+| 017  | Verificação factual: checar o que o roteirista inventou (2.0, peça 3/4 — regime C, delta) | P1 | M | 015 | SPEC (escrito 2026-08-15; aguarda plano de implementação) |
 
 Status: TODO | IN PROGRESS | DONE | BLOCKED (motivo) | REJECTED (motivo)
 
