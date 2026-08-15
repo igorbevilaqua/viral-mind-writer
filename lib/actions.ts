@@ -10,6 +10,8 @@ import { isSubstantiveEdit } from "./learning-loop";
 import { registrarAtividade, currentUserId } from "./hub";
 import { createClient } from "./supabase/server";
 import { runProbeTopup } from "./calibration-probe";
+import { type Casa, type Ensinamento } from "./pipeline/classify-teaching";
+import { validarPadrao } from "./regex-safety";
 
 export interface NewAttachment {
   kind: "reference_script" | "news_link" | "document" | "video_link";
@@ -534,16 +536,147 @@ export async function requestMoreProbes(): Promise<void> {
 }
 
 // Promove uma versão PROPOSTA de playbook (Fase 4) para ativa. Portão humano no /ensinar.
-export async function promoteHookPlaybook(version: number) {
-  await appDb.from("vm_playbooks").update({ active: false }).eq("slug", "hook");
-  const { error } = await appDb.from("vm_playbooks").update({ active: true }).eq("slug", "hook").eq("version", version);
+export async function promoteHookPlaybook(version: number, slug = "hook") {
+  await appDb.from("vm_playbooks").update({ active: false }).eq("slug", slug);
+  const { error } = await appDb.from("vm_playbooks").update({ active: true }).eq("slug", slug).eq("version", version);
   if (error) throw new Error(error.message);
   revalidatePath("/ensinar");
 }
 
 // Descarta uma proposta (versão inativa) que o time não quer.
-export async function dismissHookPlaybook(version: number) {
-  const { error } = await appDb.from("vm_playbooks").delete().eq("slug", "hook").eq("version", version).eq("active", false);
+export async function dismissHookPlaybook(version: number, slug = "hook") {
+  const { error } = await appDb.from("vm_playbooks").delete().eq("slug", slug).eq("version", version).eq("active", false);
   if (error) throw new Error(error.message);
   revalidatePath("/ensinar");
+}
+
+export interface EnsinamentoConfirmado extends Ensinamento {
+  textoCru: string;
+  escopo: "cliente" | "global";
+  sessionId: string;
+  clientId: string | null;
+}
+
+// Doutrina não tem playbook único: a dimensão diz qual manual a proposta altera.
+const PLAYBOOK_POR_DIMENSAO: Record<string, string> = {
+  hook: "hook",
+  storytelling: "storytelling",
+  tema: "storytelling",
+  comando: "comando",
+  ritmo: "style_guide",
+  geral: "style_guide",
+};
+
+// Grava o ensinamento CONFIRMADO pelo humano na casa que o classificador escolheu (§5.1).
+// Os quatro casos existem de verdade: um `case` faltando devolveria `undefined`, a tela diria
+// "gravado" e nada teria sido gravado — a falha silenciosa que a peça 015 existe para matar.
+export async function gravarEnsinamento(
+  e: EnsinamentoConfirmado
+): Promise<{ ok: boolean; id?: string; erro?: string }> {
+  // vm_client_preferences é por cliente por definição: vocabulário com escopo Global cai em
+  // frase banida com severity warn (§5.1).
+  const casa: Casa = e.casa === "vocabulario" && e.escopo === "global" ? "frase_banida" : e.casa;
+  const clientId = e.escopo === "cliente" ? e.clientId : null;
+
+  switch (casa) {
+    case "licao": {
+      // RPC transacional: vm_lessons + vm_lesson_learnings ou nenhum dos dois (§8).
+      const { data, error } = await appDb.rpc("vm_gravar_ensinamento", {
+        p_client_id: clientId,
+        p_session_url: `/sessions/${e.sessionId}`,
+        p_texto_cru: e.textoCru,
+        p_titulo: e.regra,
+        p_descricao: e.regra,
+        p_dimensao: e.dimensao,
+        p_destinatarios: e.destinatarios,
+        p_evidencia: e.evidencia ?? null,
+      });
+      if (error) return { ok: false, erro: error.message };
+      revalidatePath("/ensinar");
+      return { ok: true, id: data as string };
+    }
+
+    case "frase_banida": {
+      // Regex de LLM entrando num lint de produção é onde se apaga texto bom em silêncio.
+      const v = validarPadrao(e.padrao ?? "");
+      if (!v.ok) {
+        // Vocabulário rebaixado para frase banida não traz `padrao` (o classificador só o
+        // preenche quando ELE escolheu frase_banida). Erro explícito > regex inventada.
+        return {
+          ok: false,
+          erro:
+            e.casa === "vocabulario"
+              ? `vocabulário com escopo Global vira frase banida e precisa de um padrão — ${v.motivo}`
+              : v.motivo,
+        };
+      }
+      const { error } = await appDb.from("vm_banned_phrases").insert({
+        pattern: e.padrao, // a coluna é `pattern` (0001_init), não `padrao`
+        label: e.regra,
+        motivo: e.motivo ?? e.textoCru,
+        severity: "warn",
+      });
+      return error ? { ok: false, erro: error.message } : { ok: true };
+    }
+
+    case "vocabulario": {
+      if (!clientId) return { ok: false, erro: "vocabulário é por cliente: a sessão precisa ter um cliente" };
+      // O classificador não devolve direção (evitar vs preferir): negação explícita na regra
+      // manda para `vocabulario_evitar`, o resto para `vocabulario_usar`.
+      // ponytail: heurística — o teto é a regra ambígua ("diga X, nunca Y"). Upgrade = campo
+      // `direcao` na tool do classificador + chip no dialog. Enquanto isso, o humano corrige
+      // em /settings/clientes, onde os dois campos são editáveis.
+      const campo = /\b(n[ãa]o|nunca|jamais|evit\w*|proib\w*|banir?)\b/i.test(e.regra)
+        ? "vocabulario_evitar"
+        : "vocabulario_usar";
+      const { data: prefs, error: readErr } = await appDb
+        .from("vm_client_preferences")
+        .select("vocabulario_evitar, vocabulario_usar")
+        .eq("client_id", clientId)
+        .maybeSingle();
+      if (readErr) return { ok: false, erro: readErr.message };
+      // ponytail: read-modify-write. Cliente sem linha ainda é comum (6 de 30), daí o upsert.
+      // Duas confirmações simultâneas no mesmo cliente perderiam uma — gesto humano, ignorado.
+      const atual: string[] = prefs?.[campo] ?? [];
+      if (atual.includes(e.regra)) return { ok: true };
+      const { error } = await appDb.from("vm_client_preferences").upsert({
+        client_id: clientId,
+        [campo]: [...atual, e.regra],
+        updated_at: new Date().toISOString(),
+      });
+      if (error) return { ok: false, erro: error.message };
+      revalidatePath("/settings/clientes");
+      return { ok: true };
+    }
+
+    case "playbook": {
+      // Playbook é manual versionado que todos os agentes leem: ensinamento de sessão vira
+      // PROPOSTA (active:false), nunca escrita direta (§5.1). Mesmo trilho do curador da Fase 4
+      // — quem ativa é o humano em /ensinar (components/playbook-proposals.tsx).
+      const slug = PLAYBOOK_POR_DIMENSAO[e.dimensao] ?? "style_guide";
+      const { data: latest, error: pbErr } = await appDb
+        .from("vm_playbooks")
+        .select("version, content")
+        .eq("slug", slug)
+        .order("version", { ascending: false })
+        .limit(1)
+        .maybeSingle();
+      if (pbErr) return { ok: false, erro: pbErr.message };
+      if (!latest) return { ok: false, erro: `sem playbook base para "${slug}"` };
+      const content = `${String(latest.content).trimEnd()}
+
+## Ensinado em sessão (${new Date().toISOString().slice(0, 10)})
+
+- ${e.regra}
+
+> ${e.textoCru.trim().replace(/\s*\n+\s*/g, " ")}
+`;
+      const { error } = await appDb
+        .from("vm_playbooks")
+        .insert({ slug, version: (Number(latest.version) || 0) + 1, content, active: false });
+      if (error) return { ok: false, erro: error.message };
+      revalidatePath("/ensinar");
+      return { ok: true };
+    }
+  }
 }

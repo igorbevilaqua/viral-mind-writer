@@ -13,14 +13,16 @@ export default async function EnsinarPage() {
       .order("created_at", { ascending: false })
       .limit(100),
     appDb.from("vm_lesson_learnings").select("lesson_id, active"),
-    appDb.from("vm_playbooks").select("version, content, active, created_at").eq("slug", "hook").order("version", { ascending: false }),
+    appDb.from("vm_playbooks").select("slug, version, content, active, created_at").order("version", { ascending: false }),
   ]);
 
-  // propostas do curador (Fase 4) = versões inativas ACIMA da ativa (as antigas ficam abaixo)
-  const ativaVer = (playbooks ?? []).find((p) => p.active)?.version ?? 0;
+  // propostas = versões inativas ACIMA da ativa DAQUELE slug (as antigas ficam abaixo). Vêm do
+  // curador (Fase 4, slug hook) e do ensino em sessão (015, qualquer slug).
+  const ativaVer = new Map<string, number>();
+  for (const p of playbooks ?? []) if (p.active) ativaVer.set(p.slug, p.version);
   const propostas: Proposta[] = (playbooks ?? [])
-    .filter((p) => !p.active && p.version > ativaVer)
-    .map((p) => ({ version: p.version, content: p.content, created_at: p.created_at }));
+    .filter((p) => !p.active && p.version > (ativaVer.get(p.slug) ?? 0))
+    .map((p) => ({ slug: p.slug, version: p.version, content: p.content, created_at: p.created_at }));
 
   const counts = new Map<string, { total: number; ativos: number }>();
   for (const l of learnings ?? []) {
