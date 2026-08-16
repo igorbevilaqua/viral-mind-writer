@@ -123,6 +123,13 @@ describe("montarSemente", () => {
 });
 
 describe("limparQueries", () => {
+  it("corta em 10, porque o maxItems da tool não é imposto", () => {
+    // Em produção o modelo devolveu 12 para um schema que pedia no máximo 10, e cada query
+    // excedente custa 2 créditos por rodada (uma busca por plataforma).
+    const doze = Array.from({ length: 12 }, (_, i) => `busca numero ${i}`);
+    expect(limparQueries(doze)).toHaveLength(10);
+  });
+
   it("tira hashtag e aspas, deduplica sem diferenciar caixa e corta o que é curto demais", () => {
     expect(limparQueries(["#empresasQueFaliram", "empresas que faliram", "Empresas Que Faliram", '"leilão da Caixa"', "ok", ""])).toEqual([
       "empresasQueFaliram",

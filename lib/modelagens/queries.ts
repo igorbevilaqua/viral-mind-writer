@@ -26,6 +26,10 @@ const DIA_MS = 86_400_000;
 // busca paga uma chamada de LLM.
 const MARGEM_PREFS_MS = 60_000;
 
+// O `maxItems` do schema da tool NÃO é imposto: em produção o modelo devolveu 12 onde o
+// schema pedia 10, e cada query excedente custa 2 créditos por rodada (uma busca por
+// plataforma). O corte é aqui, no código.
+const MAX_QUERIES = 10;
 const MAX_VIDEOS = 60; // amostra do corpus lida do banco
 const MAX_TITULOS = 15; // títulos que entram na semente
 const MAX_CATEGORIAS = 8;
@@ -224,7 +228,7 @@ export function limparQueries(queries: string[]): string[] {
     vistas.add(chave);
     out.push(limpa);
   }
-  return out;
+  return out.slice(0, MAX_QUERIES);
 }
 
 /**
