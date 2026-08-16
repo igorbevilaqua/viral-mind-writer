@@ -13,6 +13,7 @@ import {
   confirmarPremissa,
   updatePremissa,
 } from "@/lib/actions";
+import { useTeachDialog } from "@/components/teach-dialog";
 import type { BobModo } from "@/lib/pipeline/bob";
 import { spliceRoteiro, mergeFontes } from "@/lib/bob-edit";
 import type { NarrativaCandidata, RankingItem, SessionArtifacts } from "@/lib/pipeline/types";
@@ -910,15 +911,51 @@ function BobInlinePanel({
   );
 }
 
-// ── Card do roteiro final: leitura, edição manual inline e "Chame o Bob" ──────
+// Um dos três verbos sobre a seleção. O preventDefault em mouse E touch é o que impede a
+// seleção de colapsar — sem ele o botão some antes de o toque virar clique no celular.
+// `touch=false` no popover de edição: lá o alvo é um textarea, que hoje só escuta o mouse,
+// e ligar o toque agora seria mudança de comportamento fora do escopo desta task.
+function VerboBtn({
+  label,
+  onAcionar,
+  principal,
+  touch = true,
+}: {
+  label: string;
+  onAcionar: () => void;
+  principal?: boolean;
+  touch?: boolean;
+}) {
+  const go = (e: React.SyntheticEvent) => {
+    e.preventDefault();
+    onAcionar();
+  };
+  return (
+    <button
+      onMouseDown={go}
+      onTouchStart={touch ? go : undefined}
+      className={
+        principal
+          ? "btn-gold rounded-full px-3.5 py-2 text-xs font-semibold whitespace-nowrap"
+          : "rounded-full border border-gold/40 bg-[#161410] px-3 py-2 text-xs font-medium text-cream whitespace-nowrap hover:border-gold/70"
+      }
+    >
+      {label}
+    </button>
+  );
+}
+
+// ── Card do roteiro final: leitura, edição manual inline e os três verbos da seleção ──────
 function ScriptCard({
   script,
   sessionId,
+  clientId,
   disabled,
   rating,
 }: {
   script: Script;
   sessionId: string;
+  clientId: string | null;
   disabled: boolean;
   rating: number | null;
 }) {
@@ -940,6 +977,17 @@ function ScriptCard({
   const [bobInline, setBobInline] = useState<{ start: number; end: number; trecho: string; slash?: boolean } | null>(null);
   // Botão flutuante "Chamar o Bob" ao selecionar texto no textarea (modo edição).
   const [taSel, setTaSel] = useState<{ x: number; y: number; start: number; end: number } | null>(null);
+
+  // Janela única de explicar / mudar / ensinar (015 §7.1). "Mudar" volta para o Bob de hoje:
+  // o dialog só devolve o trecho, os offsets exatos vêm de `sel`, que ainda está em pé
+  // quando o handler roda.
+  const teach = useTeachDialog({
+    scriptId: script.id,
+    sessionId,
+    clientId,
+    roteiro: editing ? draft.roteiro : script.roteiro,
+    onMudar: () => sel && setBob({ start: sel.start, end: sel.end, trecho: sel.trecho }),
+  });
 
   const startEdit = () => {
     setSel(null);
@@ -1104,6 +1152,16 @@ function ScriptCard({
             Editar
           </button>
         )}
+        {!editing && (
+          // Entrada sem seleção (§7.1): o caminho dos ensinamentos que não são sobre trecho
+          // nenhum. Entrada global fora da sessão fica para a peça 4.
+          <button
+            onClick={() => teach.abrir("ensinar")}
+            className="inline-flex items-center gap-1.5 rounded-lg border border-white/15 px-3 py-2 sm:py-[5px] text-xs text-white/65 hover:border-gold/50 hover:text-cream transition-colors"
+          >
+            Ensinar
+          </button>
+        )}
         {editing ? (
           <div className="ml-auto flex items-center gap-2">
             <button
@@ -1224,17 +1282,29 @@ function ScriptCard({
           </p>
         )}
         {editing && taSel && !bobInline && (
-          <button
-            onMouseDown={(e) => {
-              e.preventDefault();
-              openBobInline(roteiroTaRef.current, false, { start: taSel.start, end: taSel.end });
-            }}
+          <div
             style={{ position: "fixed", left: taSel.x, top: taSel.y - 42, transform: "translateX(-50%)", zIndex: 40 }}
-            className="btn-gold inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-semibold shadow-lg whitespace-nowrap"
+            className="flex items-center gap-1.5 rounded-full bg-[#131110]/95 p-1 shadow-lg backdrop-blur-sm"
           >
-            <QuillIcon size={12} color="#161410" />
-            Chamar o Bob
-          </button>
+            {/* Em edição "Mudar" é o Bob INLINE (insere no draft), não o modal — comportamento
+                de hoje, preservado. Os outros dois verbos leem o trecho do draft. */}
+            <VerboBtn
+              label="Por quê?"
+              touch={false}
+              onAcionar={() => teach.abrir("porque", draft.roteiro.slice(taSel.start, taSel.end))}
+            />
+            <VerboBtn
+              label="Mudar"
+              principal
+              touch={false}
+              onAcionar={() => openBobInline(roteiroTaRef.current, false, { start: taSel.start, end: taSel.end })}
+            />
+            <VerboBtn
+              label="Ensinar"
+              touch={false}
+              onAcionar={() => teach.abrir("ensinar", draft.roteiro.slice(taSel.start, taSel.end))}
+            />
+          </div>
         )}
         {editing && bobInline && (
           <BobInlinePanel
@@ -1289,28 +1359,39 @@ function ScriptCard({
         </section>
       )}
 
-      {/* botão flutuante "Chame o Bob" ao selecionar trecho.
-          touchstart com preventDefault: o toque não colapsa a seleção nem gera clique
-          fantasma — sem isso o botão sumia antes de o toque virar clique no celular. */}
+      {/* três verbos flutuantes ao selecionar trecho (015 §7.1): a seleção já custou um gesto,
+          então não vira menu. touchstart com preventDefault: o toque não colapsa a seleção nem
+          gera clique fantasma — sem isso o botão sumia antes de o toque virar clique no celular. */}
       {sel && (
-        <button
-          onMouseDown={(e) => {
-            e.preventDefault();
-            setBob({ start: sel.start, end: sel.end, trecho: sel.trecho });
-            setSel(null);
-          }}
-          onTouchStart={(e) => {
-            e.preventDefault();
-            setBob({ start: sel.start, end: sel.end, trecho: sel.trecho });
-            setSel(null);
-          }}
+        <div
           style={{ position: "fixed", left: sel.x, top: sel.y, transform: "translateX(-50%)", zIndex: 40 }}
-          className="btn-gold inline-flex items-center gap-1.5 rounded-full px-4 py-2.5 text-xs font-semibold shadow-lg whitespace-nowrap"
+          className="flex items-center gap-1.5 rounded-full bg-[#131110]/95 p-1 shadow-lg backdrop-blur-sm"
         >
-          <QuillIcon size={12} color="#161410" />
-          Chame o Bob
-        </button>
+          <VerboBtn
+            label="Por quê?"
+            onAcionar={() => {
+              teach.abrir("porque", sel.trecho);
+              setSel(null);
+            }}
+          />
+          <VerboBtn
+            label="Mudar"
+            principal
+            onAcionar={() => {
+              teach.abrir("mudar", sel.trecho); // onMudar lê `sel`, que ainda está em pé aqui
+              setSel(null);
+            }}
+          />
+          <VerboBtn
+            label="Ensinar"
+            onAcionar={() => {
+              teach.abrir("ensinar", sel.trecho);
+              setSel(null);
+            }}
+          />
+        </div>
       )}
+      {teach.dialog}
 
       {bob && (
         <BobModal
@@ -1934,7 +2015,13 @@ export default function SessionView({
             ))}
           </div>
 
-          <ScriptCard script={script} sessionId={session.id} disabled={closed} rating={lastRating[script.id] ?? null} />
+          <ScriptCard
+            script={script}
+            sessionId={session.id}
+            clientId={clientId}
+            disabled={closed}
+            rating={lastRating[script.id] ?? null}
+          />
 
           {!!script.hook_variants?.length && (
             <HookVariants scriptId={script.id} variants={script.hook_variants} disabled={generating || watching || closed} />
