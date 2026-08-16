@@ -325,12 +325,6 @@ GANCHO POTENCIAL: ${n.gancho_potencial}`;
 // pesquisador checa o que ele alegou (nada entra como fato nosso sem confirmação) e traz
 // munição que o original não usou. Sem isto, o roteiro sai 100% da palavra do vídeo.
 function checagemBlock(adapt: { transcricao: string; compreensao?: ModelagemCompreensao }): string {
-  // o json tem `_comentario` (string) junto dos tiers — só arrays interessam aqui
-  const tiers: Record<string, unknown> = fontesAutoritativas;
-  const lista = (t: string) => {
-    const v = tiers[t];
-    return Array.isArray(v) ? v.slice(0, 14).join(", ") : "";
-  };
   const c = adapt.compreensao;
   const alvo = c
     ? `TEMA: ${c.tema}\nTESE DO VÍDEO — É A NOSSA TAMBÉM, e é ela que você vai testar e municiar: ${c.argumento_central}\nRECOMPENSA QUE O ORIGINAL ENTREGOU (a nossa versão precisa superar): ${c.recompensa}`
@@ -352,11 +346,8 @@ Se a lista acima vier vazia, extraia você mesmo as afirmações factuais do ví
 B) MUNIÇÃO NOVA — o que o vídeo NÃO usou e deixaria a nossa versão mais forte que a dele:
 - dados contraintuitivos que desmintam o senso comum sobre o assunto e REFORCEM a tese acima (é ela que vamos defender, melhor que o original);
 - o melhor contra-argumento contra a tese, com fonte: não para trocarmos de tese, mas para não sermos desmentidos — se a evidência realmente derruba a tese, diga isso com clareza, é informação crítica;
-- comparações em ESCALA HUMANA BRASILEIRA (R$, salários mínimos, tempo de trabalho, preço de coisas do cotidiano) que façam o número ser sentido, não só lido;
 - curiosidades e fatos que despertem emoção (injustiça, perda, ascensão), com fonte;
 - o que mudou sobre o assunto DEPOIS deste vídeo.
-
-HIERARQUIA DE FONTES (mais forte primeiro): tier 1 (primárias/institucionais) ${lista("tier_1")}. tier 2 (jornalismo com histórico) ${lista("tier_2")}. tier 3 (confirmação cruzada de data/contexto, fraco para números finos e superlativos) ${lista("tier_3")}. Confirmação só em tier 3 → marque "nao_verificavel" se for número fino ou superlativo.
 
 TRANSCRIÇÃO DO VÍDEO:
 ${adapt.transcricao.slice(0, 12000)}`;
@@ -397,31 +388,54 @@ function premissaPautaBlock(ctx: GenerationContext): string {
 }
 
 // ── 1. Pesquisador (Grok + busca em tempo real) ─────────────────────────────
+
+// Hierarquia de fontes, montada do JSON em runtime — é por isso que ela NÃO pode morar em
+// agents/pesquisador.md, que é lido do disco sem interpolação: congelaria os domínios numa
+// segunda lista divergindo em silêncio de fontes-autoritativas.json (016 §12).
+// Vale para toda geração, não só para a checagem de modelagem, e por isso saiu de dentro dela.
+export function fontesBlock(): string {
+  // o json tem `_comentario` (string) junto dos tiers — só arrays interessam aqui
+  const tiers: Record<string, unknown> = fontesAutoritativas;
+  const lista = (t: string) => {
+    const v = tiers[t];
+    return Array.isArray(v) ? v.slice(0, 14).join(", ") : "";
+  };
+  return `HIERARQUIA DE FONTES (mais forte primeiro): tier 1 (primárias/institucionais) ${lista("tier_1")}. tier 2 (jornalismo com histórico) ${lista("tier_2")}. tier 3 (confirmação cruzada de data/contexto, fraco para números finos e superlativos) ${lista("tier_3")}. Confirmação só em tier 3 → não trate como fato: número fino ou superlativo nessa condição é "nao_verificavel".`;
+}
+
+// A entrada é montada à parte da chamada só para poder ser testada sem rede.
+export function montarEntradaPesquisa(
+  ctx: GenerationContext,
+  adapt?: { transcricao: string; compreensao?: ModelagemCompreensao }
+): string {
+  // Notícias anexadas: o pesquisador abre os links e incorpora os fatos ao dossiê,
+  // guiado pelos comentários do usuário sobre cada uma.
+  const noticias = ctx.attachments.filter((a) => a.kind === "news_link" && a.url);
+  return `${adapt ? `${checagemBlock(adapt)}\n\n` : `TEMA DO VÍDEO: ${ctx.prompt}`}${premissaPautaBlock(ctx)}${
+    // Em modelagem o nicho do cliente enviesava a busca pro campo dele em vez do
+    // assunto do vídeo modelado — o dossiê é do vídeo, não do cliente.
+    ctx.clientPrefs && !ctx.modoModelagem
+      ? `\nCLIENTE: ${ctx.clientPrefs.nome}${ctx.clientPrefs.temas_preferidos.length ? ` (nicho: ${ctx.clientPrefs.temas_preferidos.join(", ")})` : ""}`
+      : ""
+  }${
+    noticias.length
+      ? `\n\nNOTÍCIAS INDICADAS PELO USUÁRIO — abra/pesquise cada link e incorpore os fatos ao dossiê (com fonte e data). Os comentários do usuário indicam o ângulo desejado:\n${noticias
+          .map((n) => `- ${n.url}${n.raw_content?.trim() ? `\n  comentários do usuário: ${n.raw_content.trim().slice(0, 500)}` : ""}`)
+          .join("\n")}`
+      : ""
+  }\n\n${fontesBlock()}\n\nMonte o dossiê.`;
+}
+
 export async function research(
   ctx: GenerationContext,
   adapt?: { transcricao: string; compreensao?: ModelagemCompreensao }
 ): Promise<string> {
-  // Notícias anexadas: o pesquisador abre os links e incorpora os fatos ao dossiê,
-  // guiado pelos comentários do usuário sobre cada uma.
-  const noticias = ctx.attachments.filter((a) => a.kind === "news_link" && a.url);
   const t0 = Date.now();
   try {
     const res = await grokClient().responses.create({
       model: RESEARCH_MODEL,
       instructions: agentPrompt("pesquisador"),
-      input: `${adapt ? `${checagemBlock(adapt)}\n\n` : `TEMA DO VÍDEO: ${ctx.prompt}`}${premissaPautaBlock(ctx)}${
-        // Em modelagem o nicho do cliente enviesava a busca pro campo dele em vez do
-        // assunto do vídeo modelado — o dossiê é do vídeo, não do cliente.
-        ctx.clientPrefs && !ctx.modoModelagem
-          ? `\nCLIENTE: ${ctx.clientPrefs.nome}${ctx.clientPrefs.temas_preferidos.length ? ` (nicho: ${ctx.clientPrefs.temas_preferidos.join(", ")})` : ""}`
-          : ""
-      }${
-        noticias.length
-          ? `\n\nNOTÍCIAS INDICADAS PELO USUÁRIO — abra/pesquise cada link e incorpore os fatos ao dossiê (com fonte e data). Os comentários do usuário indicam o ângulo desejado:\n${noticias
-              .map((n) => `- ${n.url}${n.raw_content?.trim() ? `\n  comentários do usuário: ${n.raw_content.trim().slice(0, 500)}` : ""}`)
-              .join("\n")}`
-          : ""
-      }\n\nMonte o dossiê.`,
+      input: montarEntradaPesquisa(ctx, adapt),
       tools: [{ type: "web_search" }] as never,
     });
     return res.output_text ?? "";
