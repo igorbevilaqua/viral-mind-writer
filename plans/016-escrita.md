@@ -61,10 +61,24 @@ verificar saída**: é lido só para imprimir domínios no prompt (`agents.ts:30
 
 ### 1.3 A comparação hook × abertura já existe e nunca olhou o hook
 
-`ecoa(a, b)` (`lib/pipeline/draft.ts:415-423`) compara a primeira frase de dois trechos por palavras
-de conteúdo, com limiares `MIN_PALAVRAS_EM_COMUM = 4` e `LIMITE_ECO = 0.5` (`draft.ts:412-413`).
-Roda em produção hoje (`index.ts:289`) — mas **só para descartar variações de hook**. O hook
-escolhido nunca é comparado contra a abertura do corpo, em lugar nenhum do pipeline.
+`ecoa(a, b)` compara a primeira frase de dois trechos por palavras de conteúdo, com limiares
+`MIN_PALAVRAS_EM_COMUM = 4` e `LIMITE_ECO = 0.5`. É consumida por `semEcoDaAbertura`, que descarta
+variações de hook que só reescrevem a abertura do corpo.
+
+**Correção importante sobre o estado dela:** a função **não está em produção**. Ela existe apenas no
+working tree do Igor, **não commitada** (junto de uma instrução nova em `agents/roteirista.md` e de
+três testes em `tests/parse-sections.test.ts`). Uma versão anterior deste spec afirmava que ela
+"roda em produção hoje" — errado: a exploração leu o working tree sem conferir se as linhas estavam
+commitadas.
+
+Isso não enfraquece o desenho, fortalece: o trabalho já feito **aplica exatamente a arquitetura que
+este spec propõe** — instrução a montante (`roteirista.md`: "não abra o corpo com uma segunda
+abertura") e barreira determinística a jusante (`semEcoDaAbertura`), com o comentário do próprio
+código dizendo "barreira em código, não pedido no prompt". É a §4.2 desta peça, escrita antes dela.
+
+O que continua verdadeiro e é o ponto: mesmo com esse trabalho, **o hook escolhido nunca é comparado
+contra a abertura do corpo**. A comparação só filtra *variações*. Ligar no par principal segue sendo
+o trabalho desta sub-peça — e fica trivial assim que o WIP for commitado.
 
 ### 1.4 O sub-hook não existe
 
@@ -285,8 +299,9 @@ falso positivo seja mensurável em vez de estimada.
 
 ### 6.2 Hook × abertura do corpo
 
-**Custo próximo de zero: a função existe e está testada.** `ecoa(a, b)` (`draft.ts:415-423`) já roda
-em produção para variações (`index.ts:289`), com testes em `tests/parse-sections.test.ts:35-60`.
+**Custo próximo de zero: a função existe e está testada** — mas ainda **não commitada** (§1.3). Esta
+sub-peça depende de o WIP do eco de abertura entrar na história do repo; enquanto não entrar, o custo
+não é zero, é "reescrever o que já está pronto no disco de alguém".
 
 Passa a ser chamada também para o par que nunca foi olhado: **hook escolhido × primeiro bloco do
 corpo**, antes da montagem em `index.ts:263-270` (onde o hook é colado na frente do corpo de
