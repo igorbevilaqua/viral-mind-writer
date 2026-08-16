@@ -3,7 +3,7 @@ export type Etapa = "roteirista" | "revisao" | "humanizacao" | "pos_save";
 
 // Normaliza para comparar por conteúdo, não por formatação: minúsculas, acentos preservados,
 // pontuação e espaço colapsados. Basta para pertencimento de sentença.
-const norm = (s: string) => s.toLowerCase().replace(/[^\p{L}\p{N}\s]/gu, "").replace(/\s+/g, " ").trim();
+export const norm = (s: string) => s.toLowerCase().replace(/[^\p{L}\p{N}\s]/gu, "").replace(/\s+/g, " ").trim();
 
 export function atribuirEtapa(
   trecho: string,
