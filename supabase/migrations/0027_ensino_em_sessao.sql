@@ -4,14 +4,18 @@
 
 alter table vm_lesson_learnings add column destinatarios text[] not null default '{}';
 
-update vm_lesson_learnings set destinatarios = case dimensao
+-- O cast é obrigatório: os literais do `case` são unknown e o Postgres resolve a expressão
+-- inteira como `text`, que não entra numa coluna text[] (42804). Sem `else` de propósito:
+-- dimensao fora do mapa devolve NULL, a coluna é not null e a migration aborta — falha
+-- barulhenta é melhor que lição roteada para o agente errado em silêncio.
+update vm_lesson_learnings set destinatarios = (case dimensao
   when 'hook'         then '{hook,dados}'
   when 'storytelling' then '{storytelling,modelagem,dados}'
   when 'tema'         then '{storytelling,modelagem,premissa,dados}'
   when 'ritmo'        then '{roteirista,dados}'
   when 'comando'      then '{comando,dados}'
   when 'geral'        then '{roteirista,premissa,dados}'
-end;
+end)::text[];
 
 create index vm_lesson_learnings_destinatarios_idx
   on vm_lesson_learnings using gin (destinatarios);
