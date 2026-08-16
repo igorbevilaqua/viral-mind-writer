@@ -270,7 +270,7 @@ export async function runPipeline(
     ].join("\n\n");
 
     emit({ type: "phase", phase: "revisao" });
-    const revised = await critiqueAndRewrite(ctx, assembled);
+    const { revised, critica } = await critiqueAndRewrite(ctx, assembled);
 
     emit({ type: "phase", phase: "humanizacao" });
     const { text: final, violations } = await humanize(ctx, revised);

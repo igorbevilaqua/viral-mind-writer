@@ -7,7 +7,10 @@ import type { GenerationContext } from "./types";
 // Os chapéus vivem em agents/revisao.md; o checklist eliminatório vem do playbook.
 // Contexto enxuto: a revisão corrige contra checklist, não imita voz — sem few-shot,
 // sem materiais do usuário, dossiê truncado (buildReviewDynamicBlock).
-export async function critiqueAndRewrite(ctx: GenerationContext, draft: string): Promise<string> {
+export async function critiqueAndRewrite(
+  ctx: GenerationContext,
+  draft: string
+): Promise<{ revised: string; critica: string }> {
   const res = await trackedCreate(ctx.usageLog, "revisao", {
     model: ANALYST_MODEL,
     max_tokens: 8000,
@@ -37,7 +40,11 @@ ${draft}`,
   const text = block?.type === "text" ? block.text : "";
   const parts = text.split(/=====\s*ROTEIRO_REVISADO\s*=====/i);
   const revised = (parts[1] ?? "").trim();
+  // A crítica por chapéu: já era calculada e nunca lida. É ela que responde "por que o revisor
+  // reescreveu isto" no rastro de proveniência (015 §4.1).
+  const critica = (parts[0] ?? "").trim();
   // Guarda: reescrita truncada/ausente nunca pode zerar o roteiro — o trabalho
   // dos especialistas (montado) segue em frente e a humanização cuida do resto.
-  return /##\s*ROTEIRO/i.test(revised) ? revised : draft;
+  // A crítica vai junto mesmo nesse caminho: é ela que explica por que a revisão falhou.
+  return { revised: /##\s*ROTEIRO/i.test(revised) ? revised : draft, critica };
 }

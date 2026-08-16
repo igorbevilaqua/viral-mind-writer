@@ -281,6 +281,13 @@ export function buildReviewDynamicBlock(ctx: GenerationContext): string {
       );
     if (a.dossie) parts.push(`# DOSSIÊ DE PESQUISA (resumo — confira fatos citados)\n${a.dossie.slice(0, 2000)}`);
   }
+  // O revisor passa a ser ensinável (015 §6.3): até esta linha ele era o único agente de
+  // julgamento sem canal de lição — ensinar para ele gravava e não produzia efeito.
+  const ensinado = taughtBlock(ctx, "revisao");
+  if (ensinado)
+    parts.push(
+      `# APRENDIZADOS ENSINADOS PELO TIME PARA A REVISÃO (curadoria humana — prevalecem sobre padrões do corpus em conflito)\n${ensinado}`
+    );
   const prefs = clientPrefsBlock(ctx);
   if (prefs) parts.push(prefs);
   return parts.join("\n\n");

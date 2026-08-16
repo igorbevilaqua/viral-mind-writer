@@ -1,5 +1,7 @@
+import { readFileSync } from "node:fs";
 import { describe, expect, test } from "vitest";
 import { taughtBlock } from "@/lib/pipeline/agents";
+import { DESTINATARIOS } from "@/lib/pipeline/destinatarios";
 import type { GenerationContext } from "@/lib/pipeline/types";
 
 const ctx = (licoes: { titulo: string; destinatarios: string[] }[]) =>
@@ -52,5 +54,25 @@ describe("taughtBlock por destinatário", () => {
     const c = ctx([{ titulo: "A", destinatarios: [] }]);
     expect(taughtBlock(c, "hook")).toBe("");
     expect(taughtBlock(c, "roteirista")).toBe("");
+  });
+
+  // Invariante que impede a falha silenciosa de voltar por uma porta nova: destinatário que o
+  // classificador pode emitir sem consumidor real grava a lição e não produz efeito nenhum.
+  test("todo destinatário válido tem call site real", () => {
+    const fontes = [
+      "lib/pipeline/agents.ts",
+      "lib/pipeline/draft.ts",
+      "lib/pipeline/premissa.ts",
+      "lib/pipeline/modelagem.ts",
+      "lib/pipeline/critique.ts",
+    ]
+      .map((f) => readFileSync(f, "utf8"))
+      .join("\n");
+    for (const a of DESTINATARIOS) {
+      if (a === "dados") continue; // dados consome via formatInsightsForDados, não taughtBlock
+      expect(fontes, `destinatário "${a}" não tem call site de taughtBlock`).toMatch(
+        new RegExp(`taughtBlock\\([^)]*["']${a}["']`)
+      );
+    }
   });
 });
