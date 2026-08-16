@@ -399,4 +399,293 @@ update (`codex-updates/state.json`) são do pacote, tratados na peça 1.
 
 ---
 
-**Status:** spec. O plano de implementação entra neste arquivo depois de aprovado, no formato do 015.
+## 12. Correções ao spec, apuradas em 2026-08-16
+
+Escritas aqui em vez de editar as seções acima, para o registro do que mudou não sumir.
+
+**§1.3 e §6.2 estão desatualizados: o WIP do eco de abertura FOI commitado.** `semEcoDaAbertura`,
+`ecoa`, `conteudo` e `primeiraFrase` estão em `lib/pipeline/draft.ts:391-429` desde o commit
+`93ade70`, com os testes em `tests/parse-sections.test.ts`. A ressalva de §6.2 ("o custo não é zero,
+é reescrever o que já está pronto no disco de alguém") **caducou** — o custo é zero de verdade
+agora. `ecoa` continua **não exportada**, e é isso que a Task 4 resolve.
+
+**§5.2 tem um problema que o spec não viu: a hierarquia de fontes NÃO pode ir para
+`agents/pesquisador.md`.** A linha `agents.ts:359` interpola a lista de domínios do JSON em tempo de
+execução (`${lista("tier_1")}`). A persona é um `.md` lido do disco (`agentPrompt`), sem
+interpolação. Mover o texto para lá exigiria **congelar os domínios no markdown**, e aí
+`fontes-autoritativas.json` deixaria de ser fonte única — passaria a haver duas listas divergindo em
+silêncio. A escala humana (`agents.ts:355`) não tem esse problema: é prosa pura.
+
+**Resolução:** separar as duas promoções por natureza, não empacotá-las juntas.
+- **Escala humana** → `agents/pesquisador.md` (prosa, sem interpolação).
+- **Hierarquia de fontes** → função `fontesBlock()` em `agents.ts`, montada do JSON e chamada
+  **incondicionalmente** em `research`. Sai de dentro do `checagemBlock` para não duplicar no modo
+  modelagem.
+
+**§6.1 precisa de uma leitura literal: o detector NÃO entra dentro de `slopLint()`.** Ele *mora* em
+`slop-lint.ts` (a casa dos detectores), mas é exportado à parte e chamado de `index.ts` sobre
+`assembled`, **antes** de `critiqueAndRewrite`. `slopLint()` só roda dentro de `humanize`
+(`humanize.ts`), que acontece **depois** da revisão — pendurar o eco lá dentro entregaria o sinal
+tarde demais para o revisor, que é justamente quem a decisão 4 nomeia como juiz.
+
+---
+
+# Plano de implementação
+
+> **Para executores agênticos:** um subagente por task, TDD (escreve o teste, confirma que falha,
+> implementa, confirma que passa). Subagente **não** roda `git add` nem `git commit`.
+
+**Goal:** dar ao roteirista material melhor antes de escrever (estudos com URL, números já
+comparados a uma escala) e dar ao revisor sinais determinísticos depois (eco numérico, hook ×
+abertura) — sem uma chamada de LLM a mais e sem um parágrafo a mais no prompt do roteirista.
+
+**Arquitetura:** adição e remoção em lados opostos do roteirista (§4.2). O que adiciona pega carona
+na chamada Grok que já roda; o que remove é determinístico e vai ao revisor como lista de decisão.
+
+**Stack:** Next.js 16, vitest, Grok via `grokClient()`. Sem migration — tudo que grava vai para
+`pipeline_trace.proveniencia`, campo que a peça 1 criou.
+
+## Global Constraints
+
+- **Nenhuma chamada de LLM nova.** Se uma task precisar de uma, o desenho está errado.
+- **O prompt do roteirista não ganha um parágrafo.** `buildDynamicSystemBlock` fica intocado.
+- **Detector determinístico sinaliza, não decide** (§3.3). Toda saída nova é `warn` e vai ao revisor.
+- **Nenhum corte é silencioso.** Estudo descartado, eco excedente e sinal cortado por teto vão para
+  `pipeline_trace.proveniencia` com o motivo.
+- **A âncora de substituição é sempre a frase inteira, nunca o fragmento** (`slop-lint.ts:159-161`).
+- Baseline da suíte: **23 arquivos, 248 testes**. Gate: `npx tsc --noEmit && npx eslint . && npm run check && npm test`.
+
+---
+
+### Task 1: Promover escala humana e hierarquia de fontes para toda geração
+
+Hoje as duas só rodam em modelagem sem tema (§1.2) — 100% das gerações com tema digitado nunca
+viram nenhuma das duas.
+
+**Files:**
+- Modify: `agents/pesquisador.md` (escala humana, prosa)
+- Modify: `lib/pipeline/agents.ts` — nova `fontesBlock()`; `checagemBlock` perde a linha de
+  hierarquia; `research` passa a montar a entrada por função pura
+- Test: `tests/research-input.test.ts`
+
+**Interfaces:**
+- Produces: `fontesBlock(): string`; `montarEntradaPesquisa(ctx, adapt?): string` (pura, exportada —
+  é ela que o teste lê, para não precisar de rede).
+
+- [ ] **Passo 1: escrever o teste que falha**
+
+O teste que importa é o de **paridade entre os dois modos**: a hierarquia de fontes aparece na
+entrada com tema digitado E em modelagem sem tema, e aparece **uma vez só** nos dois casos
+(regressão óbvia: duplicar no modo modelagem, onde `checagemBlock` já a tinha).
+
+- [ ] **Passo 2: rodar e confirmar que falha** — hoje a hierarquia some no modo com tema.
+
+- [ ] **Passo 3: extrair `montarEntradaPesquisa`** de dentro de `research` (`agents.ts:390-400`),
+      sem mudar o texto montado. É refactor puro; o teste de paridade ainda falha.
+
+- [ ] **Passo 4: criar `fontesBlock()`** lendo `fontes-autoritativas.json`, com o mesmo
+      `slice(0, 14)` de hoje, e chamá-la incondicionalmente. **Remover** a linha de hierarquia de
+      `checagemBlock` (`agents.ts:359`) — senão duplica no modo modelagem.
+
+- [ ] **Passo 5: mover a escala humana** de `agents.ts:355` para `agents/pesquisador.md`, como item
+      da lista "O que entregar". **Remover da origem**, não copiar.
+
+- [ ] **Passo 6: gate + commit**
+
+```
+feat(pesquisa): escala humana e hierarquia de fontes em toda geracao
+```
+
+**Atenção (§10.5):** isto **muda o comportamento da geração comum** de propósito, e não há teste de
+equivalência possível — o ponto é justamente mudar. Avaliar num roteiro real antes de dar por
+fechada.
+
+---
+
+### Task 2: Seção `## ESTUDOS` com portão determinístico de URL
+
+**Files:**
+- Modify: `agents/pesquisador.md` (a seção nova)
+- Create: `lib/pipeline/estudos.ts`
+- Test: `tests/estudos.test.ts`
+
+**Interfaces:**
+- Produces: `extrairEstudos(dossie: string): { aceitos: Estudo[]; descartados: { linha: string; motivo: string }[] }`
+  onde `Estudo = { texto: string; url: string; dominio: string; tier: 1 | 2 | 3 | null }`.
+
+- [ ] **Passo 1: escrever o teste que falha**
+
+Casos mínimos: linha **sem URL** vai para `descartados` **com motivo**; linha com URL entra; domínio
+fora do `fontes-autoritativas.json` entra **marcado com `tier: null`, não descartado** (§5.1 — o
+JSON tem 14 domínios por tier e não é exaustivo); dossiê sem a seção devolve as duas listas vazias
+sem lançar.
+
+- [ ] **Passo 2: rodar e confirmar que falha**
+
+- [ ] **Passo 3: implementar.** O recorte da seção reusa o padrão de `checagemSection`
+      (`draft.ts:116-123`), **inclusive o `(?![\s\S])` no lugar de `$`** — com a flag `m` o `$`
+      casaria o fim da primeira linha e devolveria só o primeiro estudo. O casamento de domínio é
+      por **sufixo** (`sec.gov` casa `data.sec.gov`), como o `_comentario` do JSON já manda.
+
+- [ ] **Passo 4: instrução em `agents/pesquisador.md`** no formato de §5.1, no mesmo padrão da
+      `## CHECAGEM` que já existe.
+
+- [ ] **Passo 5: ligar em `index.ts`** — os descartados vão para
+      `proveniencia.estudos_descartados` **com os textos**, não só o contador (§7): é o sinal de que
+      o Grok está inventando referência, e some se só o número for salvo.
+
+- [ ] **Passo 6: gate + commit**
+
+```
+feat(pesquisa): secao ESTUDOS com portao de URL (forma e procedencia, nao conteudo)
+```
+
+**O que este portão NÃO faz:** abrir a URL e confirmar que a página existe. Isso é a peça 3. O
+comentário no código tem que dizer isso, senão alguém lê "verificável" como "verificado".
+
+---
+
+### Task 3: Detector de eco numérico
+
+**Files:**
+- Modify: `lib/pipeline/slop-lint.ts`
+- Test: `tests/eco-numerico.test.ts`
+
+**Interfaces:**
+- Produces: `ecosNumericos(text: string): EcoNumerico[]` onde
+  `EcoNumerico = { valor: string; frases: string[] }`. **Exportada à parte, NÃO chamada de dentro de
+  `slopLint()`** (§12): `slopLint` só roda no humanizador, depois da revisão — tarde demais.
+
+- [ ] **Passo 1: escrever o teste que falha, com os quatro casos reais de §1.1 como fixture**
+
+`60%`, `400%`, `37,5%` e `2 milhões` — os textos literais estão na tabela de §1.1. Os quatro
+**acusam** (o detector não julga); o que o teste trava é que **nenhum deles sai como `block`** e que
+o `match`/frase devolvido é a **frase inteira**, nunca o número. É o teste que impede a regressão
+que quebraria o retry cirúrgico se alguém um dia ligar o detector nele.
+
+Guardas, cada uma com seu caso: número em linha de `## FONTES` não acusa; data `dd/mm/aaaa` não
+acusa; URL não acusa; `## VARIACOES_DE_HOOK` não acusa (repete conteúdo por definição).
+
+- [ ] **Passo 2: rodar e confirmar que falha**
+
+- [ ] **Passo 3: implementar.** Regex de quantidade (dígito + escala/percentual), valor normalizado
+      como chave de agrupamento, frases separadas pelo mesmo `split(/(?<=[.!?])\s+|\n+/)` que a
+      parataxe já usa (`slop-lint.ts:142`). As guardas reusam o teste de linha de
+      `slop-lint.ts:146`. Envolver em `try/catch` que devolve `[]` (§7): detector com bug nunca
+      derruba geração.
+
+- [ ] **Passo 4: rodar e confirmar que passa**
+
+- [ ] **Passo 5: commit**
+
+```
+feat(lint): detector deterministico de eco numerico (sinaliza, nao corrige)
+```
+
+---
+
+### Task 4: Hook × abertura do corpo
+
+**Files:**
+- Modify: `lib/pipeline/draft.ts` (exportar `ecoa`)
+- Modify: `lib/pipeline/index.ts` (o call site do par principal)
+- Test: `tests/hook-abertura.test.ts`
+
+- [ ] **Passo 1: escrever o teste que falha**
+
+Dois testes. O de comportamento: hook que ecoa a abertura é sinalizado; hook distinto não é; e —
+guarda de §7 — **hook idêntico à abertura é PULADO, não sinalizado** (`stripLeadingHook` é fuzzy e
+pode não cortar, `draft.ts:381`; nesse caso o "primeiro bloco" é o próprio hook e a comparação daria
+eco de 100% por construção).
+
+E o de **call site**, no espírito do "todo destinatário tem consumidor" da peça 1: `ecoa` é chamada
+com o hook principal em algum lugar de `lib/pipeline/`. Sem ele, alguém escreve o detector e esquece
+de ligá-lo — e ele vira o `taughtBlock` de 2026: construído, correto e nunca chamado.
+
+- [ ] **Passo 2: rodar e confirmar que falha** — `ecoa` não é exportada hoje (`draft.ts:415`).
+
+- [ ] **Passo 3: exportar `ecoa`** e ligar o par principal em `index.ts`, **antes** da montagem do
+      `assembled` (`index.ts:263-270`), onde o hook é colado na frente do corpo de propósito.
+
+- [ ] **Passo 4: gate + commit**
+
+```
+feat(hook): compara o hook escolhido com a abertura do corpo (o par que nunca foi olhado)
+```
+
+---
+
+### Task 5: Entregar os sinais ao revisor
+
+É aqui que a peça deixa de ser detector e vira efeito. Sem esta task, as Tasks 3 e 4 gravam e não
+mudam nada — a falha silenciosa que o pacote inteiro combate.
+
+**Files:**
+- Modify: `lib/pipeline/draft.ts` (`buildReviewDynamicBlock`)
+- Modify: `lib/pipeline/index.ts` (chamar os detectores, passar ao revisor, gravar no trace)
+- Test: `tests/sinais-revisor.test.ts`
+
+- [ ] **Passo 1: escrever o teste que falha** — o bloco entregue ao revisor contém as frases do eco
+      e **termina em MANTENHA**, não em corte (§6.1). A regra não é "não repita", é "repetição tem
+      que se pagar": instruir "não repita" produziria os dois cortes errados de §1.1. Teto na lista
+      + excedente contado.
+
+- [ ] **Passo 2: rodar e confirmar que falha**
+
+- [ ] **Passo 3: implementar** o bloco no formato literal de §6.1, dentro de
+      `buildReviewDynamicBlock` (que a peça 1 já usa para as lições do revisor).
+
+- [ ] **Passo 4: gravar em `proveniencia.ecos_numericos`** o sinal e o excedente, para que a taxa de
+      falso positivo seja **medida e não estimada** (§10.1). É esse número que decide se o detector
+      aperta ou afrouxa depois.
+
+- [ ] **Passo 5: gate + commit**
+
+```
+feat(revisao): eco numerico e hook x abertura viram lista de decisao do revisor
+```
+
+---
+
+### Task 6: Higiene — `validarPadrao` no caminho de escrita do lint
+
+**Files:**
+- Modify: `lib/pipeline/slop-lint.ts:12-18`
+
+- [ ] **Passo 1:** trocar o `try/catch` + `continue` por `validarPadrao` (`lib/regex-safety.ts`), que
+      a peça 1 criou. Uma linha. Com a peça 1 permitindo cadastrar padrão em sessão, a validação
+      passa a valer a pena aqui (§6.3).
+
+- [ ] **Passo 2: gate + commit**
+
+```
+fix(lint): regex do banco passa por validarPadrao, como no caminho de ensino
+```
+
+---
+
+## Ordem, dependências e portões
+
+| Task | Depende de | Portão |
+|---|---|---|
+| 1 | — | hierarquia aparece **uma vez** nos dois modos |
+| 2 | 1 | descartado carrega motivo e texto |
+| 3 | — | os 4 casos de §1.1 acusam, nenhum como `block` |
+| 4 | — | hook idêntico à abertura é pulado |
+| 5 | **3, 4** | o bloco do revisor termina em MANTENHA |
+| 6 | — | suíte verde |
+
+Tasks 1, 3, 4 e 6 são independentes entre si — as candidatas naturais a paralelizar. A 5 é a que dá
+efeito às 3 e 4 e não pode ser deixada para depois: sem ela a peça grava e não muda nada.
+
+## Cobertura do spec
+
+| Seção | Task |
+|---|---|
+| §5.1 estudos + portão de URL | 2 |
+| §5.2 senso de grandeza + hierarquia de fontes | 1 |
+| §6.1 eco numérico | 3, 5 |
+| §6.2 hook × abertura | 4, 5 |
+| §6.3 frases genéricas + higiene do `validarPadrao` | 6 (o resto é a peça 1) |
+| §7 tratamento de erro | 2 (estudos), 3 (`try/catch`), 4 (identidade), 5 (teto) |
+| §8 checagem | 2, 3, 4, 5 |
