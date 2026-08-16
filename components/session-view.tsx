@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState, useTransition } from "react";
+import { useCallback, useEffect, useRef, useState, useTransition, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import {
   finalizeSession,
@@ -14,6 +14,8 @@ import {
   updatePremissa,
 } from "@/lib/actions";
 import { useTeachDialog } from "@/components/teach-dialog";
+import { useVerificacaoDialog } from "@/components/verificacao-dialog";
+import type { RegistroVerificacao } from "@/lib/pipeline/verificar";
 import type { BobModo } from "@/lib/pipeline/bob";
 import { spliceRoteiro, mergeFontes } from "@/lib/bob-edit";
 import type { NarrativaCandidata, RankingItem, SessionArtifacts } from "@/lib/pipeline/types";
@@ -38,6 +40,8 @@ interface Script {
   // extraídos de pipeline_trace no server component (WP-F.4/.3)
   violations: LintViolation[];
   edicao_humana: boolean;
+  // 017 §9: coluna `verificacao` (0029). null = nunca verificado — e a tela diz isso.
+  verificacao: RegistroVerificacao | null;
 }
 
 export interface Baseline {
@@ -54,7 +58,9 @@ export interface ScriptPerformance {
   seguidores_ganhos: number | null;
 }
 
-const PHASES = ["premissa", "pesquisa", "modelagem", "narrativas", "roteiro", "hook_comando", "revisao", "humanizacao", "salvando"] as const;
+// "verificacao" roda DEPOIS do save e depois do `done` (017 §8), mas ainda dentro do stream:
+// sem ela na lista, o stepper cai no fallback e mostra "Preparando" durante a verificação.
+const PHASES = ["premissa", "pesquisa", "modelagem", "narrativas", "roteiro", "hook_comando", "revisao", "humanizacao", "salvando", "verificacao"] as const;
 
 const PHASE_SHORT: Record<string, string> = {
   premissa: "Premissa",
@@ -66,6 +72,7 @@ const PHASE_SHORT: Record<string, string> = {
   revisao: "Revisão",
   humanizacao: "Humanização",
   salvando: "Salvando",
+  verificacao: "Verificação",
 };
 
 // Modelagem por roteiro colado não tem link nenhum (o conteúdo está em raw_content), então a
@@ -86,6 +93,7 @@ const PHASE_LABELS: Record<string, string> = {
   revisao: "Sala de revisão: hook, storytelling, comando, ritmo, restrições...",
   humanizacao: "Passe final de naturalidade...",
   salvando: "Salvando...",
+  verificacao: "Conferindo as alegações que não vieram da pesquisa, uma busca por alegação...",
 };
 
 // Painel da premissa: o fio condutor do roteiro, visível e editável.
@@ -952,12 +960,15 @@ function ScriptCard({
   clientId,
   disabled,
   rating,
+  selo,
 }: {
   script: Script;
   sessionId: string;
   clientId: string | null;
   disabled: boolean;
   rating: number | null;
+  /** selo da verificação factual (017 §10) — o dialog vive no SessionView, com o botão de varredura */
+  selo?: ReactNode;
 }) {
   const router = useRouter();
   const [editing, setEditing] = useState(false);
@@ -1142,6 +1153,7 @@ function ScriptCard({
           sempre à mão no celular em vez de a 3 telas de distância, lá no topo do card */}
       <div className="sticky top-[52px] z-20 flex flex-wrap items-center gap-2.5 px-5 sm:px-6 py-3 border-b border-white/[.07] bg-[#131110]/95 backdrop-blur-sm">
         <span className="kicker text-gold">ROTEIRO COMPLETO</span>
+        {!editing && selo}
         {!editing && <ThumbBtns scriptId={script.id} sessionId={sessionId} rating={rating} />}
         {!disabled && !editing && (
           <button
@@ -1763,6 +1775,15 @@ export default function SessionView({
   const script = scripts[selected];
   const closed = session.status === "closed";
 
+  // Verificação factual (017 §10): uma instância só — o selo vai para o header do card e o
+  // botão de varredura completa para o fim da página, mas os dois falam do mesmo registro.
+  const verificacao = useVerificacaoDialog({
+    scriptId: script?.id ?? "",
+    registro: script?.verificacao ?? null,
+    roteiro: script?.roteiro ?? "",
+    disabled: closed || !script,
+  });
+
   return (
     <div className="max-w-[860px] mx-auto w-full px-4 sm:px-6 py-8 sm:py-10 space-y-5">
       {/* breadcrumb + header */}
@@ -2021,7 +2042,9 @@ export default function SessionView({
             clientId={clientId}
             disabled={closed}
             rating={lastRating[script.id] ?? null}
+            selo={verificacao.selo}
           />
+          {verificacao.dialog}
 
           {!!script.hook_variants?.length && (
             <HookVariants scriptId={script.id} variants={script.hook_variants} disabled={generating || watching || closed} />
@@ -2082,6 +2105,7 @@ export default function SessionView({
                 </button>
                 <span className="text-[12px] text-white/55">mesma narrativa · pesquisa reaproveitada</span>
               </div>
+              {verificacao.botaoVerificarTudo}
               <FeedbackForm sessionId={session.id} scriptId={script.id} editedInline={script.edicao_humana} />
             </>
           )}

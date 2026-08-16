@@ -3,6 +3,7 @@ import { appDb, viralData } from "@/lib/db";
 import { writerScope } from "@/lib/hub";
 import { isStaleGeneration } from "@/lib/generation";
 import type { LintViolation } from "@/lib/pipeline/slop-lint";
+import type { RegistroVerificacao } from "@/lib/pipeline/verificar";
 import SessionView from "@/components/session-view";
 
 export const dynamic = "force-dynamic";
@@ -33,7 +34,7 @@ export default async function SessionPage({
     appDb
       .from("vm_generated_scripts")
       .select(
-        "id, version, headline, hook, hook_variants, roteiro, comando, fontes, slop_lint_violations, status, published_url, published_at, created_at, pipeline_trace"
+        "id, version, headline, hook, hook_variants, roteiro, comando, fontes, slop_lint_violations, status, published_url, published_at, created_at, pipeline_trace, verificacao"
       )
       .eq("session_id", id)
       .order("version", { ascending: false }),
@@ -71,12 +72,15 @@ export default async function SessionPage({
   }
 
   // WP-F.4/.3: só o que a UI precisa do trace (violations + edição inline) — o resto fica no server
-  const scriptsView = (scripts ?? []).map(({ pipeline_trace, ...s }) => {
+  const scriptsView = (scripts ?? []).map(({ pipeline_trace, verificacao, ...s }) => {
     const trace = (pipeline_trace ?? {}) as { violations?: LintViolation[]; edicao_humana?: boolean };
     return {
       ...s,
       violations: Array.isArray(trace.violations) ? trace.violations : [],
       edicao_humana: !!trace.edicao_humana,
+      // 017 §9: null enquanto ninguém verificou (ou enquanto a 0029 não estiver aplicada).
+      // A tela trata null como "não verificado" — nunca como "verificado, 0 problemas".
+      verificacao: (verificacao ?? null) as RegistroVerificacao | null,
     };
   });
 
