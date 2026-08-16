@@ -1,3 +1,4 @@
+import { validarPadrao } from "../regex-safety";
 import type { BannedPhrase } from "./types";
 
 export interface LintViolation {
@@ -10,13 +11,17 @@ export function slopLint(text: string, phrases: BannedPhrase[]): LintViolation[]
   const violations: LintViolation[] = [];
 
   for (const p of phrases) {
-    let re: RegExp;
-    try {
-      re = new RegExp(p.pattern, "gi");
-    } catch {
-      continue; // regex inválida cadastrada no settings não derruba a geração
+    // Mesma validação do caminho de ensino (015 Task 8): além de regex inválida, barra
+    // quantificador aninhado e padrão longo demais. Com a peça 1 permitindo cadastrar padrão
+    // em sessão, deixar isso só no try/catch era proteger um lado da porta e não o outro.
+    const v = validarPadrao(p.pattern);
+    if (!v.ok) {
+      // Nenhum corte é silencioso: frase banida que para de valer sem ninguém saber é a
+      // falha que o pacote combate. As 32 ativas hoje passam; o log é para a 33ª.
+      console.error(`slop-lint: padrão "${p.pattern}" ignorado — ${v.motivo}`);
+      continue;
     }
-    const m = text.match(re);
+    const m = text.match(v.re);
     if (m) violations.push({ label: p.label ?? p.pattern, match: m[0], severity: p.severity });
   }
 
