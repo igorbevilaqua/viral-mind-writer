@@ -11,6 +11,8 @@ import { registrarAtividade, currentUserId } from "./hub";
 import { createClient } from "./supabase/server";
 import { runProbeTopup } from "./calibration-probe";
 import { type Casa, type Ensinamento } from "./pipeline/classify-teaching";
+import { atribuirEtapa } from "./provenance";
+import { explicar, type Explicacao, type TraceExplicavel } from "./pipeline/explain";
 import { validarPadrao } from "./regex-safety";
 
 export interface NewAttachment {
@@ -443,6 +445,24 @@ export async function suggestFragment(
 ): Promise<string> {
   if (!input.trecho.trim() || !input.instrucao.trim()) throw new Error("trecho e pedido são obrigatórios");
   return rewriteFragment(sessionId, input);
+}
+
+// Modo "Por quê" (015 §4): etapa é determinística (pertencimento de sentença nos três
+// snapshots, que existem em todos os 47 roteiros), causa sai do rastro. Nada é inventado —
+// roteiro sem `proveniencia` responde nao_determinado sem chamar modelo nenhum.
+export async function explicarTrecho(scriptId: string, trecho: string): Promise<Explicacao> {
+  if (!trecho.trim()) throw new Error("selecione um trecho");
+  // A coluna `slop_lint_violations` é int (contagem, 0001_init) — as violações em si vivem em
+  // pipeline_trace.violations, e é de lá que a etapa de humanização é explicada.
+  const { data, error } = await appDb
+    .from("vm_generated_scripts")
+    .select("pipeline_trace")
+    .eq("id", scriptId)
+    .single();
+  if (error || !data) throw new Error(error?.message ?? "roteiro não encontrado");
+  const t = (data.pipeline_trace ?? null) as TraceExplicavel | null;
+  const etapa = atribuirEtapa(trecho, { assembled: t?.assembled, revised: t?.revised, final: t?.final });
+  return explicar({ trecho, etapa, trace: t });
 }
 
 // Troca o hook do roteiro por uma das variações (a antiga vira variação — dá pra desfazer trocando de volta).
