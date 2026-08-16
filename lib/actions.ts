@@ -10,7 +10,7 @@ import { isSubstantiveEdit } from "./learning-loop";
 import { registrarAtividade, currentUserId } from "./hub";
 import { createClient } from "./supabase/server";
 import { runProbeTopup } from "./calibration-probe";
-import { type Casa, type Ensinamento } from "./pipeline/classify-teaching";
+import { classificarEnsinamento, type Casa, type Ensinamento } from "./pipeline/classify-teaching";
 import { atribuirEtapa } from "./provenance";
 import { explicar, type Explicacao, type TraceExplicavel } from "./pipeline/explain";
 import { validarPadrao } from "./regex-safety";
@@ -568,6 +568,48 @@ export async function dismissHookPlaybook(version: number, slug = "hook") {
   const { error } = await appDb.from("vm_playbooks").delete().eq("slug", slug).eq("version", version).eq("active", false);
   if (error) throw new Error(error.message);
   revalidatePath("/ensinar");
+}
+
+// O classificador roda no servidor (SDK da Anthropic); o dialog de ensino é client component.
+// Devolve `erro` em vez de lançar: na tela o texto cru do usuário precisa sobreviver à falha
+// para o botão de repetir ter o que repetir (§8).
+export async function classificarTexto(input: {
+  texto: string;
+  trecho?: string;
+  referenciaId?: string;
+  clientId?: string | null;
+}): Promise<{ ok: true; ensinamento: Ensinamento } | { ok: false; erro: string }> {
+  if (!input.texto.trim()) return { ok: false, erro: "escreva o que você quer ensinar" };
+  try {
+    // Nome do cliente é contexto do classificador ("evite X" costuma ser sobre a marca).
+    const { data: cli } = input.clientId
+      ? await appDb.from("clientes").select("nome").eq("id", input.clientId).maybeSingle()
+      : { data: null };
+    const ensinamento = await classificarEnsinamento({
+      texto: input.texto,
+      trecho: input.trecho,
+      referenciaId: input.referenciaId,
+      clienteNome: cli?.nome ?? undefined,
+    });
+    return { ok: true, ensinamento };
+  } catch (e) {
+    console.error("classificarTexto falhou", e);
+    return { ok: false, erro: e instanceof Error ? e.message : String(e) };
+  }
+}
+
+// Lição citada por uma explicação (§7.2, "Corrigir esta lição"): o dialog precisa do título e
+// da descrição atuais para editar sem apagar o que já estava lá.
+export async function getLearning(
+  id: string
+): Promise<{ titulo: string; descricao: string; active: boolean } | null> {
+  const { data, error } = await appDb
+    .from("vm_lesson_learnings")
+    .select("titulo, descricao, active")
+    .eq("id", id)
+    .maybeSingle();
+  if (error) throw new Error(error.message);
+  return data ?? null;
 }
 
 export interface EnsinamentoConfirmado extends Ensinamento {
