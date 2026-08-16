@@ -141,3 +141,92 @@ export async function turnoKasparov(args: {
   );
   return separarAssunto(bruto, args.estado.assunto);
 }
+
+// ────────────────────────────────────────────────────────────────────────────
+// Destilação (018 §5) — o ponto onde esta peça pode envenenar a peça 1
+//
+// O classificador da peça 1 (`classificarEnsinamento`) recebe `texto: string` — as
+// palavras CRUAS do usuário — e `vm_lessons.context_note` as guarda literais. É esse
+// campo que permite auditar depois se o sistema entendeu ou reescreveu (015 §5).
+//
+// Num debate de dez turnos essa string NÃO EXISTE: alguém tem que comprimir o acordo
+// numa frase, e esse alguém é o Kasparov. Se a frase dele for gravada em context_note
+// como se fosse fala do usuário, a auditoria da peça 1 morre em silêncio.
+//
+// Por isso o que sai daqui é uma PROPOSTA, com as palavras dele, e nada mais: o campo
+// que vira `context_note` (`textoCru`) só é montado depois que o usuário confirmar ou
+// reescrever a síntese na tela da peça 1. Este módulo não grava e não classifica —
+// não existe atalho de "gravar direto quando a confiança for alta" (018 §14.1).
+// ────────────────────────────────────────────────────────────────────────────
+
+export interface PropostaDeDestilacao {
+  /** as palavras do KASPAROV, para o usuário confirmar ou reescrever — nunca gravadas como fala dele */
+  sintese: string;
+  /** o que o registro guarda de procedência: nasceu de debate, não de digitação direta */
+  origem: "kasparov";
+}
+
+// Dois formatos possíveis, e o padrão é o primeiro. Marcador de texto e não tool porque
+// `trackedStream` já é a chamada de uma fala só — e é ela que mantém este módulo sem
+// nenhum parâmetro por onde a conversa inteira entraria (§4).
+const MARCADOR_REGRA = "REGRA:";
+
+const INSTRUCAO_DESTILACAO = `# AGORA: o debate produziu regra nova?
+
+Olhe para o que vocês acabaram de trocar e para o ESTADO DO SISTEMA abaixo. Responda em UM
+destes dois formatos, e nada além disso:
+
+NADA NOVO
+${MARCADOR_REGRA} <uma frase, nas suas palavras, com a regra acordada>
+
+"NADA NOVO" é o desfecho padrão e o mais frequente: confirmar o que o sistema já sabe não é
+aprender, e conclusão que só vale para o roteiro aberto agora morre com a conversa. Só escreva
+${MARCADOR_REGRA} quando o acordo for replicável em outro roteiro, sobre outro tema, por outra
+pessoa — e quando ainda não estiver nos APRENDIZADOS ATIVOS.
+
+A frase é uma PROPOSTA: ela vai à tela com as SUAS palavras e o usuário confirma ou reescreve
+antes de virar registro. Não escreva como se fosse fala dele.`;
+
+/**
+ * Puro: lê a resposta da destilação e devolve a síntese, ou `null` quando não houve regra.
+ * Qualquer coisa fora do formato cai em `null` — o desfecho seguro é o padrão do produto.
+ */
+export function separarProposta(bruto: string): string | null {
+  const primeira = umaLinha(bruto.split("\n")[0]);
+  if (!primeira.toUpperCase().startsWith(MARCADOR_REGRA)) return null;
+  return umaLinha(primeira.slice(MARCADOR_REGRA.length)) || null;
+}
+
+/**
+ * A procedência de uma lição nascida de debate (§5.3). Thread vazia devolve string vazia:
+ * `gravarEnsinamento` recusa a gravação em vez de carimbar `/kasparov/undefined`.
+ */
+export const origemDoDebate = (threadId: string) => (threadId.trim() ? `/kasparov/${threadId.trim()}` : "");
+
+/**
+ * Propõe registrar o que foi acordado — ou nada, que é o caso comum (§3, §12.4).
+ *
+ * `mensagem` e `resposta` são o ÚLTIMO par, ambos no singular: não há parâmetro para os
+ * turnos anteriores, pela mesma razão do turno (§4). O que o modelo tem além disso é o
+ * estado do sistema, que é o que lhe permite dizer "isso já é lição, nada novo".
+ */
+export async function proporDestilacao(args: {
+  ctx: GenerationContext;
+  estado: EstadoDaThread;
+  /** o que o usuário acabou de dizer */
+  mensagem: string;
+  /** o que o Kasparov acabou de responder */
+  resposta: string;
+  log?: UsageLog;
+}): Promise<PropostaDeDestilacao | null> {
+  const bruto = await trackedStream(args.log ?? args.ctx.usageLog, "kasparov-destilacao", {
+    model: ANALYST_MODEL,
+    // Uma frase de saída. Teto baixo de propósito: destilação longa é sintoma de resumo
+    // da conversa, que é exatamente o que não pode virar lição.
+    max_tokens: 300,
+    system: `${agentPrompt("kasparov")}\n\n${INSTRUCAO_DESTILACAO}\n\n${montarContexto(args.ctx, args.estado)}`,
+    turno: `VOCÊ ACABOU DE RESPONDER:\n${args.resposta}\n\nO USUÁRIO RESPONDEU:\n${args.mensagem}`,
+  });
+  const sintese = separarProposta(bruto);
+  return sintese ? { sintese, origem: "kasparov" } : null;
+}

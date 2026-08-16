@@ -699,7 +699,21 @@ export interface EnsinamentoConfirmado extends Ensinamento {
   escopo: "cliente" | "global";
   sessionId: string;
   clientId: string | null;
+  /**
+   * Procedência quando o ensino não nasceu numa sessão: a origem do debate com o Kasparov
+   * (`/kasparov/<thread>` ou a URL do vídeo discutido). Debate avulso não tem `sessionId` —
+   * `loadContextAvulso` devolve "" de propósito, como sinal (018 §5.3).
+   */
+  sourceUrl?: string;
 }
+
+// A procedência que vai para `vm_lessons.source_url`. Não exportada: este arquivo é
+// "use server" e só exporta server actions.
+// `/sessions/${sessionId}` com sessionId vazio grava lição com procedência FALSA
+// (`/sessions/`), que é pior que não gravar: a auditoria passa a apontar para uma sessão
+// que nunca existiu. Sem procedência nenhuma, erro explícito (018 §5.3).
+const procedencia = (e: EnsinamentoConfirmado): string | null =>
+  e.sourceUrl?.trim() || (e.sessionId?.trim() ? `/sessions/${e.sessionId.trim()}` : null);
 
 // Doutrina não tem playbook único: a dimensão diz qual manual a proposta altera.
 const PLAYBOOK_POR_DIMENSAO: Record<string, string> = {
@@ -724,10 +738,13 @@ export async function gravarEnsinamento(
 
   switch (casa) {
     case "licao": {
+      const origem = procedencia(e);
+      if (!origem)
+        return { ok: false, erro: "sem procedência: a lição precisa da sessão ou da origem do debate" };
       // RPC transacional: vm_lessons + vm_lesson_learnings ou nenhum dos dois (§8).
       const { data, error } = await appDb.rpc("vm_gravar_ensinamento", {
         p_client_id: clientId,
-        p_session_url: `/sessions/${e.sessionId}`,
+        p_session_url: origem,
         p_texto_cru: e.textoCru,
         p_titulo: e.regra,
         p_descricao: e.regra,
@@ -806,9 +823,12 @@ export async function gravarEnsinamento(
         .maybeSingle();
       if (pbErr) return { ok: false, erro: pbErr.message };
       if (!latest) return { ok: false, erro: `sem playbook base para "${slug}"` };
+      // "em sessão" seria mentira num acordo de debate, e playbook é manual que todos os
+      // agentes leem: a procedência da proposta é a mesma da lição (§5.3).
+      const onde = procedencia(e)?.startsWith("/kasparov/") ? "debate" : "sessão";
       const content = `${String(latest.content).trimEnd()}
 
-## Ensinado em sessão (${new Date().toISOString().slice(0, 10)})
+## Ensinado em ${onde} (${new Date().toISOString().slice(0, 10)})
 
 - ${e.regra}
 
