@@ -438,13 +438,32 @@ const primeiraFrase = (texto: string) => texto.trim().split(/(?<=[.!?])\s+/)[0] 
 const MIN_PALAVRAS_EM_COMUM = 4; // frase curta divide metade das palavras por acaso
 const LIMITE_ECO = 0.5;
 
-function ecoa(a: string, b: string): boolean {
+export function ecoa(a: string, b: string): boolean {
   const pa = conteudo(primeiraFrase(a));
   const pb = conteudo(primeiraFrase(b));
   if (!pa.size || !pb.size) return false;
   let comuns = 0;
   for (const p of pa) if (pb.has(p)) comuns++;
   return comuns >= MIN_PALAVRAS_EM_COMUM && comuns / Math.min(pa.size, pb.size) >= LIMITE_ECO;
+}
+
+/**
+ * O par que nunca foi olhado: o hook ESCOLHIDO contra o primeiro bloco do corpo — os dois trechos
+ * que o espectador ouve seguidos. Não descarta nada; hook e abertura ecoarem pode ser costura
+ * deliberada. Só devolve o sinal, e o revisor decide.
+ *
+ * Identidade é PULADA, não sinalizada (§7): `stripLeadingHook` é fuzzy e pode não cortar, e nesse
+ * caso o "primeiro bloco" é o próprio hook — eco de 100% por construção, falso positivo garantido.
+ */
+export function hookEcoaAbertura(hook: string | null, corpo: string | null): boolean {
+  if (!hook?.trim() || !corpo?.trim()) return false;
+  const abertura = corpo.split(/\n\s*\n/)[0] ?? "";
+  // mesma comparação fuzzy de stripLeadingHook: se ela cortaria, os dois lados são o mesmo texto
+  const norm = (s: string) => s.toLowerCase().replace(/[^a-zà-ú0-9]+/gi, " ").trim();
+  const h = norm(hook);
+  const a = norm(abertura);
+  if (h === a || h.includes(a) || a.includes(h)) return false;
+  return ecoa(hook, abertura);
 }
 
 /** Descarta as variações de hook que só reescrevem a abertura do roteiro. */

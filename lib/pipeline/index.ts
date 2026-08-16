@@ -6,7 +6,7 @@ import { analyzeModelagem, ensureTranscript, type ModelagemResult } from "./mode
 import { compreensaoBlock } from "./modelagem-brief";
 import { research, proposeNarratives, rankNarratives, designHook, writeComando } from "./agents";
 import { pairFromCandidates } from "../calibration";
-import { generateDraft, parseSections, semEcoDaAbertura, stripLeadingHook, stripTrailingComando } from "./draft";
+import { generateDraft, hookEcoaAbertura, parseSections, semEcoDaAbertura, stripLeadingHook, stripTrailingComando } from "./draft";
 import { critiqueAndRewrite } from "./critique";
 import { extractFromCorrection } from "./teach";
 import { humanize } from "./humanize";
@@ -259,6 +259,10 @@ export async function runPipeline(
     // ── Hook e comando em paralelo, ambos vendo o roteiro pronto ──
     emit({ type: "phase", phase: "hook_comando" });
     const [hookRes, comando] = await Promise.all([designHook(ctx, corpo), writeComando(ctx, corpo)]);
+
+    // hook escolhido x abertura do corpo, ANTES da montagem: logo abaixo o hook é colado na frente
+    // do corpo de propósito, e depois disso os dois lados deixam de ser distinguíveis.
+    const ecoHookAbertura = hookEcoaAbertura(hookRes.hook, corpo);
 
     const assembled = [
       `## HEADLINE\n${headline ?? ""}`,
