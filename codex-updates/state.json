@@ -1,31 +1,39 @@
 {
-  "version": "1.8",
+  "version": "1.9",
   "codexUrl": "https://codex.viralmindlabs.com",
   "pending": [],
   "lastRelease": {
-    "version": "1.7",
-    "git": "3662002",
-    "productSummary": "Sugerir tema passa a entregar, junto de cada pauta, um vídeo externo que já performou e pode virar modelagem em um clique; o hit de outro cliente da casa também ganhou o link do original.",
-    "message": "🪄 *Codex: Nova Versão Disponível (v1.7)*\n🔖 Git: 3662002\n\nSugerir tema parou de entregar só a ideia. Agora cada pauta pode vir com um vídeo real que já estourou lá fora, pronto para virar modelagem em um clique.\n\n📋 *O que mudou:*\n\n✨ *O tema chega com um viral de fora junto*\nCada sugestão pode vir acompanhada de um vídeo real de outro perfil, com autor, views e a informação de o assunto ser perene ou morrer em duas semanas. Um segundo botão aplica o tema e já anexa o vídeo como modelagem, sem caçar link em lugar nenhum. E o critério de escolha não é views: um vídeo com 1.556 seguidores fazendo 316 mil views ganha de um com 763 mil seguidores fazendo 9 milhões, porque nesse caso o mérito está no vídeo e não na audiência herdada. Quem ordena isso é código, não o modelo.\n\n💅 *O hit de outro cliente também vira modelagem em um clique*\nQuando a pauta nasce de um vídeo que já funcionou para outro cliente da casa, o card passa a carregar o link do original. Aplicar o tema com aquele vídeo anexado virou um clique, em vez de procurar o link no histórico.\n\n👉 Acesse agora em https://codex.viralmindlabs.com\n",
+    "version": "1.8",
+    "git": "1eb0dc5",
+    "productSummary": "Ensinar o Codex deixou de ser um destino: sobre o trecho selecionado aparecem Por quê?, Mudar e Ensinar, o ensinamento vai para a casa certa com confirmação e vale na próxima geração, e a lição passa a ser roteada para o agente que precisa dela.",
+    "message": "🪄 *Codex: Nova Versão Disponível (v1.8)*\n🔖 Git: 1eb0dc5\n\nAté agora, ensinar o Codex era ir a algum lugar depois. Nesta versão você ensina no meio da sessão, em cima do trecho, e o que você ensinou vale já na próxima geração.\n\n📋 *O que mudou:*\n\n✨ *Três verbos em cima do trecho selecionado*\nSelecionar um pedaço do roteiro parou de oferecer só o Bob. Agora aparecem três: *Por quê?*, *Mudar* e *Ensinar*. Tem também um botão Ensinar no topo do roteiro, para o que não é sobre trecho nenhum. Você escreve do seu jeito (\"manchete é uma palavra difícil\") e o sistema decide sozinho se aquilo é uma lição, uma palavra a evitar, uma frase a banir ou uma mudança de manual. Antes de gravar, a tela mostra suas palavras exatas ao lado do que ele entendeu, e quem vai receber a regra — você corrige ali se ele te entendeu torto. O botão diz *\"vale da próxima geração\"* e é literal: geração em andamento não muda no meio.\n\n✨ *Dá para perguntar por que uma frase está ali*\nO Codex passou a guardar o rastro de cada geração: o que cada agente viu quando escreveu, a crítica do revisor e até os hooks que ele descartou. Com isso ele responde qual etapa produziu aquele trecho e por quê — e quando a culpa é de uma lição, a lição vira um botão que abre ela para você corrigir ou desligar. Se nada no prompt mandou escrever aquilo, ele diz exatamente isso, em vez de inventar uma justificativa bonita. Roteiro gerado antes desta versão responde que é anterior ao rastro; ninguém finge saber.\n\n💅 *A lição agora chega em quem precisa dela*\nUma lição sobre hook arquivada como \"geral\" nunca chegava ao agente de hook — ficava ativa, confirmada e invisível. A lição passou a ser roteada por quem precisa saber daquilo, o revisor virou ensinável pela primeira vez, e o corte que descartava lições ativas além da décima segunda deixou de existir. Quando algum limite cortar alguma coisa, isso fica registrado em vez de sumir calado.\n\n👉 Acesse agora em https://codex.viralmindlabs.com\n",
     "changes": [
       {
-        "id": "mss043fg",
+        "id": "msvtm44r",
         "type": "feature",
-        "summary": "Sugerir tema passa a vir com um vídeo externo que já performou",
-        "detail": "Cada tema sugerido pode vir acompanhado de um vídeo real de fora da casa que estourou a própria audiência, com autor, views, quantas vezes passou da audiência do perfil e se o assunto é perene ou morre em duas semanas. Um segundo botão aplica o tema e já anexa o vídeo como modelagem, sem precisar caçar link. A escolha é por quanto o vídeo superou o próprio perfil, não por views absolutas: um vídeo com 1.556 seguidores fazendo 316 mil views ganha de um com 763 mil seguidores fazendo 9 milhões.",
-        "commit": "3662002",
-        "addedAt": "2026-08-13T20:59:19.530Z"
+        "summary": "Ensinar o sistema no meio da sessão, com efeito na próxima geração",
+        "detail": "Selecionar um trecho do roteiro passa a oferecer três verbos no lugar de um: Por quê?, Mudar e Ensinar. Também há um botão Ensinar no topo do roteiro, para o que não é sobre trecho nenhum. O que você ensina é classificado automaticamente na casa certa (lição, vocabulário, frase banida ou proposta de playbook), você confirma na tela antes de gravar, e vale da próxima geração em diante.",
+        "commit": "1eb0dc5",
+        "addedAt": "2026-08-16T13:08:27.640Z"
       },
       {
-        "id": "mss043gk",
+        "id": "msvtm45r",
+        "type": "feature",
+        "summary": "Perguntar por que um trecho do roteiro está daquele jeito",
+        "detail": "O sistema passa a guardar o rastro de cada geração: o que cada agente viu, a crítica do revisor e os hooks que foram descartados. Com isso ele responde qual etapa escreveu o trecho e por quê, com a lição culpada virando um botão que abre ela para correção. Quando nada no prompt determinou a frase, ele diz isso — não inventa justificativa.",
+        "commit": "1eb0dc5",
+        "addedAt": "2026-08-16T13:08:27.673Z"
+      },
+      {
+        "id": "msvtm46l",
         "type": "improvement",
-        "summary": "O hit de outro cliente também vira modelagem em um clique",
-        "detail": "Quando a sugestão nasce de um vídeo que já funcionou para outro cliente da casa, o card passa a carregar o link do original, então dá para aplicar o tema já com aquele vídeo anexado como modelagem. Antes só apareciam título e views e o link tinha que ser caçado à mão.",
-        "commit": "3662002",
-        "addedAt": "2026-08-13T20:59:19.566Z"
+        "summary": "A lição ensinada chega ao agente que precisa dela",
+        "detail": "Antes a lição era arquivada por dimensão, e uma lição sobre hook classificada como geral simplesmente nunca chegava ao agente de hook. Agora ela é roteada por quem precisa saber, e o revisor virou ensinável pela primeira vez. Some também o corte silencioso que descartava lições ativas além da décima segunda.",
+        "commit": "1eb0dc5",
+        "addedAt": "2026-08-16T13:08:27.703Z"
       }
     ],
-    "releasedAt": "2026-08-13T21:01:16.826Z"
+    "releasedAt": "2026-08-16T13:08:50.774Z"
   },
   "history": [
     {
@@ -354,6 +362,31 @@
         }
       ],
       "releasedAt": "2026-08-07T14:54:29.808Z"
+    },
+    {
+      "version": "1.7",
+      "git": "3662002",
+      "productSummary": "Sugerir tema passa a entregar, junto de cada pauta, um vídeo externo que já performou e pode virar modelagem em um clique; o hit de outro cliente da casa também ganhou o link do original.",
+      "message": "🪄 *Codex: Nova Versão Disponível (v1.7)*\n🔖 Git: 3662002\n\nSugerir tema parou de entregar só a ideia. Agora cada pauta pode vir com um vídeo real que já estourou lá fora, pronto para virar modelagem em um clique.\n\n📋 *O que mudou:*\n\n✨ *O tema chega com um viral de fora junto*\nCada sugestão pode vir acompanhada de um vídeo real de outro perfil, com autor, views e a informação de o assunto ser perene ou morrer em duas semanas. Um segundo botão aplica o tema e já anexa o vídeo como modelagem, sem caçar link em lugar nenhum. E o critério de escolha não é views: um vídeo com 1.556 seguidores fazendo 316 mil views ganha de um com 763 mil seguidores fazendo 9 milhões, porque nesse caso o mérito está no vídeo e não na audiência herdada. Quem ordena isso é código, não o modelo.\n\n💅 *O hit de outro cliente também vira modelagem em um clique*\nQuando a pauta nasce de um vídeo que já funcionou para outro cliente da casa, o card passa a carregar o link do original. Aplicar o tema com aquele vídeo anexado virou um clique, em vez de procurar o link no histórico.\n\n👉 Acesse agora em https://codex.viralmindlabs.com\n",
+      "changes": [
+        {
+          "id": "mss043fg",
+          "type": "feature",
+          "summary": "Sugerir tema passa a vir com um vídeo externo que já performou",
+          "detail": "Cada tema sugerido pode vir acompanhado de um vídeo real de fora da casa que estourou a própria audiência, com autor, views, quantas vezes passou da audiência do perfil e se o assunto é perene ou morre em duas semanas. Um segundo botão aplica o tema e já anexa o vídeo como modelagem, sem precisar caçar link. A escolha é por quanto o vídeo superou o próprio perfil, não por views absolutas: um vídeo com 1.556 seguidores fazendo 316 mil views ganha de um com 763 mil seguidores fazendo 9 milhões.",
+          "commit": "3662002",
+          "addedAt": "2026-08-13T20:59:19.530Z"
+        },
+        {
+          "id": "mss043gk",
+          "type": "improvement",
+          "summary": "O hit de outro cliente também vira modelagem em um clique",
+          "detail": "Quando a sugestão nasce de um vídeo que já funcionou para outro cliente da casa, o card passa a carregar o link do original, então dá para aplicar o tema já com aquele vídeo anexado como modelagem. Antes só apareciam título e views e o link tinha que ser caçado à mão.",
+          "commit": "3662002",
+          "addedAt": "2026-08-13T20:59:19.566Z"
+        }
+      ],
+      "releasedAt": "2026-08-13T21:01:16.826Z"
     }
   ]
 }
