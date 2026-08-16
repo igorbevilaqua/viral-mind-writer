@@ -1,4 +1,5 @@
 import { ANALYST_MODEL, trackedCreate } from "../anthropic";
+import { houveEdicaoHumana } from "../learning-loop";
 import type { Etapa } from "../provenance";
 import { agentPrompt, toolInput } from "./agents";
 import type { LintViolation } from "./slop-lint";
@@ -33,7 +34,9 @@ export interface TraceExplicavel {
   revised?: string;
   final?: string;
   violations?: LintViolation[];
-  roteiro_original?: string; // presente ⇒ houve edição humana depois de salvar
+  roteiro_original?: string; // presente ⇒ o texto foi alterado depois de salvar (humano OU verificação)
+  edicao_humana?: boolean;
+  correcao_factual?: boolean;
   proveniencia?: {
     blocos?: Record<string, unknown>;
     critica?: string;
@@ -126,7 +129,12 @@ export function montarEntrada(
     case "pos_save":
       return {
         edicoes_do_bob: prov.bob ?? [],
-        houve_edicao_humana: !!trace?.roteiro_original,
+        // Mesmo defeito do §16.1 da peça 3, aqui em outra porta: `roteiro_original` também é
+        // gravado pela correção factual, então lê-lo faria o explicador AFIRMAR ao usuário que
+        // ele editou um trecho que quem mudou foi a verificação. Os dois sinais são distintos
+        // e vão separados — inventar causa é exatamente o que este agente não pode fazer.
+        houve_edicao_humana: houveEdicaoHumana(trace ?? {}),
+        houve_correcao_factual: trace?.correcao_factual === true,
         ids_citaveis: [],
       };
   }

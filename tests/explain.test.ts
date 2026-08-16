@@ -14,6 +14,7 @@ const traceCompleto = {
     { label: "outra", match: "de forma inequívoca", severity: "block" as const },
   ],
   roteiro_original: "texto da sala",
+  edicao_humana: true, // par que updateScript sempre gravou junto — é o caso de edição humana
   proveniencia: {
     blocos: {
       roteirista: { premissa: "p", licoes: [{ id: "L1", titulo: "abra pelo número" }] },
@@ -110,9 +111,24 @@ describe("montagem da entrada por etapa", () => {
     expect(e.houve_edicao_humana).toBe(true);
   });
 
-  test("sem roteiro_original a flag de edição humana é falsa", () => {
-    const semEdicao = { ...traceCompleto, roteiro_original: undefined };
+  test("sem edição humana a flag é falsa", () => {
+    const semEdicao = { ...traceCompleto, roteiro_original: undefined, edicao_humana: undefined };
     expect(montarEntrada("trecho", "pos_save", semEdicao)!.houve_edicao_humana).toBe(false);
+  });
+
+  // Correção da verificação (peça 3) também grava `roteiro_original`. Ler esse campo faria o
+  // explicador afirmar ao usuário que ELE editou o trecho — inventar causa é o que este agente
+  // existe para não fazer. Os dois sinais são distintos.
+  test("correção factual não é reportada como edição humana", () => {
+    const soCorrecao = {
+      ...traceCompleto,
+      roteiro_original: "texto da sala",
+      edicao_humana: undefined,
+      correcao_factual: true,
+    };
+    const e = montarEntrada("trecho", "pos_save", soCorrecao)!;
+    expect(e.houve_edicao_humana).toBe(false);
+    expect(e.houve_correcao_factual).toBe(true);
   });
 });
 
