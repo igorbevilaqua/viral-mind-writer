@@ -6,7 +6,7 @@ import { analyzeModelagem, ensureTranscript, type ModelagemResult } from "./mode
 import { compreensaoBlock } from "./modelagem-brief";
 import { research, proposeNarratives, rankNarratives, designHook, writeComando } from "./agents";
 import { pairFromCandidates } from "../calibration";
-import { generateDraft, parseSections, stripLeadingHook, stripTrailingComando } from "./draft";
+import { generateDraft, parseSections, semEcoDaAbertura, stripLeadingHook, stripTrailingComando } from "./draft";
 import { critiqueAndRewrite } from "./critique";
 import { extractFromCorrection } from "./teach";
 import { humanize } from "./humanize";
@@ -283,6 +283,10 @@ export async function runPipeline(
     }
     // e o hook fica só na coluna `hook` — o roteiro salvo é o desenvolvimento
     if (sections.roteiro) sections.roteiro = stripLeadingHook(sections.roteiro, sections.hook);
+    // variação que só reescreve a abertura do corpo nem chega a ser oferecida: guardada ela é
+    // inofensiva, mas no dia em que alguém troca o hook por ela (swapHook) o vídeo diz a mesma
+    // coisa duas vezes seguidas. Aconteceu em produção.
+    sections.hookVariants = semEcoDaAbertura(sections.hookVariants, sections.roteiro);
 
     const narrativa = artifacts ? (artifacts.candidatas[artifacts.escolhida] ?? null) : null;
     // unique (session_id, version): conflito com escrita concorrente → recalcula a version e tenta de novo

@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { checagemSection, parseSections, stripLeadingHook, stripTrailingComando } from "@/lib/pipeline/draft";
+import { checagemSection, parseSections, semEcoDaAbertura, stripLeadingHook, stripTrailingComando } from "@/lib/pipeline/draft";
 
 // o hook abre o ROTEIRO no documento montado, mas é salvo só na coluna `hook`
 describe("stripLeadingHook", () => {
@@ -26,6 +26,41 @@ describe("stripLeadingHook", () => {
 
   test("sem hook, devolve o roteiro", () => {
     expect(stripLeadingHook("Corpo.\n\nMais corpo.", null)).toBe("Corpo.\n\nMais corpo.");
+  });
+});
+
+// Caso real (roteiro ecdbcba1, 14/08/2026): a variação 1 era a abertura do corpo reescrita.
+// Ninguém percebeu até alguém trocar o hook por ela, e o vídeo passou a dizer a mesma coisa
+// duas vezes seguidas.
+describe("semEcoDaAbertura", () => {
+  const abertura =
+    "O homem mais poderoso do mundo estaria morto agora se Israel tivesse ficado quieto. " +
+    "E para você entender como Trump chegou tão perto de ser assassinado, precisa voltar seis anos no tempo.";
+  const roteiro = `${abertura}\n\nJaneiro de 2020. Trump ordena o ataque que mata o general Qassem Soleimani.`;
+
+  const eco = "O homem mais poderoso do planeta estaria morto se um único aviso não tivesse chegado a tempo. E esse aviso não veio da inteligência americana.";
+  const original = "Israel descobriu um plano para matar Donald Trump e a própria CIA se recusou a acreditar. O que aconteceu depois quase acendeu a Terceira Guerra Mundial.";
+  const aviao = "O avião que pousou na Turquia era diferente do que decolou dos Estados Unidos. Se essa troca secreta não tivesse acontecido, o mundo poderia estar em guerra agora.";
+  const cia = "A CIA analisou o alerta sobre o assassinato de Trump e mandou arquivar. Esse erro quase custou a vida do presidente e a paz do mundo inteiro.";
+
+  test("descarta a variação que reescreve a abertura e mantém as outras", () => {
+    expect(semEcoDaAbertura([eco, aviao, cia], roteiro)).toEqual([aviao, cia]);
+  });
+
+  test("não descarta hook que só compartilha o tema com a abertura", () => {
+    // "Israel" aparece nos dois e ainda assim são ideias diferentes: o corte é por frase de
+    // abertura, não por vocabulário do texto inteiro.
+    expect(semEcoDaAbertura([original], roteiro)).toEqual([original]);
+  });
+
+  test("não mexe quando não há roteiro, variação ou quando a frase é curta demais", () => {
+    expect(semEcoDaAbertura([eco], null)).toEqual([eco]);
+    expect(semEcoDaAbertura([eco], "")).toEqual([eco]);
+    expect(semEcoDaAbertura(null, roteiro)).toEqual([]);
+    // Duas frases curtas dividem metade das palavras por acaso; exige 4 em comum.
+    expect(semEcoDaAbertura(["Trump quase morreu."], "Trump quase morreu ontem.\n\nCorpo.")).toEqual([
+      "Trump quase morreu.",
+    ]);
   });
 });
 

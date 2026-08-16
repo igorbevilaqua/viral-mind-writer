@@ -381,6 +381,53 @@ export function stripLeadingHook(roteiro: string, hook: string | null): string {
   return blocks.join("\n\n").trimStart();
 }
 
+// As variações são escritas DEPOIS do corpo, olhando para ele, e às vezes uma delas sai
+// como a primeira frase do corpo reescrita com outras palavras. Guardada, ela é inofensiva;
+// no dia em que alguém troca o hook por ela (swapHook), o vídeo passa a dizer a mesma coisa
+// duas vezes seguidas. Caso real: "O homem mais poderoso do PLANETA estaria morto se um
+// aviso..." como variação de um corpo que abria com "O homem mais poderoso do MUNDO estaria
+// morto agora se Israel...". Barreira em código, não pedido no prompt: variação que ecoa a
+// abertura não chega a ser oferecida.
+const PALAVRAS_VAZIAS = new Set(
+  ("a o e de da do das dos em no na nos nas um uma uns umas que se por para com sem sobre " +
+    "ao aos as à às pelo pela é era foi ser sendo seu sua seus suas este esta esse essa isso " +
+    "aquele aquela mais menos muito ja nao sim como quando onde qual quais tao ate entao " +
+    "voce vocês ele ela eles elas eu nos meu minha depois antes agora aqui ali la").split(" ")
+);
+
+const conteudo = (frase: string): Set<string> =>
+  new Set(
+    frase
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .split(/[^a-z0-9]+/)
+      .filter((p) => p.length > 2 && !PALAVRAS_VAZIAS.has(p))
+  );
+
+const primeiraFrase = (texto: string) => texto.trim().split(/(?<=[.!?])\s+/)[0] ?? texto.trim();
+
+// Compara só a PRIMEIRA frase de cada lado: o que incomoda o espectador é ouvir a mesma
+// abertura duas vezes seguidas, não duas frases que dividem vocabulário lá adiante.
+const MIN_PALAVRAS_EM_COMUM = 4; // frase curta divide metade das palavras por acaso
+const LIMITE_ECO = 0.5;
+
+function ecoa(a: string, b: string): boolean {
+  const pa = conteudo(primeiraFrase(a));
+  const pb = conteudo(primeiraFrase(b));
+  if (!pa.size || !pb.size) return false;
+  let comuns = 0;
+  for (const p of pa) if (pb.has(p)) comuns++;
+  return comuns >= MIN_PALAVRAS_EM_COMUM && comuns / Math.min(pa.size, pb.size) >= LIMITE_ECO;
+}
+
+/** Descarta as variações de hook que só reescrevem a abertura do roteiro. */
+export function semEcoDaAbertura(variantes: string[] | null, roteiro: string | null): string[] {
+  if (!variantes?.length || !roteiro?.trim()) return variantes ?? [];
+  const abertura = roteiro.split(/\n\s*\n/)[0] ?? "";
+  return variantes.filter((v) => !ecoa(v, abertura));
+}
+
 export function parseSections(text: string): ScriptSections {
   const grab = (header: string) => {
     const m = text.match(new RegExp(`##\\s*${header}\\s*\\n([\\s\\S]*?)(?=\\n##\\s|$)`, "i"));
