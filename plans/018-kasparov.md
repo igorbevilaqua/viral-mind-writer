@@ -326,6 +326,161 @@ peças 1 a 3.
 
 ---
 
+---
+
+# Plano de implementação
+
+> Um subagente por task, TDD. Subagente **não** roda `git add`/`git commit` e **não** aplica migration.
+
+**Goal:** um interlocutor com quem discutir estratégia, que abre com posição, drena as filas
+pendentes na conversa e destila o que foi acordado pelas casas da peça 1 — sem nenhuma porta nova
+de gravação.
+
+**Arquitetura:** contexto do turno = **estado do sistema**, nunca transcript (§4). A thread é
+registro para o usuário reler, não insumo do modelo — o que rebaixa "memória conversacional" para
+"lista de mensagens", que é uma tabela e nada mais.
+
+## Global Constraints
+
+- **Custo por turno constante.** Qualquer coisa que faça o contexto crescer com o número de turnos
+  quebra o §4. Se uma conclusão importa, ela vira lição; se não virou, deve ser esquecida.
+- **Nenhuma porta nova de gravação.** Só `gravarEnsinamento`. Há teste para isso (§12.2).
+- **O desfecho padrão de um debate é NENHUMA lição** (§3.3). "Concordamos, nada novo" é legítimo e
+  frequente.
+- **Nunca "os dados mostram" sem dado** (§6, §11). Com `vm_outcomes` = 0, o lastro hoje é playbook e
+  ratio do corpus; o resto é opinião e é dito como tal.
+- **A síntese do Kasparov nunca vira `context_note` sem confirmação** (§5.1). É o risco de maior
+  consequência da peça.
+- Migration **0030**. Gate: `npx tsc --noEmit && npx eslint . && npm run check && npm test`.
+
+---
+
+### Task 1: Migration 0030 — thread e mensagens
+
+**Files:** `supabase/migrations/0030_kasparov.sql`
+
+- [ ] Tabela de thread (id, `user_id`, `client_id` nullable, `titulo`, timestamps) e tabela de
+      mensagens (id, `thread_id` FK on delete cascade, `papel`, `conteudo`, `ordem`, `created_at`),
+      com índice por `(thread_id, ordem)`. Tabela e não `jsonb` — decisão 17 do Igor: há consulta
+      por thread e ordenação por turno.
+- [ ] **STOP:** o operador aplica via Supabase MCP.
+
+---
+
+### Task 2: Destravar a autópsia (decisão 18, §7.2)
+
+**Files:** `lib/pipeline/modelagem.ts` · Test: `tests/autopsia-avulsa.test.ts`
+
+- [ ] Separar o núcleo da autópsia do par `Attachment` + `GenerationContext`, com **chave de cache
+      pela URL do vídeo** em vez de `attachment_id`. Vídeo discutido fora de sessão não tem
+      `attachment_id`, logo não tem chave — e cada debate sobre o mesmo vídeo pagaria de novo.
+- [ ] **As 12 autópsias já pagas continuam válidas.** É o teste que prova que o refactor não
+      invalidou cache existente.
+- [ ] `ensureTranscript` também exige `Attachment` e **cacheia mutando `attachment.raw_content`** —
+      tratar junto.
+
+---
+
+### Task 3: Contexto do turno (§4) — o coração da peça
+
+**Files:** `lib/pipeline/kasparov.ts` (novo) · Test: `tests/kasparov-contexto.test.ts`
+
+- [ ] `montarContexto(args): string` — playbooks por **referência** (slug+version), lições ativas
+      roteadas para `dados` (o destinatário que já agrega tudo, 015 §6.2), prefs do cliente, roteiro
+      aberto quando existe, e o assunto corrente em **uma linha**.
+- [ ] **O teste que trava o desenho:** montar o contexto do turno 1 e do turno 20 da mesma thread
+      produz a mesma estrutura e **não cresce com o número de mensagens** (§12.1). É ele que impede
+      o transcript de voltar por uma porta lateral.
+
+---
+
+### Task 4: A persona e o turno (§3, §6)
+
+**Files:** `agents/kasparov.md` (novo) · `lib/pipeline/kasparov.ts`
+
+- [ ] Persona: **abre com posição, não com pergunta** (§3.1). Um estrategista que devolve "o que
+      você acha?" é formulário com outra roupa.
+- [ ] **Discordância (§6):** classifica a própria posição antes de responder — sustenta quando tem
+      playbook/`performance_ratio`/`vm_outcomes` atrás, **cede quando estava só achando, e diz qual
+      dos dois é o caso**. Nunca bloqueia o usuário; a discordância vencida é sinal e é registrada.
+- [ ] Streaming (§10): é o único lugar do pacote onde SSE se justifica — resposta de debate é longa,
+      ao contrário da classificação de ~3s da peça 1.
+
+---
+
+### Task 5: Debate sobre vídeo (§7)
+
+**Files:** `lib/pipeline/kasparov.ts` · `agents/kasparov.md`
+
+- [ ] Vídeo **no acervo** → abre com o **ratio** ("316k views com 1.556 seguidores — 203×"). Fora do
+      acervo → transcreve, analisa e **diz explicitamente que está opinando sem dado**.
+- [ ] Reusa a autópsia destravada (Task 2). Ela já cobre tema, hook, storytelling e comando;
+      **faltam contrastes, linguagem e apelo emocional** — acrescentar só esses três.
+
+---
+
+### Task 6: As filas (§8)
+
+**Files:** `lib/pipeline/kasparov.ts` · `lib/actions.ts`
+
+- [ ] Calibração: `getNextCalibrationPair` já faz seleção e rotação de eixos; o voto continua indo
+      para `vm_calibration_votes`. **Comparação cega** — o mecanismo não é revelado, para não
+      enviesar.
+- [ ] Lições nunca ativadas: uma por vez, com a evidência que a gerou; ativar é `setLearningActive`,
+      que já existe.
+- [ ] **Nenhuma fila ganha tela nova.** São assunto entre um turno e outro. O A/B não é pouco usado
+      porque é ruim — é pouco usado porque é um destino (6 votos em 94 pares).
+
+---
+
+### Task 7: Destilação (§5) — onde a peça pode envenenar a peça 1
+
+**Files:** `lib/pipeline/kasparov.ts` · `lib/actions.ts` · Test: `tests/kasparov-destilacao.test.ts`
+
+- [ ] Usa `classificarEnsinamento` e `gravarEnsinamento`. **Nada novo.**
+- [ ] **§5.1, o requisito duro:** a síntese vai à tela **como proposta, com as palavras do
+      Kasparov**, e o usuário confirma ou reescreve antes de virar `texto`. O que for para
+      `context_note` é o texto **pós-confirmação**, e o registro guarda que a origem foi `kasparov`.
+      Sem isso a auditoria da peça 1 morre em silêncio: deixa de ser possível distinguir "ele me
+      entendeu" de "ele me reescreveu".
+- [ ] **§5.3:** `gravarEnsinamento` monta `/sessions/${sessionId}`. Debate fora de sessão **não tem
+      sessionId** — `source_url` passa a aceitar a origem do debate. Deixar `undefined` grava lição
+      com procedência falsa.
+- [ ] Testes §12.2 (nenhuma porta nova: o módulo não referencia `vm_lessons`,
+      `vm_lesson_learnings`, `vm_banned_phrases` nem `vm_client_preferences`), §12.3 (origem
+      preservada, nunca `/sessions/undefined`) e §12.4 (**debate sem acordo não chama gravação
+      nenhuma**).
+
+---
+
+### Task 8: Rota e tela (§10)
+
+**Files:** `app/api/kasparov/route.ts` · `app/kasparov/page.tsx` · `components/kasparov-chat.tsx`
+
+- [ ] Rota SSE no molde de `app/api/bob/route.ts`. Chat estilo ChatGPT/Claude: lista de mensagens,
+      campo fixo, streaming.
+- [ ] A confirmação de gravação **reusa o `teach-dialog` da peça 1** — não é componente novo.
+- [ ] Dizer na tela o que o §4 implica: "o que a gente acordar eu registro; o resto eu esqueço".
+
+---
+
+## Ordem, dependências e portões
+
+| Task | Depende de | Portão |
+|---|---|---|
+| 1 | — | **operador aplica a 0030** |
+| 2 | — | as 12 autópsias existentes continuam válidas |
+| 3 | — | contexto do turno 20 = contexto do turno 1 |
+| 4 | 3 | abre com posição |
+| 5 | 2, 4 | fora do acervo, diz que opina sem dado |
+| 6 | 4 | voto vai para a tabela que já existe |
+| 7 | 4 | **debate sem acordo não grava nada** |
+| 8 | 1, 7 | a confirmação é a da peça 1 |
+
+Tasks 1, 2 e 3 são independentes — as candidatas a paralelizar.
+
+---
+
 ## Pendências que este spec abre
 
 Registradas em `plans/2.0-decisoes.md`. Nenhuma bloqueia escrever o plano de implementação; a
