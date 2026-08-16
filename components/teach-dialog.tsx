@@ -13,11 +13,19 @@ import {
   setLearningActive,
   updateLearning,
 } from "@/lib/actions";
-import type { Casa, Ensinamento } from "@/lib/pipeline/classify-teaching";
+import type { Casa, Direcao, Ensinamento } from "@/lib/pipeline/classify-teaching";
 import type { Explicacao } from "@/lib/pipeline/explain";
 import type { Etapa } from "@/lib/provenance";
 import { DESTINATARIOS } from "@/lib/pipeline/destinatarios";
-import { CASA_LABEL, casaFinal, precisaPadrao, textoNaoDeterminado, type Escopo } from "@/lib/ensino-ui";
+import {
+  CASA_LABEL,
+  DIRECAO_LABEL,
+  casaFinal,
+  precisaDirecao,
+  precisaPadrao,
+  textoNaoDeterminado,
+  type Escopo,
+} from "@/lib/ensino-ui";
 import { preview, validarPadrao } from "@/lib/regex-safety";
 
 export type TeachModo = "porque" | "mudar" | "ensinar";
@@ -33,6 +41,7 @@ export interface TeachDialogArgs {
 }
 
 const CASAS_UI = Object.keys(CASA_LABEL) as Casa[];
+const DIRECOES_UI = Object.keys(DIRECAO_LABEL) as Direcao[];
 
 const ETAPA_SELO: Record<Etapa, string> = {
   roteirista: "o roteirista escreveu isto",
@@ -383,7 +392,11 @@ function EnsinarView({
   const vPadrao = mostraPadrao ? validarPadrao(ens.padrao ?? "") : null;
   const casos = mostraPadrao && vPadrao?.ok ? preview(ens.padrao ?? "", args.roteiro) : [];
   const faltaDestinatario = casaF === "licao" && !ens.destinatarios.length;
-  const podeConfirmar = !!ens.regra.trim() && !faltaDestinatario && (!mostraPadrao || !!vPadrao?.ok);
+  // Vocabulário sem direção grava na lista oposta à ensinada: o portão é aqui (pendência 10).
+  const mostraDirecao = precisaDirecao(ens.casa, escopo);
+  const faltaDirecao = mostraDirecao && (!ens.direcao || !ens.termo?.trim());
+  const podeConfirmar =
+    !!ens.regra.trim() && !faltaDestinatario && !faltaDirecao && (!mostraPadrao || !!vPadrao?.ok);
 
   const confirmar = () =>
     startSave(async () => {
@@ -495,6 +508,41 @@ function EnsinarView({
           {!args.clientId && <span className="text-[11.5px] text-white/35">esta sessão não tem cliente</span>}
         </div>
       </div>
+
+      {mostraDirecao && (
+        <div>
+          <Rotulo>TERMO E DIREÇÃO</Rotulo>
+          <input
+            value={ens.termo ?? ""}
+            onChange={(e) => setEns({ ...ens, termo: e.target.value })}
+            placeholder="a palavra em si — assinante"
+            className={inputCls}
+          />
+          <div className="mt-1.5 flex flex-wrap gap-1.5">
+            {DIRECOES_UI.map((d) => (
+              <button
+                key={d}
+                type="button"
+                onClick={() => setEns({ ...ens, direcao: d })}
+                className={chipCls(ens.direcao === d)}
+              >
+                {DIRECAO_LABEL[d]}
+              </button>
+            ))}
+          </div>
+          {faltaDirecao ? (
+            <p className="mt-1.5 text-[11.5px] text-amber-300/90">
+              escreva o termo e escolha a direção — sem isso a gravação erraria a lista.
+            </p>
+          ) : (
+            <p className="mt-1.5 text-[11.5px] text-white/45">
+              {ens.direcao === "evitar"
+                ? `o roteirista deixa de escrever “${ens.termo?.trim()}”.`
+                : `o roteirista passa a escrever “${ens.termo?.trim()}”.`}
+            </p>
+          )}
+        </div>
+      )}
 
       {mostraPadrao && (
         <div>

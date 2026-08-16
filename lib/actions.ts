@@ -16,9 +16,11 @@ import {
 import { registrarAtividade, currentUserId } from "./hub";
 import { createClient } from "./supabase/server";
 import { runProbeTopup } from "./calibration-probe";
-import { classificarEnsinamento, type Casa, type Ensinamento } from "./pipeline/classify-teaching";
+import { classificarEnsinamento, DIRECOES, type Casa, type Ensinamento } from "./pipeline/classify-teaching";
 import { atribuirEtapa } from "./provenance";
 import { explicar, type Explicacao, type TraceExplicavel } from "./pipeline/explain";
+import { verificarScriptSalvo } from "./pipeline";
+import type { RegistroVerificacao } from "./pipeline/verificar";
 import { validarPadrao } from "./regex-safety";
 
 export interface NewAttachment {
@@ -356,6 +358,25 @@ export async function updateScript(
   revalidatePath(`/sessions/${data.session_id}`);
 }
 
+// Verificação factual sob demanda (017 §8): a MESMA fase que roda no fim da geração, acionada
+// da tela. `completa` pula o filtro de delta (§4.3) e é a operação cara — o rótulo do botão diz
+// isso. Não lança: a tela precisa mostrar o erro sem perder o que já tinha na mão.
+// Para varredura completa com progresso na tela, use a rota `app/api/verificar` — server
+// action não transmite andamento.
+export async function verificarScript(
+  scriptId: string,
+  regime: "delta" | "completa"
+): Promise<{ ok: true; registro: RegistroVerificacao } | { ok: false; erro: string }> {
+  try {
+    const { registro, sessionId } = await verificarScriptSalvo(scriptId, regime);
+    revalidatePath(`/sessions/${sessionId}`);
+    return { ok: true, registro };
+  } catch (e) {
+    console.error("verificação falhou — nada foi gravado", e);
+    return { ok: false, erro: e instanceof Error ? e.message : String(e) };
+  }
+}
+
 // Correção cirúrgica da verificação (017 §7.1). ZERO LLM: a verificação já achou o dado
 // certo, então os dois lados são conhecidos e não há o que gerar — é `split/join` +
 // `updateScript`, que já aplica dedash, já preserva `roteiro_original` e já revalida.
@@ -371,7 +392,7 @@ export async function aplicarCorrecao(
   // edição que o usuário fez entre a verificação e o clique seria apagada.
   const { data, error } = await appDb
     .from("vm_generated_scripts")
-    .select("roteiro, session_id")
+    .select("roteiro, session_id, verificacao")
     .eq("id", scriptId)
     .single();
   if (error || !data) throw new Error(error?.message ?? "roteiro não encontrado");
@@ -393,6 +414,20 @@ export async function aplicarCorrecao(
     };
   }
   await updateScript(scriptId, { roteiro: novo }, "correcao_factual");
+
+  // Marcar a linha como aplicada no próprio registro. Sem isto, no refresh seguinte a tela
+  // olharia o roteiro já corrigido, não acharia mais o `trecho_literal` e diria "o trecho não
+  // está no roteiro" sobre uma correção que ela mesma acabou de aplicar. Best-effort: o
+  // roteiro já foi corrigido, e falhar aqui não pode desfazer isso.
+  const reg = data.verificacao as RegistroVerificacao | null;
+  if (reg?.itens?.length) {
+    const itens = reg.itens.map((i) => (i.trecho_literal === trecho_literal ? { ...i, aplicada: true } : i));
+    const { error: erroMarca } = await appDb
+      .from("vm_generated_scripts")
+      .update({ verificacao: { ...reg, itens } })
+      .eq("id", scriptId);
+    if (erroMarca) console.error(`correção aplicada, mas não marcada no registro: ${erroMarca.message}`);
+  }
   return { aplicada: true };
 }
 
@@ -730,14 +765,13 @@ export async function gravarEnsinamento(
 
     case "vocabulario": {
       if (!clientId) return { ok: false, erro: "vocabulário é por cliente: a sessão precisa ter um cliente" };
-      // O classificador não devolve direção (evitar vs preferir): negação explícita na regra
-      // manda para `vocabulario_evitar`, o resto para `vocabulario_usar`.
-      // ponytail: heurística — o teto é a regra ambígua ("diga X, nunca Y"). Upgrade = campo
-      // `direcao` na tool do classificador + chip no dialog. Enquanto isso, o humano corrige
-      // em /settings/clientes, onde os dois campos são editáveis.
-      const campo = /\b(n[ãa]o|nunca|jamais|evit\w*|proib\w*|banir?)\b/i.test(e.regra)
-        ? "vocabulario_evitar"
-        : "vocabulario_usar";
+      // A direção vem do classificador e passa pelo chip do dialog. Adivinhar grava o OPOSTO
+      // do que o usuário ensinou, em silêncio — erro explícito, como no caminho frase_banida.
+      if (!e.direcao || !DIRECOES.includes(e.direcao))
+        return { ok: false, erro: "vocabulário precisa de uma direção: evitar ou preferir" };
+      const campo = e.direcao === "evitar" ? "vocabulario_evitar" : "vocabulario_usar";
+      // A lista é de palavras, não de frases: grava o termo, com a regra como rede.
+      const termo = e.termo?.trim() || e.regra;
       const { data: prefs, error: readErr } = await appDb
         .from("vm_client_preferences")
         .select("vocabulario_evitar, vocabulario_usar")
@@ -747,10 +781,10 @@ export async function gravarEnsinamento(
       // ponytail: read-modify-write. Cliente sem linha ainda é comum (6 de 30), daí o upsert.
       // Duas confirmações simultâneas no mesmo cliente perderiam uma — gesto humano, ignorado.
       const atual: string[] = prefs?.[campo] ?? [];
-      if (atual.includes(e.regra)) return { ok: true };
+      if (atual.includes(termo)) return { ok: true };
       const { error } = await appDb.from("vm_client_preferences").upsert({
         client_id: clientId,
-        [campo]: [...atual, e.regra],
+        [campo]: [...atual, termo],
         updated_at: new Date().toISOString(),
       });
       if (error) return { ok: false, erro: error.message };

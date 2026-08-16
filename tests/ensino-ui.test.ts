@@ -2,8 +2,8 @@
 // o campo `padrao` precisa estar na tela, e a frase do "por quê" sem rastro. Julgamento do
 // classificador não se testa com assert — o portão dele é a confirmação humana.
 import { describe, expect, test } from "vitest";
-import { CASA_LABEL, casaFinal, precisaPadrao, textoNaoDeterminado } from "@/lib/ensino-ui";
-import { CASAS } from "@/lib/pipeline/classify-teaching";
+import { CASA_LABEL, DIRECAO_LABEL, casaFinal, precisaDirecao, precisaPadrao, textoNaoDeterminado } from "@/lib/ensino-ui";
+import { CASAS, DIRECOES } from "@/lib/pipeline/classify-teaching";
 
 describe("casaFinal", () => {
   test("vocabulário com escopo Global vira frase banida (espelha gravarEnsinamento)", () => {
@@ -45,6 +45,24 @@ describe("textoNaoDeterminado", () => {
   });
 });
 
+describe("precisaDirecao", () => {
+  // Sem os chips o usuário não corrige a direção antes de confirmar — e a gravação recusa.
+  test("vocabulário por cliente exige a direção", () => {
+    expect(precisaDirecao("vocabulario", "cliente")).toBe(true);
+  });
+  test("vocabulário + Global não: vira frase banida, que não tem direção", () => {
+    expect(precisaDirecao("vocabulario", "global")).toBe(false);
+  });
+  test("as outras casas não pedem direção", () => {
+    for (const casa of CASAS)
+      if (casa !== "vocabulario") expect(precisaDirecao(casa, "cliente")).toBe(false);
+  });
+});
+
 test("toda casa tem rótulo na tela", () => {
   expect(Object.keys(CASA_LABEL).sort()).toEqual([...CASAS].sort());
+});
+
+test("toda direção tem rótulo na tela", () => {
+  expect(Object.keys(DIRECAO_LABEL).sort()).toEqual([...DIRECOES].sort());
 });

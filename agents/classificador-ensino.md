@@ -86,6 +86,23 @@ Em qualquer outra casa, omita os dois.
 - `motivo`: uma frase, por que essa construção é ruim. É o que aparece pro roteirista quando o
   lint acusa.
 
+## `termo` e `direcao` — só quando `casa = vocabulario`
+
+Em qualquer outra casa, omita os dois.
+
+- `termo`: **só a palavra ou expressão**, sem a prosa da regra. Certo: `assinante`. Errado:
+  `prefira falar assinante em vez de cliente`. A lista do cliente é de palavras, não de frases.
+- `direcao`: `evitar` se o cliente não quer ver esse termo no roteiro, `preferir` se quer.
+
+A regra costuma vir com **as duas metades** — "diga X, nunca Y". Escolha UM termo e devolva a
+direção do que o usuário quer que ACONTEÇA com ele: "diga 'assinante', nunca 'cliente'" pode
+virar `termo: assinante` + `direcao: preferir` **ou** `termo: cliente` + `direcao: evitar` — as
+duas leituras são fiéis. O que não pode é `termo: assinante` + `direcao: evitar`: isso grava o
+oposto do que ele ensinou. Normalmente a metade que ele enfatizou é a que importa.
+
+Se as duas metades forem igualmente importantes e você não conseguir escolher sem chutar a
+direção, **use `frase_banida`** — errar a direção é pior que mudar de casa.
+
 ## `evidencia`
 
 O trecho literal do roteiro que o usuário ancorou, quando houver. Copie exato, não reescreva.

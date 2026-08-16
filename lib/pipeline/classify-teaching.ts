@@ -11,6 +11,10 @@ export type Casa = (typeof CASAS)[number];
 
 export const DIMENSOES_CHECK = ["hook", "storytelling", "tema", "ritmo", "comando", "geral"] as const;
 
+// O que fazer com o `termo` — o que a heurística de negação em `gravarEnsinamento` chutava.
+export const DIRECOES = ["evitar", "preferir"] as const;
+export type Direcao = (typeof DIRECOES)[number];
+
 export interface Ensinamento {
   regra: string;
   casa: Casa;
@@ -19,6 +23,10 @@ export interface Ensinamento {
   evidencia?: string;
   padrao?: string;
   motivo?: string;
+  /** só quando casa=vocabulario */
+  direcao?: Direcao;
+  /** a palavra/expressão em si, sem a prosa da regra; só quando casa=vocabulario */
+  termo?: string;
 }
 
 // Sem anotação de tipo do SDK de propósito: o teste de contrato lê
@@ -42,6 +50,15 @@ export const ENSINAMENTO_TOOL = {
       evidencia: { type: "string", description: "trecho literal ancorado, quando houver" },
       padrao: { type: "string", description: "regex JS, só quando casa=frase_banida" },
       motivo: { type: "string", description: "por que a frase é ruim, só quando casa=frase_banida" },
+      direcao: {
+        type: "string",
+        enum: [...DIRECOES],
+        description: "o que fazer com o termo, só quando casa=vocabulario",
+      },
+      termo: {
+        type: "string",
+        description: "a palavra/expressão em si, sem a prosa da regra, só quando casa=vocabulario",
+      },
     },
     required: ["regra", "casa", "destinatarios", "dimensao"],
   },
@@ -81,6 +98,8 @@ Classifique.`,
   // ninguém (destinatário inválido) ou escrita na tabela errada (casa inválida).
   const casa = raw.casa;
   const destinatarios = (raw.destinatarios ?? []).filter((d) => DESTINATARIOS.includes(d));
+  // Direção fora do enum não pode virar gravação: `evitar` e `preferir` são listas opostas.
+  const direcao = raw.direcao && DIRECOES.includes(raw.direcao) ? raw.direcao : undefined;
   if (!raw.regra || !casa || !CASAS.includes(casa) || !destinatarios.length) {
     console.error(`classificador-ensino inválido — ${JSON.stringify(raw).slice(0, 500)}`);
     throw new Error("classificador-ensino: ensinamento inválido");
@@ -95,5 +114,8 @@ Classifique.`,
     // padrao/motivo só existem em frase_banida — LLM às vezes preenche por inércia.
     padrao: casa === "frase_banida" ? raw.padrao : undefined,
     motivo: casa === "frase_banida" ? raw.motivo : undefined,
+    // idem para direcao/termo, que só existem em vocabulario.
+    direcao: casa === "vocabulario" ? direcao : undefined,
+    termo: casa === "vocabulario" ? raw.termo : undefined,
   };
 }

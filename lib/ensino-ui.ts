@@ -2,7 +2,7 @@
 // propósito: o dialog é client component e não pode arrastar o SDK da Anthropic para o bundle.
 // `Casa` entra como import de tipo (apagado na compilação).
 
-import type { Casa } from "./pipeline/classify-teaching";
+import type { Casa, Direcao } from "./pipeline/classify-teaching";
 
 export type Escopo = "cliente" | "global";
 
@@ -28,6 +28,18 @@ export const casaFinal = (casa: Casa, escopo: Escopo): Casa =>
  * rebaixa esse caso para `frase_banida` — sem campo editável o usuário bate num erro sem saída.
  */
 export const precisaPadrao = (casa: Casa, escopo: Escopo) => casaFinal(casa, escopo) === "frase_banida";
+
+// Mesmo Record fechado do CASA_LABEL: direção nova quebra o tsc aqui, não a tela.
+export const DIRECAO_LABEL: Record<Direcao, string> = {
+  evitar: "evitar",
+  preferir: "preferir",
+};
+
+/**
+ * Direção e termo precisam estar na tela, editáveis: `gravarEnsinamento` recusa vocabulário
+ * sem direção (pendência 10) — adivinhar grava na lista oposta à que o usuário ensinou.
+ */
+export const precisaDirecao = (casa: Casa, escopo: Escopo) => casaFinal(casa, escopo) === "vocabulario";
 
 // Frase que `explicar()` devolve em roteiro anterior à 2.0 (lib/pipeline/explain.ts).
 const SEM_PROVENIENCIA = "anterior ao registro de proveniência";
