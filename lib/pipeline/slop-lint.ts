@@ -167,6 +167,86 @@ const ELLIPSIS_FIGURES: EllipsisFigure[] = [
   },
 ];
 
+// ── Eco numérico ───────────────────────────────────────────────────────────────
+// Defeito RELACIONAL: a mesma quantidade vestindo dois fatos diferentes. O ouvinte não
+// distingue, e o segundo número rouba o peso do primeiro.
+//
+// Mora aqui porque esta é a casa dos detectores, mas é exportada À PARTE e NÃO é chamada
+// de dentro de `slopLint()` (016 §12): `slopLint` só roda no humanizador, DEPOIS da
+// revisão — pendurar o eco lá entregaria o sinal tarde demais pro revisor, que é quem
+// decide. O call site é `index.ts`, sobre o roteiro montado, antes de `critiqueAndRewrite`.
+//
+// O detector SINALIZA, NÃO JULGA. Três em quatro sinais reais são texto bom (016 §1.1: o
+// refrão de "400%", o contraste de "37,5%"). Por isso não devolve `LintViolation`, não tem
+// severity e nunca corrige: quem lê a lista e decide é o revisor.
+export interface EcoNumerico {
+  valor: string;
+  frases: string[];
+}
+
+// Quantidade = dígito + escala/percentual. Número pelado (ano, idade, contagem) fica fora
+// de propósito: é onde mora quase todo falso positivo, e ele não vira eco de quantidade.
+// `milh|bilh|trilh` antes de `mil` senão "mil" casa o prefixo de "milhões".
+const QUANTIDADE = new RegExp(
+  `(\\d[\\d.,]*)\\s*(%|milh(?:ão|ões|ao|oes)|bilh(?:ão|ões|ao|oes)|trilh(?:ão|ões|ao|oes)|mil)${FIM}`,
+  "gi"
+);
+
+// Seções que são lista de citação ou repetição por construção. Números nelas não são prosa
+// do roteiro: acusá-las faria TODO roteiro acusar.
+const SECAO_MUDA = /^(fontes|varia[cç][oõ]e?s?_de_hook)/i;
+const HEADER = /^#{1,3}\s*(.+)$/;
+
+// Chave de agrupamento. Em pt-BR "." é milhar e "," é decimal, então "37,5" → 37.5 e
+// "1.500" → 1500. Percentual e escala vivem em espaços separados: 2 milhões nunca colide
+// com 2%.
+// ponytail: só agrupa o que veio COM unidade — "2 milhões" e "2.000.000" são grupos
+// distintos porque o segundo nem é detectado. Normalizar número pelado é o passo seguinte,
+// se algum dia o falso positivo de ano/idade valer o preço.
+function chaveDeQuantidade(numero: string, unidade: string): string {
+  const n = Number(numero.replace(/\./g, "").replace(",", "."));
+  if (!Number.isFinite(n)) return "";
+  const u = unidade.toLowerCase();
+  if (u === "%") return `%:${n}`;
+  const fator = u.startsWith("milh") ? 1e6 : u.startsWith("bilh") ? 1e9 : u.startsWith("trilh") ? 1e12 : 1e3;
+  return `n:${n * fator}`;
+}
+
+export function ecosNumericos(text: string): EcoNumerico[] {
+  try {
+    const grupos = new Map<string, EcoNumerico>();
+    let mudo = false;
+    // Mesma separação de frases do detector de parataxe.
+    for (const bruta of text.split(/(?<=[.!?])\s+|\n+/)) {
+      const frase = bruta.trim();
+      const header = frase.match(HEADER);
+      if (header) {
+        mudo = SECAO_MUDA.test(header[1].trim());
+        continue;
+      }
+      if (mudo) continue;
+      // Mesmo teste de linha da parataxe (slop-lint.ts:146): citação, URL e data
+      // dd/mm/aaaa são números por natureza, não eco.
+      if (/https?:\/\/|\d{1,2}\/\d{1,2}\/\d{2,4}/.test(frase)) continue;
+
+      for (const m of frase.matchAll(QUANTIDADE)) {
+        const chave = chaveDeQuantidade(m[1], m[2]);
+        if (!chave) continue;
+        // A ÂNCORA É A FRASE INTEIRA, NUNCA O NÚMERO. Se alguém um dia ligar isto no passe
+        // cirúrgico, `current.split(match).join(sub)` (humanize.ts:101) substitui TODAS as
+        // ocorrências pelo mesmo texto — devolver "60%" trocaria as duas de uma vez, que é
+        // exatamente o avesso do conserto de um defeito relacional.
+        const g = grupos.get(chave) ?? { valor: m[0].replace(/\s+/g, " "), frases: [] };
+        if (!g.frases.includes(frase)) g.frases.push(frase);
+        grupos.set(chave, g);
+      }
+    }
+    return [...grupos.values()].filter((g) => g.frases.length > 1);
+  } catch {
+    return []; // detector com bug nunca derruba a geração (016 §7)
+  }
+}
+
 export const blockCount = (v: LintViolation[]) => v.filter((x) => x.severity === "block").length;
 
 // Travessão de fala de personagem: início de linha (após espaços) ou logo após ": ".
