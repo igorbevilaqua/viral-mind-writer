@@ -6,7 +6,13 @@ import { platformVideoId } from "./video-url";
 import { dedash } from "./pipeline/slop-lint";
 import { rewriteFragment } from "./pipeline/rewrite-fragment";
 import { extractFromEdit, extractFromNotes } from "./pipeline/teach";
-import { isSubstantiveEdit, houveEdicaoHumana, marcarOrigemEdicao, type TraceEdicao } from "./learning-loop";
+import {
+  isSubstantiveEdit,
+  houveEdicaoHumana,
+  marcarOrigemEdicao,
+  aplicarCorrecaoLiteral,
+  type TraceEdicao,
+} from "./learning-loop";
 import { registrarAtividade, currentUserId } from "./hub";
 import { createClient } from "./supabase/server";
 import { runProbeTopup } from "./calibration-probe";
@@ -348,6 +354,46 @@ export async function updateScript(
     payload: { script_id: scriptId },
   });
   revalidatePath(`/sessions/${data.session_id}`);
+}
+
+// Correção cirúrgica da verificação (017 §7.1). ZERO LLM: a verificação já achou o dado
+// certo, então os dois lados são conhecidos e não há o que gerar — é `split/join` +
+// `updateScript`, que já aplica dedash, já preserva `roteiro_original` e já revalida.
+// A origem "correcao_factual" é o que impede a lição envenenada do §7.2: correção de
+// máquina não marca `edicao_humana` e por isso não abre o portão do Professor.
+export async function aplicarCorrecao(
+  scriptId: string,
+  trecho_literal: string,
+  correcao: string
+): Promise<{ aplicada: boolean; motivo?: string }> {
+  // §11: `updateScript` é patch por campo inteiro, SEM guarda otimista. Reler aqui,
+  // imediatamente antes de aplicar, e refazer o split/join sobre o texto NOVO — senão a
+  // edição que o usuário fez entre a verificação e o clique seria apagada.
+  const { data, error } = await appDb
+    .from("vm_generated_scripts")
+    .select("roteiro, session_id")
+    .eq("id", scriptId)
+    .single();
+  if (error || !data) throw new Error(error?.message ?? "roteiro não encontrado");
+
+  // §11: valida com `includes` ANTES de aplicar (dentro de aplicarCorrecaoLiteral).
+  const novo = aplicarCorrecaoLiteral(data.roteiro ?? "", trecho_literal, correcao);
+  if (novo === null) {
+    // Registrar o descasamento: é o sinal de que o modelo está parafraseando em vez de
+    // copiar, e some se ninguém contar. Best-effort e nunca lança — o veredicto continua
+    // valendo, só a ação automática cai.
+    await registrarAtividade("correcao_nao_aplicada", {
+      sessaoId: data.session_id,
+      payload: { script_id: scriptId, trecho_literal },
+    });
+    return {
+      aplicada: false,
+      motivo:
+        "o trecho da verificação não está no roteiro atual — ou ele foi editado depois, ou o modelo parafraseou em vez de copiar. Verifique de novo.",
+    };
+  }
+  await updateScript(scriptId, { roteiro: novo }, "correcao_factual");
+  return { aplicada: true };
 }
 
 // "Reportar problema" (menu da sessão) → hub.bugs via RPC hub_reportar_bug.

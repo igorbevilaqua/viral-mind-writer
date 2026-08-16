@@ -62,6 +62,22 @@ export function houveEdicaoHumana(trace: TraceEdicao): boolean {
   return trace.edicao_humana === true;
 }
 
+// ── Peça 3 §7.1: a correção cirúrgica não precisa de LLM ─────────────────────
+
+// A verificação já achou os dois lados (o trecho errado e o dado certo), então não há o
+// que gerar: a correção é `split/join` sobre o campo.
+// A substituição GLOBAL é benigna aqui. Trocar todas as ocorrências é o avesso do conserto
+// para repetição estilística — é o motivo de a peça 2 ter recusado o retry cirúrgico
+// (016 §4.4) — mas para um dado errado é exatamente o certo: `45 bilhões` errado é errado
+// em toda aparição.
+// null (nunca throw, §11) = o trecho não casa: ou o modelo parafraseou em vez de copiar,
+// ou o roteiro mudou depois da verificação. O veredicto sobrevive; só a ação automática cai.
+export function aplicarCorrecaoLiteral(roteiro: string, trecho_literal: string, correcao: string): string | null {
+  // trecho vazio casa em tudo e `split("")` estilhaçaria o roteiro em caracteres
+  if (!trecho_literal || !roteiro.includes(trecho_literal)) return null;
+  return roteiro.split(trecho_literal).join(correcao);
+}
+
 // ── WP-E.3: calibração previsto×real do agente Dados ─────────────────────────
 
 export interface CalibrationPayload {
