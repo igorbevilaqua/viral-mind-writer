@@ -1,4 +1,4 @@
-import { ANALYST_MODEL, trackedCreate } from "../anthropic";
+import { ANALYST_MODEL, trackedCreate, type UsageLog } from "../anthropic";
 import { appDb, viralData } from "../db";
 import { platformVideoId } from "../video-url";
 import { fetchTranscript } from "../transcribe";
@@ -178,11 +178,11 @@ type ClassJson = Record<string, { classificacoes?: { tipo: string; confianca: st
 // Se o vídeo de referência existe no corpus (match por id de plataforma, mesmo padrão do ETL),
 // ancora a análise nas métricas reais e nas classificações já feitas — em vez de especular.
 // Qualquer falha aqui só remove o bloco: modelagem nunca derruba a geração.
-async function lookupCorpus(attachment: Attachment): Promise<{ promptBlock: string; resumoMetricas: string }> {
+async function lookupCorpus(url: string | null): Promise<{ promptBlock: string; resumoMetricas: string }> {
   const none = { promptBlock: "", resumoMetricas: "" };
-  if (attachment.kind !== "video_link" || !attachment.url) return none;
+  if (!url) return none;
   try {
-    const pid = platformVideoId(attachment.url);
+    const pid = platformVideoId(url);
     if (!pid) return none;
     const { data: vid } = await viralData
       .from("videos")
@@ -231,7 +231,7 @@ async function lookupCorpus(attachment: Attachment): Promise<{ promptBlock: stri
         `Se sua leitura divergir da classificação existente, justifique.`,
     };
   } catch (e) {
-    console.error("modelagem: lookup no corpus falhou (seguindo sem métricas)", attachment.url, e);
+    console.error("modelagem: lookup no corpus falhou (seguindo sem métricas)", url, e);
     return none;
   }
 }
@@ -265,47 +265,93 @@ export interface ModelagemResult {
 // vira log, mas sem tema a geração morre aqui e o usuário precisa saber o que fazer
 // (configurar chave? colar a transcrição? o link não é suportado?).
 export async function ensureTranscript(attachment: Attachment): Promise<{ text: string; erro: string | null }> {
-  let erro: string | null = null;
-  if (!attachment.raw_content?.trim() && attachment.kind === "video_link" && attachment.url) {
-    try {
-      const { title, text } = await fetchTranscript(attachment.url);
-      attachment.raw_content = title ? `${title}\n\n${text}` : text;
-    } catch (e) {
-      erro = e instanceof Error ? e.message : String(e);
-      console.error("modelagem: transcrição do link falhou", attachment.url, e);
-    }
-  }
-  return { text: attachment.raw_content?.trim() ?? "", erro };
+  if (attachment.raw_content?.trim() || attachment.kind !== "video_link" || !attachment.url)
+    return { text: attachment.raw_content?.trim() ?? "", erro: null };
+  const { text, erro } = await transcricaoDeUrl(attachment.url);
+  if (text) attachment.raw_content = text;
+  return { text, erro };
 }
 
-export async function analyzeModelagem(attachment: Attachment, ctx: GenerationContext): Promise<ModelagemResult> {
+// A mesma busca, sem anexo para mutar: é ela que o Kasparov usa. O cache aqui é o da
+// autópsia (por URL, abaixo) — quem acerta o cache nem chega a transcrever.
+export async function transcricaoDeUrl(url: string): Promise<{ text: string; erro: string | null }> {
+  try {
+    const { title, text } = await fetchTranscript(url);
+    return { text: (title ? `${title}\n\n${text}` : text).trim(), erro: null };
+  } catch (e) {
+    console.error("modelagem: transcrição do link falhou", url, e);
+    return { text: "", erro: e instanceof Error ? e.message : String(e) };
+  }
+}
+
+// ── As duas chaves de cache da autópsia ──────────────────────────────────────────────────
+// Convivem de propósito, e nenhuma cobre o caso da outra:
+//   • `attachment_id` — a chave histórica. É a única gravada nas autópsias já pagas, e a
+//     única possível para anexo SEM url (roteiro de referência colado).
+//   • `video_url` — a chave nova. É a única possível para vídeo debatido com o Kasparov, que
+//     não nasce de sessão e portanto não tem anexo (018 §7.2).
+// O lookup consulta as duas num `or`: registro velho continua resolvendo pelo anexo, vídeo
+// avulso resolve pela URL. A migration 0031 faz o backfill de `video_url` a partir de
+// `vm_attachments.url` — é ela que torna as autópsias já pagas reusáveis TAMBÉM por URL.
+// Match por id de plataforma (ilike), mesma tática do lookupCorpus: a mesma /reel/ colada com
+// utm, com ou sem www, é o mesmo vídeo.
+export function filtroDeAutopsia(url: string | null, attachmentId?: string | null): string | null {
+  const partes: string[] = [];
+  if (attachmentId) partes.push(`attachment_id.eq.${attachmentId}`);
+  const u = url?.trim();
+  if (u) {
+    const pid = platformVideoId(u);
+    // aspas: a URL crua pode ter vírgula, que é o separador do filtro do PostgREST
+    partes.push(pid ? `video_url.ilike.%${pid}%` : `video_url.eq."${u.replaceAll('"', "")}"`);
+  }
+  return partes.length ? partes.join(",") : null;
+}
+
+// Só `video_link` tem URL de vídeo — para os outros tipos, a chave continua sendo o anexo.
+export function chavesDoAnexo(a: Attachment): { url: string | null; attachmentId: string } {
+  return { url: a.kind === "video_link" ? a.url : null, attachmentId: a.id };
+}
+
+export interface AutopsiaOpts {
+  transcript?: string; // já em mãos (o anexo da sessão traz a dele)
+  tema?: string; // tema novo digitado; vazio = a sala publica sobre o MESMO assunto
+  taxonomia?: string; // playbooks de hook/estrutura já renderizados
+  cliente?: string; // o que a casa sabe do cliente
+  usageLog?: UsageLog;
+  attachmentId?: string | null; // chave histórica, quando a autópsia nasce de um anexo
+}
+
+// O núcleo da autópsia, livre de Attachment e de GenerationContext: o que ele precisa é uma
+// URL (ou uma transcrição) e blocos de prompt já prontos. `analyzeModelagem` é um envelope
+// fino sobre isto — o pipeline de geração não mudou de comportamento.
+export async function autopsiaDeUrl(url: string | null, opts: AutopsiaOpts = {}): Promise<ModelagemResult> {
   const vazio: ModelagemResult = { brief: "", analysis: {} };
-  const { text: transcript } = await ensureTranscript(attachment);
+
+  // Cache ANTES da transcrição: sem isso cada debate sobre o mesmo vídeo pagaria os dois.
+  // Análises no formato antigo (sem `esqueleto`) re-analisam uma vez no formato novo.
+  const filtro = filtroDeAutopsia(url, opts.attachmentId);
+  if (filtro) {
+    const { data: cached } = await appDb
+      .from("vm_modelagem_analyses")
+      .select("replication_brief, analysis")
+      .or(filtro)
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+    if (cached?.replication_brief && (cached.analysis as { esqueleto?: unknown } | null)?.esqueleto)
+      return { brief: cached.replication_brief, analysis: cached.analysis as ModelagemAnalysis };
+  }
+
+  const transcript = opts.transcript?.trim() || (url ? (await transcricaoDeUrl(url)).text : "");
   if (!transcript) return vazio;
 
-  // Anexo já analisado (ex: "Gerar nova versão") → reusa em vez de pagar outra chamada.
-  // Análises no formato antigo (sem `esqueleto`) re-analisam uma vez no formato novo.
-  const { data: cached } = await appDb
-    .from("vm_modelagem_analyses")
-    .select("replication_brief, analysis")
-    .eq("attachment_id", attachment.id)
-    .order("created_at", { ascending: false })
-    .limit(1)
-    .maybeSingle();
-  if (cached?.replication_brief && (cached.analysis as { esqueleto?: unknown } | null)?.esqueleto)
-    return { brief: cached.replication_brief, analysis: cached.analysis as ModelagemAnalysis };
-
-  const comTema = Boolean(ctx.prompt.trim());
-  const corpus = await lookupCorpus(attachment);
-  const storyIndex = playbookIndex(ctx.playbooks.storytelling);
-  const taxonomia =
-    (ctx.playbooks.hook ? `\n\n# PLAYBOOK DE HOOKS (classifique o hook com este vocabulário)\n${ctx.playbooks.hook}` : "") +
-    (storyIndex
-      ? `\n\n# ESTRUTURAS NARRATIVAS DO PLAYBOOK (classifique em estrutura_narrativa com código + nome EXATOS)\n${storyIndex}`
-      : "");
+  const tema = opts.tema?.trim() ?? "";
+  const comTema = Boolean(tema);
+  const corpus = await lookupCorpus(url);
+  const taxonomia = opts.taxonomia ?? "";
 
   const missao = comTema
-    ? `Um roteirista vai usar essa arquitetura para escrever sobre outro tema: "${ctx.prompt}". Extraia o que TRANSFERE para lá.`
+    ? `Um roteirista vai usar essa arquitetura para escrever sobre outro tema: "${tema}". Extraia o que TRANSFERE para lá.`
     : `Não há tema novo: a sala vai publicar sobre o MESMO assunto deste vídeo, defendendo a MESMA TESE, ` +
       `numa versão melhor executada. Não é para fugir do ângulo dele — é para vencê-lo no próprio ângulo. ` +
       `Por isso o campo argumento_central é o mais importante da sua análise: é ele que vira a PREMISSA do nosso ` +
@@ -320,7 +366,7 @@ export async function analyzeModelagem(attachment: Attachment, ctx: GenerationCo
       `Em diagnostico.gargalo, seja preciso: é a camada onde o original era mais fraco, e é exatamente ali que ` +
       `a nossa versão tem que ganhar dele.`;
 
-  const res = await trackedCreate(ctx.usageLog, "modelagem", {
+  const res = await trackedCreate(opts.usageLog, "modelagem", {
     model: ANALYST_MODEL,
     // análise estruturada via tool forçada; o sonnet-5 pensa por padrão no mesmo teto.
     // 8000 dá folga para o tool_use não truncar.
@@ -338,7 +384,7 @@ export async function analyzeModelagem(attachment: Attachment, ctx: GenerationCo
           `(A única exceção é o campo evidencia do diagnóstico, que existe justamente para citar a frase literal.)\n\n` +
           `Separe o que TRANSFERE do que era circunstância: trend, celebridade, rosto conhecido ou janela de notícia ` +
           `não se replicam e vão em nao_transferivel.\n\n${missao}` +
-          `${taxonomia}${clienteBlock(ctx)}${corpus.promptBlock}\n\nTRANSCRIÇÃO:\n${transcript}`,
+          `${taxonomia}${opts.cliente ?? ""}${corpus.promptBlock}\n\nTRANSCRIÇÃO:\n${transcript}`,
       },
     ],
   });
@@ -355,11 +401,39 @@ export async function analyzeModelagem(attachment: Attachment, ctx: GenerationCo
     return vazio;
   }
 
+  // Grava as duas chaves quando as duas existem: a autópsia paga numa sessão fica reusável
+  // no debate avulso, e vice-versa.
   await appDb.from("vm_modelagem_analyses").insert({
-    attachment_id: attachment.id,
+    attachment_id: opts.attachmentId ?? null,
+    video_url: url,
     analysis,
     replication_brief: composed,
   });
 
   return { brief: composed, analysis };
+}
+
+export async function analyzeModelagem(attachment: Attachment, ctx: GenerationContext): Promise<ModelagemResult> {
+  // A transcrição vem ANTES do cache aqui de propósito, ao contrário do núcleo: o pipeline
+  // depende do efeito colateral (`attachment.raw_content` alimenta a pesquisa no modo
+  // adaptação, index.ts). Envelope não muda comportamento — nem esse.
+  const { text: transcript } = await ensureTranscript(attachment);
+  if (!transcript) return { brief: "", analysis: {} };
+
+  const storyIndex = playbookIndex(ctx.playbooks.storytelling);
+  const { url, attachmentId } = chavesDoAnexo(attachment);
+  return autopsiaDeUrl(url, {
+    transcript,
+    tema: ctx.prompt,
+    attachmentId,
+    usageLog: ctx.usageLog,
+    cliente: clienteBlock(ctx),
+    taxonomia:
+      (ctx.playbooks.hook
+        ? `\n\n# PLAYBOOK DE HOOKS (classifique o hook com este vocabulário)\n${ctx.playbooks.hook}`
+        : "") +
+      (storyIndex
+        ? `\n\n# ESTRUTURAS NARRATIVAS DO PLAYBOOK (classifique em estrutura_narrativa com código + nome EXATOS)\n${storyIndex}`
+        : ""),
+  });
 }
