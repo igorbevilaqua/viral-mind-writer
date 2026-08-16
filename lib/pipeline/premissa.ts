@@ -62,7 +62,7 @@ export interface PremissaDerivada {
 export async function derivePremissa(ctx: GenerationContext): Promise<PremissaDerivada> {
   const temaContexto = [
     clientInsightBlock(ctx, ["tema", "geral"], 6),
-    taughtBlock(ctx, ["tema", "geral"]),
+    taughtBlock(ctx, "premissa"),
     clientPrefsBlock(ctx),
   ]
     .filter(Boolean)

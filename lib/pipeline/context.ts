@@ -109,28 +109,34 @@ export async function loadContext(sessionId: string): Promise<GenerationContext>
     .in("scope", scopes);
   if (insightsErr) throw new Error(`falha ao carregar insights: ${insightsErr.message}`);
 
-  // Aprendizados ensinados (menu Ensinar): entram como pseudo-insights taught_<dimensao>,
-  // roteados por dimensão nos agentes via taughtBlock. Curadoria humana: prevalecem em conflito.
+  // Aprendizados ensinados (menu Ensinar): entram como pseudo-insights `taught`, roteados por
+  // DESTINATÁRIO nos agentes via taughtBlock. Curadoria humana: prevalecem em conflito.
   const taught: { insight_type: string; scope: string; payload: unknown }[] = [];
   const lessonIds: string[] = []; // WP-E.1: ids das lições que entraram no contexto (fingerprint)
   try {
     const { data } = await appDb
       .from("vm_lesson_learnings")
-      .select("id, dimensao, titulo, descricao, created_at, vm_lessons!inner(client_id)")
+      .select("id, dimensao, destinatarios, titulo, descricao, created_at, vm_lessons!inner(client_id)")
       .eq("active", true)
       .order("created_at", { ascending: false });
     const rows = (data ?? [])
       .map((t) => ({ ...t, lessonClient: (Array.isArray(t.vm_lessons) ? t.vm_lessons[0] : t.vm_lessons)?.client_id ?? null }))
       .filter((t) => t.lessonClient === null || (!modoModelagem && t.lessonClient === session.client_id))
       // client-scoped antes de global; dentro do grupo, mais novos primeiro (já ordenado)
-      .sort((a, b) => Number(!!b.lessonClient) - Number(!!a.lessonClient))
-      .slice(0, 12); // orçamento de contexto do agente Dados
+      .sort((a, b) => Number(!!b.lessonClient) - Number(!!a.lessonClient));
+    // sem .slice(): o teto agora é por destinatário, aplicado em taughtBlock, com o excedente
+    // registrado. O corte global de 12 escondia lição ativa sem dizer a ninguém.
     lessonIds.push(...rows.map((t) => t.id));
     taught.push(
       ...rows.map((t) => ({
-        insight_type: `taught_${t.dimensao}`,
+        insight_type: "taught",
         scope: t.lessonClient ? `client:${t.lessonClient}` : "global",
-        payload: { titulo: t.titulo, descricao: t.descricao },
+        payload: {
+          titulo: t.titulo,
+          descricao: t.descricao,
+          destinatarios: t.destinatarios ?? [],
+          dimensao: t.dimensao,
+        },
       }))
     );
   } catch (e) {

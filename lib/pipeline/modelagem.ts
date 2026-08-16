@@ -242,7 +242,7 @@ function clienteBlock(ctx: GenerationContext): string {
   const prefs = clientPrefsBlock(ctx);
   const performou = clientInsightBlock(ctx, ["tema", "storytelling", "hook"], 5);
   const publicados = scriptResultBlock(ctx, "estrutura");
-  const ensinado = taughtBlock(ctx, ["storytelling", "tema"]);
+  const ensinado = taughtBlock(ctx, "modelagem");
   const parts = [
     prefs,
     performou && `# O QUE JÁ PERFORMOU PARA ESTE CLIENTE (dados reais, pré-rankeados)\n${performou}`,

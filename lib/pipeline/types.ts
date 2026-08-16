@@ -176,6 +176,10 @@ export interface GenerationContext {
   usageLog?: UsageLog;
   // WP-E.1: fingerprint do conhecimento usado na geração (persistido em pipeline_trace.fingerprint)
   lessonIds?: string[]; // vm_lesson_learnings.id das lições taught presentes no contexto
+  // Lições elegíveis que o teto por destinatário cortou (agente -> quantas ficaram de fora).
+  // Preenchido por taughtBlock e persistido em pipeline_trace.proveniencia — nenhum corte é
+  // silencioso, e é este número que justifica subir o teto depois (015 §6.3).
+  licoesExcedidas?: Record<string, number>;
   playbookVersions?: { slug: string; version: number }[];
   insightRunId?: string | null; // último vm_insight_runs vigente na geração
 }

@@ -12,6 +12,7 @@ import type {
   NarrativaCandidata,
   RankingItem,
 } from "./types";
+import { type Destinatario, type TaughtPayload } from "./destinatarios";
 import { deepDedash } from "./slop-lint";
 import fontesAutoritativas from "./fontes-autoritativas.json";
 import { HOOK_MECHANISMS, HOOK_FORMATS, filtrarCandidatos, selectHook, type HookCandidate } from "./hook-mechanisms";
@@ -42,14 +43,20 @@ export function clientInsightBlock(ctx: GenerationContext, categorias: string[],
 }
 
 // Aprendizados ensinados pelo usuário (menu Ensinar, curadoria humana):
-// roteados por dimensão, máx 3 por prompt de especialista.
-export function taughtBlock(ctx: GenerationContext, dimensoes: string[], n = 3): string {
+// roteados por DESTINATÁRIO ("quem precisa saber disto?"), não por dimensão — a dimensão é
+// rótulo de filtro em /ensinar e não decide destino (015 §6).
+// n = 3 é o teto de hoje, mantido de propósito: esta mudança é de ROTEAMENTO, não de volume.
+// Subir o teto é mudança separada, justificada por licoes_excedidas no trace.
+export function taughtBlock(ctx: GenerationContext, agente: Destinatario, n = 3): string {
   const rows = ctx.insights
-    .filter((i) => dimensoes.some((d) => i.insight_type === `taught_${d}`))
-    .slice(0, n)
-    .map((i) => i.payload as { titulo: string; descricao: string });
-  if (!rows.length) return "";
-  return rows.map((r) => `- ${r.titulo} — ${r.descricao}`).join("\n");
+    .filter((i) => i.insight_type === "taught")
+    .map((i) => i.payload as TaughtPayload)
+    .filter((p) => (p.destinatarios ?? []).includes(agente));
+  const usadas = rows.slice(0, n);
+  if (!usadas.length) return "";
+  // Nenhum corte é silencioso: o excedente vai ao trace (proveniencia.licoes_excedidas) e à tela.
+  if (rows.length > n) ctx.licoesExcedidas = { ...(ctx.licoesExcedidas ?? {}), [agente]: rows.length - n };
+  return usadas.map((r) => `- ${r.titulo} — ${r.descricao}`).join("\n");
 }
 
 // Payload de client_scriptresult (flywheel do ETL). verdict/em_observacao/maduro chegam
@@ -133,8 +140,12 @@ export function formatInsightsForDados(
     if (i.insight_type === "client_scriptresult" || i.insight_type === "client_hook_examples") continue;
     if (i.insight_type === "calibracao_dados") continue; // já injetado como nota no topo
     const p = i.payload as ClientInsightPayload;
-    if ((i.insight_type.startsWith("client_") || i.insight_type.startsWith("taught_")) && p?.titulo) {
-      grouped.set(i.insight_type, [...(grouped.get(i.insight_type) ?? []), p]);
+    // Lição ensinada chega com insight_type "taught" (antes taught_<dimensao>); o cabeçalho do
+    // bloco continua sendo taught_<dimensao>, agora lido do payload. O Dados recebe TODAS.
+    const key =
+      i.insight_type === "taught" ? `taught_${(i.payload as TaughtPayload).dimensao ?? "geral"}` : i.insight_type;
+    if ((i.insight_type.startsWith("client_") || i.insight_type === "taught") && p?.titulo) {
+      grouped.set(key, [...(grouped.get(key) ?? []), p]);
     } else {
       globals.push({ type: i.insight_type, payload: i.payload });
     }
@@ -482,7 +493,7 @@ export async function proposeNarratives(
     .map((a) => a.raw_content!.slice(0, 3000))
     .join("\n\n---\n\n");
   const dadosCliente = clientInsightBlock(ctx, ["storytelling", "tema"], 8);
-  const ensinado = taughtBlock(ctx, ["storytelling", "tema"]);
+  const ensinado = taughtBlock(ctx, "storytelling");
   const resultadosSala = scriptResultBlock(ctx, "estrutura");
 
   const messages = [
@@ -754,7 +765,7 @@ ${narrativaBloco}
 ${modelagemHookBlock(ctx)}
 ORIENTAÇÃO DOS DADOS SOBRE HOOKS:
 ${orientacaoHook}
-${rankingMecanismos ? `\n${rankingMecanismos}` : ""}${preferencias ? `\n${preferencias}` : ""}${hookCampeoes ? `\nHOOKS CAMPEÕES DESTE CLIENTE (literais — a primeira frase real dos vídeos de mais views; use como referência de registro, nunca copie):\n${hookCampeoes}` : ""}${resultadosHook ? `\nHOOKS DE ROTEIROS DESTA SALA JÁ PUBLICADOS (resultado real — evite o marcado como EVITE):\n${resultadosHook}` : ""}${clientInsightBlock(ctx, ["hook"]) ? `\nHOOKS QUE JÁ FUNCIONARAM PARA ESTE CLIENTE (pré-rankeados por performance+recência):\n${clientInsightBlock(ctx, ["hook"])}` : ""}${taughtBlock(ctx, ["hook"]) ? `\nAPRENDIZADOS DE HOOK ENSINADOS PELO TIME (curadoria humana — prevalecem sobre padrões do corpus em conflito):\n${taughtBlock(ctx, ["hook"])}` : ""}
+${rankingMecanismos ? `\n${rankingMecanismos}` : ""}${preferencias ? `\n${preferencias}` : ""}${hookCampeoes ? `\nHOOKS CAMPEÕES DESTE CLIENTE (literais — a primeira frase real dos vídeos de mais views; use como referência de registro, nunca copie):\n${hookCampeoes}` : ""}${resultadosHook ? `\nHOOKS DE ROTEIROS DESTA SALA JÁ PUBLICADOS (resultado real — evite o marcado como EVITE):\n${resultadosHook}` : ""}${clientInsightBlock(ctx, ["hook"]) ? `\nHOOKS QUE JÁ FUNCIONARAM PARA ESTE CLIENTE (pré-rankeados por performance+recência):\n${clientInsightBlock(ctx, ["hook"])}` : ""}${taughtBlock(ctx, "hook") ? `\nAPRENDIZADOS DE HOOK ENSINADOS PELO TIME (curadoria humana — prevalecem sobre padrões do corpus em conflito):\n${taughtBlock(ctx, "hook")}` : ""}
 
 CORPO DO ROTEIRO (o hook precisa emendar na primeira frase e ser pago pelo final):
 ${corpo}
@@ -836,8 +847,8 @@ export async function writeComando(ctx: GenerationContext, corpo: string): Promi
             ? `COMANDOS QUE JÁ CONVERTERAM PARA ESTE CLIENTE (pré-rankeados por seguidores ganhos):\n${clientInsightBlock(ctx, ["comando"])}\n\n`
             : ""
         }${
-          taughtBlock(ctx, ["comando"])
-            ? `APRENDIZADOS DE COMANDO ENSINADOS PELO TIME (curadoria humana — prevalecem sobre padrões do corpus em conflito):\n${taughtBlock(ctx, ["comando"])}\n\n`
+          taughtBlock(ctx, "comando")
+            ? `APRENDIZADOS DE COMANDO ENSINADOS PELO TIME (curadoria humana — prevalecem sobre padrões do corpus em conflito):\n${taughtBlock(ctx, "comando")}\n\n`
             : ""
         }FINAL DO ROTEIRO (o comando vem logo depois):
 ${corpo.slice(-1200)}

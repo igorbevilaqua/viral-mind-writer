@@ -199,7 +199,7 @@ export function buildDynamicSystemBlock(ctx: GenerationContext): string {
   const boasPraticas = clientInsightBlock(ctx, ["geral"], 4);
   if (boasPraticas) parts.push(`# BOAS PRÁTICAS DESTE CLIENTE (aprendidas dos dados de performance)\n${boasPraticas}`);
 
-  const ensinado = taughtBlock(ctx, ["ritmo", "geral"]);
+  const ensinado = taughtBlock(ctx, "roteirista");
   if (ensinado) parts.push(`# APRENDIZADOS ENSINADOS PELO TIME (ritmo e regras gerais — curadoria humana, cumpra)\n${ensinado}`);
 
   const prefs = clientPrefsBlock(ctx);

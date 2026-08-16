@@ -8,6 +8,15 @@ export const DESTINATARIOS = [
 
 export type Destinatario = (typeof DESTINATARIOS)[number];
 
+// Payload do pseudo-insight `taught` montado em context.ts e lido por taughtBlock /
+// formatInsightsForDados. `dimensao` sobrevive só como rótulo de agrupamento no bloco do Dados.
+export interface TaughtPayload {
+  titulo: string;
+  descricao: string;
+  destinatarios?: string[];
+  dimensao?: string;
+}
+
 // `dados` (formatInsightsForDados, agents.ts:136) agrupa TODO taught_* — por isso aparece em
 // todas as linhas. `revisao` não aparece: hoje o revisor não recebe lição nenhuma (Task 3 liga
 // o call site; lições só chegam nele quando alguém ensinar explicitamente para o revisor).
