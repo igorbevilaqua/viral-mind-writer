@@ -376,4 +376,258 @@ update (`codex-updates/state.json`) são do pacote, tratados na peça 1.
 
 ---
 
-**Status:** spec. O plano de implementação entra neste arquivo depois de aprovado, no formato do 015.
+## 16. Correções ao spec, apuradas em 2026-08-16
+
+Registradas aqui em vez de editar as seções acima, para o que mudou não sumir.
+
+### 16.1 §7.2 está incompleto, e é o erro mais caro do spec
+
+O §7.2 manda marcar `correcao_factual` em vez de `edicao_humana`. **Isso não basta, porque o portão
+do Professor não lê `edicao_humana`.** Ele lê `roteiro_original`:
+
+```ts
+// lib/actions.ts, finalizeSession
+const editada = form.edited_version.trim() || (trace.roteiro_original ? script!.roteiro : "");
+```
+
+E o próprio §7.2 exige preservar `roteiro_original` (a correção precisa ser revertível). Ou seja:
+seguir o spec ao pé da letra **grava `correcao_factual`, não grava `edicao_humana`, e o Professor
+aprende assim mesmo** — a lição envenenada continua nascendo, agora com um rótulo tranquilizador
+no trace.
+
+**O conserto é no portão:** `finalizeSession` passa a decidir por `trace.edicao_humana`, não por
+`trace.roteiro_original`. É seguro para os 47 roteiros existentes: `updateScript` sempre gravou os
+dois **no mesmo objeto literal**, então todo roteiro que tem `roteiro_original` hoje também tem
+`edicao_humana`. Nenhum comportamento legado muda.
+
+### 16.2 A peça 2 já entregou metade da adaptação 4 do §6.1
+
+`fontesBlock()` existe em `lib/pipeline/agents.ts` desde o commit `d8a1278` (peça 2, Task 1), já
+monta a hierarquia a partir de `fontes-autoritativas.json` e já é chamada em toda pesquisa. A
+adaptação 4 ("remover a hierarquia embutida no prompt e injetar o JSON") vira **reuso de uma linha**,
+não trabalho novo. O `agents.ts:335` que o §6.1 cita como precedente virou essa função.
+
+### 16.3 Duas primitivas necessárias são module-private
+
+- `grokPesquisa` (`lib/pipeline/bob.ts:56`) — o §5 chama de "a razão de a peça ser viável", e ela
+  **não é exportada**. Precisa sair de `bob.ts`.
+- `norm` (`lib/provenance.ts:6`) — o §4.2 manda reusar a normalização da peça 1, e ela também é
+  privada. Precisa ser exportada para o filtro de delta usar a MESMA função, e não uma cópia que
+  diverge no primeiro acento.
+
+---
+
+# Plano de implementação
+
+> **Para executores agênticos:** um subagente por task, TDD. Subagente **não** roda `git add` nem
+> `git commit`, e **não** aplica migration.
+
+**Goal:** verificar o que o roteirista inventou — as alegações do roteiro final que não são
+rastreáveis ao dossiê — com fonte citada, veredicto estruturado e correção cirúrgica quando o dado
+certo é conhecido.
+
+**Arquitetura:** regime C (§4). Filtro determinístico de delta antes de qualquer busca, para o custo
+crescer com a invenção e não com o tamanho do roteiro. Busca em paralelo, julgamento em lote.
+
+**Stack:** Next.js 16, vitest, `grokPesquisa` para busca web, `ANALYST_MODEL` para extração e
+julgamento.
+
+## Global Constraints
+
+- **Custo cresce com a invenção, não com o roteiro.** Qualquer atalho que verifique tudo por padrão
+  quebra o eixo de desenho da peça.
+- **`nao_verificavel` é resposta válida e esperada.** Nunca inventar confirmação, nunca cair para
+  `confirmado` quando a busca falha.
+- **Nenhum corte silencioso.** Teto, busca falha, `trecho_literal` que não casa: tudo vai para a
+  tabela e para a coluna.
+- **Correção factual nunca alimenta o Professor** (§7.2 + §16.1). É o requisito mais duro da peça.
+- **Paralelizar o passo 3 é requisito, não otimização** (§8): `maxDuration` é 300 na geração e 120
+  no molde do Bob; N buscas sequenciais não cabem.
+- Migration **0029**. Baseline da suíte: **28 arquivos, 286 testes**.
+- Gate: `npx tsc --noEmit && npx eslint . && npm run check && npm test`.
+
+---
+
+### Task 1: O portão do Professor (§7.2 + §16.1)
+
+**A task mais importante da peça, e a única que conserta um defeito que já existe.** Vem primeiro
+porque tudo que escreve no roteiro depende dela estar certa.
+
+**Files:** `lib/actions.ts` · Test: `tests/correcao-factual.test.ts`
+
+- [ ] **Passo 1: escrever o teste que falha.** Correção factual **não** marca `edicao_humana`; marca
+      `correcao_factual`; **preserva `roteiro_original`** (a correção é revertível); e o par
+      original→corrigido **não** vira insumo de `extractFromEdit`. Extraia a decisão do portão para
+      uma função pura (ex. `houveEdicaoHumana(trace)`) para poder testar sem banco.
+- [ ] **Passo 2: rodar e confirmar que falha.**
+- [ ] **Passo 3:** `updateScript(scriptId, patch, origem: "humano" | "correcao_factual" = "humano")`.
+      O default cobre todos os call sites atuais — nenhum quebra.
+- [ ] **Passo 4: consertar o portão.** `finalizeSession` decide por `trace.edicao_humana`, não por
+      `trace.roteiro_original` (§16.1). Comentar o porquê no código: sem isso alguém "simplifica" de
+      volta em seis meses.
+- [ ] **Passo 5: gate + commit.**
+
+---
+
+### Task 2: Âncoras e filtro de delta (§4.2)
+
+O coração do regime C. Determinístico, **zero LLM**.
+
+**Files:** `lib/provenance.ts` (exportar `norm`) · `lib/pipeline/delta.ts` (novo) ·
+Test: `tests/delta.test.ts`
+
+**Interfaces:** `extrairAncoras(alegacao: string): string[]`;
+`ehRastreada(alegacao: string, dossie: string): boolean`.
+
+- [ ] **Passo 1: escrever o teste que falha** (§12.1 e §12.2). Âncoras: quantidade, data e nome
+      próprio entram; palavra comum **não**. Delta: todas as âncoras no dossiê → `rastreada`; uma
+      âncora ausente → delta; **alegação sem âncora nenhuma → delta**; dossiê vazio → tudo delta.
+- [ ] **Passo 2: rodar e confirmar que falha.**
+- [ ] **Passo 3: implementar.** Reusar `norm` de `lib/provenance.ts` — **a mesma função, não uma
+      cópia**, senão as duas divergem no primeiro acento. Nome próprio = maiúscula **fora de início
+      de frase**.
+- [ ] **Passo 4: gate + commit.**
+
+**Direção do erro (§4.2):** conservador para o lado de verificar demais. Falso delta custa uma busca;
+falso `rastreada` deixa passar invenção, que é o defeito que a peça existe para matar.
+
+---
+
+### Task 3: O verificador — persona e as duas tools (§5.1, §5.4, §6)
+
+**Files:** `agents/verificador.md` (novo) · `lib/pipeline/verificar.ts` (novo) ·
+Test: `tests/verificar.test.ts`
+
+- [ ] **Passo 1: portar o prompt do Apêndice A** de `plans/2.0-decisoes.md`, com as quatro
+      adaptações do §6.1: remover `<inicializacao>`; remover "responda no chat, nunca crie
+      artefato"; trocar o `<formato_de_saida>` markdown pelo tool call; e **remover a hierarquia de
+      fontes embutida**, injetando `fontesBlock()` — que a peça 2 já criou (§16.2). O resto entra
+      **inalterado**: cronologia, causalidade, superlativo, status atual e as regras de
+      arredondamento são o valor do documento e já estão calibradas.
+- [ ] **Passo 2: teste de contrato** (§12.5): enum de `veredicto` fechado em
+      `confirmado|impreciso|falso|nao_verificavel`.
+- [ ] **Passo 3: implementar as duas chamadas.** `registrar_alegacoes` sobre `hook + roteiro +
+      comando` salvos; `registrar_verificacao` recebendo delta + resultado de busca. `trackedCreate`
+      nas duas (§14.2 — hoje **nenhuma** operação sob demanda contabiliza custo). `max_tokens` com
+      folga: thinking divide o teto e trunca o `tool_use`.
+- [ ] **Passo 4:** o agente **não recebe o roteiro inteiro** (§6.2) — recebe alegação e evidência.
+      Mandar o roteiro convida o modelo a opinar sobre qualidade, que o próprio prompt proíbe.
+- [ ] **Passo 5: gate + commit.**
+
+---
+
+### Task 4: Busca em paralelo (§5 passo 3, §8, §11)
+
+**Files:** `lib/pipeline/bob.ts` (exportar `grokPesquisa`) · `lib/pipeline/verificar.ts` ·
+Test: `tests/verificar-busca.test.ts`
+
+- [ ] **Passo 1:** exportar `grokPesquisa` (§16.3). É o único ponto do sistema que devolve **fonte
+      estruturada** (`annotations.url_citation`) em vez de prosa — sem ele, isto seria infra nova.
+- [ ] **Passo 2: paralelizar com teto.** Requisito, não otimização (§8). Excedente vira "não
+      verificada nesta rodada", **listada**, nunca omitida.
+- [ ] **Passo 3: teste do fail-soft por alegação** (§11): busca que falha vira `nao_verificavel` com
+      o motivo, **nunca `confirmado`**, e as outras alegações seguem. É o teste que impede a peça de
+      mentir "verificado" quando não verificou.
+- [ ] **Passo 4: gate + commit.**
+
+---
+
+### Task 5: Correção cirúrgica (§7.1)
+
+**Files:** `lib/actions.ts` · Test: `tests/correcao-cirurgica.test.ts`
+
+- [ ] **Passo 1: escrever o teste** (§12.3): `trecho_literal` presente troca **todas** as
+      ocorrências; ausente **não aplica e não lança**.
+- [ ] **Passo 2: implementar** `split(trecho_literal).join(correcao)` + `updateScript(..., "correcao_factual")`.
+      **Zero LLM**: quando a verificação já achou o dado certo, os dois lados são conhecidos e não há
+      o que gerar.
+- [ ] **Passo 3: validar com `includes` ANTES de oferecer o botão** (§11). Paráfrase do modelo mata a
+      correção; nesse caso o veredicto sobrevive e só a ação automática cai. Registrar o
+      descasamento — é sinal de que o modelo parafraseou.
+- [ ] **Passo 4: reler o roteiro antes de aplicar** (§11): `updateScript` é patch por campo inteiro,
+      sem guarda otimista. Se mudou no meio, refazer o `split/join` sobre o texto novo ou abortar com
+      aviso.
+- [ ] **Passo 5: gate + commit.**
+
+**Nota (§7.1):** a substituição global que quebra a peça 2 é **benigna aqui** — um número errado é
+errado em toda aparição.
+
+---
+
+### Task 6: Migration 0029 e persistência (§9)
+
+**Files:** `supabase/migrations/0029_verificacao.sql` (novo) · `lib/pipeline/verificar.ts`
+
+- [ ] **Passo 1: escrever o `.sql`.** `alter table vm_generated_scripts add column verificacao jsonb;`
+      Coluna, não tabela — decisão 7 do `2.0-decisoes.md`.
+- [ ] **Passo 2: gravar o registro** no formato do §9 (`at`, `regime`, `dossie_presente`, contagens,
+      `itens[]`).
+- [ ] **Passo 3: commit.**
+
+> **STOP — a migration 0029 é aplicada pelo operador via Supabase MCP.** O código que lê a coluna não
+> funciona antes disso. Avisar e parar.
+
+---
+
+### Task 7: Onde roda (§8)
+
+**Files:** `app/api/verificar/route.ts` (novo) · `lib/pipeline/index.ts`
+
+- [ ] **Passo 1:** rodar **depois do save**, como fase própria. Se falhar, o roteiro está intacto e
+      salvo — fail-soft por construção.
+- [ ] **Passo 2: rota de varredura completa** no molde de `app/api/bob/route.ts` (valida payload →
+      `guardEmit` → emite `phase`/`done`/`error`). O regime `completa` **pula o filtro de delta**
+      (§4.3): toda alegação é verificada.
+- [ ] **Passo 3: emitir progresso.** O heartbeat de 15s existe por causa do idle-timeout do proxy da
+      Hostinger — fase longa e silenciosa derruba a conexão.
+- [ ] **Passo 4: gate + commit.**
+
+---
+
+### Task 8: Interface (§10)
+
+**Files:** `components/verificacao-dialog.tsx` (novo) · `components/session-view.tsx`
+
+- [ ] **Passo 1:** `<dialog>` nativo com pseudo-tabela. O projeto **não tem `<table>` em lugar
+      nenhum** — copiar `components/class-videos-dialog.tsx` (linhas em `div.flex`, `truncate`,
+      `ml-auto`), o mesmo padrão do `teach-dialog` da peça 1.
+- [ ] **Passo 2:** cada linha com veredicto (emoji + cor), alegação truncada, fonte como link e —
+      só quando `impreciso` **com** `correcao` — o botão de aplicar, com **antes e depois visíveis**.
+- [ ] **Passo 3: entradas.** Selo no card do roteiro com a contagem por veredicto; botão
+      **"Verificar tudo"** no fim da página. O rótulo diz o que custa: a varredura completa é a
+      operação cara, e a diferença para a automática precisa estar na tela.
+- [ ] **Passo 4:** estados honestos (§11): "não verificado" nunca vira "verificado, 0 problemas";
+      delta vazio diz "nada fora do dossiê"; sem dossiê avisa que a rodada é integral.
+- [ ] **Passo 5: gate + commit.**
+
+---
+
+## Ordem, dependências e portões
+
+| Task | Depende de | Portão |
+|---|---|---|
+| 1 | — | correção factual não alimenta o Professor |
+| 2 | — | alegação sem âncora cai no delta |
+| 3 | 2 | enum de veredicto fechado |
+| 4 | 3 | busca falha vira `nao_verificavel`, nunca `confirmado` |
+| 5 | 1 | `trecho_literal` ausente não aplica e não lança |
+| 6 | 3 | **operador aplica a 0029** |
+| 7 | 4, 6 | roteiro intacto quando a verificação falha |
+| 8 | 7 | selo não mente sobre o que não foi verificado |
+
+Tasks 1 e 2 são independentes entre si e de todo o resto — as candidatas a paralelizar.
+
+## Cobertura do spec
+
+| Seção | Task |
+|---|---|
+| §4.2 filtro de delta · §4.3 varredura completa | 2, 7 |
+| §5 pipeline de 5 passos | 3, 4 |
+| §6 agente, adaptações e tool | 3 |
+| §7.1 correção cirúrgica | 5 |
+| §7.2 + §16.1 armadilha do `edicao_humana` | **1** |
+| §8 onde roda, tetos, heartbeat | 4, 7 |
+| §9 persistência | 6 |
+| §10 interface | 8 |
+| §11 tratamento de erro | 4, 5, 8 |
+| §12 checagem | 1, 2, 3, 5 |
