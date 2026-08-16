@@ -1,9 +1,11 @@
 import { ANALYST_MODEL, trackedCreate, type UsageLog } from "../anthropic";
 import { agentPrompt, fontesBlock, toolArray, toolInput } from "./agents";
+import { grokPesquisa } from "./grok-search";
+import { ehRastreada } from "./delta";
 
-// Verificação factual (017): as duas chamadas Anthropic do pipeline de 5 passos.
-// Passo 1 extrai as alegações do roteiro FINAL; passo 4 julga o delta com a evidência de busca
-// já em mãos. Os passos 2 (filtro de delta, `delta.ts`), 3 (busca) e 5 (ação) não moram aqui.
+// Verificação factual (017): as duas chamadas Anthropic do pipeline de 5 passos, o passo 3
+// (busca) e a orquestração 1→4. Passo 1 extrai as alegações do roteiro FINAL; passo 4 julga o
+// delta com a evidência de busca já em mãos. O passo 2 mora em `delta.ts`; o 5 (ação) não mora aqui.
 
 export const VEREDICTOS = ["confirmado", "impreciso", "falso", "nao_verificavel"] as const;
 export type TipoVeredicto = (typeof VEREDICTOS)[number];
@@ -242,4 +244,135 @@ Registre pela tool.`,
       it.alegacao
     );
   });
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Passo 3 (busca) e a orquestração dos passos 1→4 (§5, §8, §11)
+// ─────────────────────────────────────────────────────────────────────────────
+
+export type Regime = "delta" | "completa";
+
+export interface ItemVerificado extends Veredicto {
+  /** marcada pela correção cirúrgica (§7.1), nunca aqui. */
+  aplicada?: boolean;
+}
+
+/** A forma do §9 — o que vai para `vm_generated_scripts.verificacao`. Montar não é gravar. */
+export interface RegistroVerificacao {
+  at: string;
+  regime: Regime;
+  dossie_presente: boolean;
+  total_alegacoes: number;
+  rastreadas: number;
+  verificadas: number;
+  excedentes: number;
+  itens: ItemVerificado[];
+}
+
+export interface DepsVerificacao {
+  buscar: (query: string) => Promise<{ texto: string; fontes: string[] }>;
+  extrair: typeof extrairAlegacoes;
+  classificar: typeof classificar;
+}
+
+/**
+ * Teto de alegações buscadas por rodada. 20 porque é o que os dois tetos reais permitem: 20
+ * buscas simultâneas cabem no `maxDuration = 300` da geração, e 20 veredictos cabem nos 8000
+ * tokens de saída do passo 4 com folga para o thinking do sonnet. O excedente NÃO some — vai
+ * para `itens` como "não verificada nesta rodada" e o botão de varredura completa drena.
+ * ponytail: teto simples; se roteiros de 40+ alegações virarem rotina, quebrar o passo 4 em
+ * lotes de 20 é a saída, não subir o número.
+ */
+export const TETO_POR_RODADA = 20;
+
+// A MESMA função que o Bob usa, não uma cópia. Import estático: `grok-search.ts` é módulo
+// próprio justamente para não arrastar o grafo de contexto (Supabase na carga) atrás dela.
+const DEPS_PADRAO: DepsVerificacao = { buscar: grokPesquisa, extrair: extrairAlegacoes, classificar };
+
+const queryDe = (alegacao: string) =>
+  `Esta afirmação é factualmente correta? Traga os dados atuais e a URL da fonte de cada um: "${alegacao}"`;
+
+// Degradação segura em forma de item: nunca `confirmado`, nunca sem motivo visível (§11).
+const naoVerificavel = (alegacao: string, explicacao: string): ItemVerificado => ({
+  alegacao,
+  trecho_literal: alegacao,
+  veredicto: "nao_verificavel",
+  fonte: null,
+  correcao: null,
+  explicacao,
+});
+
+/**
+ * Orquestra a verificação: extrair (1) → filtro de delta (2) → buscar em paralelo (3) →
+ * classificar (4). Devolve o registro do §9 **sem gravar** — quem persiste é a rota.
+ *
+ * Regime `completa` (§4.3) pula o filtro: toda alegação vira delta. É o que o usuário aciona
+ * quando está inseguro, e a única forma de auditar o próprio dossiê pelo produto.
+ *
+ * Paralelizar o passo 3 é requisito, não otimização (§8): N buscas sequenciais não cabem no
+ * `maxDuration`. E `onProgresso` alimenta o heartbeat de 15s — fase longa e silenciosa derruba
+ * a conexão no proxy da Hostinger.
+ */
+export async function verificarRoteiro(
+  args: {
+    roteiro: { hook: string; roteiro: string; comando: string };
+    dossie: string;
+    regime: Regime;
+    log?: UsageLog;
+    onProgresso?: (e: { etapa: string; feito?: number; total?: number }) => void;
+  },
+  deps: DepsVerificacao = DEPS_PADRAO
+): Promise<RegistroVerificacao> {
+  const { roteiro, dossie, regime, log, onProgresso } = args;
+
+  onProgresso?.({ etapa: "extraindo" });
+  const alegacoes = await deps.extrair(roteiro, log);
+
+  const delta = regime === "completa" ? alegacoes : alegacoes.filter((a) => !ehRastreada(a, dossie));
+  const aBuscar = delta.slice(0, TETO_POR_RODADA);
+  const excedentes = delta.slice(TETO_POR_RODADA);
+
+  onProgresso?.({ etapa: "buscando", feito: 0, total: aBuscar.length });
+  let feito = 0;
+  // Fail-soft POR ALEGAÇÃO (§11): o try/catch é de cada busca, não da rodada. Uma exceção
+  // marca aquela alegação e as outras seguem — `Promise.all` só vê promessas resolvidas.
+  const buscas = await Promise.all(
+    aBuscar.map(async (alegacao) => {
+      try {
+        return { alegacao, busca: await deps.buscar(queryDe(alegacao)) };
+      } catch (e) {
+        console.error(`verificacao: busca falhou — ${alegacao.slice(0, 120)}`, e);
+        return { alegacao, busca: null };
+      } finally {
+        onProgresso?.({ etapa: "buscando", feito: ++feito, total: aBuscar.length });
+      }
+    })
+  );
+
+  // Busca falha não vai para o passo 4: sem evidência, não há o que julgar, e o julgamento
+  // determinístico aqui é o que garante que ela nunca vire `confirmado`.
+  const comBusca = buscas.flatMap((b, i) => (b.busca ? [{ i, item: { alegacao: b.alegacao, busca: b.busca } }] : []));
+  onProgresso?.({ etapa: "classificando", total: comBusca.length });
+  const veredictos = comBusca.length ? await deps.classificar(comBusca.map((c) => c.item), log) : [];
+
+  const itens: ItemVerificado[] = buscas.map((b) => naoVerificavel(b.alegacao, "busca falhou"));
+  comBusca.forEach(({ i, item }, k) => {
+    itens[i] = veredictos[k] ?? naoVerificavel(item.alegacao, "o verificador não devolveu veredicto para esta alegação");
+  });
+  for (const a of excedentes) {
+    itens.push(naoVerificavel(a, `não verificada nesta rodada (teto de ${TETO_POR_RODADA} alegações por rodada)`));
+  }
+
+  return {
+    at: new Date().toISOString(),
+    regime,
+    dossie_presente: Boolean(dossie?.trim()),
+    total_alegacoes: alegacoes.length,
+    // Rastreada passa direto por decisão de regime (§4.1) — conta, mas não vira linha na tabela.
+    rastreadas: alegacoes.length - delta.length,
+    // Tentadas nesta rodada, inclusive as de busca falha: elas têm linha e motivo.
+    verificadas: aBuscar.length,
+    excedentes: excedentes.length,
+    itens,
+  };
 }
