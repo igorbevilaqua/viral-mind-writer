@@ -31,6 +31,37 @@ export function isSubstantiveEdit(original: string, editada: string, threshold =
   return changedRatio(original, editada) > threshold;
 }
 
+// ── Peça 3 §7.2/§16.1: quem tem direito de alimentar o Professor ─────────────
+
+export interface TraceEdicao {
+  roteiro_original?: string;
+  edicao_humana?: boolean;
+  correcao_factual?: boolean;
+}
+
+// Merge do trace na escrita do roteiro (updateScript). `roteiro_original` é preservado
+// nas DUAS origens — a correção factual também precisa ser revertível; só o rótulo muda.
+export function marcarOrigemEdicao(
+  trace: TraceEdicao,
+  roteiroAnterior: string,
+  origem: "humano" | "correcao_factual"
+): TraceEdicao {
+  // sempre o texto da sala, nunca de edição anterior
+  const base = { ...trace, roteiro_original: trace.roteiro_original ?? roteiroAnterior };
+  return origem === "humano" ? { ...base, edicao_humana: true } : { ...base, correcao_factual: true };
+}
+
+// O portão do aprendizado por edição. Lê `edicao_humana` e NUNCA `roteiro_original`:
+// a correção factual de máquina também grava `roteiro_original`, então decidir por esse
+// campo faria o Professor extrair lição da própria correção ("prefira 4,5 bi a 45 bi"),
+// que não é regra de escrita nenhuma — a lição envenenada do §7.2. NÃO "simplifique"
+// isto de volta para `trace.roteiro_original`.
+// Legado seguro: updateScript sempre gravou os dois campos no MESMO objeto literal, então
+// todo roteiro que tem `roteiro_original` hoje também tem `edicao_humana`.
+export function houveEdicaoHumana(trace: TraceEdicao): boolean {
+  return trace.edicao_humana === true;
+}
+
 // ── WP-E.3: calibração previsto×real do agente Dados ─────────────────────────
 
 export interface CalibrationPayload {

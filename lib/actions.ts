@@ -6,7 +6,7 @@ import { platformVideoId } from "./video-url";
 import { dedash } from "./pipeline/slop-lint";
 import { rewriteFragment } from "./pipeline/rewrite-fragment";
 import { extractFromEdit, extractFromNotes } from "./pipeline/teach";
-import { isSubstantiveEdit } from "./learning-loop";
+import { isSubstantiveEdit, houveEdicaoHumana, marcarOrigemEdicao, type TraceEdicao } from "./learning-loop";
 import { registrarAtividade, currentUserId } from "./hub";
 import { createClient } from "./supabase/server";
 import { runProbeTopup } from "./calibration-probe";
@@ -141,11 +141,13 @@ export async function finalizeSession(
       .select("roteiro, client_id, pipeline_trace")
       .eq("id", scriptId)
       .single();
-    const trace = (script?.pipeline_trace ?? {}) as { roteiro_original?: string };
+    const trace = (script?.pipeline_trace ?? {}) as TraceEdicao;
     // original = texto que a sala gerou (preservado pelo updateScript na 1ª edição inline)
     const original = trace.roteiro_original ?? script?.roteiro ?? "";
-    // editada = versão colada no feedback OU o roteiro atual quando houve edição inline
-    const editada = form.edited_version.trim() || (trace.roteiro_original ? script!.roteiro : "");
+    // editada = versão colada no feedback OU o roteiro atual quando houve edição HUMANA.
+    // O portão é `edicao_humana`, não `roteiro_original` (§16.1): a correção factual também
+    // preserva o original, e lê-lo aqui faria o Professor aprender com a máquina.
+    const editada = form.edited_version.trim() || (houveEdicaoHumana(trace) ? script!.roteiro : "");
     const notes = form.notes?.trim() ?? "";
 
     let learnings: Awaited<ReturnType<typeof extractFromEdit>> = [];
@@ -303,9 +305,12 @@ export async function quickFeedback(scriptId: string, sessionId: string, thumb: 
 
 // Edição manual do roteiro: salva os campos editados no próprio roteiro (sem nova versão).
 // dedash garante zero travessão de slop mesmo no texto colado/editado à mão.
+// `origem` decide o rótulo no trace: "correcao_factual" (verificação) não vale como
+// edição humana e por isso não abre o portão do Professor (§7.2 + §16.1).
 export async function updateScript(
   scriptId: string,
-  patch: { headline?: string | null; hook?: string | null; roteiro?: string; comando?: string | null; fontes?: string | null }
+  patch: { headline?: string | null; hook?: string | null; roteiro?: string; comando?: string | null; fontes?: string | null },
+  origem: "humano" | "correcao_factual" = "humano"
 ) {
   const clean = (v: string | null | undefined) => (typeof v === "string" ? dedash(v) : v);
   const update: Record<string, unknown> = {};
@@ -322,13 +327,9 @@ export async function updateScript(
         .select("roteiro, pipeline_trace")
         .eq("id", scriptId)
         .single();
-      const trace = (cur?.pipeline_trace ?? {}) as { roteiro_original?: string };
+      const trace = (cur?.pipeline_trace ?? {}) as TraceEdicao;
       if (cur && update.roteiro !== cur.roteiro) {
-        update.pipeline_trace = {
-          ...trace,
-          roteiro_original: trace.roteiro_original ?? cur.roteiro, // sempre o texto da sala, nunca de edição anterior
-          edicao_humana: true,
-        };
+        update.pipeline_trace = marcarOrigemEdicao(trace, cur.roteiro, origem);
       }
     } catch (e) {
       console.error("preservação do roteiro original no trace falhou — edição segue", e);
