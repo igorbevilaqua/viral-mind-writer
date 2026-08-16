@@ -1,5 +1,6 @@
 import { anthropic, WRITER_MODEL, recordUsage } from "../anthropic";
 import { agentPrompt, clientInsightBlock, formatNarrativa, licaoRefs, licoesPara, premissaBlock, registrarBloco } from "./agents";
+import type { EcoNumerico } from "./slop-lint";
 import type { GenerationContext, ScriptSections } from "./types";
 
 // Formato final do roteiro montado (usado por revisão e humanização).
@@ -258,10 +259,45 @@ export function buildDynamicSystemBlock(ctx: GenerationContext): string {
   return parts.join("\n\n");
 }
 
+// Quantos ecos vão na lista do revisor. O excedente é DITO, nunca cortado em silêncio —
+// lista longa demais vira ruído e o revisor para de ler, que é o mesmo que não sinalizar.
+export const TETO_ECOS = 6;
+
+// Os sinais determinísticos viram lista de DECISÃO, não de correção (016 §6.1). O detector
+// não julga: três em quatro ecos reais são texto bom — o refrão do "400%", o contraste do
+// "37,5%". Por isso a instrução termina em MANTENHA, e não em corte: "não repita" produziria
+// exatamente os dois cortes errados. A regra é "repetição tem que se pagar".
+export function blocoSinaisRevisor(ecos: EcoNumerico[], ecoHookAbertura: boolean): string {
+  const partes: string[] = [];
+
+  if (ecos.length) {
+    const listados = ecos.slice(0, TETO_ECOS);
+    const linhas = listados.map(
+      (e) =>
+        `- "${e.valor}" aparece em ${e.frases.length} frases:\n${e.frases.map((f, i) => `    ${i + 1}. "${f}"`).join("\n")}`
+    );
+    const excedente =
+      ecos.length > listados.length ? `\n(mais ${ecos.length - listados.length} valores repetidos não listados aqui)` : "";
+    partes.push(
+      `QUANTIDADES REPETIDAS (o ouvinte não distingue dois fatos com o mesmo número):\n${linhas.join("\n")}${excedente}\n` +
+        `Se forem fatos diferentes, diferencie ou corte um. Se o retorno se paga (fecha arco, arma contraste, vira virada), MANTENHA.`
+    );
+  }
+
+  if (ecoHookAbertura) {
+    partes.push(
+      `HOOK E ABERTURA DO CORPO DIZEM A MESMA COISA: o espectador ouve os dois seguidos e escuta a mesma frase duas vezes. ` +
+        `Se a repetição for costura deliberada (o hook promete, a abertura confirma e avança), MANTENHA. Se for só a mesma ideia reescrita, reescreva a abertura para AVANÇAR.`
+    );
+  }
+
+  return partes.join("\n\n");
+}
+
 // Variante enxuta pro agente de revisão: ele corrige contra checklist, não imita voz —
 // dispensa few-shot e materiais do usuário; dossiê truncado a ~2000 chars. Briefs de
 // modelagem entram: fidelidade à arquitetura-modelo é item eliminatório da revisão.
-export function buildReviewDynamicBlock(ctx: GenerationContext): string {
+export function buildReviewDynamicBlock(ctx: GenerationContext, sinais = ""): string {
   const parts: string[] = [];
   // Eliminatório na revisão: roteiro que não sustenta a premissa é roteiro errado, por bem
   // escrito que esteja. Mesmo bloco literal do roteirista — a tese não pode divergir entre eles.
@@ -295,6 +331,18 @@ export function buildReviewDynamicBlock(ctx: GenerationContext): string {
   }
   // O revisor passa a ser ensinável (015 §6.3): até esta linha ele era o único agente de
   // julgamento sem canal de lição — ensinar para ele gravava e não produzia efeito.
+  // Sinais determinísticos desta geração (016 §6): o revisor é o juiz nomeado, e sem este
+  // push os detectores das Tasks 3 e 4 gravariam no trace sem mudar nada no roteiro.
+  if (sinais)
+    parts.push(
+      `# SINAIS AUTOMÁTICOS SOBRE ESTE ROTEIRO (detectados em código, NÃO são veredito — você decide)\n${sinais}`
+    );
+  // A outra metade do §5.2: o pesquisador já não emite superlativo sem fonte datada; aqui o
+  // revisor trata o que escapou com o mesmo rigor que a CHECAGEM dá a "contestado".
+  parts.push(
+    `# SUPERLATIVO SEM FONTE (016 §5.2)\n"O maior", "o primeiro", "o único" são alegações factuais, não ênfase. ` +
+      `Superlativo que o dossiê não sustenta com fonte datada sai, ou vira a afirmação menor que a fonte banca. Comparação de escala não precisa disso: ela é conta sobre número que a pesquisa trouxe.`
+  );
   const licoes = licoesPara(ctx, "revisao");
   if (licoes.length)
     parts.push(

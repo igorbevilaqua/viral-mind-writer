@@ -9,7 +9,10 @@ import type { GenerationContext } from "./types";
 // sem materiais do usuário, dossiê truncado (buildReviewDynamicBlock).
 export async function critiqueAndRewrite(
   ctx: GenerationContext,
-  draft: string
+  draft: string,
+  // Sinais determinísticos daquela geração (eco numérico, hook × abertura — 016 §6).
+  // Chegam prontos de index.ts: o revisor é quem decide, o detector só sinaliza.
+  sinais = ""
 ): Promise<{ revised: string; critica: string }> {
   const res = await trackedCreate(ctx.usageLog, "revisao", {
     model: ANALYST_MODEL,
@@ -18,7 +21,7 @@ export async function critiqueAndRewrite(
       // block 1 = estático compartilhado + cache: o modelo é sonnet (cache separado do fable),
       // mas "gerar nova versão" re-roda a revisão com o mesmo prefixo e reusa a escrita.
       { type: "text", text: buildStaticSystemBlock(ctx), cache_control: { type: "ephemeral" } },
-      { type: "text", text: `${agentPrompt("revisao")}\n\n${buildReviewDynamicBlock(ctx)}` },
+      { type: "text", text: `${agentPrompt("revisao")}\n\n${buildReviewDynamicBlock(ctx, sinais)}` },
     ],
     messages: [
       {

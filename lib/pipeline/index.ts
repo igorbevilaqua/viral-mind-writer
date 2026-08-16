@@ -6,12 +6,13 @@ import { analyzeModelagem, ensureTranscript, type ModelagemResult } from "./mode
 import { compreensaoBlock } from "./modelagem-brief";
 import { research, proposeNarratives, rankNarratives, designHook, writeComando } from "./agents";
 import { pairFromCandidates } from "../calibration";
-import { generateDraft, hookEcoaAbertura, parseSections, semEcoDaAbertura, stripLeadingHook, stripTrailingComando } from "./draft";
+import { blocoSinaisRevisor, generateDraft, hookEcoaAbertura, parseSections, semEcoDaAbertura, stripLeadingHook, stripTrailingComando, TETO_ECOS } from "./draft";
 import { critiqueAndRewrite } from "./critique";
+import { extrairEstudos } from "./estudos";
 import { extractFromCorrection } from "./teach";
 import { humanize } from "./humanize";
 import { derivePremissa } from "./premissa";
-import { blockCount, dedash, deepDedash } from "./slop-lint";
+import { blockCount, dedash, deepDedash, ecosNumericos } from "./slop-lint";
 import { APP_VERSION, GIT_SHA } from "../version";
 import { registrarAtividade } from "../hub";
 import type { PipelineEvent, SessionArtifacts } from "./types";
@@ -273,8 +274,16 @@ export async function runPipeline(
       `## FONTES\n${fontes ?? ""}`,
     ].join("\n\n");
 
+    // Detectores determinísticos sobre o roteiro montado, antes da revisão (016 §4.2): o que
+    // ADICIONA texto entrou no dossiê, o que REMOVE é julgado aqui. Custo zero de LLM.
+    const ecos = ecosNumericos(assembled);
+    const sinais = blocoSinaisRevisor(ecos, ecoHookAbertura);
+    // Portão de forma e procedência sobre a seção ESTUDOS do dossiê. Determinístico, sem LLM,
+    // e sem abrir a URL — confirmar que a página existe e diz aquilo é a peça 3.
+    const estudos = extrairEstudos(artifacts?.dossie ?? "");
+
     emit({ type: "phase", phase: "revisao" });
-    const { revised, critica } = await critiqueAndRewrite(ctx, assembled);
+    const { revised, critica } = await critiqueAndRewrite(ctx, assembled, sinais);
 
     emit({ type: "phase", phase: "humanizacao" });
     const { text: final, violations } = await humanize(ctx, revised);
@@ -338,6 +347,17 @@ export async function runPipeline(
               hooks_descartados: hookRes.descartados,
               bob: [], // preenchido pós-save pelas edições do Bob
               licoes_excedidas: ctx.licoesExcedidas ?? {},
+              // 016 §10.1: é este registro que torna a taxa de falso positivo do eco MEDIDA
+              // e não estimada — e é ela que decide se o detector aperta ou afrouxa depois.
+              // Guarda o sinal e o que sobrou do teto; o `revised` ao lado diz o que o
+              // revisor fez com ele.
+              ecos_numericos: ecos,
+              ecos_excedidos: Math.max(0, ecos.length - TETO_ECOS),
+              eco_hook_abertura: ecoHookAbertura,
+              // 016 §7: os estudos descartados vão com o TEXTO, não só o contador — é o sinal
+              // de que o Grok está inventando referência, e ele some se só o número for salvo.
+              estudos: estudos.aceitos,
+              estudos_descartados: estudos.descartados,
             },
             few_shot_origens: ctx.fewShot.map((f) => f.origem),
             modelagem_briefs: ctx.modelagemBriefs,
