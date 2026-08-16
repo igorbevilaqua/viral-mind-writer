@@ -51,34 +51,32 @@ async function fetchFewShot(prompt: string, clientId: string | null) {
   }
 }
 
-export async function loadContext(sessionId: string): Promise<GenerationContext> {
-  const { data: session, error } = await appDb
-    .from("vm_sessions")
-    .select("id, user_id, prompt, client_id, artifacts, premissa, premissa_origem")
-    .eq("id", sessionId)
-    .single();
-  if (error || !session) throw new Error(`sessão não encontrada: ${error?.message}`);
+// O estado que NÃO depende de sessão: playbooks, frases banidas, prefs do cliente, insights e
+// lições ativas. Uma implementação só, consumida pela sessão (loadContext) e pelo debate avulso
+// (loadContextAvulso) — duas cópias divergiriam no primeiro campo novo.
+type EstadoComum = Pick<
+  GenerationContext,
+  "playbooks" | "playbookVersions" | "bannedPhrases" | "clientPrefs" | "insights" | "lessonIds" | "insightRunId"
+>;
 
-  const [attachments, playbooksRes, bannedRes, prefsRes, fewShot, lastRun] = await Promise.all([
-    appDb.from("vm_attachments").select("id, kind, is_modelagem, url, raw_content").eq("session_id", sessionId),
+async function loadEstadoComum(clientId: string | null, modoModelagem: boolean): Promise<EstadoComum> {
+  const [playbooksRes, bannedRes, prefsRes, lastRun] = await Promise.all([
     appDb.from("vm_playbooks").select("slug, content, version").eq("active", true),
     appDb.from("vm_banned_phrases").select("pattern, label, severity, motivo").eq("active", true),
-    session.client_id
+    clientId
       ? appDb
           .from("vm_client_preferences")
           .select("proibicoes, tom_de_voz, temas_preferidos, vocabulario_evitar, vocabulario_usar, notas_entrevista, viral_data_cliente_id, clientes(nome)")
-          .eq("client_id", session.client_id)
+          .eq("client_id", clientId)
           .maybeSingle()
       : Promise.resolve({ data: null }),
-    fetchFewShot(session.prompt, session.client_id),
     // WP-E.1: id do run de insights vigente entra no fingerprint do roteiro.
     // Tabela vazia/ausente (migration 0014 não aplicada) → null, sem erro.
     appDb.from("vm_insight_runs").select("id").order("run_at", { ascending: false }).limit(1).maybeSingle(),
   ]);
 
-  // Falha de query aqui gerava roteiro silenciosamente SEM materiais/playbooks/banned.
+  // Falha de query aqui gerava roteiro silenciosamente SEM playbooks/banned.
   // Lançar é o certo: o catch do pipeline persiste e exibe o erro ao usuário.
-  if (attachments.error) throw new Error(`falha ao carregar anexos: ${attachments.error.message}`);
   if (playbooksRes.error) throw new Error(`falha ao carregar playbooks: ${playbooksRes.error.message}`);
   if (bannedRes.error) throw new Error(`falha ao carregar frases banidas: ${bannedRes.error.message}`);
 
@@ -94,15 +92,9 @@ export async function loadContext(sessionId: string): Promise<GenerationContext>
     clientPrefs = { ...prefs, nome: clientRel?.nome ?? "cliente" };
   }
 
-  // Modelagem pedida: o alvo é o vídeo modelado. O que o cliente já fez (hooks campeões,
-  // estruturas que performaram, lições dele) puxava o roteiro de volta pro repertório da casa —
-  // era essa a interferência. Em modo modelagem esse material NÃO entra: o cliente sobrevive
-  // só como veto e identidade (clientPrefsBlock). Insight/lição global continua valendo.
-  const modoModelagem = (attachments.data ?? []).some((a) => a.is_modelagem);
-
   // Insights: globais + do cliente (pós-consolidação, client_id JÁ é o id no corpus)
   const scopes = ["global"];
-  if (session.client_id && !modoModelagem) scopes.push(`client:${session.client_id}`);
+  if (clientId && !modoModelagem) scopes.push(`client:${clientId}`);
   const { data: insights, error: insightsErr } = await appDb
     .from("vm_viral_insights")
     .select("insight_type, scope, payload")
@@ -121,7 +113,7 @@ export async function loadContext(sessionId: string): Promise<GenerationContext>
       .order("created_at", { ascending: false });
     const rows = (data ?? [])
       .map((t) => ({ ...t, lessonClient: (Array.isArray(t.vm_lessons) ? t.vm_lessons[0] : t.vm_lessons)?.client_id ?? null }))
-      .filter((t) => t.lessonClient === null || (!modoModelagem && t.lessonClient === session.client_id))
+      .filter((t) => t.lessonClient === null || (!modoModelagem && t.lessonClient === clientId))
       // client-scoped antes de global; dentro do grupo, mais novos primeiro (já ordenado)
       .sort((a, b) => Number(!!b.lessonClient) - Number(!!a.lessonClient));
     // sem .slice(): o teto agora é por destinatário, aplicado em taughtBlock, com o excedente
@@ -145,25 +137,76 @@ export async function loadContext(sessionId: string): Promise<GenerationContext>
   }
 
   return {
+    playbooks,
+    playbookVersions,
+    bannedPhrases: (bannedRes.data ?? []) as BannedPhrase[],
+    clientPrefs,
+    insights: [...(insights ?? []), ...taught],
+    lessonIds,
+    insightRunId: lastRun.data?.id ?? null,
+  };
+}
+
+export async function loadContext(sessionId: string): Promise<GenerationContext> {
+  const { data: session, error } = await appDb
+    .from("vm_sessions")
+    .select("id, user_id, prompt, client_id, artifacts, premissa, premissa_origem")
+    .eq("id", sessionId)
+    .single();
+  if (error || !session) throw new Error(`sessão não encontrada: ${error?.message}`);
+
+  const [attachments, fewShot] = await Promise.all([
+    appDb.from("vm_attachments").select("id, kind, is_modelagem, url, raw_content").eq("session_id", sessionId),
+    fetchFewShot(session.prompt, session.client_id),
+  ]);
+  // Falha de query aqui gerava roteiro silenciosamente SEM materiais.
+  if (attachments.error) throw new Error(`falha ao carregar anexos: ${attachments.error.message}`);
+
+  // Modelagem pedida: o alvo é o vídeo modelado. O que o cliente já fez (hooks campeões,
+  // estruturas que performaram, lições dele) puxava o roteiro de volta pro repertório da casa —
+  // era essa a interferência. Em modo modelagem esse material NÃO entra: o cliente sobrevive
+  // só como veto e identidade (clientPrefsBlock). Insight/lição global continua valendo.
+  // É ele que decide o escopo dos insights, e por isso a carga comum vem DEPOIS dos anexos:
+  // ponytail: uma ida a mais ao banco numa geração de minutos, em troca de uma carga só.
+  const modoModelagem = (attachments.data ?? []).some((a) => a.is_modelagem);
+
+  return {
     sessionId,
     userId: session.user_id ?? null,
     prompt: session.prompt,
     premissa: (session.premissa ?? "").trim(),
     premissaOrigem: (session.premissa_origem ?? null) as GenerationContext["premissaOrigem"],
     clientId: session.client_id,
-    clientPrefs,
     modoModelagem,
-    playbooks,
-    bannedPhrases: (bannedRes.data ?? []) as BannedPhrase[],
-    insights: [...(insights ?? []), ...taught],
+    ...(await loadEstadoComum(session.client_id, modoModelagem)),
     fewShot,
     attachments: (attachments.data ?? []) as Attachment[],
     modelagemBriefs: [],
     modelagemHooks: [],
     artifacts: (session.artifacts as GenerationContext["artifacts"]) ?? null,
     usageLog: {},
-    lessonIds,
-    playbookVersions,
-    insightRunId: lastRun.data?.id ?? null,
+  };
+}
+
+// 018 §2 e §5.3: o Kasparov debate FORA de qualquer sessão — entrada global, vídeo aleatório.
+// loadContext exige uma sessão real (e lança sem ela), então o debate precisa desta porta.
+// Os campos que só existem em sessão vêm vazios de propósito: `sessionId` vazio é o sinal de
+// "não há sessão", e é ele que impede a lição nascida daqui de gravar `/sessions/undefined`.
+export async function loadContextAvulso(clientId: string | null): Promise<GenerationContext> {
+  return {
+    sessionId: "",
+    userId: null,
+    prompt: "",
+    premissa: "",
+    premissaOrigem: null,
+    clientId,
+    modoModelagem: false,
+    ...(await loadEstadoComum(clientId, false)),
+    fewShot: [],
+    attachments: [],
+    modelagemBriefs: [],
+    modelagemHooks: [],
+    artifacts: null,
+    usageLog: {},
   };
 }

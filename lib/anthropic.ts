@@ -72,6 +72,30 @@ export function recordUsage(
   }
 }
 
+// Streaming com telemetria — o par de trackedCreate para resposta longa (018 §10).
+// `turno` é UMA fala do usuário, de propósito: quem chama daqui não tem por onde passar
+// uma lista de turnos anteriores, e é isso que mantém o custo por turno constante (018 §4).
+// generateDraft não passa por aqui: ele monta system em dois blocos com cache_control.
+export async function trackedStream(
+  log: UsageLog | undefined,
+  fase: string,
+  params: { model: string; max_tokens: number; system: string; turno: string },
+  onToken?: (t: string) => void
+): Promise<string> {
+  const t0 = Date.now();
+  const stream = anthropic.messages.stream({
+    model: params.model,
+    max_tokens: params.max_tokens,
+    system: params.system,
+    messages: [{ role: "user", content: params.turno }],
+  });
+  if (onToken) stream.on("text", onToken);
+  const final = await stream.finalMessage();
+  recordUsage(log, fase, params.model, Date.now() - t0, final.usage);
+  const block = final.content.find((b) => b.type === "text");
+  return block?.type === "text" ? block.text : "";
+}
+
 export type Effort = "low" | "medium" | "high";
 
 // messages.create com tiering de esforço (output_config.effort) + telemetria — 1 linha no call site.
