@@ -70,8 +70,10 @@ describe("taughtBlock por destinatário", () => {
       .join("\n");
     for (const a of DESTINATARIOS) {
       if (a === "dados") continue; // dados consome via formatInsightsForDados, não taughtBlock
-      expect(fontes, `destinatário "${a}" não tem call site de taughtBlock`).toMatch(
-        new RegExp(`taughtBlock\\([^)]*["']${a}["']`)
+      // licoesPara é o roteamento cru; taughtBlock é o formatador em cima dele. Qualquer um
+      // dos dois é consumidor real — o que não pode existir é destinatário sem nenhum.
+      expect(fontes, `destinatário "${a}" não tem call site de roteamento`).toMatch(
+        new RegExp(`(taughtBlock|licoesPara)\\([^)]*["']${a}["']`)
       );
     }
   });

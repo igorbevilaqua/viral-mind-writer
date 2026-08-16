@@ -11,6 +11,9 @@ export type Destinatario = (typeof DESTINATARIOS)[number];
 // Payload do pseudo-insight `taught` montado em context.ts e lido por taughtBlock /
 // formatInsightsForDados. `dimensao` sobrevive só como rótulo de agrupamento no bloco do Dados.
 export interface TaughtPayload {
+  // vm_lesson_learnings.id — é ele que transforma "veio da lição X" num botão que abre a lição X
+  // para correção (015 §4.3). Opcional só para contexto montado à mão em teste.
+  id?: string;
   titulo: string;
   descricao: string;
   destinatarios?: string[];

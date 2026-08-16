@@ -1,5 +1,5 @@
 import { anthropic, WRITER_MODEL, recordUsage } from "../anthropic";
-import { agentPrompt, clientInsightBlock, formatNarrativa, premissaBlock, taughtBlock } from "./agents";
+import { agentPrompt, clientInsightBlock, formatNarrativa, licaoRefs, licoesPara, premissaBlock, registrarBloco } from "./agents";
 import type { GenerationContext, ScriptSections } from "./types";
 
 // Formato final do roteiro montado (usado por revisão e humanização).
@@ -199,8 +199,20 @@ export function buildDynamicSystemBlock(ctx: GenerationContext): string {
   const boasPraticas = clientInsightBlock(ctx, ["geral"], 4);
   if (boasPraticas) parts.push(`# BOAS PRÁTICAS DESTE CLIENTE (aprendidas dos dados de performance)\n${boasPraticas}`);
 
-  const ensinado = taughtBlock(ctx, "roteirista");
+  const licoes = licoesPara(ctx, "roteirista");
+  const ensinado = licoes.length ? licoes.map((r) => `- ${r.titulo} — ${r.descricao}`).join("\n") : "";
   if (ensinado) parts.push(`# APRENDIZADOS ENSINADOS PELO TIME (ritmo e regras gerais — curadoria humana, cumpra)\n${ensinado}`);
+
+  // Rastro (015 §4.1): o que o roteirista viu, por referência. Custo zero de LLM — é
+  // serialização do que esta função já montou em memória e descartava.
+  registrarBloco(ctx, "roteirista", {
+    premissa: ctx.premissa || null,
+    narrativa_id: ctx.artifacts?.escolhida ?? null,
+    playbook_ref: ctx.playbookVersions ?? [], // slug+version, nunca o texto do playbook
+    licoes: licaoRefs(licoes),
+    vocabulario: ctx.clientPrefs?.vocabulario_evitar ?? [],
+    prefs_cliente: ctx.clientPrefs?.proibicoes ?? [],
+  });
 
   const prefs = clientPrefsBlock(ctx);
   if (prefs) parts.push(prefs);
@@ -283,11 +295,18 @@ export function buildReviewDynamicBlock(ctx: GenerationContext): string {
   }
   // O revisor passa a ser ensinável (015 §6.3): até esta linha ele era o único agente de
   // julgamento sem canal de lição — ensinar para ele gravava e não produzia efeito.
-  const ensinado = taughtBlock(ctx, "revisao");
-  if (ensinado)
+  const licoes = licoesPara(ctx, "revisao");
+  if (licoes.length)
     parts.push(
-      `# APRENDIZADOS ENSINADOS PELO TIME PARA A REVISÃO (curadoria humana — prevalecem sobre padrões do corpus em conflito)\n${ensinado}`
+      `# APRENDIZADOS ENSINADOS PELO TIME PARA A REVISÃO (curadoria humana — prevalecem sobre padrões do corpus em conflito)\n${licoes
+        .map((r) => `- ${r.titulo} — ${r.descricao}`)
+        .join("\n")}`
     );
+  registrarBloco(ctx, "revisao", {
+    // O checklist é o playbook `checklist` — referência por slug+version, nunca o texto.
+    checklist_ref: ctx.playbookVersions?.find((p) => p.slug === "checklist") ?? null,
+    licoes: licaoRefs(licoes),
+  });
   const prefs = clientPrefsBlock(ctx);
   if (prefs) parts.push(prefs);
   return parts.join("\n\n");

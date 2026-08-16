@@ -324,6 +324,17 @@ export async function runPipeline(
             hook_mecanismo: hookRes.mecanismo,
             hook_formato: hookRes.formato,
             hook_mecanismos_variantes: hookRes.mecanismosVariantes,
+            // 015 §4.1: o rastro de proveniência. Custo zero de LLM — é serialização do que os
+            // agentes já montaram em memória e descartavam. Conteúdo estático entra por
+            // REFERÊNCIA (lição = {id,titulo}, playbook = slug+version); dossiê e transcrição
+            // não entram. Sem essa regra o trace sai da casa dos KB.
+            proveniencia: {
+              blocos: ctx.blocos ?? {},
+              critica,
+              hooks_descartados: hookRes.descartados,
+              bob: [], // preenchido pós-save pelas edições do Bob
+              licoes_excedidas: ctx.licoesExcedidas ?? {},
+            },
             few_shot_origens: ctx.fewShot.map((f) => f.origem),
             modelagem_briefs: ctx.modelagemBriefs,
             // telemetria de custo por fase: tokens (input/output/cache) + duração + modelo

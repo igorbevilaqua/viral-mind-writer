@@ -47,16 +47,29 @@ export function clientInsightBlock(ctx: GenerationContext, categorias: string[],
 // rótulo de filtro em /ensinar e não decide destino (015 §6).
 // n = 3 é o teto de hoje, mantido de propósito: esta mudança é de ROTEAMENTO, não de volume.
 // Subir o teto é mudança separada, justificada por licoes_excedidas no trace.
-export function taughtBlock(ctx: GenerationContext, agente: Destinatario, n = 3): string {
+export function licoesPara(ctx: GenerationContext, agente: Destinatario, n = 3): TaughtPayload[] {
   const rows = ctx.insights
     .filter((i) => i.insight_type === "taught")
     .map((i) => i.payload as TaughtPayload)
     .filter((p) => (p.destinatarios ?? []).includes(agente));
-  const usadas = rows.slice(0, n);
-  if (!usadas.length) return "";
   // Nenhum corte é silencioso: o excedente vai ao trace (proveniencia.licoes_excedidas) e à tela.
   if (rows.length > n) ctx.licoesExcedidas = { ...(ctx.licoesExcedidas ?? {}), [agente]: rows.length - n };
+  return rows.slice(0, n);
+}
+
+export function taughtBlock(ctx: GenerationContext, agente: Destinatario, n = 3): string {
+  const usadas = licoesPara(ctx, agente, n);
+  if (!usadas.length) return "";
   return usadas.map((r) => `- ${r.titulo} — ${r.descricao}`).join("\n");
+}
+
+// Regra dura do rastro: lição entra por REFERÊNCIA, nunca por cópia (015 §4.1) — o texto
+// integral já vive em vm_lesson_learnings e faria o trace crescer sem informação nova.
+export const licaoRefs = (rows: TaughtPayload[]) => rows.map((l) => ({ id: l.id ?? null, titulo: l.titulo }));
+
+// O que este agente viu, guardado no contexto até a hora de salvar o pipeline_trace.
+export function registrarBloco(ctx: GenerationContext, agente: string, bloco: Record<string, unknown>): void {
+  ctx.blocos = { ...(ctx.blocos ?? {}), [agente]: bloco };
 }
 
 // Payload de client_scriptresult (flywheel do ETL). verdict/em_observacao/maduro chegam
@@ -722,7 +735,18 @@ const HOOK_TOOL = {
 export async function designHook(
   ctx: GenerationContext,
   corpo: string
-): Promise<{ hook: string; variantes: string[]; racional: string; mecanismo: string; formato: string; mecanismosVariantes: string[]; candidatos: HookCandidate[] }> {
+): Promise<{
+  hook: string;
+  variantes: string[];
+  racional: string;
+  mecanismo: string;
+  formato: string;
+  mecanismosVariantes: string[];
+  candidatos: HookCandidate[];
+  // Reprovados nos critérios de eliminação. Até a 2.0 isto só existia como console.warn —
+  // o rastro precisa deles para responder "por que o hook não é aquele outro" (015 §4.1).
+  descartados: { hook: string; motivos: string[] }[];
+}> {
   // Modo adaptação não tem narrativa vencedora: a arquitetura vem dos briefs de modelagem.
   const a = ctx.artifacts;
   const n = a ? a.candidatas[a.escolhida] : null;
@@ -801,11 +825,18 @@ Gere de 5 a 6 candidatos a hook, cada um com um MECANISMO DISTINTO da taxonomia,
   if (!escolha) throw new Error("hook: seleção vazia");
   const { principal, variantes } = escolha;
 
+  registrarBloco(ctx, "hook", {
+    licoes: licaoRefs(licoesPara(ctx, "hook")),
+    mecanismos_ranking: rank,
+    prefs_calibracao: hookPreferenceBlock(ctx) || null,
+  });
+
   // racional: o do modelo + a justificativa de dados da escolha
   const notaDados = rank
     ? ` Mecanismo "${principal.mecanismo}" priorizado pelo ranking de vencedores ${rank.doCliente ? "do cliente" : "geral"}.`
     : "";
   return {
+    descartados,
     hook: principal.hook,
     variantes: variantes.map((v) => v.hook),
     racional: `${principal.racional ?? ""}${notaDados}`.trim(),
@@ -819,6 +850,7 @@ Gere de 5 a 6 candidatos a hook, cada um com um MECANISMO DISTINTO da taxonomia,
 
 // ── 6. Comando (CTA) ─────────────────────────────────────────────────────────
 export async function writeComando(ctx: GenerationContext, corpo: string): Promise<string> {
+  registrarBloco(ctx, "comando", { licoes: licaoRefs(licoesPara(ctx, "comando")) });
   const p = ctx.clientPrefs;
   // Em modelagem o comando é o ÚNICO lugar onde o cliente aparece de propósito: é ele que
   // converte a audiência do vídeo modelado em seguidor. Tom e notas de entrevista ficam de

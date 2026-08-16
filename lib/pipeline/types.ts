@@ -180,6 +180,9 @@ export interface GenerationContext {
   // Preenchido por taughtBlock e persistido em pipeline_trace.proveniencia — nenhum corte é
   // silencioso, e é este número que justifica subir o teto depois (015 §6.3).
   licoesExcedidas?: Record<string, number>;
+  // O que cada agente REALMENTE viu no seu bloco dinâmico, por referência (015 §4.1).
+  // Serializado em pipeline_trace.proveniencia.blocos — é a matéria-prima do "por quê".
+  blocos?: Record<string, unknown>;
   playbookVersions?: { slug: string; version: number }[];
   insightRunId?: string | null; // último vm_insight_runs vigente na geração
 }

@@ -132,6 +132,7 @@ export async function loadContext(sessionId: string): Promise<GenerationContext>
         insight_type: "taught",
         scope: t.lessonClient ? `client:${t.lessonClient}` : "global",
         payload: {
+          id: t.id,
           titulo: t.titulo,
           descricao: t.descricao,
           destinatarios: t.destinatarios ?? [],
