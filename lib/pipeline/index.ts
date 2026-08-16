@@ -12,6 +12,7 @@ import { extrairEstudos } from "./estudos";
 import { extractFromCorrection } from "./teach";
 import { humanize } from "./humanize";
 import { derivePremissa } from "./premissa";
+import { verificarRoteiro, type Regime, type RegistroVerificacao } from "./verificar";
 import { blockCount, dedash, deepDedash, ecosNumericos } from "./slop-lint";
 import { APP_VERSION, GIT_SHA } from "../version";
 import { registrarAtividade } from "../hub";
@@ -42,8 +43,11 @@ export async function runPipeline(
   const rawEmit = guardEmit(emit);
   emit = (e) => {
     if (e.type === "phase") {
+      // Progresso dentro da fase repete o mesmo `phase` (017 §8) — só a TROCA vira evento
+      // no hub, senão uma verificação de 20 alegações vira 20 linhas de atividade.
+      if (e.phase !== currentPhase)
+        void registrarAtividade(e.phase, { sessaoId: sessionId, userId: hubUser, payload: { etapa: e.phase } });
       currentPhase = e.phase;
-      void registrarAtividade(e.phase, { sessaoId: sessionId, userId: hubUser, payload: { etapa: e.phase } });
     }
     rawEmit(e);
   };
@@ -394,6 +398,19 @@ export async function runPipeline(
     await registrarAtividade("roteiro_gerado", { sessaoId: sessionId, userId: hubUser, payload: { script_id: saved.id } });
     emit({ type: "done", scriptId: saved.id });
 
+    // ── Verificação factual (017 §8) ──
+    // Fase própria, DEPOIS do save e DEPOIS do `done`: o roteiro está no banco e já foi
+    // entregue ao usuário. O try/catch é o que sustenta o fail-soft — sem ele, o catch geral
+    // lá embaixo marcaria a sessão como `error` e apagaria da tela uma geração que deu certo.
+    // Regime `delta`: só o que não é rastreável ao dossiê é buscado (§4.1). A varredura
+    // completa é o botão da tela, em `app/api/verificar`.
+    try {
+      emit({ type: "phase", phase: "verificacao" });
+      await verificarScriptSalvo(saved.id, "delta", (p) => emit({ type: "phase", phase: "verificacao", ...p }));
+    } catch (e) {
+      console.error("verificação falhou — roteiro entregue e salvo mesmo assim", e);
+    }
+
     // Correção da sala → aprendizado. O PEDIDO do usuário (caixa "AJUSTAR O ROTEIRO")
     // é sinal supervisionado; o Professor destila em lições active:false pra curadoria
     // no /ensinar (mesma máquina da edição/viral). client_id escopa regras de cliente.
@@ -446,4 +463,50 @@ export async function runPipeline(
     await registrarAtividade("erro", { sessaoId: sessionId, userId: hubUser, payload: { error_message: message, etapa: currentPhase } });
     emit({ type: "error", message });
   }
+}
+
+/**
+ * Verificação factual de um roteiro JÁ SALVO (017 §8, §9): lê o roteiro e o dossiê da sessão,
+ * verifica e grava em `vm_generated_scripts.verificacao` — um `update` por id, sobrescrevendo.
+ * É um registro por roteiro, sem histórico (§9).
+ *
+ * Um caminho só para as três portas: a fase do pipeline, a server action `verificarScript` e a
+ * rota de varredura completa. Lê do banco mesmo quando o chamador acabou de escrever (o
+ * `artifacts` já está em `vm_sessions` antes do insert do roteiro, index.ts:236), porque duas
+ * leituras baratas valem menos que duas versões desta função divergindo.
+ *
+ * **Lança em qualquer falha, de propósito** (§11): sem registro gravado a tela diz "não
+ * verificado". Gravar um registro vazio depois de uma extração que falhou seria dizer
+ * "verificado, 0 problemas" sobre o que ninguém verificou.
+ */
+export async function verificarScriptSalvo(
+  scriptId: string,
+  regime: Regime,
+  onProgresso?: (e: { etapa: string; feito?: number; total?: number }) => void
+): Promise<{ registro: RegistroVerificacao; sessionId: string }> {
+  const { data: script, error } = await appDb
+    .from("vm_generated_scripts")
+    .select("hook, roteiro, comando, session_id")
+    .eq("id", scriptId)
+    .single();
+  if (error || !script) throw new Error(error?.message ?? "roteiro não encontrado");
+
+  // Sessão sem dossiê (6 de 44) → dossiê vazio → tudo cai no delta, que é o certo: roteiro sem
+  // pesquisa é roteiro inteiramente por conta do modelo (§4.2).
+  const { data: sess } = await appDb.from("vm_sessions").select("artifacts").eq("id", script.session_id).single();
+  const dossie = ((sess?.artifacts ?? null) as SessionArtifacts | null)?.dossie ?? "";
+
+  const registro = await verificarRoteiro({
+    roteiro: { hook: script.hook ?? "", roteiro: script.roteiro ?? "", comando: script.comando ?? "" },
+    dossie,
+    regime,
+    onProgresso,
+  });
+
+  const { error: upErr } = await appDb.from("vm_generated_scripts").update({ verificacao: registro }).eq("id", scriptId);
+  // A 0029 ainda não aplicada cai aqui (PGRST204). Lança em vez de engolir: verificação que
+  // não foi gravada não pode passar por gravada, e o operador precisa ver o motivo.
+  if (upErr) throw new Error(`verificação feita, mas não gravada: ${upErr.message}`);
+
+  return { registro, sessionId: script.session_id };
 }

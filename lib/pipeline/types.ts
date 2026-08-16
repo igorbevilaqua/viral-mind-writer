@@ -12,7 +12,15 @@ export type PipelineEvent =
         | "hook_comando"
         | "revisao"
         | "humanizacao"
-        | "salvando";
+        | "salvando"
+        // 017 §8: roda DEPOIS do save, como fase própria. O roteiro já está entregue.
+        | "verificacao";
+      // Progresso dentro da fase (017 §8): a verificação repete o mesmo `phase` com o
+      // andamento das buscas. É o que impede a fase longa e silenciosa de estourar o
+      // idle-timeout do proxy da Hostinger.
+      etapa?: string;
+      feito?: number;
+      total?: number;
     }
   | { type: "narrativas"; candidatas: NarrativaCandidata[]; ranking: RankingItem[]; escolhida: number }
   // Modo modelagem: a autópsia extraiu a tese do original e o pipeline PAROU aqui. O usuário
