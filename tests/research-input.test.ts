@@ -30,10 +30,13 @@ describe("entrada do pesquisador — paridade entre os dois modos", () => {
   });
 
   // §12: escala humana é prosa pura, então mora na persona — e SÓ nela. Duas cópias divergem.
+  // Casa por "ESCALA HUMANA" e não pela frase inteira: o que este teste protege é o LUGAR da
+  // instrução, não a redação dela (a regra já foi recalibrada uma vez, de "todo número" para
+  // "só quando o número é grande demais para ser sentido", e quebrou este teste à toa).
   test("escala humana mora na persona, e saiu da entrada nos dois modos", () => {
-    expect(agentPrompt("pesquisador")).toContain("ESCALA HUMANA BRASILEIRA");
-    expect(montarEntradaPesquisa(ctx())).not.toContain("ESCALA HUMANA BRASILEIRA");
-    expect(montarEntradaPesquisa(ctx({ modoModelagem: true }), adapt)).not.toContain("ESCALA HUMANA BRASILEIRA");
+    expect(agentPrompt("pesquisador")).toContain("ESCALA HUMANA");
+    expect(montarEntradaPesquisa(ctx())).not.toContain("ESCALA HUMANA");
+    expect(montarEntradaPesquisa(ctx({ modoModelagem: true }), adapt)).not.toContain("ESCALA HUMANA");
   });
 
   // Refactor puro não pode ter comido nada do que a entrada já montava.
