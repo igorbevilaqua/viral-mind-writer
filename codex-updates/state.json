@@ -1,39 +1,47 @@
 {
-  "version": "1.9",
+  "version": "2.1",
   "codexUrl": "https://codex.viralmindlabs.com",
   "pending": [],
   "lastRelease": {
-    "version": "1.8",
-    "git": "1eb0dc5",
-    "productSummary": "Ensinar o Codex deixou de ser um destino: sobre o trecho selecionado aparecem Por quê?, Mudar e Ensinar, o ensinamento vai para a casa certa com confirmação e vale na próxima geração, e a lição passa a ser roteada para o agente que precisa dela.",
-    "message": "🪄 *Codex: Nova Versão Disponível (v1.8)*\n🔖 Git: 1eb0dc5\n\nAté agora, ensinar o Codex era ir a algum lugar depois. Nesta versão você ensina no meio da sessão, em cima do trecho, e o que você ensinou vale já na próxima geração.\n\n📋 *O que mudou:*\n\n✨ *Três verbos em cima do trecho selecionado*\nSelecionar um pedaço do roteiro parou de oferecer só o Bob. Agora aparecem três: *Por quê?*, *Mudar* e *Ensinar*. Tem também um botão Ensinar no topo do roteiro, para o que não é sobre trecho nenhum. Você escreve do seu jeito (\"manchete é uma palavra difícil\") e o sistema decide sozinho se aquilo é uma lição, uma palavra a evitar, uma frase a banir ou uma mudança de manual. Antes de gravar, a tela mostra suas palavras exatas ao lado do que ele entendeu, e quem vai receber a regra — você corrige ali se ele te entendeu torto. O botão diz *\"vale da próxima geração\"* e é literal: geração em andamento não muda no meio.\n\n✨ *Dá para perguntar por que uma frase está ali*\nO Codex passou a guardar o rastro de cada geração: o que cada agente viu quando escreveu, a crítica do revisor e até os hooks que ele descartou. Com isso ele responde qual etapa produziu aquele trecho e por quê — e quando a culpa é de uma lição, a lição vira um botão que abre ela para você corrigir ou desligar. Se nada no prompt mandou escrever aquilo, ele diz exatamente isso, em vez de inventar uma justificativa bonita. Roteiro gerado antes desta versão responde que é anterior ao rastro; ninguém finge saber.\n\n💅 *A lição agora chega em quem precisa dela*\nUma lição sobre hook arquivada como \"geral\" nunca chegava ao agente de hook — ficava ativa, confirmada e invisível. A lição passou a ser roteada por quem precisa saber daquilo, o revisor virou ensinável pela primeira vez, e o corte que descartava lições ativas além da décima segunda deixou de existir. Quando algum limite cortar alguma coisa, isso fica registrado em vez de sumir calado.\n\n👉 Acesse agora em https://codex.viralmindlabs.com\n",
+    "version": "2.0",
+    "git": "78743a0",
+    "productSummary": "O Codex passa a conferir o que escreveu (verificação factual com fonte e correção em um clique), ganha um estrategista de chat que drena as filas paradas na conversa, e melhora o insumo: estudos com link, números comparados a escala humana e sinais automáticos para o revisor.",
+    "message": "🪄 *Codex: Nova Versão Disponível (v2.0)*\n🔖 Git: 78743a0\n\nNa 1.8 o Codex passou a aprender com você no meio da sessão. A 2.0 fecha o resto do ciclo: ele checa o que inventou, melhora o que pesquisa, e ganha alguém com quem discutir estratégia.\n\n📋 *O que mudou:*\n\n✨ *Ele agora confere o que escreveu — e mostra a fonte*\nTodo roteiro sempre saiu com a seção FONTES, e nenhuma citação tinha sido conferida uma vez sequer. Agora, depois de salvar, o Codex separa as afirmações do roteiro final que *não* vieram do dossiê (é ali que a invenção mora), pesquisa cada uma na web e devolve uma tabela: confirmado, impreciso, falso ou não verificável, com o link da fonte em cada linha. Quando o erro é um número e o dado certo é conhecido, tem um botão que corrige no roteiro — mostrando o antes e o depois. E existe um botão de *Verificar tudo* para quando você quiser a varredura completa, inclusive do próprio dossiê. Se nada foi verificado, a tela diz \"não verificado\" — ela nunca diz \"0 problemas\" sobre o que não olhou.\n\n✨ *Kasparov: alguém para discutir estratégia*\nUm chat de verdade com um estrategista que abre com posição, não com pergunta. Quando você discorda, ele diz de que lado está: sustenta quando tem playbook ou número real atrás, e admite \"eu estava só achando\" quando era palpite. Cola o link de um vídeo e ele abre pela métrica que importa (316 mil views com 1.556 seguidores é 203×, e é isso que ele diz, não as views soltas); vídeo de fora do acervo ele analisa avisando que está opinando sem dado. E entre um assunto e outro ele puxa o que está parado: os pares de calibração e as lições que foram extraídas e nunca ligadas. O que vocês combinarem vira lição — com a sua confirmação, sempre.\n\n💅 *A pesquisa ficou mais forte, e o revisor ganhou olhos*\nO dossiê passa a trazer estudos com link (sem URL verificável, não entra) e a comparar todo número relevante a uma escala que dá para sentir — em reais, em salários mínimos, em tempo de trabalho. Do outro lado, o revisor recebe avisos automáticos: quantidade repetida em duas frases diferentes e hook que só reescreve a abertura do corpo. Ele decide o que fazer — repetição que se paga continua no lugar.\n\n👉 Acesse agora em https://codex.viralmindlabs.com\n",
     "changes": [
       {
-        "id": "msvtm44r",
+        "id": "mswh6aou",
         "type": "feature",
-        "summary": "Ensinar o sistema no meio da sessão, com efeito na próxima geração",
-        "detail": "Selecionar um trecho do roteiro passa a oferecer três verbos no lugar de um: Por quê?, Mudar e Ensinar. Também há um botão Ensinar no topo do roteiro, para o que não é sobre trecho nenhum. O que você ensina é classificado automaticamente na casa certa (lição, vocabulário, frase banida ou proposta de playbook), você confirma na tela antes de gravar, e vale da próxima geração em diante.",
-        "commit": "1eb0dc5",
-        "addedAt": "2026-08-16T13:08:27.640Z"
+        "summary": "Verificação factual do roteiro final, com fonte e correção em um clique",
+        "detail": "O Codex passa a checar o que o roteirista inventou: cada alegação do roteiro final que não é rastreável ao dossiê vai para busca na web e volta com veredicto e fonte. Impreciso com o dado certo em mãos vira correção em um clique.",
+        "commit": "78743a0",
+        "addedAt": "2026-08-17T00:08:00.427Z"
       },
       {
-        "id": "msvtm45r",
+        "id": "mswh6apt",
         "type": "feature",
-        "summary": "Perguntar por que um trecho do roteiro está daquele jeito",
-        "detail": "O sistema passa a guardar o rastro de cada geração: o que cada agente viu, a crítica do revisor e os hooks que foram descartados. Com isso ele responde qual etapa escreveu o trecho e por quê, com a lição culpada virando um botão que abre ela para correção. Quando nada no prompt determinou a frase, ele diz isso — não inventa justificativa.",
-        "commit": "1eb0dc5",
-        "addedAt": "2026-08-16T13:08:27.673Z"
+        "summary": "Kasparov: um estrategista com quem discutir, e que drena as filas na conversa",
+        "detail": "Chat com um estrategista que abre com posição em vez de pergunta, sustenta quando tem playbook ou ratio atrás e cede quando estava só achando. Entre um turno e outro ele puxa os pares de calibração e as lições que nunca foram ativadas.",
+        "commit": "78743a0",
+        "addedAt": "2026-08-17T00:08:00.460Z"
       },
       {
-        "id": "msvtm46l",
+        "id": "mswh6aqo",
         "type": "improvement",
-        "summary": "A lição ensinada chega ao agente que precisa dela",
-        "detail": "Antes a lição era arquivada por dimensão, e uma lição sobre hook classificada como geral simplesmente nunca chegava ao agente de hook. Agora ela é roteada por quem precisa saber, e o revisor virou ensinável pela primeira vez. Some também o corte silencioso que descartava lições ativas além da décima segunda.",
-        "commit": "1eb0dc5",
-        "addedAt": "2026-08-16T13:08:27.703Z"
+        "summary": "A pesquisa traz estudos com link e compara todo número a uma escala humana",
+        "detail": "",
+        "commit": "78743a0",
+        "addedAt": "2026-08-17T00:08:00.490Z"
+      },
+      {
+        "id": "mswh6ari",
+        "type": "improvement",
+        "summary": "O revisor recebe sinais automáticos: número repetido e hook que ecoa a abertura",
+        "detail": "",
+        "commit": "78743a0",
+        "addedAt": "2026-08-17T00:08:00.519Z"
       }
     ],
-    "releasedAt": "2026-08-16T13:08:50.774Z"
+    "releasedAt": "2026-08-17T00:08:29.639Z"
   },
   "history": [
     {
@@ -387,6 +395,39 @@
         }
       ],
       "releasedAt": "2026-08-13T21:01:16.826Z"
+    },
+    {
+      "version": "1.8",
+      "git": "1eb0dc5",
+      "productSummary": "Ensinar o Codex deixou de ser um destino: sobre o trecho selecionado aparecem Por quê?, Mudar e Ensinar, o ensinamento vai para a casa certa com confirmação e vale na próxima geração, e a lição passa a ser roteada para o agente que precisa dela.",
+      "message": "🪄 *Codex: Nova Versão Disponível (v1.8)*\n🔖 Git: 1eb0dc5\n\nAté agora, ensinar o Codex era ir a algum lugar depois. Nesta versão você ensina no meio da sessão, em cima do trecho, e o que você ensinou vale já na próxima geração.\n\n📋 *O que mudou:*\n\n✨ *Três verbos em cima do trecho selecionado*\nSelecionar um pedaço do roteiro parou de oferecer só o Bob. Agora aparecem três: *Por quê?*, *Mudar* e *Ensinar*. Tem também um botão Ensinar no topo do roteiro, para o que não é sobre trecho nenhum. Você escreve do seu jeito (\"manchete é uma palavra difícil\") e o sistema decide sozinho se aquilo é uma lição, uma palavra a evitar, uma frase a banir ou uma mudança de manual. Antes de gravar, a tela mostra suas palavras exatas ao lado do que ele entendeu, e quem vai receber a regra — você corrige ali se ele te entendeu torto. O botão diz *\"vale da próxima geração\"* e é literal: geração em andamento não muda no meio.\n\n✨ *Dá para perguntar por que uma frase está ali*\nO Codex passou a guardar o rastro de cada geração: o que cada agente viu quando escreveu, a crítica do revisor e até os hooks que ele descartou. Com isso ele responde qual etapa produziu aquele trecho e por quê — e quando a culpa é de uma lição, a lição vira um botão que abre ela para você corrigir ou desligar. Se nada no prompt mandou escrever aquilo, ele diz exatamente isso, em vez de inventar uma justificativa bonita. Roteiro gerado antes desta versão responde que é anterior ao rastro; ninguém finge saber.\n\n💅 *A lição agora chega em quem precisa dela*\nUma lição sobre hook arquivada como \"geral\" nunca chegava ao agente de hook — ficava ativa, confirmada e invisível. A lição passou a ser roteada por quem precisa saber daquilo, o revisor virou ensinável pela primeira vez, e o corte que descartava lições ativas além da décima segunda deixou de existir. Quando algum limite cortar alguma coisa, isso fica registrado em vez de sumir calado.\n\n👉 Acesse agora em https://codex.viralmindlabs.com\n",
+      "changes": [
+        {
+          "id": "msvtm44r",
+          "type": "feature",
+          "summary": "Ensinar o sistema no meio da sessão, com efeito na próxima geração",
+          "detail": "Selecionar um trecho do roteiro passa a oferecer três verbos no lugar de um: Por quê?, Mudar e Ensinar. Também há um botão Ensinar no topo do roteiro, para o que não é sobre trecho nenhum. O que você ensina é classificado automaticamente na casa certa (lição, vocabulário, frase banida ou proposta de playbook), você confirma na tela antes de gravar, e vale da próxima geração em diante.",
+          "commit": "1eb0dc5",
+          "addedAt": "2026-08-16T13:08:27.640Z"
+        },
+        {
+          "id": "msvtm45r",
+          "type": "feature",
+          "summary": "Perguntar por que um trecho do roteiro está daquele jeito",
+          "detail": "O sistema passa a guardar o rastro de cada geração: o que cada agente viu, a crítica do revisor e os hooks que foram descartados. Com isso ele responde qual etapa escreveu o trecho e por quê, com a lição culpada virando um botão que abre ela para correção. Quando nada no prompt determinou a frase, ele diz isso — não inventa justificativa.",
+          "commit": "1eb0dc5",
+          "addedAt": "2026-08-16T13:08:27.673Z"
+        },
+        {
+          "id": "msvtm46l",
+          "type": "improvement",
+          "summary": "A lição ensinada chega ao agente que precisa dela",
+          "detail": "Antes a lição era arquivada por dimensão, e uma lição sobre hook classificada como geral simplesmente nunca chegava ao agente de hook. Agora ela é roteada por quem precisa saber, e o revisor virou ensinável pela primeira vez. Some também o corte silencioso que descartava lições ativas além da décima segunda.",
+          "commit": "1eb0dc5",
+          "addedAt": "2026-08-16T13:08:27.703Z"
+        }
+      ],
+      "releasedAt": "2026-08-16T13:08:50.774Z"
     }
   ]
 }
