@@ -22,6 +22,21 @@ function decodeEntities(s: string) {
 
 type CaptionTrack = { baseUrl: string; languageCode: string; kind?: string };
 
+// Erro upstream costuma vir em HTML (página 502/504, challenge do Cloudflare, redirect pra
+// landing page). `res.json()` direto estoura "Unexpected token '<', "<!DOCTYPE "..." e é ESSE
+// texto que chega ao usuário na tela — em vez do status do serviço e do que fazer a respeito.
+export async function jsonOuErro(res: Response, quem: string) {
+  const body = await res.text();
+  try {
+    return JSON.parse(body);
+  } catch {
+    throw new Error(
+      `${quem} respondeu ${res.status} sem JSON (${body.slice(0, 120).replace(/\s+/g, " ").trim()}) — ` +
+        `provável instabilidade do serviço; tente de novo ou cole a transcrição manualmente`
+    );
+  }
+}
+
 async function transcribeYouTube(videoId: string): Promise<Transcript> {
   const res = await fetch("https://www.youtube.com/youtubei/v1/player?prettyPrint=false", {
     method: "POST",
@@ -37,7 +52,7 @@ async function transcribeYouTube(videoId: string): Promise<Transcript> {
     }),
   });
   if (!res.ok) throw new Error(`YouTube respondeu ${res.status}`);
-  const data = await res.json();
+  const data = await jsonOuErro(res, "YouTube");
   if (data.playabilityStatus?.status !== "OK")
     throw new Error(data.playabilityStatus?.reason ?? "vídeo indisponível");
 
@@ -75,7 +90,7 @@ async function transcribeViaSupadata(url: string, platform: string): Promise<Tra
     `https://api.supadata.ai/v1/transcript?url=${encodeURIComponent(url)}&text=true&lang=pt`,
     { headers: { "x-api-key": key } }
   );
-  const data = await res.json();
+  const data = await jsonOuErro(res, "Supadata");
   if (!res.ok) throw new Error(data.message ?? data.error ?? `Supadata respondeu ${res.status}`);
   // ponytail: jobId = transcrição assíncrona (vídeos longos); polling se algum dia precisar
   if (!data.content || typeof data.content !== "string")
