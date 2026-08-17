@@ -111,7 +111,7 @@ export interface ModelagemAnalysis {
 
 export interface Attachment {
   id: string;
-  kind: "reference_script" | "news_link" | "document" | "video_link";
+  kind: "reference_script" | "news_link" | "document" | "video_link" | "carousel_link";
   is_modelagem: boolean;
   url: string | null;
   raw_content: string | null;

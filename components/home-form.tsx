@@ -14,6 +14,10 @@ const KIND_LABELS: Record<NewAttachment["kind"], { label: string; placeholder: s
   },
   document: { label: "Documento", placeholder: "O texto extraído do arquivo aparece aqui para revisão, ou cole o conteúdo direto..." },
   video_link: { label: "Vídeo", placeholder: "Opcional: cole a transcrição do vídeo aqui. Se deixar em branco, buscamos ao conjurar." },
+  carousel_link: {
+    label: "Carrossel",
+    placeholder: "Opcional: cole o texto dos slides aqui. Se deixar em branco, lemos os slides ao conjurar.",
+  },
 };
 
 // Frases que rotacionam durante a espera de cada fase — a pesquisa é a longa, então tem mais.
@@ -40,8 +44,9 @@ const SUGGEST_MESSAGES: Record<string, string[]> = {
   ],
 };
 
-// Modelagem (desconstruir e replicar a arquitetura) só faz sentido para material com estrutura de vídeo.
-const CAN_MODELAGEM: NewAttachment["kind"][] = ["reference_script", "video_link"];
+// Modelagem (desconstruir e replicar a arquitetura) só faz sentido para material com estrutura
+// autoral: roteiro, vídeo, ou carrossel — em todos os três existe hook, sequência e fechamento.
+const CAN_MODELAGEM: NewAttachment["kind"][] = ["reference_script", "video_link", "carousel_link"];
 const DOC_ACCEPT = ".pdf,.doc,.docx,.txt,.html,.htm,.md,.csv,.xls,.xlsx,.ppt,.pptx,.rtf";
 
 const KIND_ICONS: Record<NewAttachment["kind"], React.ReactNode> = {
@@ -67,6 +72,13 @@ const KIND_ICONS: Record<NewAttachment["kind"], React.ReactNode> = {
     <svg width="17" height="17" viewBox="0 0 16 16" fill="none">
       <rect x="2" y="3.5" width="9" height="9" rx="1.5" stroke="currentColor" strokeWidth="1.2" />
       <path d="M11 7.5 14 5.5v5l-3-2Z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" />
+    </svg>
+  ),
+  // cartas empilhadas: é a metáfora do carrossel (o slide de trás aparecendo atrás do da frente)
+  carousel_link: (
+    <svg width="17" height="17" viewBox="0 0 16 16" fill="none">
+      <rect x="4.5" y="3" width="8" height="10" rx="1.5" stroke="currentColor" strokeWidth="1.2" />
+      <path d="M2.5 5v6.5a1.5 1.5 0 0 0 1.5 1.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
     </svg>
   ),
 };
@@ -471,12 +483,16 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
               </p>
             )}
             <div className="flex flex-col gap-2.5">
-              {(a.kind === "news_link" || a.kind === "video_link") && (
+              {(a.kind === "news_link" || a.kind === "video_link" || a.kind === "carousel_link") && (
                 <input
                   value={a.url}
                   onChange={(e) => update(i, { url: e.target.value })}
                   placeholder={
-                    a.kind === "news_link" ? "Link da notícia (obrigatório)" : "Link do vídeo (YouTube/Shorts, Reels, TikTok)"
+                    a.kind === "news_link"
+                      ? "Link da notícia (obrigatório)"
+                      : a.kind === "carousel_link"
+                        ? "Link do carrossel (instagram.com/p/...)"
+                        : "Link do vídeo (YouTube/Shorts, Reels, TikTok)"
                   }
                   className={`rounded-[10px] border bg-transparent px-3.5 py-2.5 font-mono text-[12.5px] outline-none placeholder:text-white/30 focus:border-gold/40 ${
                     a.kind === "news_link" && !a.url.trim() ? "border-amber-500/40" : "border-white/[.12]"
@@ -507,7 +523,7 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
               <textarea
                 value={a.raw_content}
                 onChange={(e) => update(i, { raw_content: e.target.value })}
-                rows={a.kind === "news_link" ? 2 : a.kind === "video_link" ? 1 : 4}
+                rows={a.kind === "news_link" ? 2 : a.kind === "video_link" || a.kind === "carousel_link" ? 1 : 4}
                 placeholder={KIND_LABELS[a.kind].placeholder}
                 className="rounded-[10px] border border-white/[.12] bg-transparent px-3.5 py-2.5 text-[12.5px] resize-y outline-none placeholder:text-white/35 focus:border-gold/40"
               />

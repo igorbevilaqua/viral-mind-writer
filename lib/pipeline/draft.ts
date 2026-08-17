@@ -151,7 +151,7 @@ function clientModelagemBlock(p: NonNullable<GenerationContext["clientPrefs"]>):
 Só quando você tiver ALTA CONFIANÇA de que uma informação específica desse campo enriquece o roteiro E aumenta a autoridade percebida dele, faça um ajuste PONTUAL (uma frase, um dado, um exemplo). Na dúvida, não ajuste — o default é não mexer. Nunca troque a tese, o ângulo, a estrutura ou o registro por causa disso, e nunca invente experiência pessoal, cliente ou caso dele.`
     : "";
   return `# CLIENTE "${p.nome}" — INTERFERÊNCIA MÍNIMA (o usuário pediu MODELAGEM)
-Escreva como se NÃO houvesse cliente selecionado: quem dita tese, ângulo, estrutura, tom e vocabulário é o vídeo modelado, não o histórico do cliente. Duas exceções, e só elas:
+Escreva como se NÃO houvesse cliente selecionado: quem dita tese, ângulo, estrutura, tom e vocabulário é o material modelado, não o histórico do cliente. Duas exceções, e só elas:
 
 1. RESTRIÇÕES DO CLIENTE (INVIOLÁVEIS) — se algo do roteiro cair aqui, adapte ou remova em silêncio, sem comentar a mudança no texto.
 ${veto}${autoridade}`;
@@ -229,8 +229,8 @@ export function buildDynamicSystemBlock(ctx: GenerationContext): string {
     // O mandato da modelagem: MESMA tese, execução melhor. Ele vive aqui (prosa estática) e não
     // dentro do brief, que é só dado e tem teto de tamanho.
     parts.push(
-      `# VÍDEO MODELADO — MESMA TESE, VERSÃO MELHOR\n` +
-        `O usuário pediu modelagem de um vídeo que funcionou. Sua tarefa NÃO é fugir do ângulo dele, é vencê-lo no próprio ângulo: ` +
+      `# MATERIAL MODELADO — MESMA TESE, VERSÃO MELHOR\n` +
+        `O usuário pediu modelagem de um material que funcionou (vídeo ou carrossel). Sua tarefa NÃO é fugir do ângulo dele, é vencê-lo no próprio ângulo: ` +
         `sustente a mesma premissa e a mesma arquitetura, executando melhor em cinco frentes —\n` +
         `1. LINGUAGEM: simplifique o que é difícil. Palavra que o espectador precisa parar pra entender é palavra que perde retenção.\n` +
         `2. ARGUMENTO: fortaleça o encadeamento. Onde o original afirmou, você demonstra.\n` +
@@ -249,6 +249,7 @@ export function buildDynamicSystemBlock(ctx: GenerationContext): string {
       news_link: "Comentários do usuário sobre a notícia (o conteúdo dela está no dossiê; estes comentários orientam o ângulo)",
       document: "Documento",
       video_link: "Transcrição de vídeo de referência",
+      carousel_link: "Texto dos slides de um carrossel de referência",
     };
     parts.push(
       `# MATERIAIS DE REFERÊNCIA FORNECIDOS PELO USUÁRIO\n` +

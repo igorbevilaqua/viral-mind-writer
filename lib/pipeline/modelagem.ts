@@ -2,6 +2,7 @@ import { ANALYST_MODEL, trackedCreate, type UsageLog } from "../anthropic";
 import { appDb, viralData } from "../db";
 import { platformVideoId } from "../video-url";
 import { fetchTranscript } from "../transcribe";
+import { lerCarrossel } from "../carrossel";
 import { clientInsightBlock, scriptResultBlock, taughtBlock, toolInput } from "./agents";
 import { clientPrefsBlock, playbookIndex } from "./draft";
 import { composeBrief } from "./modelagem-brief";
@@ -264,12 +265,68 @@ export interface ModelagemResult {
 // Devolve o motivo da falha em vez de só engolir: com tema a modelagem é opcional e o motivo
 // vira log, mas sem tema a geração morre aqui e o usuário precisa saber o que fazer
 // (configurar chave? colar a transcrição? o link não é suportado?).
-export async function ensureTranscript(attachment: Attachment): Promise<{ text: string; erro: string | null }> {
-  if (attachment.raw_content?.trim() || attachment.kind !== "video_link" || !attachment.url)
+export async function ensureTranscript(
+  attachment: Attachment,
+  log?: UsageLog
+): Promise<{ text: string; erro: string | null }> {
+  const linkavel = attachment.kind === "video_link" || attachment.kind === "carousel_link";
+  if (attachment.raw_content?.trim() || !linkavel || !attachment.url)
     return { text: attachment.raw_content?.trim() ?? "", erro: null };
-  const { text, erro } = await transcricaoDeUrl(attachment.url);
+  // Vídeo tem áudio para transcrever; carrossel tem texto escrito nos slides para LER (visão).
+  // Mesmo contrato de saída, porque daqui pra frente o pipeline só vê texto.
+  const { text, erro } =
+    attachment.kind === "carousel_link"
+      ? await leituraDeCarrossel(attachment.url, log)
+      : await transcricaoDeUrl(attachment.url);
   if (text) attachment.raw_content = text;
   return { text, erro };
+}
+
+// Mesmo formato de retorno de `transcricaoDeUrl`: o motivo da falha volta como dado, não como
+// exceção, porque com tema a modelagem é opcional e sem tema o motivo vai para a tela.
+async function leituraDeCarrossel(url: string, log?: UsageLog): Promise<{ text: string; erro: string | null }> {
+  try {
+    const { titulo, text } = await lerCarrossel(url, log);
+    return { text: (titulo ? `${titulo}\n\n${text}` : text).trim(), erro: null };
+  } catch (e) {
+    console.error("modelagem: leitura do carrossel falhou", url, e);
+    return { text: "", erro: e instanceof Error ? e.message : String(e) };
+  }
+}
+
+// Procedência do roteiro modelado, gravada no campo FONTES: o link do vídeo original não é
+// pesquisa, mas é de onde a estrutura veio, e é a única coisa que responde "de onde saiu isso?"
+// na tela pública de compartilhamento — que só recebe o roteiro salvo, sem os anexos da sessão.
+export const LINK_MODELAVEL: Attachment["kind"][] = ["video_link", "carousel_link"];
+
+// ── Vídeo ou carrossel, uma ferramenta só ────────────────────────────────────────────────
+// A tool da modelagem continua a mesma de propósito: hook, sequência, loop aberto e fechamento
+// existem nos dois formatos, e duplicar a análise em duas versões criaria duas definições da casa
+// para "bom hook" — o mesmo erro que o 018 §8 proíbe o Kasparov de cometer. O que muda é o
+// vocabulário e ONDE cada peça mora, e isso cabe num bloco de prompt.
+//
+// Quem diz qual é o formato é o próprio material: lib/carrossel.ts marca a leitura no topo. Sem
+// depender do `kind` do anexo, a autópsia avulsa do Kasparov (que só recebe texto) também acerta.
+const MARCA_DE_CARROSSEL = /^\[CARROSSEL DO INSTAGRAM/m;
+
+const MAPA_DO_CARROSSEL =
+  `\n\nESTE MATERIAL É UM CARROSSEL, não um vídeo: o conteúdo está ESCRITO nos slides, na ordem em que o leitor desliza. ` +
+  `Onde os campos da ferramenta dizem "vídeo", leia "carrossel"; onde dizem "espectador", leia "leitor". ` +
+  `A mecânica é a mesma, e no carrossel ela mora assim:\n` +
+  `- hook: o slide 1 inteiro. A capa é o hook, e é ela que decide se houve o primeiro deslize;\n` +
+  `- beats: os slides na ordem, um beat por slide (ou por bloco de slides, quando dois carregam o mesmo movimento). ` +
+  `O campo seg não se aplica a carrossel: omita, não invente duração;\n` +
+  `- loops_abertos: o que um slide deixa pendente e obriga a deslizar para o próximo. É o motor do formato, ` +
+  `e a desistência acontece ENTRE slides, não dentro de um;\n` +
+  `- comando: o último slide, e a legenda quando é ela que pede a ação;\n` +
+  `- a legenda vem no fim do material, marcada como LEGENDA DO POST. Ela é moldura, não é o roteiro: ` +
+  `não trate texto de legenda como se fosse slide.`;
+
+export function fontesComProcedencia(fontes: string | null, modelagens: Attachment[]): string | null {
+  const linhas = modelagens
+    .filter((a) => LINK_MODELAVEL.includes(a.kind) && a.url && !fontes?.includes(a.url))
+    .map((a) => `Modelado de: ${a.url}`);
+  return [...linhas, fontes?.trim()].filter(Boolean).join("\n\n") || null;
 }
 
 // A mesma busca, sem anexo para mutar: é ela que o Kasparov usa. O cache aqui é o da
@@ -307,9 +364,9 @@ export function filtroDeAutopsia(url: string | null, attachmentId?: string | nul
   return partes.length ? partes.join(",") : null;
 }
 
-// Só `video_link` tem URL de vídeo — para os outros tipos, a chave continua sendo o anexo.
+// Só link modelável (vídeo, carrossel) tem URL própria — nos outros tipos a chave é o anexo.
 export function chavesDoAnexo(a: Attachment): { url: string | null; attachmentId: string } {
-  return { url: a.kind === "video_link" ? a.url : null, attachmentId: a.id };
+  return { url: LINK_MODELAVEL.includes(a.kind) ? a.url : null, attachmentId: a.id };
 }
 
 export interface AutopsiaOpts {
@@ -349,10 +406,12 @@ export async function autopsiaDeUrl(url: string | null, opts: AutopsiaOpts = {})
   const comTema = Boolean(tema);
   const corpus = await lookupCorpus(url);
   const taxonomia = opts.taxonomia ?? "";
+  const carrossel = MARCA_DE_CARROSSEL.test(transcript);
+  const peca = carrossel ? "carrossel" : "vídeo";
 
   const missao = comTema
     ? `Um roteirista vai usar essa arquitetura para escrever sobre outro tema: "${tema}". Extraia o que TRANSFERE para lá.`
-    : `Não há tema novo: a sala vai publicar sobre o MESMO assunto deste vídeo, defendendo a MESMA TESE, ` +
+    : `Não há tema novo: a sala vai publicar sobre o MESMO assunto deste ${peca}, defendendo a MESMA TESE, ` +
       `numa versão melhor executada. Não é para fugir do ângulo dele — é para vencê-lo no próprio ângulo. ` +
       `Por isso o campo argumento_central é o mais importante da sua análise: é ele que vira a PREMISSA do nosso ` +
       `roteiro, e o usuário vai confirmá-lo antes de qualquer linha ser escrita. Enuncie a tese com precisão, ` +
@@ -377,14 +436,16 @@ export async function autopsiaDeUrl(url: string | null, opts: AutopsiaOpts = {})
       {
         role: "user",
         content:
-          `Você é um analista forense de vídeos virais. Desconstrua o vídeo abaixo para descobrir POR QUE ele funcionou — ` +
+          `Você é um analista forense de conteúdo viral. Desconstrua o ${peca} abaixo para descobrir POR QUE ele funcionou: ` +
           `o mecanismo, não o conteúdo.\n\n` +
           `PROIBIÇÃO CENTRAL: é PROIBIDO citar no esqueleto qualquer tema, nome, número, marca ou frase do original. ` +
           `Se um campo só puder ser preenchido citando o conteúdo, você não extraiu o mecanismo — extraia de novo. ` +
           `(A única exceção é o campo evidencia do diagnóstico, que existe justamente para citar a frase literal.)\n\n` +
           `Separe o que TRANSFERE do que era circunstância: trend, celebridade, rosto conhecido ou janela de notícia ` +
           `não se replicam e vão em nao_transferivel.\n\n${missao}` +
-          `${taxonomia}${opts.cliente ?? ""}${corpus.promptBlock}\n\nTRANSCRIÇÃO:\n${transcript}`,
+          `${carrossel ? MAPA_DO_CARROSSEL : ""}` +
+          `${taxonomia}${opts.cliente ?? ""}${corpus.promptBlock}` +
+          `\n\n${carrossel ? "SLIDES DO CARROSSEL" : "TRANSCRIÇÃO"}:\n${transcript}`,
       },
     ],
   });
@@ -417,7 +478,7 @@ export async function analyzeModelagem(attachment: Attachment, ctx: GenerationCo
   // A transcrição vem ANTES do cache aqui de propósito, ao contrário do núcleo: o pipeline
   // depende do efeito colateral (`attachment.raw_content` alimenta a pesquisa no modo
   // adaptação, index.ts). Envelope não muda comportamento — nem esse.
-  const { text: transcript } = await ensureTranscript(attachment);
+  const { text: transcript } = await ensureTranscript(attachment, ctx.usageLog);
   if (!transcript) return { brief: "", analysis: {} };
 
   const storyIndex = playbookIndex(ctx.playbooks.storytelling);

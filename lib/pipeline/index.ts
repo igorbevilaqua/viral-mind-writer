@@ -2,7 +2,13 @@ import { appDb } from "../db";
 import { bindUsageLog } from "../anthropic";
 import { guardEmit, STALE_GENERATION_MS } from "../generation";
 import { loadContext } from "./context";
-import { analyzeModelagem, ensureTranscript, type ModelagemResult } from "./modelagem";
+import {
+  analyzeModelagem,
+  ensureTranscript,
+  fontesComProcedencia,
+  LINK_MODELAVEL,
+  type ModelagemResult,
+} from "./modelagem";
 import { compreensaoBlock } from "./modelagem-brief";
 import { research, proposeNarratives, rankNarratives, designHook, writeComando } from "./agents";
 import { pairFromCandidates } from "../calibration";
@@ -75,8 +81,9 @@ export async function runPipeline(
     // ── Modelagem ∥ pesquisa: independentes — os briefs só são consumidos do
     // proposeNarratives em diante, então a análise roda em paralelo com o Grok.
     // Modelagem roda com transcrição colada OU só com o link (busca a transcrição ao conjurar).
+    // Link modelável: vídeo (transcreve o áudio) ou carrossel (lê o texto dos slides).
     const modelagens = ctx.attachments.filter(
-      (a) => a.is_modelagem && (a.raw_content || (a.kind === "video_link" && a.url))
+      (a) => a.is_modelagem && (a.raw_content || (LINK_MODELAVEL.includes(a.kind) && a.url))
     );
     // Sem tema digitado + modelagem de vídeo = MESMO assunto do vídeo, ângulo novo:
     // a modelagem propõe 3 ângulos que viram as narrativas candidatas, e a pesquisa
@@ -90,11 +97,14 @@ export async function runPipeline(
     // Sem tema, TUDO depende da transcrição — garanta antes de pagar qualquer LLM,
     // e antes de disparar modelagem e pesquisa (que a consomem em paralelo).
     if (adaptation) {
-      const { text, erro } = await ensureTranscript(modelagens[0]);
+      const { text, erro } = await ensureTranscript(modelagens[0], ctx.usageLog);
       if (!text) {
+        // A mensagem diz qual material falhou: "transcrição do vídeo" para um carrossel mandaria
+        // o usuário procurar um áudio que não existe.
+        const oQue = modelagens[0].kind === "carousel_link" ? "ler o carrossel" : "obter a transcrição do vídeo";
         throw new Error(
-          `Não consegui obter a transcrição do vídeo${erro ? `: ${erro}` : ""}. ` +
-            `Cole a transcrição no campo do vídeo, ou digite um tema, e conjure de novo.`
+          `Não consegui ${oQue}${erro ? `: ${erro}` : ""}. ` +
+            `Cole o conteúdo no campo do material, ou digite um tema, e conjure de novo.`
         );
       }
     }
@@ -328,7 +338,7 @@ export async function runPipeline(
           hook_variants: sections.hookVariants,
           roteiro: sections.roteiro,
           comando: sections.comando,
-          fontes: sections.fontes,
+          fontes: fontesComProcedencia(sections.fontes, modelagens),
           slop_lint_violations: blockCount(violations),
           pipeline_trace: {
             assembled,

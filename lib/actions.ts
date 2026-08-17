@@ -24,7 +24,7 @@ import type { RegistroVerificacao } from "./pipeline/verificar";
 import { validarPadrao } from "./regex-safety";
 
 export interface NewAttachment {
-  kind: "reference_script" | "news_link" | "document" | "video_link";
+  kind: "reference_script" | "news_link" | "document" | "video_link" | "carousel_link";
   is_modelagem: boolean;
   url: string;
   raw_content: string;
