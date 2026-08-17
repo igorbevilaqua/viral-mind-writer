@@ -1,7 +1,72 @@
 {
   "version": "2.1",
   "codexUrl": "https://codex.viralmindlabs.com",
-  "pending": [],
+  "pending": [
+    {
+      "id": "msxaqn41",
+      "type": "fix",
+      "summary": "Modelagem de reel do Instagram volta a funcionar",
+      "detail": "A transcricao automatica dependia de um unico servico externo; agora, quando ele falha, o Codex busca a transcricao numa segunda fonte sozinho, sem pedir para colar nada",
+      "commit": "18d2a8c",
+      "addedAt": "2026-08-17T13:55:38.510Z"
+    },
+    {
+      "id": "msxaqn51",
+      "type": "improvement",
+      "summary": "Erro de transcricao agora diz o motivo real",
+      "detail": "Antes aparecia uma mensagem tecnica de parser; agora a tela mostra qual servico falhou, com que status, e o que fazer",
+      "commit": "18d2a8c",
+      "addedAt": "2026-08-17T13:55:38.545Z"
+    },
+    {
+      "id": "msxqypdg",
+      "type": "feature",
+      "summary": "Carrossel do Instagram virou fonte de modelagem",
+      "detail": "Cole o link de um carrossel e o Codex le o texto de cada slide na ordem, transformando aquilo em materia-prima de roteiro. Antes so vídeo entrava",
+      "commit": "0e22bdd",
+      "addedAt": "2026-08-17T21:29:48.550Z"
+    },
+    {
+      "id": "msxqypeu",
+      "type": "feature",
+      "summary": "As conversas com o Kasparov agora ficam salvas e sao reabertas",
+      "detail": "Elas aparecem no painel de sessoes junto dos roteiros, com filtro por tipo, e voce reabre qualquer uma para reler e continuar de onde parou",
+      "commit": "0e22bdd",
+      "addedAt": "2026-08-17T21:29:48.598Z"
+    },
+    {
+      "id": "msxqypg0",
+      "type": "improvement",
+      "summary": "Filtro de cliente no painel virou uma janela de marcar e desmarcar",
+      "detail": "Some a fileira de chips com o nome de todo cliente na tela; agora e um botao que abre a lista, e voce pode filtrar por varios clientes de uma vez",
+      "commit": "0e22bdd",
+      "addedAt": "2026-08-17T21:29:48.636Z"
+    },
+    {
+      "id": "msxqyph2",
+      "type": "improvement",
+      "summary": "Kasparov le as views de vídeo de fora da casa",
+      "detail": "Quando o vídeo nao esta no nosso acervo, ele busca o numero no Instagram na hora para abrir o debate pelo ratio; se o numero nao vier, ele diz que esta opinando sem dado em vez de estimar",
+      "commit": "0e22bdd",
+      "addedAt": "2026-08-17T21:29:48.673Z"
+    },
+    {
+      "id": "msxqyphx",
+      "type": "improvement",
+      "summary": "Resposta do Kasparov formatada, e sem travessao",
+      "detail": "Antes apareciam os asteriscos crus no lugar do negrito. Agora a resposta tem hierarquia de leitura no celular, e o travessao saiu da voz dele e de toda a interface",
+      "commit": "0e22bdd",
+      "addedAt": "2026-08-17T21:29:48.705Z"
+    },
+    {
+      "id": "msxqypiw",
+      "type": "improvement",
+      "summary": "Roteiro modelado registra de onde veio",
+      "detail": "O link do vídeo ou carrossel modelado entra no campo FONTES, entao a tela de compartilhamento tambem mostra a procedencia",
+      "commit": "0e22bdd",
+      "addedAt": "2026-08-17T21:29:48.741Z"
+    }
+  ],
   "lastRelease": {
     "version": "2.0",
     "git": "78743a0",
