@@ -278,6 +278,27 @@ function FilaCard({ p, onResponder }: { p: Pendencia; onResponder: (r: Resposta)
             </button>
           </div>
         </>
+      ) : p.tipo === "metrica" ? (
+        <>
+          {/* Peça 5: lembrete, não coleta. Não há número para digitar aqui — vm_script_performance
+              é preenchida pelo ETL, e é por isso que a única resposta é "agora não". */}
+          <p className="text-[13px] text-white/70">
+            Você publicou um roteiro há {p.dias} dias e a gente ainda não tem a performance dele.{" "}
+            <span className="text-white/35">({p.restantes} esperando)</span>
+          </p>
+          <a
+            href={p.url}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-block text-[12.5px] text-gold underline underline-offset-2 hover:text-cream"
+          >
+            abrir o vídeo publicado
+          </a>
+          <p className="text-[12px] leading-relaxed text-white/45">
+            Sem esse número eu discuto no achismo: é ele que vira ratio, e o ratio é o que me deixa
+            sustentar uma posição em vez de só opinar.
+          </p>
+        </>
       ) : (
         <>
           <p className="text-[13px] text-white/70">

@@ -236,3 +236,44 @@ describe("leitura padrão das lições (appDb, sem injeção)", () => {
     expect(p).toMatchObject({ learningId: "global", restantes: 1 });
   });
 });
+
+// ── Peça 5: lembrete de métrica de publicação ────────────────────────────────
+describe("fila de métrica faltando", () => {
+  const semOutras = { proximoPar: async () => null, licoesPendentes: async () => [] };
+
+  test("roteiro publicado sem métrica vira pendência", async () => {
+    const p = await proximaPendencia("c1", {
+      ...semOutras,
+      metricasFaltando: async () => [{ scriptId: "s1", url: "https://ig/p/1", dias: 20 }],
+    });
+    expect(p).toEqual({ tipo: "metrica", scriptId: "s1", url: "https://ig/p/1", dias: 20, restantes: 1 });
+  });
+
+  test("cobra o mais antigo primeiro", async () => {
+    const p = await proximaPendencia("c1", {
+      ...semOutras,
+      metricasFaltando: async () => [
+        { scriptId: "novo", url: "u", dias: 15 },
+        { scriptId: "velho", url: "u", dias: 60 },
+      ],
+    });
+    expect(p).toMatchObject({ scriptId: "velho", dias: 60 });
+  });
+
+  test("nada publicado sem métrica, nada a puxar", async () => {
+    expect(await proximaPendencia("c1", { ...semOutras, metricasFaltando: async () => [] })).toBeNull();
+  });
+
+  // É lembrete, não coleta: vm_script_performance exige viral_data_video_id e quem preenche é o
+  // ETL. Aceitar `skip` sem gravar é honesto; fingir que registrou métrica não seria.
+  test("só aceita skip, e skip não escreve nada", async () => {
+    const p = { tipo: "metrica" as const, scriptId: "s1", url: "u", dias: 20, restantes: 1 };
+    const escritas: string[] = [];
+    await responder(p, "skip", "c1", {
+      votar: async () => escritas.push("voto"),
+      ativarLicao: async () => void escritas.push("ativa"),
+    });
+    expect(escritas).toEqual([]);
+    await expect(responder(p, "ativar", "c1", {})).rejects.toThrow(/só aceita skip/);
+  });
+});

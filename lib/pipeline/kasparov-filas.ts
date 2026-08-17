@@ -17,7 +17,15 @@ export type Pendencia =
       descricao: string;
       evidencia: string | null;
       restantes: number;
-    };
+    }
+  // Peça 5: roteiro publicado há +14 dias sem performance registrada. É LEMBRETE, não coleta —
+  // vm_script_performance exige `viral_data_video_id` e é preenchida pelo ETL a partir do
+  // corpus, então não há número para o usuário digitar aqui. A pendência some sozinha quando a
+  // métrica aparece.
+  // ponytail: teto conhecido — não existe "dispensar para sempre", porque não há onde gravar
+  // isso hoje. Ela reaparece até a métrica existir; se incomodar, a saída é uma coluna
+  // `metrica_dispensada_em` em vm_generated_scripts, não um estado em memória.
+  | { tipo: "metrica"; scriptId: string; url: string; dias: number; restantes: number };
 
 // `skip` é resposta legítima — é um valor de `winner` na tabela, não um erro (§8).
 export type Resposta = "a" | "b" | "skip" | "ativar";
@@ -50,6 +58,39 @@ export interface FilasDeps {
   /** `setLearningActive` */
   ativarLicao?: (id: string, active: boolean) => Promise<void>;
   licoesPendentes?: (clientId: string | null) => Promise<LicaoPendente[]>;
+  metricasFaltando?: (clientId: string | null) => Promise<MetricaFaltando[]>;
+}
+
+export interface MetricaFaltando {
+  scriptId: string;
+  url: string;
+  dias: number;
+}
+
+const DIAS_PARA_COBRAR = 14;
+
+// Publicado há tempo suficiente e ainda sem linha em vm_script_performance. Sem published_at
+// não dá para saber se já passaram os 14 dias — fica de fora em vez de cobrar cedo demais.
+async function metricasFaltandoDb(clientId: string | null): Promise<MetricaFaltando[]> {
+  const corte = new Date(Date.now() - DIAS_PARA_COBRAR * 86_400_000).toISOString();
+  const [pub, perf] = await Promise.all([
+    appDb
+      .from("vm_generated_scripts")
+      .select("id, published_url, published_at, client_id")
+      .not("published_url", "is", null)
+      .not("published_at", "is", null)
+      .lt("published_at", corte),
+    appDb.from("vm_script_performance").select("script_id"),
+  ]);
+  if (pub.error) throw new Error(pub.error.message);
+  const comMetrica = new Set((perf.data ?? []).map((p) => p.script_id));
+  return (pub.data ?? [])
+    .filter((s) => !comMetrica.has(s.id) && (clientId === null || s.client_id === clientId))
+    .map((s) => ({
+      scriptId: s.id,
+      url: s.published_url as string,
+      dias: Math.floor((Date.now() - new Date(s.published_at as string).getTime()) / 86_400_000),
+    }));
 }
 
 // Extraída e NUNCA ativada: `active = false` e `updated_at = created_at`. A segunda metade é o
@@ -83,9 +124,10 @@ async function ouNada<T>(p: Promise<T>, oque: string): Promise<T | null> {
 }
 
 export async function proximaPendencia(clientId: string | null, deps: FilasDeps = {}): Promise<Pendencia | null> {
-  const [par, licoes] = await Promise.all([
+  const [par, licoes, metricas] = await Promise.all([
     deps.proximoPar ? ouNada(deps.proximoPar(clientId), "calibração") : null,
     ouNada((deps.licoesPendentes ?? licoesPendentesDb)(clientId), "lições"),
+    ouNada((deps.metricasFaltando ?? metricasFaltandoDb)(clientId), "métricas"),
   ]);
 
   const candidatas: Pendencia[] = [];
@@ -103,6 +145,12 @@ export async function proximaPendencia(clientId: string | null, deps: FilasDeps 
       restantes: licoes.length,
     });
   }
+  if (metricas?.length) {
+    // A mais antiga primeiro: aqui a ordem não vira nag na mesma linha, porque quando a métrica
+    // chega ela sai da fila de vez — ao contrário da lição, que o usuário pode só não querer.
+    const m = [...metricas].sort((a, b) => b.dias - a.dias)[0];
+    candidatas.push({ tipo: "metrica", scriptId: m.scriptId, url: m.url, dias: m.dias, restantes: metricas.length });
+  }
   if (!candidatas.length) return null;
   // sorteio entre as filas: 94 pares contra 28 lições, e a maior monopolizaria o assunto para
   // sempre se a ordem fosse fixa. Mesma rotação por sorteio que o eixo já usa.
@@ -115,6 +163,12 @@ export async function responder(
   clientId: string | null,
   deps: FilasDeps = {}
 ): Promise<void> {
+  // Lembrete não tem resposta que escreva: a pendência sai da fila quando a métrica existir, e
+  // o ETL é quem a traz. Aceitar `skip` sem gravar é honesto — fingir que registrou não seria.
+  if (p.tipo === "metrica") {
+    if (resposta !== "skip") throw new Error("lembrete de métrica só aceita skip");
+    return;
+  }
   if (p.tipo === "calibracao") {
     if (resposta === "ativar") throw new Error("voto de calibração só aceita a, b ou skip");
     await deps.votar?.(p.pairId, resposta, clientId);
