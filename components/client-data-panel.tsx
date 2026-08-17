@@ -68,7 +68,7 @@ function ClassList({
               {metric === "seguidores"
                 ? r.media_seguidores != null
                   ? `+${fmt(r.media_seguidores)}`
-                  : "—" /* comando sem dado de conversão nunca mostra views */
+                  : "n/d" /* comando sem dado de conversão nunca mostra views; "sem dado" não cabe nos 52px */
                 : fmt(r.media_views)}
             </span>
           </button>

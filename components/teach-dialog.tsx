@@ -300,7 +300,7 @@ function CorrigirLicao({ id, onFechar }: { id: string; onFechar: () => void }) {
         className={`${inputCls} resize-y`}
       />
       {erro && <p className="text-[12px] text-red-300">{erro}</p>}
-      {salvo && <p className="text-[12px] text-emerald-300">Salvo — vale da próxima geração.</p>}
+      {salvo && <p className="text-[12px] text-emerald-300">Salvo (vale da próxima geração).</p>}
       <div className="flex flex-wrap gap-2">
         <button
           disabled={pending || !l.titulo.trim() || !l.descricao.trim()}
@@ -381,7 +381,7 @@ function EnsinarView({
         <Trecho texto={trecho} />
         {editavel && (
           <p className="text-[12px] text-white/45">
-            Esta frase é do Kasparov, não sua. Reescreva do seu jeito antes de continuar — é ela que fica registrada.
+            Esta frase é do Kasparov, não sua. Reescreva do seu jeito antes de continuar: é ela que fica registrada.
           </p>
         )}
         <textarea
@@ -394,7 +394,7 @@ function EnsinarView({
         />
         {erro && (
           <p className="text-[12.5px] text-red-300">
-            Não consegui entender agora — {erro}. Seu texto continua aí; tente de novo.
+            Não consegui entender agora: {erro}. Seu texto continua aí; tente de novo.
           </p>
         )}
         <button
@@ -434,7 +434,7 @@ function EnsinarView({
       });
       // Falha de gravação não descarta nada: o painel inteiro continua na tela (§8).
       if (r.ok) setSalvo(true);
-      else setErro(r.erro ?? "não consegui gravar — tente de novo");
+      else setErro(r.erro ?? "não consegui gravar, tente de novo");
     });
 
   return (
@@ -442,7 +442,7 @@ function EnsinarView({
       <Cabecalho titulo="ENSINAR" onFechar={onFechar} />
 
       <div>
-        <Rotulo>{editavel ? "VOCÊ DISSE (nas palavras do Kasparov — corrija)" : "VOCÊ DISSE"}</Rotulo>
+        <Rotulo>{editavel ? "VOCÊ DISSE (nas palavras do Kasparov, corrija)" : "VOCÊ DISSE"}</Rotulo>
         {editavel ? (
           // A síntese é do Kasparov e ainda não é fala de ninguém: o que for gravado em
           // context_note é o que o humano deixar aqui (018 §5.1).
@@ -550,7 +550,7 @@ function EnsinarView({
           <input
             value={ens.termo ?? ""}
             onChange={(e) => setEns({ ...ens, termo: e.target.value })}
-            placeholder="a palavra em si — assinante"
+            placeholder="a palavra em si, ex: assinante"
             className={inputCls}
           />
           <div className="mt-1.5 flex flex-wrap gap-1.5">
@@ -567,7 +567,7 @@ function EnsinarView({
           </div>
           {faltaDirecao ? (
             <p className="mt-1.5 text-[11.5px] text-amber-300/90">
-              escreva o termo e escolha a direção — sem isso a gravação erraria a lista.
+              escreva o termo e escolha a direção: sem isso a gravação erraria a lista.
             </p>
           ) : (
             <p className="mt-1.5 text-[11.5px] text-white/45">
@@ -610,7 +610,7 @@ function EnsinarView({
           disabled={salvando || !podeConfirmar}
           className="btn-gold rounded-[10px] px-4 py-2 text-[13px] font-semibold disabled:opacity-40"
         >
-          {salvando ? "Gravando…" : "Confirmar — vale da próxima geração"}
+          {salvando ? "Gravando…" : "Confirmar (vale da próxima geração)"}
         </button>
         <button onClick={onFechar} className="text-[12.5px] text-white/45 hover:text-white/80 px-2">
           Cancelar

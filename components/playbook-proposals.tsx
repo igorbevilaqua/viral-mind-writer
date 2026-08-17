@@ -21,7 +21,7 @@ export default function PlaybookProposals({ propostas }: { propostas: Proposta[]
     <section className="mt-8">
       <div className="kicker text-gold tracking-[.22em]">PROPOSTAS DE PLAYBOOK</div>
       <p className="mt-1.5 text-[13px] text-white/50">
-        Novas versões propostas de playbook — pelo curador (a partir dos resultados reais dos mecanismos) ou por um
+        Novas versões propostas de playbook, pelo curador (a partir dos resultados reais dos mecanismos) ou por um
         ensinamento de sessão. Revise antes de ativar. Nada entra na sala sem você.
       </p>
       <div className="flex flex-col gap-2 mt-3">

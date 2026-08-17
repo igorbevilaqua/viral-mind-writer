@@ -161,7 +161,7 @@ export function useVerificacaoDialog(args: {
           {/* §11: sem registro é "não verificado". Nunca "verificado, 0 problemas". */}
           <p className="text-[13px] text-white/60">
             Este roteiro <strong className="text-white/85">não foi verificado</strong>. Nenhuma alegação foi
-            checada — o silêncio aqui não é aprovação.
+            checada. O silêncio aqui não é aprovação.
           </p>
           {avisoErro}
           {botaoVarredura("Verificar tudo")}
@@ -185,7 +185,7 @@ export function useVerificacaoDialog(args: {
 
         {!reg.dossie_presente && (
           <p className={`${secao} border-amber-500/25 bg-amber-500/[.06] text-amber-200/90`}>
-            Esta sessão não tem dossiê de pesquisa — a rodada foi <strong>integral</strong>: toda alegação
+            Esta sessão não tem dossiê de pesquisa, então a rodada foi <strong>integral</strong>: toda alegação
             precisou ser checada, nada pôde ser rastreado.
           </p>
         )}
@@ -193,7 +193,7 @@ export function useVerificacaoDialog(args: {
         {reg.excedentes > 0 && (
           <p className={`${secao} border-amber-500/25 bg-amber-500/[.06] text-amber-200/90`}>
             {reg.excedentes} alegaç{reg.excedentes === 1 ? "ão ficou" : "ões ficaram"} fora do teto desta
-            rodada. Estão listadas abaixo como <em>não verificada nesta rodada</em> — a varredura completa
+            rodada. Estão listadas abaixo como <em>não verificada nesta rodada</em>. A varredura completa
             drena o resto.
           </p>
         )}
@@ -205,7 +205,7 @@ export function useVerificacaoDialog(args: {
             <p className={`${secao} border-emerald-500/25 bg-emerald-500/[.06] text-emerald-200/90`}>
               <strong>Nada fora do dossiê.</strong> As {reg.total_alegacoes} alegações do roteiro estão
               rastreadas à pesquisa desta sessão, então nenhuma precisou de busca externa. O dossiê em si não
-              foi auditado — é para isso que serve a varredura completa.
+              foi auditado. É para isso que serve a varredura completa.
             </p>
             {botaoVarredura("Verificar tudo mesmo assim")}
           </div>
@@ -292,7 +292,7 @@ export function useVerificacaoDialog(args: {
     <div className="flex items-center gap-2.5 flex-wrap">
       {botaoVarredura("Verificar tudo")}
       <span className="text-[12px] text-white/55">
-        varredura completa · checa toda alegação, inclusive as que vieram do dossiê — mais lenta e mais cara
+        varredura completa · checa toda alegação, inclusive as que vieram do dossiê. Mais lenta e mais cara
         que a verificação automática, que só olha o que está fora dele
       </span>
     </div>
@@ -391,7 +391,7 @@ function Linha({
               // §11: veredicto vale, ação cai — e o motivo fica na tela em vez de virar um
               // botão que falharia no clique.
               <p className="mt-1.5 text-[12px] text-white/45">
-                Não dá para aplicar automaticamente: este trecho não está literalmente no roteiro atual — o
+                Não dá para aplicar automaticamente: este trecho não está literalmente no roteiro atual. O
                 verificador parafraseou em vez de copiar, ou o roteiro mudou depois. O veredicto continua
                 valendo; a troca é manual.
               </p>

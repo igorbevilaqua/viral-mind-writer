@@ -40,7 +40,7 @@ export async function POST(req: Request) {
     return Response.json(
       {
         error: legacy
-          ? `Formato antigo ${lower.slice(lower.lastIndexOf("."))} não suportado — salve como ${lower.endsWith(".doc") ? ".docx" : lower.endsWith(".ppt") ? ".pptx" : ".xlsx"} e envie de novo.`
+          ? `Formato antigo ${lower.slice(lower.lastIndexOf("."))} não suportado. Salve como ${lower.endsWith(".doc") ? ".docx" : lower.endsWith(".ppt") ? ".pptx" : ".xlsx"} e envie de novo.`
           : "Não consegui extrair texto deste arquivo. Cole o conteúdo manualmente.",
       },
       { status: 422 }
