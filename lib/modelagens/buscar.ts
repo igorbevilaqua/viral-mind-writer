@@ -54,7 +54,7 @@ const IG_PAGINA_MAX = 11; // page >= 12 responde 400
 // sugestão e a caça simplesmente para de trazer resultado, sem erro visível.
 let creditosVistos: number | null = null;
 
-async function sc<T>(path: string, params: Record<string, string | number>, sinal?: AbortSignal): Promise<T> {
+export async function sc<T>(path: string, params: Record<string, string | number>, sinal?: AbortSignal): Promise<T> {
   const chave = process.env.SCRAPECREATORS_API_KEY;
   if (!chave) throw new Error("SCRAPECREATORS_API_KEY não configurada");
 

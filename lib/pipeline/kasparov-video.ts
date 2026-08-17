@@ -2,6 +2,7 @@ import { appDb, viralData } from "../db";
 import { fmtNum } from "../format";
 import { VIDEO_URL_RE, platformVideoId } from "../video-url";
 import { autopsiaDeUrl, transcricaoDeUrl, type ModelagemResult } from "./modelagem";
+import { sc } from "../modelagens/buscar";
 import type { UsageLog } from "../anthropic";
 
 // ────────────────────────────────────────────────────────────────────────────
@@ -21,8 +22,11 @@ export interface VideoNoAcervo {
   views: number;
   seguidores: number;
   ratio: number;
-  /** `corpus` = vídeo de cliente (videos + vm_video_stats); `pool` = vm_modelagem_pool. */
-  fonte: "corpus" | "pool";
+  /**
+   * `corpus` = vídeo de cliente (videos + vm_video_stats); `pool` = vm_modelagem_pool;
+   * `ao_vivo` = lido no Instagram na hora, porque vídeo de fora não está em nenhum dos dois.
+   */
+  fonte: "corpus" | "pool" | "ao_vivo";
 }
 
 // Piso de seguidores igual ao de lib/modelagens/rank.ts:62 — conta nova (ou perfil sem
@@ -34,11 +38,14 @@ const SEGUIDORES_MINIMOS = 1000;
 export const ratioDoVideo = (views: number, seguidores: number) => views / Math.max(seguidores, SEGUIDORES_MINIMOS);
 
 // fmtRatio (lib/format) é o formato da TELA ("203.1x"); esta linha é prosa que o Kasparov
-// fala, e o 018 §7 fixa a forma dela: "316k views com 1.556 seguidores — 203×".
+// fala, e a forma dela é: "316k views com 1.556 seguidores, 203×".
+//
+// Sem travessão de propósito, e isto não é cosmético: esta linha é a PRIMEIRA COISA que ele
+// copia na resposta (§8 da persona), então travessão aqui ensinaria o vício que o §7 proíbe.
 const fmtX = (r: number) => `${r >= 10 ? Math.round(r) : Math.round(r * 10) / 10}×`;
 
 export function linhaDeRatio(v: VideoNoAcervo): string {
-  return `${fmtNum(v.views)} views com ${v.seguidores.toLocaleString("pt-BR")} seguidores — ${fmtX(v.ratio)}`;
+  return `${fmtNum(v.views)} views com ${v.seguidores.toLocaleString("pt-BR")} seguidores, ${fmtX(v.ratio)}`;
 }
 
 // ── A URL dentro da frase ───────────────────────────────────────────────────
@@ -106,6 +113,38 @@ async function doPool(pid: string): Promise<Omit<VideoNoAcervo, "url" | "ratio">
   return { titulo: (data?.autor_handle as string | null) ?? null, views, seguidores, fonte: "pool" };
 }
 
+// Terceira fonte, e a única que serve para vídeo de fora: ler o número no Instagram na hora,
+// pela mesma API (e mesma chave) da caça de modelagens. Custa 1 crédito, então só roda quando
+// corpus e pool já disseram não.
+//
+// Best-effort de propósito. O Instagram entrega `video_play_count` em parte das respostas e
+// omite em outras, e a API responde 200 com `{error}` quando o post não abre (privado, apagado,
+// login exigido). Sem os DOIS números não há ratio, e aí o debate segue pelo caminho "sem dado",
+// que continua sendo a verdade — nunca views sozinhas, nunca número estimado (§7 da persona).
+// ponytail: só Instagram; TikTok/YouTube usam outro endpoint e nenhum apareceu em debate ainda.
+interface IgPostResp {
+  data?: {
+    xdt_shortcode_media?: {
+      video_play_count?: number;
+      owner?: { username?: string; edge_followed_by?: { count?: number } };
+    };
+  };
+  error?: string;
+}
+
+async function aoVivo(url: string): Promise<Omit<VideoNoAcervo, "url" | "ratio"> | null> {
+  if (!/instagram\.com\//.test(url)) return null;
+  const resp = await sc<IgPostResp>("/v1/instagram/post", { url });
+  const m = resp.data?.xdt_shortcode_media;
+  const views = Number(m?.video_play_count ?? 0);
+  const seguidores = Number(m?.owner?.edge_followed_by?.count ?? 0);
+  if (!views || !seguidores) {
+    console.warn("kasparov: leitura ao vivo sem os dois números (seguindo sem dado)", url, resp.error ?? "");
+    return null;
+  }
+  return { titulo: m?.owner?.username ? `@${m.owner.username}` : null, views, seguidores, fonte: "ao_vivo" };
+}
+
 /**
  * O vídeo está no acervo? Null quando não está — e também quando a consulta falha, o que
  * é aceitável de propósito: sem número em mãos, "estou opinando sem dado" continua sendo
@@ -114,13 +153,21 @@ async function doPool(pid: string): Promise<Omit<VideoNoAcervo, "url" | "ratio">
 export async function acervoPorUrl(url: string): Promise<VideoNoAcervo | null> {
   const pid = platformVideoId(url);
   if (!pid) return null;
-  try {
-    const achado = (await doCorpus(pid)) ?? (await doPool(pid));
-    return achado && { url, ...achado, ratio: ratioDoVideo(achado.views, achado.seguidores) };
-  } catch (e) {
-    console.error("kasparov: consulta ao acervo falhou (seguindo sem dado)", url, e);
-    return null;
-  }
+  // Uma fonte que falha não pode derrubar as outras: banco fora do ar cancelaria a leitura ao
+  // vivo, que é justamente a que não depende dele.
+  const tenta = async (nome: string, f: () => Promise<Omit<VideoNoAcervo, "url" | "ratio"> | null>) => {
+    try {
+      return await f();
+    } catch (e) {
+      console.error(`kasparov: consulta ao ${nome} falhou (seguindo sem dado)`, url, e);
+      return null;
+    }
+  };
+  const achado =
+    (await tenta("corpus", () => doCorpus(pid))) ??
+    (await tenta("pool", () => doPool(pid))) ??
+    (await tenta("Instagram", () => aoVivo(url)));
+  return achado && { url, ...achado, ratio: ratioDoVideo(achado.views, achado.seguidores) };
 }
 
 // ── O bloco ─────────────────────────────────────────────────────────────────
@@ -142,22 +189,36 @@ export type BlocoDeVideo =
 // ponytail: corte simples no fim; se vídeo longo virar assunto comum, cortar por beats.
 const TRANSCRICAO_MAX = 6000;
 
-const CAMADAS_QUE_FALTAM = `## AS TRÊS CAMADAS QUE FALTAM (a autópsia acima não cobre estas — são suas, e saem da transcrição)
-1. CONTRASTES — onde o vídeo põe duas coisas lado a lado para uma dar sentido à outra: antes/depois, o que todo mundo acha vs o que é, escala grande vs pequena, um número contra outro. Diga qual é o contraste que sustenta o vídeo e em que ponto ele aparece. Sem contraste, diga isso: é uma fraqueza, não uma neutralidade.
-2. LINGUAGEM — as palavras, não o conteúdo: tamanho de frase, quem fala com quem (segunda pessoa? plural?), concreto vs abstrato, jargão, repetição deliberada, ritmo. Cite trecho literal ao apontar. Vale para o que você recomendaria copiar e para o que você não deixaria passar num roteiro nosso.
-3. APELO EMOCIONAL — qual emoção o vídeo produz (indignação, medo, alívio, orgulho, curiosidade, vergonha alheia) e por qual mecanismo ele a produz. Nomeie a emoção, não diga "engajante". Diga também se a emoção sustenta até o fim ou se desaba no meio.`;
+const CAMADAS_QUE_FALTAM = `## AS TRÊS CAMADAS QUE FALTAM (a autópsia acima não cobre estas: são suas, e saem da transcrição)
+1. CONTRASTES: onde o vídeo põe duas coisas lado a lado para uma dar sentido à outra: antes/depois, o que todo mundo acha vs o que é, escala grande vs pequena, um número contra outro. Diga qual é o contraste que sustenta o vídeo e em que ponto ele aparece. Sem contraste, diga isso: é uma fraqueza, não uma neutralidade.
+2. LINGUAGEM: as palavras, não o conteúdo: tamanho de frase, quem fala com quem (segunda pessoa? plural?), concreto vs abstrato, jargão, repetição deliberada, ritmo. Cite trecho literal ao apontar. Vale para o que você recomendaria copiar e para o que você não deixaria passar num roteiro nosso.
+3. APELO EMOCIONAL: qual emoção o vídeo produz (indignação, medo, alívio, orgulho, curiosidade, vergonha alheia) e por qual mecanismo ele a produz. Nomeie a emoção, não diga "engajante". Diga também se a emoção sustenta até o fim ou se desaba no meio.`;
 
 function blocoDoAcervo(v: VideoNoAcervo | null): string {
   if (!v)
     return `## SEM DADO DE DESEMPENHO
 Não tenho número nenhum deste vídeo: ele não está no acervo, ou o acervo não tem views e seguidores dele. Não existe ratio para citar.
-DIGA ISSO NA RESPOSTA, com todas as letras, na primeira vez que você falar do desempenho dele: você está lendo o vídeo, não medindo. Sua análise é leitura sua, e vale — mas é opinião, e você diz que é.
+DIGA ISSO NA RESPOSTA, com todas as letras, na primeira vez que você falar do desempenho dele: você está lendo o vídeo, não medindo. Sua análise é leitura sua, e vale, mas é opinião, e você diz que é.
 PROIBIDO: "os dados mostram", "esse formato performa", estimar views, chutar ratio ou comparar com "vídeos parecidos" que você não tem na mão.`;
 
-  return `## DESEMPENHO REAL (está no acervo — este número é lastro, e é seu)
-${linhaDeRatio(v)}${v.titulo ? `\nVídeo: ${v.titulo}` : ""} (fonte: ${v.fonte === "corpus" ? "corpus do cliente" : "pool de modelagens"})
+  const fonte = {
+    corpus: "corpus do cliente",
+    pool: "pool de modelagens",
+    ao_vivo: "lido no Instagram agora",
+  }[v.fonte];
+
+  // Leitura ao vivo: o número é medido, mas o denominador é o seguidor de HOJE. Vídeo antigo de
+  // perfil que cresceu depois tem ratio subestimado, e o Kasparov precisa saber disso para não
+  // sustentar uma conclusão fina demais em cima de um número grosso.
+  const ressalva =
+    v.fonte === "ao_vivo"
+      ? "\nRESSALVA DESTA LEITURA: os seguidores são a contagem de hoje, não a da publicação. Se o vídeo for antigo e o perfil tiver crescido depois, o ratio real foi MAIOR que este. Use o número, mas não construa nada fino em cima da segunda casa decimal."
+      : "";
+
+  return `## DESEMPENHO REAL (número medido: este é lastro, e é seu)
+${linhaDeRatio(v)}${v.titulo ? `\nVídeo: ${v.titulo}` : ""} (fonte: ${fonte})
 ABRA POR AQUI: a primeira coisa da sua resposta é essa linha, com esses números. Views sozinhas medem a audiência que o perfil já tinha; o ratio mede o VÍDEO, que é o que está em debate.
-Este é um dos poucos lastros reais que você tem: se o usuário discordar da sua leitura do desempenho, sustente pelo número (§2 da sua persona). Tudo o mais que você disser sobre este vídeo continua sendo leitura sua.`;
+Este é um dos poucos lastros reais que você tem: se o usuário discordar da sua leitura do desempenho, sustente pelo número (§2 da sua persona). Tudo o mais que você disser sobre este vídeo continua sendo leitura sua.${ressalva}`;
 }
 
 function blocoDaAutopsia(r: ModelagemResult | null): string {
@@ -177,10 +238,10 @@ A autópsia deste vídeo falhou. Diga isso na resposta e siga assim mesmo: você
     e?.estrutura_narrativa && `Storytelling: ${e.estrutura_narrativa}`,
     e?.comando?.tipo && `Comando: ${e.comando.tipo}${e.comando.posicao ? ` (${e.comando.posicao})` : ""}`,
     a.diagnostico?.gargalo && `Gargalo apontado pela casa: ${a.diagnostico.gargalo}`,
-    ...(a.diagnostico?.por_camada ?? []).map((c) => `- ${c.camada} — "${c.evidencia}" → ${c.leitura}`),
+    ...(a.diagnostico?.por_camada ?? []).map((c) => `- ${c.camada}: "${c.evidencia}" → ${c.leitura}`),
   ].filter(Boolean);
 
-  return `## AUTÓPSIA DA CASA (tema, hook, storytelling e comando JÁ estão julgados aqui — não refaça, discuta)
+  return `## AUTÓPSIA DA CASA (tema, hook, storytelling e comando JÁ estão julgados aqui: não refaça, discuta)
 ${linhas.join("\n")}
 Esta leitura é a definição da casa de "por que funciona ou falha". Você pode discordar dela, mas discordando de forma explícita, e dizendo que é a sua leitura contra a análise registrada.`;
 }
@@ -212,7 +273,7 @@ export async function blocoDeVideo(url: string, deps: DepsDeVideo = {}): Promise
       erro:
         `Não consegui ler ${url}: ${motivo}.` +
         `${acervo ? ` O que eu tenho dele é o número: ${linhaDeRatio(acervo)}.` : ""}` +
-        ` Não vou opinar sobre um vídeo que não li — cola a transcrição aqui que eu analiso.`,
+        ` Não vou opinar sobre um vídeo que não li: cola a transcrição aqui que eu analiso.`,
     };
   }
 

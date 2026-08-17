@@ -32,7 +32,7 @@ export function montarContexto(ctx: GenerationContext, estado: EstadoDaThread = 
   // Cabeçalho fixo: com 0 lições ativas e sem cliente o resto do estado é vazio, e vazio
   // silencioso vira "ele inventou porque não tinha nada" — o mesmo defeito do §11.
   const partes: string[] = [
-    "# ESTADO DO SISTEMA\nÉ tudo o que você sabe. O que não está registrado abaixo, o sistema não sabe — e você não finge que sabe.",
+    "# ESTADO DO SISTEMA\nÉ tudo o que você sabe. O que não está registrado abaixo, o sistema não sabe, e você não finge que sabe.",
   ];
 
   // Playbook por REFERÊNCIA (slug+version), nunca o texto: é a mesma regra do rastro
@@ -41,7 +41,7 @@ export function montarContexto(ctx: GenerationContext, estado: EstadoDaThread = 
   const playbooks = ctx.playbookVersions ?? [];
   if (playbooks.length)
     partes.push(
-      `# PLAYBOOKS VIGENTES (por referência — cite o slug e a versão quando o lastro for um deles)\n` +
+      `# PLAYBOOKS VIGENTES (por referência: cite o slug e a versão quando o lastro for um deles)\n` +
         playbooks.map((p) => `- ${p.slug} v${p.version}`).join("\n")
     );
 
@@ -51,7 +51,7 @@ export function montarContexto(ctx: GenerationContext, estado: EstadoDaThread = 
   // turno constante mesmo quando a base de lições crescer.
   const licoes = taughtBlock(ctx, "dados");
   if (licoes)
-    partes.push(`# APRENDIZADOS ATIVOS (curadoria humana — prevalecem sobre padrão do corpus em conflito)\n${licoes}`);
+    partes.push(`# APRENDIZADOS ATIVOS (curadoria humana: prevalecem sobre padrão do corpus em conflito)\n${licoes}`);
 
   const prefs = clientPrefsBlock(ctx);
   if (prefs) partes.push(prefs);
@@ -182,7 +182,7 @@ ${MARCADOR_REGRA} <uma frase, nas suas palavras, com a regra acordada>
 "NADA NOVO" é o desfecho padrão e o mais frequente: confirmar o que o sistema já sabe não é
 aprender, e conclusão que só vale para o roteiro aberto agora morre com a conversa. Só escreva
 ${MARCADOR_REGRA} quando o acordo for replicável em outro roteiro, sobre outro tema, por outra
-pessoa — e quando ainda não estiver nos APRENDIZADOS ATIVOS.
+pessoa, e quando ainda não estiver nos APRENDIZADOS ATIVOS.
 
 A frase é uma PROPOSTA: ela vai à tela com as SUAS palavras e o usuário confirma ou reescreve
 antes de virar registro. Não escreva como se fosse fala dele.`;

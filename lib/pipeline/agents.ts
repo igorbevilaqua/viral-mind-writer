@@ -39,7 +39,7 @@ export function clientInsightBlock(ctx: GenerationContext, categorias: string[],
     .sort((a, b) => (b.score ?? 0) - (a.score ?? 0))
     .slice(0, n);
   if (!rows.length) return "";
-  return rows.map((r) => `- ${r.titulo} — ${r.descricao}${r.destaque ? " [INSIGHT MAIS FORTE DO CLIENTE]" : ""}`).join("\n");
+  return rows.map((r) => `- ${r.titulo}: ${r.descricao}${r.destaque ? " [INSIGHT MAIS FORTE DO CLIENTE]" : ""}`).join("\n");
 }
 
 // Aprendizados ensinados pelo usuário (menu Ensinar, curadoria humana):
@@ -60,7 +60,9 @@ export function licoesPara(ctx: GenerationContext, agente: Destinatario, n = 3):
 export function taughtBlock(ctx: GenerationContext, agente: Destinatario, n = 3): string {
   const usadas = licoesPara(ctx, agente, n);
   if (!usadas.length) return "";
-  return usadas.map((r) => `- ${r.titulo} — ${r.descricao}`).join("\n");
+  // dois-pontos e não travessão: este bloco entra no turno do Kasparov, que é proibido de
+  // escrever travessão (agents/kasparov.md §7) — exemplo no prompt ensina o vício.
+  return usadas.map((r) => `- ${r.titulo}: ${r.descricao}`).join("\n");
 }
 
 // Regra dura do rastro: lição entra por REFERÊNCIA, nunca por cópia (015 §4.1) — o texto

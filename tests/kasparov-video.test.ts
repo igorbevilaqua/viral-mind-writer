@@ -70,8 +70,10 @@ const deps = (over: Partial<DepsDeVideo> = {}): DepsDeVideo => ({
 });
 
 describe("abertura por acervo (§7)", () => {
+  // Sem travessão: esta linha é a primeira coisa que ele copia na resposta, e o exemplo dentro
+  // do prompt é o que ensina o vício que a persona §7 proíbe.
   it("a linha do ratio é a do spec, literal", () => {
-    expect(linhaDeRatio(NO_ACERVO)).toBe("316k views com 1.556 seguidores — 203×");
+    expect(linhaDeRatio(NO_ACERVO)).toBe("316k views com 1.556 seguidores, 203×");
   });
 
   it("vídeo no acervo: o bloco manda ABRIR pelo ratio, não pelas views", async () => {
@@ -80,7 +82,7 @@ describe("abertura por acervo (§7)", () => {
     expect(r.ok).toBe(true);
     if (!r.ok) return;
     expect(r.acervo).toEqual(NO_ACERVO);
-    expect(r.bloco).toContain("316k views com 1.556 seguidores — 203×");
+    expect(r.bloco).toContain("316k views com 1.556 seguidores, 203×");
     expect(r.bloco).toContain("ABRA POR AQUI");
     // o aviso de "sem dado" é do outro caso — aqui há lastro, e ele não pode aparecer
     expect(r.bloco).not.toContain("SEM DADO");

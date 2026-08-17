@@ -26,10 +26,23 @@ const FASES: Record<string, string> = {
 const inputCls =
   "w-full rounded-[10px] border border-white/[.14] bg-transparent px-3 py-2 text-[13px] text-cream outline-none placeholder:text-white/30 focus:border-gold/40";
 
-export default function KasparovChat({ clients }: { clients: { id: string; nome: string }[] }) {
-  const [clientId, setClientId] = useState<string | null>(null);
-  const [thread, setThread] = useState<{ id: string; origem: string } | null>(null);
-  const [msgs, setMsgs] = useState<Msg[]>([]);
+/** Conversa recuperada do banco (rota /kasparov/[id]): a tela reabre e o debate continua nela. */
+export interface ConversaRecuperada {
+  thread: { id: string; origem: string };
+  clientId: string | null;
+  msgs: Msg[];
+}
+
+export default function KasparovChat({
+  clients,
+  inicial,
+}: {
+  clients: { id: string; nome: string }[];
+  inicial?: ConversaRecuperada;
+}) {
+  const [clientId, setClientId] = useState<string | null>(inicial?.clientId ?? null);
+  const [thread, setThread] = useState<{ id: string; origem: string } | null>(inicial?.thread ?? null);
+  const [msgs, setMsgs] = useState<Msg[]>(inicial?.msgs ?? []);
   const [parcial, setParcial] = useState("");
   const [fase, setFase] = useState<string | null>(null);
   const [erro, setErro] = useState<string | null>(null);
@@ -155,8 +168,16 @@ export default function KasparovChat({ clients }: { clients: { id: string; nome:
           Eu não guardo a conversa: cada turno vê o estado do sistema (playbooks, lições ativas, preferências do
           cliente), nunca o que a gente disse há dez mensagens.{" "}
           <span className="text-gold/80">O que a gente acordar eu registro; o resto eu esqueço.</span> Se uma conclusão
-          importa, ela vira lição — por isso a confirmação aparece no fim do turno.
+          importa, ela vira lição, e é por isso que a confirmação aparece no fim do turno.
         </p>
+        {/* Reabrir a conversa não é reabrir a memória dele: sem isto na tela, o usuário lê os
+            turnos antigos ali em cima e assume que o Kasparov também está lendo. */}
+        {inicial && (
+          <p className="mt-1.5 text-[12px] text-white/40">
+            Conversa recuperada: você relê os turnos acima, ele não. O próximo turno vê o estado do sistema e o assunto
+            corrente, como sempre.
+          </p>
+        )}
       </header>
 
       <div className="flex-1 min-h-0 overflow-y-auto space-y-4 pb-4">
@@ -238,6 +259,75 @@ export default function KasparovChat({ clients }: { clients: { id: string; nome:
   );
 }
 
+// O Kasparov escreve em markdown (§6.1 da persona) e a tela mostrava os asteriscos crus.
+// Não vale uma dependência de markdown: o vocabulário é fechado e é só este. Streaming mostra
+// o marcador por um instante antes de fechar o par — é o preço de não bufferizar o token.
+// ponytail: bold, itálico, bullet, numerada e rótulo. Link e tabela não entram porque o
+// Kasparov não escreve nenhum dos dois; se um dia escrever, aí sim uma lib.
+const INLINE = /(\*\*[^*\n]+\*\*|(?<![*\w])\*[^*\n]+\*(?!\w))/g;
+
+function Inline({ texto }: { texto: string }) {
+  return (
+    <>
+      {texto.split(INLINE).map((p, i) =>
+        p.startsWith("**") && p.endsWith("**") ? (
+          <strong key={i} className="font-semibold text-cream">
+            {p.slice(2, -2)}
+          </strong>
+        ) : p.startsWith("*") && p.endsWith("*") && p.length > 2 ? (
+          <em key={i} className="text-white/70">
+            {p.slice(1, -1)}
+          </em>
+        ) : (
+          p
+        )
+      )}
+    </>
+  );
+}
+
+// Hierarquia de leitura: rótulo (###) > parágrafo > item de lista. O recuo e o marcador em
+// dourado são o que faz a lista ser varrida com o olho em vez de lida palavra por palavra.
+function Formatado({ texto }: { texto: string }) {
+  const linhas = texto.split("\n");
+  return (
+    <>
+      {linhas.map((linha, i) => {
+        const l = linha.trim();
+        if (!l) return <div key={i} className="h-2.5" />;
+
+        const rotulo = /^#{1,4}\s+(.*)$/.exec(l);
+        if (rotulo)
+          return (
+            <div key={i} className="kicker text-gold/85 text-[10px] mt-3 mb-1 first:mt-0">
+              {rotulo[1].replace(/[:.]$/, "")}
+            </div>
+          );
+
+        const bullet = /^[-*•]\s+(.*)$/.exec(l);
+        const numerada = /^(\d{1,2})[.)]\s+(.*)$/.exec(l);
+        if (bullet || numerada)
+          return (
+            <div key={i} className="flex gap-2 pl-0.5 my-0.5">
+              <span className="shrink-0 font-mono text-[11.5px] text-gold/70 leading-[1.7]">
+                {bullet ? "•" : `${numerada![1]}.`}
+              </span>
+              <span className="min-w-0">
+                <Inline texto={bullet ? bullet[1] : numerada![2]} />
+              </span>
+            </div>
+          );
+
+        return (
+          <p key={i} className="my-0.5">
+            <Inline texto={l} />
+          </p>
+        );
+      })}
+    </>
+  );
+}
+
 function Bolha({ papel, conteudo }: Msg) {
   const meu = papel === "usuario";
   return (
@@ -246,11 +336,11 @@ function Bolha({ papel, conteudo }: Msg) {
         className={
           meu
             ? "max-w-[85%] rounded-[12px] border border-white/[.12] bg-white/[.05] px-3.5 py-2.5 text-[13.5px] leading-relaxed text-cream whitespace-pre-wrap"
-            : "max-w-[95%] text-[13.5px] leading-relaxed text-white/80 whitespace-pre-wrap"
+            : "max-w-[95%] text-[13.5px] leading-relaxed text-white/80"
         }
       >
         {!meu && <span className="kicker text-gold text-[10px] block mb-1.5">KASPAROV</span>}
-        {conteudo}
+        {meu ? conteudo : <Formatado texto={conteudo} />}
       </div>
     </div>
   );
@@ -312,7 +402,7 @@ function FilaCard({ p, onResponder }: { p: Pendencia; onResponder: (r: Resposta)
             onClick={() => onResponder("ativar")}
             className="btn-gold rounded-[10px] px-4 py-2 text-[13px] font-semibold"
           >
-            Ativar — vale da próxima geração
+            Ativar (vale da próxima geração)
           </button>
         </>
       )}
