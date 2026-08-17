@@ -1,6 +1,6 @@
 import { appDb, viralData } from "../db";
 import { fmtNum } from "../format";
-import { platformVideoId } from "../video-url";
+import { VIDEO_URL_RE, platformVideoId } from "../video-url";
 import { autopsiaDeUrl, transcricaoDeUrl, type ModelagemResult } from "./modelagem";
 import type { UsageLog } from "../anthropic";
 
@@ -39,6 +39,25 @@ const fmtX = (r: number) => `${r >= 10 ? Math.round(r) : Math.round(r * 10) / 10
 
 export function linhaDeRatio(v: VideoNoAcervo): string {
   return `${fmtNum(v.views)} views com ${v.seguidores.toLocaleString("pt-BR")} seguidores — ${fmtX(v.ratio)}`;
+}
+
+// ── A URL dentro da frase ───────────────────────────────────────────────────
+// No chat o link vem embrulhado em prosa ("olha esse aqui https://... o que você acha?").
+// Quem decide se há vídeo em debate é a rota, e a decisão é esta função — puro texto, sem rede.
+const URLS = /https?:\/\/[^\s<>"'`]+/g;
+
+/**
+ * Primeira URL de vídeo da mensagem, ou null. `platformVideoId` é o portão: link de PERFIL
+ * passa no regex de domínio e não é vídeo nenhum — mandá-lo ao transcritor só produziria a
+ * recusa do §11 com o motivo errado.
+ */
+export function urlDeVideo(mensagem: string): string | null {
+  for (const bruta of mensagem.match(URLS) ?? []) {
+    // pontuação final da frase gruda na URL: "…/reel/abc." vira id "abc." e não casa nada.
+    const url = bruta.replace(/[.,;:!?)\]}'"]+$/, "");
+    if (VIDEO_URL_RE.test(url) && platformVideoId(url)) return url;
+  }
+  return null;
 }
 
 // ── O acervo ────────────────────────────────────────────────────────────────

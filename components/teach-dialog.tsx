@@ -15,6 +15,7 @@ import {
 } from "@/lib/actions";
 import type { Casa, Direcao, Ensinamento } from "@/lib/pipeline/classify-teaching";
 import type { Explicacao } from "@/lib/pipeline/explain";
+import type { PropostaDeDestilacao } from "@/lib/pipeline/kasparov";
 import type { Etapa } from "@/lib/provenance";
 import { DESTINATARIOS } from "@/lib/pipeline/destinatarios";
 import {
@@ -23,6 +24,7 @@ import {
   casaFinal,
   precisaDirecao,
   precisaPadrao,
+  textoCruEditavel,
   textoNaoDeterminado,
   type Escopo,
 } from "@/lib/ensino-ui";
@@ -36,6 +38,12 @@ export interface TeachDialogArgs {
   clientId: string | null;
   /** roteiro aberto na tela — é contra ele que o preview do regex roda (§5.1). */
   roteiro: string;
+  /**
+   * Procedência quando o ensino NÃO nasceu numa sessão: `origemDoDebate(threadId)` do Kasparov
+   * (018 §5.3). Sem isto a gravação cai na guarda de procedência de `gravarEnsinamento` e
+   * devolve erro — de propósito: falha visível em vez de `/sessions/` inventado.
+   */
+  sourceUrl?: string;
   /** O modo "Mudar" é o Bob de hoje, que vive dentro do session-view. Ver comentário abaixo. */
   onMudar: (trecho: string) => void;
 }
@@ -72,9 +80,12 @@ export function useTeachDialog(args: TeachDialogArgs) {
     modo: "porque" | "ensinar";
     trecho: string;
     referenciaId?: string;
+    proposta?: PropostaDeDestilacao;
   } | null>(null);
 
-  const abrir = (modo: TeachModo, trecho?: string) => {
+  // `proposta` só vem do Kasparov: é a síntese dele, que entra no campo "Você disse" EDITÁVEL
+  // (018 §5.1). Sem ela o caminho é o de sempre — o usuário digita, e o que ele digitou é literal.
+  const abrir = (modo: TeachModo, trecho?: string, proposta?: PropostaDeDestilacao) => {
     // ponytail: "Mudar" é o BobModal que já existe DENTRO de session-view.tsx, sem export.
     // Mover ou duplicar o Bob para cá seria reescrever uma tela que funciona; o dialog só
     // devolve o trecho e quem liga no Bob é o call site (Task 11).
@@ -82,7 +93,7 @@ export function useTeachDialog(args: TeachDialogArgs) {
       args.onMudar(trecho ?? "");
       return;
     }
-    setSessao((s) => ({ n: (s?.n ?? 0) + 1, modo, trecho: trecho ?? "" }));
+    setSessao((s) => ({ n: (s?.n ?? 0) + 1, modo, trecho: trecho ?? "", proposta }));
     if (!dialogRef.current?.open) dialogRef.current?.showModal();
   };
 
@@ -114,6 +125,7 @@ export function useTeachDialog(args: TeachDialogArgs) {
               args={args}
               trecho={sessao.trecho}
               referenciaId={sessao.referenciaId}
+              proposta={sessao.proposta}
               onFechar={fechar}
             />
           )}
@@ -322,15 +334,19 @@ function EnsinarView({
   args,
   trecho,
   referenciaId,
+  proposta,
   onFechar,
 }: {
   args: TeachDialogArgs;
   trecho: string;
   referenciaId?: string;
+  proposta?: PropostaDeDestilacao;
   onFechar: () => void;
 }) {
-  // `texto` NUNCA é limpo por erro: é o que o usuário digitou (§8).
-  const [texto, setTexto] = useState("");
+  // `texto` NUNCA é limpo por erro: é o que o usuário digitou (§8) — ou, vindo do Kasparov, a
+  // síntese dele, que o usuário confirma ou reescreve antes de virar context_note (018 §5.1).
+  const [texto, setTexto] = useState(proposta?.sintese ?? "");
+  const editavel = textoCruEditavel(proposta?.origem ?? "usuario");
   const [ens, setEns] = useState<Ensinamento | null>(null);
   const [escopo, setEscopo] = useState<Escopo>(args.clientId ? "cliente" : "global");
   const [classificando, setClassificando] = useState(false);
@@ -363,6 +379,11 @@ function EnsinarView({
       <>
         <Cabecalho titulo="ENSINAR" onFechar={onFechar} />
         <Trecho texto={trecho} />
+        {editavel && (
+          <p className="text-[12px] text-white/45">
+            Esta frase é do Kasparov, não sua. Reescreva do seu jeito antes de continuar — é ela que fica registrada.
+          </p>
+        )}
         <textarea
           value={texto}
           onChange={(e) => setTexto(e.target.value)}
@@ -395,8 +416,10 @@ function EnsinarView({
   // Vocabulário sem direção grava na lista oposta à ensinada: o portão é aqui (pendência 10).
   const mostraDirecao = precisaDirecao(ens.casa, escopo);
   const faltaDirecao = mostraDirecao && (!ens.direcao || !ens.termo?.trim());
+  // `texto` entra em podeConfirmar porque no caminho do Kasparov ele é editável: esvaziado,
+  // gravaria context_note em branco — a auditoria da peça 1 sem a frase que a justifica.
   const podeConfirmar =
-    !!ens.regra.trim() && !faltaDestinatario && !faltaDirecao && (!mostraPadrao || !!vPadrao?.ok);
+    !!texto.trim() && !!ens.regra.trim() && !faltaDestinatario && !faltaDirecao && (!mostraPadrao || !!vPadrao?.ok);
 
   const confirmar = () =>
     startSave(async () => {
@@ -407,6 +430,7 @@ function EnsinarView({
         escopo,
         sessionId: args.sessionId,
         clientId: args.clientId,
+        sourceUrl: args.sourceUrl,
       });
       // Falha de gravação não descarta nada: o painel inteiro continua na tela (§8).
       if (r.ok) setSalvo(true);
@@ -418,11 +442,22 @@ function EnsinarView({
       <Cabecalho titulo="ENSINAR" onFechar={onFechar} />
 
       <div>
-        <Rotulo>VOCÊ DISSE</Rotulo>
-        {/* literal e não editável: é assim que o usuário confere se foi compreendido (§7.4) */}
-        <p className="whitespace-pre-wrap rounded-[10px] border border-white/[.08] bg-white/[.03] px-3 py-2 text-[12.5px] italic leading-relaxed text-white/70">
-          &ldquo;{texto}&rdquo;
-        </p>
+        <Rotulo>{editavel ? "VOCÊ DISSE (nas palavras do Kasparov — corrija)" : "VOCÊ DISSE"}</Rotulo>
+        {editavel ? (
+          // A síntese é do Kasparov e ainda não é fala de ninguém: o que for gravado em
+          // context_note é o que o humano deixar aqui (018 §5.1).
+          <textarea
+            value={texto}
+            onChange={(e) => setTexto(e.target.value)}
+            rows={2}
+            className={`${inputCls} resize-y italic`}
+          />
+        ) : (
+          /* literal e não editável: é assim que o usuário confere se foi compreendido (§7.4) */
+          <p className="whitespace-pre-wrap rounded-[10px] border border-white/[.08] bg-white/[.03] px-3 py-2 text-[12.5px] italic leading-relaxed text-white/70">
+            &ldquo;{texto}&rdquo;
+          </p>
+        )}
       </div>
 
       <div>

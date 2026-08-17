@@ -41,6 +41,23 @@ export const DIRECAO_LABEL: Record<Direcao, string> = {
  */
 export const precisaDirecao = (casa: Casa, escopo: Escopo) => casaFinal(casa, escopo) === "vocabulario";
 
+/**
+ * Quem escreveu o texto que vai virar `vm_lessons.context_note`. Digitado na sessão, é fala do
+ * usuário; nascido de debate, é a SÍNTESE do Kasparov (018 §5.1).
+ */
+export type OrigemDoTextoCru = "usuario" | "kasparov";
+
+/**
+ * O "Você disse" é editável? `context_note` guarda as palavras cruas e é a prova de auditoria
+ * de que o sistema não reescreveu o usuário (015 §5) — por isso texto DIGITADO é literal e não
+ * se edita: editar apagaria a prova.
+ *
+ * Num debate essa string não existe: quem comprime o acordo numa frase é o Kasparov. Gravar a
+ * frase DELE como se fosse fala do usuário mata a auditoria em silêncio (018 §5.1). Então a
+ * síntese chega à tela editável, e o que vira registro é o que o humano confirmou ou reescreveu.
+ */
+export const textoCruEditavel = (origem: OrigemDoTextoCru) => origem === "kasparov";
+
 // Frase que `explicar()` devolve em roteiro anterior à 2.0 (lib/pipeline/explain.ts).
 const SEM_PROVENIENCIA = "anterior ao registro de proveniência";
 

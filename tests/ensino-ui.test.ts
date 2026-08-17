@@ -2,7 +2,15 @@
 // o campo `padrao` precisa estar na tela, e a frase do "por quê" sem rastro. Julgamento do
 // classificador não se testa com assert — o portão dele é a confirmação humana.
 import { describe, expect, test } from "vitest";
-import { CASA_LABEL, DIRECAO_LABEL, casaFinal, precisaDirecao, precisaPadrao, textoNaoDeterminado } from "@/lib/ensino-ui";
+import {
+  CASA_LABEL,
+  DIRECAO_LABEL,
+  casaFinal,
+  precisaDirecao,
+  precisaPadrao,
+  textoCruEditavel,
+  textoNaoDeterminado,
+} from "@/lib/ensino-ui";
 import { CASAS, DIRECOES } from "@/lib/pipeline/classify-teaching";
 
 describe("casaFinal", () => {
@@ -65,4 +73,15 @@ test("toda casa tem rótulo na tela", () => {
 
 test("toda direção tem rótulo na tela", () => {
   expect(Object.keys(DIRECAO_LABEL).sort()).toEqual([...DIRECOES].sort());
+});
+
+// 018 §5.1 — o campo que vira vm_lessons.context_note. É a decisão que separa "prova de
+// auditoria" de "palavra da máquina gravada como se fosse do humano".
+describe("textoCruEditavel", () => {
+  test("digitado na sessão é literal e não se edita — editar apagaria a prova", () => {
+    expect(textoCruEditavel("usuario")).toBe(false);
+  });
+  test("síntese do Kasparov nasce editável: ela ainda não é fala de ninguém", () => {
+    expect(textoCruEditavel("kasparov")).toBe(true);
+  });
 });

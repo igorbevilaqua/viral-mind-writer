@@ -18,6 +18,7 @@ import {
   blocoDeVideo,
   linhaDeRatio,
   ratioDoVideo,
+  urlDeVideo,
   type DepsDeVideo,
   type VideoNoAcervo,
 } from "@/lib/pipeline/kasparov-video";
@@ -191,5 +192,39 @@ describe("vídeo que não deu para ler (§11)", () => {
     if (r.ok) throw new Error("deveria ter falhado");
     expect(r.erro).toContain(URL_VIDEO);
     expect(r.erro).toContain("cola a transcrição");
+  });
+});
+
+// A rota decide "há vídeo em debate?" por esta função, e no chat o link vem embrulhado em
+// prosa. Errar aqui é o Kasparov opinar sobre um vídeo que ninguém pediu — ou ignorar o que
+// o usuário colou e responder do nada.
+describe("a URL dentro da frase", () => {
+  it("acha o link no meio da prosa", () => {
+    expect(urlDeVideo(`olha esse aqui ${URL_VIDEO} o que você acha?`)).toBe(URL_VIDEO);
+  });
+
+  it("solta a pontuação que gruda no fim da frase", () => {
+    expect(urlDeVideo(`o que você acha de ${URL_VIDEO}.`)).toBe(URL_VIDEO);
+    expect(urlDeVideo(`(${URL_VIDEO})`)).toBe(URL_VIDEO);
+  });
+
+  it("mensagem sem link nenhum não vira debate de vídeo", () => {
+    expect(urlDeVideo("hook de pergunta funciona melhor que hook de número?")).toBeNull();
+  });
+
+  it("link que não é de vídeo é ignorado", () => {
+    expect(urlDeVideo("achei em https://exemplo.com/artigo isso aqui")).toBeNull();
+  });
+
+  // Link de PERFIL passa no regex de domínio e não é vídeo nenhum: mandá-lo ao transcritor
+  // produziria a recusa do §11 com o motivo errado.
+  it("link de perfil não é vídeo", () => {
+    expect(urlDeVideo("segue https://www.instagram.com/algumperfil/ aí")).toBeNull();
+    expect(urlDeVideo("canal: https://www.youtube.com/@algumcanal")).toBeNull();
+  });
+
+  it("com dois links, o primeiro de vídeo vence", () => {
+    const outro = "https://youtu.be/dQw4w9WgXcQ";
+    expect(urlDeVideo(`compara https://exemplo.com/x com ${outro} e ${URL_VIDEO}`)).toBe(outro);
   });
 });
