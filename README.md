@@ -26,7 +26,7 @@ Cada cliente tem: **Preferências** (restrições de voz), **Dados** ao vivo do 
    - `SUPABASE_SERVICE_ROLE_KEY` e `VIRAL_DATA_SERVICE_ROLE_KEY` — a mesma **secret** (`sb_secret_...`) do projeto **Viral Data** → Settings → API Keys
    - `VM_ALLOWED_EMAILS` — emails autorizados a logar, separados por vírgula (quem não estiver na lista não recebe magic link nem acessa nada)
    - `ANTHROPIC_API_KEY`, `GROK_API_KEY` (xAI, agente pesquisador), `OPENAI_API_KEY` (opcional, só para embeddings do few-shot)
-   - `SUPADATA_API_KEY` (opcional, [supadata.ai](https://supadata.ai)) — transcrição automática de links do Instagram Reels e TikTok no anexo de vídeo. YouTube/Shorts funciona sem chave (legendas públicas); sem a chave, Reels/TikTok pedem para colar a transcrição manualmente.
+   - `SUPADATA_API_KEY` (opcional, [supadata.ai](https://supadata.ai)) — transcrição automática de links do Instagram Reels e TikTok no anexo de vídeo. YouTube/Shorts funciona sem chave (legendas públicas); Reels caem no ScrapeCreators (1 crédito) quando o Supadata falha ou a chave não existe; TikTok sem a chave pede para colar a transcrição manualmente.
 2. Popular os insights do corpus (repete toda segunda via Vercel Cron em produção):
    ```
    npm run etl

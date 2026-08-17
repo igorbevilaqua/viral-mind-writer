@@ -98,6 +98,27 @@ async function transcribeViaSupadata(url: string, platform: string): Promise<Tra
   return { title: undefined, text: data.content.trim() };
 }
 
+// Plano B do Supadata para Instagram, com a chave que a caça de modelagens JÁ usa: 1 crédito
+// por reel. Existe porque o Supadata é o elo mais fraco do fluxo (plano gratuito, e devolvendo
+// HTML de gateway em produção) — e sem plano B a modelagem morre pedindo transcrição manual.
+async function transcribeViaScrapeCreators(url: string): Promise<Transcript> {
+  const key = process.env.SCRAPECREATORS_API_KEY;
+  if (!key) throw new Error("SCRAPECREATORS_API_KEY não configurada");
+  const res = await fetch(
+    `https://api.scrapecreators.com/v2/instagram/media/transcript?url=${encodeURIComponent(url)}`,
+    { headers: { "x-api-key": key } }
+  );
+  const data = await jsonOuErro(res, "ScrapeCreators");
+  if (!res.ok) throw new Error(data.message ?? data.error ?? `ScrapeCreators respondeu ${res.status}`);
+  // crédito acabando some em silêncio: sem este log a transcrição volta a falhar sem motivo visível
+  if (typeof data.credits_remaining === "number" && data.credits_remaining < 100)
+    console.warn(`[transcribe] créditos ScrapeCreators baixos: ${data.credits_remaining}`);
+  const text = data.transcripts?.[0]?.text;
+  if (typeof text !== "string" || !text.trim())
+    throw new Error("ScrapeCreators não retornou transcrição; cole a transcrição manualmente");
+  return { title: undefined, text: text.trim() };
+}
+
 // Vídeo já no nosso corpus → o roteiro do banco É a transcrição: instantâneo, grátis,
 // e poupa a cota da Supadata (plano gratuito). Falha aqui só cai pra transcrição externa.
 async function fromCorpus(url: string): Promise<Transcript | null> {
@@ -133,7 +154,16 @@ export async function fetchTranscript(url: string): Promise<Transcript> {
         console.error("innertube falhou, tentando Supadata", url, e);
         result = await transcribeViaSupadata(url, "YouTube");
       }
-    } else if (/instagram\.com\/(reels?|p|tv)\//.test(url)) result = await transcribeViaSupadata(url, "Instagram");
+    } else if (/instagram\.com\/(reels?|p|tv)\//.test(url)) {
+      // mesma escada do YouTube: fonte grátis primeiro, crédito pago só quando ela falha
+      try {
+        result = await transcribeViaSupadata(url, "Instagram");
+      } catch (e) {
+        if (!process.env.SCRAPECREATORS_API_KEY) throw e;
+        console.error("Supadata falhou, tentando ScrapeCreators", url, e);
+        result = await transcribeViaScrapeCreators(url);
+      }
+    }
     else if (/tiktok\.com\//.test(url)) result = await transcribeViaSupadata(url, "TikTok");
     else throw new Error("link não reconhecido; suporto YouTube/Shorts, Instagram Reels e TikTok");
   }
