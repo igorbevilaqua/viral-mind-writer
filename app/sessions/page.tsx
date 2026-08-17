@@ -3,6 +3,7 @@ import { appDb } from "@/lib/db";
 import { writerScope } from "@/lib/hub";
 import { fmtNum, fmtWhen } from "@/lib/format";
 import { isStaleGeneration } from "@/lib/generation";
+import { clientesDoFiltro, entraNoPainel, mesclarPainel } from "@/lib/painel-sessoes";
 
 export const dynamic = "force-dynamic";
 
@@ -94,10 +95,16 @@ function StatusIcon({ status }: { status: string }) {
   );
 }
 
-function chipHref(cliente: string | undefined, status: string | undefined): string {
+const TIPO_FILTERS: { key: string; label: string }[] = [
+  { key: "roteiros", label: "Roteiros" },
+  { key: "kasparov", label: "Kasparov" },
+];
+
+function chipHref(clientes: string[], status?: string, tipo?: string): string {
   const sp = new URLSearchParams();
-  if (cliente) sp.set("cliente", cliente);
+  for (const c of clientes) sp.append("cliente", c);
   if (status) sp.set("status", status);
+  if (tipo) sp.set("tipo", tipo);
   const qs = sp.toString();
   return qs ? `/sessions?${qs}` : "/sessions";
 }
@@ -117,13 +124,74 @@ function Chip({ href, active, children }: { href: string; active: boolean; child
   );
 }
 
+// Debate do Kasparov na mesma lista do roteiro, com a mesma anatomia de linha (rótulo à
+// esquerda, título, cliente, data) para a lista continuar sendo varrida de uma vez. O link vai
+// para /kasparov/<id>, que é a mesma URL que a lição de debate já grava como procedência.
+function LinhaDeDebate({
+  id,
+  assunto,
+  cliente,
+  turnos,
+  quando,
+}: {
+  id: string;
+  assunto: string | null;
+  cliente: string | null;
+  turnos: number;
+  quando: string;
+}) {
+  return (
+    <Link
+      href={`/kasparov/${id}`}
+      className="flex items-center gap-3 sm:gap-4 rounded-[14px] border border-white/[.08] bg-white/[.02] px-4 sm:px-5 py-3.5 hover:border-gold/40 transition-colors"
+    >
+      <span className="inline-flex items-center gap-1.5 sm:w-[110px] shrink-0 text-xs text-violet-300/85">
+        <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+          <path
+            d="M2.5 4.5A2 2 0 0 1 4.5 2.5h7a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H7l-3.5 3v-3h-1v-6Z"
+            stroke="currentColor"
+            strokeWidth="1.2"
+            strokeLinejoin="round"
+          />
+        </svg>
+        <span className="hidden sm:inline">Kasparov</span>
+      </span>
+      <span className="flex-1 min-w-0">
+        <span className="block truncate text-[13.5px] text-[#ededf0]/85">
+          {assunto?.trim() || <span className="text-white/40 italic">Debate sem assunto registrado</span>}
+        </span>
+        <span className="sm:hidden flex items-center gap-2 mt-1 text-[11px] text-white/35">
+          <span className="text-violet-300/85">Kasparov</span>
+          {cliente && <span className="truncate text-indigo-300/80">· {cliente}</span>}
+          <span className="ml-auto shrink-0 font-mono">{fmtWhen(quando)}</span>
+        </span>
+      </span>
+      <span className="shrink-0 rounded-full border border-white/15 px-2.5 py-[3px] font-mono text-[11px] text-white/45">
+        {turnos} msg
+      </span>
+      {cliente && (
+        <span className="hidden sm:inline-block shrink-0 rounded-full border border-indigo-500/35 px-2.5 py-[3px] text-[11.5px] text-indigo-300">
+          {cliente}
+        </span>
+      )}
+      <span className="hidden sm:block w-[88px] shrink-0 text-right font-mono text-[11.5px] text-white/35">
+        {fmtWhen(quando)}
+      </span>
+    </Link>
+  );
+}
+
 export default async function SessionsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ cliente?: string; status?: string }>;
+  searchParams: Promise<{ cliente?: string | string[]; status?: string; tipo?: string }>;
 }) {
-  const { cliente, status: statusParam } = await searchParams;
+  const { cliente, status: statusParam, tipo: tipoParam } = await searchParams;
+  const clientes = clientesDoFiltro(cliente);
   const { isAdmin, userId } = await writerScope();
+
+  const querSessoes = entraNoPainel("roteiro", tipoParam, statusParam);
+  const querThreads = entraNoPainel("kasparov", tipoParam, statusParam);
 
   let sessionsQuery = appDb
     .from("vm_sessions")
@@ -132,10 +200,24 @@ export default async function SessionsPage({
     .limit(100);
   // Usuário comum só vê as próprias sessões; adm vê todas. (middleware garante userId != null)
   if (!isAdmin) sessionsQuery = sessionsQuery.eq("user_id", userId ?? "");
-  if (cliente) sessionsQuery = sessionsQuery.eq("client_id", cliente);
+  if (clientes.length) sessionsQuery = sessionsQuery.in("client_id", clientes);
 
-  const [{ data: sessions }, { data: clients }] = await Promise.all([
-    sessionsQuery,
+  // Debate do Kasparov. `vm_kasparov_messages(count)` é o que separa conversa de thread órfã:
+  // a thread nasce na primeira mensagem e sobrevive ao turno que falhou, então sem a contagem a
+  // lista encheria de conversa vazia. Ordena por updated_at: é a data do último turno.
+  // Sem embed de `clientes` porque vm_kasparov_threads.client_id não tem FK (migration 0030) —
+  // o nome sai do mapa de clientes que a página já carrega.
+  let threadsQuery = appDb
+    .from("vm_kasparov_threads")
+    .select("id, assunto, client_id, created_at, updated_at, vm_kasparov_messages(count)")
+    .order("updated_at", { ascending: false })
+    .limit(100);
+  if (!isAdmin) threadsQuery = threadsQuery.eq("user_id", userId ?? "");
+  if (clientes.length) threadsQuery = threadsQuery.in("client_id", clientes);
+
+  const [{ data: sessions }, { data: threads }, { data: clients }] = await Promise.all([
+    querSessoes ? sessionsQuery : { data: [] as never[] },
+    querThreads ? threadsQuery : { data: [] as never[] },
     appDb.from("clientes").select("id, nome").eq("ativo", true).order("nome"),
   ]);
 
@@ -185,7 +267,9 @@ export default async function SessionsPage({
     publishedViews.set(s.session_id, v != null ? (prev ?? 0) + v : (prev ?? null));
   }
 
-  const rows = (sessions ?? [])
+  const nomePorCliente = new Map((clients ?? []).map((c) => [c.id, c.nome]));
+
+  const linhasDeRoteiro = (sessions ?? [])
     .map((s) => ({
       ...s,
       effStatus: isStaleGeneration(s.status, s.generation_started_at) ? "stalled" : s.status,
@@ -200,9 +284,26 @@ export default async function SessionsPage({
       if (statusParam === "encerrada") return s.effStatus === "closed";
       if (statusParam === "interrompida") return s.effStatus === "stalled";
       return true;
-    });
+    })
+    .map((s) => ({ tipo: "roteiro" as const, quando: s.created_at as string, s }));
 
-  const hasFilter = Boolean(cliente || statusParam);
+  const linhasDeDebate = (threads ?? [])
+    .map((t) => ({
+      t,
+      turnos: Number((t.vm_kasparov_messages as { count: number }[] | null)?.[0]?.count ?? 0),
+    }))
+    .filter((l) => l.turnos > 0)
+    .map((l) => ({
+      tipo: "kasparov" as const,
+      quando: (l.t.updated_at ?? l.t.created_at) as string,
+      turnos: l.turnos,
+      t: l.t,
+    }));
+
+  // a união explícita: sem ela o genérico se fixa no primeiro array e o debate não entra
+  type Linha = (typeof linhasDeRoteiro)[number] | (typeof linhasDeDebate)[number];
+  const linhas = mesclarPainel<Linha>([linhasDeRoteiro, linhasDeDebate]);
+  const hasFilter = Boolean(clientes.length || statusParam || tipoParam);
 
   return (
     <div className="max-w-[860px] mx-auto w-full px-4 sm:px-6 py-10">
@@ -220,31 +321,105 @@ export default async function SessionsPage({
         </Link>
       </div>
 
-      <div className="flex items-center gap-1.5 flex-wrap mt-6">
-        <Chip href={chipHref(cliente, undefined)} active={!statusParam}>
-          Todas
-        </Chip>
-        {STATUS_FILTERS.map((f) => (
-          <Chip key={f.key} href={chipHref(cliente, f.key)} active={statusParam === f.key}>
-            {f.label}
+      {/* Status é conceito de roteiro: com tipo=kasparov os chips saem da tela em vez de
+          ficarem ali sugerindo uma combinação que não filtra nada (lib/painel-sessoes.ts). */}
+      {tipoParam !== "kasparov" && (
+        <div className="flex items-center gap-1.5 flex-wrap mt-6">
+          <Chip href={chipHref(clientes, undefined, tipoParam)} active={!statusParam}>
+            Todas
           </Chip>
-        ))}
-      </div>
-      {(clients?.length ?? 0) > 0 && (
-        <div className="flex items-center gap-1.5 flex-wrap mt-2">
-          <Chip href={chipHref(undefined, statusParam)} active={!cliente}>
-            Todos os clientes
-          </Chip>
-          {(clients ?? []).map((c) => (
-            <Chip key={c.id} href={chipHref(c.id, statusParam)} active={cliente === c.id}>
-              {c.nome}
+          {STATUS_FILTERS.map((f) => (
+            <Chip key={f.key} href={chipHref(clientes, f.key, tipoParam)} active={statusParam === f.key}>
+              {f.label}
             </Chip>
           ))}
         </div>
       )}
 
+      <div className={`flex items-center gap-1.5 flex-wrap ${tipoParam === "kasparov" ? "mt-6" : "mt-2"}`}>
+        <Chip href={chipHref(clientes, statusParam, undefined)} active={!tipoParam}>
+          Tudo
+        </Chip>
+        {TIPO_FILTERS.map((f) => (
+          <Chip
+            key={f.key}
+            // trocar para kasparov leva o status embora: debate não tem status para filtrar
+            href={chipHref(clientes, f.key === "kasparov" ? undefined : statusParam, f.key)}
+            active={tipoParam === f.key}
+          >
+            {f.label}
+          </Chip>
+        ))}
+
+        {/* Janela de clientes: marca e desmarca vários, e nome de cliente só aparece para quem
+            abre. `details` + form GET nativos — a URL é o estado do filtro, sem client component
+            e sem JS. ponytail: um clique em "Aplicar" no lugar de auto-submit, que fecharia a
+            janela a cada marcação e obrigaria a reabrir para escolher o segundo cliente. */}
+        {(clients?.length ?? 0) > 0 && (
+          <details className="relative ml-auto">
+            <summary
+              className={`cursor-pointer list-none [&::-webkit-details-marker]:hidden rounded-full border px-3 py-[5px] text-[11.5px] transition-colors ${
+                clientes.length
+                  ? "border-gold/60 bg-gold/[.08] text-gold"
+                  : "border-white/15 text-white/55 hover:border-white/35 hover:text-white/80"
+              }`}
+            >
+              {clientes.length ? `${clientes.length} cliente${clientes.length > 1 ? "s" : ""}` : "Clientes"} ▾
+            </summary>
+            <form
+              method="GET"
+              action="/sessions"
+              className="absolute right-0 z-30 mt-2 w-[250px] rounded-[12px] border border-white/15 bg-[#0b0b0f] p-3 shadow-2xl"
+            >
+              {statusParam && <input type="hidden" name="status" value={statusParam} />}
+              {tipoParam && <input type="hidden" name="tipo" value={tipoParam} />}
+              <div className="max-h-[280px] overflow-y-auto pr-1">
+                {(clients ?? []).map((c) => (
+                  <label
+                    key={c.id}
+                    className="flex items-center gap-2 py-[3px] text-[12.5px] text-white/70 hover:text-white cursor-pointer"
+                  >
+                    <input
+                      type="checkbox"
+                      name="cliente"
+                      value={c.id}
+                      defaultChecked={clientes.includes(c.id)}
+                      className="accent-gold"
+                    />
+                    <span className="truncate">{c.nome}</span>
+                  </label>
+                ))}
+              </div>
+              <div className="flex items-center gap-3 pt-2.5 mt-1.5 border-t border-white/[.08]">
+                <button type="submit" className="btn-gold rounded-[8px] px-3 py-1.5 text-[12px] font-semibold">
+                  Aplicar
+                </button>
+                <Link
+                  href={chipHref([], statusParam, tipoParam)}
+                  className="text-[12px] text-white/45 underline underline-offset-4 hover:text-white/75"
+                >
+                  limpar
+                </Link>
+              </div>
+            </form>
+          </details>
+        )}
+      </div>
+
       <div className="flex flex-col gap-2 mt-5">
-        {rows.map((s) => {
+        {linhas.map((linha) => {
+          if (linha.tipo === "kasparov")
+            return (
+              <LinhaDeDebate
+                key={linha.t.id}
+                id={linha.t.id}
+                assunto={linha.t.assunto}
+                cliente={linha.t.client_id ? (nomePorCliente.get(linha.t.client_id) ?? null) : null}
+                turnos={linha.turnos}
+                quando={linha.quando}
+              />
+            );
+          const s = linha.s;
           const client = Array.isArray(s.clientes) ? s.clientes[0] : s.clientes;
           const st = STATUS[s.effStatus] ?? STATUS.draft;
           return (
@@ -294,11 +469,11 @@ export default async function SessionsPage({
             </Link>
           );
         })}
-        {!rows.length && (
+        {!linhas.length && (
           <div className="rounded-[14px] border border-white/[.08] bg-white/[.02] px-5 py-8 text-center">
             <p className="text-white/45 text-sm">
               {hasFilter
-                ? "Nenhuma sessão com esses filtros."
+                ? "Nada com esses filtros."
                 : "Nenhuma sessão ainda. Comece com um prompt: a sala de agentes pesquisa o corpus e escreve o roteiro."}
             </p>
             <div className="mt-4 flex items-center justify-center gap-3">
