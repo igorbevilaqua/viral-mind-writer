@@ -1,5 +1,6 @@
 import { bobAssist, type BobModo } from "@/lib/pipeline/bob";
-import { guardEmit, UUID_RE } from "@/lib/generation";
+import { UUID_RE } from "@/lib/generation";
+import { sseResponse } from "@/lib/sse";
 import { barrarNaRota } from "@/lib/autorizacao";
 
 export const maxDuration = 120;
@@ -33,30 +34,12 @@ export async function POST(req: Request) {
     evitar: b?.evitar ? String(b.evitar) : undefined,
   };
 
-  const encoder = new TextEncoder();
-  const stream = new ReadableStream({
-    async start(controller) {
-      const emit = guardEmit((e: unknown) => controller.enqueue(encoder.encode(`data: ${JSON.stringify(e)}\n\n`)));
-      try {
-        const r = await bobAssist(sessionId, input, (p) => emit({ type: "phase", ...p }));
-        emit({ type: "done", ...r });
-      } catch (e) {
-        emit({ type: "error", message: e instanceof Error ? e.message : String(e) });
-      } finally {
-        try {
-          controller.close();
-        } catch {
-          /* cliente já desconectou */
-        }
-      }
-    },
-  });
-
-  return new Response(stream, {
-    headers: {
-      "Content-Type": "text/event-stream",
-      "Cache-Control": "no-cache, no-transform",
-      Connection: "keep-alive",
-    },
+  return sseResponse(async (emit) => {
+    try {
+      const r = await bobAssist(sessionId, input, (p) => emit({ type: "phase", ...p }));
+      emit({ type: "done", ...r });
+    } catch (e) {
+      emit({ type: "error", message: e instanceof Error ? e.message : String(e) });
+    }
   });
 }

@@ -1,6 +1,8 @@
 import { runPipeline } from "@/lib/pipeline";
 import { UUID_RE } from "@/lib/generation";
+import { sseResponse } from "@/lib/sse";
 import { barrarNaRota } from "@/lib/autorizacao";
+import type { PipelineEvent } from "@/lib/pipeline/types";
 
 export const maxDuration = 300; // gerações levam 60-180s; requer Vercel Pro
 export const dynamic = "force-dynamic";
@@ -16,39 +18,12 @@ export async function POST(req: Request) {
   const barrado = await barrarNaRota({ sessao: sessionId });
   if (barrado) return barrado;
 
-  const encoder = new TextEncoder();
-  const stream = new ReadableStream({
-    async start(controller) {
-      const emit = (e: unknown) => controller.enqueue(encoder.encode(`data: ${JSON.stringify(e)}\n\n`));
-      // heartbeat: fases silenciosas (Grok fica 30-90s mudo) estouram o idle-timeout do proxy Hostinger
-      const ping = setInterval(() => {
-        try {
-          controller.enqueue(encoder.encode(": ping\n\n"));
-        } catch {
-          /* stream fechado — o guard do runPipeline cuida dos emits */
-        }
-      }, 15_000);
-      try {
-        await runPipeline(sessionId, emit, {
-          narrativeIndex: typeof narrativeIndex === "number" ? narrativeIndex : undefined,
-          feedback: typeof feedback === "string" && feedback.trim() ? feedback.trim() : undefined,
-        });
-      } finally {
-        clearInterval(ping);
-        try {
-          controller.close();
-        } catch {
-          /* cliente já desconectou */
-        }
-      }
-    },
-  });
-
-  return new Response(stream, {
-    headers: {
-      "Content-Type": "text/event-stream",
-      "Cache-Control": "no-cache, no-transform",
-      Connection: "keep-alive",
-    },
-  });
+  // O heartbeat que nasceu aqui (fases silenciosas estouram o idle-timeout do proxy Hostinger)
+  // mora agora em lib/sse.ts e vale para todas as rotas de stream.
+  return sseResponse<PipelineEvent>((emit) =>
+    runPipeline(sessionId, emit, {
+      narrativeIndex: typeof narrativeIndex === "number" ? narrativeIndex : undefined,
+      feedback: typeof feedback === "string" && feedback.trim() ? feedback.trim() : undefined,
+    })
+  );
 }

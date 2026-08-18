@@ -1,6 +1,7 @@
 import { getNextCalibrationPair, setLearningActive, submitCalibrationVote } from "@/lib/actions";
 import { appDb } from "@/lib/db";
-import { guardEmit, UUID_RE } from "@/lib/generation";
+import { UUID_RE } from "@/lib/generation";
+import { sseResponse } from "@/lib/sse";
 import { currentUserId, writerScope } from "@/lib/hub";
 import { barrarNaRota } from "@/lib/autorizacao";
 import { comparacaoFewShot, loadContextAvulso } from "@/lib/pipeline/context";
@@ -137,90 +138,72 @@ export async function POST(req: Request) {
     .maybeSingle();
   const ordem = (ultima?.ordem ?? -1) + 1;
 
-  const encoder = new TextEncoder();
-  const stream = new ReadableStream({
-    async start(controller) {
-      const emit = guardEmit((e: unknown) => controller.enqueue(encoder.encode(`data: ${JSON.stringify(e)}\n\n`)));
-      const gravar = async (papel: "usuario" | "kasparov", conteudo: string, n: number) => {
-        const { error } = await appDb
-          .from("vm_kasparov_messages")
-          .insert({ thread_id: thread.id, papel, conteudo, ordem: n });
-        if (error) throw new Error(`não consegui gravar a mensagem: ${error.message}`);
-      };
+  return sseResponse(async (emit) => {
+    const gravar = async (papel: "usuario" | "kasparov", conteudo: string, n: number) => {
+      const { error } = await appDb
+        .from("vm_kasparov_messages")
+        .insert({ thread_id: thread.id, papel, conteudo, ordem: n });
+      if (error) throw new Error(`não consegui gravar a mensagem: ${error.message}`);
+    };
 
-      try {
-        // Vai antes de tudo: a tela manda este id no turno seguinte, e a procedência da
-        // lição sai dele. Thread nova sem este evento gravaria a próxima mensagem em outra.
-        emit({ type: "thread", threadId: thread.id, origem: origemDoDebate(thread.id) });
-        emit({ type: "phase", phase: "pensando" });
-        await gravar("usuario", mensagem, ordem);
+    try {
+      // Vai antes de tudo: a tela manda este id no turno seguinte, e a procedência da
+      // lição sai dele. Thread nova sem este evento gravaria a próxima mensagem em outra.
+      emit({ type: "thread", threadId: thread.id, origem: origemDoDebate(thread.id) });
+      emit({ type: "phase", phase: "pensando" });
+      await gravar("usuario", mensagem, ordem);
 
-        const ctx = await loadContextAvulso(clientId);
-        const estado = { roteiroAberto: (script?.roteiro as string | null) ?? null, assunto: thread.assunto };
+      const ctx = await loadContextAvulso(clientId);
+      const estado = { roteiroAberto: (script?.roteiro as string | null) ?? null, assunto: thread.assunto };
 
-        // §7 — link na frase vira bloco de vídeo composto ANTES da mensagem do usuário.
-        let turno = mensagem;
-        const url = urlDeVideo(mensagem);
-        if (url) {
-          emit({ type: "phase", phase: "vendo-video", url });
-          const v = await blocoDeVideo(url, { log: ctx.usageLog });
-          if (!v.ok) {
-            // §11: nunca opinar sobre vídeo que não leu. A recusa é a resposta — o turno
-            // não roda, e o que vai à tela é o motivo, com o link.
-            await gravar("kasparov", v.erro, ordem + 1);
-            await appDb
-              .from("vm_kasparov_threads")
-              .update({ updated_at: new Date().toISOString() })
-              .eq("id", thread.id);
-            emit({ type: "done", texto: v.erro, assunto: estado.assunto, pendencia });
-            return;
-          }
-          turno = `${v.bloco}\n\n${mensagem}`;
+      // §7 — link na frase vira bloco de vídeo composto ANTES da mensagem do usuário.
+      let turno = mensagem;
+      const url = urlDeVideo(mensagem);
+      if (url) {
+        emit({ type: "phase", phase: "vendo-video", url });
+        const v = await blocoDeVideo(url, { log: ctx.usageLog });
+        if (!v.ok) {
+          // §11: nunca opinar sobre vídeo que não leu. A recusa é a resposta — o turno
+          // não roda, e o que vai à tela é o motivo, com o link.
+          await gravar("kasparov", v.erro, ordem + 1);
+          await appDb
+            .from("vm_kasparov_threads")
+            .update({ updated_at: new Date().toISOString() })
+            .eq("id", thread.id);
+          emit({ type: "done", texto: v.erro, assunto: estado.assunto, pendencia });
+          return;
         }
-
-        emit({ type: "phase", phase: "escrevendo" });
-        const { texto, assunto } = await turnoKasparov({
-          ctx,
-          estado,
-          mensagem: turno,
-          onToken: (t) => emit({ type: "token", t }),
-        });
-
-        await gravar("kasparov", texto, ordem + 1);
-        // O assunto é a única linha da conversa que atravessa turnos (§4).
-        await appDb
-          .from("vm_kasparov_threads")
-          .update({ assunto, updated_at: new Date().toISOString() })
-          .eq("id", thread.id);
-
-        // §5 — proposta, nunca gravação: quem grava é a confirmação da peça 1. `null` é o
-        // desfecho padrão, e destilação que falha não derruba o turno que já respondeu.
-        emit({ type: "phase", phase: "destilando" });
-        const proposta = await proporDestilacao({ ctx, estado: { ...estado, assunto }, mensagem, resposta: texto }).catch(
-          (e) => {
-            console.error("kasparov: destilação falhou (turno segue sem proposta)", e);
-            return null;
-          }
-        );
-
-        emit({ type: "done", texto, assunto, proposta, pendencia });
-      } catch (e) {
-        emit({ type: "error", message: e instanceof Error ? e.message : String(e) });
-      } finally {
-        try {
-          controller.close();
-        } catch {
-          /* cliente já desconectou */
-        }
+        turno = `${v.bloco}\n\n${mensagem}`;
       }
-    },
-  });
 
-  return new Response(stream, {
-    headers: {
-      "Content-Type": "text/event-stream",
-      "Cache-Control": "no-cache, no-transform",
-      Connection: "keep-alive",
-    },
+      emit({ type: "phase", phase: "escrevendo" });
+      const { texto, assunto } = await turnoKasparov({
+        ctx,
+        estado,
+        mensagem: turno,
+        onToken: (t) => emit({ type: "token", t }),
+      });
+
+      await gravar("kasparov", texto, ordem + 1);
+      // O assunto é a única linha da conversa que atravessa turnos (§4).
+      await appDb
+        .from("vm_kasparov_threads")
+        .update({ assunto, updated_at: new Date().toISOString() })
+        .eq("id", thread.id);
+
+      // §5 — proposta, nunca gravação: quem grava é a confirmação da peça 1. `null` é o
+      // desfecho padrão, e destilação que falha não derruba o turno que já respondeu.
+      emit({ type: "phase", phase: "destilando" });
+      const proposta = await proporDestilacao({ ctx, estado: { ...estado, assunto }, mensagem, resposta: texto }).catch(
+        (e) => {
+          console.error("kasparov: destilação falhou (turno segue sem proposta)", e);
+          return null;
+        }
+      );
+
+      emit({ type: "done", texto, assunto, proposta, pendencia });
+    } catch (e) {
+      emit({ type: "error", message: e instanceof Error ? e.message : String(e) });
+    }
   });
 }

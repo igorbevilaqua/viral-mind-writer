@@ -1,5 +1,6 @@
 import { verificarScriptSalvo } from "@/lib/pipeline";
-import { guardEmit, UUID_RE } from "@/lib/generation";
+import { UUID_RE } from "@/lib/generation";
+import { sseResponse } from "@/lib/sse";
 import { barrarNaRota } from "@/lib/autorizacao";
 
 // 120 como o Bob, e é o mesmo motivo de as buscas serem paralelas (verificar.ts): N buscas
@@ -25,33 +26,15 @@ export async function POST(req: Request) {
   const barrado = await barrarNaRota({ script: scriptId });
   if (barrado) return barrado;
 
-  const encoder = new TextEncoder();
-  const stream = new ReadableStream({
-    async start(controller) {
-      const emit = guardEmit((e: unknown) => controller.enqueue(encoder.encode(`data: ${JSON.stringify(e)}\n\n`)));
-      try {
-        // O progresso É o heartbeat desta rota: N buscas em silêncio estouram o idle-timeout do
-        // proxy da Hostinger, que é por que o /api/generate manda `: ping` a cada 15s.
-        const { registro } = await verificarScriptSalvo(scriptId, regime, (p) => emit({ type: "phase", ...p }));
-        emit({ type: "done", registro });
-      } catch (e) {
-        // Nada foi gravado (§11): a tela continua dizendo "não verificado", nunca "0 problemas".
-        emit({ type: "error", message: e instanceof Error ? e.message : String(e) });
-      } finally {
-        try {
-          controller.close();
-        } catch {
-          /* cliente já desconectou */
-        }
-      }
-    },
-  });
-
-  return new Response(stream, {
-    headers: {
-      "Content-Type": "text/event-stream",
-      "Cache-Control": "no-cache, no-transform",
-      Connection: "keep-alive",
-    },
+  return sseResponse(async (emit) => {
+    try {
+      // O progresso desta rota é frequente, mas o `: ping` do sseResponse é a garantia: uma busca
+      // longa entre dois progressos ainda estouraria o idle-timeout do proxy da Hostinger.
+      const { registro } = await verificarScriptSalvo(scriptId, regime, (p) => emit({ type: "phase", ...p }));
+      emit({ type: "done", registro });
+    } catch (e) {
+      // Nada foi gravado (§11): a tela continua dizendo "não verificado", nunca "0 problemas".
+      emit({ type: "error", message: e instanceof Error ? e.message : String(e) });
+    }
   });
 }

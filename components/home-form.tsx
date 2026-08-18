@@ -186,6 +186,10 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ clientId }),
       });
+      // Mesmo teste do /api/generate: 400/403 respondem com corpo de TEXTO, e sem isto o loop de
+      // SSE não acha nenhum `data:` e a recusa some em silêncio (o botão volta ao normal, sem
+      // sugestão e sem motivo).
+      if (!res.ok) throw new Error((await res.text().catch(() => "")) || `falha ao sugerir temas (${res.status})`);
       if (!res.body) throw new Error("sem stream");
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
@@ -205,7 +209,14 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
         }
       }
     } catch (e) {
-      setSuggestError(e instanceof Error ? e.message : String(e));
+      // "Failed to fetch"/"NetworkError" sozinho não diz nada a quem está na tela: a conexão caiu
+      // no meio de um trabalho que pode ter continuado no servidor. Diz o que fazer.
+      const msg = e instanceof Error ? e.message : String(e);
+      setSuggestError(
+        /fetch|network|load failed/i.test(msg)
+          ? `${msg} — a conexão caiu durante a sugestão. Tente de novo; se repetir, avise o time.`
+          : msg
+      );
     } finally {
       setSuggestPhase(null);
     }
