@@ -14,6 +14,7 @@ import {
   type TraceEdicao,
 } from "./learning-loop";
 import { registrarAtividade, currentUserId } from "./hub";
+import { exigirAcesso, ErroDeAcesso } from "./autorizacao";
 import { createClient } from "./supabase/server";
 import { runProbeTopup } from "./calibration-probe";
 import { classificarEnsinamento, DIRECOES, type Casa, type Ensinamento } from "./pipeline/classify-teaching";
@@ -88,6 +89,8 @@ export async function savePreferences(clientId: string, form: {
   vocabulario_usar: string;
   notas_entrevista: string;
 }) {
+  // Regra 3: preferência de cliente é restrição inviolável no prompt dele — adm edita, todos leem.
+  await exigirAcesso({ adm: "editar as preferências do cliente" });
   const toArray = (s: string) => s.split("\n").map((x) => x.trim()).filter(Boolean);
   const { error } = await appDb.from("vm_client_preferences").upsert({
     client_id: clientId,
@@ -135,6 +138,10 @@ export async function finalizeSession(
   scriptId: string,
   form: { rating: number | null; notes: string; edited_version: string }
 ) {
+  // Os DOIS ids vêm do cliente e cada um manda numa escrita diferente (o roteiro recebe o
+  // feedback, a sessão é encerrada). Checar só um deixaria a outra escrita aberta.
+  await exigirAcesso({ sessao: sessionId });
+  await exigirAcesso({ script: scriptId });
   if (form.rating || form.notes || form.edited_version) {
     const { error } = await appDb.from("vm_script_feedback").insert({
       script_id: scriptId,
@@ -230,6 +237,8 @@ export async function saveLesson(input: {
   contextNote: string | null;
   learnings: LessonLearningInput[];
 }): Promise<string> {
+  // Regra 2: aceita `active` vindo do cliente — lição ativa entra no prompt de todo mundo.
+  await exigirAcesso({ adm: "criar lição já ativa" });
   const { data: lesson, error } = await appDb
     .from("vm_lessons")
     .insert({
@@ -259,6 +268,8 @@ export async function saveLesson(input: {
 }
 
 export async function setLearningActive(id: string, active: boolean) {
+  // Regra 2: lição ativa entra no prompt de todos os clientes.
+  await exigirAcesso({ adm: "ativar ou desativar uma lição" });
   const { error } = await appDb
     .from("vm_lesson_learnings")
     .update({ active, updated_at: new Date().toISOString() })
@@ -271,6 +282,9 @@ export async function updateLearning(
   id: string,
   patch: { titulo?: string; descricao?: string; dimensao?: LessonLearningInput["dimensao"] }
 ) {
+  // Regra 2: se a lição está ativa, este texto É o que entra no prompt de todos os clientes.
+  // Ativar e reescrever mudam a mesma coisa — quem só pode uma das duas não está protegido.
+  await exigirAcesso({ adm: "editar uma lição" });
   const { error } = await appDb
     .from("vm_lesson_learnings")
     .update({ ...patch, updated_at: new Date().toISOString() })
@@ -283,6 +297,8 @@ export async function addLearning(
   lessonId: string,
   l: { dimensao: LessonLearningInput["dimensao"]; titulo: string; descricao: string }
 ) {
+  // Regra 2: nasce active=true por default de coluna — é lição no ar sem passar por curadoria.
+  await exigirAcesso({ adm: "adicionar um aprendizado à lição" });
   const { error } = await appDb
     .from("vm_lesson_learnings")
     .insert({ ...l, lesson_id: lessonId, origem: "manual" });
@@ -295,6 +311,7 @@ export async function addLearning(
 // de volta. Não usa videos.crm_script_id — aquela coluna é do outro app. ─────
 
 export async function markPublished(scriptId: string, url: string) {
+  await exigirAcesso({ script: scriptId });
   // platformVideoId exige o id do vídeo — link de perfil passaria no regex de domínio
   // e o flywheel nunca casaria com o corpus, silenciosamente.
   if (!platformVideoId(url))
@@ -312,6 +329,8 @@ export async function markPublished(scriptId: string, url: string) {
 // WP-F.3: feedback 1-clique por versão — 👍 grava rating 5, 👎 grava 1, sem encerrar a sessão.
 // Cada clique insere uma linha nova; a UI mostra o rating mais recente por script.
 export async function quickFeedback(scriptId: string, sessionId: string, thumb: "up" | "down") {
+  // `sessionId` aqui só endereça o revalidatePath; quem recebe a escrita é o roteiro.
+  await exigirAcesso({ script: scriptId });
   const { error } = await appDb
     .from("vm_script_feedback")
     .insert({ script_id: scriptId, rating: thumb === "up" ? 5 : 1 });
@@ -328,6 +347,8 @@ export async function updateScript(
   patch: { headline?: string | null; hook?: string | null; roteiro?: string; comando?: string | null; fontes?: string | null },
   origem: "humano" | "correcao_factual" = "humano"
 ) {
+  // A guarda mora aqui e não em cada chamador: `aplicarCorrecao` também desemboca neste update.
+  await exigirAcesso({ script: scriptId });
   const clean = (v: string | null | undefined) => (typeof v === "string" ? dedash(v) : v);
   const update: Record<string, unknown> = {};
   for (const k of ["headline", "hook", "roteiro", "comando", "fontes"] as const) {
@@ -376,6 +397,9 @@ export async function verificarScript(
   regime: "delta" | "completa"
 ): Promise<{ ok: true; registro: RegistroVerificacao } | { ok: false; erro: string }> {
   try {
+    // Dentro do try de propósito: esta action não lança, e "este roteiro é de outra pessoa"
+    // chega na tela pelo mesmo campo `erro` que já existe, em vez de estourar a página.
+    await exigirAcesso({ script: scriptId });
     const { registro, sessionId } = await verificarScriptSalvo(scriptId, regime);
     revalidatePath(`/sessions/${sessionId}`);
     return { ok: true, registro };
@@ -395,6 +419,7 @@ export async function aplicarCorrecao(
   trecho_literal: string,
   correcao: string
 ): Promise<{ aplicada: boolean; motivo?: string }> {
+  await exigirAcesso({ script: scriptId });
   // §11: `updateScript` é patch por campo inteiro, SEM guarda otimista. Reler aqui,
   // imediatamente antes de aplicar, e refazer o split/join sobre o texto NOVO — senão a
   // edição que o usuário fez entre a verificação e o clique seria apagada.
@@ -484,6 +509,7 @@ export async function reportarProblema(
 // gravou a sugestão em artifacts e parou; este action grava a tese confirmada e devolve o
 // controle, e o cliente dispara o run 2, que reusa os artifacts como qualquer regeneração.
 export async function confirmarPremissa(sessionId: string, premissa: string) {
+  await exigirAcesso({ sessao: sessionId });
   const texto = premissa.trim();
   if (!texto) throw new Error("a premissa não pode ficar vazia — nenhum roteiro é gerado sem ela");
   const { error } = await appDb
@@ -504,6 +530,7 @@ export async function confirmarPremissa(sessionId: string, premissa: string) {
 // então limpa as candidatas cacheadas: manter narrativa antiga sob tese nova é o defeito que
 // a Etapa B existe pra impedir.
 export async function updatePremissa(sessionId: string, premissa: string) {
+  await exigirAcesso({ sessao: sessionId });
   const texto = premissa.trim();
   if (!texto) throw new Error("a premissa não pode ficar vazia");
   const { data: s } = await appDb.from("vm_sessions").select("artifacts").eq("id", sessionId).single();
@@ -523,6 +550,7 @@ export async function updatePremissa(sessionId: string, premissa: string) {
 
 // Atribui/corrige o cliente de uma sessão já criada (resgata sessão criada sem cliente).
 export async function updateSessionClient(sessionId: string, clientId: string | null) {
+  await exigirAcesso({ sessao: sessionId });
   const { error } = await appDb.from("vm_sessions").update({ client_id: clientId }).eq("id", sessionId);
   if (error) throw new Error(error.message);
   revalidatePath(`/sessions/${sessionId}`);
@@ -533,6 +561,7 @@ export async function suggestFragment(
   sessionId: string,
   input: { roteiro: string; trecho: string; instrucao: string; evitar?: string }
 ): Promise<string> {
+  await exigirAcesso({ sessao: sessionId });
   if (!input.trecho.trim() || !input.instrucao.trim()) throw new Error("trecho e pedido são obrigatórios");
   return rewriteFragment(sessionId, input);
 }
@@ -541,6 +570,8 @@ export async function suggestFragment(
 // snapshots, que existem em todos os 47 roteiros), causa sai do rastro. Nada é inventado —
 // roteiro sem `proveniencia` responde nao_determinado sem chamar modelo nenhum.
 export async function explicarTrecho(scriptId: string, trecho: string): Promise<Explicacao> {
+  // Leitura, mas de dado interno (pipeline_trace): a regra vale aqui, e não vale em /r/[id].
+  await exigirAcesso({ script: scriptId });
   if (!trecho.trim()) throw new Error("selecione um trecho");
   // A coluna `slop_lint_violations` é int (contagem, 0001_init) — as violações em si vivem em
   // pipeline_trace.violations, e é de lá que a etapa de humanização é explicada.
@@ -557,6 +588,7 @@ export async function explicarTrecho(scriptId: string, trecho: string): Promise<
 
 // Troca o hook do roteiro por uma das variações (a antiga vira variação — dá pra desfazer trocando de volta).
 export async function swapHook(scriptId: string, variantIndex: number) {
+  await exigirAcesso({ script: scriptId });
   const { data: s, error } = await appDb
     .from("vm_generated_scripts")
     .select("session_id, hook, hook_variants")
@@ -647,6 +679,8 @@ export async function requestMoreProbes(): Promise<void> {
 
 // Promove uma versão PROPOSTA de playbook (Fase 4) para ativa. Portão humano no /ensinar.
 export async function promoteHookPlaybook(version: number, slug = "hook") {
+  // Regra 2: playbook ativo é o manual que TODOS os agentes leem.
+  await exigirAcesso({ adm: "ativar uma versão de playbook" });
   await appDb.from("vm_playbooks").update({ active: false }).eq("slug", slug);
   const { error } = await appDb.from("vm_playbooks").update({ active: true }).eq("slug", slug).eq("version", version);
   if (error) throw new Error(error.message);
@@ -655,6 +689,8 @@ export async function promoteHookPlaybook(version: number, slug = "hook") {
 
 // Descarta uma proposta (versão inativa) que o time não quer.
 export async function dismissHookPlaybook(version: number, slug = "hook") {
+  // Regra 2: DELETE irrecuperável de uma proposta que ninguém mais consegue reconstruir.
+  await exigirAcesso({ adm: "descartar uma proposta de playbook" });
   const { error } = await appDb.from("vm_playbooks").delete().eq("slug", slug).eq("version", version).eq("active", false);
   if (error) throw new Error(error.message);
   revalidatePath("/ensinar");
@@ -733,6 +769,14 @@ const PLAYBOOK_POR_DIMENSAO: Record<string, string> = {
   geral: "style_guide",
 };
 
+// Só para a mensagem de recusa dizer o que foi barrado, em vez do nome interno da casa.
+const CASA_LABEL: Record<Casa, string> = {
+  licao: "lição",
+  vocabulario: "vocabulário do cliente",
+  frase_banida: "frase banida",
+  playbook: "proposta de playbook",
+};
+
 // Grava o ensinamento CONFIRMADO pelo humano na casa que o classificador escolheu (§5.1).
 // Os quatro casos existem de verdade: um `case` faltando devolveria `undefined`, a tela diria
 // "gravado" e nada teria sido gravado — a falha silenciosa que a peça 015 existe para matar.
@@ -743,6 +787,20 @@ export async function gravarEnsinamento(
   // frase banida com severity warn (§5.1).
   const casa: Casa = e.casa === "vocabulario" && e.escopo === "global" ? "frase_banida" : e.casa;
   const clientId = e.escopo === "cliente" ? e.clientId : null;
+
+  // Regras 2 e 3: das quatro casas, só `licao` fica aberta — ela nasce active:false, é proposta,
+  // e a curadoria (adm) é o portão. As outras três escrevem direto no que a sala lê: regex de
+  // lint em produção, proposta de playbook e a preferência do cliente.
+  // Devolve `erro` em vez de deixar lançar porque o painel de confirmação precisa sobreviver à
+  // recusa com o texto do usuário na tela (§8) — mesmo contrato dos outros erros daqui.
+  if (casa !== "licao") {
+    try {
+      await exigirAcesso({ adm: `gravar ${CASA_LABEL[casa]}` });
+    } catch (erroAcesso) {
+      if (!(erroAcesso instanceof ErroDeAcesso)) throw erroAcesso;
+      return { ok: false, erro: erroAcesso.message };
+    }
+  }
 
   switch (casa) {
     case "licao": {

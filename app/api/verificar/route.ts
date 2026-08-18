@@ -1,5 +1,6 @@
 import { verificarScriptSalvo } from "@/lib/pipeline";
 import { guardEmit, UUID_RE } from "@/lib/generation";
+import { barrarNaRota } from "@/lib/autorizacao";
 
 // 120 como o Bob, e é o mesmo motivo de as buscas serem paralelas (verificar.ts): N buscas
 // sequenciais não caberiam aqui. Fora da geração, então o teto de 300 do /api/generate não vale.
@@ -19,6 +20,10 @@ export async function POST(req: Request) {
 
   if (typeof scriptId !== "string" || !UUID_RE.test(scriptId))
     return new Response("scriptId (uuid) obrigatório", { status: 400 });
+
+  // Na fronteira, antes do stream: dentro do start() não há cookies() para ler.
+  const barrado = await barrarNaRota({ script: scriptId });
+  if (barrado) return barrado;
 
   const encoder = new TextEncoder();
   const stream = new ReadableStream({

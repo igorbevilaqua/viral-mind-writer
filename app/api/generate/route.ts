@@ -1,5 +1,6 @@
 import { runPipeline } from "@/lib/pipeline";
 import { UUID_RE } from "@/lib/generation";
+import { barrarNaRota } from "@/lib/autorizacao";
 
 export const maxDuration = 300; // gerações levam 60-180s; requer Vercel Pro
 export const dynamic = "force-dynamic";
@@ -9,6 +10,11 @@ export async function POST(req: Request) {
   const { sessionId, narrativeIndex, feedback } = body ?? {};
   if (typeof sessionId !== "string" || !UUID_RE.test(sessionId))
     return new Response("sessionId (uuid) obrigatório", { status: 400 });
+
+  // AQUI, na fronteira: dentro do start() do stream o contexto da request já respondeu e
+  // cookies() estoura (lib/hub.ts:41). O pipeline nunca autoriza — ele já roda autorizado.
+  const barrado = await barrarNaRota({ sessao: sessionId });
+  if (barrado) return barrado;
 
   const encoder = new TextEncoder();
   const stream = new ReadableStream({

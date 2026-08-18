@@ -15,6 +15,8 @@ import {
   updatePremissa,
 } from "@/lib/actions";
 import { useTeachDialog } from "@/components/teach-dialog";
+import { AvisoDeEdicao, Presentes, useOnline, usePresencaSessao } from "@/components/presenca";
+import type { Pessoa } from "@/lib/presenca";
 import { useVerificacaoDialog } from "@/components/verificacao-dialog";
 import type { RegistroVerificacao } from "@/lib/pipeline/verificar";
 import type { BobModo } from "@/lib/pipeline/bob";
@@ -22,6 +24,7 @@ import { spliceRoteiro, mergeFontes } from "@/lib/bob-edit";
 import type { NarrativaCandidata, RankingItem, SessionArtifacts } from "@/lib/pipeline/types";
 import type { LintViolation } from "@/lib/pipeline/slop-lint";
 import { fmtNum, fmtRatio, ratioTone } from "@/lib/format";
+import { PHASE_SHORT, podeGerar } from "@/lib/generation";
 import { BUILD_TAG } from "@/lib/version";
 
 interface Script {
@@ -66,19 +69,6 @@ const TODAS_AS_FASES = ["premissa", "pesquisa", "modelagem", "narrativas", "rote
 // Replicar não passa por storytelling nem pelo agente Dados: a narrativa é a do original, montada
 // em código. Anunciar "Narrativas" numa trilha que nunca vai acender é mentir para quem espera.
 const PHASES_REPLICAR = TODAS_AS_FASES.filter((p) => p !== "narrativas");
-
-const PHASE_SHORT: Record<string, string> = {
-  premissa: "Premissa",
-  pesquisa: "Pesquisa",
-  modelagem: "Autópsia",
-  narrativas: "Narrativas",
-  roteiro: "Roteiro",
-  hook_comando: "Hook + CTA",
-  revisao: "Revisão",
-  humanizacao: "Humanização",
-  salvando: "Salvando",
-  verificacao: "Verificação",
-};
 
 // Modelagem por roteiro colado não tem link nenhum (o conteúdo está em raw_content), então a
 // linha "Modelado de" precisa dizer de onde veio sem prometer um link que não existe.
@@ -127,6 +117,15 @@ function PremissaBox({
   const [editing, setEditing] = useState(pendente);
   const [texto, setTexto] = useState(premissa);
   const [pending, startTransition] = useTransition();
+  const areaRef = useRef<HTMLTextAreaElement>(null);
+
+  // `aguardando_premissa` é o ÚNICO estado que exige ação humana: ao abrir a sessão nele, a caixa
+  // tem que ser a primeira coisa que a pessoa vê, não algo que ela precise descobrir rolando.
+  useEffect(() => {
+    if (!pendente) return;
+    areaRef.current?.scrollIntoView({ block: "center", behavior: "smooth" });
+    areaRef.current?.focus({ preventScroll: true });
+  }, [pendente]);
 
   const ORIGEM_LABEL: Record<string, string> = {
     digitada: "definida por você",
@@ -173,6 +172,7 @@ function PremissaBox({
       {editing ? (
         <div className="mt-2.5">
           <textarea
+            ref={areaRef}
             value={texto}
             onChange={(e) => setTexto(e.target.value)}
             rows={3}
@@ -563,11 +563,13 @@ function PublishBox({
   perf,
   semCorpus,
   baseline,
+  avisar,
 }: {
   script: Script;
   perf: ScriptPerformance | null;
   semCorpus: boolean;
   baseline: Baseline | null;
+  avisar: (evento: string) => void;
 }) {
   const router = useRouter();
   const [url, setUrl] = useState("");
@@ -595,6 +597,7 @@ function PublishBox({
                   setError(null);
                   await markPublished(script.id, url);
                   router.refresh();
+                  avisar("publicado");
                 } catch (e) {
                   setError(e instanceof Error ? e.message : String(e));
                 }
@@ -690,7 +693,7 @@ function PublishBox({
 }
 
 // Feedback que orienta uma reescrita: nova geração usando a versão atual como base.
-function RewriteBox({ onRewrite }: { onRewrite: (feedback: string) => void }) {
+function RewriteBox({ onRewrite, disabled }: { onRewrite: (feedback: string) => void; disabled: boolean }) {
   const [text, setText] = useState("");
   return (
     <div className="rounded-2xl border border-white/[.08] bg-white/[.02] p-4 sm:p-5 space-y-3">
@@ -707,7 +710,7 @@ function RewriteBox({ onRewrite }: { onRewrite: (feedback: string) => void }) {
       />
       <button
         onClick={() => text.trim() && onRewrite(text.trim())}
-        disabled={!text.trim()}
+        disabled={!text.trim() || disabled}
         className="btn-gold inline-flex items-center gap-2 rounded-[10px] px-4 py-2 text-[13px] font-semibold disabled:opacity-40"
       >
         <QuillIcon color="#161410" />
@@ -823,7 +826,10 @@ function BobInlinePanel({
           evitar,
         }),
       });
-      if (!res.body) throw new Error(res.ok ? "sem stream" : await res.text());
+      // !res.ok vem antes: 403/400 respondem com corpo de TEXTO, e um corpo existe — sem esta
+      // linha o loop de SSE não acharia nenhum `data:` e a recusa sumiria em silêncio.
+      if (!res.ok) throw new Error((await res.text().catch(() => "")) || `falha do Bob (${res.status})`);
+      if (!res.body) throw new Error("sem stream");
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
       let buffer = "";
@@ -1032,6 +1038,9 @@ function ScriptCard({
   disabled,
   rating,
   selo,
+  presentes,
+  onEditando,
+  avisar,
 }: {
   script: Script;
   sessionId: string;
@@ -1040,6 +1049,12 @@ function ScriptCard({
   rating: number | null;
   /** selo da verificação factual (017 §10) — o dialog vive no SessionView, com o botão de varredura */
   selo?: ReactNode;
+  /** outras pessoas com esta sessão aberta (presença; cosmético) */
+  presentes: Pessoa[];
+  /** anuncia no canal que este card entrou/saiu do modo edição */
+  onEditando: (v: boolean) => void;
+  /** avisa as outras abas que algo mudou no banco (elas dão router.refresh) */
+  avisar: (evento: string) => void;
 }) {
   const router = useRouter();
   const [editing, setEditing] = useState(false);
@@ -1109,7 +1124,15 @@ function ScriptCard({
       });
       setEditing(false);
       router.refresh();
+      avisar("roteiro");
     });
+
+  // Modo edição vira estado de presença: é o que acende o aviso de colisão na tela do outro.
+  // O `false` na limpeza cobre trocar de versão e sair da sessão sem passar por Cancelar.
+  useEffect(() => {
+    onEditando(editing);
+    return () => onEditando(false);
+  }, [editing, onEditando]);
 
   // Seleção dentro do roteiro (nó de texto único) → offsets no string do roteiro.
   // Ouvir `selectionchange` no documento (em vez de onMouseUp no <p>) faz o "Chame o
@@ -1165,6 +1188,7 @@ function ScriptCard({
       await updateScript(script.id, { roteiro: novo });
       setBob(null);
       router.refresh();
+      avisar("roteiro");
     });
 
   // Abre o Bob inline. `explicit` fixa a seleção (botão flutuante), senão lê o cursor.
@@ -1284,6 +1308,10 @@ function ScriptCard({
           </div>
         )}
       </div>
+
+      {/* colisão: updateScript sobrescreve em silêncio, então o aviso vem ANTES do gesto —
+          logo abaixo da barra, e visível mesmo para quem ainda não clicou em Editar */}
+      <AvisoDeEdicao pessoas={presentes} />
 
       {/* HEADLINE */}
       {(editing || script.headline) && (
@@ -1733,6 +1761,7 @@ function ClientPicker({
 
 export default function SessionView({
   session,
+  eu,
   clientId,
   clients,
   scripts,
@@ -1743,6 +1772,7 @@ export default function SessionView({
   analyses,
   modelagens,
   artifacts,
+  faseEmAndamento,
   autoStart,
   generationStale,
 }: {
@@ -1755,6 +1785,8 @@ export default function SessionView({
     error_message: string | null;
     clientNome: string | null;
   };
+  /** identidade da presença, resolvida no servidor. null = sem sessão de auth → sem presença. */
+  eu: { userId: string; nome: string } | null;
   clientId: string | null;
   clients: { id: string; nome: string }[];
   scripts: Script[];
@@ -1768,11 +1800,18 @@ export default function SessionView({
   // `modo` null = Modelar (migration 0034).
   modelagens: { kind: string; url: string | null; modo?: string | null }[];
   artifacts: SessionArtifacts | null;
+  // Fase corrente lida de vm_sessions.debug.phase (server component): é o que o modo
+  // acompanhamento mostra — sem ela, quem recarrega durante a geração vê um texto genérico.
+  faseEmAndamento: string | null;
   autoStart: boolean;
   generationStale: boolean;
 }) {
   const router = useRouter();
   const replicar = modelagens.some((m) => m.modo === "replicar");
+  // Presença desta sessão: quem mais está aqui, quem está editando, e o aviso de "alguém salvou".
+  // Cosmético e opcional — se o Realtime não subir, `outros` fica vazio e nada na tela muda.
+  const presenca = usePresencaSessao(session.id, eu?.userId ?? null, eu?.nome ?? "");
+  useOnline(eu?.userId ?? null, eu?.nome ?? ""); // e continua aparecendo como online na lista
   const [phase, setPhase] = useState<string | null>(null);
   const [streamText, setStreamText] = useState("");
   const [error, setError] = useState<string | null>(
@@ -1790,10 +1829,16 @@ export default function SessionView({
     session.status === "aguardando_premissa" ? (artifacts?.premissa_sugerida ?? "") : ""
   );
   const started = useRef(false);
+  // Dono único do disparo: `generating` só vale no próximo render, então duplo clique e dois
+  // caminhos concorrentes (autoStart + onConfirm da premissa) passariam os dois. O ref fecha
+  // a porta na hora — o lock no banco é a segunda linha de defesa, não a primeira.
+  const gerando = useRef(false);
   const streamRef = useRef<HTMLDivElement>(null);
 
   const generate = useCallback(
     async (narrativeIndex?: number, feedback?: string) => {
+      if (gerando.current) return;
+      gerando.current = true;
       setGenerating(true);
       setError(null);
       setStreamText("");
@@ -1803,6 +1848,9 @@ export default function SessionView({
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ sessionId: session.id, narrativeIndex, feedback }),
         });
+        // 403/400 respondem com corpo de texto: sem este teste o loop de SSE não acharia
+        // nenhum `data:` e a recusa sumiria em silêncio.
+        if (!res.ok) throw new Error((await res.text().catch(() => "")) || `falha na geração (${res.status})`);
         if (!res.body) throw new Error("sem stream");
         const reader = res.body.getReader();
         const decoder = new TextDecoder();
@@ -1836,12 +1884,17 @@ export default function SessionView({
             if (e.type === "premissa_pendente") setPremissaPendente(e.sugerida);
             if (e.type === "token") setStreamText((t) => t + e.text);
             if (e.type === "error") setError(e.message);
+            // Outra conexão é a dona da geração: nada a reprocessar aqui. O refresh traz
+            // status=generating (o lock acabou de gravá-lo) e a aba cai no modo acompanhamento,
+            // com a fase corrente — em vez da caixa vermelha com "Tentar de novo".
+            if (e.type === "em_andamento") router.refresh();
             if (e.type === "done") router.refresh();
           }
         }
       } catch (e) {
         setError(e instanceof Error ? e.message : String(e));
       } finally {
+        gerando.current = false;
         setGenerating(false);
         setPhase(null);
       }
@@ -1852,9 +1905,14 @@ export default function SessionView({
   useEffect(() => {
     if (autoStart && !started.current) {
       started.current = true;
+      // `start=1` é gatilho de uso único e some da URL ANTES de gerar: sem isso um reload —
+      // ou o revalidatePath do confirmarPremissa, que devolve status=draft — reentrega
+      // autoStart=true e dispara uma segunda geração concorrente. replace, não push: o
+      // gatilho consumido não merece entrada no histórico.
+      router.replace(`/sessions/${session.id}`, { scroll: false });
       generate();
     }
-  }, [autoStart, generate]);
+  }, [autoStart, generate, router, session.id]);
 
   // Geração em andamento em outra conexão (montou com status=generating não-stale):
   // modo "acompanhando" — polling leve até sair de generating, o refresh traz o resultado.
@@ -1871,6 +1929,15 @@ export default function SessionView({
 
   const script = scripts[selected];
   const closed = session.status === "closed";
+  // Uma decisão só, derivada do estado do banco, para os três botões que disparam geração e para
+  // a oferta de "Conjurar roteiro" (lib/generation.ts). Premissa pendente bloqueia: conjurar ali
+  // re-pagava transcrição e autópsia para voltar exatamente ao mesmo estado.
+  const podeDisparar = podeGerar({
+    status: session.status,
+    generationStale,
+    gerandoAqui: generating,
+    premissaPendente: !!premissaPendente,
+  });
 
   // Verificação factual (017 §10): uma instância só — o selo vai para o header do card e o
   // botão de varredura completa para o fim da página, mas os dois falam do mesmo registro.
@@ -1921,6 +1988,7 @@ export default function SessionView({
         })()}
         <div className="flex items-center gap-2.5 mt-3 flex-wrap">
           <ClientPicker sessionId={session.id} clientId={clientId} clients={clients} />
+          <Presentes pessoas={presenca.outros} />
           {(generating || watching) && (
             <span className="inline-flex items-center gap-2 rounded-full border border-gold/45 bg-gold/[.08] px-3 py-1 text-xs text-gold">
               <span className="w-1.5 h-1.5 rounded-full bg-gold vm-pulse" />
@@ -2031,11 +2099,20 @@ export default function SessionView({
         </>
       )}
 
-      {/* geração iniciada em outra aba/conexão: acompanha por polling, sem stream */}
+      {/* geração iniciada em outra aba/conexão: acompanha por polling, sem stream.
+          A MESMA trilha da geração ao vivo, alimentada pela fase persistida em
+          vm_sessions.debug.phase — quem recarrega no meio vê onde a sala está, não um spinner. */}
       {watching && (
-        <div className="rounded-2xl border border-gold/25 bg-gold/[.04] px-4 py-3.5 text-[13px] text-white/70">
-          Geração em andamento nesta sessão. Acompanhando: a página atualiza sozinha quando o roteiro ficar pronto.
-        </div>
+        <>
+          <Stepper current={faseEmAndamento} replicar={replicar} />
+          <div className="rounded-2xl border border-gold/25 bg-gold/[.04] px-4 py-3.5 text-[13px] text-white/70">
+            {faseEmAndamento && (
+              <span className="block text-gold mb-1">{PHASE_SHORT[faseEmAndamento]}</span>
+            )}
+            {faseEmAndamento ? PHASE_LABELS[faseEmAndamento] : "Geração em andamento nesta sessão."} Acompanhando: a
+            página atualiza sozinha quando o roteiro ficar pronto.
+          </div>
+        </>
       )}
 
       {/* premissa — o fio condutor. Pendente (modelagem) tem prioridade sobre a vigente. */}
@@ -2050,6 +2127,7 @@ export default function SessionView({
             await confirmarPremissa(session.id, texto);
             setPremissa(texto);
             setPremissaPendente("");
+            presenca.avisar("premissa");
             generate(); // run 2: reusa os artifacts e segue da pesquisa em diante
           }}
           onUpdate={async (texto) => {
@@ -2082,7 +2160,8 @@ export default function SessionView({
           candidatas={narrativas.candidatas}
           ranking={narrativas.ranking}
           escolhida={narrativas.escolhida}
-          disabled={generating || watching || closed}
+          // trocar de narrativa dispara geração: mesma decisão dos outros botões
+          disabled={!podeDisparar}
           onPick={setConfirmPick}
           collapsible={!generating && !!script}
         />
@@ -2107,7 +2186,11 @@ export default function SessionView({
       {error && (
         <div className="rounded-[14px] border border-red-500/30 bg-red-500/[.05] p-4 text-sm">
           <p className="text-red-300">Erro: {error}</p>
-          <button onClick={() => generate()} className="mt-2 underline text-white/80 hover:text-white">
+          <button
+            onClick={() => generate()}
+            disabled={!podeDisparar}
+            className="mt-2 underline text-white/80 hover:text-white disabled:opacity-40 disabled:no-underline"
+          >
             Tentar de novo
           </button>
           {/* auto-identificação do print: versão/git + id da sessão → detalhe fica em vm_sessions.debug */}
@@ -2143,6 +2226,9 @@ export default function SessionView({
             disabled={closed}
             rating={lastRating[script.id] ?? null}
             selo={verificacao.selo}
+            presentes={presenca.outros}
+            onEditando={presenca.setEditando}
+            avisar={presenca.avisar}
           />
           {verificacao.dialog}
 
@@ -2156,6 +2242,7 @@ export default function SessionView({
             perf={performance.find((p) => p.script_id === script.id) ?? null}
             semCorpus={semCorpus.includes(script.id)}
             baseline={baseline}
+            avisar={presenca.avisar}
           />
 
 
@@ -2199,11 +2286,12 @@ export default function SessionView({
 
           {!closed && !watching && (
             <>
-              <RewriteBox onRewrite={(fb) => generate(undefined, fb)} />
+              <RewriteBox onRewrite={(fb) => generate(undefined, fb)} disabled={!podeDisparar} />
               <div className="flex items-center gap-2.5 flex-wrap">
                 <button
                   onClick={() => generate()}
-                  className="inline-flex items-center gap-2 rounded-[10px] border border-white/20 px-4 py-2 text-[13px] text-white/80 hover:border-gold/50 hover:text-cream transition-colors"
+                  disabled={!podeDisparar}
+                  className="inline-flex items-center gap-2 rounded-[10px] border border-white/20 px-4 py-2 text-[13px] text-white/80 hover:border-gold/50 hover:text-cream transition-colors disabled:opacity-40 disabled:hover:border-white/20 disabled:hover:text-white/80"
                 >
                   <QuillIcon />
                   Gerar nova versão
@@ -2217,10 +2305,11 @@ export default function SessionView({
         </div>
       )}
 
-      {!generating && !watching && !script && !error && (
+      {podeDisparar && !script && !error && (
         <button
           onClick={() => generate()}
-          className="btn-gold inline-flex items-center gap-2 rounded-[11px] px-5 py-2.5 text-[13.5px] font-semibold"
+          disabled={!podeDisparar}
+          className="btn-gold inline-flex items-center gap-2 rounded-[11px] px-5 py-2.5 text-[13.5px] font-semibold disabled:opacity-40"
         >
           <QuillIcon color="#161410" />
           Conjurar roteiro

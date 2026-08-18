@@ -1,7 +1,8 @@
 import { getNextCalibrationPair, setLearningActive, submitCalibrationVote } from "@/lib/actions";
 import { appDb } from "@/lib/db";
 import { guardEmit, UUID_RE } from "@/lib/generation";
-import { currentUserId } from "@/lib/hub";
+import { currentUserId, writerScope } from "@/lib/hub";
+import { barrarNaRota } from "@/lib/autorizacao";
 import { comparacaoFewShot, loadContextAvulso } from "@/lib/pipeline/context";
 import { origemDoDebate, proporDestilacao, turnoKasparov } from "@/lib/pipeline/kasparov";
 import {
@@ -42,8 +43,18 @@ const FILAS: FilasDeps = {
 
 const RESPOSTAS: Resposta[] = ["a", "b", "skip", "ativar", "rejeitar"];
 
-// Fronteira de confiança: `responder` roteia por `p.tipo` e leva o id direto ao banco.
-// Objeto solto do cliente vira update com id `undefined` sem esta checagem.
+// Regra 2: das quatro filas, duas terminam em decisão global — ativar a lição a põe no prompt de
+// todos, e o critério do few-shot troca ~4 dos 5 exemplos que a sala imita. Calibração e métrica
+// são commons e seguem abertas. `decidirCriterioDb` é chamado só daqui, então este é o portão dele.
+const PENDENCIA_DE_ADM: Record<string, string> = {
+  licao: "ativar uma lição",
+  criterio: "trocar o critério do few-shot",
+};
+
+// Forma do payload, e SÓ isso — `responder` roteia por `p.tipo` e leva o id direto ao banco,
+// então objeto solto do cliente viraria update com id `undefined`. A permissão é outra coisa e
+// é resolvida logo abaixo, em `PENDENCIA_DE_ADM`: até a peça de segurança, um `learningId` real
+// e alheio passava por aqui de forma perfeitamente válida e ativava a lição de outra pessoa.
 function pendenciaValida(p: unknown): p is Pendencia {
   const o = p as Partial<Pendencia> | null;
   if (!o || typeof o !== "object") return false;
@@ -68,6 +79,11 @@ export async function POST(req: Request) {
   if (b?.pendencia !== undefined || b?.resposta !== undefined) {
     if (!pendenciaValida(b?.pendencia)) return new Response("pendência inválida", { status: 400 });
     if (!RESPOSTAS.includes(b?.resposta)) return new Response("resposta inválida", { status: 400 });
+    const decisaoGlobal = PENDENCIA_DE_ADM[b.pendencia.tipo];
+    if (decisaoGlobal) {
+      const barrado = await barrarNaRota({ adm: decisaoGlobal });
+      if (barrado) return barrado;
+    }
     try {
       await responder(b.pendencia, b.resposta as Resposta, clientId, FILAS);
       return Response.json({ ok: true });
@@ -79,11 +95,20 @@ export async function POST(req: Request) {
   const mensagem = typeof b?.mensagem === "string" ? b.mensagem.trim() : "";
   if (!mensagem) return new Response("mensagem obrigatória", { status: 400 });
 
+  // Retomar thread alheia é ler a conversa de outra pessoa e escrever dentro dela. Mesmo
+  // tratamento de /sessions/[id]; thread nova (threadId null) não tem dono ainda.
+  const barrado = threadId ? await barrarNaRota({ thread: threadId }) : null;
+  if (barrado) return barrado;
+
   // Tudo que depende de cookies() acontece ANTES do stream: dentro do start() o contexto
-  // da request já respondeu e a leitura estoura (lib/hub.ts:41). Vale para currentUserId e
-  // para proximaPendencia, que passa por getNextCalibrationPair.
+  // da request já respondeu e a leitura estoura (lib/hub.ts:41). Vale para currentUserId,
+  // para writerScope e para proximaPendencia, que passa por getNextCalibrationPair.
+  const { isAdmin } = await writerScope();
   const userId = await currentUserId();
-  const pendencia = await proximaPendencia(clientId, FILAS).catch(() => null);
+  let pendencia = await proximaPendencia(clientId, FILAS).catch(() => null);
+  // Cortesia, não autorização (o portão é o PENDENCIA_DE_ADM lá em cima): não se oferece a
+  // quem não pode responder — a pendência voltaria a ser sorteada para o adm mais adiante.
+  if (!isAdmin && pendencia && PENDENCIA_DE_ADM[pendencia.tipo]) pendencia = null;
 
   // A thread nasce na primeira mensagem. Sem `id` não há onde gravar, e a tela precisa
   // dele para o turno seguinte e para a procedência da lição (§5.3).

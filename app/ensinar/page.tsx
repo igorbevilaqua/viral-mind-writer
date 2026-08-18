@@ -1,11 +1,14 @@
 import Link from "next/link";
 import { appDb } from "@/lib/db";
+import { writerScope } from "@/lib/hub";
 import PlaybookProposals, { type Proposta } from "@/components/playbook-proposals";
 import { fmtDay } from "@/lib/format";
 
 export const dynamic = "force-dynamic";
 
 export default async function EnsinarPage() {
+  // Regra 2: a lista é leitura para todos; os botões que mudam o prompt de todo mundo, não.
+  const { isAdmin } = await writerScope();
   const [{ data: allLessons }, { data: learnings }, { data: playbooks }] = await Promise.all([
     appDb
       .from("vm_lessons")
@@ -54,19 +57,21 @@ export default async function EnsinarPage() {
           >
             🎯 Calibração de hooks
           </Link>
-          <Link
-            href="/ensinar/nova"
-            className="btn-gold inline-flex items-center gap-2 rounded-[10px] px-4 py-2 text-[13px] font-semibold"
-          >
-            <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
-              <path d="M8 3v10M3 8h10" stroke="#161410" strokeWidth="1.6" strokeLinecap="round" />
-            </svg>
-            Ensinar novo viral
-          </Link>
+          {isAdmin && (
+            <Link
+              href="/ensinar/nova"
+              className="btn-gold inline-flex items-center gap-2 rounded-[10px] px-4 py-2 text-[13px] font-semibold"
+            >
+              <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
+                <path d="M8 3v10M3 8h10" stroke="#161410" strokeWidth="1.6" strokeLinecap="round" />
+              </svg>
+              Ensinar novo viral
+            </Link>
+          )}
         </div>
       </div>
 
-      <PlaybookProposals propostas={propostas} />
+      {isAdmin && <PlaybookProposals propostas={propostas} />}
 
       {derived.length > 0 && (
         <section className="mt-8">

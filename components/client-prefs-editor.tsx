@@ -40,9 +40,12 @@ function relTime(iso?: string | null) {
 export default function ClientPrefsEditor({
   client,
   prefs,
+  podeEditar,
 }: {
   client: { id: string; nome: string };
   prefs: Prefs | null;
+  /** Regra 3: adm edita, qualquer login lê. Esconder o botão é cortesia — quem barra é o servidor. */
+  podeEditar: boolean;
 }) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [editing, setEditing] = useState(false);
@@ -56,6 +59,7 @@ export default function ClientPrefsEditor({
   });
   const [pending, startTransition] = useTransition();
   const [saved, setSaved] = useState(false);
+  const [erro, setErro] = useState<string | null>(null);
 
   const set = (k: keyof typeof form) => (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     setForm((f) => ({ ...f, [k]: e.target.value }));
@@ -181,9 +185,16 @@ export default function ClientPrefsEditor({
               <button
                 onClick={() =>
                   startTransition(async () => {
-                    await savePreferences(client.id, form);
-                    setSaved(true);
-                    setEditing(false);
+                    try {
+                      setErro(null);
+                      await savePreferences(client.id, form);
+                      setSaved(true);
+                      setEditing(false);
+                    } catch (e) {
+                      // Recusa do servidor aparece aqui, com o form intacto: nada do que a
+                      // pessoa digitou se perde por causa da mensagem de erro.
+                      setErro(e instanceof Error ? e.message : String(e));
+                    }
                   })
                 }
                 disabled={pending}
@@ -198,8 +209,9 @@ export default function ClientPrefsEditor({
               >
                 Cancelar
               </button>
+              {erro && <span className="text-red-300 text-xs">{erro}</span>}
             </>
-          ) : (
+          ) : podeEditar ? (
             <>
               <button
                 onClick={() => setEditing(true)}
@@ -209,6 +221,8 @@ export default function ClientPrefsEditor({
               </button>
               {saved && <span className="text-emerald-300 text-xs">Salvo ✓</span>}
             </>
+          ) : (
+            <span className="text-xs text-white/35">Só um administrador edita as preferências do cliente.</span>
           )}
         </div>
       </dialog>

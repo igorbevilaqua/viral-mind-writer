@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { appDb, viralData } from "@/lib/db";
+import { writerScope } from "@/lib/hub";
 import ClientPrefsEditor from "@/components/client-prefs-editor";
 import ClientDataPanel, { type ClientPanel } from "@/components/client-data-panel";
 import ClientInsightsList, { type InsightRowView } from "@/components/client-insights-list";
@@ -10,6 +11,8 @@ export const dynamic = "force-dynamic";
 export default async function ClienteDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
 
+  // Regra 3: leitura para qualquer login, edição só para adm.
+  const { isAdmin } = await writerScope();
   const [{ data: cliente }, { data: prefs }, panelRes, { data: insights }] = await Promise.all([
     appDb.from("clientes").select("id, nome").eq("id", id).maybeSingle(),
     appDb.from("vm_client_preferences").select("*").eq("client_id", id).maybeSingle(),
@@ -42,7 +45,7 @@ export default async function ClienteDetailPage({ params }: { params: Promise<{ 
           <span className="kicker text-white/45">PREFERÊNCIAS</span>
           <span className="text-xs text-white/30">restrições invioláveis nos roteiros</span>
         </div>
-        <ClientPrefsEditor client={cliente} prefs={prefs ?? null} />
+        <ClientPrefsEditor client={cliente} prefs={prefs ?? null} podeEditar={isAdmin} />
       </section>
 
       <section>

@@ -1,5 +1,6 @@
 import { bobAssist, type BobModo } from "@/lib/pipeline/bob";
 import { guardEmit, UUID_RE } from "@/lib/generation";
+import { barrarNaRota } from "@/lib/autorizacao";
 
 export const maxDuration = 120;
 export const dynamic = "force-dynamic";
@@ -17,6 +18,10 @@ export async function POST(req: Request) {
   if (!instrucao) return new Response("instrucao obrigatória", { status: 400 });
   if (modo === "reescrever" && !String(b?.trecho ?? "").trim())
     return new Response("trecho obrigatório para reescrever", { status: 400 });
+
+  // Na fronteira, antes do stream: dentro do start() não há cookies() para ler.
+  const barrado = await barrarNaRota({ sessao: sessionId });
+  if (barrado) return barrado;
 
   const input = {
     modo,

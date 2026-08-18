@@ -1,11 +1,14 @@
 import { notFound } from "next/navigation";
 import { appDb } from "@/lib/db";
+import { writerScope } from "@/lib/hub";
 import LessonView from "@/components/lesson-view";
 
 export const dynamic = "force-dynamic";
 
 export default async function LessonPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
+  // Regra 2: ler a lição é de todos; ativar/adicionar aprendizado é do adm.
+  const { isAdmin } = await writerScope();
   const { data: lesson } = await appDb
     .from("vm_lessons")
     .select("id, source_kind, source_url, source_title, transcript, context_note, created_at, clientes(nome)")
@@ -33,6 +36,7 @@ export default async function LessonPage({ params }: { params: Promise<{ id: str
         clientNome: client?.nome ?? null,
       }}
       learnings={(learnings ?? []) as Parameters<typeof LessonView>[0]["learnings"]}
+      isAdmin={isAdmin}
     />
   );
 }

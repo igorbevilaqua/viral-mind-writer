@@ -1,7 +1,8 @@
 import { notFound } from "next/navigation";
 import { appDb, viralData } from "@/lib/db";
-import { writerScope } from "@/lib/hub";
-import { isStaleGeneration } from "@/lib/generation";
+import { emailsPorUsuario, writerScope } from "@/lib/hub";
+import { nomeDeEmail } from "@/lib/usuarios";
+import { faseDeDebug, isStaleGeneration } from "@/lib/generation";
 import { resolveCorpusVideo } from "@/lib/script-performance";
 import type { LintViolation } from "@/lib/pipeline/slop-lint";
 import type { RegistroVerificacao } from "@/lib/pipeline/verificar";
@@ -23,7 +24,9 @@ export default async function SessionPage({
   const { data: session } = await appDb
     .from("vm_sessions")
     .select(
-      "id, prompt, premissa, premissa_origem, status, error_message, artifacts, generation_started_at, created_at, client_id, user_id, clientes(nome)"
+      // `debug` entra pela fase corrente (debug.phase, gravada a cada troca pelo runPipeline):
+      // é o que o modo acompanhamento mostra no lugar de um spinner mudo.
+      "id, prompt, premissa, premissa_origem, status, error_message, artifacts, debug, generation_started_at, created_at, client_id, user_id, clientes(nome)"
     )
     .eq("id", id)
     .maybeSingle();
@@ -112,6 +115,10 @@ export default async function SessionPage({
     }
   }
 
+  // Identidade da presença vem daqui, do servidor — o canal nunca é fonte de identidade.
+  const emails = await emailsPorUsuario();
+  const eu = userId ? { userId, nome: nomeDeEmail(emails.get(userId)) } : null;
+
   const client = Array.isArray(session.clientes) ? session.clientes[0] : session.clientes;
   // generating >10min = geração morta → erro recuperável (botão de retry volta)
   const generationStale = isStaleGeneration(session.status, session.generation_started_at);
@@ -127,6 +134,7 @@ export default async function SessionPage({
         error_message: session.error_message,
         clientNome: client?.nome ?? null,
       }}
+      eu={eu}
       clientId={session.client_id ?? null}
       clients={clients ?? []}
       generationStale={generationStale}
@@ -138,6 +146,7 @@ export default async function SessionPage({
       analyses={(analyses ?? []).map((a) => ({ analysis: a.analysis, replication_brief: a.replication_brief }))}
       modelagens={modelagens ?? []}
       artifacts={session.artifacts ?? null}
+      faseEmAndamento={faseDeDebug(session.debug)}
       autoStart={start === "1" && session.status === "draft"}
     />
   );

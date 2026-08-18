@@ -37,7 +37,8 @@ const { banco, fakeAppDb, verificarRoteiro } = vi.hoisted(() => {
 
 vi.mock("@/lib/db", () => ({ appDb: fakeAppDb, viralData: {} }));
 vi.mock("next/cache", () => ({ revalidatePath: vi.fn() }));
-vi.mock("@/lib/hub", () => ({ registrarAtividade: vi.fn(), currentUserId: async () => null }));
+// adm passa por tudo (lib/autorizacao.ts): estes testes cobrem a lógica da action, não a autorização.
+vi.mock("@/lib/hub", () => ({ registrarAtividade: vi.fn(), currentUserId: async () => null, writerScope: async () => ({ isAdmin: true, userId: "adm-1" }) }));
 vi.mock("@/lib/pipeline/verificar", () => ({ verificarRoteiro }));
 
 import { verificarScript } from "@/lib/actions";

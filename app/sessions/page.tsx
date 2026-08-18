@@ -1,9 +1,11 @@
 import Link from "next/link";
 import { appDb } from "@/lib/db";
-import { writerScope } from "@/lib/hub";
+import { emailsPorUsuario, writerScope } from "@/lib/hub";
+import { nomeDeEmail } from "@/lib/usuarios";
+import { OnlineAgora } from "@/components/presenca";
 import { fmtNum, fmtWhen } from "@/lib/format";
-import { isStaleGeneration } from "@/lib/generation";
-import { clientesDoFiltro, entraNoPainel, mesclarPainel } from "@/lib/painel-sessoes";
+import { faseDeDebug, isStaleGeneration, PHASE_SHORT } from "@/lib/generation";
+import { casaComStatus, clientesDoFiltro, entraNoPainel, mesclarPainel } from "@/lib/painel-sessoes";
 
 export const dynamic = "force-dynamic";
 
@@ -51,6 +53,8 @@ const STATUS: Record<string, { label: string; cls: string; rowCls: string }> = {
 // filtro ?status= → status efetivo da linha; "publicada" é derivado do script, não da sessão
 const STATUS_FILTERS: { key: string; label: string }[] = [
   { key: "gerando", label: "Gerando" },
+  // O estado que espera uma pessoa. Sem chip próprio ele sumia da lista sob qualquer filtro.
+  { key: "aguardando", label: "Aguardando você" },
   { key: "pronta", label: "Pronta" },
   { key: "publicada", label: "Publicada" },
   { key: "encerrada", label: "Encerrada" },
@@ -195,7 +199,9 @@ export default async function SessionsPage({
 
   let sessionsQuery = appDb
     .from("vm_sessions")
-    .select("id, prompt, status, generation_started_at, created_at, client_id, clientes(nome)")
+    // `debug` sai de graça na mesma query e carrega a fase corrente (debug.phase, gravada pelo
+    // runPipeline a cada troca): "Gerando" na lista passa a dizer gerando O QUÊ.
+    .select("id, prompt, status, debug, generation_started_at, created_at, client_id, user_id, clientes(nome)")
     .order("created_at", { ascending: false })
     .limit(100);
   // Usuário comum só vê as próprias sessões; adm vê todas. (middleware garante userId != null)
@@ -269,6 +275,12 @@ export default async function SessionsPage({
 
   const nomePorCliente = new Map((clients ?? []).map((c) => [c.id, c.nome]));
 
+  // Quem criou cada sessão. Só serve para adm: o usuário comum só enxerga as próprias sessões,
+  // então a coluna repetiria o nome dele em toda linha. O mesmo mapa dá o SEU nome, que a
+  // presença precisa anunciar no canal (cacheado em lib/hub.ts — uma chamada a cada 5 min).
+  const emails = await emailsPorUsuario();
+  const meuNome = nomeDeEmail(emails.get(userId ?? ""));
+
   const linhasDeRoteiro = (sessions ?? [])
     .map((s) => ({
       ...s,
@@ -276,15 +288,7 @@ export default async function SessionsPage({
       published: publishedViews.has(s.id),
       views: publishedViews.get(s.id) ?? null,
     }))
-    .filter((s) => {
-      if (!statusParam) return true;
-      if (statusParam === "publicada") return s.published;
-      if (statusParam === "gerando") return s.effStatus === "generating";
-      if (statusParam === "pronta") return s.effStatus === "done" && !s.published;
-      if (statusParam === "encerrada") return s.effStatus === "closed";
-      if (statusParam === "interrompida") return s.effStatus === "stalled";
-      return true;
-    })
+    .filter((s) => casaComStatus(statusParam, s))
     .map((s) => ({ tipo: "roteiro" as const, quando: s.created_at as string, s }));
 
   const linhasDeDebate = (threads ?? [])
@@ -320,6 +324,9 @@ export default async function SessionsPage({
           Nova sessão
         </Link>
       </div>
+
+      {/* quem está com o writer aberto agora (Realtime Presence; sem ninguém, não ocupa espaço) */}
+      <OnlineAgora userId={userId} nome={meuNome} />
 
       {/* Status é conceito de roteiro: com tipo=kasparov os chips saem da tela em vez de
           ficarem ali sugerindo uma combinação que não filtra nada (lib/painel-sessoes.ts). */}
@@ -422,6 +429,12 @@ export default async function SessionsPage({
           const s = linha.s;
           const client = Array.isArray(s.clientes) ? s.clientes[0] : s.clientes;
           const st = STATUS[s.effStatus] ?? STATUS.draft;
+          // Criador só para adm. Email não resolvido (conta removida) cai no rótulo neutro do
+          // nomeDeEmail — nunca UUID cru nem espaço em branco.
+          const email = isAdmin ? (emails.get(s.user_id ?? "") ?? "") : "";
+          const criador = isAdmin ? nomeDeEmail(email) : null;
+          // fase só faz sentido enquanto a geração está viva — em stalled/error o debug é do run morto
+          const fase = s.effStatus === "generating" ? faseDeDebug(s.debug) : null;
           return (
             <Link
               key={s.id}
@@ -447,11 +460,20 @@ export default async function SessionsPage({
                     })()}
                 </span>
                 <span className="sm:hidden flex items-center gap-2 mt-1 text-[11px] text-white/35">
-                  <span className={st.cls}>{st.label}</span>
+                  <span className={st.cls}>
+                    {st.label}
+                    {fase && ` · ${PHASE_SHORT[fase]}`}
+                  </span>
                   {client && <span className="truncate text-indigo-300/80">· {client.nome}</span>}
+                  {criador && <span className="truncate text-white/40">· {criador}</span>}
                   <span className="ml-auto shrink-0 font-mono">{fmtWhen(s.created_at)}</span>
                 </span>
               </span>
+              {fase && (
+                <span className="hidden sm:inline-block shrink-0 rounded-full border border-gold/35 px-2.5 py-[3px] text-[11px] text-gold/90">
+                  {PHASE_SHORT[fase]}
+                </span>
+              )}
               {s.published && (
                 <span className="shrink-0 inline-flex items-center gap-1.5 rounded-full border border-gold/40 bg-gold/[.08] px-2.5 py-[3px] text-[11px] font-medium text-gold">
                   publicada
@@ -461,6 +483,16 @@ export default async function SessionsPage({
               {client && (
                 <span className="hidden sm:inline-block shrink-0 rounded-full border border-indigo-500/35 px-2.5 py-[3px] text-[11.5px] text-indigo-300">
                   {client.nome}
+                </span>
+              )}
+              {/* quem criou — só adm (o usuário comum só vê as próprias sessões, seria ruído).
+                  Email completo no title; conta removida cai no rótulo neutro, nunca UUID. */}
+              {criador && (
+                <span
+                  title={email || "conta removida"}
+                  className="hidden sm:block w-[96px] shrink-0 truncate text-right text-[11.5px] text-white/40"
+                >
+                  {criador}
                 </span>
               )}
               <span className="hidden sm:block w-[88px] shrink-0 text-right font-mono text-[11.5px] text-white/35">

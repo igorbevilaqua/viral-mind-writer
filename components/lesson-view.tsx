@@ -17,7 +17,7 @@ interface Learning {
   needs_review?: boolean; // WP-E.5: flopou em ≥2 roteiros publicados — revisão humana
 }
 
-function LearningRow({ l }: { l: Learning }) {
+function LearningRow({ l, isAdmin }: { l: Learning; isAdmin: boolean }) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
   const [editing, setEditing] = useState(false);
@@ -48,7 +48,9 @@ function LearningRow({ l }: { l: Learning }) {
           </span>
         )}
         <span className="ml-auto flex items-center gap-2">
-          {!editing && (
+          {/* Reescrever o texto de uma lição ativa muda o prompt de todos tanto quanto ligá-la:
+              sem esta guarda o não-adm digitaria a edição inteira só para tomar erro no salvar. */}
+          {!editing && isAdmin && (
             <button
               onClick={() => setEditing(true)}
               className="text-[11.5px] text-white/45 hover:text-white/80 p-1.5 -m-1.5"
@@ -56,8 +58,10 @@ function LearningRow({ l }: { l: Learning }) {
               editar
             </button>
           )}
+          {/* Não-adm vê o estado, não o interruptor: lição ativa entra no prompt de todos. */}
           <button
-            disabled={pending}
+            disabled={pending || !isAdmin}
+            title={isAdmin ? undefined : "só um administrador ativa ou desativa uma lição"}
             onClick={() =>
               startTransition(async () => {
                 await setLearningActive(l.id, !l.active);
@@ -65,6 +69,8 @@ function LearningRow({ l }: { l: Learning }) {
               })
             }
             className={`rounded-full border px-3 py-1 text-[11px] font-medium transition-colors disabled:opacity-40 ${
+              !isAdmin ? "cursor-default" : ""
+            } ${
               l.active
                 ? "border-emerald-500/40 bg-emerald-500/[.08] text-emerald-300 hover:border-emerald-500/70"
                 : "border-white/20 text-white/50 hover:border-white/40"
@@ -202,6 +208,7 @@ function AddLearningBox({ lessonId }: { lessonId: string }) {
 export default function LessonView({
   lesson,
   learnings,
+  isAdmin,
 }: {
   lesson: {
     id: string;
@@ -213,6 +220,8 @@ export default function LessonView({
     clientNome: string | null;
   };
   learnings: Learning[];
+  /** Regra 2: ativar e adicionar aprendizado são decisões globais. Cortesia — quem barra é a action. */
+  isAdmin: boolean;
 }) {
   const router = useRouter();
   const ativos = learnings.filter((l) => l.active).length;
@@ -265,10 +274,10 @@ export default function LessonView({
 
       <div className="space-y-3">
         {ordered.map((l) => (
-          <LearningRow key={l.id} l={l} />
+          <LearningRow key={l.id} l={l} isAdmin={isAdmin} />
         ))}
         {!learnings.length && <p className="text-white/40 text-sm">Nenhum aprendizado nesta lição.</p>}
-        <AddLearningBox lessonId={lesson.id} />
+        {isAdmin && <AddLearningBox lessonId={lesson.id} />}
       </div>
 
       <details className="rounded-[14px] border border-white/[.08] bg-white/[.02] px-4 py-3">

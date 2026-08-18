@@ -1,9 +1,13 @@
 import { appDb } from "@/lib/db";
+import { writerScope } from "@/lib/hub";
 import TeachForm from "@/components/teach-form";
 
 export const dynamic = "force-dynamic";
 
 export default async function NovaLicaoPage() {
+  // Regra 2: `saveLesson` aceita `active` do cliente — lição ativa entra no prompt de todos.
+  // O portão que vale é o da action; aqui é só não mostrar um formulário que vai ser recusado.
+  const { isAdmin } = await writerScope();
   const { data: clients } = await appDb.from("clientes").select("id, nome").eq("ativo", true).order("nome");
   return (
     <div className="max-w-[860px] mx-auto w-full px-4 sm:px-6 py-10">
@@ -15,7 +19,15 @@ export default async function NovaLicaoPage() {
         Cole um vídeo viral ou um roteiro campeão. O Professor extrai os aprendizados, você revisa, e os aprovados
         passam a orientar os agentes nas próximas gerações.
       </p>
-      <TeachForm clients={clients ?? []} />
+      {isAdmin ? (
+        <TeachForm clients={clients ?? []} />
+      ) : (
+        <p className="mt-6 rounded-[14px] border border-white/[.08] bg-white/[.02] px-5 py-4 text-[13px] text-white/55">
+          Lição nova entra no prompt de todos os clientes, então quem cria é um administrador. Para propor um
+          aprendizado, use o botão de ensinar dentro de uma sessão ou do debate com o Kasparov: ele nasce como
+          proposta e a curadoria decide.
+        </p>
+      )}
     </div>
   );
 }
