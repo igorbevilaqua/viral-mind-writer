@@ -1,63 +1,39 @@
 {
-  "version": "2.3",
+  "version": "2.4",
   "codexUrl": "https://codex.viralmindlabs.com",
   "pending": [],
   "lastRelease": {
-    "version": "2.2",
-    "git": "5ad308f",
-    "productSummary": "Sessao retoma no ponto exato, presenca no painel, e as decisoes que mudam o roteiro de todos passam a ser do administrador.",
-    "message": "*Codex 2.2*\n\n👉 *Clicar numa sessão leva direto ao ponto onde ela parou:* se ela espera confirmação de premissa, a caixa vem na frente e já focada; se está gerando, você vê em que fase a sala de agentes está.\n\n👉 *Abrir a mesma sessão em outra janela não reprocessa nada,* só leva você para o estado atual.\n\n👉 *Sessões que esperam você pararam de sumir da lista:* bastava clicar em qualquer filtro e a única que exige ação humana desaparecia, agora tem filtro próprio.\n\n👉 *Dá pra ver quem está online* e quem está com a mesma sessão aberta que você.\n\n👉 *Aviso quando outra pessoa está editando o mesmo roteiro:* até agora, quando dois editavam e salvavam, o segundo apagava o trabalho do primeiro sem ninguém saber.\n\n👉 *O painel mostra quem criou cada sessão,* para administradores.\n\n👉 *Roteiro de outra pessoa deixou de ser editável por quem tem o link:* o endereço de compartilhamento carrega o mesmo identificador do roteiro, e ele bastava para editar, publicar ou encerrar o trabalho de outro.\n\n👉 *Decisões que mudam o roteiro de todos os clientes agora são do administrador:* ativar ou reescrever lição, trocar playbook de hook, criar frase banida, mexer nas preferências de um cliente e decidir o critério dos exemplos de referência.\n\nhttps://codex.viralmindlabs.com\n",
+    "version": "2.3",
+    "git": "6eaffaa",
+    "productSummary": "Modelagem marcada manda na premissa: a tese sai do video e o texto digitado vira direcao. E a sala nunca mais inventa premissa quando nao consegue ler o material.",
+    "message": "🪄 *Codex: Nova Versão Disponível (v2.3)*\n🔖 Git: 6eaffaa\n\nQuando você marca um vídeo como Modelar ou Replicar, agora é ele que manda: a sala extrai a tese do próprio vídeo, mostra pra você confirmar, e o que você escrever no campo de cima vale como direção, não como tema novo. E ela nunca mais inventa uma premissa quando não conseguiu ler o material.\n\n📋 *O que mudou:*\n\n✨ *A modelagem manda na premissa.* Antes, digitar qualquer coisa no campo desligava a leitura da tese: a sala copiava só a mecânica do vídeo (hook, ritmo, beats) e escrevia sobre outro assunto. Agora ela lê o vídeo a fundo, extrai a tese que ele defende, te mostra pra confirmar ou corrigir, e só então escreve. O que você digitar chega como direção aos quatro especialistas certos: recorte pro roteirista, pauta extra pro pesquisador, palpite de hook e de CTA. Dá pra pedir \"cite o caso da Argentina\" ou \"seja mais crítico\" sem que a sala troque de assunto no meio do caminho.\n\n🐛 *Fim da premissa inventada.* Uma sessão real gravou a palavra <UNKNOWN> como premissa e o roteiro inteiro foi escrito defendendo ela, sob o rótulo de tese inegociável. Agora são três travas: se a leitura do vídeo falha, a geração para e diz o motivo (com o caminho de saída), o derivador de tese se recusa a rodar sem nada em mãos, e uma última checagem barra placeholder antes da tese ser congelada. Roteiro sem fio condutor de verdade não sai mais da sala.\n\n⚡ *Um material por sessão como Modelar ou Replicar.* Os dois ditam a linha central do conteúdo, então marcar dois era pedir duas teses concorrentes no mesmo roteiro (e pagar duas análises). Agora vale um, a tela impede o segundo, e o excedente continua valendo como material de referência, com o registro de que foi rebaixado.\n\n👉 Acesse agora em https://codex.viralmindlabs.com\n",
     "changes": [
       {
-        "id": "msy0s479",
-        "type": "fix",
-        "summary": "Clicar numa sessao leva direto ao ponto onde ela parou",
-        "detail": "Se ela espera confirmacao de premissa, a caixa aparece na frente e ja focada. Se esta gerando, voce ve em que fase a sala de agentes esta, em vez de um texto generico. E abrir a mesma sessao em outra janela nao reprocessa nada: leva voce para o estado atual.",
-        "commit": "1c91c4f",
-        "addedAt": "2026-08-18T02:04:37.317Z"
-      },
-      {
-        "id": "msy0s47y",
-        "type": "fix",
-        "summary": "Sessoes que esperam voce pararam de sumir da lista",
-        "detail": "Bastava clicar em qualquer filtro de status para a sessao com premissa pendente desaparecer, justamente a unica que exige acao humana. Ganhou filtro proprio, Aguardando voce.",
-        "commit": "1c91c4f",
-        "addedAt": "2026-08-18T02:04:37.342Z"
-      },
-      {
-        "id": "msy0s48k",
+        "id": "msypjqmb",
         "type": "feature",
-        "summary": "Da pra ver quem esta online e quem esta na mesma sessao que voce",
-        "detail": "No painel aparece quem esta ativo agora. Dentro de uma sessao, quem mais esta com ela aberta. E se outra pessoa esta editando o mesmo roteiro, voce e avisado antes de comecar: ate agora, quando dois editavam e salvavam, o segundo apagava o trabalho do primeiro sem ninguem saber.",
-        "commit": "3ce2433",
-        "addedAt": "2026-08-18T02:04:37.364Z"
+        "summary": "Material marcado como Modelar ou Replicar agora manda na premissa: a tese sai do proprio video, e o que voce escreve no campo de cima vira direcao (recorte, sugestao de pesquisa, de hook ou de comando), nunca tema novo",
+        "detail": "Antes, digitar qualquer texto desligava a leitura de tese do material: a sala modelava so a mecanica e escrevia sobre outro assunto. Agora a tese e sempre extraida e confirmada por voce antes de qualquer linha ser escrita, e a direcao chega a pesquisador, roteirista, hook e comando.",
+        "commit": "6eaffaa",
+        "addedAt": "2026-08-18T13:37:56.881Z"
       },
       {
-        "id": "msy0s496",
-        "type": "improvement",
-        "summary": "O painel mostra quem criou cada sessao",
-        "detail": "Visivel para administradores, que sao os que enxergam as sessoes de todo mundo.",
-        "commit": "3ce2433",
-        "addedAt": "2026-08-18T02:04:37.386Z"
+        "id": "msypjqnf",
+        "type": "fix",
+        "summary": "A sala nunca mais inventa premissa: quando nao consegue extrair a tese do material, ela para e diz o motivo, em vez de escrever um roteiro inteiro servindo a uma tese fabricada",
+        "detail": "Uma sessao real gravou a palavra <UNKNOWN> como premissa e o roteiro foi escrito defendendo ela. Agora ha tres travas: falha de autopsia para o fluxo, o derivador recusa rodar sem insumo, e uma guarda final rejeita placeholder antes de congelar a tese.",
+        "commit": "6eaffaa",
+        "addedAt": "2026-08-18T13:37:56.919Z"
       },
       {
-        "id": "msy0s49p",
+        "id": "msypjqog",
         "type": "improvement",
-        "summary": "Roteiro de outra pessoa deixou de ser editavel por quem tem o link",
-        "detail": "O endereco de compartilhamento carrega o mesmo identificador do roteiro, e ate agora ele bastava para editar, publicar ou encerrar o trabalho de outra pessoa. Agora toda alteracao confere de quem e a sessao.",
-        "commit": "5ad308f",
-        "addedAt": "2026-08-18T02:04:37.405Z"
-      },
-      {
-        "id": "msy0s4a9",
-        "type": "improvement",
-        "summary": "Decisoes que mudam o roteiro de todos os clientes agora sao do administrador",
-        "detail": "Ativar ou reescrever uma licao, trocar o playbook de hook, criar frase banida, mexer nas preferencias de um cliente e decidir o criterio dos exemplos de referencia. Todas afetam o prompt de todo mundo e qualquer pessoa logada conseguia faze-las. Preferencias de cliente continuam visiveis para todos, so a edicao virou restrita.",
-        "commit": "5ad308f",
-        "addedAt": "2026-08-18T02:04:37.425Z"
+        "summary": "Um material por sessao como Modelar ou Replicar: os dois ditam a linha central do conteudo, entao marcar dois era contradicao. O excedente continua valendo como material de referencia",
+        "detail": "",
+        "commit": "6eaffaa",
+        "addedAt": "2026-08-18T13:37:56.957Z"
       }
     ],
-    "releasedAt": "2026-08-18T02:04:58.858Z"
+    "releasedAt": "2026-08-18T13:38:56.402Z"
   },
   "history": [
     {
@@ -606,6 +582,63 @@
         }
       ],
       "releasedAt": "2026-08-18T00:30:59.659Z"
+    },
+    {
+      "version": "2.2",
+      "git": "5ad308f",
+      "productSummary": "Sessao retoma no ponto exato, presenca no painel, e as decisoes que mudam o roteiro de todos passam a ser do administrador.",
+      "message": "*Codex 2.2*\n\n👉 *Clicar numa sessão leva direto ao ponto onde ela parou:* se ela espera confirmação de premissa, a caixa vem na frente e já focada; se está gerando, você vê em que fase a sala de agentes está.\n\n👉 *Abrir a mesma sessão em outra janela não reprocessa nada,* só leva você para o estado atual.\n\n👉 *Sessões que esperam você pararam de sumir da lista:* bastava clicar em qualquer filtro e a única que exige ação humana desaparecia, agora tem filtro próprio.\n\n👉 *Dá pra ver quem está online* e quem está com a mesma sessão aberta que você.\n\n👉 *Aviso quando outra pessoa está editando o mesmo roteiro:* até agora, quando dois editavam e salvavam, o segundo apagava o trabalho do primeiro sem ninguém saber.\n\n👉 *O painel mostra quem criou cada sessão,* para administradores.\n\n👉 *Roteiro de outra pessoa deixou de ser editável por quem tem o link:* o endereço de compartilhamento carrega o mesmo identificador do roteiro, e ele bastava para editar, publicar ou encerrar o trabalho de outro.\n\n👉 *Decisões que mudam o roteiro de todos os clientes agora são do administrador:* ativar ou reescrever lição, trocar playbook de hook, criar frase banida, mexer nas preferências de um cliente e decidir o critério dos exemplos de referência.\n\nhttps://codex.viralmindlabs.com\n",
+      "changes": [
+        {
+          "id": "msy0s479",
+          "type": "fix",
+          "summary": "Clicar numa sessao leva direto ao ponto onde ela parou",
+          "detail": "Se ela espera confirmacao de premissa, a caixa aparece na frente e ja focada. Se esta gerando, voce ve em que fase a sala de agentes esta, em vez de um texto generico. E abrir a mesma sessao em outra janela nao reprocessa nada: leva voce para o estado atual.",
+          "commit": "1c91c4f",
+          "addedAt": "2026-08-18T02:04:37.317Z"
+        },
+        {
+          "id": "msy0s47y",
+          "type": "fix",
+          "summary": "Sessoes que esperam voce pararam de sumir da lista",
+          "detail": "Bastava clicar em qualquer filtro de status para a sessao com premissa pendente desaparecer, justamente a unica que exige acao humana. Ganhou filtro proprio, Aguardando voce.",
+          "commit": "1c91c4f",
+          "addedAt": "2026-08-18T02:04:37.342Z"
+        },
+        {
+          "id": "msy0s48k",
+          "type": "feature",
+          "summary": "Da pra ver quem esta online e quem esta na mesma sessao que voce",
+          "detail": "No painel aparece quem esta ativo agora. Dentro de uma sessao, quem mais esta com ela aberta. E se outra pessoa esta editando o mesmo roteiro, voce e avisado antes de comecar: ate agora, quando dois editavam e salvavam, o segundo apagava o trabalho do primeiro sem ninguem saber.",
+          "commit": "3ce2433",
+          "addedAt": "2026-08-18T02:04:37.364Z"
+        },
+        {
+          "id": "msy0s496",
+          "type": "improvement",
+          "summary": "O painel mostra quem criou cada sessao",
+          "detail": "Visivel para administradores, que sao os que enxergam as sessoes de todo mundo.",
+          "commit": "3ce2433",
+          "addedAt": "2026-08-18T02:04:37.386Z"
+        },
+        {
+          "id": "msy0s49p",
+          "type": "improvement",
+          "summary": "Roteiro de outra pessoa deixou de ser editavel por quem tem o link",
+          "detail": "O endereco de compartilhamento carrega o mesmo identificador do roteiro, e ate agora ele bastava para editar, publicar ou encerrar o trabalho de outra pessoa. Agora toda alteracao confere de quem e a sessao.",
+          "commit": "5ad308f",
+          "addedAt": "2026-08-18T02:04:37.405Z"
+        },
+        {
+          "id": "msy0s4a9",
+          "type": "improvement",
+          "summary": "Decisoes que mudam o roteiro de todos os clientes agora sao do administrador",
+          "detail": "Ativar ou reescrever uma licao, trocar o playbook de hook, criar frase banida, mexer nas preferencias de um cliente e decidir o criterio dos exemplos de referencia. Todas afetam o prompt de todo mundo e qualquer pessoa logada conseguia faze-las. Preferencias de cliente continuam visiveis para todos, so a edicao virou restrita.",
+          "commit": "5ad308f",
+          "addedAt": "2026-08-18T02:04:37.425Z"
+        }
+      ],
+      "releasedAt": "2026-08-18T02:04:58.858Z"
     }
   ]
 }
