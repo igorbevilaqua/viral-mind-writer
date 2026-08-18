@@ -1,7 +1,16 @@
 {
   "version": "2.4",
   "codexUrl": "https://codex.viralmindlabs.com",
-  "pending": [],
+  "pending": [
+    {
+      "id": "msyx14po",
+      "type": "fix",
+      "summary": "Sugerir tema nao cai mais com erro de rede: o servidor passa a dar sinal de vida durante as buscas longas, entao a conexao nao e mais cortada no meio",
+      "detail": "A rota ficava ate 90 segundos em silencio enquanto o Grok pesquisava, e o proxy derrubava a conexao. O sinal de vida existia so na geracao de roteiro; agora vale para todas as telas que mostram progresso (gerar, sugerir tema, Bob, verificacao e Kasparov), e o tempo maximo da sugestao subiu de 2 para 5 minutos.",
+      "commit": "d596e10",
+      "addedAt": "2026-08-18T17:07:25.612Z"
+    }
+  ],
   "lastRelease": {
     "version": "2.3",
     "git": "6eaffaa",
