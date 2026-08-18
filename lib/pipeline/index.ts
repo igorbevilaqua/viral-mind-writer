@@ -10,7 +10,7 @@ import {
   type ModelagemResult,
 } from "./modelagem";
 import { compreensaoBlock } from "./modelagem-brief";
-import { anexoReplicar, comandoDoOriginal, exigirEsqueletoDoOriginal, narrativaDoOriginal } from "./replicar";
+import { anexoModelagem, anexoReplicar, comandoDoOriginal, exigirEsqueletoDoOriginal, narrativaDoOriginal } from "./replicar";
 import { registrarBloco, research, proposeNarratives, rankNarratives, designHook, writeComando } from "./agents";
 import { pairFromCandidates } from "../calibration";
 import { blocoSinaisRevisor, generateDraft, hookEcoaAbertura, parseSections, semEcoDaAbertura, stripLeadingHook, stripTrailingComando, TETO_ECOS } from "./draft";
@@ -18,7 +18,7 @@ import { critiqueAndRewrite } from "./critique";
 import { extrairEstudos } from "./estudos";
 import { extractFromCorrection } from "./teach";
 import { humanize } from "./humanize";
-import { derivePremissa } from "./premissa";
+import { derivePremissa, origemDaPremissa, teseAceitavel } from "./premissa";
 import { verificarRoteiro, type Regime, type RegistroVerificacao } from "./verificar";
 import { blockCount, dedash, deepDedash, ecosNumericos } from "./slop-lint";
 import { APP_VERSION, GIT_SHA } from "../version";
@@ -100,36 +100,48 @@ export async function runPipeline(
     // liga o usageLog à sessão → cada chamada de LLM emite um evento 'llm' no hub
     if (ctx.usageLog) bindUsageLog(ctx.usageLog, { sessaoId: sessionId, userId: ctx.userId });
 
-    // ── Modelagem ∥ pesquisa: independentes — os briefs só são consumidos do
-    // proposeNarratives em diante, então a análise roda em paralelo com o Grok.
+    // ── Modelagem: a análise é disparada cedo, mas com modelagem marcada a PREMISSA sai dela, e
+    // por isso ela é aguardada antes da pesquisa (a tese diz ao pesquisador o que checar).
     // Modelagem roda com transcrição colada OU só com o link (busca a transcrição ao conjurar).
     // Link modelável: vídeo (transcreve o áudio) ou carrossel (lê o texto dos slides).
     let modelagens = ctx.attachments.filter(
       (a) => a.is_modelagem && (a.raw_content || (LINK_MODELAVEL.includes(a.kind) && a.url))
     );
 
-    // ── REPLICAR ──────────────────────────────────────────────────────────────────────────
-    // Relação 1:1 com o material: a estrutura seguida é a de UM original. Um segundo material
-    // (mesmo em Modelar) injetaria uma arquitetura concorrente no roteirista — os excedentes
-    // ficam de fora e o descarte vai ao rastro, nunca em silêncio.
+    // ── UM material dita a linha central (Regra 4) ────────────────────────────────────────
+    // Relação 1:1 com o material, agora nos DOIS modos: Modelar e Replicar ditam premissa e
+    // arquitetura, e um segundo material injetaria uma tese e uma arquitetura concorrentes.
+    // Replicar vence quando existe (é o mais restritivo). O excedente não vira lixo silencioso:
+    // perde só a condição de modelagem e segue como material de referência comum — e o descarte
+    // vai ao rastro.
+    const principal = anexoModelagem(modelagens);
+    const ignoradas = modelagens.filter((a) => a !== principal);
+    for (const a of ignoradas) a.is_modelagem = false;
+    modelagens = principal ? [principal] : [];
     const replicando = anexoReplicar(modelagens);
-    const ignoradosNoReplicar = replicando ? modelagens.filter((a) => a !== replicando).map((a) => a.id) : [];
-    if (replicando) modelagens = [replicando];
 
-    // Sem tema digitado + modelagem de vídeo = MESMO assunto do vídeo, ângulo novo:
-    // a modelagem propõe 3 ângulos que viram as narrativas candidatas, e a pesquisa
-    // checa o que o vídeo alegou em vez de aceitar a palavra dele.
-    // Replicar entra SEMPRE por aqui: o assunto e a tese são os do original mesmo quando há texto
-    // digitado, porque ali o texto é orientação de ângulo, não tema novo.
-    const adaptation = Boolean(replicando) || (!ctx.prompt.trim() && modelagens.length > 0);
+    // Modelagem marcada = a premissa vem do vídeo (Regra 2), com ou sem texto digitado: a tese é
+    // a do original, a pesquisa checa o que ele alegou em vez de aceitar a palavra dele, e o
+    // texto digitado é direção de ângulo dentro dessa mesma tese — nunca assunto novo.
+    // Antes disso, texto digitado desligava tudo isto e a autópsia nem extraía a tese.
+    const modelando = modelagens.length > 0;
+
+    // Nenhum descarte em silêncio: o rastro diz qual material ditou a linha, em que modo, e
+    // quais foram rebaixados a material de referência comum.
+    if (principal)
+      registrarBloco(ctx, "modelagem", {
+        attachment_id: principal.id,
+        modo: replicando ? "replicar" : "modelar",
+        rebaixadas_a_referencia: ignoradas.map((a) => a.id),
+      });
 
     // A fase entra ANTES da busca da transcrição: ela pode levar segundos e falhar, e sem
     // emitir nada aqui a tela fica muda até o erro aparecer do nada (debug.phase="init").
-    if (modelagens.length) emit({ type: "phase", phase: "modelagem" });
+    if (modelando) emit({ type: "phase", phase: "modelagem" });
 
-    // Sem tema, TUDO depende da transcrição — garanta antes de pagar qualquer LLM,
+    // Com modelagem, TUDO depende da transcrição — garanta antes de pagar qualquer LLM,
     // e antes de disparar modelagem e pesquisa (que a consomem em paralelo).
-    if (adaptation) {
+    if (modelando) {
       const { text, erro } = await ensureTranscript(modelagens[0], ctx.usageLog);
       if (!text) {
         // A mensagem diz qual material falhou: "transcrição do vídeo" para um carrossel mandaria
@@ -137,11 +149,11 @@ export async function runPipeline(
         const oQue = modelagens[0].kind === "carousel_link" ? "ler o carrossel" : "obter a transcrição do vídeo";
         throw new Error(
           `Não consegui ${oQue}${erro ? `: ${erro}` : ""}. ` +
-            // Em Replicar digitar um tema não salva a geração (o assunto é o do original):
-            // a única saída é colar o conteúdo, e a mensagem não pode mandar para o caminho errado.
-            (replicando
-              ? `Cole o conteúdo no campo do material e conjure de novo.`
-              : `Cole o conteúdo no campo do material, ou digite um tema, e conjure de novo.`)
+            // Digitar um tema não salva mais a geração em nenhum dos modos: com o material
+            // marcado, o assunto e a tese são os DELE. As saídas são colar o conteúdo ou
+            // desmarcar o material — e a mensagem não pode mandar para o caminho errado.
+            `Cole o conteúdo no campo do material e conjure de novo` +
+            (replicando ? `.` : `, ou desmarque o material como Modelar para a sala escrever pelo tema digitado.`)
         );
       }
     }
@@ -159,29 +171,34 @@ export async function runPipeline(
     // Resolvida ANTES da pesquisa de propósito: é a premissa que diz ao pesquisador o que
     // procurar. Pesquisar o tema solto e só depois inventar a tese era a inversão que deixava
     // o dossiê genérico e o roteirista sem fio condutor.
-    // Precedência: digitada pelo usuário > extraída da modelagem (com confirmação) > derivada.
+    // Precedência: já resolvida (digitada sem modelagem, ou confirmada da modelagem no run
+    // anterior) > extraída da modelagem (com confirmação) > derivada do tema.
     let premissa = ctx.premissa;
-    if (premissa) {
-      // Digitada: adotada VERBATIM. O nó de derivação nem roda — sem modelo no caminho, não
-      // existe deriva possível. É a única garantia dura do sistema.
-      ctx.premissaOrigem ??= "digitada";
-    } else if (adaptation && !ctx.artifacts?.candidatas?.length) {
-      // Modelagem SEM tema: a tese é a DO ORIGINAL (compreensao.argumento_central) e o usuário
-      // confirma antes de escrever. O run termina aqui; confirmarPremissa dispara o run 2, que
-      // reusa artifacts. Duas execuções normais no lugar de uma suspensa.
-      // Só na primeira geração: sessão legada com candidatas já feitas não fica travada.
-      // Modelar COM tema digitado NÃO entra aqui: ali o assunto é outro, a tese do vídeo modelado
-      // seria ruído (a autópsia nem extrai `compreensao`), e a premissa vem do tema. Isso também
-      // preserva o paralelismo modelagem ∥ pesquisa, que um await aqui mataria.
-      // Replicar entra SEMPRE (com ou sem texto digitado): lá a tese é a do original por definição,
-      // e o texto do campo é ângulo, não assunto.
+    // A tese do vídeo só é buscada quando ela pode ser usada. Premissa já na coluna vence — é ela
+    // que `confirmarPremissa` grava, e é por isso que o run 2 não volta a pausar (um "ignore
+    // ctx.premissa quando há modelagem" aqui poria a sessão em laço eterno de confirmação).
+    // E só na primeira geração: sessão legada com candidatas já feitas não fica travada na pausa.
+    const tirarTeseDoVideo = modelando && !premissa && !ctx.artifacts?.candidatas?.length;
+    let teseExtraida = "";
+    if (tirarTeseDoVideo) {
       const analise = (await modelagemP)[0]?.analysis;
       // Replicar sem esqueleto não tem o que replicar: aborta com o caminho de saída em vez de
       // seguir e escrever um roteiro que finge ter obedecido uma estrutura que ninguém leu.
       if (replicando) exigirEsqueletoDoOriginal(analise);
-      const extraida = analise?.compreensao?.argumento_central?.trim();
-      if (extraida) {
-        const sugerida = dedash(extraida);
+      teseExtraida = analise?.compreensao?.argumento_central?.trim() ?? "";
+    }
+
+    switch (origemDaPremissa({ digitada: premissa, temModelagem: tirarTeseDoVideo, teseExtraida })) {
+      case "digitada":
+        // Adotada VERBATIM. O nó de derivação nem roda — sem modelo no caminho, não existe deriva
+        // possível. `??=` preserva a origem já gravada (`modelagem`, no run 2).
+        ctx.premissaOrigem ??= "digitada";
+        break;
+      case "modelagem": {
+        // A tese é a DO ORIGINAL (compreensao.argumento_central) e o humano confirma antes de
+        // qualquer linha ser escrita. O run termina aqui; confirmarPremissa dispara o run 2, que
+        // reusa artifacts. Duas execuções normais no lugar de uma suspensa.
+        const sugerida = dedash(teseExtraida);
         await appDb
           .from("vm_sessions")
           .update({
@@ -193,36 +210,53 @@ export async function runPipeline(
         emit({ type: "premissa_pendente", sugerida });
         return;
       }
+      case "sem_tese":
+        // Regra 1: com modelagem, a autópsia É o trabalho — falhar aqui derruba a geração, com o
+        // caminho de saída. Antes, este ramo simplesmente não existia: o fluxo escorregava para a
+        // derivação sem tema e sem material, e o modelo inventava um placeholder de premissa.
+        throw new Error(
+          "Não consegui extrair a tese do vídeo modelado — e é dela que a premissa desta sessão sai. " +
+            "Cole a transcrição no campo do material e conjure de novo, ou desmarque o material como modelagem."
+        );
+      case "derivada": {
+        // Nem resolvida nem extraível: o sistema produz a tese a partir do tema. É o caminho que
+        // fecha a regra "nenhum roteiro sem premissa" sem transformar o formulário em pedágio.
+        // Sem insumo nenhum, `derivePremissa` recusa em vez de inventar.
+        emit({ type: "phase", phase: "premissa" });
+        const derivada = await derivePremissa(ctx);
+        premissa = derivada.premissa;
+        ctx.premissaOrigem = "derivada";
+        ctx.premissaProvas = derivada.o_que_provaria;
+        ctx.premissaContraintuitivo = derivada.angulo_contraintuitivo;
+        await appDb
+          .from("vm_sessions")
+          .update({ premissa, premissa_origem: "derivada" })
+          .eq("id", sessionId);
+        break;
+      }
     }
-
-    if (!premissa) {
-      // Nem digitada nem extraível: o sistema produz a tese a partir do tema. É o caminho que
-      // fecha a regra "nenhum roteiro sem premissa" sem transformar o formulário em pedágio.
-      emit({ type: "phase", phase: "premissa" });
-      const derivada = await derivePremissa(ctx);
-      premissa = derivada.premissa;
-      ctx.premissaOrigem = "derivada";
-      ctx.premissaProvas = derivada.o_que_provaria;
-      ctx.premissaContraintuitivo = derivada.angulo_contraintuitivo;
-      await appDb
-        .from("vm_sessions")
-        .update({ premissa, premissa_origem: "derivada" })
-        .eq("id", sessionId);
-    }
+    // Guarda de sanidade, a última linha antes de congelar: placeholder ou rótulo curto não é
+    // tese, e uma premissa dessas atravessaria o pipeline inteiro sob o cabeçalho "INEGOCIÁVEL".
+    if (!teseAceitavel(premissa))
+      throw new Error(
+        `A premissa desta sessão não é uma tese ("${premissa.slice(0, 80)}"). ` +
+          `Escreva 1 ou 2 frases afirmativas — no campo da premissa, ou na caixa de premissa da sessão — e conjure de novo.`
+      );
     // Congelada: daqui pra frente todo agente lê ctx.premissa via premissaBlock(), a mesma string.
     ctx.premissa = premissa;
 
     // ── Pesquisa + narrativas + ranking (só na primeira geração da sessão) ──
     let artifacts: SessionArtifacts | null = ctx.artifacts;
     if (!artifacts?.candidatas?.length) {
-      // Sem tema, a ordem importa: a autópsia primeiro, porque é ela que diz ao pesquisador
+      // Com modelagem, a ordem importa: a autópsia primeiro, porque é ela que diz ao pesquisador
       // QUAL tese testar e QUAIS alegações checar. Pesquisa cega enriquece no escuro e
       // deixa os ângulos sem lastro factual — que é justamente o que a casa desclassifica.
-      // Com tema, os dois são independentes e seguem em paralelo (o Grok leva 30-90s).
+      // O paralelismo modelagem ∥ pesquisa sobrevive só onde não há modelagem, e é o preço
+      // consciente da Regra 2: a tese vem antes, mesmo quando há texto digitado.
       let resultados: ModelagemResult[];
       let dossie: string;
       let compreensao = "";
-      if (adaptation) {
+      if (modelando) {
         resultados = await modelagemP;
         if (replicando) exigirEsqueletoDoOriginal(resultados[0]?.analysis);
         compreensao = compreensaoBlock(resultados[0]?.analysis ?? {});
@@ -270,7 +304,6 @@ export async function runPipeline(
           motivo: "a narrativa é a do original — não há o que propor nem rankear",
           estrutura_do_original: narrativa.estrutura,
           beats_do_original: narrativa.beats.length,
-          modelagens_ignoradas: ignoradosNoReplicar,
         });
       } else {
         emit({ type: "phase", phase: "narrativas" });

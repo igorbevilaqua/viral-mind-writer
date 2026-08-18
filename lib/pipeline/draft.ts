@@ -1,6 +1,6 @@
 import { anthropic, WRITER_MODEL, recordUsage } from "../anthropic";
-import { agentPrompt, bulletsBlock, clientInsightBlock, formatNarrativa, licaoRefs, licoesPara, premissaBlock, registrarBloco } from "./agents";
-import { anexoReplicar } from "./replicar";
+import { agentPrompt, bulletsBlock, clientInsightBlock, direcaoBlock, formatNarrativa, licaoRefs, licoesPara, premissaBlock, registrarBloco } from "./agents";
+import { anexoModelagem, anexoReplicar } from "./replicar";
 import type { EcoNumerico } from "./slop-lint";
 import type { GenerationContext, ScriptSections } from "./types";
 
@@ -112,7 +112,7 @@ export function extractPlaybookSection(playbook: string | undefined, estrutura: 
   return hit?.trim() ?? "";
 }
 
-// Extrai a seção "## CHECAGEM" do dossiê (só existe em modelagem sem tema: o pesquisador
+// Extrai a seção "## CHECAGEM" do dossiê (só existe quando há modelagem: o pesquisador
 // verifica ali cada alegação do vídeo original). Vai inteira ao revisor — truncar a checagem
 // é o mesmo que não checar. Teto de segurança pra dossiê degenerado.
 export function checagemSection(dossie: string | undefined, max = 4000): string {
@@ -425,19 +425,21 @@ export async function generateDraft(
 ): Promise<WriterOutput> {
   // Replicar é outro trabalho, não outro parágrafo de instrução: prompt próprio (AGENTS.md §5).
   const replicando = anexoReplicar(ctx.attachments);
+  // Com modelagem (nos dois modos) o assunto é o do material e o texto digitado é DIREÇÃO — o
+  // mesmo canal que só o Replicar tinha, agora valendo para Modelar (Regra 3).
+  const modelando = anexoModelagem(ctx.attachments);
+  const direcao = direcaoBlock(ctx, 'recorte, ênfase ou exemplo a citar ("cite o caso X", "seja mais crítico")');
   const task = revision
     ? `Reescreva o corpo do roteiro abaixo atendendo o FEEDBACK DO USUÁRIO (prioridade máxima), mantendo a NARRATIVA VENCEDORA do seu contexto e o brief. Aproveite o que já funciona na versão anterior; mude o que o feedback pedir.\n\nVERSÃO ANTERIOR:\n${revision.anterior}\n\nFEEDBACK DO USUÁRIO:\n${revision.feedback}`
     : replicando
-      ? `Escreva o corpo do roteiro replicando a ARQUITETURA DO ORIGINAL do seu contexto, beat a beat, na mesma ordem, com a mesma função e a mesma proporção de duração. Não proponha estrutura nova e não troque a tese: o ganho é frase a frase.${
-          ctx.prompt.trim()
-            ? `\n\nORIENTAÇÃO DE ÂNGULO DO USUÁRIO (recorte DENTRO da mesma tese — NÃO é tema novo e não autoriza trocar de assunto):\n${ctx.prompt.trim()}`
-            : ""
-        }`
-      : ctx.prompt.trim()
-      ? `Escreva o corpo do roteiro executando a NARRATIVA VENCEDORA do seu contexto, sobre o brief abaixo.`
-      : // Modelagem sem tema: mesmo assunto e MESMA TESE do vídeo analisado, execução melhor.
-        // O texto original não chega aqui de propósito — a premissa, a narrativa e o dossiê bastam.
-        `Escreva o corpo do roteiro sustentando a PREMISSA do seu contexto (é a tese do vídeo modelado, confirmada pelo usuário) e executando a NARRATIVA VENCEDORA. Não invente ângulo novo: a aposta é vencer o original no mesmo ângulo, com linguagem mais simples, argumento mais forte, mais prova e conclusão mais consequente. Você NÃO tem o texto original em mãos — e não precisa dele: use os fatos do DOSSIÊ (confira a seção CHECAGEM antes de afirmar qualquer coisa) e a arquitetura da seção do vídeo modelado.`;
+      ? `Escreva o corpo do roteiro replicando a ARQUITETURA DO ORIGINAL do seu contexto, beat a beat, na mesma ordem, com a mesma função e a mesma proporção de duração. Não proponha estrutura nova e não troque a tese: o ganho é frase a frase.${direcao}`
+      : modelando
+        ? // Modelagem: mesmo assunto e MESMA TESE do vídeo analisado, execução melhor.
+          // O texto original não chega aqui de propósito — a premissa, a narrativa e o dossiê bastam.
+          `Escreva o corpo do roteiro sustentando a PREMISSA do seu contexto (é a tese do vídeo modelado, confirmada pelo usuário) e executando a NARRATIVA VENCEDORA. Não invente ângulo novo: a aposta é vencer o original no mesmo ângulo, com linguagem mais simples, argumento mais forte, mais prova e conclusão mais consequente. Você NÃO tem o texto original em mãos — e não precisa dele: use os fatos do DOSSIÊ (confira a seção CHECAGEM antes de afirmar qualquer coisa) e a arquitetura da seção do vídeo modelado.${direcao}`
+        : ctx.prompt.trim()
+          ? `Escreva o corpo do roteiro executando a NARRATIVA VENCEDORA do seu contexto, sobre o brief abaixo.`
+          : `Escreva o corpo do roteiro executando a NARRATIVA VENCEDORA do seu contexto e sustentando a PREMISSA.`;
 
   const t0 = Date.now();
   const stream = anthropic.messages.stream({
@@ -457,9 +459,9 @@ export async function generateDraft(
       {
         role: "user",
         content: `${task} Duração-alvo: 60 a 180 segundos de fala (150 a 430 palavras no corpo — fora disso o roteiro é eliminado na revisão).${
-          // Em Replicar o texto digitado já entrou como ORIENTAÇÃO DE ÂNGULO na task: repeti-lo
-          // como BRIEF seria oferecer ao roteirista um tema novo, que é justamente o que o modo proíbe.
-          ctx.prompt.trim() && !replicando ? `\n\nBRIEF:\n${ctx.prompt}` : ""
+          // Com modelagem o texto digitado já entrou como ORIENTAÇÃO na task: repeti-lo como
+          // BRIEF seria oferecer ao roteirista um tema novo, que é justamente o que a Regra 3 proíbe.
+          ctx.prompt.trim() && !modelando ? `\n\nBRIEF:\n${ctx.prompt}` : ""
         }\n\n${WRITER_FORMAT}`,
       },
     ],

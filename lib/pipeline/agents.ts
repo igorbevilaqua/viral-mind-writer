@@ -17,7 +17,7 @@ import { deepDedash } from "./slop-lint";
 import fontesAutoritativas from "./fontes-autoritativas.json";
 import { HOOK_MECHANISMS, HOOK_FORMATS, filtrarCandidatos, selectHook, type HookCandidate } from "./hook-mechanisms";
 import { clientPrefsBlock } from "./draft";
-import { anexoReplicar } from "./replicar";
+import { anexoModelagem, anexoReplicar } from "./replicar";
 import { selecionarBullets } from "../bullets";
 
 // Os prompts dos agentes vivem em agents/*.md — fonte única consumida pelo app e pela skill /goal.
@@ -348,8 +348,23 @@ ${n.beats.map((b, i) => `${i + 1}. ${b}`).join("\n")}
 GANCHO POTENCIAL: ${n.gancho_potencial}`;
 }
 
-// Missão extra quando não há tema digitado: o "tema" é o do vídeo modelado, então o
-// pesquisador checa o que ele alegou (nada entra como fato nosso sem confirmação) e traz
+// ── A direção do usuário (Regra 3) ───────────────────────────────────────────────────────────
+// Com modelagem marcada, o texto digitado NÃO é tema: o assunto e a tese são os do material, e o
+// que o usuário escreveu é recorte DENTRO da mesma tese. Um bloco só para os quatro agentes que
+// sabem usar direção — muda apenas a linha do que ela significa em cada um, porque quatro
+// redações das mesmas travas divergem na primeira edição.
+export function direcaoBlock(ctx: GenerationContext, oQueSignificaAqui: string): string {
+  const d = ctx.prompt.trim();
+  if (!d || !anexoModelagem(ctx.attachments)) return "";
+  return (
+    `\n\nORIENTAÇÃO DO USUÁRIO (recorte DENTRO da mesma tese — não é tema novo e não autoriza trocar de assunto): ${d}\n` +
+    `Aqui ela vale como ${oQueSignificaAqui}. É SUGESTÃO, não ordem: não revoga a premissa nem a arquitetura do material ` +
+    `modelado. Se conflitar com o que você tem de mais forte, ignore-a e diga por quê no seu racional — nunca no texto entregue.`
+  );
+}
+
+// Missão extra quando há modelagem: o "tema" é o do vídeo modelado, então o pesquisador
+// checa o que ele alegou (nada entra como fato nosso sem confirmação) e traz
 // munição que o original não usou. Sem isto, o roteiro sai 100% da palavra do vídeo.
 function checagemBlock(adapt: { transcricao: string; compreensao?: ModelagemCompreensao; replicar?: boolean }): string {
   const c = adapt.compreensao;
@@ -376,7 +391,7 @@ Traga também, fora do teto, o melhor CONTRA-ARGUMENTO com fonte: não para troc
 
   const abertura = adapt.replicar
     ? `MODO REPLICAR. Vamos republicar o vídeo abaixo com execução melhor: MESMO assunto, MESMA tese, MESMA estrutura beat a beat — a autópsia dele já foi feita e está aqui.`
-    : `NÃO HÁ TEMA DIGITADO. Vamos publicar sobre o MESMO assunto do vídeo abaixo, por um ângulo novo e melhor — a autópsia dele já foi feita e está aqui.`;
+    : `MODO MODELAR. Vamos publicar sobre o MESMO assunto do vídeo abaixo, defendendo a MESMA tese, por um ângulo novo e melhor — a autópsia dele já foi feita e está aqui.`;
 
   return `${abertura}
 
@@ -452,12 +467,9 @@ export function montarEntradaPesquisa(
   // Notícias anexadas: o pesquisador abre os links e incorpora os fatos ao dossiê,
   // guiado pelos comentários do usuário sobre cada uma.
   const noticias = ctx.attachments.filter((a) => a.kind === "news_link" && a.url);
-  // Em Replicar o texto digitado não é tema: é orientação de ÂNGULO dentro da mesma tese, e é
-  // assim que ele entra na busca — como prioridade de recorte, nunca como assunto novo.
-  const angulo =
-    adapt && ctx.prompt.trim()
-      ? `\n\nORIENTAÇÃO DE ÂNGULO DO USUÁRIO (recorte DENTRO da mesma tese — não é tema novo e não autoriza trocar de assunto): ${ctx.prompt.trim()}`
-      : "";
+  // Com modelagem (nos dois modos) o texto digitado não é tema: é direção dentro da mesma tese, e
+  // é assim que ele entra na busca — como pauta extra a confirmar, nunca como assunto novo.
+  const angulo = adapt ? direcaoBlock(ctx, "sugestão de pesquisa e informação extra a confirmar") : "";
   return `${adapt ? `${checagemBlock(adapt)}${angulo}\n\n` : `TEMA DO VÍDEO: ${ctx.prompt}`}${premissaPautaBlock(ctx)}${
     // Em modelagem o nicho do cliente enviesava a busca pro campo dele em vez do
     // assunto do vídeo modelado — o dossiê é do vídeo, não do cliente.
@@ -557,9 +569,9 @@ const NARRATIVAS_TOOL = {
 export async function proposeNarratives(
   ctx: GenerationContext,
   dossie: string,
-  // Sem tema digitado: o assunto E a tese são os do vídeo modelado (a premissa já foi
-  // confirmada pelo usuário). As candidatas são arquiteturas diferentes para sustentar essa
-  // MESMA tese melhor que o original — não ângulos alternativos a ela.
+  // Com modelagem: o assunto E a tese são os do vídeo modelado (a premissa já foi confirmada
+  // pelo usuário). As candidatas são arquiteturas diferentes para sustentar essa MESMA tese
+  // melhor que o original — não ângulos alternativos a ela.
   compreensao?: string
 ): Promise<NarrativaCandidata[]> {
   const refs = ctx.attachments
@@ -575,7 +587,7 @@ export async function proposeNarratives(
       role: "user" as const,
       content: `${premissaBlock(ctx)}${premissaBlock(ctx) ? "\n\n" : ""}${
         compreensao
-          ? `MODELAGEM DE VÍDEO SEM TEMA DIGITADO — a autópsia do vídeo de referência está abaixo. Vamos publicar sobre o MESMO assunto defendendo a MESMA TESE (a premissa acima saiu dela e foi confirmada pelo usuário), numa execução melhor. Cada candidata é um CAMINHO NARRATIVO diferente para sustentar essa tese, não uma tese alternativa: trocar o argumento é desclassificação. A recompensa emocional entregue pelo original é o piso, não o teto.\n\n${compreensao}`
+          ? `MODELAGEM DE VÍDEO — a autópsia do vídeo de referência está abaixo. Vamos publicar sobre o MESMO assunto defendendo a MESMA TESE (a premissa acima saiu dela e foi confirmada pelo usuário), numa execução melhor. Cada candidata é um CAMINHO NARRATIVO diferente para sustentar essa tese, não uma tese alternativa: trocar o argumento é desclassificação. A recompensa emocional entregue pelo original é o piso, não o teto.\n\n${compreensao}`
           : `TEMA DO VÍDEO: ${ctx.prompt}`
       }
 
@@ -700,7 +712,9 @@ export async function rankNarratives(
     messages: [
       {
         role: "user",
-        content: `TEMA: ${ctx.prompt || "(sem tema digitado — é uma modelagem de vídeo: o assunto é o do vídeo original e cada candidata ataca por um ângulo diferente)"}${ctx.clientPrefs && !ctx.modoModelagem ? `\nCLIENTE: ${ctx.clientPrefs.nome}` : ""}
+        // Com modelagem o texto digitado é direção, não tema: mandá-lo como TEMA aqui faria o
+        // Dados rankear as candidatas contra um assunto que a sala não vai escrever.
+        content: `TEMA: ${anexoModelagem(ctx.attachments) ? "(modelagem de vídeo — o assunto e a tese são os do original, e cada candidata ataca por um caminho narrativo diferente)" : ctx.prompt}${ctx.clientPrefs && !ctx.modoModelagem ? `\nCLIENTE: ${ctx.clientPrefs.nome}` : ""}
 
 NARRATIVAS CANDIDATAS:
 ${candidatas.map((n, i) => `[${i}]\n${formatNarrativa(n)}\nPor que funciona (storytelling): ${n.porque_funciona}`).join("\n\n")}
@@ -857,7 +871,7 @@ export async function designHook(
           role: "user",
           content: `${prefsCliente ? `${prefsCliente}\n\n` : ""}${premissaHookBlock(ctx)}NARRATIVA VENCEDORA:
 ${narrativaBloco}
-${modelagemHookBlock(ctx)}
+${modelagemHookBlock(ctx)}${direcaoBlock(ctx, "sugestão de hook — um palpite de abertura, que você julga como julgaria os seus")}
 ORIENTAÇÃO DOS DADOS SOBRE HOOKS:
 ${orientacaoHook}
 ${rankingMecanismos ? `\n${rankingMecanismos}` : ""}${preferencias ? `\n${preferencias}` : ""}${paleta ? `\n${paleta}` : ""}${hookCampeoes ? `\nHOOKS CAMPEÕES DESTE CLIENTE (literais — a primeira frase real dos vídeos de mais views; use como referência de registro, nunca copie):\n${hookCampeoes}` : ""}${resultadosHook ? `\nHOOKS DE ROTEIROS DESTA SALA JÁ PUBLICADOS (resultado real — evite o marcado como EVITE):\n${resultadosHook}` : ""}${clientInsightBlock(ctx, ["hook"]) ? `\nHOOKS QUE JÁ FUNCIONARAM PARA ESTE CLIENTE (pré-rankeados por performance+recência):\n${clientInsightBlock(ctx, ["hook"])}` : ""}${taughtBlock(ctx, "hook") ? `\nAPRENDIZADOS DE HOOK ENSINADOS PELO TIME (curadoria humana — prevalecem sobre padrões do corpus em conflito):\n${taughtBlock(ctx, "hook")}` : ""}
@@ -940,6 +954,7 @@ export async function writeComando(ctx: GenerationContext, corpo: string): Promi
     : r.adaptar
       ? `MODO REPLICAR — ADAPTE O COMANDO DO ORIGINAL. Ele fechava assim: ${r.descricao}.\nMantenha o mesmo tipo de pedido e a mesma posição; melhore a execução (benefício explícito na própria frase, verbo mais concreto, promessa que o roteiro pagou). Nenhuma frase literal do original pode sobreviver.\n\n`
       : `MODO REPLICAR — CRIE O COMANDO: ${r.descricao}. É o ponto onde a nossa versão ganha dele.\nO pedido tem que soar CONSEQUÊNCIA natural do que o vídeo acabou de dizer, não apêndice colado no fim: quem entendeu a tese já quer fazer o que você vai pedir.\n\n`;
+  const direcaoComando = direcaoBlock(ctx, "sugestão de comando — um palpite de CTA, que você julga como julgaria os seus");
   // CTA é fórmula curta sobre padrões dados no contexto: ANALYST_MODEL + effort low bastam
   // (era WRITER_MODEL/fable, ~3x o preço, pra 2-3 frases). Sem cache_control: prompt pequeno
   // (provavelmente abaixo do mínimo cacheável) e agora no modelo barato — write premium não paga.
@@ -954,7 +969,7 @@ export async function writeComando(ctx: GenerationContext, corpo: string): Promi
       messages: [
       {
         role: "user",
-        content: `${clienteBloco}${replicarBloco}${
+        content: `${clienteBloco}${replicarBloco}${direcaoComando ? `${direcaoComando.trim()}\n\n` : ""}${
           clientInsightBlock(ctx, ["comando"])
             ? `COMANDOS QUE JÁ CONVERTERAM PARA ESTE CLIENTE (pré-rankeados por seguidores ganhos):\n${clientInsightBlock(ctx, ["comando"])}\n\n`
             : ""

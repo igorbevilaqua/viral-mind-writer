@@ -44,7 +44,14 @@ export async function createSession(input: {
   const userId = await currentUserId();
   // Premissa digitada é adotada VERBATIM (origem 'digitada'): o nó de derivação nem roda, então
   // nenhum modelo reescreve a tese do usuário. Vazia → o pipeline resolve (modelagem ou derivação).
-  const premissa = input.premissa?.trim() || null;
+  //
+  // Com material marcado como modelagem, porém, ela NÃO existe: a tese é a do vídeo, e dois donos
+  // da tese é contradição. O formulário some com o campo, e esta linha é a invariante — UI não é
+  // autorização. Editar a tese DEPOIS de extraída continua valendo (é a caixa de confirmação),
+  // e é por isso que a regra mora aqui, na criação, e não em runPipeline: lá `premissa` já pode
+  // ser a confirmada da modelagem, e ignorá-la poria a sessão em laço eterno de confirmação.
+  const temModelagem = input.attachments.some((a) => a.is_modelagem);
+  const premissa = (temModelagem ? "" : input.premissa?.trim()) || null;
   const { data: session, error } = await appDb
     .from("vm_sessions")
     .insert({

@@ -47,7 +47,9 @@ describe("entrada do pesquisador — paridade entre os dois modos", () => {
     expect(e).toContain("Monte o dossiê.");
 
     const m = montarEntradaPesquisa(ctx({ modoModelagem: true }), adapt);
-    expect(m).toContain("NÃO HÁ TEMA DIGITADO");
+    // A abertura deixou de anunciar "não há tema digitado": com modelagem marcada o assunto é o
+    // do vídeo com ou sem texto no campo, e o texto (quando existe) entra como direção.
+    expect(m).toContain("MODO MODELAR");
     expect(m).toContain("o vídeo modelado fala disso");
     expect(m).not.toContain("TEMA DO VÍDEO: reforma tributária");
   });

@@ -7,14 +7,66 @@ import type { GenerationContext } from "./types";
 // A PREMISSA é o argumento que o vídeo defende — 1-2 frases, afirmativa, falsificável.
 // Não é o tema (assunto), não é o ângulo (recorte), não é o gancho (isca): é a tese.
 //
-// Três fontes, um slot só (resolvido em runPipeline):
+// Três fontes, um slot só (resolvido em runPipeline, decidido por `origemDaPremissa` abaixo):
 //   1. digitada pelo usuário → adotada VERBATIM, este módulo nem roda. É a garantia mais
-//      forte que existe: sem modelo no caminho, não há deriva possível.
-//   2. extraída da modelagem (compreensao.argumento_central) → confirmada pelo usuário.
+//      forte que existe: sem modelo no caminho, não há deriva possível. Só existe em sessão SEM
+//      modelagem: com material marcado, a tese é a do vídeo e não há dois donos dela.
+//   2. extraída da modelagem (compreensao.argumento_central) → confirmada pelo usuário. Depois
+//      de confirmada ela está na coluna e vence como qualquer premissa já resolvida.
 //   3. derivada do tema → `derivePremissa` abaixo.
 //
 // Depois de resolvida ela é congelada em vm_sessions.premissa e TODO estágio recebe a mesma
 // string literal via `premissaBlock`. Ninguém re-deriva, ninguém parafraseia.
+
+// Placeholders que um modelo forçado por `tool_choice` produz quando não tem o que dizer — foi
+// assim que a string literal `<UNKNOWN>` virou o fio condutor de um roteiro inteiro em produção.
+const PLACEHOLDER =
+  /^(?:<[^>]*>|n\.?\s*\/?\s*a\.?|n[aã]o (?:se )?aplic\w*|unknown|desconhecid\w*|indefinid\w*|sem premissa|null|undefined|[-–—.?]+)$/i;
+
+// A outra forma de premissa fabricada, encontrada em produção na sessão d5ebc218: a tese vem
+// legítima e então o modelo continua escrevendo a serialização crua da tool, e o campo termina
+// em `</premissa>\n<parameter name="angulo_contraintuitivo">…`. Passa em tudo o que o
+// PLACEHOLDER testa — é longa, tem dezenas de palavras — e foi para o roteirista sob
+// "INEGOCIÁVEL" com a marcação dentro. Diferente do PLACEHOLDER, aqui a busca é no meio do
+// texto, não ancorada: o vazamento vem DEPOIS da tese boa.
+const VAZAMENTO_DE_TOOL = /<\/|<(?:parameter|premissa|invoke|function|antml)\b/i;
+
+/**
+ * A guarda de sanidade da premissa: a ÚLTIMA linha antes de congelar a tese, nunca a primeira.
+ * A correção principal é não fabricar premissa (não derivar sem insumo, não seguir com autópsia
+ * sem tese); isto aqui é o cinto, e existe porque a próxima fabricação vai ter outro formato.
+ *
+ * Pura de propósito — as asserções vivem em tests/premissa-origem.test.ts.
+ */
+export function teseAceitavel(texto: string | null | undefined): boolean {
+  const t = (texto ?? "").trim();
+  if (PLACEHOLDER.test(t)) return false;
+  if (VAZAMENTO_DE_TOOL.test(t)) return false;
+  // Uma tese é uma afirmação de 1-2 frases. Abaixo disso é rótulo, sigla ou recusa — não tese.
+  return t.length >= 15 && t.split(/\s+/).length >= 3;
+}
+
+export type OrigemPremissa = "digitada" | "modelagem" | "derivada" | "sem_tese";
+
+/**
+ * Quem manda na premissa, em uma decisão pura (Regra 2): já resolvida (digitada sem modelagem,
+ * ou confirmada da modelagem num run anterior) > extraída da modelagem > derivada do tema.
+ *
+ * `temModelagem` aqui significa "esta execução tem que tirar a tese do vídeo" — falso quando a
+ * premissa já está na coluna, e é isso que impede o run 2 de voltar a pausar para sempre.
+ *
+ * Autópsia sem tese utilizável é `sem_tese`: FALHA declarada, nunca uma degradação silenciosa
+ * para a derivação (era o `if` sem `else` que fabricava premissa).
+ */
+export function origemDaPremissa(e: {
+  digitada?: string | null;
+  temModelagem: boolean;
+  teseExtraida?: string | null;
+}): OrigemPremissa {
+  if ((e.digitada ?? "").trim()) return "digitada";
+  if (!e.temModelagem) return "derivada";
+  return teseAceitavel(e.teseExtraida) ? "modelagem" : "sem_tese";
+}
 
 const PREMISSA_TOOL = {
   name: "registrar_premissa",
@@ -69,11 +121,21 @@ export async function derivePremissa(ctx: GenerationContext): Promise<PremissaDe
     .join("\n\n");
 
   // Materiais do usuário (notícia, documento, roteiro de referência) são a matéria-prima mais
-  // direta da tese: se ele colou uma notícia, a premissa provavelmente está lá dentro.
+  // direta da tese: se ele colou uma notícia, a premissa provavelmente está lá dentro. O anexo de
+  // modelagem fica FORA — a tese dele sai da autópsia, não de uma segunda leitura.
   const materiais = ctx.attachments
     .filter((a) => !a.is_modelagem && a.raw_content)
     .map((a) => `## ${a.kind}${a.url ? ` (${a.url})` : ""}\n${a.raw_content!.slice(0, 3000)}`)
     .join("\n\n");
+
+  // Regra 1, e a trava mora AQUI (não em quem chama): sem tema e sem material não há o que
+  // derivar, e pedir ao modelo — forçado por tool_choice — que preencha o campo assim mesmo é
+  // fabricar premissa. Era exatamente esse o caminho que gravava `<UNKNOWN>` em vm_sessions.
+  if (!ctx.prompt.trim() && !materiais)
+    throw new Error(
+      "Não há tema nem material de onde derivar a premissa desta sessão. " +
+        "Digite o tema (ou a premissa) e conjure de novo."
+    );
 
   const res = await trackedCreate(ctx.usageLog, "premissa", {
     model: ANALYST_MODEL,

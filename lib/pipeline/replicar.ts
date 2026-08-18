@@ -19,6 +19,14 @@ export function anexoReplicar<T extends Pick<Attachment, "is_modelagem" | "modo"
   return attachments.find((a) => a.is_modelagem && resolverModo(a.modo) === "replicar") ?? null;
 }
 
+// O anexo que dita a linha central da sessão — a MESMA regra 1:1 do Replicar, agora valendo para
+// Modelar (Regra 4): os dois ditam premissa e arquitetura, então dois deles é contradição, não
+// riqueza. Replicar vence quando existe (é o modo mais restritivo); senão, o primeiro marcado.
+// Os excedentes perdem a condição de modelagem e seguem como material de referência comum.
+export function anexoModelagem<T extends Pick<Attachment, "is_modelagem" | "modo">>(attachments: T[]): T | null {
+  return anexoReplicar(attachments) ?? attachments.find((a) => a.is_modelagem) ?? null;
+}
+
 // Marcador registrável para "o original não pedia nada ao espectador" (esqueleto.comando.tipo).
 // Campo vazio é ambíguo — não distingue "não havia comando" de "a autópsia não olhou".
 export const SEM_COMANDO = "nenhum";

@@ -49,8 +49,9 @@ const SUGGEST_MESSAGES: Record<string, string[]> = {
 const CAN_MODELAGEM: NewAttachment["kind"][] = ["reference_script", "video_link", "carousel_link"];
 
 // Os dois modos, lado a lado e mutuamente exclusivos (aparência de chip, comportamento de radio).
+// Os dois tiram a tese do material — o que muda é a liberdade de arquitetura.
 const MODOS = [
-  { modo: "modelar" as const, label: "Modelar", ajuda: "usa a arquitetura dele para o SEU tema" },
+  { modo: "modelar" as const, label: "Modelar", ajuda: "mesma tese, caminho narrativo novo" },
   { modo: "replicar" as const, label: "Replicar", ajuda: "mesmo vídeo, execução melhor" },
 ];
 const DOC_ACCEPT = ".pdf,.doc,.docx,.txt,.html,.htm,.md,.csv,.xls,.xlsx,.ppt,.pptx,.rtf";
@@ -141,7 +142,9 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
     setAttachments((a) => a.map((x, j) => (j === i ? { ...x, ...patch } : x)));
 
   // Clicar no chip do modo já ativo desliga a referência inteira (é o toggle de antes).
-  // Replicar é 1:1 com o material: marcar num segundo anexo desmarca o primeiro.
+  // Modelar e Replicar ditam a linha central do conteúdo, então são 1:1 com o material (Regra 4):
+  // marcar qualquer um dos dois num segundo anexo desmarca o anterior — o excedente continua na
+  // sessão como material de referência comum. O pipeline garante de novo: UI não é invariante.
   const setModo = (i: number, modo: "modelar" | "replicar") =>
     setAttachments((a) =>
       a.map((x, j) => {
@@ -149,7 +152,7 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
           const desligando = x.is_modelagem && x.modo === modo;
           return { ...x, is_modelagem: !desligando, modo: desligando ? null : modo };
         }
-        return modo === "replicar" && x.modo === "replicar" ? { ...x, is_modelagem: false, modo: null } : x;
+        return x.is_modelagem ? { ...x, is_modelagem: false, modo: null } : x;
       })
     );
 
@@ -236,6 +239,12 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
   const isUsable = (a: NewAttachment) => (a.kind === "news_link" ? a.url.trim() : a.raw_content.trim() || a.url.trim());
   const canSubmit = !!prompt.trim() || attachments.some(isUsable);
 
+  // Com material marcado, o campo de cima deixa de ser TEMA e vira DIREÇÃO (o assunto e a tese
+  // são os do material), e a premissa some do formulário: ela vai ser extraída do vídeo e
+  // confirmada na sessão. Campo desabilitado pediria explicação; campo ausente não levanta a
+  // pergunta. A regra de valer mora no servidor (createSession) — isto aqui é só o que se vê.
+  const temModelagem = attachments.some((a) => a.is_modelagem && isUsable(a));
+
   const submit = () => {
     if (!canSubmit) return;
     startTransition(async () => {
@@ -253,33 +262,50 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
     <div className="w-full max-w-2xl mt-9">
       {/* prompt */}
       <div className="rounded-[18px] border border-white/[.12] bg-white/[.03] overflow-hidden focus-within:border-gold/40 transition-colors">
+        {temModelagem && (
+          <p className="px-5 pt-4 text-[11px] uppercase tracking-wider text-amber-300/70">
+            Direções{" "}
+            <span className="normal-case tracking-normal text-white/30">
+              (opcional — com material marcado, o assunto e a tese são os dele)
+            </span>
+          </p>
+        )}
         <textarea
           ref={promptRef}
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
           rows={4}
-          placeholder="Descreva o vídeo: tema, ângulo, formato…"
-          className="w-full bg-transparent resize-none outline-none px-5 pt-5 pb-2 text-[15px] leading-relaxed placeholder:text-white/35 overflow-y-auto"
+          placeholder={
+            temModelagem
+              ? "Opcional: recorte, ênfase, sugestão de pesquisa, de hook ou de comando…"
+              : "Descreva o vídeo: tema, ângulo, formato…"
+          }
+          className={`w-full bg-transparent resize-none outline-none px-5 pb-2 text-[15px] leading-relaxed placeholder:text-white/35 overflow-y-auto ${
+            temModelagem ? "pt-1.5" : "pt-5"
+          }`}
         />
         {/* Premissa: o argumento que o vídeo defende. Preenchida, atravessa o pipeline inteiro
-            sem nenhum modelo tocá-la. Em branco, o sistema a define antes de pesquisar. */}
-        <div className="px-5 pb-3 pt-1 border-t border-white/[.05]">
-          <label className="block text-[11px] uppercase tracking-wider text-white/35 mb-1.5">
-            Premissa <span className="normal-case tracking-normal text-white/25">(opcional: o que o vídeo afirma)</span>
-          </label>
-          <textarea
-            value={premissa}
-            onChange={(e) => setPremissa(e.target.value)}
-            rows={2}
-            placeholder="1 ou 2 frases afirmativas. Ex: cada ataque público do Milei é peça de uma negociação comercial que já estava em curso."
-            className="w-full bg-transparent resize-none outline-none text-[13.5px] leading-relaxed placeholder:text-white/25 overflow-y-auto"
-          />
-          <p className="text-[11px] text-white/25">
-            {premissa.trim()
-              ? "A sala vai seguir esta premissa literalmente: narrativa, pesquisa e hook servem a ela."
-              : "Em branco, a sala define a premissa antes de pesquisar, e mostra qual foi."}
-          </p>
-        </div>
+            sem nenhum modelo tocá-la. Em branco, o sistema a define antes de pesquisar.
+            Com modelagem o campo SOME: a tese é a do material, extraída e confirmada na sessão. */}
+        {!temModelagem && (
+          <div className="px-5 pb-3 pt-1 border-t border-white/[.05]">
+            <label className="block text-[11px] uppercase tracking-wider text-white/35 mb-1.5">
+              Premissa <span className="normal-case tracking-normal text-white/25">(opcional: o que o vídeo afirma)</span>
+            </label>
+            <textarea
+              value={premissa}
+              onChange={(e) => setPremissa(e.target.value)}
+              rows={2}
+              placeholder="1 ou 2 frases afirmativas. Ex: cada ataque público do Milei é peça de uma negociação comercial que já estava em curso."
+              className="w-full bg-transparent resize-none outline-none text-[13.5px] leading-relaxed placeholder:text-white/25 overflow-y-auto"
+            />
+            <p className="text-[11px] text-white/25">
+              {premissa.trim()
+                ? "A sala vai seguir esta premissa literalmente: narrativa, pesquisa e hook servem a ela."
+                : "Em branco, a sala define a premissa antes de pesquisar, e mostra qual foi."}
+            </p>
+          </div>
+        )}
         <div className="flex items-center gap-2.5 px-3.5 py-3 border-t border-white/[.07] bg-white/[.02] flex-wrap">
           <select
             value={clientId}
@@ -505,30 +531,22 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
                 {MODOS.map((m) => `${m.label}: ${m.ajuda}`).join(" · ")}
               </p>
             )}
-            {a.is_modelagem && a.modo === "replicar" && (
+            {a.is_modelagem && (
               <>
                 <p className="text-xs text-white/40">
-                  Replicar: mesmo vídeo, execução melhor. A sala segue os beats do original na mesma ordem e na mesma
-                  proporção, e ganha frase a frase, sem copiar nenhuma frase dele.
+                  {a.modo === "replicar"
+                    ? "Replicar: mesmo vídeo, execução melhor. A sala segue os beats do original na mesma ordem e na mesma proporção, e ganha frase a frase, sem copiar nenhuma frase dele."
+                    : "Modelar: a sala mantém o assunto e a tese deste material, desconstrói a estrutura, as emoções e os elementos virais dele, e escreve uma versão melhor — com os fatos dele conferidos antes."}
                 </p>
-                {/* Em Replicar o tema é o do próprio original. Texto digitado NÃO troca o assunto:
-                    é assim que a UI diz, e é exatamente assim que o pipeline o trata. */}
+                {/* Nos DOIS modos o assunto é o do próprio material. Texto digitado não troca o
+                    assunto: é assim que a UI diz, e é exatamente assim que o pipeline o trata. */}
                 {prompt.trim() && (
                   <p className="text-xs text-amber-300/80">
-                    Em Replicar o assunto é o do próprio vídeo: o texto do campo acima é lido como orientação de
-                    ângulo dentro da mesma tese, não como tema novo.
+                    O assunto é o deste material: o texto do campo acima é lido como direção dentro da mesma tese
+                    (recorte, sugestão de pesquisa, de hook ou de comando), nunca como tema novo.
                   </p>
                 )}
               </>
-            )}
-            {a.is_modelagem && a.modo !== "replicar" && (
-              // Sem tema digitado a sala trabalha o assunto do próprio vídeo — dizer
-              // "no seu tema" aqui seria mentira, e era a única pista que o usuário tinha.
-              <p className="text-xs text-white/40">
-                {prompt.trim()
-                  ? "Modelar: a estrutura, emoções e elementos virais deste material serão desconstruídos e usados no seu tema"
-                  : "Sem tema: a sala mantém o assunto e a tese deste vídeo, e escreve uma versão melhor, com os fatos dele conferidos antes"}
-              </p>
             )}
             <div className="flex flex-col gap-2.5">
               {(a.kind === "news_link" || a.kind === "video_link" || a.kind === "carousel_link") && (

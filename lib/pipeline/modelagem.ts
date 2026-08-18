@@ -13,7 +13,7 @@ import type { Attachment, GenerationContext, ModelagemAnalysis } from "./types";
 // A modelagem extrai o MECANISMO do sucesso, nunca o conteúdo: o esqueleto é a parte
 // que viaja para outro tema/rosto/semana. Campos que descreviam o que o vídeo DIZ
 // (beats.resumo, argumentos, hook.texto) saíram de propósito — eram a origem da cópia.
-function modelagemTool(comTema: boolean) {
+function modelagemTool() {
   const props: Record<string, unknown> = {
     compreensao: {
       type: "object",
@@ -168,20 +168,17 @@ function modelagemTool(comTema: boolean) {
     },
   };
 
-  // Com tema digitado, a compreensão do assunto do vídeo é ruído: o roteiro é sobre
-  // OUTRA coisa e só a mecânica transfere. Sem tema, ela é o insumo da pesquisa dirigida
-  // e da proposta de ângulos — e paga o próprio custo.
-  if (comTema) delete props.compreensao;
-
+  // `compreensao` é OBRIGATÓRIA, sempre. Ela já foi apagada quando havia tema digitado (a leitura
+  // de então: "o roteiro é sobre outra coisa, o assunto do vídeo é ruído") — e é dela que sai a
+  // PREMISSA. Com modelagem marcada a tese é a do vídeo, com ou sem texto digitado, então apagá-la
+  // era apagar justamente o insumo do trabalho: a tese a confirmar e as alegações a checar.
   return {
     name: "registrar_modelagem",
     description: "Registra a autópsia de um vídeo viral: o que ele entregou à audiência e a mecânica que fez isso funcionar.",
     input_schema: {
       type: "object" as const,
       properties: props,
-      required: comTema
-        ? ["diagnostico", "esqueleto", "nao_transferivel", "timing"]
-        : ["compreensao", "diagnostico", "esqueleto", "nao_transferivel", "timing"],
+      required: ["compreensao", "diagnostico", "esqueleto", "nao_transferivel", "timing"],
     },
   };
 }
@@ -272,11 +269,11 @@ export interface ModelagemResult {
 }
 
 // Só o link foi colado (sem transcrição manual): busca a transcrição agora, ao conjurar —
-// não mais ao colar o link. Idempotente (mutação no attachment). Sem tema, o pipeline chama
-// isto ANTES de tudo — modelagem e pesquisa precisam da transcrição ao mesmo tempo.
-// Devolve o motivo da falha em vez de só engolir: com tema a modelagem é opcional e o motivo
-// vira log, mas sem tema a geração morre aqui e o usuário precisa saber o que fazer
-// (configurar chave? colar a transcrição? o link não é suportado?).
+// não mais ao colar o link. Idempotente (mutação no attachment). Com modelagem o pipeline chama
+// isto ANTES de tudo — premissa, modelagem e pesquisa precisam da transcrição ao mesmo tempo.
+// Devolve o motivo da falha em vez de só engolir: a geração morre aqui (a modelagem é a fonte da
+// premissa, não um enfeite) e o usuário precisa saber o que fazer — configurar chave? colar a
+// transcrição? o link não é suportado?
 export async function ensureTranscript(
   attachment: Attachment,
   log?: UsageLog
@@ -295,7 +292,7 @@ export async function ensureTranscript(
 }
 
 // Mesmo formato de retorno de `transcricaoDeUrl`: o motivo da falha volta como dado, não como
-// exceção, porque com tema a modelagem é opcional e sem tema o motivo vai para a tela.
+// exceção — quem chama é que decide se vira log (debate avulso) ou mensagem de tela (geração).
 async function leituraDeCarrossel(url: string, log?: UsageLog): Promise<{ text: string; erro: string | null }> {
   try {
     const { titulo, text } = await lerCarrossel(url, log);
@@ -383,13 +380,12 @@ export function chavesDoAnexo(a: Attachment): { url: string | null; attachmentId
 
 export interface AutopsiaOpts {
   transcript?: string; // já em mãos (o anexo da sessão traz a dele)
-  tema?: string; // tema novo digitado; vazio = a sala publica sobre o MESMO assunto
   taxonomia?: string; // playbooks de hook/estrutura já renderizados
   cliente?: string; // o que a casa sabe do cliente
   usageLog?: UsageLog;
   attachmentId?: string | null; // chave histórica, quando a autópsia nasce de um anexo
-  // A geração sem tema (Replicar e Modelar-sem-tema) tira a PREMISSA de `compreensao`: análise
-  // cacheada sem ela não serve ali, ainda que sirva ao Kasparov (que só quer o esqueleto).
+  // Toda geração com modelagem tira a PREMISSA de `compreensao`: análise cacheada sem ela não
+  // serve ali, ainda que sirva ao Kasparov (que só quer o esqueleto).
   exigeTese?: boolean;
   // Modo Replicar: o `esqueleto.comando` (inclusive o "nenhum") é insumo obrigatório — é ele que
   // decide, em código, se o agente comando adapta o CTA do original ou cria um.
@@ -401,9 +397,11 @@ export interface AutopsiaOpts {
 // por modo. Multiplicar a chave por modo faria o mesmo vídeo ser autopsiado duas vezes à toa.
 // O que varia é o que o CHAMADOR precisa encontrar dentro da análise, e é isso que o cache checa:
 //   • sempre: `esqueleto` (formato pós-refactor; análise antiga re-analisa uma vez);
-//   • `exigeTese` (geração sem tema): `compreensao.argumento_central`. Sem esta trava, uma
-//     autópsia paga COM tema digitado — que apaga `compreensao` de propósito — seria servida a
-//     uma sessão sem tema, que ficaria sem tese e sem alegações para checar;
+//   • `exigeTese` (toda geração com modelagem): `compreensao.argumento_central`. Esta trava é o
+//     que impede que as autópsias pagas na era do `comTema` — que apagavam `compreensao` de
+//     propósito — sejam servidas a uma sessão nova, que ficaria sem tese e sem alegações para
+//     checar. Elas continuam válidas para quem só quer o esqueleto (Kasparov): cache bom não é
+//     invalidado, só é recusado por quem precisa da metade que falta;
 //   • `exigeComando` (Replicar): `esqueleto.comando.tipo`, que é o que distingue "o original não
 //     pedia nada" de "ninguém olhou".
 function cacheServe(analysis: ModelagemAnalysis | null, opts: AutopsiaOpts): boolean {
@@ -417,8 +415,6 @@ function cacheServe(analysis: ModelagemAnalysis | null, opts: AutopsiaOpts): boo
 // fino sobre isto — o pipeline de geração não mudou de comportamento.
 export async function autopsiaDeUrl(url: string | null, opts: AutopsiaOpts = {}): Promise<ModelagemResult> {
   const vazio: ModelagemResult = { brief: "", analysis: {} };
-  const tema = opts.tema?.trim() ?? "";
-  const comTema = Boolean(tema);
 
   // Cache ANTES da transcrição: sem isso cada debate sobre o mesmo vídeo pagaria os dois.
   // Análises no formato antigo (sem `esqueleto`) re-analisam uma vez no formato novo.
@@ -443,9 +439,12 @@ export async function autopsiaDeUrl(url: string | null, opts: AutopsiaOpts = {})
   const carrossel = MARCA_DE_CARROSSEL.test(transcript);
   const peca = carrossel ? "carrossel" : "vídeo";
 
-  const missao = comTema
-    ? `Um roteirista vai usar essa arquitetura para escrever sobre outro tema: "${tema}". Extraia o que TRANSFERE para lá.`
-    : `Não há tema novo: a sala vai publicar sobre o MESMO assunto deste ${peca}, defendendo a MESMA TESE, ` +
+  // Missão única: o assunto é sempre o do próprio material. Havia aqui uma segunda missão
+  // ("escrever sobre outro tema: X") disparada pelo texto digitado — ela dizia ao analista para
+  // extrair só o que transfere, e o resultado era uma autópsia sem tese. Texto digitado é
+  // direção dentro da mesma tese (Regra 3), nunca assunto novo, e por isso não chega mais aqui.
+  const missao =
+    `A sala vai publicar sobre o MESMO assunto deste ${peca}, defendendo a MESMA TESE, ` +
       `numa versão melhor executada. Não é para fugir do ângulo dele — é para vencê-lo no próprio ângulo. ` +
       `Por isso o campo argumento_central é o mais importante da sua análise: é ele que vira a PREMISSA do nosso ` +
       `roteiro, e o usuário vai confirmá-lo antes de qualquer linha ser escrita. Enuncie a tese com precisão, ` +
@@ -466,7 +465,7 @@ export async function autopsiaDeUrl(url: string | null, opts: AutopsiaOpts = {})
     // análise estruturada via tool forçada; o sonnet-5 pensa por padrão no mesmo teto.
     // 8000 dá folga para o tool_use não truncar.
     max_tokens: 8000,
-    tools: [modelagemTool(comTema)],
+    tools: [modelagemTool()],
     tool_choice: { type: "tool", name: "registrar_modelagem" },
     messages: [
       {
@@ -519,16 +518,12 @@ export async function analyzeModelagem(attachment: Attachment, ctx: GenerationCo
 
   const storyIndex = playbookIndex(ctx.playbooks.storytelling);
   const { url, attachmentId } = chavesDoAnexo(attachment);
-  // Replicar não tem tema novo: o assunto é o do próprio original, e o texto digitado (quando
-  // existe) é orientação de ÂNGULO dentro da mesma tese. Passar tema aqui apagaria `compreensao`
-  // — justamente a tese que o usuário confirma e as alegações que a pesquisa vai checar.
   const replicar = resolverModo(attachment.modo) === "replicar";
-  const tema = replicar ? "" : ctx.prompt;
   return autopsiaDeUrl(url, {
     transcript,
-    tema,
-    // Sem tema a premissa vem da autópsia; em Replicar o comando dela decide adaptar × criar.
-    exigeTese: !tema.trim(),
+    // Nos dois modos a premissa vem da autópsia (Regra 2), então a tese é obrigatória em toda
+    // sessão; em Replicar o comando dela também decide, em código, adaptar × criar o CTA.
+    exigeTese: true,
     exigeComando: replicar,
     attachmentId,
     usageLog: ctx.usageLog,
