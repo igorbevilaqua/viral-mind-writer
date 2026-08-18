@@ -39,13 +39,29 @@ jobs:
             echo "::error::Falta a variable APP_URL e/ou o secret CRON_SECRET (veja o cabeçalho deste arquivo)."
             exit 1
           fi
+          # Sem esquema o curl assume http://, o servidor devolve 301 para o https e o corpo
+          # que chega é uma página de redirecionamento. Aconteceu no primeiro run de verdade.
+          case "$APP_URL" in
+            https://*) ;;
+            *) echo "::error::APP_URL precisa começar com https:// (veio: ${APP_URL})"; exit 1 ;;
+          esac
+          APP_URL="${APP_URL%/}"  # barra no fim também vira redirect
           echo "Chamando ${APP_URL}/api/cron/weekly-etl"
-          # --fail-with-body: sai com erro em 4xx/5xx MAS ainda imprime a resposta, senão um
-          # 401 vira "falhou" sem dizer por quê. --max-time acima do maxDuration 300 da rota.
-          curl --fail-with-body -sS --max-time 600 \
+
+          # Checa o código na mão em vez de --fail-with-body: aquele só falha em 4xx/5xx, então
+          # um 301 saía com sucesso e o job ficava VERDE sem ter rodado nada. Um check verde que
+          # não fez nada é pior que um vermelho — é assim que robô parado passa meses sem ninguém ver.
+          # --max-time acima do maxDuration 300 da rota. Sem -L de propósito: seguir redirect faria
+          # o curl descartar o Authorization ao mudar de host, e o 401 resultante mentiria a causa.
+          code=$(curl -sS --max-time 600 -o resultado.json -w '%{http_code}' \
             -H "Authorization: Bearer ${CRON_SECRET}" \
-            "${APP_URL}/api/cron/weekly-etl" | tee resultado.json
+            "${APP_URL}/api/cron/weekly-etl")
+          cat resultado.json
           echo
+          if [ "$code" != "200" ]; then
+            echo "::error::HTTP ${code} (esperado 200). 3xx = APP_URL com host ou esquema errado; 401 = CRON_SECRET ausente na Hostinger, diferente do secret do GitHub, ou app não reiniciado depois de criar a variável."
+            exit 1
+          fi
 
       - name: Resumo
         run: |
