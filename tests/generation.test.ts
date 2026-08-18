@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { guardEmit, isStaleGeneration, STALE_GENERATION_MS, UUID_RE } from "@/lib/generation";
+import { faseDeDebug, guardEmit, isStaleGeneration, podeGerar, STALE_GENERATION_MS, UUID_RE } from "@/lib/generation";
 
 describe("guardEmit", () => {
   it("repassa eventos enquanto o stream está vivo", () => {
@@ -43,6 +43,49 @@ describe("isStaleGeneration", () => {
   it("generating sem timestamp (pré-migration) é stale", () => {
     expect(isStaleGeneration("generating", null, now)).toBe(true);
     expect(isStaleGeneration("generating", undefined, now)).toBe(true);
+  });
+});
+
+describe("faseDeDebug", () => {
+  it("lê a fase corrente gravada pelo pipeline", () => {
+    expect(faseDeDebug({ phase: "pesquisa", git: "abc" })).toBe("pesquisa");
+  });
+
+  it("nada persistido, lixo ou fase desconhecida viram null (a tela não inventa rótulo)", () => {
+    expect(faseDeDebug(null)).toBe(null);
+    expect(faseDeDebug(undefined)).toBe(null);
+    expect(faseDeDebug("pesquisa")).toBe(null);
+    expect(faseDeDebug([{ phase: "pesquisa" }])).toBe(null);
+    expect(faseDeDebug({ phase: 7 })).toBe(null);
+    // "init" é o valor do dump de erro anterior a qualquer fase — não é fase de trabalho
+    expect(faseDeDebug({ phase: "init" })).toBe(null);
+  });
+});
+
+describe("podeGerar", () => {
+  const base = { status: "draft", generationStale: false, gerandoAqui: false, premissaPendente: false };
+
+  it("rascunho e erro podem gerar", () => {
+    expect(podeGerar(base)).toBe(true);
+    expect(podeGerar({ ...base, status: "error" })).toBe(true);
+    expect(podeGerar({ ...base, status: "done" })).toBe(true);
+  });
+
+  it("premissa esperando confirmação bloqueia: gerar ali re-paga transcrição e autópsia", () => {
+    expect(podeGerar({ ...base, status: "aguardando_premissa", premissaPendente: true })).toBe(false);
+  });
+
+  it("geração viva em outra conexão bloqueia — a aba acompanha, não reprocessa", () => {
+    expect(podeGerar({ ...base, status: "generating" })).toBe(false);
+  });
+
+  it("geração morta (stale) libera o retry", () => {
+    expect(podeGerar({ ...base, status: "generating", generationStale: true })).toBe(true);
+  });
+
+  it("gerando nesta aba bloqueia (duplo clique) e sessão encerrada também", () => {
+    expect(podeGerar({ ...base, gerandoAqui: true })).toBe(false);
+    expect(podeGerar({ ...base, status: "closed" })).toBe(false);
   });
 });
 

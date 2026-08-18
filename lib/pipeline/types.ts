@@ -29,6 +29,10 @@ export type PipelineEvent =
   | { type: "premissa_pendente"; sugerida: string }
   | { type: "token"; text: string }
   | { type: "done"; scriptId: string }
+  // Lock não adquirido: OUTRA conexão já está gerando esta sessão. Não é erro — é o sistema
+  // funcionando. Evento próprio para a tela levar a aba ao modo acompanhamento em vez de
+  // mostrar caixa vermelha com "Tentar de novo", que convidava a repetir o irrepetível.
+  | { type: "em_andamento" }
   | { type: "error"; message: string };
 
 export interface NarrativaCandidata {

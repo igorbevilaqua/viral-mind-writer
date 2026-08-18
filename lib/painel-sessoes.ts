@@ -27,6 +27,39 @@ export function entraNoPainel(tipo: TipoDoPainel, tipoParam?: string, statusPara
 }
 
 /**
+ * A linha de roteiro passa pelo chip de status ativo?
+ *
+ * `aguardando_premissa` tem chip próprio ("Aguardando você") porque é o estado que EXIGE ação
+ * humana: sem ele, qualquer chip ativo escondia exatamente a sessão que estava parada esperando
+ * alguém — o pior estado possível para ficar invisível.
+ *
+ * "publicada" é derivado do roteiro, não da sessão; os demais comparam com o status efetivo
+ * (já resolvido para `stalled` quando a geração morreu).
+ */
+export function casaComStatus(statusParam: string | undefined, linha: { effStatus: string; published: boolean }): boolean {
+  switch (statusParam) {
+    case undefined:
+    case "":
+      return true;
+    case "publicada":
+      return linha.published;
+    case "gerando":
+      return linha.effStatus === "generating";
+    case "aguardando":
+      return linha.effStatus === "aguardando_premissa";
+    case "pronta":
+      return linha.effStatus === "done" && !linha.published;
+    case "encerrada":
+      return linha.effStatus === "closed";
+    case "interrompida":
+      return linha.effStatus === "stalled";
+    // Status desconhecido na URL não esconde a lista inteira (link antigo, chip removido).
+    default:
+      return true;
+  }
+}
+
+/**
  * As duas listas em uma, mais recente primeiro. `quando` é ISO em UTC nas duas tabelas, então
  * comparar string basta e não paga o custo de N Date().
  *

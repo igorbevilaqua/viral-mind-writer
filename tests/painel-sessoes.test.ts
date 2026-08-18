@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { clientesDoFiltro, entraNoPainel, mesclarPainel } from "@/lib/painel-sessoes";
+import { casaComStatus, clientesDoFiltro, entraNoPainel, mesclarPainel } from "@/lib/painel-sessoes";
 
 const A = "11111111-1111-4111-8111-111111111111";
 const B = "22222222-2222-4222-8222-222222222222";
@@ -39,6 +39,34 @@ describe("entraNoPainel", () => {
 
   test("tipo=kasparov com status pendurado na URL ainda mostra debate", () => {
     expect(entraNoPainel("kasparov", "kasparov", "publicada")).toBe(true);
+  });
+});
+
+describe("casaComStatus", () => {
+  const aguardando = { effStatus: "aguardando_premissa", published: false };
+
+  test("sem chip, tudo passa", () => {
+    expect(casaComStatus(undefined, aguardando)).toBe(true);
+    expect(casaComStatus(undefined, { effStatus: "done", published: true })).toBe(true);
+  });
+
+  test("a sessão que espera ação humana tem chip próprio e não some sob ele", () => {
+    expect(casaComStatus("aguardando", aguardando)).toBe(true);
+    expect(casaComStatus("aguardando", { effStatus: "generating", published: false })).toBe(false);
+  });
+
+  test("os chips existentes continuam valendo", () => {
+    expect(casaComStatus("gerando", { effStatus: "generating", published: false })).toBe(true);
+    expect(casaComStatus("pronta", { effStatus: "done", published: false })).toBe(true);
+    // pronta e publicada são chips diferentes: publicada não conta duas vezes
+    expect(casaComStatus("pronta", { effStatus: "done", published: true })).toBe(false);
+    expect(casaComStatus("publicada", { effStatus: "done", published: true })).toBe(true);
+    expect(casaComStatus("encerrada", { effStatus: "closed", published: false })).toBe(true);
+    expect(casaComStatus("interrompida", { effStatus: "stalled", published: false })).toBe(true);
+  });
+
+  test("status desconhecido na URL não esvazia a lista", () => {
+    expect(casaComStatus("chip-que-nao-existe-mais", aguardando)).toBe(true);
   });
 });
 

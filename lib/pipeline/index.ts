@@ -45,6 +45,23 @@ export async function runPipeline(
   let currentPhase = "init";
   // user_id da sessão (vm_sessions.user_id): preenchido após loadContext, usado na telemetria do hub
   let hubUser: string | null = null;
+  // Base do dump de diagnóstico gravado em vm_sessions.debug (jsonb, migration 0008).
+  const debugBase = { version: APP_VERSION, git: GIT_SHA, opts };
+  // A fase corrente é persistida a cada TROCA — ~10 UPDATEs pequenos por geração, de propósito:
+  // é o que faz a aba que só acompanha (reload, segunda janela) ver em que fase a sala está em
+  // vez de um spinner mudo. Reusa a coluna `debug` para não pedir migration nova. O objeto é
+  // reescrito inteiro em cada escrita e o catch reescreve por último, então o dump de erro nunca
+  // é comido por uma fase. Best-effort: falhar aqui não pode derrubar a geração.
+  const gravarFase = (phase: string) => {
+    appDb
+      .from("vm_sessions")
+      .update({ debug: { ...debugBase, phase, at: new Date().toISOString() } })
+      .eq("id", sessionId)
+      .then(
+        ({ error }) => error && console.error("fase não persistida em vm_sessions.debug", error.message),
+        (err) => console.error("fase não persistida em vm_sessions.debug", err)
+      );
+  };
   // ponto único de todos os emits: guardado → desconexão do cliente não mata o pipeline,
   // e o emit({type:"error"}) do catch nunca relança. Cada troca de fase vira um evento no hub.
   const rawEmit = guardEmit(emit);
@@ -52,8 +69,10 @@ export async function runPipeline(
     if (e.type === "phase") {
       // Progresso dentro da fase repete o mesmo `phase` (017 §8) — só a TROCA vira evento
       // no hub, senão uma verificação de 20 alegações vira 20 linhas de atividade.
-      if (e.phase !== currentPhase)
+      if (e.phase !== currentPhase) {
         void registrarAtividade(e.phase, { sessaoId: sessionId, userId: hubUser, payload: { etapa: e.phase } });
+        gravarFase(e.phase);
+      }
       currentPhase = e.phase;
     }
     rawEmit(e);
@@ -69,8 +88,10 @@ export async function runPipeline(
     });
     if (lockErr) throw new Error(`falha ao iniciar geração: ${lockErr.message}`);
     if (!locked) {
-      // não passa pelo catch: setar status=error aqui clobberaria a geração em andamento
-      emit({ type: "error", message: "Geração já em andamento para esta sessão — acompanhe ou aguarde alguns minutos." });
+      // não passa pelo catch: setar status=error aqui clobberaria a geração em andamento.
+      // E não é `error`: outra conexão está gerando, o que é o sistema funcionando. A tela
+      // usa este evento para levar a aba ao modo acompanhamento (session-view: watching).
+      emit({ type: "em_andamento" });
       return;
     }
 
@@ -526,11 +547,9 @@ export async function runPipeline(
   } catch (e) {
     const message = e instanceof Error ? e.message : String(e);
     const debug = {
+      ...debugBase,
       phase: currentPhase,
-      version: APP_VERSION,
-      git: GIT_SHA,
       at: new Date().toISOString(),
-      opts,
       // diagnóstico específico anexado pelo agente que falhou (ex.: storytelling → stop_reason)
       ...(e && typeof e === "object" && "debug" in e ? { detail: (e as { debug: unknown }).debug } : {}),
     };
