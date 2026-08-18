@@ -1,112 +1,127 @@
 {
-  "version": "2.1",
+  "version": "2.2",
   "codexUrl": "https://codex.viralmindlabs.com",
-  "pending": [
-    {
-      "id": "msxaqn41",
-      "type": "fix",
-      "summary": "Modelagem de reel do Instagram volta a funcionar",
-      "detail": "A transcricao automatica dependia de um unico servico externo; agora, quando ele falha, o Codex busca a transcricao numa segunda fonte sozinho, sem pedir para colar nada",
-      "commit": "18d2a8c",
-      "addedAt": "2026-08-17T13:55:38.510Z"
-    },
-    {
-      "id": "msxaqn51",
-      "type": "improvement",
-      "summary": "Erro de transcricao agora diz o motivo real",
-      "detail": "Antes aparecia uma mensagem tecnica de parser; agora a tela mostra qual servico falhou, com que status, e o que fazer",
-      "commit": "18d2a8c",
-      "addedAt": "2026-08-17T13:55:38.545Z"
-    },
-    {
-      "id": "msxqypdg",
-      "type": "feature",
-      "summary": "Carrossel do Instagram virou fonte de modelagem",
-      "detail": "Cole o link de um carrossel e o Codex le o texto de cada slide na ordem, transformando aquilo em materia-prima de roteiro. Antes so vídeo entrava",
-      "commit": "0e22bdd",
-      "addedAt": "2026-08-17T21:29:48.550Z"
-    },
-    {
-      "id": "msxqypeu",
-      "type": "feature",
-      "summary": "As conversas com o Kasparov agora ficam salvas e sao reabertas",
-      "detail": "Elas aparecem no painel de sessoes junto dos roteiros, com filtro por tipo, e voce reabre qualquer uma para reler e continuar de onde parou",
-      "commit": "0e22bdd",
-      "addedAt": "2026-08-17T21:29:48.598Z"
-    },
-    {
-      "id": "msxqypg0",
-      "type": "improvement",
-      "summary": "Filtro de cliente no painel virou uma janela de marcar e desmarcar",
-      "detail": "Some a fileira de chips com o nome de todo cliente na tela; agora e um botao que abre a lista, e voce pode filtrar por varios clientes de uma vez",
-      "commit": "0e22bdd",
-      "addedAt": "2026-08-17T21:29:48.636Z"
-    },
-    {
-      "id": "msxqyph2",
-      "type": "improvement",
-      "summary": "Kasparov le as views de vídeo de fora da casa",
-      "detail": "Quando o vídeo nao esta no nosso acervo, ele busca o numero no Instagram na hora para abrir o debate pelo ratio; se o numero nao vier, ele diz que esta opinando sem dado em vez de estimar",
-      "commit": "0e22bdd",
-      "addedAt": "2026-08-17T21:29:48.673Z"
-    },
-    {
-      "id": "msxqyphx",
-      "type": "improvement",
-      "summary": "Resposta do Kasparov formatada, e sem travessao",
-      "detail": "Antes apareciam os asteriscos crus no lugar do negrito. Agora a resposta tem hierarquia de leitura no celular, e o travessao saiu da voz dele e de toda a interface",
-      "commit": "0e22bdd",
-      "addedAt": "2026-08-17T21:29:48.705Z"
-    },
-    {
-      "id": "msxqypiw",
-      "type": "improvement",
-      "summary": "Roteiro modelado registra de onde veio",
-      "detail": "O link do vídeo ou carrossel modelado entra no campo FONTES, entao a tela de compartilhamento tambem mostra a procedencia",
-      "commit": "0e22bdd",
-      "addedAt": "2026-08-17T21:29:48.741Z"
-    }
-  ],
+  "pending": [],
   "lastRelease": {
-    "version": "2.0",
-    "git": "78743a0",
-    "productSummary": "O Codex passa a conferir o que escreveu (verificação factual com fonte e correção em um clique), ganha um estrategista de chat que drena as filas paradas na conversa, e melhora o insumo: estudos com link, números comparados a escala humana e sinais automáticos para o revisor.",
-    "message": "🪄 *Codex: Nova Versão Disponível (v2.0)*\n🔖 Git: 78743a0\n\nNa 1.8 o Codex passou a aprender com você no meio da sessão. A 2.0 fecha o resto do ciclo: ele checa o que inventou, melhora o que pesquisa, e ganha alguém com quem discutir estratégia.\n\n📋 *O que mudou:*\n\n✨ *Ele agora confere o que escreveu — e mostra a fonte*\nTodo roteiro sempre saiu com a seção FONTES, e nenhuma citação tinha sido conferida uma vez sequer. Agora, depois de salvar, o Codex separa as afirmações do roteiro final que *não* vieram do dossiê (é ali que a invenção mora), pesquisa cada uma na web e devolve uma tabela: confirmado, impreciso, falso ou não verificável, com o link da fonte em cada linha. Quando o erro é um número e o dado certo é conhecido, tem um botão que corrige no roteiro — mostrando o antes e o depois. E existe um botão de *Verificar tudo* para quando você quiser a varredura completa, inclusive do próprio dossiê. Se nada foi verificado, a tela diz \"não verificado\" — ela nunca diz \"0 problemas\" sobre o que não olhou.\n\n✨ *Kasparov: alguém para discutir estratégia*\nUm chat de verdade com um estrategista que abre com posição, não com pergunta. Quando você discorda, ele diz de que lado está: sustenta quando tem playbook ou número real atrás, e admite \"eu estava só achando\" quando era palpite. Cola o link de um vídeo e ele abre pela métrica que importa (316 mil views com 1.556 seguidores é 203×, e é isso que ele diz, não as views soltas); vídeo de fora do acervo ele analisa avisando que está opinando sem dado. E entre um assunto e outro ele puxa o que está parado: os pares de calibração e as lições que foram extraídas e nunca ligadas. O que vocês combinarem vira lição — com a sua confirmação, sempre.\n\n💅 *A pesquisa ficou mais forte, e o revisor ganhou olhos*\nO dossiê passa a trazer estudos com link (sem URL verificável, não entra) e a comparar todo número relevante a uma escala que dá para sentir — em reais, em salários mínimos, em tempo de trabalho. Do outro lado, o revisor recebe avisos automáticos: quantidade repetida em duas frases diferentes e hook que só reescreve a abertura do corpo. Ele decide o que fazer — repetição que se paga continua no lugar.\n\n👉 Acesse agora em https://codex.viralmindlabs.com\n",
+    "version": "2.1",
+    "git": "208553d",
+    "productSummary": "Bullets e Replicar mudam o que sai do roteiro; o loop de aprendizado volta a rodar e a medir o que foi publicado.",
+    "message": "*Codex 2.1*\n\nEssa versão mexeu no que sai do roteiro e no que o sistema aprende depois que ele vai pro ar.\n\n*NOVO*\n\n*Bullets.* Uma tela de ranking das palavras fortes. Qualquer um adiciona uma expressão de alta carga (Perturbador, Manipulado, Desesperado) e vota pra subir ou descer, estilo Reddit. Dentro da sessão dá pra favoritar direto: seleciona o trecho, toca na estrela. As mais votadas viram uma paleta que o roteirista e o hook recebem, com trava de no máximo 1 ou 2 por roteiro. Palavra forte em toda frase vira caricatura, e disso a gente foge.\n\n*Replicar.* Do lado de Modelar agora tem um segundo modo. Modelar pega a arquitetura do vídeo e leva pro SEU tema. Replicar fica no mesmo tema e na mesma estrutura, beat a beat, e trabalha frase a frase: palavra mais simples, palavra mais forte, contraste onde só havia afirmação, e no máximo dois dados novos se somarem à tese. No fim adapta o comando do original, ou cria um se ele não tinha.\n\n*Carrossel do Instagram vira modelagem.* Cole o link e o Codex lê o texto de cada slide na ordem. Antes só vídeo entrava.\n\n*Kasparov guarda as conversas.* Elas aparecem no painel junto dos roteiros, com filtro por tipo, e você reabre qualquer uma pra continuar de onde parou.\n\n*CONSERTOS QUE IMPORTAM*\n\n*Roteiro publicado volta a ser medido.* O ciclo que traz a performance do vídeo de volta pro sistema estava quebrado desde sempre: tentava casar roteiro com vídeo por uma coluna que é de outro produto, e não casava nenhum. Agora casa pelo link. Na caixa de publicação aparece o estado real: medido, aguardando coleta, ou vermelho quando o link não bate com nenhum vídeo.\n\n*O robô semanal volta a rodar.* O ciclo que lê a performance, fecha a conta de previsto contra real e reconstrói os aprendizados que entram nos roteiros estava agendado num serviço que a gente não usa. Nunca disparou uma vez. Passou pro GitHub, roda toda segunda de manhã e avisa por email se falhar.\n\n*Modelagem de reel do Instagram.* A transcrição dependia de um serviço só. Agora, quando ele falha, o Codex busca numa segunda fonte sozinho, sem pedir pra colar nada. E quando falha de vez, a tela diz qual serviço caiu e o que fazer.\n\n*MELHORIAS*\n\nO Kasparov pergunta se muda como os 5 exemplos de referência são escolhidos. Hoje saem por views; medimos que escolher por taxa de compartilhamento traria um conjunto quase todo diferente. Ele mostra os dois lado a lado com os números, e você decide.\n\nO Kasparov também busca as views de vídeo de fora da casa na hora, e quando o número não vem ele avisa que está opinando sem dado.\n\nA resposta dele agora vem formatada e sem travessão.\n\nO filtro de cliente no painel virou uma janela de marcar e desmarcar, com vários clientes de uma vez.\n\nRoteiro modelado registra a procedência no campo FONTES, então a tela de compartilhamento também mostra de onde veio.\n\nCinco tabelas do banco que estavam acessíveis por fora do app foram fechadas.\n\nhttps://codex.viralmindlabs.com\n",
     "changes": [
       {
-        "id": "mswh6aou",
-        "type": "feature",
-        "summary": "Verificação factual do roteiro final, com fonte e correção em um clique",
-        "detail": "O Codex passa a checar o que o roteirista inventou: cada alegação do roteiro final que não é rastreável ao dossiê vai para busca na web e volta com veredicto e fonte. Impreciso com o dado certo em mãos vira correção em um clique.",
-        "commit": "78743a0",
-        "addedAt": "2026-08-17T00:08:00.427Z"
+        "id": "msxaqn41",
+        "type": "fix",
+        "summary": "Modelagem de reel do Instagram volta a funcionar",
+        "detail": "A transcricao automatica dependia de um unico servico externo; agora, quando ele falha, o Codex busca a transcricao numa segunda fonte sozinho, sem pedir para colar nada",
+        "commit": "18d2a8c",
+        "addedAt": "2026-08-17T13:55:38.510Z"
       },
       {
-        "id": "mswh6apt",
-        "type": "feature",
-        "summary": "Kasparov: um estrategista com quem discutir, e que drena as filas na conversa",
-        "detail": "Chat com um estrategista que abre com posição em vez de pergunta, sustenta quando tem playbook ou ratio atrás e cede quando estava só achando. Entre um turno e outro ele puxa os pares de calibração e as lições que nunca foram ativadas.",
-        "commit": "78743a0",
-        "addedAt": "2026-08-17T00:08:00.460Z"
-      },
-      {
-        "id": "mswh6aqo",
+        "id": "msxaqn51",
         "type": "improvement",
-        "summary": "A pesquisa traz estudos com link e compara todo número a uma escala humana",
-        "detail": "",
-        "commit": "78743a0",
-        "addedAt": "2026-08-17T00:08:00.490Z"
+        "summary": "Erro de transcricao agora diz o motivo real",
+        "detail": "Antes aparecia uma mensagem tecnica de parser; agora a tela mostra qual servico falhou, com que status, e o que fazer",
+        "commit": "18d2a8c",
+        "addedAt": "2026-08-17T13:55:38.545Z"
       },
       {
-        "id": "mswh6ari",
+        "id": "msxqypdg",
+        "type": "feature",
+        "summary": "Carrossel do Instagram virou fonte de modelagem",
+        "detail": "Cole o link de um carrossel e o Codex le o texto de cada slide na ordem, transformando aquilo em materia-prima de roteiro. Antes so vídeo entrava",
+        "commit": "0e22bdd",
+        "addedAt": "2026-08-17T21:29:48.550Z"
+      },
+      {
+        "id": "msxqypeu",
+        "type": "feature",
+        "summary": "As conversas com o Kasparov agora ficam salvas e sao reabertas",
+        "detail": "Elas aparecem no painel de sessoes junto dos roteiros, com filtro por tipo, e voce reabre qualquer uma para reler e continuar de onde parou",
+        "commit": "0e22bdd",
+        "addedAt": "2026-08-17T21:29:48.598Z"
+      },
+      {
+        "id": "msxqypg0",
         "type": "improvement",
-        "summary": "O revisor recebe sinais automáticos: número repetido e hook que ecoa a abertura",
-        "detail": "",
-        "commit": "78743a0",
-        "addedAt": "2026-08-17T00:08:00.519Z"
+        "summary": "Filtro de cliente no painel virou uma janela de marcar e desmarcar",
+        "detail": "Some a fileira de chips com o nome de todo cliente na tela; agora e um botao que abre a lista, e voce pode filtrar por varios clientes de uma vez",
+        "commit": "0e22bdd",
+        "addedAt": "2026-08-17T21:29:48.636Z"
+      },
+      {
+        "id": "msxqyph2",
+        "type": "improvement",
+        "summary": "Kasparov le as views de vídeo de fora da casa",
+        "detail": "Quando o vídeo nao esta no nosso acervo, ele busca o numero no Instagram na hora para abrir o debate pelo ratio; se o numero nao vier, ele diz que esta opinando sem dado em vez de estimar",
+        "commit": "0e22bdd",
+        "addedAt": "2026-08-17T21:29:48.673Z"
+      },
+      {
+        "id": "msxqyphx",
+        "type": "improvement",
+        "summary": "Resposta do Kasparov formatada, e sem travessao",
+        "detail": "Antes apareciam os asteriscos crus no lugar do negrito. Agora a resposta tem hierarquia de leitura no celular, e o travessao saiu da voz dele e de toda a interface",
+        "commit": "0e22bdd",
+        "addedAt": "2026-08-17T21:29:48.705Z"
+      },
+      {
+        "id": "msxqypiw",
+        "type": "improvement",
+        "summary": "Roteiro modelado registra de onde veio",
+        "detail": "O link do vídeo ou carrossel modelado entra no campo FONTES, entao a tela de compartilhamento tambem mostra a procedencia",
+        "commit": "0e22bdd",
+        "addedAt": "2026-08-17T21:29:48.741Z"
+      },
+      {
+        "id": "msxxen1s",
+        "type": "feature",
+        "summary": "Bullets: o time cura as palavras fortes que os roteiros usam",
+        "detail": "Nova tela de ranking onde qualquer um adiciona uma palavra ou expressao de alta carga (Perturbador, Manipulado, Desesperado) e vota pra subir ou descer, estilo Reddit. Dentro da sessao da pra favoritar selecionando o trecho e tocando na estrela, sem sair da leitura. As palavras mais votadas viram uma paleta emocional que o roteirista e o hook recebem - com trava de no maximo 1 ou 2 por roteiro, porque palavra forte em toda frase vira caricatura.",
+        "commit": "208553d",
+        "addedAt": "2026-08-18T00:30:09.712Z"
+      },
+      {
+        "id": "msxxen2l",
+        "type": "feature",
+        "summary": "Replicar: mesmo video, execucao melhor",
+        "detail": "Ao lado de Modelar (que agora se chama assim) tem um segundo modo. Modelar usa a arquitetura do video pro SEU tema. Replicar mantem o video no mesmo tema e na mesma estrutura, beat a beat, e trabalha frase a frase: palavra mais simples, palavra mais forte, contraste onde so havia afirmacao, e no maximo dois dados novos se somarem. No fim, adapta o comando do original - ou cria um, se ele nao tinha.",
+        "commit": "208553d",
+        "addedAt": "2026-08-18T00:30:09.741Z"
+      },
+      {
+        "id": "msxxen38",
+        "type": "fix",
+        "summary": "Roteiro publicado volta a ser medido",
+        "detail": "O ciclo que traz a performance do video publicado de volta pro sistema estava quebrado desde sempre: ele tentava casar roteiro com video por uma coluna que pertence a outro app, e nunca casava nenhum. Agora casa pelo link. Na caixa de publicacao da sessao aparece o estado real: medido, aguardando coleta, ou vermelho quando o link nao bate com nenhum video.",
+        "commit": "208553d",
+        "addedAt": "2026-08-18T00:30:09.764Z"
+      },
+      {
+        "id": "msxxezmk",
+        "type": "fix",
+        "summary": "O robo semanal de aprendizado volta a rodar",
+        "detail": "O ciclo semanal que le a performance dos videos, fecha a conta de previsto contra real e reconstroi os aprendizados que entram nos roteiros estava agendado num servico que a gente nao usa - nunca disparou uma vez. Passou pro GitHub, que roda toda segunda de manha e avisa por email se falhar.",
+        "commit": "7d23e47",
+        "addedAt": "2026-08-18T00:30:26.012Z"
+      },
+      {
+        "id": "msxxeznb",
+        "type": "improvement",
+        "summary": "Kasparov pergunta se muda como os exemplos sao escolhidos",
+        "detail": "Os 5 roteiros de referencia que o sistema imita sao escolhidos por views. Medimos: escolher por taxa de compartilhamento traria um conjunto quase todo diferente. Em vez de trocar sozinho, o Kasparov mostra os dois conjuntos lado a lado, com os numeros, e voce aprova ou nao.",
+        "commit": "208553d",
+        "addedAt": "2026-08-18T00:30:26.039Z"
+      },
+      {
+        "id": "msxxeznw",
+        "type": "improvement",
+        "summary": "Cinco tabelas do banco que estavam abertas foram fechadas",
+        "detail": "Tabelas de calibracao, classificacao de hook e conversas do Kasparov estavam acessiveis por fora do app. Agora so o servidor entra.",
+        "commit": "208553d",
+        "addedAt": "2026-08-18T00:30:26.060Z"
       }
     ],
-    "releasedAt": "2026-08-17T00:08:29.639Z"
+    "releasedAt": "2026-08-18T00:30:59.659Z"
   },
   "history": [
     {
@@ -493,6 +508,47 @@
         }
       ],
       "releasedAt": "2026-08-16T13:08:50.774Z"
+    },
+    {
+      "version": "2.0",
+      "git": "78743a0",
+      "productSummary": "O Codex passa a conferir o que escreveu (verificação factual com fonte e correção em um clique), ganha um estrategista de chat que drena as filas paradas na conversa, e melhora o insumo: estudos com link, números comparados a escala humana e sinais automáticos para o revisor.",
+      "message": "🪄 *Codex: Nova Versão Disponível (v2.0)*\n🔖 Git: 78743a0\n\nNa 1.8 o Codex passou a aprender com você no meio da sessão. A 2.0 fecha o resto do ciclo: ele checa o que inventou, melhora o que pesquisa, e ganha alguém com quem discutir estratégia.\n\n📋 *O que mudou:*\n\n✨ *Ele agora confere o que escreveu — e mostra a fonte*\nTodo roteiro sempre saiu com a seção FONTES, e nenhuma citação tinha sido conferida uma vez sequer. Agora, depois de salvar, o Codex separa as afirmações do roteiro final que *não* vieram do dossiê (é ali que a invenção mora), pesquisa cada uma na web e devolve uma tabela: confirmado, impreciso, falso ou não verificável, com o link da fonte em cada linha. Quando o erro é um número e o dado certo é conhecido, tem um botão que corrige no roteiro — mostrando o antes e o depois. E existe um botão de *Verificar tudo* para quando você quiser a varredura completa, inclusive do próprio dossiê. Se nada foi verificado, a tela diz \"não verificado\" — ela nunca diz \"0 problemas\" sobre o que não olhou.\n\n✨ *Kasparov: alguém para discutir estratégia*\nUm chat de verdade com um estrategista que abre com posição, não com pergunta. Quando você discorda, ele diz de que lado está: sustenta quando tem playbook ou número real atrás, e admite \"eu estava só achando\" quando era palpite. Cola o link de um vídeo e ele abre pela métrica que importa (316 mil views com 1.556 seguidores é 203×, e é isso que ele diz, não as views soltas); vídeo de fora do acervo ele analisa avisando que está opinando sem dado. E entre um assunto e outro ele puxa o que está parado: os pares de calibração e as lições que foram extraídas e nunca ligadas. O que vocês combinarem vira lição — com a sua confirmação, sempre.\n\n💅 *A pesquisa ficou mais forte, e o revisor ganhou olhos*\nO dossiê passa a trazer estudos com link (sem URL verificável, não entra) e a comparar todo número relevante a uma escala que dá para sentir — em reais, em salários mínimos, em tempo de trabalho. Do outro lado, o revisor recebe avisos automáticos: quantidade repetida em duas frases diferentes e hook que só reescreve a abertura do corpo. Ele decide o que fazer — repetição que se paga continua no lugar.\n\n👉 Acesse agora em https://codex.viralmindlabs.com\n",
+      "changes": [
+        {
+          "id": "mswh6aou",
+          "type": "feature",
+          "summary": "Verificação factual do roteiro final, com fonte e correção em um clique",
+          "detail": "O Codex passa a checar o que o roteirista inventou: cada alegação do roteiro final que não é rastreável ao dossiê vai para busca na web e volta com veredicto e fonte. Impreciso com o dado certo em mãos vira correção em um clique.",
+          "commit": "78743a0",
+          "addedAt": "2026-08-17T00:08:00.427Z"
+        },
+        {
+          "id": "mswh6apt",
+          "type": "feature",
+          "summary": "Kasparov: um estrategista com quem discutir, e que drena as filas na conversa",
+          "detail": "Chat com um estrategista que abre com posição em vez de pergunta, sustenta quando tem playbook ou ratio atrás e cede quando estava só achando. Entre um turno e outro ele puxa os pares de calibração e as lições que nunca foram ativadas.",
+          "commit": "78743a0",
+          "addedAt": "2026-08-17T00:08:00.460Z"
+        },
+        {
+          "id": "mswh6aqo",
+          "type": "improvement",
+          "summary": "A pesquisa traz estudos com link e compara todo número a uma escala humana",
+          "detail": "",
+          "commit": "78743a0",
+          "addedAt": "2026-08-17T00:08:00.490Z"
+        },
+        {
+          "id": "mswh6ari",
+          "type": "improvement",
+          "summary": "O revisor recebe sinais automáticos: número repetido e hook que ecoa a abertura",
+          "detail": "",
+          "commit": "78743a0",
+          "addedAt": "2026-08-17T00:08:00.519Z"
+        }
+      ],
+      "releasedAt": "2026-08-17T00:08:29.639Z"
     }
   ]
 }
