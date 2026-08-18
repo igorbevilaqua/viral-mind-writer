@@ -22,10 +22,14 @@ import { explicar, type Explicacao, type TraceExplicavel } from "./pipeline/expl
 import { verificarScriptSalvo } from "./pipeline";
 import type { RegistroVerificacao } from "./pipeline/verificar";
 import { validarPadrao } from "./regex-safety";
+import { normalizarTermo, validarTermo } from "./bullets";
 
 export interface NewAttachment {
   kind: "reference_script" | "news_link" | "document" | "video_link" | "carousel_link";
   is_modelagem: boolean;
+  // Como o material é usado quando is_modelagem = true (migration 0034): "modelar" (a arquitetura
+  // dele para o SEU tema) ou "replicar" (mesmo vídeo, execução melhor). Ausente = modelar.
+  modo?: "modelar" | "replicar" | null;
   url: string;
   raw_content: string;
 }
@@ -59,6 +63,9 @@ export async function createSession(input: {
         session_id: session.id,
         kind: a.kind,
         is_modelagem: a.is_modelagem,
+        // Só grava a coluna quando o modo é Replicar: null já É "modelar" (0034), e assim a
+        // criação de sessão continua funcionando mesmo antes de a migration ser aplicada.
+        ...(a.is_modelagem && a.modo === "replicar" ? { modo: "replicar" } : {}),
         url: a.url || null,
         raw_content: a.raw_content || null,
       }))
@@ -284,7 +291,8 @@ export async function addLearning(
 }
 
 // ── Flywheel: marca o roteiro como publicado; o ETL semanal casa a URL com o
-// vídeo no corpus (videos.crm_script_id) e traz a performance de volta. ──────
+// vídeo no corpus pelo link (lib/script-performance.ts) e traz a performance
+// de volta. Não usa videos.crm_script_id — aquela coluna é do outro app. ─────
 
 export async function markPublished(scriptId: string, url: string) {
   // platformVideoId exige o id do vídeo — link de perfil passaria no regex de domínio
@@ -842,4 +850,103 @@ export async function gravarEnsinamento(
       return { ok: true };
     }
   }
+}
+
+// ── BULLETS: paleta emocional votada pelo time (migration 0033) ───────────────
+// Escopo global só: a coluna client_id existe na tabela, mas a curadoria começa numa
+// paleta única — palavra forte é do idioma, não do cliente.
+
+export interface BulletView {
+  id: string;
+  termo: string;
+  score: number;
+  meuVoto: -1 | 0 | 1;
+}
+
+export async function listBullets(): Promise<BulletView[]> {
+  const userId = await currentUserId();
+  const { data, error } = await appDb
+    .from("vm_bullets")
+    .select("id, termo, vm_bullet_votes(user_id, valor)")
+    .is("client_id", null);
+  if (error) throw new Error(error.message);
+  return (data ?? [])
+    .map((b) => {
+      const votos = (b.vm_bullet_votes ?? []) as { user_id: string | null; valor: number }[];
+      return {
+        id: b.id as string,
+        termo: b.termo as string,
+        score: votos.reduce((s, v) => s + (Number(v.valor) || 0), 0),
+        meuVoto: ((userId && votos.find((v) => v.user_id === userId)?.valor) || 0) as -1 | 0 | 1,
+      };
+    })
+    .sort((a, b) => b.score - a.score || a.termo.localeCompare(b.termo));
+}
+
+/**
+ * Adiciona um bullet e já dá o +1 de quem adicionou (comportamento do Reddit: bullet novo
+ * nascendo com score 0 é indistinguível de bullet rejeitado). Termo repetido NÃO duplica —
+ * vira upvote no que já existe, que é o que o gesto significava.
+ * Devolve `erro` em vez de lançar: a estrela da sessão precisa piscar em vermelho, não quebrar.
+ */
+export async function addBullet(termo: string): Promise<{ erro?: string }> {
+  const erro = validarTermo(termo);
+  if (erro) return { erro };
+  const limpo = termo.trim().replace(/\s+/g, " ");
+  const userId = await currentUserId();
+  // Mesma guarda do voteBullet: user_id null não colide na unique (bullet_id, user_id), então
+  // sem identidade o auto-upvote viraria voto duplicável. O middleware já exige sessão.
+  if (!userId) return { erro: "sessão expirada" };
+
+  const { data: existente, error: selErr } = await appDb
+    .from("vm_bullets")
+    .select("id")
+    .eq("termo_norm", normalizarTermo(limpo))
+    .is("client_id", null)
+    .maybeSingle();
+  if (selErr) return { erro: selErr.message };
+
+  let id = existente?.id as string | undefined;
+  if (!id) {
+    const { data, error } = await appDb
+      .from("vm_bullets")
+      .insert({ termo: limpo, termo_norm: normalizarTermo(limpo), criado_por: userId })
+      .select("id")
+      .single();
+    if (error) return { erro: error.message };
+    id = data.id;
+  }
+  // upsert e não insert: refavoritar o mesmo termo é idempotente, nunca erro na cara do usuário.
+  const { error: votoErr } = await appDb
+    .from("vm_bullet_votes")
+    .upsert({ bullet_id: id, user_id: userId, valor: 1 }, { onConflict: "bullet_id,user_id" });
+  if (votoErr) return { erro: votoErr.message };
+
+  await registrarAtividade("bullet_adicionado", { userId, payload: { termo: limpo, novo: !existente } });
+  revalidatePath("/bullets");
+  return {};
+}
+
+/** Voto do usuário. Votar de novo no mesmo sentido REMOVE o voto (toggle do Reddit). */
+export async function voteBullet(bulletId: string, valor: 1 | -1): Promise<void> {
+  const userId = await currentUserId();
+  if (!userId) return; // sem identidade não há voto a atribuir (o middleware já exige sessão)
+
+  const { data: atual } = await appDb
+    .from("vm_bullet_votes")
+    .select("id, valor")
+    .eq("bullet_id", bulletId)
+    .eq("user_id", userId)
+    .maybeSingle();
+
+  const { error } =
+    atual?.valor === valor
+      ? await appDb.from("vm_bullet_votes").delete().eq("id", atual.id)
+      : await appDb
+          .from("vm_bullet_votes")
+          .upsert({ bullet_id: bulletId, user_id: userId, valor }, { onConflict: "bullet_id,user_id" });
+  if (error) throw new Error(error.message);
+
+  await registrarAtividade("bullet_votado", { userId, payload: { bullet_id: bulletId, valor: atual?.valor === valor ? 0 : valor } });
+  revalidatePath("/bullets");
 }

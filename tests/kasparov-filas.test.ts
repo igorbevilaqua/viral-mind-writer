@@ -277,3 +277,50 @@ describe("fila de métrica faltando", () => {
     await expect(responder(p, "ativar", "c1", {})).rejects.toThrow(/só aceita skip/);
   });
 });
+
+// ── Gate do critério do few-shot ─────────────────────────────────────────────
+describe("fila do critério do few-shot", () => {
+  const semOutras = { proximoPar: async () => null, licoesPendentes: async () => [], metricasFaltando: async () => [] };
+  const comparacao = {
+    tema: "juros do rotativo",
+    mudam: 4,
+    views: [{ trecho: "a", views: 1_000_000, taxa: 0.001, fallback: false }],
+    taxa: [{ trecho: "b", views: 50_000, taxa: 0.08, fallback: false }],
+  };
+
+  test("comparação disponível vira pendência com os DOIS conjuntos", async () => {
+    const p = await proximaPendencia("c1", { ...semOutras, comparacaoCriterio: async () => comparacao });
+    expect(p).toEqual({ tipo: "criterio", ...comparacao });
+  });
+
+  test("sem comparação (já decidido, ou nada a decidir) não puxa assunto", async () => {
+    expect(await proximaPendencia("c1", { ...semOutras, comparacaoCriterio: async () => null })).toBeNull();
+  });
+
+  test("aprovar grava taxa_compartilhamento; rejeitar grava views — as duas são decisão", async () => {
+    const gravadas: [string, unknown][] = [];
+    const d = { ...semOutras, decidirCriterio: async (c: string, a: unknown) => void gravadas.push([c, a]) };
+    const p = { tipo: "criterio" as const, ...comparacao };
+    await responder(p, "ativar", null, d);
+    await responder(p, "rejeitar", null, d);
+    expect(gravadas.map(([c]) => c)).toEqual(["taxa_compartilhamento", "views"]);
+    // a amostra que estava na mesa vai junto — é o que torna a decisão auditável depois
+    expect(gravadas[0][1]).toMatchObject({ tema: "juros do rotativo", mudam: 4 });
+  });
+
+  test("skip é adiar, não decidir: nada é gravado e a pendência volta", async () => {
+    const gravadas: string[] = [];
+    const d = { ...semOutras, comparacaoCriterio: async () => comparacao, decidirCriterio: async (c: string) => void gravadas.push(c) };
+    const p = await proximaPendencia(null, d);
+    await responder(p!, "skip", null, d);
+    expect(gravadas).toEqual([]);
+    expect(await proximaPendencia(null, d)).toEqual(p);
+  });
+
+  test("resposta de outra fila é recusada, e nada é gravado", async () => {
+    const gravadas: string[] = [];
+    const d = { decidirCriterio: async (c: string) => void gravadas.push(c) };
+    await expect(responder({ tipo: "criterio", ...comparacao }, "a", null, d)).rejects.toThrow(/só aceita/);
+    expect(gravadas).toEqual([]);
+  });
+});

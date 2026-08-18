@@ -5,7 +5,7 @@ import { describe, expect, it, vi } from "vitest";
 vi.mock("@/lib/db", () => ({ appDb: {}, viralData: {} }));
 import { formatInsightsForDados, hookExamplesBlock, scriptResultBlock } from "@/lib/pipeline/agents";
 import { extractPlaybookSection, playbookIndex } from "@/lib/pipeline/draft";
-import { pickTopFewShot } from "@/lib/pipeline/context";
+import { candidatosDeDocumentos, rankFewShot } from "@/lib/pipeline/few-shot";
 import { excerptAround } from "@/lib/pipeline/humanize";
 import type { GenerationContext } from "@/lib/pipeline/types";
 
@@ -225,27 +225,29 @@ descrição do contraste`;
   });
 });
 
-describe("pickTopFewShot", () => {
+// O ranking do few-shot saiu de context.ts para lib/pipeline/few-shot.ts (função pura, sem db):
+// o comportamento de hoje continua coberto aqui, o resto do critério vive em tests/few-shot.test.ts.
+describe("few-shot do corpus (critério de hoje: views)", () => {
   it("ordena por views desc e anota views na origem", () => {
     const rows = Array.from({ length: 20 }, (_, i) => ({
       content: `roteiro ${i}`,
       metadata: { views: (i + 1) * 100_000 },
     }));
-    const out = pickTopFewShot(rows);
+    const out = rankFewShot(candidatosDeDocumentos(rows));
     expect(out).toHaveLength(5);
     expect(out[0].roteiro).toBe("roteiro 19");
-    expect(out[0].origem).toBe("roteiro publicado (corpus) — 2.0M views");
+    expect(out[0].origem).toBe("roteiro publicado (corpus) — 2.0M views, entrou por views");
   });
 
   it("sem views em nenhum → mantém a ordem de similaridade", () => {
     const rows = [{ content: "a" }, { content: "b", metadata: {} }, { content: "c", metadata: { views: null } }];
-    const out = pickTopFewShot(rows);
+    const out = rankFewShot(candidatosDeDocumentos(rows));
     expect(out.map((o) => o.roteiro)).toEqual(["a", "b", "c"]);
-    expect(out[0].origem).toBe("roteiro publicado (corpus)");
+    expect(out[0].origem).toBe("roteiro publicado (corpus) — sem dado de performance, ordem por similaridade");
   });
 
   it("descarta linhas sem content", () => {
-    expect(pickTopFewShot([{ content: null }, { content: "ok" }])).toHaveLength(1);
+    expect(rankFewShot(candidatosDeDocumentos([{ content: null }, { content: "ok" }]))).toHaveLength(1);
   });
 });
 

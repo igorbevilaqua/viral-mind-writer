@@ -51,6 +51,15 @@ const DESTINOS = [
     ),
   },
   {
+    href: "/bullets",
+    label: "Bullets",
+    icon: (
+      <svg width="19" height="19" viewBox="0 0 16 16" fill="none">
+        <path d="M8 2.2 9.8 6l4.2.5-3.1 2.8.9 4.1L8 11.4l-3.8 2 .9-4.1L2 6.5 6.2 6 8 2.2Z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" />
+      </svg>
+    ),
+  },
+  {
     href: "/settings/clientes",
     label: "Clientes",
     match: "/settings",
@@ -130,7 +139,7 @@ export function MobileTabs() {
   if (pathname.startsWith("/r/") || pathname === "/login") return null;
 
   return (
-    <nav className="sm:hidden sticky bottom-0 z-30 grid grid-cols-5 border-t border-white/[.08] bg-[#0b0b0f]/95 backdrop-blur-sm pb-[env(safe-area-inset-bottom)]">
+    <nav className="sm:hidden sticky bottom-0 z-30 grid grid-cols-6 border-t border-white/[.08] bg-[#0b0b0f]/95 backdrop-blur-sm pb-[env(safe-area-inset-bottom)]">
       {DESTINOS.map((d) => {
         const on = ativo(d);
         return (

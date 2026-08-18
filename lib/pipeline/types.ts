@@ -1,4 +1,5 @@
 import type { UsageLog } from "../anthropic";
+import type { CriterioFewShot, ExemploFewShot } from "./few-shot";
 
 export type PipelineEvent =
   | {
@@ -113,6 +114,10 @@ export interface Attachment {
   id: string;
   kind: "reference_script" | "news_link" | "document" | "video_link" | "carousel_link";
   is_modelagem: boolean;
+  // Como o material é usado (migration 0034), só quando is_modelagem = true. null/ausente é lido
+  // como "modelar" (resolverModo em replicar.ts) — todo o código que testa `is_modelagem` segue
+  // valendo nos dois modos, e só os ramos que divergem leem isto.
+  modo?: "modelar" | "replicar" | null;
   url: string | null;
   raw_content: string | null;
 }
@@ -173,12 +178,24 @@ export interface GenerationContext {
   playbooks: Record<string, string>; // slug -> markdown
   bannedPhrases: BannedPhrase[];
   insights: { insight_type: string; scope: string; payload: unknown }[];
-  fewShot: { roteiro: string; origem: string }[];
+  // Paleta emocional votada pelo time (migration 0033), com o score agregado dos votos.
+  // Bruta de propósito: o corte por score, o teto e os vetos são aplicados na injeção
+  // (selecionarBullets), onde prefs do cliente e frases banidas já estão resolvidas.
+  bullets: { termo: string; score: number }[];
+  // Os 5 exemplos de alta performance, já rankeados: o roteirista lê todos (draft.ts) e o
+  // humanizador lê os 2 primeiros como "Referência de voz" (humanize.ts). A origem de cada um
+  // diz por qual critério ele entrou — é ela que o pipeline_trace guarda.
+  fewShot: ExemploFewShot[];
+  /** critério que rankeou o few-shot nesta geração (decisão humana; padrão views) */
+  fewShotCriterio: CriterioFewShot;
   attachments: Attachment[];
   modelagemBriefs: string[];
   // O brief só chega ao designHook no modo adaptação (sem narrativa vencedora). O fator de
   // curiosidade do vídeo modelado tem que chegar SEMPRE — é a matéria-prima do hook.
   modelagemHooks: NonNullable<ModelagemAnalysis["esqueleto"]>["hook"][];
+  // Modo Replicar: o comando do original + a decisão tomada em CÓDIGO (adaptar o CTA dele, ou
+  // criar um quando não havia). Só o agente comando lê. Ausente = não é Replicar.
+  replicarComando?: { adaptar: boolean; descricao: string };
   artifacts: SessionArtifacts | null;
   // telemetria de custo por fase — preenchida pelos agentes, persistida em pipeline_trace.usage
   usageLog?: UsageLog;

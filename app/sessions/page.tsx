@@ -249,11 +249,11 @@ export default async function SessionsPage({
   for (const h of heads ?? []) {
     if (h.headline?.trim() && !headlineBySession.has(h.session_id)) headlineBySession.set(h.session_id, h.headline.trim());
   }
-  // Sessão de modelagem (adaptar/otimizar um vídeo) → prefixo "Modelagem:" no título.
+  // Sessão com material de referência → prefixo "Modelar:" ou "Replicar:" no título (0034).
   const { data: modAtts } = semPromptIds.length
-    ? await appDb.from("vm_attachments").select("session_id").eq("is_modelagem", true).in("session_id", semPromptIds)
-    : { data: [] as { session_id: string }[] };
-  const modelagemSessions = new Set((modAtts ?? []).map((a) => a.session_id));
+    ? await appDb.from("vm_attachments").select("session_id, modo").eq("is_modelagem", true).in("session_id", semPromptIds)
+    : { data: [] as { session_id: string; modo: string | null }[] };
+  const modoPorSessao = new Map((modAtts ?? []).map((a) => [a.session_id, a.modo === "replicar" ? "Replicar" : "Modelar"]));
 
   const viewsByScript = new Map<string, number>();
   for (const p of perf ?? []) {
@@ -441,9 +441,9 @@ export default async function SessionsPage({
                   {s.prompt?.trim() ||
                     (() => {
                       const head = headlineBySession.get(s.id);
-                      const mod = modelagemSessions.has(s.id);
-                      if (head) return mod ? `Modelagem: ${head}` : head;
-                      return <span className="text-white/40 italic">{mod ? "Modelagem" : "Roteiro a partir de material"}</span>;
+                      const mod = modoPorSessao.get(s.id);
+                      if (head) return mod ? `${mod}: ${head}` : head;
+                      return <span className="text-white/40 italic">{mod ?? "Roteiro a partir de material"}</span>;
                     })()}
                 </span>
                 <span className="sm:hidden flex items-center gap-2 mt-1 text-[11px] text-white/35">

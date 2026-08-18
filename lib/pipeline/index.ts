@@ -10,7 +10,8 @@ import {
   type ModelagemResult,
 } from "./modelagem";
 import { compreensaoBlock } from "./modelagem-brief";
-import { research, proposeNarratives, rankNarratives, designHook, writeComando } from "./agents";
+import { anexoReplicar, comandoDoOriginal, exigirEsqueletoDoOriginal, narrativaDoOriginal } from "./replicar";
+import { registrarBloco, research, proposeNarratives, rankNarratives, designHook, writeComando } from "./agents";
 import { pairFromCandidates } from "../calibration";
 import { blocoSinaisRevisor, generateDraft, hookEcoaAbertura, parseSections, semEcoDaAbertura, stripLeadingHook, stripTrailingComando, TETO_ECOS } from "./draft";
 import { critiqueAndRewrite } from "./critique";
@@ -82,13 +83,24 @@ export async function runPipeline(
     // proposeNarratives em diante, então a análise roda em paralelo com o Grok.
     // Modelagem roda com transcrição colada OU só com o link (busca a transcrição ao conjurar).
     // Link modelável: vídeo (transcreve o áudio) ou carrossel (lê o texto dos slides).
-    const modelagens = ctx.attachments.filter(
+    let modelagens = ctx.attachments.filter(
       (a) => a.is_modelagem && (a.raw_content || (LINK_MODELAVEL.includes(a.kind) && a.url))
     );
+
+    // ── REPLICAR ──────────────────────────────────────────────────────────────────────────
+    // Relação 1:1 com o material: a estrutura seguida é a de UM original. Um segundo material
+    // (mesmo em Modelar) injetaria uma arquitetura concorrente no roteirista — os excedentes
+    // ficam de fora e o descarte vai ao rastro, nunca em silêncio.
+    const replicando = anexoReplicar(modelagens);
+    const ignoradosNoReplicar = replicando ? modelagens.filter((a) => a !== replicando).map((a) => a.id) : [];
+    if (replicando) modelagens = [replicando];
+
     // Sem tema digitado + modelagem de vídeo = MESMO assunto do vídeo, ângulo novo:
     // a modelagem propõe 3 ângulos que viram as narrativas candidatas, e a pesquisa
     // checa o que o vídeo alegou em vez de aceitar a palavra dele.
-    const adaptation = !ctx.prompt.trim() && modelagens.length > 0;
+    // Replicar entra SEMPRE por aqui: o assunto e a tese são os do original mesmo quando há texto
+    // digitado, porque ali o texto é orientação de ângulo, não tema novo.
+    const adaptation = Boolean(replicando) || (!ctx.prompt.trim() && modelagens.length > 0);
 
     // A fase entra ANTES da busca da transcrição: ela pode levar segundos e falhar, e sem
     // emitir nada aqui a tela fica muda até o erro aparecer do nada (debug.phase="init").
@@ -104,7 +116,11 @@ export async function runPipeline(
         const oQue = modelagens[0].kind === "carousel_link" ? "ler o carrossel" : "obter a transcrição do vídeo";
         throw new Error(
           `Não consegui ${oQue}${erro ? `: ${erro}` : ""}. ` +
-            `Cole o conteúdo no campo do material, ou digite um tema, e conjure de novo.`
+            // Em Replicar digitar um tema não salva a geração (o assunto é o do original):
+            // a única saída é colar o conteúdo, e a mensagem não pode mandar para o caminho errado.
+            (replicando
+              ? `Cole o conteúdo no campo do material e conjure de novo.`
+              : `Cole o conteúdo no campo do material, ou digite um tema, e conjure de novo.`)
         );
       }
     }
@@ -133,10 +149,16 @@ export async function runPipeline(
       // confirma antes de escrever. O run termina aqui; confirmarPremissa dispara o run 2, que
       // reusa artifacts. Duas execuções normais no lugar de uma suspensa.
       // Só na primeira geração: sessão legada com candidatas já feitas não fica travada.
-      // Com tema digitado NÃO entra aqui: ali o assunto é outro, a tese do vídeo modelado seria
-      // ruído (a autópsia nem extrai `compreensao`), e a premissa vem do tema. Isso também
+      // Modelar COM tema digitado NÃO entra aqui: ali o assunto é outro, a tese do vídeo modelado
+      // seria ruído (a autópsia nem extrai `compreensao`), e a premissa vem do tema. Isso também
       // preserva o paralelismo modelagem ∥ pesquisa, que um await aqui mataria.
-      const extraida = (await modelagemP)[0]?.analysis.compreensao?.argumento_central?.trim();
+      // Replicar entra SEMPRE (com ou sem texto digitado): lá a tese é a do original por definição,
+      // e o texto do campo é ângulo, não assunto.
+      const analise = (await modelagemP)[0]?.analysis;
+      // Replicar sem esqueleto não tem o que replicar: aborta com o caminho de saída em vez de
+      // seguir e escrever um roteiro que finge ter obedecido uma estrutura que ninguém leu.
+      if (replicando) exigirEsqueletoDoOriginal(analise);
+      const extraida = analise?.compreensao?.argumento_central?.trim();
       if (extraida) {
         const sugerida = dedash(extraida);
         await appDb
@@ -181,11 +203,15 @@ export async function runPipeline(
       let compreensao = "";
       if (adaptation) {
         resultados = await modelagemP;
+        if (replicando) exigirEsqueletoDoOriginal(resultados[0]?.analysis);
         compreensao = compreensaoBlock(resultados[0]?.analysis ?? {});
         emit({ type: "phase", phase: "pesquisa" });
         dossie = await research(ctx, {
           transcricao: modelagens[0].raw_content!,
           compreensao: resultados[0]?.analysis.compreensao,
+          // Replicar: a checagem das alegações do original continua obrigatória, e a munição
+          // nova ganha teto (no máximo 2 dados que somem à tese).
+          replicar: Boolean(replicando),
         });
       } else {
         emit({ type: "phase", phase: "pesquisa" });
@@ -194,35 +220,68 @@ export async function runPipeline(
       }
       ctx.modelagemBriefs = resultados.map((r) => r.brief).filter(Boolean);
 
-      emit({ type: "phase", phase: "narrativas" });
-      // Nos dois modos quem propõe ângulo é o storytelling, com o dossiê como lastro.
-      // Sem tema ele recebe a compreensão do vídeo e a ordem de NÃO repetir o ângulo dele.
-      const candidatas = await proposeNarratives(ctx, dossie, compreensao || undefined);
-      const rank = await rankNarratives(ctx, dossie, candidatas);
-      const valid = rank.ranking.filter((r) => candidatas[r.indice]);
-      // Dois eixos, hierarquia clara: servir a premissa é RESTRIÇÃO, viralizar é o critério.
-      // Candidata que sustenta mal a tese está fora por viral que seja — era exatamente esse o
-      // furo de antes, quando o único eixo era `score` de views. Entre as que servem, ganha a
-      // mais viral. Se nenhuma passa do piso, ganha a que menos mal serve, nunca a mais viral.
-      // `?? 100` mantém rankings pré-Etapa C (sem o campo) elegíveis.
-      const servem = valid.filter((r) => (r.servico_a_premissa ?? 100) >= SERVICO_PREMISSA_MIN);
-      const pool = servem.length ? servem : valid;
-      const vencedora = pool.length
-        ? [...pool].sort((a, b) =>
-            servem.length ? b.score - a.score : (b.servico_a_premissa ?? 0) - (a.servico_a_premissa ?? 0)
-          )[0].indice
-        : 0;
+      if (replicando) {
+        // ── Storytelling e Dados PULADOS, de propósito ──────────────────────────────────
+        // Não há narrativa a propor nem a rankear: a narrativa é a do original. Além de
+        // economizar as duas chamadas caras (16k + 6k), isto remove o ponto exato onde a sala
+        // reinterpretava e perdia a estrutura. A vencedora é montada em código (replicar.ts) no
+        // mesmo formato que roteirista, hook e revisor já consomem.
+        const narrativa = narrativaDoOriginal(resultados[0]!.analysis);
+        artifacts = {
+          dossie,
+          candidatas: [narrativa],
+          ranking: [], // ninguém rankeou: ranking vazio é a verdade, nota inventada não seria
+          escolhida: 0,
+          orientacao_roteiro:
+            "MODO REPLICAR: a ordem, a função e a proporção de duração dos beats do original são inegociáveis. " +
+            "O ganho vem frase a frase (palavra mais simples, palavra mais forte, contraste onde havia só afirmação), " +
+            "nunca de estrutura nova.",
+          orientacao_hook: "",
+          premissa_provas: ctx.premissaProvas,
+          premissa_contraintuitivo: ctx.premissaContraintuitivo,
+        };
+        // Nenhum corte silencioso: o rastro diz o que foi pulado, por quê, e o que ficou de fora.
+        registrarBloco(ctx, "replicar", {
+          modo: "replicar",
+          attachment_id: replicando.id,
+          storytelling_pulado: true,
+          dados_pulado: true,
+          motivo: "a narrativa é a do original — não há o que propor nem rankear",
+          estrutura_do_original: narrativa.estrutura,
+          beats_do_original: narrativa.beats.length,
+          modelagens_ignoradas: ignoradosNoReplicar,
+        });
+      } else {
+        emit({ type: "phase", phase: "narrativas" });
+        // Nos dois modos quem propõe ângulo é o storytelling, com o dossiê como lastro.
+        // Sem tema ele recebe a compreensão do vídeo e a ordem de NÃO repetir o ângulo dele.
+        const candidatas = await proposeNarratives(ctx, dossie, compreensao || undefined);
+        const rank = await rankNarratives(ctx, dossie, candidatas);
+        const valid = rank.ranking.filter((r) => candidatas[r.indice]);
+        // Dois eixos, hierarquia clara: servir a premissa é RESTRIÇÃO, viralizar é o critério.
+        // Candidata que sustenta mal a tese está fora por viral que seja — era exatamente esse o
+        // furo de antes, quando o único eixo era `score` de views. Entre as que servem, ganha a
+        // mais viral. Se nenhuma passa do piso, ganha a que menos mal serve, nunca a mais viral.
+        // `?? 100` mantém rankings pré-Etapa C (sem o campo) elegíveis.
+        const servem = valid.filter((r) => (r.servico_a_premissa ?? 100) >= SERVICO_PREMISSA_MIN);
+        const pool = servem.length ? servem : valid;
+        const vencedora = pool.length
+          ? [...pool].sort((a, b) =>
+              servem.length ? b.score - a.score : (b.servico_a_premissa ?? 0) - (a.servico_a_premissa ?? 0)
+            )[0].indice
+          : 0;
 
-      artifacts = {
-        dossie,
-        candidatas,
-        ranking: rank.ranking,
-        escolhida: vencedora,
-        orientacao_roteiro: rank.orientacao_roteiro,
-        orientacao_hook: rank.orientacao_hook,
-        premissa_provas: ctx.premissaProvas,
-        premissa_contraintuitivo: ctx.premissaContraintuitivo,
-      };
+        artifacts = {
+          dossie,
+          candidatas,
+          ranking: rank.ranking,
+          escolhida: vencedora,
+          orientacao_roteiro: rank.orientacao_roteiro,
+          orientacao_hook: rank.orientacao_hook,
+          premissa_provas: ctx.premissaProvas,
+          premissa_contraintuitivo: ctx.premissaContraintuitivo,
+        };
+      }
     } else {
       // Regeneração: a premissa vem de vm_sessions (coluna), mas provas/contraintuitivo ficaram
       // nos artifacts — restaura pra o hook e a pesquisa não perderem a pauta.
@@ -234,6 +293,9 @@ export async function runPipeline(
     const modelagens_ = await modelagemP;
     ctx.modelagemBriefs = modelagens_.map((r) => r.brief).filter(Boolean);
     ctx.modelagemHooks = modelagens_.map((r) => r.analysis?.esqueleto?.hook).filter(Boolean);
+    // Replicar: a decisão adaptar-o-CTA-do-original × criar-um é tomada AQUI, em código, e chega
+    // ao agente comando como instrução única (nunca como pergunta).
+    if (replicando) ctx.replicarComando = comandoDoOriginal(modelagens_[0]?.analysis);
 
     if (artifacts) {
       // Override do usuário: troca a narrativa vencedora e reescreve a partir daqui
@@ -245,7 +307,10 @@ export async function runPipeline(
       artifacts = deepDedash(artifacts);
       ctx.artifacts = artifacts;
       await appDb.from("vm_sessions").update({ artifacts }).eq("id", sessionId);
-      emit({ type: "narrativas", candidatas: artifacts.candidatas, ranking: artifacts.ranking, escolhida: artifacts.escolhida });
+      // Uma candidata só não é negociação: em Replicar a narrativa é a do original e não há
+      // escolha a mostrar nem a trocar. Os cards ficam de fora (a tela aplica o mesmo critério).
+      if (artifacts.candidatas.length > 1)
+        emit({ type: "narrativas", candidatas: artifacts.candidatas, ranking: artifacts.ranking, escolhida: artifacts.escolhida });
     }
 
     // Reescrita orientada: feedback do usuário + versão anterior como base
@@ -374,6 +439,8 @@ export async function runPipeline(
               estudos_descartados: estudos.descartados,
             },
             few_shot_origens: ctx.fewShot.map((f) => f.origem),
+            // o critério que escolheu esses exemplos (decisão humana; padrão views)
+            few_shot_criterio: ctx.fewShotCriterio,
             modelagem_briefs: ctx.modelagemBriefs,
             // telemetria de custo por fase: tokens (input/output/cache) + duração + modelo
             usage: ctx.usageLog ?? {},

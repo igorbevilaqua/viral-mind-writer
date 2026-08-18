@@ -1,4 +1,5 @@
 import { appDb } from "@/lib/db";
+import type { ComparacaoCriterio, CriterioFewShot } from "./few-shot";
 
 // As filas que o Kasparov drena (018 §8). Nenhuma ganha tela nova: são assunto entre um turno
 // e outro. O A/B não é pouco usado porque é ruim — é pouco usado porque é um destino, e destino
@@ -25,10 +26,16 @@ export type Pendencia =
   // ponytail: teto conhecido — não existe "dispensar para sempre", porque não há onde gravar
   // isso hoje. Ela reaparece até a métrica existir; se incomodar, a saída é uma coluna
   // `metrica_dispensada_em` em vm_generated_scripts, não um estado em memória.
-  | { tipo: "metrica"; scriptId: string; url: string; dias: number; restantes: number };
+  | { tipo: "metrica"; scriptId: string; url: string; dias: number; restantes: number }
+  // Critério do few-shot: trocar views por taxa de compartilhamento troca ~4 dos 5 exemplos que
+  // o roteirista imita (e os 2 que viram a voz do humanizador). Decisão de uma vez só, e por
+  // isso ela chega com os DOIS conjuntos na mesa — botão no escuro é pior que nenhum botão.
+  | ({ tipo: "criterio" } & ComparacaoCriterio);
 
 // `skip` é resposta legítima — é um valor de `winner` na tabela, não um erro (§8).
-export type Resposta = "a" | "b" | "skip" | "ativar";
+// `rejeitar` só existe na pendência de critério: lá "agora não" (skip) e "não quero" são coisas
+// diferentes — a segunda é durável, e é ela que tira a pendência da fila para sempre.
+export type Resposta = "a" | "b" | "skip" | "ativar" | "rejeitar";
 
 export interface LicaoPendente {
   id: string;
@@ -59,6 +66,10 @@ export interface FilasDeps {
   ativarLicao?: (id: string, active: boolean) => Promise<void>;
   licoesPendentes?: (clientId: string | null) => Promise<LicaoPendente[]>;
   metricasFaltando?: (clientId: string | null) => Promise<MetricaFaltando[]>;
+  /** `comparacaoFewShot` (context.ts) — precisa de embedding + corpus, que este módulo não tem. */
+  comparacaoCriterio?: (clientId: string | null) => Promise<ComparacaoCriterio | null>;
+  /** grava a decisão do critério; default escreve em vm_fewshot_criterio sem autor */
+  decidirCriterio?: (criterio: CriterioFewShot, amostra: unknown) => Promise<void>;
 }
 
 export interface MetricaFaltando {
@@ -113,6 +124,20 @@ async function licoesPendentesDb(clientId: string | null): Promise<LicaoPendente
     .map((l) => ({ id: l.id, titulo: l.titulo, descricao: l.descricao, evidencia: l.evidencia ?? null }));
 }
 
+// A decisão do critério (migration 0036). Durável de propósito e FORA de vm_viral_insights, que
+// o ETL apaga e reinsere inteira a cada run — a decisão evaporaria no domingo seguinte.
+// Rejeitar grava 'views' (o critério de hoje): a linha existe, e é ela que fecha a pendência.
+export async function decidirCriterioDb(
+  criterio: CriterioFewShot,
+  amostra: unknown,
+  userId: string | null = null
+): Promise<void> {
+  const { error } = await appDb
+    .from("vm_fewshot_criterio")
+    .insert({ criterio, amostra, decidido_por: userId });
+  if (error) throw new Error(`não consegui gravar a decisão do critério: ${error.message}`);
+}
+
 // Fila indisponível não derrota o turno: o Kasparov só não puxa assunto (precedente de context.ts).
 async function ouNada<T>(p: Promise<T>, oque: string): Promise<T | null> {
   try {
@@ -124,10 +149,11 @@ async function ouNada<T>(p: Promise<T>, oque: string): Promise<T | null> {
 }
 
 export async function proximaPendencia(clientId: string | null, deps: FilasDeps = {}): Promise<Pendencia | null> {
-  const [par, licoes, metricas] = await Promise.all([
+  const [par, licoes, metricas, criterio] = await Promise.all([
     deps.proximoPar ? ouNada(deps.proximoPar(clientId), "calibração") : null,
     ouNada((deps.licoesPendentes ?? licoesPendentesDb)(clientId), "lições"),
     ouNada((deps.metricasFaltando ?? metricasFaltandoDb)(clientId), "métricas"),
+    deps.comparacaoCriterio ? ouNada(deps.comparacaoCriterio(clientId), "critério do few-shot") : null,
   ]);
 
   const candidatas: Pendencia[] = [];
@@ -151,6 +177,9 @@ export async function proximaPendencia(clientId: string | null, deps: FilasDeps 
     const m = [...metricas].sort((a, b) => b.dias - a.dias)[0];
     candidatas.push({ tipo: "metrica", scriptId: m.scriptId, url: m.url, dias: m.dias, restantes: metricas.length });
   }
+  // Uma decisão só, e ela some da fila assim que for tomada (a leitura da decisão é o primeiro
+  // if de comparacaoFewShot). Enquanto não for, divide o assunto com as outras filas.
+  if (criterio) candidatas.push({ tipo: "criterio", ...criterio });
   if (!candidatas.length) return null;
   // sorteio entre as filas: 94 pares contra 28 lições, e a maior monopolizaria o assunto para
   // sempre se a ordem fosse fixa. Mesma rotação por sorteio que o eixo já usa.
@@ -169,8 +198,20 @@ export async function responder(
     if (resposta !== "skip") throw new Error("lembrete de métrica só aceita skip");
     return;
   }
+  // Critério: as duas respostas são DECISÃO e as duas gravam — "ficar como está" é escolha, e
+  // gravá-la é o que impede o sistema de perguntar de novo amanhã. `skip` continua sendo adiar.
+  if (p.tipo === "criterio") {
+    if (resposta === "skip") return;
+    if (resposta !== "ativar" && resposta !== "rejeitar")
+      throw new Error("critério do few-shot só aceita ativar, rejeitar ou skip");
+    await (deps.decidirCriterio ?? decidirCriterioDb)(
+      resposta === "ativar" ? "taxa_compartilhamento" : "views",
+      p
+    );
+    return;
+  }
   if (p.tipo === "calibracao") {
-    if (resposta === "ativar") throw new Error("voto de calibração só aceita a, b ou skip");
+    if (resposta === "ativar" || resposta === "rejeitar") throw new Error("voto de calibração só aceita a, b ou skip");
     await deps.votar?.(p.pairId, resposta, clientId);
     return;
   }

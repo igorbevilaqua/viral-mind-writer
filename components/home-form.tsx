@@ -44,9 +44,15 @@ const SUGGEST_MESSAGES: Record<string, string[]> = {
   ],
 };
 
-// Modelagem (desconstruir e replicar a arquitetura) só faz sentido para material com estrutura
-// autoral: roteiro, vídeo, ou carrossel — em todos os três existe hook, sequência e fechamento.
+// Usar um material como REFERÊNCIA ESTRUTURAL (nos dois modos) só faz sentido para material com
+// estrutura autoral: roteiro, vídeo ou carrossel — nos três existe hook, sequência e fechamento.
 const CAN_MODELAGEM: NewAttachment["kind"][] = ["reference_script", "video_link", "carousel_link"];
+
+// Os dois modos, lado a lado e mutuamente exclusivos (aparência de chip, comportamento de radio).
+const MODOS = [
+  { modo: "modelar" as const, label: "Modelar", ajuda: "usa a arquitetura dele para o SEU tema" },
+  { modo: "replicar" as const, label: "Replicar", ajuda: "mesmo vídeo, execução melhor" },
+];
 const DOC_ACCEPT = ".pdf,.doc,.docx,.txt,.html,.htm,.md,.csv,.xls,.xlsx,.ppt,.pptx,.rtf";
 
 const KIND_ICONS: Record<NewAttachment["kind"], React.ReactNode> = {
@@ -129,10 +135,23 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
   }, [prompt]);
 
   const addAttachment = (kind: NewAttachment["kind"]) =>
-    setAttachments((a) => [...a, { kind, is_modelagem: false, url: "", raw_content: "" }]);
+    setAttachments((a) => [...a, { kind, is_modelagem: false, modo: null, url: "", raw_content: "" }]);
 
   const update = (i: number, patch: Partial<NewAttachment>) =>
     setAttachments((a) => a.map((x, j) => (j === i ? { ...x, ...patch } : x)));
+
+  // Clicar no chip do modo já ativo desliga a referência inteira (é o toggle de antes).
+  // Replicar é 1:1 com o material: marcar num segundo anexo desmarca o primeiro.
+  const setModo = (i: number, modo: "modelar" | "replicar") =>
+    setAttachments((a) =>
+      a.map((x, j) => {
+        if (j === i) {
+          const desligando = x.is_modelagem && x.modo === modo;
+          return { ...x, is_modelagem: !desligando, modo: desligando ? null : modo };
+        }
+        return modo === "replicar" && x.modo === "replicar" ? { ...x, is_modelagem: false, modo: null } : x;
+      })
+    );
 
   const extractFile = async (i: number, file?: File | null) => {
     if (!file) return;
@@ -205,7 +224,9 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
     if (modelagemUrl)
       setAttachments((a) =>
         // Clique repetido no mesmo card não empilha o mesmo vídeo duas vezes.
-        a.some((x) => x.url === modelagemUrl) ? a : [...a, { kind: "video_link", is_modelagem: true, url: modelagemUrl, raw_content: "" }]
+        a.some((x) => x.url === modelagemUrl)
+          ? a
+          : [...a, { kind: "video_link", is_modelagem: true, modo: "modelar", url: modelagemUrl, raw_content: "" }]
       );
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -342,10 +363,10 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
                     {modelagemUrl && (
                       <button
                         onClick={() => applyTheme(s, modelagemUrl)}
-                        title="Aplica o tema e anexa o vídeo como modelagem"
+                        title="Aplica o tema e anexa o vídeo no modo Modelar"
                         className="rounded-[9px] border border-gold/40 bg-gold/[.07] px-3 py-1.5 text-[12px] font-semibold text-gold hover:bg-gold/[.13] transition-colors"
                       >
-                        usar com modelagem
+                        usar com Modelar
                       </button>
                     )}
                   </div>
@@ -439,29 +460,33 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
               <span className={a.is_modelagem ? "text-amber-300" : "text-white/70"}>{KIND_ICONS[a.kind]}</span>
               <span className={a.is_modelagem ? "text-amber-200 font-medium" : "text-white/80"}>
                 {KIND_LABELS[a.kind].label}
-                {a.is_modelagem && " · Modelagem ativa"}
+                {a.is_modelagem && ` · ${a.modo === "replicar" ? "Replicar" : "Modelar"}`}
               </span>
               {CAN_MODELAGEM.includes(a.kind) && (
-                <label className="ml-auto inline-flex items-center gap-1.5 cursor-pointer select-none">
-                  <input
-                    type="checkbox"
-                    checked={a.is_modelagem}
-                    onChange={(e) => update(i, { is_modelagem: e.target.checked })}
-                    className="sr-only"
-                  />
-                  <span
-                    className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[10.5px] font-medium ${
-                      a.is_modelagem
-                        ? "border-amber-500/40 bg-amber-500/15 text-amber-300"
-                        : "border-white/15 text-white/45 hover:border-amber-500/40 hover:text-amber-300"
-                    }`}
-                  >
-                    <svg width="9" height="9" viewBox="0 0 16 16" fill="currentColor">
-                      <path d="M9 1 3 9.5h4L7 15l6-8.5H9L9 1Z" />
-                    </svg>
-                    Modelagem
-                  </span>
-                </label>
+                <div className="ml-auto flex items-center gap-1.5" role="radiogroup" aria-label="Modo de uso do material">
+                  {MODOS.map(({ modo, label, ajuda }) => {
+                    const ativo = a.is_modelagem && (a.modo ?? "modelar") === modo;
+                    return (
+                      <button
+                        key={modo}
+                        role="radio"
+                        aria-checked={ativo}
+                        onClick={() => setModo(i, modo)}
+                        title={ajuda}
+                        className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[10.5px] font-medium transition-colors ${
+                          ativo
+                            ? "border-amber-500/40 bg-amber-500/15 text-amber-300"
+                            : "border-white/15 text-white/45 hover:border-amber-500/40 hover:text-amber-300"
+                        }`}
+                      >
+                        <svg width="9" height="9" viewBox="0 0 16 16" fill="currentColor">
+                          <path d="M9 1 3 9.5h4L7 15l6-8.5H9L9 1Z" />
+                        </svg>
+                        {label}
+                      </button>
+                    );
+                  })}
+                </div>
               )}
               <button
                 onClick={() => setAttachments((x) => x.filter((_, j) => j !== i))}
@@ -473,12 +498,35 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
                 </svg>
               </button>
             </div>
-            {a.is_modelagem && (
+            {/* A diferença real entre os dois chips, antes de escolher (depois, o texto do modo
+                escolhido toma este lugar). */}
+            {CAN_MODELAGEM.includes(a.kind) && !a.is_modelagem && (
+              <p className="text-xs text-white/35">
+                {MODOS.map((m) => `${m.label}: ${m.ajuda}`).join(" · ")}
+              </p>
+            )}
+            {a.is_modelagem && a.modo === "replicar" && (
+              <>
+                <p className="text-xs text-white/40">
+                  Replicar: mesmo vídeo, execução melhor. A sala segue os beats do original na mesma ordem e na mesma
+                  proporção, e ganha frase a frase, sem copiar nenhuma frase dele.
+                </p>
+                {/* Em Replicar o tema é o do próprio original. Texto digitado NÃO troca o assunto:
+                    é assim que a UI diz, e é exatamente assim que o pipeline o trata. */}
+                {prompt.trim() && (
+                  <p className="text-xs text-amber-300/80">
+                    Em Replicar o assunto é o do próprio vídeo: o texto do campo acima é lido como orientação de
+                    ângulo dentro da mesma tese, não como tema novo.
+                  </p>
+                )}
+              </>
+            )}
+            {a.is_modelagem && a.modo !== "replicar" && (
               // Sem tema digitado a sala trabalha o assunto do próprio vídeo — dizer
               // "no seu tema" aqui seria mentira, e era a única pista que o usuário tinha.
               <p className="text-xs text-white/40">
                 {prompt.trim()
-                  ? "A estrutura, emoções e elementos virais deste material serão desconstruídos e replicados no seu tema"
+                  ? "Modelar: a estrutura, emoções e elementos virais deste material serão desconstruídos e usados no seu tema"
                   : "Sem tema: a sala mantém o assunto e a tese deste vídeo, e escreve uma versão melhor, com os fatos dele conferidos antes"}
               </p>
             )}

@@ -1,5 +1,6 @@
 import { anthropic, WRITER_MODEL, recordUsage } from "../anthropic";
-import { agentPrompt, clientInsightBlock, formatNarrativa, licaoRefs, licoesPara, premissaBlock, registrarBloco } from "./agents";
+import { agentPrompt, bulletsBlock, clientInsightBlock, formatNarrativa, licaoRefs, licoesPara, premissaBlock, registrarBloco } from "./agents";
+import { anexoReplicar } from "./replicar";
 import type { EcoNumerico } from "./slop-lint";
 import type { GenerationContext, ScriptSections } from "./types";
 
@@ -176,6 +177,7 @@ ${p.notas_entrevista ? `Notas da entrevista: ${p.notas_entrevista}` : ""}`;
 
 export function buildDynamicSystemBlock(ctx: GenerationContext): string {
   const parts: string[] = [];
+  const replicando = anexoReplicar(ctx.attachments);
 
   // A premissa vem PRIMEIRO, antes do dossiê e da narrativa: é o fio condutor, e tudo que vem
   // depois no contexto existe para servi-la. Sem isso o roteirista recebia molde e beats, mas
@@ -204,15 +206,24 @@ export function buildDynamicSystemBlock(ctx: GenerationContext): string {
   const ensinado = licoes.length ? licoes.map((r) => `- ${r.titulo} — ${r.descricao}`).join("\n") : "";
   if (ensinado) parts.push(`# APRENDIZADOS ENSINADOS PELO TIME (ritmo e regras gerais — curadoria humana, cumpra)\n${ensinado}`);
 
+  const paleta = bulletsBlock(ctx);
+  if (paleta) parts.push(paleta);
+
   // Rastro (015 §4.1): o que o roteirista viu, por referência. Custo zero de LLM — é
   // serialização do que esta função já montou em memória e descartava.
   registrarBloco(ctx, "roteirista", {
+    modo: replicando ? "replicar" : "modelar",
     premissa: ctx.premissa || null,
     narrativa_id: ctx.artifacts?.escolhida ?? null,
     playbook_ref: ctx.playbookVersions ?? [], // slug+version, nunca o texto do playbook
     licoes: licaoRefs(licoes),
     vocabulario: ctx.clientPrefs?.vocabulario_evitar ?? [],
     prefs_cliente: ctx.clientPrefs?.proibicoes ?? [],
+    paleta_emocional: paleta || null,
+    // Por qual critério os 5 exemplos entraram, e a origem de cada um (que já diz o critério
+    // dele — exemplo sem dado de compartilhamento entra por views mesmo com o critério trocado).
+    few_shot_criterio: ctx.fewShotCriterio,
+    few_shot_origens: ctx.fewShot.map((f) => f.origem),
   });
 
   const prefs = clientPrefsBlock(ctx);
@@ -225,7 +236,27 @@ export function buildDynamicSystemBlock(ctx: GenerationContext): string {
     );
   }
 
-  if (ctx.modelagemBriefs.length) {
+  if (ctx.modelagemBriefs.length && replicando) {
+    // REPLICAR: aqui o roteirista recebe a TRANSCRIÇÃO INTEIRA do original, e não só o brief de
+    // 2.800 chars. Esconder o texto que se quer superar é pedir fidelidade de estrutura com os
+    // olhos fechados — a trava contra cópia é a proibição de frase literal (agents/replicador.md),
+    // não a ignorância do original.
+    parts.push(
+      `# ARQUITETURA DO ORIGINAL (INEGOCIÁVEL — é ela que você executa, beat a beat)\n` +
+        `A ordem dos beats, a FUNÇÃO de cada um e a PROPORÇÃO de duração entre eles são do original e não se discutem. ` +
+        `Você não escolhe estrutura: ela já foi escolhida e já funcionou.\n\n` +
+        ctx.modelagemBriefs.join("\n\n---\n\n")
+    );
+    const original = replicando.raw_content?.trim();
+    if (original)
+      parts.push(
+        `# TEXTO DO ORIGINAL (o que você vai superar — LEIA, NUNCA COPIE)\n` +
+          `Este é o texto do vídeo que estamos replicando. Ele está aqui para você saber exatamente o que cada beat diz e ` +
+          `quanto tempo ocupa. NENHUMA frase literal dele pode aparecer no seu roteiro: a fidelidade é de ESTRUTURA, não de texto. ` +
+          `Beat a beat, o alvo é: a palavra mais simples no lugar da difícil, a palavra mais forte no lugar da morna, ` +
+          `contraste onde ele só afirmou.\n\n${original.slice(0, 20000)}`
+      );
+  } else if (ctx.modelagemBriefs.length) {
     // O mandato da modelagem: MESMA tese, execução melhor. Ele vive aqui (prosa estática) e não
     // dentro do brief, que é só dado e tem teto de tamanho.
     parts.push(
@@ -307,10 +338,27 @@ export function buildReviewDynamicBlock(ctx: GenerationContext, sinais = ""): st
     parts.push(
       `${premissa}\n\nITEM ELIMINATÓRIO: o roteiro sustenta esta premissa do início ao fim? A abertura chama atenção para ela, o meio a prova, o fim entrega a consequência dela? Se ele defende outra tese, ou se dilui em duas, reescreva para a premissa acima.`
     );
+  const replicando = anexoReplicar(ctx.attachments);
   if (ctx.modelagemBriefs.length) {
     parts.push(
       `# ARQUITETURA-MODELO (o usuário pediu modelagem — item ELIMINATÓRIO: verifique se o roteiro segue esta arquitetura de hook, beats e arco; aponte e corrija desvios)\n` +
         ctx.modelagemBriefs.join("\n\n---\n\n")
+    );
+  }
+  // Replicar tem DOIS eliminatórios próprios, e os dois precisam do texto do original na mesa:
+  // sem ele, "não copiou nenhuma frase" seria um palpite. O revisor é o último portão antes do
+  // humanizador, que não vê o original.
+  if (replicando) {
+    const original = replicando.raw_content?.trim();
+    parts.push(
+      `# MODO REPLICAR — DOIS ITENS ELIMINATÓRIOS\n` +
+        `1. DESVIO DA ESTRUTURA DO ORIGINAL: os beats têm que aparecer na MESMA ordem, com a MESMA função e a MESMA ` +
+        `proporção de duração entre eles. Beat pulado, invertido, fundido, inventado, ou um beat curto do original ` +
+        `virando metade do nosso roteiro é reprovação — reponha a estrutura na reescrita.\n` +
+        `2. FRASE COPIADA LITERALMENTE DO ORIGINAL: fidelidade é de ESTRUTURA, nunca de texto. Qualquer frase do ` +
+        `original que sobreviveu (mesmo com uma ou duas palavras trocadas) sai e é reescrita com outras palavras, ` +
+        `dizendo a mesma coisa de forma mais simples e mais forte.` +
+        (original ? `\n\nTEXTO DO ORIGINAL (referência de comparação — não é modelo de redação):\n${original.slice(0, 8000)}` : "")
     );
   }
   if (ctx.artifacts) {
@@ -352,6 +400,7 @@ export function buildReviewDynamicBlock(ctx: GenerationContext, sinais = ""): st
         .join("\n")}`
     );
   registrarBloco(ctx, "revisao", {
+    modo: replicando ? "replicar" : "modelar",
     // O checklist é o playbook `checklist` — referência por slug+version, nunca o texto.
     checklist_ref: ctx.playbookVersions?.find((p) => p.slug === "checklist") ?? null,
     licoes: licaoRefs(licoes),
@@ -374,9 +423,17 @@ export async function generateDraft(
   onToken: (t: string) => void,
   revision?: { anterior: string; feedback: string }
 ): Promise<WriterOutput> {
+  // Replicar é outro trabalho, não outro parágrafo de instrução: prompt próprio (AGENTS.md §5).
+  const replicando = anexoReplicar(ctx.attachments);
   const task = revision
     ? `Reescreva o corpo do roteiro abaixo atendendo o FEEDBACK DO USUÁRIO (prioridade máxima), mantendo a NARRATIVA VENCEDORA do seu contexto e o brief. Aproveite o que já funciona na versão anterior; mude o que o feedback pedir.\n\nVERSÃO ANTERIOR:\n${revision.anterior}\n\nFEEDBACK DO USUÁRIO:\n${revision.feedback}`
-    : ctx.prompt.trim()
+    : replicando
+      ? `Escreva o corpo do roteiro replicando a ARQUITETURA DO ORIGINAL do seu contexto, beat a beat, na mesma ordem, com a mesma função e a mesma proporção de duração. Não proponha estrutura nova e não troque a tese: o ganho é frase a frase.${
+          ctx.prompt.trim()
+            ? `\n\nORIENTAÇÃO DE ÂNGULO DO USUÁRIO (recorte DENTRO da mesma tese — NÃO é tema novo e não autoriza trocar de assunto):\n${ctx.prompt.trim()}`
+            : ""
+        }`
+      : ctx.prompt.trim()
       ? `Escreva o corpo do roteiro executando a NARRATIVA VENCEDORA do seu contexto, sobre o brief abaixo.`
       : // Modelagem sem tema: mesmo assunto e MESMA TESE do vídeo analisado, execução melhor.
         // O texto original não chega aqui de propósito — a premissa, a narrativa e o dossiê bastam.
@@ -394,13 +451,15 @@ export async function generateDraft(
       // o MESMO block 1 no MESMO modelo (fable) → leem este prefixo com ~90% de desconto.
       // Persona no block 2, fora do cache, pra não fragmentar o prefixo por agente.
       { type: "text", text: buildStaticSystemBlock(ctx), cache_control: { type: "ephemeral" } },
-      { type: "text", text: `${agentPrompt("roteirista")}\n\n${buildDynamicSystemBlock(ctx)}` },
+      { type: "text", text: `${agentPrompt(replicando ? "replicador" : "roteirista")}\n\n${buildDynamicSystemBlock(ctx)}` },
     ],
     messages: [
       {
         role: "user",
         content: `${task} Duração-alvo: 60 a 180 segundos de fala (150 a 430 palavras no corpo — fora disso o roteiro é eliminado na revisão).${
-          ctx.prompt.trim() ? `\n\nBRIEF:\n${ctx.prompt}` : ""
+          // Em Replicar o texto digitado já entrou como ORIENTAÇÃO DE ÂNGULO na task: repeti-lo
+          // como BRIEF seria oferecer ao roteirista um tema novo, que é justamente o que o modo proíbe.
+          ctx.prompt.trim() && !replicando ? `\n\nBRIEF:\n${ctx.prompt}` : ""
         }\n\n${WRITER_FORMAT}`,
       },
     ],

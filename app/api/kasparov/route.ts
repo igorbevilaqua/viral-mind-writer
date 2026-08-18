@@ -2,9 +2,16 @@ import { getNextCalibrationPair, setLearningActive, submitCalibrationVote } from
 import { appDb } from "@/lib/db";
 import { guardEmit, UUID_RE } from "@/lib/generation";
 import { currentUserId } from "@/lib/hub";
-import { loadContextAvulso } from "@/lib/pipeline/context";
+import { comparacaoFewShot, loadContextAvulso } from "@/lib/pipeline/context";
 import { origemDoDebate, proporDestilacao, turnoKasparov } from "@/lib/pipeline/kasparov";
-import { proximaPendencia, responder, type FilasDeps, type Pendencia, type Resposta } from "@/lib/pipeline/kasparov-filas";
+import {
+  decidirCriterioDb,
+  proximaPendencia,
+  responder,
+  type FilasDeps,
+  type Pendencia,
+  type Resposta,
+} from "@/lib/pipeline/kasparov-filas";
 import { blocoDeVideo, urlDeVideo } from "@/lib/pipeline/kasparov-video";
 
 // Transcrição + autópsia + debate longo. É o teto do /api/generate, pela mesma razão.
@@ -28,9 +35,12 @@ const FILAS: FilasDeps = {
   proximoPar: getNextCalibrationPair,
   votar: submitCalibrationVote,
   ativarLicao: setLearningActive,
+  comparacaoCriterio: comparacaoFewShot,
+  // quem decidiu fica na linha: é a única forma de saber depois de quem foi a troca de critério
+  decidirCriterio: async (criterio, amostra) => decidirCriterioDb(criterio, amostra, await currentUserId()),
 };
 
-const RESPOSTAS: Resposta[] = ["a", "b", "skip", "ativar"];
+const RESPOSTAS: Resposta[] = ["a", "b", "skip", "ativar", "rejeitar"];
 
 // Fronteira de confiança: `responder` roteia por `p.tipo` e leva o id direto ao banco.
 // Objeto solto do cliente vira update com id `undefined` sem esta checagem.
@@ -39,6 +49,12 @@ function pendenciaValida(p: unknown): p is Pendencia {
   if (!o || typeof o !== "object") return false;
   if (o.tipo === "calibracao") return typeof (o as { pairId?: unknown }).pairId === "string";
   if (o.tipo === "licao") return typeof (o as { learningId?: unknown }).learningId === "string";
+  // A pendência de critério não leva id a lugar nenhum — ela vira a coluna `amostra` (jsonb) da
+  // linha da decisão. O que precisa ser barrado aqui é payload fora de forma, não id forjado.
+  if (o.tipo === "criterio") {
+    const c = o as { views?: unknown; taxa?: unknown };
+    return Array.isArray(c.views) && Array.isArray(c.taxa) && c.views.length <= 5 && c.taxa.length <= 5;
+  }
   return false;
 }
 

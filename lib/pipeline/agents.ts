@@ -17,6 +17,8 @@ import { deepDedash } from "./slop-lint";
 import fontesAutoritativas from "./fontes-autoritativas.json";
 import { HOOK_MECHANISMS, HOOK_FORMATS, filtrarCandidatos, selectHook, type HookCandidate } from "./hook-mechanisms";
 import { clientPrefsBlock } from "./draft";
+import { anexoReplicar } from "./replicar";
+import { selecionarBullets } from "../bullets";
 
 // Os prompts dos agentes vivem em agents/*.md — fonte única consumida pelo app e pela skill /goal.
 const promptCache = new Map<string, string>();
@@ -279,6 +281,29 @@ export function hookPreferenceBlock(ctx: GenerationContext): string {
   );
 }
 
+// BULLETS (migration 0033): a paleta emocional votada pelo time. Só o roteirista e o hook
+// recebem — o humanizador e o revisor NÃO, porque lá a palavra forte entraria como correção
+// sobre texto pronto, que é exatamente onde ela vira enfeite colado.
+//
+// O bloco é escrito como ANTI-COTA de propósito: dar uma lista de palavras a um modelo é
+// pedir que ele use todas. As três travas (teto de 1-2, verdade literal, nenhuma obrigatória)
+// são o que separa paleta de caricatura.
+export function bulletsBlock(ctx: GenerationContext): string {
+  const termos = selecionarBullets(ctx.bullets ?? [], {
+    vetados: ctx.clientPrefs?.vocabulario_evitar ?? [],
+    bannedPhrases: ctx.bannedPhrases,
+  });
+  if (!termos.length) return "";
+  return `# PALETA EMOCIONAL (curada pelo time)
+Palavras que a equipe considera de alta carga quando ditas no contexto certo:
+${termos.join(", ")}
+
+Isto é uma PALETA, não uma cota. Três travas:
+1. No máximo 1 ou 2 destas no roteiro inteiro. Duas por parágrafo vira caricatura.
+2. Só use a palavra se ela for literalmente verdadeira sobre o fato descrito. Palavra forte sobre fato morno soa a mentira e derruba a confiança.
+3. Nenhuma delas é obrigatória. Roteiro sem nenhuma é um resultado válido.`;
+}
+
 // Claude às vezes serializa o input da tool — ou um campo array dele — como string JSON
 // (double-encode). Sem isso, `input.campo.map(...)` estoura "reading 'map' of undefined".
 // Mesmo problema já tratado no ideador (suggest.ts).
@@ -326,7 +351,7 @@ GANCHO POTENCIAL: ${n.gancho_potencial}`;
 // Missão extra quando não há tema digitado: o "tema" é o do vídeo modelado, então o
 // pesquisador checa o que ele alegou (nada entra como fato nosso sem confirmação) e traz
 // munição que o original não usou. Sem isto, o roteiro sai 100% da palavra do vídeo.
-function checagemBlock(adapt: { transcricao: string; compreensao?: ModelagemCompreensao }): string {
+function checagemBlock(adapt: { transcricao: string; compreensao?: ModelagemCompreensao; replicar?: boolean }): string {
   const c = adapt.compreensao;
   const alvo = c
     ? `TEMA: ${c.tema}\nTESE DO VÍDEO — É A NOSSA TAMBÉM, e é ela que você vai testar e municiar: ${c.argumento_central}\nRECOMPENSA QUE O ORIGINAL ENTREGOU (a nossa versão precisa superar): ${c.recompensa}`
@@ -335,7 +360,25 @@ function checagemBlock(adapt: { transcricao: string; compreensao?: ModelagemComp
     ? `\n\nALEGAÇÕES EXTRAÍDAS DO VÍDEO (cheque TODAS, uma por linha na seção CHECAGEM):\n${c.alegacoes.map((a) => `- ${a}`).join("\n")}`
     : "";
 
-  return `NÃO HÁ TEMA DIGITADO. Vamos publicar sobre o MESMO assunto do vídeo abaixo, por um ângulo novo e melhor — a autópsia dele já foi feita e está aqui.
+  // Replicar: a estrutura do original é seguida beat a beat, então dossiê largo não tem onde
+  // caber — dado a mais vira parágrafo a mais e estoura a proporção dos beats. O teto de 2 é a
+  // trava, e "não há" é resposta melhor que encher espaço.
+  const municao = adapt.replicar
+    ? `B) MUNIÇÃO NOVA — NO MÁXIMO 2 DADOS, e só os que SOMAM à tese acima:
+Este roteiro segue a estrutura do original beat a beat: não há espaço para enriquecer o dossiê. Traga no máximo DOIS dados novos, e só se cada um deixar a tese mais difícil de contestar (número que fecha a lacuna, fato contraintuitivo que desmonta a objeção óbvia, consequência posterior ao vídeo). Cada um com fonte e data.
+Se não existir dado que some, escreva exatamente "não há dado novo que some à tese" e pare. Encher espaço com fato interessante que não serve à tese é pior que não trazer nada.
+Traga também, fora do teto, o melhor CONTRA-ARGUMENTO com fonte: não para trocarmos de tese, mas para não sermos desmentidos. Se a evidência realmente derruba a tese, diga isso com clareza.`
+    : `B) MUNIÇÃO NOVA — o que o vídeo NÃO usou e deixaria a nossa versão mais forte que a dele:
+- dados contraintuitivos que desmintam o senso comum sobre o assunto e REFORCEM a tese acima (é ela que vamos defender, melhor que o original);
+- o melhor contra-argumento contra a tese, com fonte: não para trocarmos de tese, mas para não sermos desmentidos — se a evidência realmente derruba a tese, diga isso com clareza, é informação crítica;
+- curiosidades e fatos que despertem emoção (injustiça, perda, ascensão), com fonte;
+- o que mudou sobre o assunto DEPOIS deste vídeo.`;
+
+  const abertura = adapt.replicar
+    ? `MODO REPLICAR. Vamos republicar o vídeo abaixo com execução melhor: MESMO assunto, MESMA tese, MESMA estrutura beat a beat — a autópsia dele já foi feita e está aqui.`
+    : `NÃO HÁ TEMA DIGITADO. Vamos publicar sobre o MESMO assunto do vídeo abaixo, por um ângulo novo e melhor — a autópsia dele já foi feita e está aqui.`;
+
+  return `${abertura}
 
 ${alvo}${listaAlegacoes}
 
@@ -345,11 +388,7 @@ A) SEÇÃO "## CHECAGEM" (obrigatória, primeira do dossiê) — verifique cada 
 - [confirmado|contestado|nao_verificavel] a alegação — fonte (URL + data)
 Se a lista acima vier vazia, extraia você mesmo as afirmações factuais do vídeo (número, data, causalidade, superlativo). Afirmação não confirmada NÃO pode virar afirmação nossa. Marque sem dó: "nao_verificavel" é resposta legítima e muito melhor que inventar confirmação.
 
-B) MUNIÇÃO NOVA — o que o vídeo NÃO usou e deixaria a nossa versão mais forte que a dele:
-- dados contraintuitivos que desmintam o senso comum sobre o assunto e REFORCEM a tese acima (é ela que vamos defender, melhor que o original);
-- o melhor contra-argumento contra a tese, com fonte: não para trocarmos de tese, mas para não sermos desmentidos — se a evidência realmente derruba a tese, diga isso com clareza, é informação crítica;
-- curiosidades e fatos que despertem emoção (injustiça, perda, ascensão), com fonte;
-- o que mudou sobre o assunto DEPOIS deste vídeo.
+${municao}
 
 TRANSCRIÇÃO DO VÍDEO:
 ${adapt.transcricao.slice(0, 12000)}`;
@@ -408,12 +447,18 @@ export function fontesBlock(): string {
 // A entrada é montada à parte da chamada só para poder ser testada sem rede.
 export function montarEntradaPesquisa(
   ctx: GenerationContext,
-  adapt?: { transcricao: string; compreensao?: ModelagemCompreensao }
+  adapt?: { transcricao: string; compreensao?: ModelagemCompreensao; replicar?: boolean }
 ): string {
   // Notícias anexadas: o pesquisador abre os links e incorpora os fatos ao dossiê,
   // guiado pelos comentários do usuário sobre cada uma.
   const noticias = ctx.attachments.filter((a) => a.kind === "news_link" && a.url);
-  return `${adapt ? `${checagemBlock(adapt)}\n\n` : `TEMA DO VÍDEO: ${ctx.prompt}`}${premissaPautaBlock(ctx)}${
+  // Em Replicar o texto digitado não é tema: é orientação de ÂNGULO dentro da mesma tese, e é
+  // assim que ele entra na busca — como prioridade de recorte, nunca como assunto novo.
+  const angulo =
+    adapt && ctx.prompt.trim()
+      ? `\n\nORIENTAÇÃO DE ÂNGULO DO USUÁRIO (recorte DENTRO da mesma tese — não é tema novo e não autoriza trocar de assunto): ${ctx.prompt.trim()}`
+      : "";
+  return `${adapt ? `${checagemBlock(adapt)}${angulo}\n\n` : `TEMA DO VÍDEO: ${ctx.prompt}`}${premissaPautaBlock(ctx)}${
     // Em modelagem o nicho do cliente enviesava a busca pro campo dele em vez do
     // assunto do vídeo modelado — o dossiê é do vídeo, não do cliente.
     ctx.clientPrefs && !ctx.modoModelagem
@@ -430,7 +475,7 @@ export function montarEntradaPesquisa(
 
 export async function research(
   ctx: GenerationContext,
-  adapt?: { transcricao: string; compreensao?: ModelagemCompreensao }
+  adapt?: { transcricao: string; compreensao?: ModelagemCompreensao; replicar?: boolean }
 ): Promise<string> {
   const t0 = Date.now();
   try {
@@ -711,6 +756,15 @@ function modelagemHookBlock(ctx: GenerationContext): string {
         .join(" | ")
     )
     .join("\n");
+  // Em Replicar o mecanismo não está em disputa: é o do original. O que se supera é a EXECUÇÃO
+  // (palavra mais simples, mais forte, contraste onde havia só afirmação), nunca o mecanismo.
+  if (anexoReplicar(ctx.attachments))
+    return (
+      `\nHOOK DO ORIGINAL — MODO REPLICAR (o mecanismo é ESTE, e não está em discussão):\n${linhas}\n` +
+      `Todos os candidatos reabrem ESTA mesma lacuna, pelo MESMO mecanismo. Não invente mecanismo novo e não ` +
+      `troque o fator de curiosidade: o que você supera é a execução — palavra mais simples, palavra mais forte, ` +
+      `contraste onde o original só afirmou. Nenhuma frase literal da abertura original pode sobreviver.\n`
+    );
   return `\nHOOK DO VÍDEO MODELADO (o que fez a curiosidade nascer — replique o FATOR sobre o NOSSO assunto, nunca o texto):\n${linhas}\nPelo menos 1 candidato deve reabrir essa mesma lacuna.\n`;
 }
 
@@ -773,6 +827,7 @@ export async function designHook(
   const resultadosHook = scriptResultBlock(ctx, "hook");
   const rankingMecanismos = hookMechanismBlock(ctx);
   const preferencias = hookPreferenceBlock(ctx);
+  const paleta = bulletsBlock(ctx);
   // O hook era o ÚNICO agente da sala cego às proibições e ao tom de voz do cliente.
   const prefsCliente = clientPrefsBlock(ctx);
 
@@ -805,7 +860,7 @@ ${narrativaBloco}
 ${modelagemHookBlock(ctx)}
 ORIENTAÇÃO DOS DADOS SOBRE HOOKS:
 ${orientacaoHook}
-${rankingMecanismos ? `\n${rankingMecanismos}` : ""}${preferencias ? `\n${preferencias}` : ""}${hookCampeoes ? `\nHOOKS CAMPEÕES DESTE CLIENTE (literais — a primeira frase real dos vídeos de mais views; use como referência de registro, nunca copie):\n${hookCampeoes}` : ""}${resultadosHook ? `\nHOOKS DE ROTEIROS DESTA SALA JÁ PUBLICADOS (resultado real — evite o marcado como EVITE):\n${resultadosHook}` : ""}${clientInsightBlock(ctx, ["hook"]) ? `\nHOOKS QUE JÁ FUNCIONARAM PARA ESTE CLIENTE (pré-rankeados por performance+recência):\n${clientInsightBlock(ctx, ["hook"])}` : ""}${taughtBlock(ctx, "hook") ? `\nAPRENDIZADOS DE HOOK ENSINADOS PELO TIME (curadoria humana — prevalecem sobre padrões do corpus em conflito):\n${taughtBlock(ctx, "hook")}` : ""}
+${rankingMecanismos ? `\n${rankingMecanismos}` : ""}${preferencias ? `\n${preferencias}` : ""}${paleta ? `\n${paleta}` : ""}${hookCampeoes ? `\nHOOKS CAMPEÕES DESTE CLIENTE (literais — a primeira frase real dos vídeos de mais views; use como referência de registro, nunca copie):\n${hookCampeoes}` : ""}${resultadosHook ? `\nHOOKS DE ROTEIROS DESTA SALA JÁ PUBLICADOS (resultado real — evite o marcado como EVITE):\n${resultadosHook}` : ""}${clientInsightBlock(ctx, ["hook"]) ? `\nHOOKS QUE JÁ FUNCIONARAM PARA ESTE CLIENTE (pré-rankeados por performance+recência):\n${clientInsightBlock(ctx, ["hook"])}` : ""}${taughtBlock(ctx, "hook") ? `\nAPRENDIZADOS DE HOOK ENSINADOS PELO TIME (curadoria humana — prevalecem sobre padrões do corpus em conflito):\n${taughtBlock(ctx, "hook")}` : ""}
 
 CORPO DO ROTEIRO (o hook precisa emendar na primeira frase e ser pago pelo final):
 ${corpo}
@@ -845,6 +900,7 @@ Gere de 5 a 6 candidatos a hook, cada um com um MECANISMO DISTINTO da taxonomia,
     licoes: licaoRefs(licoesPara(ctx, "hook")),
     mecanismos_ranking: rank,
     prefs_calibracao: hookPreferenceBlock(ctx) || null,
+    paleta_emocional: paleta || null,
   });
 
   // racional: o do modelo + a justificativa de dados da escolha
@@ -876,6 +932,14 @@ export async function writeComando(ctx: GenerationContext, corpo: string): Promi
     : ctx.modoModelagem
       ? `${clientPrefsBlock(ctx)}\n\nO CTA é para o cliente acima: cite o nome "${p.nome}" na própria frase e convide o espectador a SEGUI-LO para continuar recebendo conteúdo como este. O benefício explícito continua obrigatório.\n\n`
       : `CLIENTE: ${p.nome}${p.tom_de_voz ? ` | Tom: ${p.tom_de_voz}` : ""}${p.notas_entrevista ? `\nNotas: ${p.notas_entrevista.slice(0, 800)}` : ""}\n\n`;
+  // Replicar: a decisão entre ADAPTAR o CTA do original e CRIAR um já foi tomada em código
+  // (comandoDoOriginal). O agente recebe a instrução pronta, nunca a dúvida.
+  const r = ctx.replicarComando;
+  const replicarBloco = !r
+    ? ""
+    : r.adaptar
+      ? `MODO REPLICAR — ADAPTE O COMANDO DO ORIGINAL. Ele fechava assim: ${r.descricao}.\nMantenha o mesmo tipo de pedido e a mesma posição; melhore a execução (benefício explícito na própria frase, verbo mais concreto, promessa que o roteiro pagou). Nenhuma frase literal do original pode sobreviver.\n\n`
+      : `MODO REPLICAR — CRIE O COMANDO: ${r.descricao}. É o ponto onde a nossa versão ganha dele.\nO pedido tem que soar CONSEQUÊNCIA natural do que o vídeo acabou de dizer, não apêndice colado no fim: quem entendeu a tese já quer fazer o que você vai pedir.\n\n`;
   // CTA é fórmula curta sobre padrões dados no contexto: ANALYST_MODEL + effort low bastam
   // (era WRITER_MODEL/fable, ~3x o preço, pra 2-3 frases). Sem cache_control: prompt pequeno
   // (provavelmente abaixo do mínimo cacheável) e agora no modelo barato — write premium não paga.
@@ -890,7 +954,7 @@ export async function writeComando(ctx: GenerationContext, corpo: string): Promi
       messages: [
       {
         role: "user",
-        content: `${clienteBloco}${
+        content: `${clienteBloco}${replicarBloco}${
           clientInsightBlock(ctx, ["comando"])
             ? `COMANDOS QUE JÁ CONVERTERAM PARA ESTE CLIENTE (pré-rankeados por seguidores ganhos):\n${clientInsightBlock(ctx, ["comando"])}\n\n`
             : ""

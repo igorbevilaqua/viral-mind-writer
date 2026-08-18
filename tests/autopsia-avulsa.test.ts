@@ -59,10 +59,15 @@ import { analyzeModelagem, autopsiaDeUrl, chavesDoAnexo, filtroDeAutopsia } from
 import type { Attachment, GenerationContext } from "@/lib/pipeline/types";
 
 // Formato real de uma linha já gravada (select em vm_modelagem_analyses, 2026-08-16):
-// analysis é um objeto jsonb com `esqueleto`, e o brief é texto.
+// analysis é um objeto jsonb com `esqueleto`, e o brief é texto. A `compreensao` está aqui
+// porque uma autópsia paga SEM tema digitado sempre a tem — e é ela que a geração sem tema usa
+// como premissa (ver o teste da tese abaixo).
 const ANALISE_PAGA = {
   replication_brief: "BRIEF JÁ PAGO",
-  analysis: { esqueleto: { estrutura_narrativa: "A1. Jornada do Herói" } },
+  analysis: {
+    esqueleto: { estrutura_narrativa: "A1. Jornada do Herói" },
+    compreensao: { argumento_central: "a tese que o vídeo defende" },
+  },
 };
 
 const ANEXO: Attachment = {
@@ -117,6 +122,21 @@ describe("as autópsias já pagas continuam válidas", () => {
     banco.linha = { replication_brief: "brief velho", analysis: { compreensao: {} }, attachment_id: ANEXO.id };
 
     await expect(analyzeModelagem(ANEXO, CTX)).rejects.toThrow("MODELO CHAMADO");
+  });
+
+  // Cache do MESMO vídeo, exigência diferente por chamador (0034): sem tema digitado a premissa
+  // sai de `compreensao.argumento_central`, e servir ali uma autópsia paga COM tema — que apaga
+  // `compreensao` de propósito — deixaria a sessão sem tese e sem alegações para checar.
+  it("sem tema, análise sem a tese não é servida como cache (mas serve ao debate avulso)", async () => {
+    banco.linha = {
+      replication_brief: "BRIEF SEM TESE",
+      analysis: { esqueleto: { estrutura_narrativa: "A1. Jornada do Herói" } },
+      attachment_id: ANEXO.id,
+    };
+
+    await expect(analyzeModelagem(ANEXO, CTX)).rejects.toThrow("MODELO CHAMADO");
+    // o Kasparov só quer o esqueleto: para ele a mesma linha continua valendo
+    expect((await autopsiaDeUrl(ANEXO.url!)).brief).toBe("BRIEF SEM TESE");
   });
 });
 

@@ -7,6 +7,7 @@
 //   • confirmação própria de gravação — é o teach-dialog da peça 1, com a síntese editável.
 
 import { useEffect, useRef, useState } from "react";
+import { fmtNum } from "@/lib/format";
 import { useTeachDialog } from "./teach-dialog";
 import type { PropostaDeDestilacao } from "@/lib/pipeline/kasparov";
 import type { Pendencia, Resposta } from "@/lib/pipeline/kasparov-filas";
@@ -388,6 +389,54 @@ function FilaCard({ p, onResponder }: { p: Pendencia; onResponder: (r: Resposta)
             Sem esse número eu discuto no achismo: é ele que vira ratio, e o ratio é o que me deixa
             sustentar uma posição em vez de só opinar.
           </p>
+        </>
+      ) : p.tipo === "criterio" ? (
+        <>
+          {/* Os DOIS conjuntos na mesa, com o número que os separa. Sem isso a troca de critério
+              seria um botão no escuro — e um botão no escuro é pior que nenhum botão. */}
+          <p className="text-[13px] text-white/70">
+            Hoje os 5 exemplos que o roteirista imita (e os 2 que viram a voz do humanizador) são os de mais{" "}
+            <span className="text-cream">views</span>. Por <span className="text-cream">taxa de compartilhamento</span>,{" "}
+            <span className="text-gold">{p.mudam} dos 5</span> mudariam.
+          </p>
+          <p className="text-[12px] text-white/40">tema real da última sessão: &ldquo;{p.tema}&rdquo;</p>
+          <div className="grid gap-2.5 sm:grid-cols-2">
+            {(
+              [
+                ["por views (hoje)", p.views],
+                ["por taxa de compartilhamento", p.taxa],
+              ] as const
+            ).map(([titulo, lista]) => (
+              <div key={titulo} className="rounded-[10px] border border-white/10 p-2.5">
+                <p className="kicker text-[10px] text-gold mb-1.5">{titulo}</p>
+                <ol className="space-y-1.5">
+                  {lista.map((e, i) => (
+                    <li key={i} className="text-[12px] leading-snug text-white/60">
+                      <span className="text-white/35">{i + 1}.</span> {e.trecho}
+                      <span className="block text-[11px] text-white/40">
+                        {fmtNum(e.views)} views ·{" "}
+                        {e.taxa == null
+                          ? "sem dado de compartilhamento"
+                          : `${(e.taxa * 100).toFixed(2)}% de compartilhamento`}
+                        {e.fallback ? " · entrou por views (fallback)" : ""}
+                      </span>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            ))}
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <button
+              onClick={() => onResponder("ativar")}
+              className="btn-gold rounded-[10px] px-4 py-2 text-[13px] font-semibold"
+            >
+              Trocar para taxa de compartilhamento
+            </button>
+            <button onClick={() => onResponder("rejeitar")} className={opcao}>
+              Ficar com views
+            </button>
+          </div>
         </>
       ) : (
         <>

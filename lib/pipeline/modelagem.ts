@@ -7,6 +7,7 @@ import { clientInsightBlock, scriptResultBlock, taughtBlock, toolInput } from ".
 import { clientPrefsBlock, playbookIndex } from "./draft";
 import { composeBrief } from "./modelagem-brief";
 import { HOOK_MECHANISMS } from "./hook-mechanisms";
+import { resolverModo, SEM_COMANDO } from "./replicar";
 import type { Attachment, GenerationContext, ModelagemAnalysis } from "./types";
 
 // A modelagem extrai o MECANISMO do sucesso, nunca o conteúdo: o esqueleto é a parte
@@ -133,12 +134,23 @@ function modelagemTool(comTema: boolean) {
           },
         },
         escalada: { type: "string", description: "como os stakes sobem do início ao fim" },
+        // "não havia comando" é um VALOR, não um campo vazio: campo em branco não distingue
+        // "o original não pedia nada" de "a autópsia não olhou". O modo Replicar decide em código
+        // entre adaptar o CTA do original e criar um, e essa decisão depende dessa distinção.
         comando: {
           type: "object",
-          properties: { tipo: { type: "string" }, gatilho: { type: "string" }, posicao: { type: "string" } },
+          properties: {
+            tipo: {
+              type: "string",
+              description: `o tipo de pedido que o fechamento faz ao espectador. Se o original NÃO pedia nada, escreva exatamente "${SEM_COMANDO}" — nunca deixe em branco.`,
+            },
+            gatilho: { type: "string", description: `o que motiva a ação; "${SEM_COMANDO}" no tipo → deixe vazio` },
+            posicao: { type: "string", description: "onde o pedido aparece (fim, meio, ao longo)" },
+          },
+          required: ["tipo"],
         },
       },
-      required: ["estrutura_narrativa", "hook", "beats", "escalada"],
+      required: ["estrutura_narrativa", "hook", "beats", "escalada", "comando"],
     },
     nao_transferivel: {
       type: "array",
@@ -325,7 +337,7 @@ const MAPA_DO_CARROSSEL =
 export function fontesComProcedencia(fontes: string | null, modelagens: Attachment[]): string | null {
   const linhas = modelagens
     .filter((a) => LINK_MODELAVEL.includes(a.kind) && a.url && !fontes?.includes(a.url))
-    .map((a) => `Modelado de: ${a.url}`);
+    .map((a) => `${resolverModo(a.modo) === "replicar" ? "Replicado" : "Modelado"} de: ${a.url}`);
   return [...linhas, fontes?.trim()].filter(Boolean).join("\n\n") || null;
 }
 
@@ -376,6 +388,28 @@ export interface AutopsiaOpts {
   cliente?: string; // o que a casa sabe do cliente
   usageLog?: UsageLog;
   attachmentId?: string | null; // chave histórica, quando a autópsia nasce de um anexo
+  // A geração sem tema (Replicar e Modelar-sem-tema) tira a PREMISSA de `compreensao`: análise
+  // cacheada sem ela não serve ali, ainda que sirva ao Kasparov (que só quer o esqueleto).
+  exigeTese?: boolean;
+  // Modo Replicar: o `esqueleto.comando` (inclusive o "nenhum") é insumo obrigatório — é ele que
+  // decide, em código, se o agente comando adapta o CTA do original ou cria um.
+  exigeComando?: boolean;
+}
+
+// ── O cache da autópsia serve os DOIS modos, e a chave continua sendo o vídeo ────────────────
+// O mesmo vídeo pode ser modelado E replicado, e a análise é a mesma peça: nada no schema muda
+// por modo. Multiplicar a chave por modo faria o mesmo vídeo ser autopsiado duas vezes à toa.
+// O que varia é o que o CHAMADOR precisa encontrar dentro da análise, e é isso que o cache checa:
+//   • sempre: `esqueleto` (formato pós-refactor; análise antiga re-analisa uma vez);
+//   • `exigeTese` (geração sem tema): `compreensao.argumento_central`. Sem esta trava, uma
+//     autópsia paga COM tema digitado — que apaga `compreensao` de propósito — seria servida a
+//     uma sessão sem tema, que ficaria sem tese e sem alegações para checar;
+//   • `exigeComando` (Replicar): `esqueleto.comando.tipo`, que é o que distingue "o original não
+//     pedia nada" de "ninguém olhou".
+function cacheServe(analysis: ModelagemAnalysis | null, opts: AutopsiaOpts): boolean {
+  if (!analysis?.esqueleto) return false;
+  if (opts.exigeTese && !analysis.compreensao?.argumento_central?.trim()) return false;
+  return !opts.exigeComando || Boolean(analysis.esqueleto.comando?.tipo?.trim());
 }
 
 // O núcleo da autópsia, livre de Attachment e de GenerationContext: o que ele precisa é uma
@@ -383,6 +417,8 @@ export interface AutopsiaOpts {
 // fino sobre isto — o pipeline de geração não mudou de comportamento.
 export async function autopsiaDeUrl(url: string | null, opts: AutopsiaOpts = {}): Promise<ModelagemResult> {
   const vazio: ModelagemResult = { brief: "", analysis: {} };
+  const tema = opts.tema?.trim() ?? "";
+  const comTema = Boolean(tema);
 
   // Cache ANTES da transcrição: sem isso cada debate sobre o mesmo vídeo pagaria os dois.
   // Análises no formato antigo (sem `esqueleto`) re-analisam uma vez no formato novo.
@@ -395,15 +431,13 @@ export async function autopsiaDeUrl(url: string | null, opts: AutopsiaOpts = {})
       .order("created_at", { ascending: false })
       .limit(1)
       .maybeSingle();
-    if (cached?.replication_brief && (cached.analysis as { esqueleto?: unknown } | null)?.esqueleto)
+    if (cached?.replication_brief && cacheServe(cached.analysis as ModelagemAnalysis | null, opts))
       return { brief: cached.replication_brief, analysis: cached.analysis as ModelagemAnalysis };
   }
 
   const transcript = opts.transcript?.trim() || (url ? (await transcricaoDeUrl(url)).text : "");
   if (!transcript) return vazio;
 
-  const tema = opts.tema?.trim() ?? "";
-  const comTema = Boolean(tema);
   const corpus = await lookupCorpus(url);
   const taxonomia = opts.taxonomia ?? "";
   const carrossel = MARCA_DE_CARROSSEL.test(transcript);
@@ -421,7 +455,9 @@ export async function autopsiaDeUrl(url: string | null, opts: AutopsiaOpts = {})
       `versão precisa provocar o MESMO sentimento, e se possível mais forte. ` +
       `Liste também cada alegação factual, porque um pesquisador vai checar uma a uma antes de qualquer coisa entrar ` +
       `no nosso roteiro — nós não herdamos a palavra dele, nós confirmamos ou descartamos. ` +
-      `Em esqueleto, a mecânica pura, incluindo a curva emocional beat a beat. ` +
+      `Em esqueleto, a mecânica pura, incluindo a curva emocional beat a beat — e preencha o campo seg ` +
+      `de cada beat: a PROPORÇÃO de duração entre os beats é parte da estrutura, e uma versão nossa que ` +
+      `gasta 40 segundos no que o original resolveu em 8 não é a mesma estrutura. ` +
       `Em diagnostico.gargalo, seja preciso: é a camada onde o original era mais fraco, e é exatamente ali que ` +
       `a nossa versão tem que ganhar dele.`;
 
@@ -483,9 +519,17 @@ export async function analyzeModelagem(attachment: Attachment, ctx: GenerationCo
 
   const storyIndex = playbookIndex(ctx.playbooks.storytelling);
   const { url, attachmentId } = chavesDoAnexo(attachment);
+  // Replicar não tem tema novo: o assunto é o do próprio original, e o texto digitado (quando
+  // existe) é orientação de ÂNGULO dentro da mesma tese. Passar tema aqui apagaria `compreensao`
+  // — justamente a tese que o usuário confirma e as alegações que a pesquisa vai checar.
+  const replicar = resolverModo(attachment.modo) === "replicar";
+  const tema = replicar ? "" : ctx.prompt;
   return autopsiaDeUrl(url, {
     transcript,
-    tema: ctx.prompt,
+    tema,
+    // Sem tema a premissa vem da autópsia; em Replicar o comando dela decide adaptar × criar.
+    exigeTese: !tema.trim(),
+    exigeComando: replicar,
     attachmentId,
     usageLog: ctx.usageLog,
     cliente: clienteBlock(ctx),

@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState, useTransition, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import {
+  addBullet,
   finalizeSession,
   markPublished,
   quickFeedback,
@@ -60,12 +61,16 @@ export interface ScriptPerformance {
 
 // "verificacao" roda DEPOIS do save e depois do `done` (017 §8), mas ainda dentro do stream:
 // sem ela na lista, o stepper cai no fallback e mostra "Preparando" durante a verificação.
-const PHASES = ["premissa", "pesquisa", "modelagem", "narrativas", "roteiro", "hook_comando", "revisao", "humanizacao", "salvando", "verificacao"] as const;
+const TODAS_AS_FASES = ["premissa", "pesquisa", "modelagem", "narrativas", "roteiro", "hook_comando", "revisao", "humanizacao", "salvando", "verificacao"] as const;
+
+// Replicar não passa por storytelling nem pelo agente Dados: a narrativa é a do original, montada
+// em código. Anunciar "Narrativas" numa trilha que nunca vai acender é mentir para quem espera.
+const PHASES_REPLICAR = TODAS_AS_FASES.filter((p) => p !== "narrativas");
 
 const PHASE_SHORT: Record<string, string> = {
   premissa: "Premissa",
   pesquisa: "Pesquisa",
-  modelagem: "Modelagem",
+  modelagem: "Autópsia",
   narrativas: "Narrativas",
   roteiro: "Roteiro",
   hook_comando: "Hook + CTA",
@@ -125,7 +130,7 @@ function PremissaBox({
 
   const ORIGEM_LABEL: Record<string, string> = {
     digitada: "definida por você",
-    modelagem: "extraída do vídeo modelado e confirmada por você",
+    modelagem: "extraída do vídeo de referência e confirmada por você",
     derivada: "definida pela sala a partir do tema",
   };
 
@@ -267,8 +272,9 @@ function ShareBtn({ scriptId }: { scriptId: string }) {
   );
 }
 
-function Stepper({ current }: { current: string | null }) {
-  const idx = current ? PHASES.indexOf(current as (typeof PHASES)[number]) : -1;
+function Stepper({ current, replicar }: { current: string | null; replicar?: boolean }) {
+  const PHASES: readonly string[] = replicar ? PHASES_REPLICAR : TODAS_AS_FASES;
+  const idx = current ? PHASES.indexOf(current) : -1;
   return (
     <div className="rounded-2xl border border-white/[.08] bg-white/[.03] p-5 sm:px-7 sm:py-6">
       {/* desktop: trilha de agentes */}
@@ -552,7 +558,17 @@ const fullScriptText = (s: Script) =>
 
 // Fechamento do flywheel: marcar publicado → ETL casa com o vídeo do corpus →
 // performance real volta como chips e vira insight do agente Dados.
-function PublishBox({ script, perf, baseline }: { script: Script; perf: ScriptPerformance | null; baseline: Baseline | null }) {
+function PublishBox({
+  script,
+  perf,
+  semCorpus,
+  baseline,
+}: {
+  script: Script;
+  perf: ScriptPerformance | null;
+  semCorpus: boolean;
+  baseline: Baseline | null;
+}) {
   const router = useRouter();
   const [url, setUrl] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -652,10 +668,21 @@ function PublishBox({ script, perf, baseline }: { script: Script; perf: ScriptPe
           )}
         </div>
         </>
+      ) : semCorpus ? (
+        // Falha visível: o roteiro foi publicado e o sistema NÃO consegue medir. Sem esta
+        // linha o flywheel morre em silêncio — que é exatamente como ele morreu até aqui.
+        <p className="flex items-start gap-2 text-xs text-red-300">
+          <span className="mt-[5px] w-1.5 h-1.5 shrink-0 rounded-full bg-red-300" />
+          <span>
+            Não consegui casar este link com nenhum vídeo do corpus — enquanto isso, a performance
+            deste roteiro não volta e ele não ensina nada à sala. Confira o link ou avise quem cuida
+            da coleta do canal.
+          </span>
+        </p>
       ) : (
         <p className="inline-flex items-center gap-2 text-xs text-amber-300">
           <span className="w-1.5 h-1.5 rounded-full bg-amber-300 vm-pulse" />
-          Aguardando métricas: sincroniza toda segunda, quando o vídeo entrar no corpus.
+          Vídeo encontrado no corpus, aguardando métricas: sincroniza toda segunda.
         </p>
       )}
     </div>
@@ -953,6 +980,50 @@ function VerboBtn({
   );
 }
 
+// 4º item do menu de seleção: favorita o trecho como bullet. Sem label — o pill é
+// `whitespace-nowrap` e não tem overflow; uma palavra a mais quebra a linha no celular.
+function EstrelaBtn({
+  estado,
+  onAcionar,
+  touch = true,
+}: {
+  estado: "ok" | "erro" | null;
+  onAcionar: () => void;
+  touch?: boolean;
+}) {
+  const go = (e: React.SyntheticEvent) => {
+    e.preventDefault();
+    onAcionar();
+  };
+  return (
+    <button
+      onMouseDown={go}
+      onTouchStart={touch ? go : undefined}
+      aria-label="Favoritar trecho como bullet"
+      title="Favoritar: entra na paleta emocional do time"
+      className={`rounded-full border px-3 py-2 whitespace-nowrap transition-colors ${
+        estado === "erro"
+          ? "border-red-500/70 text-red-400"
+          : estado === "ok"
+            ? "border-gold text-gold"
+            : "border-gold/40 bg-[#161410] text-cream hover:border-gold/70"
+      }`}
+    >
+      <svg
+        width="13"
+        height="13"
+        viewBox="0 0 16 16"
+        fill={estado === "ok" ? "currentColor" : "none"}
+        stroke="currentColor"
+        strokeWidth="1.3"
+        strokeLinejoin="round"
+      >
+        <path d="M8 1.8 10 6l4.6.6-3.4 3.1 1 4.5L8 11.9 3.8 14.2l1-4.5L1.4 6.6 6 6 8 1.8Z" />
+      </svg>
+    </button>
+  );
+}
+
 // ── Card do roteiro final: leitura, edição manual inline e os três verbos da seleção ──────
 function ScriptCard({
   script,
@@ -988,6 +1059,21 @@ function ScriptCard({
   const [bobInline, setBobInline] = useState<{ start: number; end: number; trecho: string; slash?: boolean } | null>(null);
   // Botão flutuante "Chamar o Bob" ao selecionar texto no textarea (modo edição).
   const [taSel, setTaSel] = useState<{ x: number; y: number; start: number; end: number } | null>(null);
+  // Estrela ☆ da seleção: favoritar o trecho como bullet. Atrito zero — 1 clique grava, e a
+  // própria estrela é o feedback (dourada = gravou, vermelha = trecho inválido). Sem dialog.
+  const [estrela, setEstrela] = useState<"ok" | "erro" | null>(null);
+  const favoritar = (trecho: string, limpar: () => void) => {
+    void (async () => {
+      const r = await addBullet(trecho);
+      setEstrela(r.erro ? "erro" : "ok");
+      // a seleção só sai DEPOIS da confirmação: limpar na hora tiraria da tela a estrela
+      // dourada que é o único recibo do gesto. Inválido não limpa — o usuário reescolhe.
+      setTimeout(() => {
+        setEstrela(null);
+        if (!r.erro) limpar();
+      }, 1500);
+    })();
+  };
 
   // Janela única de explicar / mudar / ensinar (015 §7.1). "Mudar" volta para o Bob de hoje:
   // o dialog só devolve o trecho, os offsets exatos vêm de `sel`, que ainda está em pé
@@ -1316,6 +1402,11 @@ function ScriptCard({
               touch={false}
               onAcionar={() => teach.abrir("ensinar", draft.roteiro.slice(taSel.start, taSel.end))}
             />
+            <EstrelaBtn
+              estado={estrela}
+              touch={false}
+              onAcionar={() => favoritar(draft.roteiro.slice(taSel.start, taSel.end), () => setTaSel(null))}
+            />
           </div>
         )}
         {editing && bobInline && (
@@ -1401,6 +1492,7 @@ function ScriptCard({
               setSel(null);
             }}
           />
+          <EstrelaBtn estado={estrela} onAcionar={() => favoritar(sel.trecho, () => setSel(null))} />
         </div>
       )}
       {teach.dialog}
@@ -1645,6 +1737,7 @@ export default function SessionView({
   clients,
   scripts,
   performance,
+  semCorpus,
   baseline,
   lastRating,
   analyses,
@@ -1666,16 +1759,20 @@ export default function SessionView({
   clients: { id: string; nome: string }[];
   scripts: Script[];
   performance: ScriptPerformance[];
+  /** ids de roteiros publicados cuja URL não casou com nenhum vídeo do corpus */
+  semCorpus: string[];
   baseline: Baseline | null;
   lastRating: Record<string, number>;
   analyses: { analysis: unknown; replication_brief: string }[];
-  // Anexos marcados como modelagem: a origem do conteúdo que este roteiro está superando.
-  modelagens: { kind: string; url: string | null }[];
+  // Anexos de referência estrutural: a origem do conteúdo que este roteiro está superando.
+  // `modo` null = Modelar (migration 0034).
+  modelagens: { kind: string; url: string | null; modo?: string | null }[];
   artifacts: SessionArtifacts | null;
   autoStart: boolean;
   generationStale: boolean;
 }) {
   const router = useRouter();
+  const replicar = modelagens.some((m) => m.modo === "replicar");
   const [phase, setPhase] = useState<string | null>(null);
   const [streamText, setStreamText] = useState("");
   const [error, setError] = useState<string | null>(
@@ -1854,7 +1951,9 @@ export default function SessionView({
       {modelagens.length > 0 && (
         <div className="rounded-[14px] border border-amber-500/25 bg-amber-500/[.04] px-4 py-3">
           <div className="flex items-baseline gap-2 flex-wrap">
-            <span className="text-[12px] text-amber-300/90 font-medium shrink-0">Modelado de:</span>
+            <span className="text-[12px] text-amber-300/90 font-medium shrink-0">
+              {replicar ? "Replicado de:" : "Modelado de:"}
+            </span>
             <div className="flex flex-col gap-1 min-w-0">
               {modelagens.map((m, i) => (
                 <div key={i} className="text-[12.5px] min-w-0">
@@ -1884,7 +1983,7 @@ export default function SessionView({
             <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor">
               <path d="M9 1 3 9.5h4L7 15l6-8.5H9L9 1Z" />
             </svg>
-            Desconstrução da modelagem ({analyses.length})
+            Desconstrução do material ({analyses.length})
           </summary>
           {analyses.map((a, i) => (
             <div key={i} className="mt-3 space-y-3 text-sm">
@@ -1904,7 +2003,7 @@ export default function SessionView({
       {/* geração em andamento */}
       {generating && (
         <>
-          <Stepper current={phase} />
+          <Stepper current={phase} replicar={replicar} />
           {streamText && (
             <div className="rounded-2xl border border-gold/25 bg-white/[.02] overflow-hidden">
               <div
@@ -1976,8 +2075,9 @@ export default function SessionView({
         </details>
       )}
 
-      {/* narrativas candidatas — a negociação da sala */}
-      {narrativas && narrativas.candidatas.length > 0 && (
+      {/* narrativas candidatas — a negociação da sala. Uma candidata só não é negociação: em
+          Replicar a narrativa é a do original, montada em código, e não há escolha a mostrar. */}
+      {narrativas && narrativas.candidatas.length > 1 && (
         <NarrativeCards
           candidatas={narrativas.candidatas}
           ranking={narrativas.ranking}
@@ -2051,7 +2151,12 @@ export default function SessionView({
           )}
 
           {/* visível também com sessão encerrada — a publicação acontece depois */}
-          <PublishBox script={script} perf={performance.find((p) => p.script_id === script.id) ?? null} baseline={baseline} />
+          <PublishBox
+            script={script}
+            perf={performance.find((p) => p.script_id === script.id) ?? null}
+            semCorpus={semCorpus.includes(script.id)}
+            baseline={baseline}
+          />
 
 
           {script.slop_lint_violations > 0 && (

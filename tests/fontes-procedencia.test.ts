@@ -34,6 +34,12 @@ describe("fontesComProcedencia", () => {
     expect(fontesComProcedencia(null, [anexo({ kind: "reference_script", raw_content: "colado" })])).toBeNull();
   });
 
+  // 0034: a procedência diz qual foi o USO do material — replicar não é modelar.
+  test("modo replicar assina a procedência com o verbo certo", () => {
+    expect(fontesComProcedencia(null, [anexo({ url: REEL, modo: "replicar" })])).toBe(`Replicado de: ${REEL}`);
+    expect(fontesComProcedencia(null, [anexo({ url: REEL, modo: null })])).toBe(`Modelado de: ${REEL}`);
+  });
+
   test("sem modelagem, as fontes passam intactas", () => {
     expect(fontesComProcedencia("https://exemplo.com/a", [])).toBe("https://exemplo.com/a");
   });

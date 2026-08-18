@@ -1,6 +1,6 @@
 import type Anthropic from "@anthropic-ai/sdk";
 import { WRITER_MODEL, trackedCreate } from "../anthropic";
-import { agentPrompt } from "./agents";
+import { agentPrompt, registrarBloco } from "./agents";
 import { slopLint, blockCount, dedash, type LintViolation } from "./slop-lint";
 import type { GenerationContext } from "./types";
 import { OUTPUT_FORMAT, buildStaticSystemBlock } from "./draft";
@@ -27,10 +27,16 @@ export async function humanize(
   ctx: GenerationContext,
   script: string
 ): Promise<{ text: string; violations: LintViolation[] }> {
-  const voiceRefs = ctx.fewShot
-    .slice(0, 2)
-    .map((f, i) => `## Referência de voz ${i + 1}\n${f.roteiro}`)
-    .join("\n\n");
+  // Este é o segundo consumidor do few-shot, e é o que decide a VOZ do produto: os 2 primeiros
+  // exemplos do mesmo ranking do roteirista. Troca de critério vale aqui também, por construção.
+  const referencias = ctx.fewShot.slice(0, 2);
+  const voiceRefs = referencias.map((f, i) => `## Referência de voz ${i + 1}\n${f.roteiro}`).join("\n\n");
+
+  // Rastro: sem isto, o "Por quê?" explica o roteiro e cala sobre a voz.
+  registrarBloco(ctx, "humanizador", {
+    few_shot_criterio: ctx.fewShotCriterio,
+    referencia_de_voz: referencias.map((f) => f.origem),
+  });
 
   // block 1 = mesmo prefixo estático do roteirista (mesmo modelo fable) → cache read na
   // primeira passada, e os retries cirúrgicos reusam este prefixo com ~90% de desconto.

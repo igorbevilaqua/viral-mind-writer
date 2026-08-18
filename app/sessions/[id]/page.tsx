@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { appDb, viralData } from "@/lib/db";
 import { writerScope } from "@/lib/hub";
 import { isStaleGeneration } from "@/lib/generation";
+import { resolveCorpusVideo } from "@/lib/script-performance";
 import type { LintViolation } from "@/lib/pipeline/slop-lint";
 import type { RegistroVerificacao } from "@/lib/pipeline/verificar";
 import SessionView from "@/components/session-view";
@@ -46,7 +47,9 @@ export default async function SessionPage({
     // Origem da modelagem. Vem de vm_attachments e não do join de vm_modelagem_analyses porque
     // o anexo existe desde a criação da sessão: a linha "Modelado de" aparece antes da autópsia
     // rodar, e continua aparecendo se ela falhar.
-    appDb.from("vm_attachments").select("kind, url").eq("session_id", id).eq("is_modelagem", true),
+    // `modo` (0034): null = Modelar. Se a migration ainda não estiver aplicada o select falha e
+    // `data` vem null — a caixa "Modelado de" some, nada quebra.
+    appDb.from("vm_attachments").select("kind, url, modo").eq("session_id", id).eq("is_modelagem", true),
   ]);
 
   const scriptIds = (scripts ?? []).map((s) => s.id);
@@ -84,6 +87,17 @@ export default async function SessionPage({
     };
   });
 
+  // Nenhum corte é silencioso: publicado e sem métrica tem duas causas muito diferentes —
+  // o vídeo ainda não entrou no corpus (espera a segunda) ou a URL não casa com vídeo nenhum
+  // (o loop morreu ali e ninguém ia perceber). Resolvido na hora, com a MESMA função do sync,
+  // para a caixa de publicação não poder discordar do ETL.
+  const medidos = new Set((performance ?? []).map((p) => p.script_id));
+  const semCorpus: string[] = [];
+  for (const s of scriptsView) {
+    if (s.status !== "published" || !s.published_url || medidos.has(s.id)) continue;
+    if (!(await resolveCorpusVideo(s.published_url))) semCorpus.push(s.id);
+  }
+
   // WP-F.2: baseline do cliente (média 30d, fallback geral) pra comparar com as métricas reais.
   // Só busca quando há performance a comparar; falha do RPC nunca derruba a página.
   let baseline: { views: number; periodo: "30d" | "geral" } | null = null;
@@ -118,6 +132,7 @@ export default async function SessionPage({
       generationStale={generationStale}
       scripts={scriptsView}
       performance={performance ?? []}
+      semCorpus={semCorpus}
       baseline={baseline}
       lastRating={lastRating}
       analyses={(analyses ?? []).map((a) => ({ analysis: a.analysis, replication_brief: a.replication_brief }))}

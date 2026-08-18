@@ -1,3 +1,4 @@
+import { semComando } from "./replicar";
 import type { ModelagemAnalysis } from "./types";
 
 // O brief de replicação é COMPOSTO EM CÓDIGO, não escrito pelo modelo: a fronteira do que
@@ -43,11 +44,15 @@ export function composeBrief(a: ModelagemAnalysis, resumoMetricas = ""): string 
   const loops = (e.loops_abertos ?? [])
     .map((l) => `- ${l.o_que_fica_pendente} (fecha no beat ${l.fecha_em_qual_beat})`)
     .join("\n");
-  const cmd = e.comando?.tipo
-    ? `Comando: ${e.comando.tipo}${e.comando.gatilho ? ` via ${e.comando.gatilho}` : ""}${
-        e.comando.posicao ? ` (${e.comando.posicao})` : ""
-      }`
-    : "";
+  // "nenhum" é registro, não ausência (modo Replicar decide em código entre adaptar e criar o
+  // CTA): dizer que o original não pedia nada é informação, imprimir "Comando: nenhum" é ruído.
+  const cmd = !e.comando?.tipo
+    ? ""
+    : semComando(e.comando)
+      ? "Comando: o original NÃO pedia nada ao espectador"
+      : `Comando: ${e.comando.tipo}${e.comando.gatilho ? ` via ${e.comando.gatilho}` : ""}${
+          e.comando.posicao ? ` (${e.comando.posicao})` : ""
+        }`;
 
   const c = a.compreensao;
   const corpo = [

@@ -1,11 +1,11 @@
 import { appDb, viralData } from "./db";
 import { anthropic, ANALYST_MODEL } from "./anthropic";
 import { agentPrompt, toolInput, toolArray } from "./pipeline/agents";
-import { platformVideoId } from "./video-url";
 import { fmtNum } from "./format";
 import { maturityGate } from "./etl-gate";
 import { attributeLessons, computeCalibration, rankHookMechanisms } from "./learning-loop";
 import { aggregatePreferences, axisValue, type CalibAxis, type CalibOption } from "./calibration";
+import { syncScriptPerformance } from "./script-performance";
 
 // ETL semanal: materializa insights do corpus em vm_viral_insights
 // (globais + por cliente, categorizados e pontuados) e sincroniza
@@ -320,75 +320,28 @@ export async function runWeeklyEtl() {
     console.error("preferências de calibração falharam, seguindo sem", e);
   }
 
-  // ── Flywheel 1/3: casa roteiros marcados como publicados com o vídeo no corpus.
-  // O vídeo pode entrar no corpus semanas depois da publicação — retenta a cada run até casar.
+  // ── Flywheel 1/3: os roteiros publicados que o resto do ciclo usa.
+  // Aqui existia uma escrita em videos.crm_script_id, que NÃO é nossa: quem casa vídeo↔roteiro
+  // naquela coluna é o coletor, do outro app que divide este Supabase. Marcar um vídeo ainda
+  // não reivindicado ocupava o lugar com um id que o CRM não reconhece — e desde que o
+  // casamento passou a ser por link (lib/script-performance.ts), nada do nosso lado a lê.
+  // Removida em 2026-08-17: não nos servia e mexia em dado alheio.
   const { data: pubScripts } = await appDb
     .from("vm_generated_scripts")
     .select("id, session_id, client_id, headline, hook, published_url, published_at, pipeline_trace")
     .eq("status", "published")
     .not("published_url", "is", null);
 
-  let linked = 0;
-  if (pubScripts?.length) {
-    const { data: already } = await viralData
-      .from("videos")
-      .select("crm_script_id")
-      .in("crm_script_id", pubScripts.map((s) => s.id));
-    const done = new Set((already ?? []).map((v) => v.crm_script_id));
-    for (const s of pubScripts.filter((x) => !done.has(x.id))) {
-      const pid = platformVideoId(s.published_url!);
-      if (!pid) continue;
-      const { data: vid } = await viralData
-        .from("videos")
-        .select("id")
-        .or(`link_video.ilike.%${pid}%,plataform_id.eq.${pid}`)
-        .is("crm_script_id", null) // nunca sobrescreve vínculo existente
-        .limit(1)
-        .maybeSingle();
-      if (vid) {
-        const up = await viralData.from("videos").update({ crm_script_id: s.id }).eq("id", vid.id).is("crm_script_id", null);
-        if (!up.error) linked++;
-      }
-    }
-  }
-
   // ── Flywheel 2/3: performance real dos roteiros publicados de volta ao app.
-  const { data: published, error: pubErr } = await viralData.rpc("vm_published_scripts");
-  if (pubErr) throw new Error(`vm_published_scripts: ${pubErr.message}`);
-
-  type PublishedRow = {
-    crm_script_id: string;
-    video_id: string;
-    views: number;
-    retencao_hook: number;
-    retencao_final: number;
-    compartilhamentos: number;
-    seguidores_ganhos: number | null;
-  };
+  // Fonte: lib/script-performance.ts (published_url → id de plataforma → vídeo do corpus).
+  // Antes vinha de vm_published_scripts(), que filtra por videos.crm_script_id — coluna do
+  // outro app que divide este Supabase: devolvia 4.952 linhas, nenhuma nossa, e por isso
+  // vm_script_performance ficou com 0 linhas desde sempre.
   const scriptById = new Map((pubScripts ?? []).map((s) => [s.id, s]));
-  let synced = 0;
-  let perfRows: PublishedRow[] = [];
-  if (published?.length) {
-    const ids = published.map((p: PublishedRow) => p.crm_script_id);
-    const { data: ours } = await appDb.from("vm_generated_scripts").select("id").in("id", ids);
-    const ourIds = new Set((ours ?? []).map((o) => o.id));
-    perfRows = (published as PublishedRow[]).filter((p) => ourIds.has(p.crm_script_id));
-    const perf = perfRows.map((p) => ({
-      script_id: p.crm_script_id,
-      viral_data_video_id: p.video_id,
-      views: p.views,
-      retencao_hook: p.retencao_hook,
-      retencao_final: p.retencao_final,
-      compartilhamentos: p.compartilhamentos,
-      seguidores_ganhos: p.seguidores_ganhos,
-      synced_at: new Date().toISOString(),
-    }));
-    if (perf.length) {
-      const up = await appDb.from("vm_script_performance").upsert(perf);
-      if (up.error) throw new Error(`upsert performance: ${up.error.message}`);
-      synced = perf.length;
-    }
-  }
+  const { rows: perfRows, naoCasaram } = await syncScriptPerformance();
+  const synced = perfRows.length;
+  if (naoCasaram.length)
+    console.warn(`${naoCasaram.length} roteiro(s) publicados sem vídeo no corpus (a sessão mostra quais)`);
 
   // ── Flywheel 3/3: resultado real dos roteiros da sala vira insight do agente Dados
   // (regenerado a cada run junto do snapshot — o wipe abaixo não é problema).
@@ -404,7 +357,7 @@ export async function runWeeklyEtl() {
     fingerprint: unknown;
   }[] = [];
   for (const p of perfRows) {
-    const s = scriptById.get(p.crm_script_id);
+    const s = scriptById.get(p.script_id);
     const clientId: string | null = s?.client_id ?? null;
     let ratio: number | null = null;
     if (clientId) {
@@ -443,7 +396,7 @@ export async function runWeeklyEtl() {
       scope: clientId ? `client:${clientId}` : "global",
       insight_type: "client_scriptresult",
       payload: {
-        titulo: `Roteiro publicado: "${s?.headline ?? s?.hook?.slice(0, 60) ?? p.crm_script_id.slice(0, 6)}"`,
+        titulo: `Roteiro publicado: "${s?.headline ?? s?.hook?.slice(0, 60) ?? p.script_id.slice(0, 6)}"`,
         descricao: [
           `${fmtNum(p.views)} views${ratio ? ` (${ratio}x a média do cliente)` : ""}`,
           gate.em_observacao ? "em observação (<14 dias)" : null,
@@ -591,5 +544,10 @@ export async function runWeeklyEtl() {
     }
   }
 
-  return { insights: rows.length, clientInsights, scriptsLinked: linked, scriptsSynced: synced };
+  return {
+    insights: rows.length,
+    clientInsights,
+    scriptsSynced: synced,
+    scriptsSemCorpus: naoCasaram.length,
+  };
 }

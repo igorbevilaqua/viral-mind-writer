@@ -13,7 +13,10 @@ Os papéis vivem em `agents/*.md` (fonte única de verdade, consumida pelo app e
 5. **Hook** e **Comando** (fable, em paralelo) trabalham vendo o roteiro pronto + narrativa + dados: hook principal + 3 variações por mecanismos distintos; CTA com benefício explícito.
 6. **Revisão** multi-chapéu (sonnet) + **Humanizador** (fable) com lint determinístico anti-clichê de IA (`vm_banned_phrases`) e travessão proibido (tolerância zero).
 
-Se houver anexo marcado como *modelagem*, a arquitetura dele é desconstruída e injetada como restrição para as narrativas e o roteiro.
+Material de referência tem **dois modos** (chips no formulário, `vm_attachments.modo`, migration 0034):
+
+- **Modelar** (o modo histórico; `modo` null é lido como este): a arquitetura do material é desconstruída e injetada como restrição para as narrativas e o roteiro — a sala reinterpreta e o roteiro é sobre o SEU tema.
+- **Replicar** (1 material por sessão): a estrutura do original não está em discussão. Transcrição é obrigatória, storytelling e agente Dados são **pulados** (a narrativa vencedora é montada em código a partir do esqueleto da autópsia, `lib/pipeline/replicar.ts`), a pesquisa checa as alegações do original e traz no máximo 2 dados novos, e o `agents/replicador.md` reescreve beat a beat — mesma ordem, mesma função, mesma proporção de duração, nenhuma frase literal do original. Tema digitado aqui é orientação de ângulo, nunca assunto novo.
 
 ## Painel de clientes (`/settings/clientes/<id>`)
 
@@ -37,7 +40,7 @@ Cada cliente tem: **Preferências** (restrições de voz), **Dados** ao vivo do 
 
 - Tudo vive num único projeto Supabase, o **Viral Data** (`qclvrddr...`): as tabelas do app têm prefixo `vm_` e convivem com o corpus (`videos`, `metricas_*`, `clientes`, `documents`). O projeto antigo "Viral Mind" (`eakiimzf...`) está aposentado.
 - Clientes do app = tabela `clientes` do corpus (filtrados por `ativo`). Do corpus o pipeline usa `match_documents`, `vm_insights_snapshot()` e `vm_published_scripts()`.
-- Flywheel (fechado): na sessão, marque o roteiro como **publicado** colando o link do vídeo. O ETL semanal casa a URL com o vídeo no corpus (grava `videos.crm_script_id`, retentando até o vídeo entrar), traz a performance de volta para `vm_script_performance` (chips na sessão: views, retenção, seguidores) e gera insights `client_scriptresult` que o agente Dados usa para confirmar/derrubar estruturas e hooks nas próximas gerações.
+- Flywheel (fechado): na sessão, marque o roteiro como **publicado** colando o link do vídeo. O ETL semanal casa a URL com o vídeo no corpus por **id de plataforma** (`lib/script-performance.ts`, retentando até o vídeo entrar), traz a performance de volta para `vm_script_performance` (chips na sessão: views, retenção, seguidores) e gera insights `client_scriptresult` que o agente Dados usa para confirmar/derrubar estruturas e hooks nas próximas gerações. Maduro (≥14d) o roteiro também vira `vm_outcomes` — previsto (`pipeline_trace.predicted_score`) × real (ratio de views). O casamento **não** usa `videos.crm_script_id`: essa coluna é do outro app que divide este Supabase. Publicado que não casa com nenhum vídeo aparece em vermelho na própria caixa de publicação — o loop nunca morre em silêncio.
 
 ## Ensinar (`/ensinar`)
 
