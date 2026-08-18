@@ -49,6 +49,31 @@ export async function currentUserId(): Promise<string | null> {
   return user?.id ?? null;
 }
 
+// user_id → email, via service role (`auth.users` é a única lista de pessoas que existe: não há
+// tabela de cadastro e o metadata das contas não tem nome). São ~24 contas, uma página basta.
+// Cache de módulo com validade curta porque isto é decoração de lista: sem ele, cada render de
+// /sessions faria uma ida ao auth server. 5 min = conta nova aparece sozinha, sem deploy.
+let cacheEmails: { em: number; mapa: Promise<Map<string, string>> } | null = null;
+const EMAILS_TTL = 5 * 60_000;
+
+export function emailsPorUsuario(): Promise<Map<string, string>> {
+  if (cacheEmails && Date.now() - cacheEmails.em < EMAILS_TTL) return cacheEmails.mapa;
+  const mapa = appDb.auth.admin
+    .listUsers({ page: 1, perPage: 200 })
+    .then(({ data, error }) => {
+      if (error) throw new Error(error.message);
+      return new Map(data.users.map((u) => [u.id, u.email ?? ""]));
+    })
+    .catch((e) => {
+      // Lista de emails é cosmética: sem ela a coluna cai no rótulo neutro e a página segue.
+      console.error("auth.admin.listUsers falhou", e);
+      cacheEmails = null; // falha não fica cacheada por 5 minutos
+      return new Map<string, string>();
+    });
+  cacheEmails = { em: Date.now(), mapa };
+  return mapa;
+}
+
 // Registra atividade em hub.atividades (app='writer') via service role.
 // Best-effort: nunca lança — telemetria não pode derrubar o fluxo principal.
 // sessaoId = vm_sessions.id → o cockpit liga o evento ao contexto rico da sessão.
