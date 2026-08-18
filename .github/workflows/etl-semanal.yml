@@ -1,0 +1,60 @@
+name: ETL semanal
+
+# Dispara o flywheel de aprendizado: performance dos roteiros publicados de volta ao app,
+# maturação em vm_outcomes (previsto x real) e reconstrução dos insights que entram nos
+# prompts. Só chama a rota — todo o trabalho acontece no servidor (lib/etl.ts).
+#
+# Por que aqui e não no vercel.json: o deploy é Hostinger, e Vercel Cron num deploy que não
+# é Vercel nunca dispara. Foi por isso que o ETL não rodou entre 2026-07-27 e 2026-08-17 —
+# vm_insight_runs ficou com 0 linhas e vm_script_performance nunca recebeu uma linha sequer.
+#
+# Setup ÚNICO (você), em Settings -> Secrets and variables -> Actions:
+#   aba Secrets    -> CRON_SECRET = o mesmo valor que está no .env de produção (é senha)
+#   aba Variables  -> APP_URL     = a URL de produção, sem barra no fim
+# APP_URL vai em Variables e não em Secrets de propósito: secret vira *** no log, e uma URL
+# mascarada transforma qualquer erro de curl em adivinhação.
+# Sem os dois o job falha de propósito, e o GitHub te avisa por email — que é exatamente
+# como este tipo de robô parado costuma ser descoberto por aqui.
+
+on:
+  schedule:
+    - cron: "0 9 * * 1" # toda segunda 09:00 UTC = 06:00 BRT
+  workflow_dispatch: {} # botão "Run workflow" para disparar à mão
+
+concurrency:
+  group: etl-semanal
+  cancel-in-progress: false
+
+jobs:
+  etl:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dispara o ETL
+        env:
+          APP_URL: ${{ vars.APP_URL }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          set -euo pipefail
+          if [ -z "${APP_URL:-}" ] || [ -z "${CRON_SECRET:-}" ]; then
+            echo "::error::Falta a variable APP_URL e/ou o secret CRON_SECRET (veja o cabeçalho deste arquivo)."
+            exit 1
+          fi
+          echo "Chamando ${APP_URL}/api/cron/weekly-etl"
+          # --fail-with-body: sai com erro em 4xx/5xx MAS ainda imprime a resposta, senão um
+          # 401 vira "falhou" sem dizer por quê. --max-time acima do maxDuration 300 da rota.
+          curl --fail-with-body -sS --max-time 600 \
+            -H "Authorization: Bearer ${CRON_SECRET}" \
+            "${APP_URL}/api/cron/weekly-etl" | tee resultado.json
+          echo
+
+      - name: Resumo
+        run: |
+          # O resumo vai para o log e para o Summary do run: é o único lugar onde dá para ver,
+          # sem abrir o banco, se o ciclo trouxe métrica nova ou se algum publicado não casou.
+          {
+            echo '### ETL semanal'
+            echo '```json'
+            cat resultado.json
+            echo
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
