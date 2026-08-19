@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { fmtDay, fmtNum, fmtRatio, fmtWhen, ratioTone } from "@/lib/format";
+import { fmtDay, fmtNum, fmtRatio, fmtWhen, ratioTone, tituloPublico } from "@/lib/format";
 
 describe("fmtNum", () => {
   test("abaixo de mil: número exato", () => {
@@ -69,5 +69,26 @@ describe("ratioTone", () => {
     expect(ratioTone(0.8)).toBe("neutral");
     expect(ratioTone(1)).toBe("neutral");
     expect(ratioTone(1.19)).toBe("neutral");
+  });
+});
+
+// O link do roteiro circula em conversa cheia de roteiro: sem o cliente no título, todo
+// compartilhamento chegava com o mesmo cabeçalho e ninguém sabia de quem era.
+describe("tituloPublico", () => {
+  test("cliente vem logo depois da marca, antes da headline", () => {
+    expect(tituloPublico({ cliente: "Renato Mendes", headline: "A RED BULL FINGIU TER CLIENTES", data: "19/08/2026" })).toBe(
+      "CODEX · Renato Mendes · A RED BULL FINGIU TER CLIENTES · 19/08/2026"
+    );
+  });
+
+  test("sessão sem cliente continua com título válido", () => {
+    expect(tituloPublico({ headline: "SEM CLIENTE", data: "19/08/2026" })).toBe("CODEX · SEM CLIENTE · 19/08/2026");
+    expect(tituloPublico({ cliente: "   ", headline: "SÓ ESPAÇO" })).toBe("CODEX · SÓ ESPAÇO");
+  });
+
+  test("roteiro sem headline não deixa o título com buraco", () => {
+    expect(tituloPublico({ cliente: "Túlio Lichenstein", headline: null, data: "19/08/2026" })).toBe(
+      "CODEX · Túlio Lichenstein · Roteiro · 19/08/2026"
+    );
   });
 });

@@ -48,7 +48,7 @@ function Linkified({ text }: { text: string }) {
   );
 }
 
-export default function PublicScript({ script }: { script: PublicScriptData }) {
+export default function PublicScript({ script, cliente }: { script: PublicScriptData; cliente?: string | null }) {
   return (
     <div className="mx-auto w-full max-w-3xl px-4 sm:px-6 py-8 sm:py-12">
       <div className="flex items-center gap-3 mb-5">
@@ -61,7 +61,17 @@ export default function PublicScript({ script }: { script: PublicScriptData }) {
         style={{ background: "linear-gradient(180deg, rgba(201,163,92,.05), rgba(255,255,255,.02) 120px)" }}
       >
         <div className="flex items-center gap-2.5 px-5 sm:px-6 py-3 border-b border-white/[.07] bg-black/20">
-          <span className="kicker text-gold">ROTEIRO COMPLETO</span>
+          {/* De quem é o roteiro vem AQUI, no topo e em destaque: o link circula em conversa cheia
+              de roteiro, e "ROTEIRO COMPLETO" sozinho não dizia de qual cliente era. */}
+          <span className="kicker text-gold shrink-0">ROTEIRO COMPLETO</span>
+          {cliente && (
+            <>
+              <span className="text-gold/40 shrink-0">·</span>
+              <span className="font-cinzel text-[15px] sm:text-base font-semibold text-cream tracking-wide truncate">
+                {cliente}
+              </span>
+            </>
+          )}
           <CopyBtn text={fullText(script)} label="Copiar tudo" />
         </div>
 

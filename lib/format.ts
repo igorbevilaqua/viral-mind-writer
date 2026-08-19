@@ -21,6 +21,16 @@ export function fmtWhen(iso: string, now = new Date()): string {
   return fmtDay(iso);
 }
 
+/**
+ * O título da página pública do roteiro (aba do navegador e preview de WhatsApp/OG).
+ * O CLIENTE vem primeiro depois da marca: é a informação que identifica o link numa conversa
+ * cheia deles, e sem ela todo roteiro compartilhado chegava com o mesmo cabeçalho.
+ * Sessão sem cliente continua funcionando — o campo simplesmente não entra.
+ */
+export function tituloPublico(p: { cliente?: string | null; headline?: string | null; data?: string }): string {
+  return ["CODEX", p.cliente?.trim(), p.headline?.trim() || "Roteiro", p.data].filter(Boolean).join(" · ");
+}
+
 // WP-F.2: multiplicador vídeo÷média do cliente no PublishBox — "N.Nx" + tom de cor
 export const fmtRatio = (n: number) => `${n.toFixed(1)}x`;
 export const ratioTone = (r: number): "gold" | "amber" | "neutral" =>
