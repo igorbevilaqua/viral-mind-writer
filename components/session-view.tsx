@@ -28,8 +28,11 @@ import { PHASE_SHORT, podeGerar } from "@/lib/generation";
 import {
   apagarRascunho,
   assinarRascunho,
+  assinaturaDoRascunho,
+  AUTOSAVE_MS,
   gravarRascunho,
   parseRascunho,
+  precisaAutosalvar,
   rascunhoCru,
   recadoDeFalhaAoSalvar,
   type Rascunho,
@@ -1040,6 +1043,16 @@ function EstrelaBtn({
 }
 
 // ── Card do roteiro final: leitura, edição manual inline e os três verbos da seleção ──────
+// O conteúdo do roteiro como está no banco, no formato do rascunho. Fora do componente porque o
+// ref do autosave precisa dele antes do primeiro render.
+const doScriptRef = (s: { headline: string | null; hook: string | null; roteiro: string; comando: string | null; fontes: string | null }): Rascunho => ({
+  headline: s.headline ?? "",
+  hook: s.hook ?? "",
+  roteiro: s.roteiro,
+  comando: s.comando ?? "",
+  fontes: s.fontes ?? "",
+});
+
 function ScriptCard({
   script,
   sessionId,
@@ -1087,6 +1100,13 @@ function ScriptCard({
     () => null
   );
   const rascunho = useMemo(() => parseRascunho(cruDoRascunho), [cruDoRascunho]);
+  // Autosave. `ultimaSalva` é a assinatura do que o SERVIDOR já tem: em ref, não em estado, porque
+  // ela muda dentro do próprio efeito que a lê — em estado, cada gravação agendaria a seguinte.
+  const ultimaSalva = useRef(assinaturaDoRascunho(doScriptRef(script)));
+  // O texto que o servidor tinha quando esta edição começou. É o que o Cancelar restaura: com
+  // autosave, parte das mudanças já foi gravada, e um Cancelar que não desfizesse mentiria.
+  const antesDaEdicao = useRef<Rascunho | null>(null);
+  const [autoSalvo, setAutoSalvo] = useState<string | null>(null);
   const roteiroRef = useRef<HTMLParagraphElement>(null);
   const roteiroTaRef = useRef<HTMLTextAreaElement>(null);
   const [sel, setSel] = useState<{ x: number; y: number; start: number; end: number; trecho: string } | null>(null);
@@ -1122,20 +1142,60 @@ function ScriptCard({
     onMudar: () => sel && setBob({ start: sel.start, end: sel.end, trecho: sel.trecho }),
   });
 
-  const doScript = (): Rascunho => ({
-    headline: script.headline ?? "",
-    hook: script.hook ?? "",
-    roteiro: script.roteiro,
-    comando: script.comando ?? "",
-    fontes: script.fontes ?? "",
-  });
+  const doScript = (): Rascunho => doScriptRef(script);
 
   const startEdit = (base?: Rascunho) => {
     setSel(null);
     setErroSalvar(null);
-    setDraft(base ?? doScript());
+    setAutoSalvo(null);
+    const original = doScript();
+    antesDaEdicao.current = original;
+    ultimaSalva.current = assinaturaDoRascunho(original);
+    setDraft(base ?? original);
     setEditing(true);
   };
+
+  // Um caminho só para toda escrita do editor (autosave, Salvar, Cancelar que restaura): mesma
+  // action, mesmo tratamento de erro, mesma atualização do "o servidor já tem isto".
+  const gravar = useCallback(
+    async (r: Rascunho, origem?: "autosave"): Promise<boolean> => {
+      const assinatura = assinaturaDoRascunho(r);
+      try {
+        await updateScript(
+          script.id,
+          {
+            headline: r.headline.trim() || null,
+            hook: r.hook.trim() || null,
+            roteiro: r.roteiro,
+            comando: r.comando.trim() || null,
+            fontes: r.fontes.trim() || null,
+          },
+          origem ?? "humano"
+        );
+      } catch (e) {
+        setErroSalvar(recadoDeFalhaAoSalvar(e instanceof Error ? e.message : String(e)));
+        return false;
+      }
+      ultimaSalva.current = assinatura;
+      setErroSalvar(null);
+      return true;
+    },
+    [script.id]
+  );
+
+  // Autosave: 2,5s depois da última tecla, e só quando há diferença real com o servidor.
+  // Sem router.refresh e sem avisar as outras abas de propósito — refresh no meio da digitação
+  // reescreveria o card por baixo do cursor, e um aviso a cada 2,5s viraria spam de presença.
+  // O gesto Salvar continua existindo: é ele que fecha a edição e publica o aviso.
+  useEffect(() => {
+    const assinatura = assinaturaDoRascunho(draft);
+    if (!precisaAutosalvar({ editando: editing, bloqueado: disabled, salvandoAgora: saving, assinatura, ultimaSalva: ultimaSalva.current }))
+      return;
+    const t = setTimeout(() => {
+      void gravar(draft, "autosave").then((ok) => ok && setAutoSalvo(new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })));
+    }, AUTOSAVE_MS);
+    return () => clearTimeout(t);
+  }, [draft, editing, disabled, saving, gravar]);
 
   // Enquanto edita, cada tecla vai para o navegador. Custo irrelevante (uma escrita síncrona de
   // alguns KB) diante de perder o roteiro reescrito à mão.
@@ -1147,26 +1207,28 @@ function ScriptCard({
 
   const save = () =>
     startSave(async () => {
-      try {
-        await updateScript(script.id, {
-          headline: draft.headline.trim() || null,
-          hook: draft.hook.trim() || null,
-          roteiro: draft.roteiro,
-          comando: draft.comando.trim() || null,
-          fontes: draft.fontes.trim() || null,
-        });
-      } catch (e) {
-        // Continua EM EDIÇÃO, de propósito: o texto fica na tela e no navegador, e a mensagem diz
-        // o que fazer. Sair do modo edição aqui seria esconder o trabalho que não foi gravado.
-        setErroSalvar(recadoDeFalhaAoSalvar(e instanceof Error ? e.message : String(e)));
-        return;
-      }
+      // Continua EM EDIÇÃO quando falha, de propósito: o texto fica na tela e no navegador, e a
+      // mensagem diz o que fazer. Sair daqui esconderia o trabalho que não foi gravado.
+      if (!(await gravar(draft))) return;
       // Só depois do servidor confirmar: o rascunho existe justamente para o caso de não confirmar.
       apagarRascunho(script.id);
-      setErroSalvar(null);
+      setAutoSalvo(null);
       setEditing(false);
       router.refresh();
       avisar("roteiro");
+    });
+
+  // Cancelar: desfaz no servidor o que o autosave já tinha gravado. Sem isto o botão prometeria
+  // descartar e deixaria metade das mudanças publicadas.
+  const cancelar = () =>
+    startSave(async () => {
+      const original = antesDaEdicao.current;
+      if (original && assinaturaDoRascunho(original) !== ultimaSalva.current && !(await gravar(original))) return;
+      descartarRascunho();
+      setAutoSalvo(null);
+      setErroSalvar(null);
+      setEditing(false);
+      router.refresh();
     });
 
   // Modo edição vira estado de presença: é o que acende o aviso de colisão na tela do outro.
@@ -1227,13 +1289,8 @@ function ScriptCard({
   const applyBob = (start: number, end: number, replacement: string) =>
     startSave(async () => {
       const novo = script.roteiro.slice(0, start) + replacement + script.roteiro.slice(end);
-      try {
-        await updateScript(script.id, { roteiro: novo });
-      } catch (e) {
-        // Mesmo motivo do save: rejeição solta na transition derrubava a tela inteira.
-        setErroSalvar(recadoDeFalhaAoSalvar(e instanceof Error ? e.message : String(e)));
-        return;
-      }
+      // Mesmo caminho do save: rejeição solta na transition derrubava a tela inteira.
+      if (!(await gravar({ ...doScript(), roteiro: novo }))) return;
       setBob(null);
       router.refresh();
       avisar("roteiro");
@@ -1334,13 +1391,13 @@ function ScriptCard({
         )}
         {editing ? (
           <div className="ml-auto flex items-center gap-2">
+            {/* Recibo do autosave: sem ele o usuário não tem como saber que já está guardado. */}
+            {autoSalvo && !saving && (
+              <span className="text-[11px] text-emerald-300/70">salvo automaticamente {autoSalvo}</span>
+            )}
             <button
-              // Desistir é gesto explícito: aqui o rascunho pode ir embora com o modo edição.
-              onClick={() => {
-                descartarRascunho();
-                setErroSalvar(null);
-                setEditing(false);
-              }}
+              // Desistir é gesto explícito: descarta o rascunho E desfaz o que o autosave gravou.
+              onClick={cancelar}
               disabled={saving}
               className="rounded-lg border border-white/15 px-3 py-[5px] text-xs text-white/60 hover:text-white/90 disabled:opacity-40"
             >

@@ -74,6 +74,33 @@ export function apagarRascunho(scriptId: string): void {
   ouvintesDeRascunho.forEach((f) => f());
 }
 
+// Autosave: 2,5s depois da última tecla. Curto o suficiente para ninguém perder um parágrafo,
+// longo o suficiente para não gravar a cada letra.
+// ponytail: intervalo fixo, sem backoff. Se o banco reclamar do volume, o passo é subir este
+// número — não construir fila de escrita.
+export const AUTOSAVE_MS = 2500;
+
+/** A assinatura do conteúdo, e a única coisa que decide se há o que gravar. */
+export function assinaturaDoRascunho(r: Rascunho): string {
+  return JSON.stringify([r.headline, r.hook, r.roteiro, r.comando, r.fontes]);
+}
+
+/**
+ * Se o autosave deve disparar agora. Pura para poder ser testada — é a regra que evita as três
+ * gravações erradas: a que repete o que o servidor já tem, a que atropela um Salvar em voo, e a
+ * que escreve num roteiro que a tela nem deixa editar (sessão fechada, versão antiga).
+ */
+export function precisaAutosalvar(e: {
+  editando: boolean;
+  bloqueado: boolean;
+  salvandoAgora: boolean;
+  assinatura: string;
+  ultimaSalva: string;
+}): boolean {
+  if (!e.editando || e.bloqueado || e.salvandoAgora) return false;
+  return e.assinatura !== e.ultimaSalva;
+}
+
 /**
  * A mensagem que a tela mostra quando o Salvar falha. O caso mais comum não é bug de dados: é
  * deploy no meio da edição — a página carregada conhece uma Server Action que o servidor novo já

@@ -352,7 +352,10 @@ export async function quickFeedback(scriptId: string, sessionId: string, thumb: 
 export async function updateScript(
   scriptId: string,
   patch: { headline?: string | null; hook?: string | null; roteiro?: string; comando?: string | null; fontes?: string | null },
-  origem: "humano" | "correcao_factual" = "humano"
+  // "autosave" é edição humana para efeito de aprendizado (o trace marca igual), mas NÃO vira
+  // linha no feed do hub: uma edição de 5 minutos publicaria dezenas de "roteiro salvo" e
+  // enterraria o resto da atividade da casa.
+  origem: "humano" | "correcao_factual" | "autosave" = "humano"
 ) {
   // A guarda mora aqui e não em cada chamador: `aplicarCorrecao` também desemboca neste update.
   await exigirAcesso({ script: scriptId });
@@ -373,7 +376,7 @@ export async function updateScript(
         .single();
       const trace = (cur?.pipeline_trace ?? {}) as TraceEdicao;
       if (cur && update.roteiro !== cur.roteiro) {
-        update.pipeline_trace = marcarOrigemEdicao(trace, cur.roteiro, origem);
+        update.pipeline_trace = marcarOrigemEdicao(trace, cur.roteiro, origem === "autosave" ? "humano" : origem);
       }
     } catch (e) {
       console.error("preservação do roteiro original no trace falhou — edição segue", e);
@@ -386,11 +389,12 @@ export async function updateScript(
     .select("session_id")
     .single();
   if (error) throw new Error(error.message);
-  await registrarAtividade("roteiro_salvo", {
-    sessaoId: data.session_id,
-    userId: await currentUserId(),
-    payload: { script_id: scriptId },
-  });
+  if (origem !== "autosave")
+    await registrarAtividade("roteiro_salvo", {
+      sessaoId: data.session_id,
+      userId: await currentUserId(),
+      payload: { script_id: scriptId },
+    });
   revalidatePath(`/sessions/${data.session_id}`);
 }
 
