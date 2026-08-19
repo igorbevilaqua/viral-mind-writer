@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState, useTransition, type ReactNode } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore, useTransition, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import {
   addBullet,
@@ -25,6 +25,15 @@ import type { NarrativaCandidata, RankingItem, SessionArtifacts } from "@/lib/pi
 import type { LintViolation } from "@/lib/pipeline/slop-lint";
 import { fmtNum, fmtRatio, ratioTone } from "@/lib/format";
 import { PHASE_SHORT, podeGerar } from "@/lib/generation";
+import {
+  apagarRascunho,
+  assinarRascunho,
+  gravarRascunho,
+  parseRascunho,
+  rascunhoCru,
+  recadoDeFalhaAoSalvar,
+  type Rascunho,
+} from "@/lib/rascunho";
 import { BUILD_TAG } from "@/lib/version";
 
 interface Script {
@@ -1066,6 +1075,18 @@ function ScriptCard({
     fontes: script.fontes ?? "",
   });
   const [saving, startSave] = useTransition();
+  // O que o Salvar respondeu de errado. Sem este estado, a action que lançava subia como rejeição
+  // solta dentro da transition: a tela quebrava no error boundary e o `draft` — o único lugar onde
+  // o texto digitado existia — ia embora com ele. Foi assim que a sessão 8e8b19 perdeu a edição.
+  const [erroSalvar, setErroSalvar] = useState<string | null>(null);
+  // Rascunho guardado no navegador (fora do React). useSyncExternalStore e não useState+effect:
+  // é leitura de fonte externa, e o servidor devolve null — sem descasar a hidratação.
+  const cruDoRascunho = useSyncExternalStore(
+    assinarRascunho,
+    () => rascunhoCru(script.id),
+    () => null
+  );
+  const rascunho = useMemo(() => parseRascunho(cruDoRascunho), [cruDoRascunho]);
   const roteiroRef = useRef<HTMLParagraphElement>(null);
   const roteiroTaRef = useRef<HTMLTextAreaElement>(null);
   const [sel, setSel] = useState<{ x: number; y: number; start: number; end: number; trecho: string } | null>(null);
@@ -1101,27 +1122,48 @@ function ScriptCard({
     onMudar: () => sel && setBob({ start: sel.start, end: sel.end, trecho: sel.trecho }),
   });
 
-  const startEdit = () => {
+  const doScript = (): Rascunho => ({
+    headline: script.headline ?? "",
+    hook: script.hook ?? "",
+    roteiro: script.roteiro,
+    comando: script.comando ?? "",
+    fontes: script.fontes ?? "",
+  });
+
+  const startEdit = (base?: Rascunho) => {
     setSel(null);
-    setDraft({
-      headline: script.headline ?? "",
-      hook: script.hook ?? "",
-      roteiro: script.roteiro,
-      comando: script.comando ?? "",
-      fontes: script.fontes ?? "",
-    });
+    setErroSalvar(null);
+    setDraft(base ?? doScript());
     setEditing(true);
   };
 
+  // Enquanto edita, cada tecla vai para o navegador. Custo irrelevante (uma escrita síncrona de
+  // alguns KB) diante de perder o roteiro reescrito à mão.
+  useEffect(() => {
+    if (editing) gravarRascunho(script.id, draft);
+  }, [editing, draft, script.id]);
+
+  const descartarRascunho = () => apagarRascunho(script.id);
+
   const save = () =>
     startSave(async () => {
-      await updateScript(script.id, {
-        headline: draft.headline.trim() || null,
-        hook: draft.hook.trim() || null,
-        roteiro: draft.roteiro,
-        comando: draft.comando.trim() || null,
-        fontes: draft.fontes.trim() || null,
-      });
+      try {
+        await updateScript(script.id, {
+          headline: draft.headline.trim() || null,
+          hook: draft.hook.trim() || null,
+          roteiro: draft.roteiro,
+          comando: draft.comando.trim() || null,
+          fontes: draft.fontes.trim() || null,
+        });
+      } catch (e) {
+        // Continua EM EDIÇÃO, de propósito: o texto fica na tela e no navegador, e a mensagem diz
+        // o que fazer. Sair do modo edição aqui seria esconder o trabalho que não foi gravado.
+        setErroSalvar(recadoDeFalhaAoSalvar(e instanceof Error ? e.message : String(e)));
+        return;
+      }
+      // Só depois do servidor confirmar: o rascunho existe justamente para o caso de não confirmar.
+      apagarRascunho(script.id);
+      setErroSalvar(null);
       setEditing(false);
       router.refresh();
       avisar("roteiro");
@@ -1185,7 +1227,13 @@ function ScriptCard({
   const applyBob = (start: number, end: number, replacement: string) =>
     startSave(async () => {
       const novo = script.roteiro.slice(0, start) + replacement + script.roteiro.slice(end);
-      await updateScript(script.id, { roteiro: novo });
+      try {
+        await updateScript(script.id, { roteiro: novo });
+      } catch (e) {
+        // Mesmo motivo do save: rejeição solta na transition derrubava a tela inteira.
+        setErroSalvar(recadoDeFalhaAoSalvar(e instanceof Error ? e.message : String(e)));
+        return;
+      }
       setBob(null);
       router.refresh();
       avisar("roteiro");
@@ -1267,7 +1315,7 @@ function ScriptCard({
         {!editing && <ThumbBtns scriptId={script.id} sessionId={sessionId} rating={rating} />}
         {!disabled && !editing && (
           <button
-            onClick={startEdit}
+            onClick={() => startEdit()}
             className="inline-flex items-center gap-1.5 rounded-lg border border-white/15 px-3 py-2 sm:py-[5px] text-xs text-white/65 hover:border-gold/50 hover:text-cream transition-colors"
           >
             <QuillIcon size={12} />
@@ -1287,7 +1335,12 @@ function ScriptCard({
         {editing ? (
           <div className="ml-auto flex items-center gap-2">
             <button
-              onClick={() => setEditing(false)}
+              // Desistir é gesto explícito: aqui o rascunho pode ir embora com o modo edição.
+              onClick={() => {
+                descartarRascunho();
+                setErroSalvar(null);
+                setEditing(false);
+              }}
               disabled={saving}
               className="rounded-lg border border-white/15 px-3 py-[5px] text-xs text-white/60 hover:text-white/90 disabled:opacity-40"
             >
@@ -1312,6 +1365,37 @@ function ScriptCard({
       {/* colisão: updateScript sobrescreve em silêncio, então o aviso vem ANTES do gesto —
           logo abaixo da barra, e visível mesmo para quem ainda não clicou em Editar */}
       <AvisoDeEdicao pessoas={presentes} />
+
+      {/* O salvamento falhou: a edição CONTINUA aberta, com o texto na tela e guardado. */}
+      {erroSalvar && (
+        <div className="rounded-[14px] border border-red-500/35 bg-red-500/[.06] px-4 py-3 text-[13px] text-red-200">
+          {erroSalvar}
+        </div>
+      )}
+
+      {/* Rascunho pendente deste roteiro no navegador — o recibo de que nada se perdeu. Aparece
+          depois de um reload (ou de um deploy no meio da edição), quando o texto digitado nunca
+          chegou ao banco. */}
+      {!editing && rascunho && rascunho.roteiro !== script.roteiro && (
+        <div className="flex flex-wrap items-center gap-2.5 rounded-[14px] border border-gold/35 bg-gold/[.05] px-4 py-3 text-[13px] text-cream/85">
+          <span className="flex-1 min-w-0">
+            Você tem edições deste roteiro que não foram salvas, guardadas neste navegador.
+          </span>
+          <button
+            onClick={() => startEdit(rascunho)}
+            className="btn-gold rounded-lg px-3 py-[5px] text-xs font-semibold"
+            disabled={disabled}
+          >
+            Retomar edição
+          </button>
+          <button
+            onClick={descartarRascunho}
+            className="rounded-lg border border-white/15 px-3 py-[5px] text-xs text-white/60 hover:text-white/90"
+          >
+            Descartar
+          </button>
+        </div>
+      )}
 
       {/* HEADLINE */}
       {(editing || script.headline) && (
