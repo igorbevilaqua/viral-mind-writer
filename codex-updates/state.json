@@ -33,6 +33,14 @@
       "detail": "Uma edicao inteira se perdeu porque a falha do salvamento derrubava a tela junto com o texto, que so existia na memoria da pagina. Agora sao tres camadas: autosave no servidor, rascunho no navegador a cada tecla, e a mensagem que diz o que aconteceu sem fechar a edicao.",
       "commit": "e3fa403",
       "addedAt": "2026-08-19T18:29:20.122Z"
+    },
+    {
+      "id": "mt0fs6sd",
+      "type": "improvement",
+      "summary": "A pagina de compartilhamento do roteiro agora mostra o nome do cliente em destaque no topo, e o titulo do link no WhatsApp vira \"CODEX - CLIENTE - HEADLINE\"",
+      "detail": "Todo roteiro compartilhado chegava com o mesmo cabecalho \"ROTEIRO COMPLETO\", sem dizer de quem era.",
+      "commit": "c42ff49",
+      "addedAt": "2026-08-19T18:40:07.275Z"
     }
   ],
   "lastRelease": {
