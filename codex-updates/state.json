@@ -17,6 +17,22 @@
       "detail": "Um reel travou a sessao com a mensagem \"cole a transcricao\" mesmo com a transcricao em maos: a analise tinha voltado pela metade e o motivo ficava so no log do servidor. Agora ha uma segunda tentativa automatica com mais espaco de resposta, e a falha registra o que faltou.",
       "commit": "86d864d",
       "addedAt": "2026-08-19T11:58:19.204Z"
+    },
+    {
+      "id": "mt0febfe",
+      "type": "feature",
+      "summary": "Autosave no editor de roteiro: a sala grava sozinha 2,5 segundos depois da ultima tecla, com o recibo \"salvo automaticamente\" na tela",
+      "detail": "O Salvar continua existindo (e ele que fecha a edicao), mas nao depender mais de um clique. Cancelar agora desfaz de verdade o que o autosave ja tinha gravado.",
+      "commit": "e3fa403",
+      "addedAt": "2026-08-19T18:29:20.090Z"
+    },
+    {
+      "id": "mt0febga",
+      "type": "fix",
+      "summary": "Erro ao salvar deixou de apagar o que voce escreveu: o texto fica na tela, guardado no navegador, e uma faixa oferece Retomar edicao depois de um reload",
+      "detail": "Uma edicao inteira se perdeu porque a falha do salvamento derrubava a tela junto com o texto, que so existia na memoria da pagina. Agora sao tres camadas: autosave no servidor, rascunho no navegador a cada tecla, e a mensagem que diz o que aconteceu sem fechar a edicao.",
+      "commit": "e3fa403",
+      "addedAt": "2026-08-19T18:29:20.122Z"
     }
   ],
   "lastRelease": {
