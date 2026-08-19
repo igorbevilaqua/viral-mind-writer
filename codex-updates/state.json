@@ -9,6 +9,14 @@
       "detail": "A rota ficava ate 90 segundos em silencio enquanto o Grok pesquisava, e o proxy derrubava a conexao. O sinal de vida existia so na geracao de roteiro; agora vale para todas as telas que mostram progresso (gerar, sugerir tema, Bob, verificacao e Kasparov), e o tempo maximo da sugestao subiu de 2 para 5 minutos.",
       "commit": "d596e10",
       "addedAt": "2026-08-18T17:07:25.612Z"
+    },
+    {
+      "id": "mt01fgvs",
+      "type": "fix",
+      "summary": "Modelagem: quando a analise do video volta incompleta, a sala tenta de novo sozinha em vez de perder a sessao, e quando desiste diz o motivo real",
+      "detail": "Um reel travou a sessao com a mensagem \"cole a transcricao\" mesmo com a transcricao em maos: a analise tinha voltado pela metade e o motivo ficava so no log do servidor. Agora ha uma segunda tentativa automatica com mais espaco de resposta, e a falha registra o que faltou.",
+      "commit": "86d864d",
+      "addedAt": "2026-08-19T11:58:19.204Z"
     }
   ],
   "lastRelease": {
