@@ -5,7 +5,7 @@ import { fetchTranscript } from "../transcribe";
 import { lerCarrossel } from "../carrossel";
 import { clientInsightBlock, scriptResultBlock, taughtBlock, toolInput } from "./agents";
 import { clientPrefsBlock, playbookIndex } from "./draft";
-import { composeBrief } from "./modelagem-brief";
+import { composeBrief, oQueFaltouNaAutopsia } from "./modelagem-brief";
 import { HOOK_MECHANISMS } from "./hook-mechanisms";
 import { resolverModo, SEM_COMANDO } from "./replicar";
 import type { Attachment, GenerationContext, ModelagemAnalysis } from "./types";
@@ -460,41 +460,64 @@ export async function autopsiaDeUrl(url: string | null, opts: AutopsiaOpts = {})
       `Em diagnostico.gargalo, seja preciso: é a camada onde o original era mais fraco, e é exatamente ali que ` +
       `a nossa versão tem que ganhar dele.`;
 
-  const res = await trackedCreate(opts.usageLog, "modelagem", {
-    model: ANALYST_MODEL,
-    // análise estruturada via tool forçada; o sonnet-5 pensa por padrão no mesmo teto.
-    // 8000 dá folga para o tool_use não truncar.
-    max_tokens: 8000,
-    tools: [modelagemTool()],
-    tool_choice: { type: "tool", name: "registrar_modelagem" },
-    messages: [
-      {
-        role: "user",
-        content:
-          `Você é um analista forense de conteúdo viral. Desconstrua o ${peca} abaixo para descobrir POR QUE ele funcionou: ` +
-          `o mecanismo, não o conteúdo.\n\n` +
-          `PROIBIÇÃO CENTRAL: é PROIBIDO citar no esqueleto qualquer tema, nome, número, marca ou frase do original. ` +
-          `Se um campo só puder ser preenchido citando o conteúdo, você não extraiu o mecanismo — extraia de novo. ` +
-          `(A única exceção é o campo evidencia do diagnóstico, que existe justamente para citar a frase literal.)\n\n` +
-          `Separe o que TRANSFERE do que era circunstância: trend, celebridade, rosto conhecido ou janela de notícia ` +
-          `não se replicam e vão em nao_transferivel.\n\n${missao}` +
-          `${carrossel ? MAPA_DO_CARROSSEL : ""}` +
-          `${taxonomia}${opts.cliente ?? ""}${corpus.promptBlock}` +
-          `\n\n${carrossel ? "SLIDES DO CARROSSEL" : "TRANSCRIÇÃO"}:\n${transcript}`,
-      },
-    ],
-  });
+  const chamar = (maxTokens: number) =>
+    trackedCreate(opts.usageLog, "modelagem", {
+      model: ANALYST_MODEL,
+      // análise estruturada via tool forçada; o sonnet-5 pensa por padrão no mesmo teto.
+      // 8000 dá folga para o tool_use não truncar.
+      max_tokens: maxTokens,
+      tools: [modelagemTool()],
+      tool_choice: { type: "tool", name: "registrar_modelagem" },
+      messages: [
+        {
+          role: "user",
+          content:
+            `Você é um analista forense de conteúdo viral. Desconstrua o ${peca} abaixo para descobrir POR QUE ele funcionou: ` +
+            `o mecanismo, não o conteúdo.\n\n` +
+            `PROIBIÇÃO CENTRAL: é PROIBIDO citar no esqueleto qualquer tema, nome, número, marca ou frase do original. ` +
+            `Se um campo só puder ser preenchido citando o conteúdo, você não extraiu o mecanismo — extraia de novo. ` +
+            `(A única exceção é o campo evidencia do diagnóstico, que existe justamente para citar a frase literal.)\n\n` +
+            `Separe o que TRANSFERE do que era circunstância: trend, celebridade, rosto conhecido ou janela de notícia ` +
+            `não se replicam e vão em nao_transferivel.\n\n${missao}` +
+            `${carrossel ? MAPA_DO_CARROSSEL : ""}` +
+            `${taxonomia}${opts.cliente ?? ""}${corpus.promptBlock}` +
+            `\n\n${carrossel ? "SLIDES DO CARROSSEL" : "TRANSCRIÇÃO"}:\n${transcript}`,
+        },
+      ],
+    });
 
-  const toolUse = res.content.find((b) => b.type === "tool_use");
-  if (!toolUse || toolUse.type !== "tool_use") throw new Error("modelagem: modelo não retornou análise estruturada");
-  const analysis = toolInput(toolUse) as ModelagemAnalysis;
-  const composed = composeBrief(analysis, corpus.resumoMetricas);
+  // A autópsia que volta sem esqueleto (ou sem tese) é falha de FORMA da resposta, não do
+  // material: o thinking do sonnet divide o mesmo teto do tool_use, e o que sai é uma análise
+  // pela metade. Uma segunda tentativa com o teto dobrado é o mesmo remédio que o storytelling
+  // já usa, e é o que evita o usuário perder a sessão por um sorteio ruim de tokens.
+  const tentar = async (maxTokens: number) => {
+    const res = await chamar(maxTokens);
+    const toolUse = res.content.find((b) => b.type === "tool_use");
+    const analysis = (toolUse?.type === "tool_use" ? toolInput(toolUse) : {}) as ModelagemAnalysis;
+    return { analysis, brief: composeBrief(analysis, corpus.resumoMetricas), stop: res.stop_reason ?? null };
+  };
+
+  let { analysis, brief: composed, stop } = await tentar(8000);
   if (!composed) {
     console.error(
-      `modelagem vazia — stop_reason=${res.stop_reason} input=${JSON.stringify(toolUse.input).slice(0, 500)}`
+      `modelagem incompleta (${oQueFaltouNaAutopsia(analysis) || "sem conteúdo utilizável"}) — stop_reason=${stop}; tentando com teto maior`
     );
-    // preserva "modelagem falhou nunca derruba a geração": não insere cache, retorna vazio
-    return vazio;
+    ({ analysis, brief: composed, stop } = await tentar(16000));
+  }
+  if (!composed) {
+    // Deixou de ser `return vazio` silencioso: com modelagem marcada a autópsia É o trabalho (a
+    // premissa sai dela), então engolir a falha aqui produzia lá na frente uma mensagem que
+    // culpava a transcrição, com o motivo real perdido no log do servidor. O `debug` anexado é
+    // persistido em vm_sessions.debug.detail pelo catch do runPipeline. O debate avulso (Kasparov)
+    // segue tolerante: ele já chama isto dentro de um .catch e continua sem análise.
+    const falta = oQueFaltouNaAutopsia(analysis) || "a análise voltou sem conteúdo utilizável";
+    throw Object.assign(
+      new Error(
+        `A autópsia do ${peca} voltou incompleta duas vezes (${falta}). ` +
+          `Isso é falha do analista, não do material: conjure de novo. Se repetir, cole a transcrição no campo do material.`
+      ),
+      { debug: { step: "modelagem", stop_reason: stop, falta, chaves: Object.keys(analysis ?? {}) } }
+    );
   }
 
   // Grava as duas chaves quando as duas existem: a autópsia paga numa sessão fica reusável

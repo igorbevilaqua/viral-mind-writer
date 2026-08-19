@@ -214,9 +214,12 @@ export async function runPipeline(
         // Regra 1: com modelagem, a autópsia É o trabalho — falhar aqui derruba a geração, com o
         // caminho de saída. Antes, este ramo simplesmente não existia: o fluxo escorregava para a
         // derivação sem tema e sem material, e o modelo inventava um placeholder de premissa.
+        // A mensagem NÃO culpa a transcrição: quando o fluxo chega aqui, a autópsia rodou e
+        // compôs brief (senão ela mesma teria falhado antes, com o motivo). O que faltou foi a
+        // tese dentro de uma análise que veio incompleta, e a ação certa é tentar de novo.
         throw new Error(
-          "Não consegui extrair a tese do vídeo modelado — e é dela que a premissa desta sessão sai. " +
-            "Cole a transcrição no campo do material e conjure de novo, ou desmarque o material como modelagem."
+          "A autópsia do material não trouxe a tese do vídeo, e é dela que a premissa desta sessão sai. " +
+            "Conjure de novo. Se repetir, cole a transcrição no campo do material ou desmarque o material como modelagem."
         );
       case "derivada": {
         // Nem resolvida nem extraível: o sistema produz a tese a partir do tema. É o caminho que

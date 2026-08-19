@@ -85,6 +85,26 @@ export function composeBrief(a: ModelagemAnalysis, resumoMetricas = ""): string 
   return full.length <= BRIEF_MAX ? full : `${full.slice(0, BRIEF_MAX).trimEnd()}…`;
 }
 
+/**
+ * O que faltou numa autópsia que não compõe brief (ou que compõe sem tese). Existe porque
+ * `composeBrief` devolvendo "" era engolido com um `console.error` no servidor: a geração parava,
+ * o usuário lia "cole a transcrição" (com a transcrição já em mãos) e o motivo real morria no log
+ * da Hostinger. Aqui o motivo vira dado, entra na mensagem e no rastro da sessão.
+ *
+ * Pura — as asserções vivem em tests/modelagem-brief.test.ts.
+ */
+export function oQueFaltouNaAutopsia(a: ModelagemAnalysis): string {
+  const faltas = [
+    !a?.esqueleto && "o esqueleto inteiro",
+    a?.esqueleto && !a.esqueleto.estrutura_narrativa && "a estrutura narrativa",
+    a?.esqueleto && !a.esqueleto.hook?.tipo && "o mecanismo do hook",
+    !a?.compreensao?.argumento_central?.trim() && "a tese do vídeo (compreensao.argumento_central)",
+  ].filter((s): s is string => Boolean(s));
+  // "" = nada faltou. Frase genérica para uma análise completa mentiria no diagnóstico, que é
+  // justamente o que esta função existe para consertar.
+  return faltas.length ? `faltou ${faltas.join(", ")}` : "";
+}
+
 // Entendimento do material para a pesquisa dirigida e para o storytelling montar a arquitetura.
 // Carrega as alegações e a promessa literal do original, que NÃO vão ao roteirista.
 //

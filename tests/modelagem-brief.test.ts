@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { composeBrief, compreensaoBlock } from "@/lib/pipeline/modelagem-brief";
+import { composeBrief, compreensaoBlock, oQueFaltouNaAutopsia } from "@/lib/pipeline/modelagem-brief";
 import type { ModelagemAnalysis } from "@/lib/pipeline/types";
 
 // Regressão anti-cópia. A fronteira MUDOU (Etapa D): a missão da modelagem passou a ser extrair
@@ -135,5 +135,34 @@ describe("compreensaoBlock", () => {
 
   test("sem compreensão (modo com tema) devolve vazio", () => {
     expect(compreensaoBlock({ ...analysis, compreensao: undefined })).toBe("");
+  });
+});
+
+// A sessão 0f1281 gastou 35s e ~12k tokens numa autópsia que voltou sem esqueleto: o
+// `composeBrief` devolveu "", o pipeline engoliu com um console.error e o usuário leu "cole a
+// transcrição" com a transcrição já obtida. O motivo real precisa virar dado, não log perdido.
+describe("oQueFaltouNaAutopsia", () => {
+  test("nomeia o esqueleto ausente (o caso real que parou a sessão)", () => {
+    expect(oQueFaltouNaAutopsia({})).toContain("o esqueleto inteiro");
+  });
+
+  test("nomeia o campo exato que faltou dentro do esqueleto", () => {
+    const semEstrutura = { esqueleto: { hook: { tipo: "curiosidade" } } } as ModelagemAnalysis;
+    expect(oQueFaltouNaAutopsia(semEstrutura)).toContain("a estrutura narrativa");
+    expect(oQueFaltouNaAutopsia(semEstrutura)).not.toContain("o mecanismo do hook");
+
+    const semHook = { esqueleto: { estrutura_narrativa: "A1. Jornada do Herói" } } as ModelagemAnalysis;
+    expect(oQueFaltouNaAutopsia(semHook)).toContain("o mecanismo do hook");
+  });
+
+  test("a tese ausente é falta, mesmo com o esqueleto completo (é dela que a premissa sai)", () => {
+    const semTese = {
+      esqueleto: { estrutura_narrativa: "A1. Jornada do Herói", hook: { tipo: "curiosidade" } },
+    } as ModelagemAnalysis;
+    expect(oQueFaltouNaAutopsia(semTese)).toContain("a tese do vídeo");
+  });
+
+  test("análise completa não acusa falta nenhuma", () => {
+    expect(oQueFaltouNaAutopsia(analysis)).toBe("");
   });
 });
