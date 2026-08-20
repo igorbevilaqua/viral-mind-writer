@@ -28,6 +28,23 @@ function tierDe(dominio: string): 1 | 2 | 3 | null {
 }
 
 /**
+ * Procedência de uma URL: o domínio normalizado e o tier dele. Exportada porque a verificação
+ * (passo 4) precisa da MESMA régua que o portão do dossiê usa — antes, `tierDe` era privada e
+ * nenhuma linha passava `veredicto.fonte.url` por ela, então um blog qualquer sustentava um
+ * `confirmado` (foi o `bestcolleges.com` da sessão #d69fc7).
+ * Devolve o domínio junto do tier de propósito: quem rebaixa precisa NOMEAR a fonte fraca,
+ * senão o rebaixamento fica indistinguível de "procurei e não achei".
+ */
+export function procedencia(url: string): { dominio: string; tier: 1 | 2 | 3 | null } {
+  try {
+    const dominio = new URL(url).hostname.replace(/^www\./, "").toLowerCase();
+    return { dominio, tier: tierDe(dominio) };
+  } catch {
+    return { dominio: "", tier: null };
+  }
+}
+
+/**
  * Recorta a seção `## ESTUDOS` do dossiê e passa cada linha pelo portão determinístico (sem LLM).
  * Descarta só o que não tem URL bem-formada; domínio fora do JSON entra REBAIXADO (`tier: null`),
  * porque o JSON não é exaustivo e descartar por isso jogaria fora estudo legítimo (016 §5.1).

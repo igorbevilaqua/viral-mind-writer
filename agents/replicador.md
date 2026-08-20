@@ -25,7 +25,7 @@ Você escreve o CORPO. Não escreve o hook (um especialista o desenha depois, so
 
 - Não abra o corpo com uma segunda abertura: o hook real entra por cima e o espectador ouviria a mesma frase duas vezes. Sua primeira frase já avança — entra no primeiro beat com fato, data, cena ou nome próprio.
 - Alegação do original que a CHECAGEM marcou como "contestado" ou "nao_verificavel" NÃO vira afirmação nossa: ou sai, ou é atribuída explicitamente. Nós não herdamos a palavra dele.
-- Toda fonte de dado específico (número, data, citação) vai nas FONTES com o link completo. Em FONTES só o nome da fonte e o link.
+- Toda fonte de dado específico (número, data, citação) vai nas FONTES com o link completo, em três linhas: nome, link e uma linha "Sustenta:" com UMA frase dizendo qual afirmação do roteiro ela comprova.
 - Obedeça o guia de estilo, as frases proibidas, as restrições do cliente e o idioma — invioláveis.
 - Duração-alvo: 60 a 180 segundos de fala (150 a 430 palavras no corpo).
 - Mantenha aberto até o fim o mesmo loop que o original mantinha: o payoff só se completa no último beat.

@@ -15,6 +15,8 @@ const { banco, fakeAppDb, verificarRoteiro } = vi.hoisted(() => {
     dossie: "DOSSIÊ: a Vale lucrou 45 bilhões em 2024.",
     escrito: null as Record<string, unknown> | null,
     erroUpdate: null as { message: string } | null,
+    // trace como ele chega na vida real: a geração já gravou a telemetria das fases dela.
+    trace: {} as Record<string, unknown>,
   };
   const fakeAppDb = {
     from: (tabela: string) => ({
@@ -22,7 +24,10 @@ const { banco, fakeAppDb, verificarRoteiro } = vi.hoisted(() => {
         eq: () => ({
           single: async () =>
             tabela === "vm_generated_scripts"
-              ? { data: { hook: "h", roteiro: "r", comando: "c", session_id: "sess-1" }, error: null }
+              ? {
+                  data: { hook: "h", roteiro: "r", comando: "c", session_id: "sess-1", pipeline_trace: banco.trace },
+                  error: null,
+                }
               : { data: { artifacts: { dossie: banco.dossie } }, error: null },
         }),
       }),
@@ -68,6 +73,7 @@ const REGISTRO = {
 beforeEach(() => {
   banco.escrito = null;
   banco.erroUpdate = null;
+  banco.trace = { assembled: "## HOOK…", usage: { roteiro: { model: "fable", chamadas: 1 } } };
   verificarRoteiro.mockReset();
   verificarRoteiro.mockResolvedValue(REGISTRO);
 });
@@ -77,7 +83,18 @@ describe("verificarScript (§9: uma coluna, sobrescrita)", () => {
     const r = await verificarScript(SCRIPT, "delta");
 
     expect(r).toEqual({ ok: true, registro: REGISTRO });
-    expect(banco.escrito).toEqual({ verificacao: REGISTRO });
+    expect(banco.escrito?.verificacao).toEqual(REGISTRO);
+  });
+
+  // O custo da verificação era a única parte do pipeline que ninguém media (0 chaves
+  // `verificacao_*` em 63 roteiros). Ele entra no MESMO `pipeline_trace.usage` das outras
+  // fases — e o merge não pode atropelar o que a geração já gravou lá.
+  it("soma a telemetria da verificação sem apagar o trace da geração", async () => {
+    await verificarScript(SCRIPT, "delta");
+
+    const trace = banco.escrito?.pipeline_trace as Record<string, unknown>;
+    expect(trace.assembled).toBe("## HOOK…"); // o resto do trace sobrevive
+    expect((trace.usage as Record<string, unknown>).roteiro).toEqual({ model: "fable", chamadas: 1 });
   });
 
   it("passa o roteiro salvo, o dossiê da sessão e o regime pedido", async () => {

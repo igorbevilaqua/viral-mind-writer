@@ -102,8 +102,15 @@ describe("ecosNumericos — guardas obrigatórias", () => {
       "O tribunal derrubou a tese.",
       "",
       "## FONTES",
-      "Agência Brasil, alta de 12%, https://agenciabrasil.example/a",
-      "Reuters, alta de 12%, https://reuters.example/b",
+      "Agência Brasil",
+      "https://agenciabrasil.example/a",
+      // A frase "Sustenta:" repete o dado de propósito (é o que ela existe para dizer) e não
+      // tem URL na linha — sem o `mudo` da seção, todo roteiro passaria a acusar eco.
+      "Sustenta: a alta de 12% no primeiro trimestre, citada no segundo beat.",
+      "",
+      "Reuters",
+      "https://reuters.example/b",
+      "Sustenta: a mesma alta de 12%, confirmada por veículo independente.",
     ].join("\n");
     expect(ecosNumericos(texto)).toEqual([]);
   });

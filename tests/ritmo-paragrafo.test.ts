@@ -85,6 +85,13 @@ describe("teto de parágrafo", () => {
     const doc = `## VARIACOES_DE_HOOK\n1. ${longa(1)}\n2. ${longa(2)}\n3. ${longa(3)}\n\n## FONTES\nVeículo Muito Longo De Nome Enorme Assim\nhttps://exemplo.com/materia`;
     expect(paragrafosLongos(doc)).toEqual([]);
   });
+
+  // A linha "Sustenta:" de cada fonte (draft.ts, OUTPUT_FORMAT) é prosa de verdade e pode não
+  // ter URL na mesma linha — quem a mantém fora da conta é só o `mudo` da seção FONTES.
+  test("a linha Sustenta: das FONTES continua fora da conta, mesmo sem URL do lado", () => {
+    const doc = `## FONTES\nVeículo\nhttps://exemplo.com/materia\nSustenta: ${longa(1)} ${longa(2)} ${longa(3)}\n\nOutra Instituição\nSustenta: ${longa(4)} ${longa(5)} ${longa(6)}`;
+    expect(paragrafosLongos(doc)).toEqual([]);
+  });
 });
 
 describe("sequência de frases longas", () => {

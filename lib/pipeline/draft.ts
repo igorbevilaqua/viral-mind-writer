@@ -25,16 +25,19 @@ export const OUTPUT_FORMAT = `Responda EXATAMENTE neste formato (headers literai
 (o CTA final, com benefício explícito escrito na própria frase)
 
 ## FONTES
-(SÓ o nome da fonte e o link, nada mais. Um bloco por fonte: o nome do veículo ou instituição numa linha, o link completo (URL) na linha seguinte, e uma linha em branco antes da próxima fonte.
-NUNCA escreva o dado, o número ou a manchete junto. NUNCA diga de que seção do dossiê veio. Nada depois do link.
+(Um bloco por fonte, TRÊS linhas e nada mais: o nome do veículo ou instituição; o link completo (URL) na linha seguinte; e "Sustenta: " seguido de UMA frase (até 25 palavras) dizendo qual afirmação do roteiro essa fonte comprova, com o dado e onde ele aparece — quem for conferir precisa saber o que procurar na página. Uma linha em branco antes da próxima fonte.
+Uma frase só, nunca um parágrafo. Não copie a manchete e NUNCA diga de que seção do dossiê veio.
+Fonte que sustenta mais de uma afirmação: a MESMA frase cobre as duas. Nunca atribua a uma fonte afirmação que ela não sustenta.
 O dossiê NÃO é fonte: cite o veículo ou instituição original que ele aponta, com o link dele.
-Fonte que veio de material do brief e não tem URL entra só com o nome.
+Fonte que veio de material do brief e não tem URL entra com o nome e o "Sustenta:", sem link.
 Exemplo:
 Harris Poll
 https://theharrispoll.com/exemplo
+Sustenta: os 74% de profissionais que trocam de emprego em dois anos, citado no segundo beat.
 
 New York Times
-https://nytimes.com/exemplo)`;
+https://nytimes.com/exemplo
+Sustenta: a data da audiência e o nome do juiz que negou o pedido.)`;
 
 // Formato do roteirista-chefe: ele escreve só o corpo — hook e comando vêm dos especialistas.
 const WRITER_FORMAT = `Responda EXATAMENTE neste formato (headers literais):
@@ -46,16 +49,19 @@ const WRITER_FORMAT = `Responda EXATAMENTE neste formato (headers literais):
 (o corpo do roteiro, começando imediatamente após o hook, pronto para ser lido em voz alta; NÃO escreva o hook nem o CTA)
 
 ## FONTES
-(SÓ o nome da fonte e o link, nada mais. Um bloco por fonte: o nome do veículo ou instituição numa linha, o link completo (URL) na linha seguinte, e uma linha em branco antes da próxima fonte. O dossiê traz os links.
-NUNCA escreva o dado, o número ou a manchete junto. NUNCA diga de que seção do dossiê veio. Nada depois do link.
+(Um bloco por fonte, TRÊS linhas e nada mais: o nome do veículo ou instituição; o link completo (URL) na linha seguinte (o dossiê traz os links); e "Sustenta: " seguido de UMA frase (até 25 palavras) dizendo qual afirmação do corpo essa fonte comprova, com o dado e onde ele aparece — quem for conferir precisa saber o que procurar na página. Uma linha em branco antes da próxima fonte.
+Uma frase só, nunca um parágrafo. Não copie a manchete e NUNCA diga de que seção do dossiê veio.
+Fonte que sustenta mais de uma afirmação: a MESMA frase cobre as duas. Nunca atribua a uma fonte afirmação que ela não sustenta.
 O dossiê NÃO é fonte: cite o veículo ou instituição original que ele aponta, com o link dele.
-Fonte que veio de material do brief e não tem URL entra só com o nome.
+Fonte que veio de material do brief e não tem URL entra com o nome e o "Sustenta:", sem link.
 Exemplo:
 Harris Poll
 https://theharrispoll.com/exemplo
+Sustenta: os 74% de profissionais que trocam de emprego em dois anos, citado no segundo beat.
 
 New York Times
-https://nytimes.com/exemplo)`;
+https://nytimes.com/exemplo
+Sustenta: a data da audiência e o nome do juiz que negou o pedido.)`;
 
 // Bloco compartilhado da sala: playbooks + estilo + proibições (sem persona — cada agente traz a sua).
 // Dieta do playbook: o PLAYBOOK DE STORYTELLING (~52KB) saiu daqui — a estrutura é decisão do
@@ -556,6 +562,26 @@ export function stripLeadingHook(roteiro: string, hook: string | null): string {
   // divergiu de verdade → não corta: hook repetido é menos grave que parágrafo do corpo perdido
   if (first === h || h.includes(first) || first.includes(h)) blocks.shift();
   return blocks.join("\n\n").trimStart();
+}
+
+// FONTES é procedência, não prosa. Revisão (critique.ts) e humanização (humanize.ts) recebem o
+// OUTPUT_FORMAT e reescrevem o roteiro INTEIRO — mas nenhuma das duas viu o dossiê nem abriu a
+// URL, então reescrever a linha "Sustenta:" ou trocar um link é assinar o que não se apurou.
+// É o mesmo furo que `sanitizarVeredicto` fecha na verificação: quem não apurou não assina.
+// Vale o bloco do rascunho, escrito pelo único agente que teve o dossiê em mãos — e nada que os
+// dois modelos ponham ali sobrevive, nem uma seção inventada onde o rascunho não tinha fonte
+// nenhuma. Instrução de prompt seria pedido; a recolagem é garantia.
+//
+// ponytail: troca o bloco INTEIRO, sem casar fonte por fonte. Perde a fonte que a revisão cortou
+// junto com o fato que a citava — uma linha sobrando é inofensiva, procedência adulterada não.
+// Casar por URL é o passo seguinte, se aparecer fonte órfã de verdade.
+// Mesma forma de recorte de `parseSections`: para no próximo header, então FONTES fora do fim
+// do documento não arrasta COMANDO junto (e volta para o fim, onde o OUTPUT_FORMAT a coloca).
+const SECAO_FONTES = /\n*##\s*FONTES\s*\n[\s\S]*?(?=\n##\s|$)/i;
+
+export function comFontesDoRascunho(final: string, rascunho: string | null): string {
+  const semFontes = final.replace(SECAO_FONTES, "").trimEnd();
+  return rascunho?.trim() ? `${semFontes}\n\n## FONTES\n${rascunho.trim()}` : semFontes;
 }
 
 // As variações são escritas DEPOIS do corpo, olhando para ele, e às vezes uma delas sai

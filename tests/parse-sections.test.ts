@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { checagemSection, parseSections, semEcoDaAbertura, stripLeadingHook, stripTrailingComando } from "@/lib/pipeline/draft";
+import { checagemSection, comFontesDoRascunho, parseSections, semEcoDaAbertura, stripLeadingHook, stripTrailingComando } from "@/lib/pipeline/draft";
 
 // o hook abre o ROTEIRO no documento montado, mas é salvo só na coluna `hook`
 describe("stripLeadingHook", () => {
@@ -184,5 +184,53 @@ describe("checagemSection", () => {
   test("trunca checagem degenerada", () => {
     const gordo = `## CHECAGEM\n${"- [confirmado] linha comprida o suficiente\n".repeat(500)}`;
     expect(checagemSection(gordo).length).toBeLessThanOrEqual(4001);
+  });
+});
+
+// Revisão e humanização recebem o OUTPUT_FORMAT e reescrevem o documento INTEIRO, FONTES
+// incluída — sem nunca terem visto o dossiê nem aberto a URL. Procedência reescrita por quem
+// não apurou é o furo que esta peça fecha.
+describe("comFontesDoRascunho", () => {
+  const RASCUNHO = `Harris Poll
+https://theharrispoll.com/exemplo
+Sustenta: os 74% de profissionais que trocam de emprego em dois anos, no segundo beat.`;
+
+  const doc = (fontes: string) =>
+    `## HEADLINE\nTITULO\n\n## HOOK\nO gancho.\n\n## ROTEIRO\nO gancho.\n\nO corpo do roteiro.\n\n## COMANDO\nComenta aí.\n\n## FONTES\n${fontes}`;
+
+  test("humanização que adultera URL e frase Sustenta: não sobrevive ao recolamento", () => {
+    // Exatamente o que o fable-5 faz de graça: reescreve a frase (que ele não apurou) e
+    // "arruma" o link. As duas coisas são afirmações sobre uma página que ele não abriu.
+    const adulterado = doc(`Harris Poll
+https://harrispoll.com/pesquisa-2024
+Sustenta: a virada cultural do mercado de trabalho brasileiro na última década.`);
+
+    const saneado = comFontesDoRascunho(adulterado, RASCUNHO);
+
+    expect(parseSections(saneado).fontes).toBe(RASCUNHO);
+    expect(saneado).toContain("https://theharrispoll.com/exemplo");
+    expect(saneado).not.toContain("https://harrispoll.com/pesquisa-2024");
+    expect(saneado).not.toContain("virada cultural");
+    // o resto do roteiro passa intacto: a peça mexe SÓ em FONTES
+    expect(parseSections(saneado).roteiro).toBe("O gancho.\n\nO corpo do roteiro.");
+    expect(parseSections(saneado).comando).toBe("Comenta aí.");
+  });
+
+  test("fonte INVENTADA onde o rascunho não tinha nenhuma é descartada", () => {
+    const inventada = doc("Estudo de Harvard\nhttps://harvard.example/inventado");
+    expect(comFontesDoRascunho(inventada, null)).not.toContain("harvard.example");
+    expect(parseSections(comFontesDoRascunho(inventada, null)).fontes).toBe(null);
+  });
+
+  test("seção que o modelo apagou volta (senão a procedência inteira se perde)", () => {
+    const semSecao = "## HEADLINE\nTITULO\n\n## ROTEIRO\nO corpo.";
+    expect(parseSections(comFontesDoRascunho(semSecao, RASCUNHO)).fontes).toBe(RASCUNHO);
+  });
+
+  test("FONTES fora do fim do documento não arrasta a seção seguinte", () => {
+    const fora = `## ROTEIRO\nO corpo.\n\n## FONTES\nFonte Velha\nhttps://velha.example\n\n## COMANDO\nComenta aí.`;
+    const s = parseSections(comFontesDoRascunho(fora, RASCUNHO));
+    expect(s.comando).toBe("Comenta aí.");
+    expect(s.fontes).toBe(RASCUNHO);
   });
 });

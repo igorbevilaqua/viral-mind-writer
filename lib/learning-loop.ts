@@ -78,6 +78,45 @@ export function aplicarCorrecaoLiteral(roteiro: string, trecho_literal: string, 
   return roteiro.split(trecho_literal).join(correcao);
 }
 
+// ── `falso` não tem correção pronta: o caminho dele é o Bob ──────────────────
+
+/**
+ * `impreciso` traz `correcao` (o dado certo, pronto para troca literal); `falso` NÃO traz
+ * substituto nenhum — a verificação sabe que a afirmação não se sustenta, não o que dizer no
+ * lugar. Por isso ele não pode ir pelo caminho do `impreciso`: aquele troca `trecho_literal`
+ * por `correcao`, que aqui é `null`, e o roteiro perderia o trecho.
+ * O portão em si é o mesmo do `podeAplicar`: sem o trecho literal no roteiro ATUAL não há o
+ * que substituir depois que o Bob responder.
+ */
+export function podeReescrever(
+  item: { veredicto: string; trecho_literal?: string | null },
+  roteiro: string
+): boolean {
+  return item.veredicto === "falso" && !!item.trecho_literal && roteiro.includes(item.trecho_literal);
+}
+
+/**
+ * O que o Bob recebe para não errar de novo no lugar do erro.
+ * ponytail: usa `explicacao` + `fonte`, e NÃO o texto bruto da busca — ele nunca foi
+ * persistido em `verificacao` (o registro guarda só fonte e explicação), e persistir custaria
+ * KBs de jsonb por roteiro para reproduzir algo que o Bob já sabe buscar: ele tem
+ * `pesquisar_web`, e a explicação do verificador já diz o que é falso e qual é o dado real.
+ * Persistir `ItemBusca.busca.texto` só se na prática o Bob começar a errar por falta de contexto.
+ * A proibição vem no primeiro parágrafo de propósito: enterrada no fim, o modelo a ignora.
+ */
+export function instrucaoReescritaFalso(item: {
+  explicacao?: string;
+  fonte?: { url?: string; veiculo?: string; ano?: string } | null;
+}): string {
+  const f = item.fonte;
+  const fonte = f?.url
+    ? `\n\nFONTE QUE DERRUBOU A AFIRMAÇÃO: ${[f.veiculo, f.ano].filter(Boolean).join(", ") || "fonte"} — ${f.url}`
+    : "";
+  return `Este trecho foi verificado e REPROVADO: a afirmação é factualmente FALSA. Reescreva o trecho dizendo o que é verdade, ou tire a afirmação e preserve só o papel dela no roteiro. NUNCA repita a afirmação falsa, nem amaciada por hedge ("pode ser que", "há indícios de", "alguns dizem"). Se não tiver um fato sólido para pôr no lugar, PESQUISE antes de escrever; se ainda assim não achar, reescreva SEM nenhuma afirmação factual nova em vez de inventar uma.
+
+O QUE O VERIFICADOR APUROU: ${item.explicacao?.trim() || "a afirmação não se sustenta nas fontes."}${fonte}`;
+}
+
 // ── WP-E.3: calibração previsto×real do agente Dados ─────────────────────────
 
 export interface CalibrationPayload {

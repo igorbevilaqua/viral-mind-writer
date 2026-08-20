@@ -53,6 +53,32 @@ describe("fail-soft por alegação (§11)", () => {
     fecham(r);
   });
 
+  // O furo que a sessão #d69fc7 expôs: crédito estourado devolvia `nao_verificavel` com o mesmo
+  // 🔍 de "procurei e não achei fonte". Aqui o registro tem que dizer que a busca NÃO RODOU.
+  test("crédito estourado não se disfarça de veredicto: sobe em busca_indisponivel", async () => {
+    const alegacao = "A Vale lucrou 45 bilhões em 2024";
+    const semCredito = Object.assign(new Error("insufficient credits"), { status: 429 });
+    const d = deps([alegacao], async () => {
+      throw semCredito;
+    });
+
+    const r = await verificarRoteiro({ roteiro, dossie: "", regime: "delta" }, d);
+
+    expect(r.busca_indisponivel).toMatch(/crédito|cota/i);
+    expect(r.itens[0].veredicto).toBe("nao_verificavel");
+    expect(r.itens[0].explicacao).toMatch(/não rodou/i);
+    fecham(r);
+  });
+
+  test("falha transitória segue sendo só 'busca falhou' — não vira alarme de crédito", async () => {
+    const d = deps(["A Vale lucrou 45 bilhões em 2024"], async () => {
+      throw Object.assign(new Error("gateway timeout"), { status: 504 });
+    });
+    const r = await verificarRoteiro({ roteiro, dossie: "", regime: "delta" }, d);
+    expect(r.busca_indisponivel).toBeNull();
+    expect(r.itens[0].explicacao).toMatch(/busca falhou/i);
+  });
+
   test("todas as buscas falhando não derruba a rodada nem chama a classificação", async () => {
     const d = deps(["A Vale lucrou 45 bilhões em 2024"], async () => {
       throw new Error("grok fora do ar");

@@ -1,5 +1,5 @@
 import { appDb } from "../db";
-import { bindUsageLog } from "../anthropic";
+import { bindUsageLog, type UsageLog } from "../anthropic";
 import { guardEmit, STALE_GENERATION_MS } from "../generation";
 import { loadContext } from "./context";
 import {
@@ -13,7 +13,7 @@ import { compreensaoBlock } from "./modelagem-brief";
 import { anexoModelagem, anexoReplicar, comandoDoOriginal, exigirEsqueletoDoOriginal, narrativaDoOriginal } from "./replicar";
 import { registrarBloco, research, proposeNarratives, rankNarratives, designHook, writeComando } from "./agents";
 import { pairFromCandidates } from "../calibration";
-import { blocoSinaisRevisor, generateDraft, hookEcoaAbertura, parseSections, semEcoDaAbertura, stripLeadingHook, stripTrailingComando, TETO_ECOS, TETO_RITMO } from "./draft";
+import { blocoSinaisRevisor, comFontesDoRascunho, generateDraft, hookEcoaAbertura, parseSections, semEcoDaAbertura, stripLeadingHook, stripTrailingComando, TETO_ECOS, TETO_RITMO } from "./draft";
 import { critiqueAndRewrite } from "./critique";
 import { extrairEstudos } from "./estudos";
 import { extractFromCorrection } from "./teach";
@@ -428,7 +428,10 @@ export async function runPipeline(
     const { text: final, violations } = await humanize(ctx, revised);
 
     emit({ type: "phase", phase: "salvando" });
-    const sections = parseSections(final);
+    // A FONTES do rascunho volta ANTES do parse: revisão e humanização reescrevem o documento
+    // inteiro e nenhuma das duas apurou a procedência. `final` segue cru no `pipeline_trace`
+    // (é o rastro do que o modelo devolveu); o que é SALVO é o bloco que teve dossiê em mãos.
+    const sections = parseSections(comFontesDoRascunho(final, fontes));
     // o comando fica só na seção COMANDO — remove a repetição do fim do roteiro
     if (sections.comando && sections.roteiro) {
       sections.roteiro = stripTrailingComando(sections.roteiro, sections.comando);
@@ -634,7 +637,9 @@ export async function verificarScriptSalvo(
 ): Promise<{ registro: RegistroVerificacao; sessionId: string }> {
   const { data: script, error } = await appDb
     .from("vm_generated_scripts")
-    .select("hook, roteiro, comando, session_id")
+    // `pipeline_trace` entra na MESMA leitura que já acontecia: é nele que a telemetria de custo
+    // das outras 10 fases vive, e a da verificação precisa cair no mesmo lugar.
+    .select("hook, roteiro, comando, session_id, pipeline_trace")
     .eq("id", scriptId)
     .single();
   if (error || !script) throw new Error(error?.message ?? "roteiro não encontrado");
@@ -644,14 +649,31 @@ export async function verificarScriptSalvo(
   const { data: sess } = await appDb.from("vm_sessions").select("artifacts").eq("id", script.session_id).single();
   const dossie = ((sess?.artifacts ?? null) as SessionArtifacts | null)?.dossie ?? "";
 
+  // Custo da verificação, medido. Antes ficava fora de `pipeline_trace.usage` por DOIS motivos, e
+  // só corrigir um não daria número: o log nunca era passado até aqui, E o trace é serializado no
+  // insert do roteiro, que acontece ANTES desta função rodar — mutar o log em memória depois
+  // disso não persistia nada. Por isso o merge no update abaixo. Resultado até hoje: chaves para
+  // 10 fases e ZERO para `verificacao_*` em 63 roteiros.
+  const log: UsageLog = {};
+
   const registro = await verificarRoteiro({
     roteiro: { hook: script.hook ?? "", roteiro: script.roteiro ?? "", comando: script.comando ?? "" },
     dossie,
     regime,
+    log,
     onProgresso,
   });
 
-  const { error: upErr } = await appDb.from("vm_generated_scripts").update({ verificacao: registro }).eq("id", scriptId);
+  const trace = (script.pipeline_trace ?? {}) as Record<string, unknown>;
+  const { error: upErr } = await appDb
+    .from("vm_generated_scripts")
+    // Mesmo update de antes, com a telemetria de brinde. As fases da geração ficam intactas: o
+    // spread preserva o que já estava lá e as chaves `verificacao_*` só se somam.
+    .update({
+      verificacao: registro,
+      pipeline_trace: { ...trace, usage: { ...((trace.usage ?? {}) as UsageLog), ...log } },
+    })
+    .eq("id", scriptId);
   // A 0029 ainda não aplicada cai aqui (PGRST204). Lança em vez de engolir: verificação que
   // não foi gravada não pode passar por gravada, e o operador precisa ver o motivo.
   if (upErr) throw new Error(`verificação feita, mas não gravada: ${upErr.message}`);

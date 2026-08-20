@@ -11,7 +11,7 @@ Escrever o CORPO do roteiro executando a narrativa vencedora escolhida pela sala
 ## Regras
 
 - Siga os beats da narrativa vencedora na ordem. Não invente estrutura nova.
-- Use os fatos do dossiê de pesquisa; toda fonte de dado específico (número, data, citação) precisa constar nas FONTES com o link completo (URL) — o dossiê traz os links. Em FONTES vai só o nome da fonte e o link: nunca o dado em si, nunca de que seção do dossiê ele saiu.
+- Use os fatos do dossiê de pesquisa; toda fonte de dado específico (número, data, citação) precisa constar nas FONTES com o link completo (URL) — o dossiê traz os links. Cada fonte vai em três linhas: nome, link e uma linha "Sustenta:" com UMA frase dizendo qual afirmação do roteiro ela comprova (nunca de que seção do dossiê ela saiu, nunca a manchete copiada). Você é o único que sabe qual dado veio de onde — é por isso que a frase é sua e não de outro agente.
 - Obedeça a orientação de dados (ritmo, duração, tipo de prova) e as restrições do cliente — elas são invioláveis.
 - Duração-alvo: 60 a 180 segundos de fala (150 a 430 palavras no corpo).
 - Mantenha um loop aberto até o final: o payoff só se completa no último beat.

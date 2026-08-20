@@ -428,7 +428,11 @@ export async function verificarScript(
 export async function aplicarCorrecao(
   scriptId: string,
   trecho_literal: string,
-  correcao: string
+  correcao: string,
+  // "reescrita" = texto do Bob para um veredicto `falso`. A troca literal é a MESMA (o resto
+  // desta função não muda); o que muda é só a marca no registro: `reescrito` em vez de
+  // `aplicada`, porque ninguém verificou o texto novo (§11).
+  modo: "correcao" | "reescrita" = "correcao"
 ): Promise<{ aplicada: boolean; motivo?: string }> {
   await exigirAcesso({ script: scriptId });
   // §11: `updateScript` é patch por campo inteiro, SEM guarda otimista. Reler aqui,
@@ -465,7 +469,11 @@ export async function aplicarCorrecao(
   // roteiro já foi corrigido, e falhar aqui não pode desfazer isso.
   const reg = data.verificacao as RegistroVerificacao | null;
   if (reg?.itens?.length) {
-    const itens = reg.itens.map((i) => (i.trecho_literal === trecho_literal ? { ...i, aplicada: true } : i));
+    // `reescrito` NÃO zera o veredicto: ele fala do texto antigo e continua contando ❌ no selo
+    // até uma nova rodada olhar o texto novo. Marcar `confirmado` aqui seria inventar
+    // confirmação sobre algo que nenhuma busca viu.
+    const marca = modo === "reescrita" ? { reescrito: true } : { aplicada: true };
+    const itens = reg.itens.map((i) => (i.trecho_literal === trecho_literal ? { ...i, ...marca } : i));
     const { error: erroMarca } = await appDb
       .from("vm_generated_scripts")
       .update({ verificacao: { ...reg, itens } })

@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import type Anthropic from "@anthropic-ai/sdk";
 import { ANALYST_MODEL, WRITER_MODEL, recordUsage, trackedCreate } from "../anthropic";
-import { grokClient, RESEARCH_MODEL } from "../grok";
+import { falhaDeInfra, grokClient, RESEARCH_MODEL } from "../grok";
 import { fmtNum } from "../format";
 import type { CalibrationPayload } from "../learning-loop";
 import type {
@@ -499,6 +499,19 @@ export async function research(
     });
     return res.output_text ?? "";
   } catch (e) {
+    // Falha de INFRA não é fail-soft: sem dossiê o roteiro sai inteiro da memória do modelo, e é
+    // exatamente aí que nasce fake news — sem nenhum sinal na tela, porque a sessão termina
+    // `done`. E crédito estourado aqui estoura também na verificação, então o roteiro sairia sem
+    // pesquisa E sem checagem. Derruba a geração: o catch do runPipeline já grava
+    // `error_message` e emite `error`, que a tela mostra em caixa vermelha (alerta reusado, zero
+    // UI nova). Falha transitória (500, timeout) segue sem dossiê, como antes.
+    const infra = falhaDeInfra(e);
+    if (infra)
+      throw new Error(
+        `A pesquisa não rodou: ${infra}. Sem dossiê o roteiro sairia só da memória do modelo, sem ` +
+          `fonte para nada e sem como ser verificado — então a geração para aqui em vez de ` +
+          `entregar um roteiro que parece pesquisado. Recarregue o crédito e conjure de novo.`
+      );
     // pesquisa nunca derruba a geração — a sala segue com o que o usuário forneceu
     console.error("pesquisa grok falhou, seguindo sem dossiê", e);
     return "";

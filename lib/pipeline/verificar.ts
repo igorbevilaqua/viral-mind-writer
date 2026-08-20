@@ -1,5 +1,7 @@
 import { ANALYST_MODEL, trackedCreate, type UsageLog } from "../anthropic";
 import { agentPrompt, fontesBlock, toolArray, toolInput } from "./agents";
+import { falhaDeInfra } from "../grok";
+import { procedencia } from "./estudos";
 import { grokPesquisa } from "./grok-search";
 import { ehRastreada } from "./delta";
 
@@ -23,6 +25,14 @@ export interface Veredicto {
   fonte: Fonte | null;
   correcao: string | null;
   explicacao: string;
+  /**
+   * Domínio da fonte quando ela sustenta um `confirmado` mas está FORA do
+   * `fontes-autoritativas.json`. O veredicto continua valendo — o JSON não é exaustivo, e
+   * recusar por isso reprovava `blog.google` sobre um anúncio do próprio Google. A marca é o que
+   * impede que essa confirmação seja lida como uma de tier 1.
+   * Opcional: os registros já gravados (inclusive a v3) seguem válidos sem o campo.
+   */
+  fonte_fraca?: string | null;
 }
 
 export interface ItemBusca {
@@ -123,8 +133,22 @@ export function sanitizarVeredicto(raw: unknown, alegacaoOriginal: string): Vere
   const v = str(r.veredicto) as TipoVeredicto;
   const valido = (VEREDICTOS as readonly string[]).includes(v);
   if (!valido) console.error(`verificador: veredicto fora do enum (${JSON.stringify(r.veredicto)}) — ${alegacao.slice(0, 120)}`);
-  // `confirmado` sem fonte não confirma nada. `falso` e `impreciso` sobrevivem sem fonte:
-  // rebaixá-los apagaria o aviso, que é o oposto da direção segura.
+
+  // A HIERARQUIA DE FONTES entra aqui, e ela MARCA — não recusa. O `fontes-autoritativas.json`
+  // não é exaustivo: o próprio `_comentario` dele diz que tier 0 (site do dono do fato) é
+  // "contextual, tratado no prompt", e a docstring de `extrairEstudos` já decidiu a semântica
+  // para o dossiê — "domínio fora do JSON entra REBAIXADO, porque o JSON não é exaustivo e
+  // descartar por isso jogaria fora estudo legítimo" (016 §5.1).
+  // Recusar era mais rígido que a régua que esta função diz copiar, e a rodada real provou o
+  // custo: `blog.google` sustentando um anúncio DO PRÓPRIO GOOGLE virou `nao_verificavel`, com
+  // `confirmado` caindo de 8/14 para 1/11. O ganho de verdade não era rejeitar
+  // `bestcolleges.com` — era ele parar de passar como confirmação LIMPA.
+  const proc = fonte ? procedencia(fonte.url) : null;
+  const fonte_fraca = v === "confirmado" && fonte && proc?.tier == null ? proc?.dominio || fonte.url : null;
+
+  // `confirmado` sem fonte NENHUMA continua não confirmando nada — isso é ausência de fonte, não
+  // procedência fraca. `falso` e `impreciso` seguem intocados por tier: rebaixá-los apagaria o
+  // aviso, que é o oposto da direção segura.
   const veredicto: TipoVeredicto = !valido || (v === "confirmado" && !fonte) ? "nao_verificavel" : v;
 
   return {
@@ -132,6 +156,10 @@ export function sanitizarVeredicto(raw: unknown, alegacaoOriginal: string): Vere
     trecho_literal,
     veredicto,
     fonte,
+    // O domínio, não um booleano: quem lê o aviso precisa saber DE QUEM é a fonte para julgar.
+    // A explicação do verificador fica intacta — a marca carrega o sinal, sem reescrever o que
+    // ele apurou.
+    fonte_fraca,
     // correcao só existe em impreciso (§7) — o modelo às vezes preenche por inércia.
     correcao: veredicto === "impreciso" ? str(r.correcao) || null : null,
     explicacao: str(r.explicacao) || (valido ? "" : "veredicto inválido do verificador; tratado como não verificável"),
@@ -152,13 +180,19 @@ export async function extrairAlegacoes(
     max_tokens: MAX_TOKENS,
     tools: [ALEGACOES_TOOL],
     tool_choice: { type: "tool", name: "registrar_alegacoes" },
-    system: [{ type: "text", text: agentPrompt("verificador"), cache_control: { type: "ephemeral" } }],
+    // Sem cache_control, e medido: o prefixo cacheável daqui (tools + system) dá 1.845 tokens,
+    // ABAIXO do mínimo de 2.048 do sonnet — a API ignorava o bloco em silêncio, então o cache
+    // nunca existiu. E o prefixo nunca casaria com o do passo 4: `tools` entra no prefixo ANTES
+    // do system, e as duas chamadas usam tools diferentes.
+    // ponytail: só vale voltar se os dois passos passarem a compartilhar tools+system (aí o
+    // passo 4 leria o que o passo 1 escreveu) ou se este prefixo crescer além de 2.048.
+    system: [{ type: "text", text: agentPrompt("verificador") }],
     messages: [
       {
         role: "user",
         content: `Este é o roteiro FINAL, como vai ao ar. Nesta chamada você NÃO classifica nada — você só levanta o que há de verificável nele.
 
-Liste cada fato verificável: nomes, cargos, números, datas, eventos, relações de causa e efeito, citações, superlativos e status atual. Opinião, promessa, chamada para ação e figura de linguagem NÃO são alegações factuais — deixe fora.
+Liste cada fato verificável: nomes, cargos, números, datas, eventos, relações de causa e efeito, citações, superlativos e status atual. Opinião, promessa, chamada para ação, hipérbole e figura de linguagem NÃO são alegações factuais — deixe fora. Quem apresenta se identificar ("eu sou X", "aqui é o X") também não é alegação a checar: é a assinatura do vídeo, não um fato sobre o mundo.
 
 Cada alegação tem que ser COPIADA LITERALMENTE do roteiro, caractere a caractere. O texto que você devolver vai ser casado com o roteiro por uma máquina; paráfrase quebra o casamento. Copie o pedaço mínimo que ainda se sustenta sozinho — se o número só faz sentido com o sujeito, traga a frase inteira.
 
@@ -174,7 +208,11 @@ ${roteiro.comando}
 Registre pela tool.`,
       },
     ],
-  });
+    // effort medium: este passo COPIA frases do roteiro e o prompt proíbe julgar qualquer uma
+    // delas — o thinking adaptativo em `high` (default do sonnet-5) está raciocinando sobre uma
+    // tarefa de transcrição. Menos thinking também deixa mais dos 8000 tokens para o tool_use,
+    // que é o que trunca quando o orçamento acaba.
+  }, "medium");
 
   const toolUse = res.content.find((b) => b.type === "tool_use");
   if (!toolUse || toolUse.type !== "tool_use") throw new Error("verificador: extração de alegações sem saída estruturada");
@@ -208,10 +246,14 @@ FONTES: ${it.busca.fontes.length ? it.busca.fontes.join(", ") : "(nenhuma)"}`
     max_tokens: MAX_TOKENS,
     tools: [VERIFICACAO_TOOL],
     tool_choice: { type: "tool", name: "registrar_verificacao" },
-    system: [
-      { type: "text", text: agentPrompt("verificador"), cache_control: { type: "ephemeral" } },
-      { type: "text", text: fontesBlock() },
-    ],
+    // Sem cache_control, e medido: o prefixo daqui dá ~2.185 tokens (passa do mínimo, então
+    // ESTE escrevia cache de verdade), mas ninguém lê — nenhuma outra chamada usa
+    // VERIFICACAO_TOOL, e a segunda rodada da mesma sessão chega tarde demais. Em produção as 3
+    // varreduras `completa` rodaram 36-45 min depois da geração, contra um TTL de 5 min: 1
+    // escrita, 0 leituras, ~546 tokens de prêmio jogados fora por rodada.
+    // `fontesBlock` FICA: ele é a régua que faz o modelo escolher uma fonte de tier bom, e o
+    // portão de código novo em `sanitizarVeredicto` só sabe rejeitar depois do fato.
+    system: [{ type: "text", text: agentPrompt("verificador") }, { type: "text", text: fontesBlock() }],
     messages: [
       {
         role: "user",
@@ -236,8 +278,13 @@ Registre pela tool.`,
   // texto (a alegação é copiada literalmente); quando ele pula uma, ela volta como
   // `nao_verificavel` em vez de sumir da tabela.
   const porAlegacao = new Map(crus.map((c) => [str(c?.alegacao), c]));
-  return itens.map((it, i) => {
-    const cru = porAlegacao.get(it.alegacao.trim()) ?? (crus.length === itens.length ? crus[i] : undefined);
+  return itens.map((it) => {
+    // Casamento SÓ por texto. Havia um fallback posicional aqui (`crus[i]` quando as contagens
+    // batiam) e ele era o único ponto da peça que degradava para o lado INSEGURO: modelo que
+    // devolve N itens fora de ordem colava o veredicto de uma alegação em OUTRA — inclusive um
+    // `confirmado` com a fonte errada. Sem ele, o descasamento cai em `nao_verificavel` com
+    // motivo, que é a degradação certa.
+    const cru = porAlegacao.get(it.alegacao.trim());
     if (!cru) console.error(`verificador: sem veredicto para "${it.alegacao.slice(0, 120)}"`);
     return sanitizarVeredicto(
       cru ?? { alegacao: it.alegacao, explicacao: "o verificador não devolveu veredicto para esta alegação" },
@@ -255,6 +302,14 @@ export type Regime = "delta" | "completa";
 export interface ItemVerificado extends Veredicto {
   /** marcada pela correção cirúrgica (§7.1), nunca aqui. */
   aplicada?: boolean;
+  /**
+   * O Bob reescreveu o trecho deste item (caminho do `falso`, que não tem `correcao` pronta).
+   * Campo separado de `aplicada` de propósito, e é o §11 que exige a separação: `aplicada`
+   * significa "o dado certo, que a verificação JÁ TINHA em mãos, entrou no lugar"; `reescrito`
+   * significa "uma máquina escreveu texto novo que NINGUÉM verificou". O veredicto continua
+   * `falso` porque ele fala do texto ANTIGO — só uma nova rodada pode falar do novo.
+   */
+  reescrito?: boolean;
 }
 
 /** A forma do §9 — o que vai para `vm_generated_scripts.verificacao`. Montar não é gravar. */
@@ -262,6 +317,13 @@ export interface RegistroVerificacao {
   at: string;
   regime: Regime;
   dossie_presente: boolean;
+  /**
+   * Motivo de a INFRA de busca ter caído (crédito/cota/chave), quando caiu. Existe porque
+   * `nao_verificavel` cobria dois mundos opostos com o mesmo 🔍: "procurei e não achei fonte
+   * confiável" (veredicto real) e "não consegui nem buscar" (nada foi checado). Opcional: os
+   * registros já gravados em jsonb seguem válidos sem ele.
+   */
+  busca_indisponivel?: string | null;
   total_alegacoes: number;
   rastreadas: number;
   verificadas: number;
@@ -334,15 +396,21 @@ export async function verificarRoteiro(
 
   onProgresso?.({ etapa: "buscando", feito: 0, total: aBuscar.length });
   let feito = 0;
+  // Primeiro motivo de infra visto na rodada — sobe ao registro para a tela poder gritar.
+  let buscaIndisponivel: string | null = null;
   // Fail-soft POR ALEGAÇÃO (§11): o try/catch é de cada busca, não da rodada. Uma exceção
   // marca aquela alegação e as outras seguem — `Promise.all` só vê promessas resolvidas.
   const buscas = await Promise.all(
     aBuscar.map(async (alegacao) => {
       try {
-        return { alegacao, busca: await deps.buscar(queryDe(alegacao)) };
+        return { alegacao, busca: await deps.buscar(queryDe(alegacao)), motivo: "busca falhou" };
       } catch (e) {
         console.error(`verificacao: busca falhou — ${alegacao.slice(0, 120)}`, e);
-        return { alegacao, busca: null };
+        // Crédito/cota estourado não é "não achei fonte": NADA foi checado. O motivo entra no
+        // item e no registro, senão o selo mostra 🔍 igual a um veredicto de verdade.
+        const infra = falhaDeInfra(e);
+        if (infra) buscaIndisponivel ??= infra;
+        return { alegacao, busca: null, motivo: infra ? `a busca não rodou: ${infra}` : "busca falhou" };
       } finally {
         onProgresso?.({ etapa: "buscando", feito: ++feito, total: aBuscar.length });
       }
@@ -355,7 +423,7 @@ export async function verificarRoteiro(
   onProgresso?.({ etapa: "classificando", total: comBusca.length });
   const veredictos = comBusca.length ? await deps.classificar(comBusca.map((c) => c.item), log) : [];
 
-  const itens: ItemVerificado[] = buscas.map((b) => naoVerificavel(b.alegacao, "busca falhou"));
+  const itens: ItemVerificado[] = buscas.map((b) => naoVerificavel(b.alegacao, b.motivo));
   comBusca.forEach(({ i, item }, k) => {
     itens[i] = veredictos[k] ?? naoVerificavel(item.alegacao, "o verificador não devolveu veredicto para esta alegação");
   });
@@ -367,6 +435,7 @@ export async function verificarRoteiro(
     at: new Date().toISOString(),
     regime,
     dossie_presente: Boolean(dossie?.trim()),
+    busca_indisponivel: buscaIndisponivel,
     total_alegacoes: alegacoes.length,
     // Rastreada passa direto por decisão de regime (§4.1) — conta, mas não vira linha na tabela.
     rastreadas: alegacoes.length - delta.length,

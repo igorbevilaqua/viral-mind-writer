@@ -46,24 +46,40 @@ describe("ehRastreada", () => {
     expect(() => ehRastreada("Foram 45 bilhões.", undefined as unknown as string)).not.toThrow();
     expect(ehRastreada("Foram 45 bilhões.", undefined as unknown as string)).toBe(false);
   });
+  // Toda alegação daqui para baixo carrega as DUAS classes de âncora (quantidade + nome próprio):
+  // é o que `ehRastreada` passou a exigir, e sem isso estes casos passariam a testar o portão de
+  // classes em vez do que vieram testar — o casamento normalizado de `normQ`.
   // `norm` preserva acentos de propósito (peça 1); o que ele colapsa é pontuação, espaço e caixa.
   test("ignora pontuação, espaço e caixa na comparação", () => {
-    expect(ehRastreada("a inadimplência do setor foi de 37,5%!", "...ficou em 37,5%, disse.")).toBe(true);
-    expect(ehRastreada("O dado veio da SERASA.", dossie)).toBe(true);
+    expect(ehRastreada("a inadimplência da Serasa foi de 37,5%!", "...a Serasa: ficou em 37,5%, disse.")).toBe(true);
+    expect(ehRastreada("o dado da SERASA é de 37,5%.", dossie)).toBe(true);
   });
   test("número não casa como substring de outro número", () => {
-    expect(ehRastreada("O caso é de 2023.", "o processo 120233 foi arquivado")).toBe(false);
+    expect(ehRastreada("o caso do Serasa é de 2023.", "o processo 120233 do Serasa foi arquivado")).toBe(false);
   });
 
   // A colisão mais cara possível: `norm` apaga a vírgula, então sem tratamento "37,5%" e
   // "1,5 bilhão" viram os tokens "375" e "15 bilhão" — e uma alegação inventada passaria como
   // rastreada contra um dossiê que fala de outro número inteiramente.
   test("decimal não colide com o inteiro sem separador", () => {
-    expect(ehRastreada("a taxa é de 37,5%.", "o lote tinha 375 unidades")).toBe(false);
-    expect(ehRastreada("gastou 1,5 bilhão.", "arrecadou 15 bilhões no periodo")).toBe(false);
+    expect(ehRastreada("a taxa da Serasa é de 37,5%.", "o lote da Serasa tinha 375 unidades")).toBe(false);
+    expect(ehRastreada("a Vale gastou 1,5 bilhão.", "a Vale arrecadou 15 bilhões no periodo")).toBe(false);
   });
 
   test("o decimal ainda casa consigo mesmo", () => {
-    expect(ehRastreada("a taxa é de 37,5%.", "a taxa ficou em 37,5% em marco")).toBe(true);
+    expect(ehRastreada("a taxa da Serasa é de 37,5%.", "a taxa da Serasa ficou em 37,5% em marco")).toBe(true);
+  });
+
+  // O portão de duas classes: âncora de uma classe só não rastreia, porque com uma âncora a barra
+  // é trivial — e era por aí que passava metade das alegações inventadas (tests/delta-vazamento).
+  test("só quantidade, sem nome próprio → delta", () => {
+    expect(ehRastreada("foram 45 bilhões no ano", dossie)).toBe(false);
+  });
+  test("só nome próprio, sem quantidade → delta", () => {
+    expect(ehRastreada("o relatório do Banco Central saiu ontem", dossie)).toBe(false);
+  });
+  // As duas classes existem no dossiê, mas em linhas diferentes: o dossiê não AFIRMA a junção.
+  test("âncoras em linhas diferentes do dossiê → delta", () => {
+    expect(ehRastreada("a Serasa apurou 45 bilhões", dossie)).toBe(false);
   });
 });

@@ -1620,7 +1620,8 @@ function ScriptCard({
             <textarea
               value={draft.fontes}
               onChange={(e) => setDraft((d) => ({ ...d, fontes: e.target.value }))}
-              rows={4}
+              // 3 linhas por fonte (nome, link, "Sustenta:") — com rows={4} só a primeira caberia.
+              rows={9}
               className={`${taCls} mt-2.5 font-mono text-[11.5px]`}
             />
           ) : (
@@ -2084,6 +2085,7 @@ export default function SessionView({
   // botão de varredura completa para o fim da página, mas os dois falam do mesmo registro.
   const verificacao = useVerificacaoDialog({
     scriptId: script?.id ?? "",
+    sessionId: session.id,
     registro: script?.verificacao ?? null,
     roteiro: script?.roteiro ?? "",
     disabled: closed || !script,
