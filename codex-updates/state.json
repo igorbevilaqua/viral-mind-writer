@@ -1,80 +1,63 @@
 {
-  "version": "2.4",
+  "version": "2.5",
   "codexUrl": "https://codex.viralmindlabs.com",
-  "pending": [
-    {
-      "id": "msyx14po",
-      "type": "fix",
-      "summary": "Sugerir tema nao cai mais com erro de rede: o servidor passa a dar sinal de vida durante as buscas longas, entao a conexao nao e mais cortada no meio",
-      "detail": "A rota ficava ate 90 segundos em silencio enquanto o Grok pesquisava, e o proxy derrubava a conexao. O sinal de vida existia so na geracao de roteiro; agora vale para todas as telas que mostram progresso (gerar, sugerir tema, Bob, verificacao e Kasparov), e o tempo maximo da sugestao subiu de 2 para 5 minutos.",
-      "commit": "d596e10",
-      "addedAt": "2026-08-18T17:07:25.612Z"
-    },
-    {
-      "id": "mt01fgvs",
-      "type": "fix",
-      "summary": "Modelagem: quando a analise do video volta incompleta, a sala tenta de novo sozinha em vez de perder a sessao, e quando desiste diz o motivo real",
-      "detail": "Um reel travou a sessao com a mensagem \"cole a transcricao\" mesmo com a transcricao em maos: a analise tinha voltado pela metade e o motivo ficava so no log do servidor. Agora ha uma segunda tentativa automatica com mais espaco de resposta, e a falha registra o que faltou.",
-      "commit": "86d864d",
-      "addedAt": "2026-08-19T11:58:19.204Z"
-    },
-    {
-      "id": "mt0febfe",
-      "type": "feature",
-      "summary": "Autosave no editor de roteiro: a sala grava sozinha 2,5 segundos depois da ultima tecla, com o recibo \"salvo automaticamente\" na tela",
-      "detail": "O Salvar continua existindo (e ele que fecha a edicao), mas nao depender mais de um clique. Cancelar agora desfaz de verdade o que o autosave ja tinha gravado.",
-      "commit": "e3fa403",
-      "addedAt": "2026-08-19T18:29:20.090Z"
-    },
-    {
-      "id": "mt0febga",
-      "type": "fix",
-      "summary": "Erro ao salvar deixou de apagar o que voce escreveu: o texto fica na tela, guardado no navegador, e uma faixa oferece Retomar edicao depois de um reload",
-      "detail": "Uma edicao inteira se perdeu porque a falha do salvamento derrubava a tela junto com o texto, que so existia na memoria da pagina. Agora sao tres camadas: autosave no servidor, rascunho no navegador a cada tecla, e a mensagem que diz o que aconteceu sem fechar a edicao.",
-      "commit": "e3fa403",
-      "addedAt": "2026-08-19T18:29:20.122Z"
-    },
-    {
-      "id": "mt0fs6sd",
-      "type": "improvement",
-      "summary": "A pagina de compartilhamento do roteiro agora mostra o nome do cliente em destaque no topo, e o titulo do link no WhatsApp vira \"CODEX - CLIENTE - HEADLINE\"",
-      "detail": "Todo roteiro compartilhado chegava com o mesmo cabecalho \"ROTEIRO COMPLETO\", sem dizer de quem era.",
-      "commit": "c42ff49",
-      "addedAt": "2026-08-19T18:40:07.275Z"
-    }
-  ],
+  "pending": [],
   "lastRelease": {
-    "version": "2.3",
-    "git": "6eaffaa",
-    "productSummary": "Modelagem marcada manda na premissa: a tese sai do video e o texto digitado vira direcao. E a sala nunca mais inventa premissa quando nao consegue ler o material.",
-    "message": "🪄 *Codex: Nova Versão Disponível (v2.3)*\n🔖 Git: 6eaffaa\n\nQuando você marca um vídeo como Modelar ou Replicar, agora é ele que manda: a sala extrai a tese do próprio vídeo, mostra pra você confirmar, e o que você escrever no campo de cima vale como direção, não como tema novo. E ela nunca mais inventa uma premissa quando não conseguiu ler o material.\n\n📋 *O que mudou:*\n\n✨ *A modelagem manda na premissa.* Antes, digitar qualquer coisa no campo desligava a leitura da tese: a sala copiava só a mecânica do vídeo (hook, ritmo, beats) e escrevia sobre outro assunto. Agora ela lê o vídeo a fundo, extrai a tese que ele defende, te mostra pra confirmar ou corrigir, e só então escreve. O que você digitar chega como direção aos quatro especialistas certos: recorte pro roteirista, pauta extra pro pesquisador, palpite de hook e de CTA. Dá pra pedir \"cite o caso da Argentina\" ou \"seja mais crítico\" sem que a sala troque de assunto no meio do caminho.\n\n🐛 *Fim da premissa inventada.* Uma sessão real gravou a palavra <UNKNOWN> como premissa e o roteiro inteiro foi escrito defendendo ela, sob o rótulo de tese inegociável. Agora são três travas: se a leitura do vídeo falha, a geração para e diz o motivo (com o caminho de saída), o derivador de tese se recusa a rodar sem nada em mãos, e uma última checagem barra placeholder antes da tese ser congelada. Roteiro sem fio condutor de verdade não sai mais da sala.\n\n⚡ *Um material por sessão como Modelar ou Replicar.* Os dois ditam a linha central do conteúdo, então marcar dois era pedir duas teses concorrentes no mesmo roteiro (e pagar duas análises). Agora vale um, a tela impede o segundo, e o excedente continua valendo como material de referência, com o registro de que foi rebaixado.\n\n👉 Acesse agora em https://codex.viralmindlabs.com\n",
+    "version": "2.4",
+    "git": "51f9a3e",
+    "productSummary": "Autosave e rede de seguranca no editor, telas longas que nao caem mais, e roteiro com paragrafo e ritmo controlados.",
+    "message": "*Codex 2.4*\n\n👉 *Autosave no editor:* você para de digitar, a sala grava sozinha, e a tela mostra \"salvo automaticamente\". O botão Salvar continua ali para fechar a edição.\n\n👉 *Erro ao salvar não apaga mais o seu texto:* uma edição inteira se perdeu porque a falha derrubava a tela junto com o texto. Agora ele fica guardado no navegador, e depois de recarregar aparece uma faixa oferecendo Retomar edição.\n\n👉 *Cancelar passou a desfazer de verdade:* como o autosave já gravou parte do caminho, ele devolve o texto que existia antes de você começar a editar.\n\n👉 *Sugerir tema não cai mais com erro de rede:* a busca ficava até 90 segundos em silêncio e a conexão era cortada por parecer ociosa; agora o servidor dá sinal de vida durante o trabalho, e isso vale para todas as telas que mostram progresso.\n\n👉 *Modelagem que volta pela metade tenta de novo sozinha,* em vez de travar a sessão pedindo uma transcrição que você já tinha colado; e quando desiste, diz o motivo real.\n\n👉 *Parágrafos mais curtos e ritmo menos monótono:* os parágrafos vinham com 51 palavras em média (o maior tinha 126) e havia trechos de até 14 frases longas seguidas sem nenhuma curta quebrando a inércia. Agora vale o teto de três linhas por parágrafo e no máximo três frases longas seguidas.\n\n👉 *A página de compartilhamento mostra o nome do cliente* no topo, e o título do link no WhatsApp vira \"CODEX · CLIENTE · HEADLINE\".\n\nhttps://codex.viralmindlabs.com\n",
     "changes": [
       {
-        "id": "msypjqmb",
-        "type": "feature",
-        "summary": "Material marcado como Modelar ou Replicar agora manda na premissa: a tese sai do proprio video, e o que voce escreve no campo de cima vira direcao (recorte, sugestao de pesquisa, de hook ou de comando), nunca tema novo",
-        "detail": "Antes, digitar qualquer texto desligava a leitura de tese do material: a sala modelava so a mecanica e escrevia sobre outro assunto. Agora a tese e sempre extraida e confirmada por voce antes de qualquer linha ser escrita, e a direcao chega a pesquisador, roteirista, hook e comando.",
-        "commit": "6eaffaa",
-        "addedAt": "2026-08-18T13:37:56.881Z"
-      },
-      {
-        "id": "msypjqnf",
+        "id": "msyx14po",
         "type": "fix",
-        "summary": "A sala nunca mais inventa premissa: quando nao consegue extrair a tese do material, ela para e diz o motivo, em vez de escrever um roteiro inteiro servindo a uma tese fabricada",
-        "detail": "Uma sessao real gravou a palavra <UNKNOWN> como premissa e o roteiro foi escrito defendendo ela. Agora ha tres travas: falha de autopsia para o fluxo, o derivador recusa rodar sem insumo, e uma guarda final rejeita placeholder antes de congelar a tese.",
-        "commit": "6eaffaa",
-        "addedAt": "2026-08-18T13:37:56.919Z"
+        "summary": "Sugerir tema nao cai mais com erro de rede: o servidor passa a dar sinal de vida durante as buscas longas, entao a conexao nao e mais cortada no meio",
+        "detail": "A rota ficava ate 90 segundos em silencio enquanto o Grok pesquisava, e o proxy derrubava a conexao. O sinal de vida existia so na geracao de roteiro; agora vale para todas as telas que mostram progresso (gerar, sugerir tema, Bob, verificacao e Kasparov), e o tempo maximo da sugestao subiu de 2 para 5 minutos.",
+        "commit": "d596e10",
+        "addedAt": "2026-08-18T17:07:25.612Z"
       },
       {
-        "id": "msypjqog",
+        "id": "mt01fgvs",
+        "type": "fix",
+        "summary": "Modelagem: quando a analise do video volta incompleta, a sala tenta de novo sozinha em vez de perder a sessao, e quando desiste diz o motivo real",
+        "detail": "Um reel travou a sessao com a mensagem \"cole a transcricao\" mesmo com a transcricao em maos: a analise tinha voltado pela metade e o motivo ficava so no log do servidor. Agora ha uma segunda tentativa automatica com mais espaco de resposta, e a falha registra o que faltou.",
+        "commit": "86d864d",
+        "addedAt": "2026-08-19T11:58:19.204Z"
+      },
+      {
+        "id": "mt0febfe",
+        "type": "feature",
+        "summary": "Autosave no editor de roteiro: a sala grava sozinha 2,5 segundos depois da ultima tecla, com o recibo \"salvo automaticamente\" na tela",
+        "detail": "O Salvar continua existindo (e ele que fecha a edicao), mas nao depender mais de um clique. Cancelar agora desfaz de verdade o que o autosave ja tinha gravado.",
+        "commit": "e3fa403",
+        "addedAt": "2026-08-19T18:29:20.090Z"
+      },
+      {
+        "id": "mt0febga",
+        "type": "fix",
+        "summary": "Erro ao salvar deixou de apagar o que voce escreveu: o texto fica na tela, guardado no navegador, e uma faixa oferece Retomar edicao depois de um reload",
+        "detail": "Uma edicao inteira se perdeu porque a falha do salvamento derrubava a tela junto com o texto, que so existia na memoria da pagina. Agora sao tres camadas: autosave no servidor, rascunho no navegador a cada tecla, e a mensagem que diz o que aconteceu sem fechar a edicao.",
+        "commit": "e3fa403",
+        "addedAt": "2026-08-19T18:29:20.122Z"
+      },
+      {
+        "id": "mt0fs6sd",
         "type": "improvement",
-        "summary": "Um material por sessao como Modelar ou Replicar: os dois ditam a linha central do conteudo, entao marcar dois era contradicao. O excedente continua valendo como material de referencia",
-        "detail": "",
-        "commit": "6eaffaa",
-        "addedAt": "2026-08-18T13:37:56.957Z"
+        "summary": "A pagina de compartilhamento do roteiro agora mostra o nome do cliente em destaque no topo, e o titulo do link no WhatsApp vira \"CODEX - CLIENTE - HEADLINE\"",
+        "detail": "Todo roteiro compartilhado chegava com o mesmo cabecalho \"ROTEIRO COMPLETO\", sem dizer de quem era.",
+        "commit": "c42ff49",
+        "addedAt": "2026-08-19T18:40:07.275Z"
+      },
+      {
+        "id": "mt0sdxu7",
+        "type": "improvement",
+        "summary": "Roteiro com paragrafo mais curto e ritmo menos monotono",
+        "detail": "Os paragrafos vinham com 51 palavras em media (o maior tinha 126) e havia trechos de ate 14 frases longas seguidas sem nenhuma curta quebrando a inercia. Agora vale o teto de tres linhas por paragrafo, e no maximo tres frases longas seguidas antes de uma curta entrar. Nao e alternar uma a uma, que viraria metronomo: a curta entra quando o trecho ja cansou.",
+        "commit": "51f9a3e",
+        "addedAt": "2026-08-20T00:32:57.487Z"
       }
     ],
-    "releasedAt": "2026-08-18T13:38:56.402Z"
+    "releasedAt": "2026-08-20T00:33:37.769Z"
   },
   "history": [
     {
@@ -680,6 +663,39 @@
         }
       ],
       "releasedAt": "2026-08-18T02:04:58.858Z"
+    },
+    {
+      "version": "2.3",
+      "git": "6eaffaa",
+      "productSummary": "Modelagem marcada manda na premissa: a tese sai do video e o texto digitado vira direcao. E a sala nunca mais inventa premissa quando nao consegue ler o material.",
+      "message": "🪄 *Codex: Nova Versão Disponível (v2.3)*\n🔖 Git: 6eaffaa\n\nQuando você marca um vídeo como Modelar ou Replicar, agora é ele que manda: a sala extrai a tese do próprio vídeo, mostra pra você confirmar, e o que você escrever no campo de cima vale como direção, não como tema novo. E ela nunca mais inventa uma premissa quando não conseguiu ler o material.\n\n📋 *O que mudou:*\n\n✨ *A modelagem manda na premissa.* Antes, digitar qualquer coisa no campo desligava a leitura da tese: a sala copiava só a mecânica do vídeo (hook, ritmo, beats) e escrevia sobre outro assunto. Agora ela lê o vídeo a fundo, extrai a tese que ele defende, te mostra pra confirmar ou corrigir, e só então escreve. O que você digitar chega como direção aos quatro especialistas certos: recorte pro roteirista, pauta extra pro pesquisador, palpite de hook e de CTA. Dá pra pedir \"cite o caso da Argentina\" ou \"seja mais crítico\" sem que a sala troque de assunto no meio do caminho.\n\n🐛 *Fim da premissa inventada.* Uma sessão real gravou a palavra <UNKNOWN> como premissa e o roteiro inteiro foi escrito defendendo ela, sob o rótulo de tese inegociável. Agora são três travas: se a leitura do vídeo falha, a geração para e diz o motivo (com o caminho de saída), o derivador de tese se recusa a rodar sem nada em mãos, e uma última checagem barra placeholder antes da tese ser congelada. Roteiro sem fio condutor de verdade não sai mais da sala.\n\n⚡ *Um material por sessão como Modelar ou Replicar.* Os dois ditam a linha central do conteúdo, então marcar dois era pedir duas teses concorrentes no mesmo roteiro (e pagar duas análises). Agora vale um, a tela impede o segundo, e o excedente continua valendo como material de referência, com o registro de que foi rebaixado.\n\n👉 Acesse agora em https://codex.viralmindlabs.com\n",
+      "changes": [
+        {
+          "id": "msypjqmb",
+          "type": "feature",
+          "summary": "Material marcado como Modelar ou Replicar agora manda na premissa: a tese sai do proprio video, e o que voce escreve no campo de cima vira direcao (recorte, sugestao de pesquisa, de hook ou de comando), nunca tema novo",
+          "detail": "Antes, digitar qualquer texto desligava a leitura de tese do material: a sala modelava so a mecanica e escrevia sobre outro assunto. Agora a tese e sempre extraida e confirmada por voce antes de qualquer linha ser escrita, e a direcao chega a pesquisador, roteirista, hook e comando.",
+          "commit": "6eaffaa",
+          "addedAt": "2026-08-18T13:37:56.881Z"
+        },
+        {
+          "id": "msypjqnf",
+          "type": "fix",
+          "summary": "A sala nunca mais inventa premissa: quando nao consegue extrair a tese do material, ela para e diz o motivo, em vez de escrever um roteiro inteiro servindo a uma tese fabricada",
+          "detail": "Uma sessao real gravou a palavra <UNKNOWN> como premissa e o roteiro foi escrito defendendo ela. Agora ha tres travas: falha de autopsia para o fluxo, o derivador recusa rodar sem insumo, e uma guarda final rejeita placeholder antes de congelar a tese.",
+          "commit": "6eaffaa",
+          "addedAt": "2026-08-18T13:37:56.919Z"
+        },
+        {
+          "id": "msypjqog",
+          "type": "improvement",
+          "summary": "Um material por sessao como Modelar ou Replicar: os dois ditam a linha central do conteudo, entao marcar dois era contradicao. O excedente continua valendo como material de referencia",
+          "detail": "",
+          "commit": "6eaffaa",
+          "addedAt": "2026-08-18T13:37:56.957Z"
+        }
+      ],
+      "releasedAt": "2026-08-18T13:38:56.402Z"
     }
   ]
 }
