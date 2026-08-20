@@ -22,7 +22,7 @@ import { atribuirEtapa } from "./provenance";
 import { explicar, type Explicacao, type TraceExplicavel } from "./pipeline/explain";
 import { verificarScriptSalvo } from "./pipeline";
 import type { RegistroVerificacao } from "./pipeline/verificar";
-import { validarPadrao } from "./regex-safety";
+import { escaparLiteral, validarPadrao } from "./regex-safety";
 import { normalizarTermo, validarTermo } from "./bullets";
 
 export interface NewAttachment {
@@ -1001,6 +1001,55 @@ export async function addBullet(termo: string): Promise<{ erro?: string }> {
 
   await registrarAtividade("bullet_adicionado", { userId, payload: { termo: limpo, novo: !existente } });
   revalidatePath("/bullets");
+  return {};
+}
+
+// Motivo comum de tudo que entra pela faca. buildStaticSystemBlock agrupa por `motivo`, então
+// texto fixo mantém os trechos sob um POR QUÊ só em vez de repetir a razão trinta vezes.
+const MOTIVO_FACA =
+  "Frase genérica: preenche o lugar de uma frase sem dizer nada que só este vídeo poderia dizer. Reescreva a frase inteira, não troque sinônimo.";
+
+/**
+ * Gêmeo invertido da estrela: em vez de "isto é bom, entra na paleta", é "isto é genérico,
+ * nunca mais". Grava o trecho selecionado como regex literal na banlist que o slop-lint aplica.
+ * Vale da PRÓXIMA geração em diante — não reescreve o roteiro na tela.
+ * Devolve `erro` em vez de lançar: a faca precisa piscar em vermelho, não quebrar o card.
+ */
+export async function banirTrecho(trecho: string): Promise<{ erro?: string }> {
+  const limpo = trecho.trim().replace(/\s+/g, " ");
+  // A tabela não tem UI de gestão: desbanir hoje é ida ao banco. Uma palavra curta e comum
+  // ("para", "que") viraria bloqueio em todo roteiro sem botão de desfazer na mão de quem errou.
+  if (limpo.length < 8) return { erro: "curto demais — selecione a expressão inteira" };
+  const pattern = escaparLiteral(limpo);
+  const v = validarPadrao(pattern);
+  if (!v.ok) return { erro: v.motivo };
+
+  try {
+    await exigirAcesso({ adm: "banir uma expressão" });
+  } catch (e) {
+    if (!(e instanceof ErroDeAcesso)) throw e;
+    return { erro: e.message };
+  }
+
+  // Sem unique em `pattern` (0001_init): banir duas vezes duplicaria a linha e o mesmo clichê
+  // apareceria repetido no prompt. Idempotente, como o refavoritar da estrela.
+  const { data: existente, error: selErr } = await appDb
+    .from("vm_banned_phrases")
+    .select("id")
+    .eq("pattern", pattern)
+    .maybeSingle();
+  if (selErr) return { erro: selErr.message };
+  if (existente) return {};
+
+  const { error } = await appDb.from("vm_banned_phrases").insert({
+    pattern,
+    label: limpo, // o prompt mostra `label ?? pattern`: o time lê a frase, não o regex escapado
+    motivo: MOTIVO_FACA,
+    severity: "block",
+  });
+  if (error) return { erro: error.message };
+
+  await registrarAtividade("expressao_banida", { userId: await currentUserId(), payload: { trecho: limpo } });
   return {};
 }
 

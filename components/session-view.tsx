@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore
 import { useRouter } from "next/navigation";
 import {
   addBullet,
+  banirTrecho,
   finalizeSession,
   markPublished,
   quickFeedback,
@@ -998,17 +999,22 @@ function VerboBtn({
   );
 }
 
-// 4º item do menu de seleção: favorita o trecho como bullet. Sem label — o pill é
-// `whitespace-nowrap` e não tem overflow; uma palavra a mais quebra a linha no celular.
-function EstrelaBtn({
-  estado,
-  onAcionar,
-  touch = true,
-}: {
+// Itens 4 e 5 do menu de seleção: só ícone, sem label — o pill é `whitespace-nowrap` e não
+// tem overflow; uma palavra a mais quebra a linha no celular. A cor da borda é o recibo
+// inteiro do gesto (dourada = gravou, vermelha = recusado), sem dialog.
+interface IconeBtnProps {
   estado: "ok" | "erro" | null;
   onAcionar: () => void;
   touch?: boolean;
-}) {
+}
+function IconeBtn({
+  estado,
+  onAcionar,
+  touch = true,
+  rotulo,
+  dica,
+  children,
+}: IconeBtnProps & { rotulo: string; dica: string; children: ReactNode }) {
   const go = (e: React.SyntheticEvent) => {
     e.preventDefault();
     onAcionar();
@@ -1017,8 +1023,8 @@ function EstrelaBtn({
     <button
       onMouseDown={go}
       onTouchStart={touch ? go : undefined}
-      aria-label="Favoritar trecho como bullet"
-      title="Favoritar: entra na paleta emocional do time"
+      aria-label={rotulo}
+      title={dica}
       className={`rounded-full border px-3 py-2 whitespace-nowrap transition-colors ${
         estado === "erro"
           ? "border-red-500/70 text-red-400"
@@ -1027,18 +1033,40 @@ function EstrelaBtn({
             : "border-gold/40 bg-[#161410] text-cream hover:border-gold/70"
       }`}
     >
+      {children}
+    </button>
+  );
+}
+
+function EstrelaBtn(props: IconeBtnProps) {
+  return (
+    <IconeBtn {...props} rotulo="Favoritar trecho como bullet" dica="Favoritar: entra na paleta emocional do time">
       <svg
         width="13"
         height="13"
         viewBox="0 0 16 16"
-        fill={estado === "ok" ? "currentColor" : "none"}
+        fill={props.estado === "ok" ? "currentColor" : "none"}
         stroke="currentColor"
         strokeWidth="1.3"
         strokeLinejoin="round"
       >
         <path d="M8 1.8 10 6l4.6.6-3.4 3.1 1 4.5L8 11.9 3.8 14.2l1-4.5L1.4 6.6 6 6 8 1.8Z" />
       </svg>
-    </button>
+    </IconeBtn>
+  );
+}
+
+// Emoji e não SVG como a estrela: foi o pedido, e a faca é o único ícone do menu que precisa
+// ler como destrutivo — cor própria faz esse trabalho sozinha.
+function FacaBtn(props: IconeBtnProps) {
+  return (
+    <IconeBtn
+      {...props}
+      rotulo="Banir expressão genérica"
+      dica="Banir: nunca mais nos roteiros (vale da próxima geração em diante)"
+    >
+      <span className="block text-[13px] leading-[13px]">🔪</span>
+    </IconeBtn>
   );
 }
 
@@ -1128,6 +1156,23 @@ function ScriptCard({
         setEstrela(null);
         if (!r.erro) limpar();
       }, 1500);
+    })();
+  };
+  // Faca 🔪 da seleção: manda a expressão para a banlist. Mesmo contrato da estrela — 1 clique,
+  // a borda é o recibo. Recusa (curto demais, ou não-adm) fica vermelha e mostra o porquê:
+  // aqui, ao contrário da estrela, o motivo não é adivinhável só pela cor.
+  const [faca, setFaca] = useState<"ok" | "erro" | null>(null);
+  const [erroBanir, setErroBanir] = useState<string | null>(null);
+  const banir = (trecho: string, limpar: () => void) => {
+    void (async () => {
+      const r = await banirTrecho(trecho);
+      setFaca(r.erro ? "erro" : "ok");
+      setErroBanir(r.erro ?? null);
+      setTimeout(() => {
+        setFaca(null);
+        setErroBanir(null);
+        if (!r.erro) limpar();
+      }, 2500);
     })();
   };
 
@@ -1576,6 +1621,12 @@ function ScriptCard({
               touch={false}
               onAcionar={() => favoritar(draft.roteiro.slice(taSel.start, taSel.end), () => setTaSel(null))}
             />
+            <FacaBtn
+              estado={faca}
+              touch={false}
+              onAcionar={() => banir(draft.roteiro.slice(taSel.start, taSel.end), () => setTaSel(null))}
+            />
+            {erroBanir && <span className="px-1.5 text-[11px] text-red-300">{erroBanir}</span>}
           </div>
         )}
         {editing && bobInline && (
@@ -1663,6 +1714,8 @@ function ScriptCard({
             }}
           />
           <EstrelaBtn estado={estrela} onAcionar={() => favoritar(sel.trecho, () => setSel(null))} />
+          <FacaBtn estado={faca} onAcionar={() => banir(sel.trecho, () => setSel(null))} />
+          {erroBanir && <span className="px-1.5 text-[11px] text-red-300">{erroBanir}</span>}
         </div>
       )}
       {teach.dialog}

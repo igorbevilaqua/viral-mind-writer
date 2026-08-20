@@ -13,6 +13,20 @@ export function validarPadrao(p: string): { ok: true; re: RegExp } | { ok: false
   }
 }
 
+/**
+ * Trecho selecionado na tela → padrão que casa ELE e só ele. Até a faca do menu de seleção,
+ * a tabela só recebia regex escrita à mão; texto cru vindo do roteiro traz `(`, `?`, `+` e
+ * vira ou regex inválida ou — pior — um padrão amplo que apaga texto bom em silêncio.
+ * Espaço vira `\s+` porque o mesmo clichê reaparece com quebra de linha no meio.
+ * Todos os escapes abaixo são válidos sob a flag `u` de validarPadrao.
+ */
+export function escaparLiteral(trecho: string): string {
+  return trecho
+    .trim()
+    .replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+    .replace(/\s+/g, "\\s+");
+}
+
 // ponytail: entrada limitada ao roteiro aberto (dezenas de KB), por isso sem timeout.
 // Se um dia isto rodar sobre corpus, precisa de execução com limite de tempo de verdade.
 export function preview(p: string, texto: string): string[] {
