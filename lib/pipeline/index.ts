@@ -13,14 +13,14 @@ import { compreensaoBlock } from "./modelagem-brief";
 import { anexoModelagem, anexoReplicar, comandoDoOriginal, exigirEsqueletoDoOriginal, narrativaDoOriginal } from "./replicar";
 import { registrarBloco, research, proposeNarratives, rankNarratives, designHook, writeComando } from "./agents";
 import { pairFromCandidates } from "../calibration";
-import { blocoSinaisRevisor, generateDraft, hookEcoaAbertura, parseSections, semEcoDaAbertura, stripLeadingHook, stripTrailingComando, TETO_ECOS } from "./draft";
+import { blocoSinaisRevisor, generateDraft, hookEcoaAbertura, parseSections, semEcoDaAbertura, stripLeadingHook, stripTrailingComando, TETO_ECOS, TETO_RITMO } from "./draft";
 import { critiqueAndRewrite } from "./critique";
 import { extrairEstudos } from "./estudos";
 import { extractFromCorrection } from "./teach";
 import { humanize } from "./humanize";
 import { derivePremissa, origemDaPremissa, teseAceitavel } from "./premissa";
 import { verificarRoteiro, type Regime, type RegistroVerificacao } from "./verificar";
-import { blockCount, dedash, deepDedash, ecosNumericos } from "./slop-lint";
+import { blockCount, dedash, deepDedash, ecosNumericos, paragrafosLongos, sequenciasLongas } from "./slop-lint";
 import { APP_VERSION, GIT_SHA } from "../version";
 import { registrarAtividade } from "../hub";
 import type { PipelineEvent, SessionArtifacts } from "./types";
@@ -413,7 +413,10 @@ export async function runPipeline(
     // Detectores determinísticos sobre o roteiro montado, antes da revisão (016 §4.2): o que
     // ADICIONA texto entrou no dossiê, o que REMOVE é julgado aqui. Custo zero de LLM.
     const ecos = ecosNumericos(assembled);
-    const sinais = blocoSinaisRevisor(ecos, ecoHookAbertura);
+    // Ritmo e parágrafo: sinal para o revisor aqui, e teto determinístico no humanizador depois.
+    const paragrafos = paragrafosLongos(assembled);
+    const sequencias = sequenciasLongas(assembled);
+    const sinais = blocoSinaisRevisor(ecos, ecoHookAbertura, paragrafos, sequencias);
     // Portão de forma e procedência sobre a seção ESTUDOS do dossiê. Determinístico, sem LLM,
     // e sem abrir a URL — confirmar que a página existe e diz aquilo é a peça 3.
     const estudos = extrairEstudos(artifacts?.dossie ?? "");
@@ -490,6 +493,19 @@ export async function runPipeline(
               ecos_numericos: ecos,
               ecos_excedidos: Math.max(0, ecos.length - TETO_ECOS),
               eco_hook_abertura: ecoHookAbertura,
+              // Ritmo e parágrafo, mesmo contrato do eco: o que o REVISOR viu (sobre o
+              // `assembled`) e o que sobrou no texto ENTREGUE. Com os dois, "corrigiu ou não"
+              // é medido e não estimado, e a régua pode ser reapertada em cima de dado.
+              ritmo: {
+                paragrafos_longos: paragrafos,
+                sequencias_longas: sequencias,
+                paragrafos_excedidos: Math.max(0, paragrafos.length - TETO_RITMO),
+                sequencias_excedidas: Math.max(0, sequencias.length - TETO_RITMO),
+              },
+              ritmo_final: {
+                paragrafos_longos: paragrafosLongos(final),
+                sequencias_longas: sequenciasLongas(final),
+              },
               // 016 §7: os estudos descartados vão com o TEXTO, não só o contador — é o sinal
               // de que o Grok está inventando referência, e ele some se só o número for salvo.
               estudos: estudos.aceitos,

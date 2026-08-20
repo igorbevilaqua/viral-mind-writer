@@ -252,6 +252,160 @@ export function ecosNumericos(text: string): EcoNumerico[] {
   }
 }
 
+// ── Ritmo de frase e tamanho de parágrafo ──────────────────────────────────────
+// Medido em 66 roteiros gerados (459 parágrafos, 1.596 frases): 51,1 palavras por parágrafo em
+// média, o maior com 126, e 59,5% acima de 45. Frase curta o roteirista JÁ usa (18,3% com ≤6
+// palavras, desvio 9,0) — o que falta é DISTRIBUIÇÃO: 45 dos 66 roteiros têm um trecho de 4+
+// frases longas seguidas sem nada quebrando a inércia, e o pior tem 14 seguidas.
+//
+// Por isso a regra é TETO DE INÉRCIA e não cadência: alternar curta/longa 1-para-1 produz
+// metrônomo, que é o outro extremo do defeito. E por isso mora aqui e não no prompt do
+// roteirista: o sintoma é contável, a escolha de QUAL frase encurtar é julgamento e continua
+// do modelo (plans/ritmo-e-paragrafo.md).
+
+// A regra das "3 linhas" do operador, convertida em palavras. Hoje 59,5% dos parágrafos
+// estouram até 45, então este teto é deliberadamente mais apertado que o estado atual.
+export const PARAGRAFO_MAX_PALAVRAS = 35;
+// A média das sequências hoje é 2,3, então 3 corta a cauda ruim sem brigar com o que já está
+// bom. A maior sequência medida é 14.
+export const MAX_LONGAS_SEGUIDAS = 3;
+// Corte usado na medição das sequências — mantido igual para o número seguir comparável.
+export const FRASE_LONGA = 12;
+
+const contarPalavras = (t: string) => t.trim().split(/\s+/).filter(Boolean).length;
+
+// Títulos: o ponto deles vem SEMPRE seguido de nome próprio em maiúscula ("o Sr. Silva"), então
+// nunca fecha frase. Abreviação terminal ("etc.", "obs.") não precisa de lista: ela só fecha
+// frase quando o que vem depois começa em maiúscula, e é exatamente o que a regra abaixo testa.
+const TITULOS = /\b(sr|sra|srs|sras|dr|dra|drs|profa?|exm[oa]|st[oa])\.$/i;
+// Candidato a fim de frase: pontuação final (reticências incluídas) + fechamento opcional de
+// citação + espaço. Sem o espaço obrigatório, "R$ 3.400" e "1.5 milhão" viravam duas frases.
+const CANDIDATO_FIM = /([.!?…]+["'”’)\]]*)([ \t]*\n+[ \t]*|[ \t]+)/g;
+const INICIO_DE_FRASE = /^[A-ZÀ-Ú0-9"“«(]/;
+
+interface FraseComPos {
+  texto: string;
+  inicio: number;
+}
+
+function frasesComPos(texto: string): FraseComPos[] {
+  const out: FraseComPos[] = [];
+  let inicio = 0;
+  for (const m of texto.matchAll(CANDIDATO_FIM)) {
+    const fimDaFrase = m.index + m[1].length;
+    const bruta = texto.slice(inicio, fimDaFrase);
+    // Quebra de linha fecha frase sempre (linha de lista, header, parágrafo). Dentro da linha,
+    // só fecha se a próxima frase começa como frase e o ponto não é de título.
+    const corta =
+      m[2].includes("\n") || (!TITULOS.test(bruta) && INICIO_DE_FRASE.test(texto.slice(m.index + m[0].length)));
+    if (!corta) continue;
+    const frase = bruta.trim();
+    if (frase) out.push({ texto: frase, inicio: inicio + bruta.indexOf(frase) });
+    inicio = m.index + m[0].length;
+  }
+  const resto = texto.slice(inicio);
+  const frase = resto.trim();
+  if (frase) out.push({ texto: frase, inicio: inicio + resto.indexOf(frase) });
+  return out;
+}
+
+/** Divide em frases aguentando português real: "Sr. Silva", "R$ 3.400", "1.5 milhão", "parou... e voltou". */
+export const dividirFrases = (texto: string): string[] => frasesComPos(texto).map((f) => f.texto);
+
+interface Bloco {
+  texto: string;
+  inicio: number;
+  secao: string;
+}
+
+// Um bloco = corrida de linhas não vazias (o roteiro é armazenado com parágrafo separado por
+// linha em branco — confirmado em 40 roteiros de vm_generated_scripts, 100% com "\n\n").
+const BLOCO = /[^\n]+(?:\n[ \t]*\S[^\n]*)*/g;
+const HEADER_LINHA = /^#{1,3}[ \t]*([^\n]*)(?:\n|$)/;
+
+// Só a PROSA entra na conta. FONTES é lista de citação e VARIACOES_DE_HOOK é lista numerada
+// (uma linha por variação, sem linha em branco entre elas): medidas como parágrafo, as duas
+// acusariam em todo roteiro. Mesma guarda de `ecosNumericos`.
+function blocosDeProsa(texto: string): Bloco[] {
+  const out: Bloco[] = [];
+  let secao = "";
+  let mudo = false;
+  for (const m of texto.matchAll(BLOCO)) {
+    let corpo = m[0];
+    let inicio = m.index;
+    // O header vem colado no primeiro parágrafo da seção ("## ROTEIRO\n<hook>"), não em bloco
+    // próprio — daí ele ser descascado aqui em vez de virar um bloco descartado.
+    const h = corpo.match(HEADER_LINHA);
+    if (h) {
+      secao = h[1].trim();
+      mudo = SECAO_MUDA.test(secao);
+      inicio += h[0].length;
+      corpo = corpo.slice(h[0].length);
+    }
+    if (mudo || !corpo.trim()) continue;
+    if (/https?:\/\//.test(corpo)) continue; // citação com link não é prosa do roteiro
+    out.push({ texto: corpo, inicio, secao });
+  }
+  return out;
+}
+
+export interface ParagrafoLongo {
+  /** Trecho VERBATIM — é ele que o passe cirúrgico substitui literalmente. */
+  texto: string;
+  palavras: number;
+}
+
+/** Parágrafos de prosa acima de `PARAGRAFO_MAX_PALAVRAS`, com a contagem de cada um. */
+export function paragrafosLongos(texto: string): ParagrafoLongo[] {
+  try {
+    return blocosDeProsa(texto)
+      .map((b) => ({ texto: b.texto.trim(), palavras: contarPalavras(b.texto) }))
+      .filter((p) => p.palavras > PARAGRAFO_MAX_PALAVRAS);
+  } catch {
+    return []; // detector com bug nunca derruba a geração (016 §7)
+  }
+}
+
+export interface SequenciaLonga {
+  /** Trecho VERBATIM da sequência inteira — é ele que o passe cirúrgico substitui. */
+  texto: string;
+  /** Índice da primeira frase longa na contagem de frases de prosa do roteiro. */
+  inicio: number;
+  /** Quantas frases longas seguidas. */
+  tamanho: number;
+}
+
+/** Corridas de mais de `MAX_LONGAS_SEGUIDAS` frases longas sem nenhuma curta quebrando a inércia. */
+export function sequenciasLongas(texto: string): SequenciaLonga[] {
+  try {
+    // A inércia é do OUVINTE, e ele não ouve quebra de parágrafo: sequência que atravessa dois
+    // parágrafos continua sendo sequência. Já a quebra de SEÇÃO corta, senão a corrida poderia
+    // engolir o header "## COMANDO" no trecho e a substituição destruiria o formato.
+    const frases = blocosDeProsa(texto).flatMap((b) =>
+      frasesComPos(b.texto).map((f) => ({
+        inicio: b.inicio + f.inicio,
+        fim: b.inicio + f.inicio + f.texto.length,
+        secao: b.secao,
+        longa: contarPalavras(f.texto) >= FRASE_LONGA,
+      }))
+    );
+    const out: SequenciaLonga[] = [];
+    for (let i = 0; i < frases.length; i++) {
+      if (!frases[i].longa) continue;
+      let j = i;
+      while (j + 1 < frases.length && frases[j + 1].longa && frases[j + 1].secao === frases[i].secao) j++;
+      const tamanho = j - i + 1;
+      if (tamanho > MAX_LONGAS_SEGUIDAS) {
+        out.push({ texto: texto.slice(frases[i].inicio, frases[j].fim), inicio: i, tamanho });
+      }
+      i = j;
+    }
+    return out;
+  } catch {
+    return [];
+  }
+}
+
 export const blockCount = (v: LintViolation[]) => v.filter((x) => x.severity === "block").length;
 
 // Travessão de fala de personagem: início de linha (após espaços) ou logo após ": ".

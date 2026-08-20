@@ -1,7 +1,7 @@
 import { anthropic, WRITER_MODEL, recordUsage } from "../anthropic";
 import { agentPrompt, bulletsBlock, clientInsightBlock, direcaoBlock, formatNarrativa, licaoRefs, licoesPara, premissaBlock, registrarBloco } from "./agents";
 import { anexoModelagem, anexoReplicar } from "./replicar";
-import type { EcoNumerico } from "./slop-lint";
+import { FRASE_LONGA, MAX_LONGAS_SEGUIDAS, PARAGRAFO_MAX_PALAVRAS, type EcoNumerico, type ParagrafoLongo, type SequenciaLonga } from "./slop-lint";
 import type { GenerationContext, ScriptSections } from "./types";
 
 // Formato final do roteiro montado (usado por revisão e humanização).
@@ -294,12 +294,27 @@ export function buildDynamicSystemBlock(ctx: GenerationContext): string {
 // Quantos ecos vão na lista do revisor. O excedente é DITO, nunca cortado em silêncio —
 // lista longa demais vira ruído e o revisor para de ler, que é o mesmo que não sinalizar.
 export const TETO_ECOS = 6;
+// Mesma ideia para os trechos de ritmo: hoje 85% dos parágrafos estouram o teto, e listar todos
+// entregaria ao revisor o roteiro inteiro de volta em forma de lista. Os piores, e o excedente dito.
+export const TETO_RITMO = 4;
+
+// O revisor tem o roteiro inteiro na mesa: o trecho aqui é só a ÂNCORA que ele usa pra achar o
+// lugar. Colar 126 palavras por item repetiria o roteiro dentro do prompt.
+const trechoCurto = (t: string, max = 90) => {
+  const linha = t.replace(/\s+/g, " ").trim();
+  return linha.length <= max ? linha : `${linha.slice(0, max)}…`;
+};
 
 // Os sinais determinísticos viram lista de DECISÃO, não de correção (016 §6.1). O detector
 // não julga: três em quatro ecos reais são texto bom — o refrão do "400%", o contraste do
 // "37,5%". Por isso a instrução termina em MANTENHA, e não em corte: "não repita" produziria
 // exatamente os dois cortes errados. A regra é "repetição tem que se pagar".
-export function blocoSinaisRevisor(ecos: EcoNumerico[], ecoHookAbertura: boolean): string {
+export function blocoSinaisRevisor(
+  ecos: EcoNumerico[],
+  ecoHookAbertura: boolean,
+  paragrafos: ParagrafoLongo[] = [],
+  sequencias: SequenciaLonga[] = []
+): string {
   const partes: string[] = [];
 
   if (ecos.length) {
@@ -313,6 +328,32 @@ export function blocoSinaisRevisor(ecos: EcoNumerico[], ecoHookAbertura: boolean
     partes.push(
       `QUANTIDADES REPETIDAS (o ouvinte não distingue dois fatos com o mesmo número):\n${linhas.join("\n")}${excedente}\n` +
         `Se forem fatos diferentes, diferencie ou corte um. Se o retorno se paga (fecha arco, arma contraste, vira virada), MANTENHA.`
+    );
+  }
+
+  // Ritmo e parágrafo pela MESMA porta e com a MESMA válvula: o humanizador tem o laço
+  // determinístico para consertar o que sobrar, então aqui não vira eliminatório. Sequência longa
+  // que constrói contexto para uma virada se paga, e regra rígida produziria roteiro picado —
+  // o outro extremo do defeito (plans/ritmo-e-paragrafo.md).
+  if (paragrafos.length) {
+    const listados = paragrafos.slice(0, TETO_RITMO);
+    const linhas = listados.map((p) => `- ${p.palavras} palavras: "${trechoCurto(p.texto)}"`);
+    const excedente = paragrafos.length > listados.length ? `\n(mais ${paragrafos.length - listados.length} parágrafos acima do teto)` : "";
+    partes.push(
+      `PARÁGRAFOS LONGOS (teto ${PARAGRAFO_MAX_PALAVRAS} palavras, umas três linhas — acima disso o espectador ouve um bloco sem respiro):\n${linhas.join("\n")}${excedente}\n` +
+        `Quebre em dois, ou corte o que não carrega a ideia. Se o parágrafo é uma escalada única que perde a força cortada ao meio, MANTENHA.`
+    );
+  }
+
+  if (sequencias.length) {
+    const listadas = sequencias.slice(0, TETO_RITMO);
+    const linhas = listadas.map(
+      (s) => `- ${s.tamanho} frases seguidas com ${FRASE_LONGA}+ palavras: "${trechoCurto(s.texto)}"`
+    );
+    const excedente = sequencias.length > listadas.length ? `\n(mais ${sequencias.length - listadas.length} sequências acima do teto)` : "";
+    partes.push(
+      `FRASES LONGAS SEGUIDAS (teto ${MAX_LONGAS_SEGUIDAS} — nada quebra a inércia e o ouvinte desliga):\n${linhas.join("\n")}${excedente}\n` +
+        `Encurte uma delas, ou entre com uma frase curta. NÃO alterne curta e longa a cada frase: o alvo é dinamismo, não metrônomo. Se a sequência está construindo contexto para uma virada, ela se paga — MANTENHA.`
     );
   }
 

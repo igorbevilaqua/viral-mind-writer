@@ -1,7 +1,16 @@
 import type Anthropic from "@anthropic-ai/sdk";
 import { WRITER_MODEL, trackedCreate } from "../anthropic";
 import { agentPrompt, registrarBloco } from "./agents";
-import { slopLint, blockCount, dedash, type LintViolation } from "./slop-lint";
+import {
+  slopLint,
+  blockCount,
+  dedash,
+  paragrafosLongos,
+  sequenciasLongas,
+  MAX_LONGAS_SEGUIDAS,
+  PARAGRAFO_MAX_PALAVRAS,
+  type LintViolation,
+} from "./slop-lint";
 import type { GenerationContext } from "./types";
 import { OUTPUT_FORMAT, buildStaticSystemBlock } from "./draft";
 
@@ -20,6 +29,41 @@ const textOf = (res: Anthropic.Message) => {
   const block = res.content.find((b) => b.type === "text");
   return block?.type === "text" ? block.text : "";
 };
+
+// Quantos trechos de ritmo, POR TIPO, vão para uma retentativa cirúrgica. Existe porque hoje
+// 85% dos parágrafos estouram o teto: sem limite, o passe "cirúrgico" viraria "reescreva o
+// roteiro inteiro" — o oposto do que ele existe pra fazer, e o custo e a fidelidade pagam.
+// Os piores primeiro; o excedente sai no rastro (`proveniencia.ritmo`), nunca em silêncio.
+export const TETO_TRECHOS_RITMO = 3;
+
+// A quebra de parágrafo é a única correção que não cabe na resposta de uma linha por item, daí
+// o marcador: o modelo escreve "||" onde entra a linha em branco e a aplicação a devolve.
+const MARCA_PARAGRAFO = "||";
+const aplicarMarca = (s: string) =>
+  s.split(MARCA_PARAGRAFO).map((p) => p.trim()).filter(Boolean).join("\n\n");
+
+// Ritmo e parágrafo viram violação determinística no MESMO formato do slop-lint, para entrarem
+// no mesmo laço de retentativa cirúrgica. Medidos sobre o texto COMO ESTÁ (não o dedashado):
+// o `match` é substituído literalmente, e um travessão de diferença deixaria a busca sem alvo.
+export function ritmoTargets(text: string): LintViolation[] {
+  const paragrafos = paragrafosLongos(text)
+    .sort((a, b) => b.palavras - a.palavras)
+    .slice(0, TETO_TRECHOS_RITMO)
+    .map((p) => ({
+      label: `parágrafo de ${p.palavras} palavras (teto ${PARAGRAFO_MAX_PALAVRAS})`,
+      match: p.texto,
+      severity: "block" as const,
+    }));
+  const sequencias = sequenciasLongas(text)
+    .sort((a, b) => b.tamanho - a.tamanho)
+    .slice(0, TETO_TRECHOS_RITMO)
+    .map((s) => ({
+      label: `${s.tamanho} frases longas seguidas sem nenhuma curta (teto ${MAX_LONGAS_SEGUIDAS})`,
+      match: s.texto,
+      severity: "block" as const,
+    }));
+  return [...paragrafos, ...sequencias];
+}
 
 // 8. Humanizador: re-textura completa 1x + retries CIRÚRGICOS (só os trechos violados),
 // e só quando o dedash determinístico não resolve sozinho.
@@ -66,10 +110,14 @@ export async function humanize(
   if (/##\s*ROTEIRO/i.test(next)) current = next;
 
   let violations = slopLint(current, ctx.bannedPhrases);
-  for (let attempt = 0; attempt < 2 && blockCount(violations) > 0; attempt++) {
+  let ritmo = ritmoTargets(current);
+  for (let attempt = 0; attempt < 2 && blockCount(violations) + ritmo.length > 0; attempt++) {
     // Só re-chama o LLM se restarem violações que o dedash final não resolve (travessões
     // são determinísticos — não pagam outra chamada).
-    const targets = slopLint(dedash(current), ctx.bannedPhrases).filter((v) => v.severity === "block");
+    const targets = [
+      ...slopLint(dedash(current), ctx.bannedPhrases).filter((v) => v.severity === "block"),
+      ...ritmo,
+    ];
     if (!targets.length) break;
 
     const lista = targets
@@ -93,7 +141,11 @@ REGRA CENTRAL: elimine a CONSTRUÇÃO, não a palavra. Trocar sinônimo, pontua�
 - pergunta curta usada como transição ("O resultado?") → diga a transição falando: "E adivinha o que aconteceu depois", "E a consequência disso ninguém esperava".
 - itens justapostos por vírgula ("carros na rua, garotos jogando bola") → amarre com conectivo e verbo: "de um lado você vê X, de outro Y, mas se der bobeira Z".
 
-O roteiro é LIDO EM VOZ ALTA: se a frase só funciona porque o olho reconstrói o que falta, ela está errada. A substituição PODE e costuma ficar mais longa que o trecho original — subordinar custa palavras, e isso é esperado, não um problema. Mantenha o sentido e a voz. NÃO reescreva o resto do roteiro. Responda EXATAMENTE uma linha por item, no formato "N. <texto substituto>", e nada mais.\n\n${lista}`,
+RITMO E PARÁGRAFO são outra família e pedem outra correção:
+- parágrafo acima do teto de palavras → quebre em dois ou três parágrafos, escrevendo "${MARCA_PARAGRAFO}" onde entra a linha em branco. Se der, corte o que não carrega a ideia. NÃO invente informação para preencher.
+- frases longas seguidas → encurte UMA delas, ou entre com uma frase curta que quebre a inércia. NÃO alterne curta e longa a cada frase: o alvo é dinamismo, não metrônomo.
+
+O roteiro é LIDO EM VOZ ALTA: se a frase só funciona porque o olho reconstrói o que falta, ela está errada. A substituição PODE e costuma ficar mais longa que o trecho original — subordinar custa palavras, e isso é esperado, não um problema. Mantenha o sentido e a voz. NÃO reescreva o resto do roteiro, e não repita nem reordene as seções (## HEADLINE, ## ROTEIRO…). Responda EXATAMENTE uma linha por item, no formato "N. <texto substituto>", e nada mais.\n\n${lista}`,
           },
         ],
       },
@@ -104,9 +156,10 @@ O roteiro é LIDO EM VOZ ALTA: se a frase só funciona porque o olho reconstrói
       const alvo = m && targets[Number(m[1]) - 1];
       // ponytail: substituição literal de todas as ocorrências do match; se o modelo
       // devolver linha a menos/mais, o trecho fica e o próximo lint/dedash decide.
-      if (alvo && m[2]) current = current.split(alvo.match).join(m[2]);
+      if (alvo && m[2]) current = current.split(alvo.match).join(aplicarMarca(m[2]));
     }
     violations = slopLint(current, ctx.bannedPhrases);
+    ritmo = ritmoTargets(current);
   }
 
   // Varredura determinística final: se ainda sobrou travessão de slop, elimina

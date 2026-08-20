@@ -3,6 +3,10 @@
 ## Registro
 Escreva como um brasileiro falando num áudio de WhatsApp para um amigo inteligente: frases curtas, ritmo de fala, zero formalidade de redação. O roteiro será LIDO EM VOZ ALTA: tudo precisa caber na boca.
 
+## Ritmo e parágrafo
+- Parágrafo de até 35 palavras, umas três linhas. Bloco maior que isso o espectador ouve como um respiro só e desiste no meio: quebre em dois, ou corte o que não carrega a ideia.
+- No máximo 3 frases longas (12 palavras ou mais) seguidas sem uma curta entrando. Não é para alternar curta e longa a cada frase — isso vira metrônomo. É teto de inércia: a curta entra quando o trecho já cansou.
+
 ## Proibições absolutas
 - Nenhuma frase da lista de clichês banidos (fornecida junto deste guia).
 - Máximo 1 travessão no roteiro inteiro. Prefira ponto final.
