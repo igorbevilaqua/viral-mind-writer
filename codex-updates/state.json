@@ -1,72 +1,39 @@
 {
-  "version": "2.5",
+  "version": "2.6",
   "codexUrl": "https://codex.viralmindlabs.com",
-  "pending": [
-    {
-      "id": "mt21d7mb",
-      "type": "feature",
-      "summary": "Faca no menu de selecao: marcar uma expressao generica bane ela dos proximos roteiros",
-      "detail": "Seleciona o trecho no roteiro, clica na faca, e a expressao entra na banlist que o lint aplica em toda geracao seguinte. So administrador.",
-      "commit": "4980658",
-      "addedAt": "2026-08-20T21:32:06.239Z"
-    }
-  ],
+  "pending": [],
   "lastRelease": {
-    "version": "2.4",
-    "git": "51f9a3e",
-    "productSummary": "Autosave e rede de seguranca no editor, telas longas que nao caem mais, e roteiro com paragrafo e ritmo controlados.",
-    "message": "*Codex 2.4*\n\n👉 *Autosave no editor:* você para de digitar, a sala grava sozinha, e a tela mostra \"salvo automaticamente\". O botão Salvar continua ali para fechar a edição.\n\n👉 *Erro ao salvar não apaga mais o seu texto:* uma edição inteira se perdeu porque a falha derrubava a tela junto com o texto. Agora ele fica guardado no navegador, e depois de recarregar aparece uma faixa oferecendo Retomar edição.\n\n👉 *Cancelar passou a desfazer de verdade:* como o autosave já gravou parte do caminho, ele devolve o texto que existia antes de você começar a editar.\n\n👉 *Sugerir tema não cai mais com erro de rede:* a busca ficava até 90 segundos em silêncio e a conexão era cortada por parecer ociosa; agora o servidor dá sinal de vida durante o trabalho, e isso vale para todas as telas que mostram progresso.\n\n👉 *Modelagem que volta pela metade tenta de novo sozinha,* em vez de travar a sessão pedindo uma transcrição que você já tinha colado; e quando desiste, diz o motivo real.\n\n👉 *Parágrafos mais curtos e ritmo menos monótono:* os parágrafos vinham com 51 palavras em média (o maior tinha 126) e havia trechos de até 14 frases longas seguidas sem nenhuma curta quebrando a inércia. Agora vale o teto de três linhas por parágrafo e no máximo três frases longas seguidas.\n\n👉 *A página de compartilhamento mostra o nome do cliente* no topo, e o título do link no WhatsApp vira \"CODEX · CLIENTE · HEADLINE\".\n\nhttps://codex.viralmindlabs.com\n",
+    "version": "2.5",
+    "git": "091a92e",
+    "productSummary": "O Codex voltou a aprender com as suas edicoes, ganhou um jeito de banir frase batida com um clique, e agora modela ou replica um roteiro pronto sem sair da tela.",
+    "message": "*Codex 2.5*\n\n👉 *Faca no menu de seleção:* achou uma frase batida no roteiro? Seleciona o trecho e clica na 🔪. Ela entra na lista de proibidas, e o Codex passa a checar isso em toda geração seguinte, então o clichê não volta. Antes, cada frase genérica era uma correção manual que se repetia sessão após sessão.\n\n👉 *As lições que saem das suas edições voltaram a chegar nos roteiros:* elas eram geradas, apareciam para aprovação e, mesmo aprovadas, eram descartadas em silêncio na hora de montar o prompt. Na prática, só o botão Ensinar ensinava alguma coisa. Agora todo caminho de aprendizado chega aos agentes.\n\n👉 *Modelar e Replicar direto do roteiro aberto:* dois botões na barra do roteiro abrem uma sessão nova em outra aba, já usando o roteiro da tela como material. Modelar reinterpreta a arquitetura por outro caminho narrativo, Replicar reescreve beat a beat com execução melhor. Antes era copiar, colar no formulário e recomeçar.\n\n👉 *Autosave no editor:* você para de digitar, a sala grava sozinha, e a tela mostra \"salvo automaticamente\". O botão Salvar continua ali para fechar a edição.\n\n👉 *Erro ao salvar não apaga mais o seu texto:* uma edição inteira se perdeu porque a falha derrubava a tela junto com o texto. Agora ele fica guardado no navegador, e depois de recarregar aparece uma faixa oferecendo Retomar edição.\n\n👉 *Cancelar passou a desfazer de verdade:* como o autosave já gravou parte do caminho, ele devolve o texto que existia antes de você começar a editar.\n\n👉 *Sugerir tema não cai mais com erro de rede:* a busca ficava até 90 segundos em silêncio e a conexão era cortada por parecer ociosa; agora o servidor dá sinal de vida durante o trabalho, e isso vale para todas as telas que mostram progresso.\n\n👉 *Modelagem que volta pela metade tenta de novo sozinha,* em vez de travar a sessão pedindo uma transcrição que você já tinha colado; e quando desiste, diz o motivo real.\n\n👉 *Parágrafos mais curtos e ritmo menos monótono:* os parágrafos vinham com 51 palavras em média (o maior tinha 126) e havia trechos de até 14 frases longas seguidas sem nenhuma curta quebrando a inércia. Agora vale o teto de três linhas por parágrafo e no máximo três frases longas seguidas.\n\n👉 *A página de compartilhamento mostra o nome do cliente* no topo, e o título do link no WhatsApp vira \"CODEX · CLIENTE · HEADLINE\".\n\nhttps://codex.viralmindlabs.com\n",
     "changes": [
       {
-        "id": "msyx14po",
-        "type": "fix",
-        "summary": "Sugerir tema nao cai mais com erro de rede: o servidor passa a dar sinal de vida durante as buscas longas, entao a conexao nao e mais cortada no meio",
-        "detail": "A rota ficava ate 90 segundos em silencio enquanto o Grok pesquisava, e o proxy derrubava a conexao. O sinal de vida existia so na geracao de roteiro; agora vale para todas as telas que mostram progresso (gerar, sugerir tema, Bob, verificacao e Kasparov), e o tempo maximo da sugestao subiu de 2 para 5 minutos.",
-        "commit": "d596e10",
-        "addedAt": "2026-08-18T17:07:25.612Z"
-      },
-      {
-        "id": "mt01fgvs",
-        "type": "fix",
-        "summary": "Modelagem: quando a analise do video volta incompleta, a sala tenta de novo sozinha em vez de perder a sessao, e quando desiste diz o motivo real",
-        "detail": "Um reel travou a sessao com a mensagem \"cole a transcricao\" mesmo com a transcricao em maos: a analise tinha voltado pela metade e o motivo ficava so no log do servidor. Agora ha uma segunda tentativa automatica com mais espaco de resposta, e a falha registra o que faltou.",
-        "commit": "86d864d",
-        "addedAt": "2026-08-19T11:58:19.204Z"
-      },
-      {
-        "id": "mt0febfe",
+        "id": "mt21d7mb",
         "type": "feature",
-        "summary": "Autosave no editor de roteiro: a sala grava sozinha 2,5 segundos depois da ultima tecla, com o recibo \"salvo automaticamente\" na tela",
-        "detail": "O Salvar continua existindo (e ele que fecha a edicao), mas nao depender mais de um clique. Cancelar agora desfaz de verdade o que o autosave ja tinha gravado.",
-        "commit": "e3fa403",
-        "addedAt": "2026-08-19T18:29:20.090Z"
+        "summary": "Faca no menu de selecao: marcar uma expressao generica bane ela dos proximos roteiros",
+        "detail": "Seleciona o trecho no roteiro, clica na faca, e a expressao entra na banlist que o lint aplica em toda geracao seguinte. So administrador.",
+        "commit": "4980658",
+        "addedAt": "2026-08-20T21:32:06.239Z"
       },
       {
-        "id": "mt0febga",
+        "id": "mt2x0lvx",
         "type": "fix",
-        "summary": "Erro ao salvar deixou de apagar o que voce escreveu: o texto fica na tela, guardado no navegador, e uma faixa oferece Retomar edicao depois de um reload",
-        "detail": "Uma edicao inteira se perdeu porque a falha do salvamento derrubava a tela junto com o texto, que so existia na memoria da pagina. Agora sao tres camadas: autosave no servidor, rascunho no navegador a cada tecla, e a mensagem que diz o que aconteceu sem fechar a edicao.",
-        "commit": "e3fa403",
-        "addedAt": "2026-08-19T18:29:20.122Z"
+        "summary": "As licoes tiradas das suas edicoes voltaram a chegar nos roteiros",
+        "detail": "Desde marco, licao gerada por edicao, correcao na sala ou curador nascia sem destinatario e era descartada em silencio na hora de montar o prompt. So o botao Ensinar funcionava.",
+        "commit": "091a92e",
+        "addedAt": "2026-08-21T12:18:05.915Z"
       },
       {
-        "id": "mt0fs6sd",
-        "type": "improvement",
-        "summary": "A pagina de compartilhamento do roteiro agora mostra o nome do cliente em destaque no topo, e o titulo do link no WhatsApp vira \"CODEX - CLIENTE - HEADLINE\"",
-        "detail": "Todo roteiro compartilhado chegava com o mesmo cabecalho \"ROTEIRO COMPLETO\", sem dizer de quem era.",
-        "commit": "c42ff49",
-        "addedAt": "2026-08-19T18:40:07.275Z"
-      },
-      {
-        "id": "mt0sdxu7",
-        "type": "improvement",
-        "summary": "Roteiro com paragrafo mais curto e ritmo menos monotono",
-        "detail": "Os paragrafos vinham com 51 palavras em media (o maior tinha 126) e havia trechos de ate 14 frases longas seguidas sem nenhuma curta quebrando a inercia. Agora vale o teto de tres linhas por paragrafo, e no maximo tres frases longas seguidas antes de uma curta entrar. Nao e alternar uma a uma, que viraria metronomo: a curta entra quando o trecho ja cansou.",
-        "commit": "51f9a3e",
-        "addedAt": "2026-08-20T00:32:57.487Z"
+        "id": "mt2x0lx2",
+        "type": "feature",
+        "summary": "Modelar e Replicar direto do roteiro aberto, em aba nova",
+        "detail": "Dois botoes na barra do roteiro abrem uma sessao nova usando o roteiro da tela como material.",
+        "commit": "091a92e",
+        "addedAt": "2026-08-21T12:18:05.952Z"
       }
     ],
-    "releasedAt": "2026-08-20T00:33:37.769Z"
+    "releasedAt": "2026-08-21T12:18:43.824Z"
   },
   "history": [
     {
@@ -705,6 +672,63 @@
         }
       ],
       "releasedAt": "2026-08-18T13:38:56.402Z"
+    },
+    {
+      "version": "2.4",
+      "git": "51f9a3e",
+      "productSummary": "Autosave e rede de seguranca no editor, telas longas que nao caem mais, e roteiro com paragrafo e ritmo controlados.",
+      "message": "*Codex 2.4*\n\n👉 *Autosave no editor:* você para de digitar, a sala grava sozinha, e a tela mostra \"salvo automaticamente\". O botão Salvar continua ali para fechar a edição.\n\n👉 *Erro ao salvar não apaga mais o seu texto:* uma edição inteira se perdeu porque a falha derrubava a tela junto com o texto. Agora ele fica guardado no navegador, e depois de recarregar aparece uma faixa oferecendo Retomar edição.\n\n👉 *Cancelar passou a desfazer de verdade:* como o autosave já gravou parte do caminho, ele devolve o texto que existia antes de você começar a editar.\n\n👉 *Sugerir tema não cai mais com erro de rede:* a busca ficava até 90 segundos em silêncio e a conexão era cortada por parecer ociosa; agora o servidor dá sinal de vida durante o trabalho, e isso vale para todas as telas que mostram progresso.\n\n👉 *Modelagem que volta pela metade tenta de novo sozinha,* em vez de travar a sessão pedindo uma transcrição que você já tinha colado; e quando desiste, diz o motivo real.\n\n👉 *Parágrafos mais curtos e ritmo menos monótono:* os parágrafos vinham com 51 palavras em média (o maior tinha 126) e havia trechos de até 14 frases longas seguidas sem nenhuma curta quebrando a inércia. Agora vale o teto de três linhas por parágrafo e no máximo três frases longas seguidas.\n\n👉 *A página de compartilhamento mostra o nome do cliente* no topo, e o título do link no WhatsApp vira \"CODEX · CLIENTE · HEADLINE\".\n\nhttps://codex.viralmindlabs.com\n",
+      "changes": [
+        {
+          "id": "msyx14po",
+          "type": "fix",
+          "summary": "Sugerir tema nao cai mais com erro de rede: o servidor passa a dar sinal de vida durante as buscas longas, entao a conexao nao e mais cortada no meio",
+          "detail": "A rota ficava ate 90 segundos em silencio enquanto o Grok pesquisava, e o proxy derrubava a conexao. O sinal de vida existia so na geracao de roteiro; agora vale para todas as telas que mostram progresso (gerar, sugerir tema, Bob, verificacao e Kasparov), e o tempo maximo da sugestao subiu de 2 para 5 minutos.",
+          "commit": "d596e10",
+          "addedAt": "2026-08-18T17:07:25.612Z"
+        },
+        {
+          "id": "mt01fgvs",
+          "type": "fix",
+          "summary": "Modelagem: quando a analise do video volta incompleta, a sala tenta de novo sozinha em vez de perder a sessao, e quando desiste diz o motivo real",
+          "detail": "Um reel travou a sessao com a mensagem \"cole a transcricao\" mesmo com a transcricao em maos: a analise tinha voltado pela metade e o motivo ficava so no log do servidor. Agora ha uma segunda tentativa automatica com mais espaco de resposta, e a falha registra o que faltou.",
+          "commit": "86d864d",
+          "addedAt": "2026-08-19T11:58:19.204Z"
+        },
+        {
+          "id": "mt0febfe",
+          "type": "feature",
+          "summary": "Autosave no editor de roteiro: a sala grava sozinha 2,5 segundos depois da ultima tecla, com o recibo \"salvo automaticamente\" na tela",
+          "detail": "O Salvar continua existindo (e ele que fecha a edicao), mas nao depender mais de um clique. Cancelar agora desfaz de verdade o que o autosave ja tinha gravado.",
+          "commit": "e3fa403",
+          "addedAt": "2026-08-19T18:29:20.090Z"
+        },
+        {
+          "id": "mt0febga",
+          "type": "fix",
+          "summary": "Erro ao salvar deixou de apagar o que voce escreveu: o texto fica na tela, guardado no navegador, e uma faixa oferece Retomar edicao depois de um reload",
+          "detail": "Uma edicao inteira se perdeu porque a falha do salvamento derrubava a tela junto com o texto, que so existia na memoria da pagina. Agora sao tres camadas: autosave no servidor, rascunho no navegador a cada tecla, e a mensagem que diz o que aconteceu sem fechar a edicao.",
+          "commit": "e3fa403",
+          "addedAt": "2026-08-19T18:29:20.122Z"
+        },
+        {
+          "id": "mt0fs6sd",
+          "type": "improvement",
+          "summary": "A pagina de compartilhamento do roteiro agora mostra o nome do cliente em destaque no topo, e o titulo do link no WhatsApp vira \"CODEX - CLIENTE - HEADLINE\"",
+          "detail": "Todo roteiro compartilhado chegava com o mesmo cabecalho \"ROTEIRO COMPLETO\", sem dizer de quem era.",
+          "commit": "c42ff49",
+          "addedAt": "2026-08-19T18:40:07.275Z"
+        },
+        {
+          "id": "mt0sdxu7",
+          "type": "improvement",
+          "summary": "Roteiro com paragrafo mais curto e ritmo menos monotono",
+          "detail": "Os paragrafos vinham com 51 palavras em media (o maior tinha 126) e havia trechos de ate 14 frases longas seguidas sem nenhuma curta quebrando a inercia. Agora vale o teto de tres linhas por paragrafo, e no maximo tres frases longas seguidas antes de uma curta entrar. Nao e alternar uma a uma, que viraria metronomo: a curta entra quando o trecho ja cansou.",
+          "commit": "51f9a3e",
+          "addedAt": "2026-08-20T00:32:57.487Z"
+        }
+      ],
+      "releasedAt": "2026-08-20T00:33:37.769Z"
     }
   ]
 }
