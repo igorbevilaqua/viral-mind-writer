@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import {
   addBullet,
   banirTrecho,
+  criarSessaoDoRoteiro,
   finalizeSession,
   markPublished,
   quickFeedback,
@@ -1158,6 +1159,31 @@ function ScriptCard({
       }, 1500);
     })();
   };
+  // Modelar / Replicar: abre sessão nova em outra aba com ESTE roteiro como material.
+  const [derivando, setDerivando] = useState<"modelar" | "replicar" | null>(null);
+  const [erroDerivar, setErroDerivar] = useState<string | null>(null);
+  const derivar = (modo: "modelar" | "replicar") => {
+    // A aba abre AGORA, ainda dentro do clique. `window.open` depois do await já perdeu o gesto
+    // do usuário e cai no bloqueador de pop-up — a sessão seria criada e ninguém a veria.
+    const aba = window.open("", "_blank");
+    setDerivando(modo);
+    setErroDerivar(null);
+    void (async () => {
+      const r = await criarSessaoDoRoteiro(script.id, modo);
+      setDerivando(null);
+      if (r.erro || !r.id) {
+        aba?.close();
+        setErroDerivar(r.erro ?? "não consegui abrir a sessão");
+        setTimeout(() => setErroDerivar(null), 4000);
+        return;
+      }
+      const url = `/sessions/${r.id}?start=1`;
+      // Bloqueador ligado: a sessão já existe, então navegar nesta aba é melhor que perdê-la.
+      if (aba) aba.location.href = url;
+      else router.push(url);
+    })();
+  };
+
   // Faca 🔪 da seleção: manda a expressão para a banlist. Mesmo contrato da estrela — 1 clique,
   // a borda é o recibo. Recusa (curto demais, ou não-adm) fica vermelha e mostra o porquê:
   // aqui, ao contrário da estrela, o motivo não é adivinhável só pela cor.
@@ -1434,6 +1460,26 @@ function ScriptCard({
             Ensinar
           </button>
         )}
+        {/* Abrem sessão NOVA em outra aba com este roteiro como material. Ficam aqui, na barra do
+            card, e não no cabeçalho da sessão: a sessão pode ter várias versões, e o material
+            precisa ser a que está na tela. */}
+        {!editing &&
+          (["modelar", "replicar"] as const).map((modo) => (
+            <button
+              key={modo}
+              onClick={() => derivar(modo)}
+              disabled={!!derivando}
+              title={
+                modo === "modelar"
+                  ? "Nova sessão: a sala reinterpreta a arquitetura deste roteiro por outro caminho narrativo"
+                  : "Nova sessão: mesmo roteiro, beat a beat, com execução melhor"
+              }
+              className="inline-flex items-center gap-1.5 rounded-lg border border-white/15 px-3 py-2 sm:py-[5px] text-xs text-white/65 hover:border-gold/50 hover:text-cream transition-colors disabled:opacity-40"
+            >
+              {derivando === modo ? "Abrindo..." : modo === "modelar" ? "Modelar" : "Replicar"}
+            </button>
+          ))}
+        {erroDerivar && <span className="text-[11px] text-red-300">{erroDerivar}</span>}
         {editing ? (
           <div className="ml-auto flex items-center gap-2">
             {/* Recibo do autosave: sem ele o usuário não tem como saber que já está guardado. */}

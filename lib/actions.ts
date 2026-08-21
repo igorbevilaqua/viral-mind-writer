@@ -18,12 +18,66 @@ import { exigirAcesso, ErroDeAcesso } from "./autorizacao";
 import { createClient } from "./supabase/server";
 import { runProbeTopup } from "./calibration-probe";
 import { classificarEnsinamento, DIRECOES, type Casa, type Ensinamento } from "./pipeline/classify-teaching";
+import { comDestinatarios } from "./pipeline/destinatarios";
 import { atribuirEtapa } from "./provenance";
 import { explicar, type Explicacao, type TraceExplicavel } from "./pipeline/explain";
 import { verificarScriptSalvo } from "./pipeline";
 import type { RegistroVerificacao } from "./pipeline/verificar";
 import { escaparLiteral, validarPadrao } from "./regex-safety";
 import { normalizarTermo, validarTermo } from "./bullets";
+
+/**
+ * Abre uma sessão nova usando o roteiro JÁ GERADO como material de referência.
+ *
+ * Reusa `createSession`: um `reference_script` com `is_modelagem` liga `ctx.modoModelagem`
+ * (context.ts) e `modo: "replicar"` liga o ramo do replicador. O pipeline inteiro (autópsia,
+ * brief, premissa) já funciona a partir daí, sem alteração.
+ *
+ * O tema e o cliente da sessão de origem vão junto: em Modelar o tema orienta o novo caminho
+ * narrativo, em Replicar ele é orientação de ângulo (README). Nos dois casos a sala pausa em
+ * `aguardando_premissa` antes de escrever, e é ali que o usuário corrige o rumo — por isso
+ * nenhum dos dois botões precisa de formulário antes de abrir a aba.
+ *
+ * O texto é lido AQUI e não recebido do cliente: o que vira material de referência entra em
+ * todos os prompts da sessão nova, e a origem disso não pode ser a página.
+ */
+export async function criarSessaoDoRoteiro(
+  scriptId: string,
+  modo: "modelar" | "replicar"
+): Promise<{ id?: string; erro?: string }> {
+  try {
+    await exigirAcesso({ script: scriptId });
+  } catch (e) {
+    if (!(e instanceof ErroDeAcesso)) throw e;
+    return { erro: e.message };
+  }
+
+  const { data: s, error } = await appDb
+    .from("vm_generated_scripts")
+    .select("headline, roteiro, comando, session_id")
+    .eq("id", scriptId)
+    .maybeSingle();
+  if (error) return { erro: error.message };
+  if (!s?.roteiro?.trim()) return { erro: "este roteiro está vazio" };
+
+  const { data: origem } = await appDb
+    .from("vm_sessions")
+    .select("prompt, client_id")
+    .eq("id", s.session_id)
+    .maybeSingle();
+
+  // `roteiro` já começa pelo hook (index.ts monta a seção assim); repetir o campo `hook` aqui
+  // faria a autópsia ler abertura em dobro. `fontes` fica de fora: é rastro de pesquisa, não
+  // arquitetura, e só gastaria espaço do brief.
+  const texto = [s.headline, s.roteiro, s.comando].filter(Boolean).join("\n\n");
+
+  const id = await createSession({
+    prompt: origem?.prompt ?? "",
+    clientId: origem?.client_id ?? null,
+    attachments: [{ kind: "reference_script", is_modelagem: true, modo, url: "", raw_content: texto }],
+  });
+  return { id };
+}
 
 export interface NewAttachment {
   kind: "reference_script" | "news_link" | "document" | "video_link" | "carousel_link";
@@ -210,7 +264,9 @@ export async function finalizeSession(
         .single();
       if (lesson) {
         await appDb.from("vm_lesson_learnings").insert(
-          learnings.map((l) => ({ ...l, evidencia: l.evidencia ?? null, origem, active: false, lesson_id: lesson.id }))
+          comDestinatarios(
+            learnings.map((l) => ({ ...l, evidencia: l.evidencia ?? null, origem, active: false, lesson_id: lesson.id }))
+          )
         );
       }
     }
@@ -263,7 +319,7 @@ export async function saveLesson(input: {
   if (input.learnings.length) {
     const { error: lrnErr } = await appDb
       .from("vm_lesson_learnings")
-      .insert(input.learnings.map((l) => ({ ...l, lesson_id: lesson.id })));
+      .insert(comDestinatarios(input.learnings.map((l) => ({ ...l, lesson_id: lesson.id }))));
     if (lrnErr) throw new Error(lrnErr.message);
   }
   await registrarAtividade("sessao_ensino_concluida", {

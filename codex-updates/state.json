@@ -1,7 +1,16 @@
 {
   "version": "2.5",
   "codexUrl": "https://codex.viralmindlabs.com",
-  "pending": [],
+  "pending": [
+    {
+      "id": "mt21d7mb",
+      "type": "feature",
+      "summary": "Faca no menu de selecao: marcar uma expressao generica bane ela dos proximos roteiros",
+      "detail": "Seleciona o trecho no roteiro, clica na faca, e a expressao entra na banlist que o lint aplica em toda geracao seguinte. So administrador.",
+      "commit": "4980658",
+      "addedAt": "2026-08-20T21:32:06.239Z"
+    }
+  ],
   "lastRelease": {
     "version": "2.4",
     "git": "51f9a3e",
