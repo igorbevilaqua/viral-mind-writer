@@ -2,6 +2,7 @@ import { appDb } from "./db";
 import { anthropic, ANALYST_MODEL } from "./anthropic";
 import { agentPrompt, toolInput, toolArray } from "./pipeline/agents";
 import { DIMENSOES, type Dimensao } from "./pipeline/teach";
+import { comDestinatarios } from "./pipeline/destinatarios";
 import { hookMechanismOutcomes } from "./learning-loop";
 
 // Curador mensal (plano 012, WP-E.6): lê winners/losers de vm_outcomes + lições
@@ -136,7 +137,7 @@ ${jaEnsinado || "(nenhuma)"}`;
   if (lErr || !lesson) return { ran: true, proposed: 0, reason: `vm_lessons: ${lErr?.message}` };
   // active:false — toda proposta passa pela curadoria humana existente no /ensinar
   const ins = await appDb.from("vm_lesson_learnings").insert(
-    licoes.map((l) => ({ ...l, origem: "curador", active: false, lesson_id: lesson.id }))
+    comDestinatarios(licoes.map((l) => ({ ...l, origem: "curador", active: false, lesson_id: lesson.id })))
   );
   if (ins.error) return { ran: true, proposed: 0, reason: ins.error.message };
   return { ran: true, proposed: licoes.length };

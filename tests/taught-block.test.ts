@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, test } from "vitest";
 import { taughtBlock } from "@/lib/pipeline/agents";
-import { DESTINATARIOS } from "@/lib/pipeline/destinatarios";
+import { comDestinatarios, DESTINATARIOS, DIMENSAO_DESTINATARIOS } from "@/lib/pipeline/destinatarios";
 import type { GenerationContext } from "@/lib/pipeline/types";
 
 const ctx = (licoes: { titulo: string; destinatarios: string[] }[]) =>
@@ -54,6 +54,37 @@ describe("taughtBlock por destinatário", () => {
     const c = ctx([{ titulo: "A", destinatarios: [] }]);
     expect(taughtBlock(c, "hook")).toBe("");
     expect(taughtBlock(c, "roteirista")).toBe("");
+  });
+
+  // O outro lado do teste acima: "sem destinatários não chega a ninguém" era o comportamento
+  // correto batendo num bug de escrita. Os quatro inserts de máquina não carimbavam a coluna,
+  // então TODA lição derivada de edição, correção ou curador caía naquele caso.
+  test("comDestinatarios carimba a partir da dimensão", () => {
+    expect(comDestinatarios([{ dimensao: "hook" }])[0].destinatarios).toEqual(["hook", "dados"]);
+  });
+
+  test("quem já traz destinatários não é sobrescrito", () => {
+    expect(comDestinatarios([{ dimensao: "hook", destinatarios: ["comando"] }])[0].destinatarios).toEqual(["comando"]);
+  });
+
+  test("dimensão fora do mapa devolve vazio em vez de destino errado", () => {
+    expect(comDestinatarios([{ dimensao: "inventada" }])[0].destinatarios).toEqual([]);
+  });
+
+  test("lição carimbada chega ao prompt — o bug, de ponta a ponta", () => {
+    const [l] = comDestinatarios([{ dimensao: "ritmo", titulo: "A" }]);
+    const c = ctx([{ titulo: "A", destinatarios: l.destinatarios }]);
+    expect(taughtBlock(c, "roteirista")).toContain("A"); // antes: "" para todo agente
+  });
+
+  // O `case` da migration 0037 replica DIMENSAO_DESTINATARIOS. A 0027 já avisava que as duas
+  // cópias desandam quando alguém mexe num lado só — aqui isso vira teste.
+  test("o backfill em SQL cobre exatamente as dimensões do mapa", () => {
+    const sql = readFileSync("supabase/migrations/0037_backfill_destinatarios_orfaos.sql", "utf8");
+    for (const [dim, destinos] of Object.entries(DIMENSAO_DESTINATARIOS)) {
+      expect(sql, `dimensão "${dim}" fora do backfill`).toContain(`when '${dim}'`);
+      expect(sql, `destinos de "${dim}" divergem do mapa`).toContain(`'{${destinos.join(",")}}'`);
+    }
   });
 
   // Invariante que impede a falha silenciosa de voltar por uma porta nova: destinatário que o

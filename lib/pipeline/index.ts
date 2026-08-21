@@ -10,6 +10,7 @@ import {
   type ModelagemResult,
 } from "./modelagem";
 import { compreensaoBlock } from "./modelagem-brief";
+import { comDestinatarios } from "./destinatarios";
 import { anexoModelagem, anexoReplicar, comandoDoOriginal, exigirEsqueletoDoOriginal, narrativaDoOriginal } from "./replicar";
 import { registrarBloco, research, proposeNarratives, rankNarratives, designHook, writeComando } from "./agents";
 import { pairFromCandidates } from "../calibration";
@@ -591,7 +592,9 @@ export async function runPipeline(
             .single();
           if (lesson) {
             await appDb.from("vm_lesson_learnings").insert(
-              learnings.map((l) => ({ ...l, evidencia: l.evidencia ?? null, origem: "correcao", active: false, lesson_id: lesson.id }))
+              comDestinatarios(
+                learnings.map((l) => ({ ...l, evidencia: l.evidencia ?? null, origem: "correcao", active: false, lesson_id: lesson.id }))
+              )
             );
           }
         }
