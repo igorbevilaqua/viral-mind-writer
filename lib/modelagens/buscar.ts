@@ -10,6 +10,8 @@
 // id/url/title/viewCount — sem canal, data, duração ou inscritos, ou seja, sem nada do
 // que o ranking precisa. Enriquecer custaria 1 crédito por vídeo (61 contra 1 da busca).
 
+import { jsonOuErro } from "../transcribe";
+
 const BASE = "https://api.scrapecreators.com";
 
 export type Plataforma = "tiktok" | "instagram";
@@ -62,7 +64,18 @@ export async function sc<T>(path: string, params: Record<string, string | number
   for (const [k, v] of Object.entries(params)) url.searchParams.set(k, String(v));
 
   const res = await fetch(url, { headers: { "x-api-key": chave }, signal: sinal });
-  if (!res.ok) throw new Error(`ScrapeCreators respondeu ${res.status} em ${path}`);
+  if (!res.ok) {
+    // O status sozinho esconde o motivo, e era só ele que chegava à tela: um carrossel morreu
+    // com "ScrapeCreators respondeu 402 em /v1/instagram/post" e a sugestão de colar o texto à
+    // mão — quando o fato acionável era que a CONTA está sem crédito e nada que passa por aqui
+    // funciona (busca, transcrição, carrossel). 402 tem um significado só nesta API, então é
+    // dito em português; o resto herda a mensagem do próprio serviço, como
+    // `transcribeViaScrapeCreators` já fazia.
+    if (res.status === 402)
+      throw new Error("a conta ScrapeCreators está sem créditos: nenhuma busca, transcrição ou carrossel funciona até recarregar em scrapecreators.com");
+    const corpo = await jsonOuErro(res, "ScrapeCreators");
+    throw new Error(corpo.message ?? corpo.error ?? `ScrapeCreators respondeu ${res.status} em ${path}`);
+  }
 
   const data = (await res.json()) as T & { credits_remaining?: number };
   if (typeof data.credits_remaining === "number") {
