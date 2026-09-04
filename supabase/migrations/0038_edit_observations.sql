@@ -12,7 +12,7 @@
 create table if not exists vm_edit_observations (
   id uuid primary key default gen_random_uuid(),
   script_id uuid not null references vm_generated_scripts(id) on delete cascade,
-  client_id uuid references clients(id),
+  client_id uuid references clientes(id),
   tipo text not null check (tipo in ('vocabulario','corte','insercao','ritmo','reescrita')),
   antes text not null,
   depois text not null,
