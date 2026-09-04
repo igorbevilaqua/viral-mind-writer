@@ -3,7 +3,15 @@ import { anthropic, ANALYST_MODEL } from "./anthropic";
 import { agentPrompt, toolInput, toolArray } from "./pipeline/agents";
 import { fmtNum } from "./format";
 import { maturityGate } from "./etl-gate";
-import { attributeLessons, computeCalibration, rankHookMechanisms } from "./learning-loop";
+import {
+  attributeLessons,
+  computeCalibration,
+  houveEdicaoHumana,
+  rankHookMechanisms,
+  textoPreHumano,
+  type TraceEdicao,
+} from "./learning-loop";
+import { chaveDoCluster, observacoesDaEdicao, type TipoMudanca } from "./edit-diff";
 import { aggregatePreferences, axisValue, type CalibAxis, type CalibOption } from "./calibration";
 import { syncScriptPerformance } from "./script-performance";
 
@@ -268,6 +276,119 @@ async function preferenceInsightRows(): Promise<InsightRow[]> {
   }));
 }
 
+/**
+ * Plano 019, Fase 1. Converte em observações toda edição humana ainda não processada.
+ *
+ * Idempotente por `script_id`: script que já tem observação é pulado. Isso também significa
+ * que um script editado de novo depois da varredura não é reprocessado — de propósito, porque
+ * reprocessar somaria a MESMA edição ao cluster duas vezes e inflaria a contagem que é o
+ * portão inteiro deste plano.
+ *
+ * Best-effort, no padrão dos outros blocos: tabela ausente (migration 0038 não aplicada) vira
+ * warning e o ETL segue.
+ */
+async function varrerEdicoes(): Promise<number> {
+  try {
+    const { data: jaVistos, error: erroVistos } = await appDb.from("vm_edit_observations").select("script_id");
+    if (erroVistos) {
+      console.warn(`vm_edit_observations indisponível: ${erroVistos.message} — aplicar migration 0038`);
+      return 0;
+    }
+    const vistos = new Set((jaVistos ?? []).map((o) => o.script_id as string));
+
+    const { data: scripts } = await appDb
+      .from("vm_generated_scripts")
+      .select("id, client_id, roteiro, pipeline_trace")
+      .not("pipeline_trace", "is", null);
+
+    const linhas: Record<string, unknown>[] = [];
+    for (const s of scripts ?? []) {
+      if (vistos.has(s.id as string)) continue;
+      const trace = (s.pipeline_trace ?? {}) as TraceEdicao;
+      if (!houveEdicaoHumana(trace)) continue;
+      const antes = textoPreHumano(trace);
+      if (!antes || !s.roteiro) continue;
+      for (const o of observacoesDaEdicao(antes, s.roteiro as string))
+        linhas.push({ script_id: s.id, client_id: s.client_id, ...o });
+    }
+    if (!linhas.length) return 0;
+    const ins = await appDb.from("vm_edit_observations").insert(linhas);
+    if (ins.error) {
+      console.warn(`vm_edit_observations insert: ${ins.error.message}`);
+      return 0;
+    }
+    return linhas.length;
+  } catch (e) {
+    console.error("varredura de edições falhou, ETL segue", e);
+    return 0;
+  }
+}
+
+/**
+ * Plano 019, Fase 5. A retroalimentação que NÃO depende de publicação.
+ *
+ * `vm_script_performance` está com 0 linhas e 2 roteiros publicados de 47, então medir lição
+ * por ratio de views é medir o vazio. O sinal disponível hoje, em volume, é a própria edição:
+ * se a lição funcionou, o humano PARA de fazer aquela edição.
+ *
+ * Conta observações do mesmo cluster geradas depois de `ativada_em`. Recorrência que não cai
+ * liga `needs_review` — a mesma coluna e o mesmo princípio do WP-E.5: só liga a flag, desligar
+ * é decisão humana no /ensinar.
+ */
+async function medirRecorrencia(): Promise<void> {
+  try {
+    const { data: licoes, error } = await appDb
+      .from("vm_lesson_learnings")
+      .select("id, ativada_em, cluster_chave")
+      .eq("active", true)
+      .not("ativada_em", "is", null)
+      .not("cluster_chave", "is", null);
+    if (error) {
+      console.warn(`ativada_em/cluster_chave indisponíveis: ${error.message} — aplicar migration 0038`);
+      return;
+    }
+    if (!licoes?.length) return;
+
+    // Uma leitura só: as observações posteriores à lição mais antiga, contadas por cluster em
+    // memória. N consultas com `count: exact` seriam N round-trips para agregar dezenas de
+    // linhas — o volume aqui é o de edições de uma semana.
+    const desde = licoes.reduce(
+      (min, l) => ((l.ativada_em as string) < min ? (l.ativada_em as string) : min),
+      licoes[0].ativada_em as string
+    );
+    const { data: obs } = await appDb
+      .from("vm_edit_observations")
+      .select("client_id, tipo, termo_de, termo_para, created_at")
+      .gt("created_at", desde);
+
+    const suspeitas: string[] = [];
+    for (const l of licoes) {
+      // Mesma edição, DEPOIS de a regra passar a valer = a regra não pegou. Pode ser que ela
+      // não chegue ao prompt (checar licoes_excedidas no trace) ou que não funcione; as duas
+      // pedem olho humano, e é por isso que aqui só liga a flag.
+      const recorrencias = (obs ?? []).filter(
+        (o) =>
+          (o.created_at as string) > (l.ativada_em as string) &&
+          chaveDoCluster({
+            clientId: (o.client_id as string | null) ?? null,
+            tipo: o.tipo as TipoMudanca,
+            termo_de: (o.termo_de as string | null) ?? null,
+            termo_para: (o.termo_para as string | null) ?? null,
+          }) === l.cluster_chave
+      ).length;
+      if (recorrencias >= RECORRENCIA_SUSPEITA) suspeitas.push(l.id as string);
+    }
+    if (!suspeitas.length) return;
+    const upd = await appDb.from("vm_lesson_learnings").update({ needs_review: true }).in("id", suspeitas);
+    if (upd.error) console.warn(`needs_review por recorrência: ${upd.error.message}`);
+  } catch (e) {
+    console.error("medição de recorrência falhou, ETL segue", e);
+  }
+}
+
+/** Edições do mesmo tipo depois da lição valer: acima disto, a regra não pegou. */
+const RECORRENCIA_SUSPEITA = 3;
+
 export async function runWeeklyEtl() {
   // MV vm_video_stats alimenta as fns vm_* (migration 0013) — refresh antes de tudo.
   // PGRST202 = migration não aplicada: as fns ainda usam a definição antiga, seguir com warning.
@@ -511,6 +632,15 @@ export async function runWeeklyEtl() {
   } catch (e) {
     console.error("agregação de feedback falhou, seguindo sem client_feedback", e);
   }
+
+  // ── Plano 019, Fase 1: a edição livre vira observação estruturada. ──────────
+  // Aqui e não no Salvar: custo zero no caminho de request, e o diff sobre o estado FINAL do
+  // roteiro é melhor que sobre os estados intermediários que o autosave produziria. O trace já
+  // guarda tudo que esta varredura precisa, então nada se perde por processar depois.
+  const observacoes = await varrerEdicoes();
+
+  // ── Plano 019, Fase 5: a lição funcionou? ───────────────────────────────────
+  await medirRecorrencia();
 
   // Histórico de runs (plano 012, WP-C.6): grava o array completo ANTES do replace,
   // retém os 12 mais recentes. Melhor esforço — tabela ausente não derruba o ETL.

@@ -26,15 +26,28 @@ export function changedRatio(original: string, editada: string): number {
   return 1 - comum / total;
 }
 
-// Edição só vira aprendizado quando mexeu em >~10% dos chars (plano 012, WP-E.4).
-export function isSubstantiveEdit(original: string, editada: string, threshold = 0.1): boolean {
-  return changedRatio(original, editada) > threshold;
-}
+// `isSubstantiveEdit` (>10% dos chars) morreu no plano 019, Fase 4: o piso descartava a troca
+// de palavra — 1 palavra em 3.000 chars dá 0,3% — que é justamente o tipo de edição que mais
+// generaliza. Quem decide o que vira aprendizado agora é a REPETIÇÃO (lib/edit-diff.ts), não
+// o tamanho do diff. `changedRatio` continua: virou distância de pareamento.
 
 // ── Peça 3 §7.2/§16.1: quem tem direito de alimentar o Professor ─────────────
 
 export interface TraceEdicao {
   roteiro_original?: string;
+  /**
+   * O texto no instante da PRIMEIRA edição humana — plano 019, Fase 1.
+   *
+   * Existe porque `roteiro_original` não serve para aprender quando houve correção factual
+   * antes: `aplicarCorrecao` chama updateScript com origem "correcao_factual" e grava T0; o
+   * humano edita depois e o par que o Professor recebia era T0 → T2, com a correção da
+   * MÁQUINA dentro do diff. Era exatamente a lição envenenada do §7.2 ("prefira 4,5 bi a
+   * 45 bi") entrando pela porta que `houveEdicaoHumana` não cobre — aquele portão pega o caso
+   * puro-máquina, não a mistura.
+   *
+   * `roteiro_original` continua intocado: é o que a explicação e o revert leem.
+   */
+  roteiro_pre_humano?: string;
   edicao_humana?: boolean;
   correcao_factual?: boolean;
 }
@@ -48,7 +61,22 @@ export function marcarOrigemEdicao(
 ): TraceEdicao {
   // sempre o texto da sala, nunca de edição anterior
   const base = { ...trace, roteiro_original: trace.roteiro_original ?? roteiroAnterior };
-  return origem === "humano" ? { ...base, edicao_humana: true } : { ...base, correcao_factual: true };
+  return origem === "humano"
+    ? // `?? roteiroAnterior` e não `?? base.roteiro_original`: o lado esquerdo do par de
+      // aprendizado tem que ser o texto que existia quando ESTE humano começou, já com
+      // qualquer correção de máquina aplicada. Só a primeira edição humana grava.
+      { ...base, edicao_humana: true, roteiro_pre_humano: trace.roteiro_pre_humano ?? roteiroAnterior }
+    : { ...base, correcao_factual: true };
+}
+
+/**
+ * O lado esquerdo do par de aprendizado: o texto da máquina imediatamente antes de o humano
+ * mexer. Cai em `roteiro_original` para os roteiros anteriores à 019 (que não têm o campo
+ * novo) — neles a contaminação por correção factual continua possível, mas é histórico, e
+ * fabricar um valor aqui seria pior que usar o que existe.
+ */
+export function textoPreHumano(trace: TraceEdicao): string | null {
+  return trace.roteiro_pre_humano ?? trace.roteiro_original ?? null;
 }
 
 // O portão do aprendizado por edição. Lê `edicao_humana` e NUNCA `roteiro_original`:

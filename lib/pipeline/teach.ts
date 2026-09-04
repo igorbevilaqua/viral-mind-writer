@@ -112,25 +112,46 @@ Extraia os aprendizados.`
   );
 }
 
-// WP-E.4 (absorve plano 010): aprende com a edição humana — o par sala→humano
-// é o sinal supervisionado mais forte do produto. Extrai só das DIFERENÇAS.
-export async function extractFromEdit(input: {
-  original: string;
-  editada: string;
+/**
+ * Plano 019, Fase 3. Substitui `extractFromEdit`, que mandava dois roteiros de 15k chars e
+ * pedia "extraia só das DIFERENÇAS" — estava pagando um modelo para fazer um diff.
+ *
+ * Aqui o diff já foi feito de graça (lib/edit-diff.ts) e o que chega é um punhado de pares
+ * curtos que JÁ SE REPETIRAM N vezes. Mais barato e mais preciso: o modelo não precisa achar
+ * a mudança, só nomear a regra por trás dela.
+ *
+ * `minItems = 1` porque um cluster é uma regra, não oito: forçar 4 faria o Professor inventar
+ * o que a evidência não sustenta — o mesmo motivo já registrado em `runProfessor`.
+ *
+ * O que NÃO chega aqui: mudança factual. Ela é descartada em `observacoesDaEdicao`, antes de
+ * virar observação. Correção de dado não é regra de escrita.
+ */
+export async function extractFromCluster(input: {
+  tipo: string;
+  n: number;
+  exemplos: { antes: string; depois: string }[];
+  termo?: { de: string; para: string } | null;
   clientNome?: string;
-  notes?: string;
 }): Promise<ExtractedLearning[]> {
+  const pares = input.exemplos
+    .slice(0, 8)
+    .map(
+      (e, i) =>
+        `--- exemplo ${i + 1} ---\nA SALA ESCREVEU: ${e.antes.slice(0, 800)}\nO HUMANO DEIXOU: ${e.depois.slice(0, 800)}`
+    )
+    .join("\n\n");
+
   return runProfessor(
-    `${input.clientNome ? `CLIENTE (nicho de destino dos aprendizados): ${input.clientNome}\n` : ""}Um roteirista humano EDITOU um roteiro produzido pela sala antes de usar.
-As diferenças entre as versões são decisões editoriais deliberadas — extraia o que a sala deveria aprender delas (o que o humano cortou, reforçou, reescreveu e POR QUÊ, quando inferível).
-${input.notes ? `Observações do roteirista: ${input.notes}\n` : ""}
-=== VERSÃO DA SALA ===
-${input.original.slice(0, 15_000)}
+    `${input.clientNome ? `CLIENTE (nicho de destino dos aprendizados): ${input.clientNome}\n` : ""}Um roteirista humano fez a MESMA correção ${input.n} vezes, em roteiros diferentes produzidos pela sala.
+Repetição é o que separa decisão editorial de ajuste circunstancial: isto não é o gosto de um vídeo, é um padrão que a sala erra sempre.
+Tipo de mudança detectado: ${input.tipo}.${
+      input.termo ? `\nTroca recorrente: "${input.termo.de}" vira "${input.termo.para}".` : ""
+    }
 
-=== VERSÃO EDITADA (final humano) ===
-${input.editada.slice(0, 15_000)}
+${pares}
 
-Extraia os aprendizados (só das DIFERENÇAS; ignore o que ficou igual).`
+Nomeie a REGRA por trás dessa correção repetida — o que a sala deve passar a fazer para não errar de novo. Descreva o padrão, nunca o caso: a regra vale para roteiros que estes exemplos nem mencionam. Se os exemplos não sustentarem nenhuma regra generalizável, registre um aprendizado só, dizendo isso.`,
+    1
   );
 }
 

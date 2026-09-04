@@ -5,14 +5,8 @@ import { revalidatePath } from "next/cache";
 import { platformVideoId } from "./video-url";
 import { dedash } from "./pipeline/slop-lint";
 import { rewriteFragment } from "./pipeline/rewrite-fragment";
-import { extractFromEdit, extractFromNotes } from "./pipeline/teach";
-import {
-  isSubstantiveEdit,
-  houveEdicaoHumana,
-  marcarOrigemEdicao,
-  aplicarCorrecaoLiteral,
-  type TraceEdicao,
-} from "./learning-loop";
+import { extractFromNotes, type ExtractedLearning } from "./pipeline/teach";
+import { houveEdicaoHumana, marcarOrigemEdicao, aplicarCorrecaoLiteral, type TraceEdicao } from "./learning-loop";
 import { registrarAtividade, currentUserId } from "./hub";
 import { exigirAcesso, ErroDeAcesso } from "./autorizacao";
 import { createClient } from "./supabase/server";
@@ -215,9 +209,17 @@ export async function finalizeSession(
 
   // Aprendizado supervisionado no encerramento → lição active:false, curadoria no /ensinar.
   // Falha aqui NUNCA bloqueia o encerramento — o feedback já está salvo.
-  //  a) rating>=4 + edição substantiva: aprende do par sala→humano (a nota entra como contexto);
-  //  b) senão, se houver observação escrita: aprende do próprio comentário — independe do rating,
-  //     porque nota crítica com avaliação baixa costuma ser o feedback mais valioso.
+  //
+  // Plano 019, Fase 4: o ramo que aprendia do par sala→humano SAIU daqui. Ele exigia
+  // rating>=4 + >10% do roteiro alterado, e os dois portões estavam invertidos: a nota alta
+  // descartava justamente o roteiro nota 2 muito editado (onde a sala mais errou), e o piso de
+  // 10% descartava a troca de palavra (1 palavra em 3.000 chars = 0,3%), que é o tipo de
+  // edição que MAIS generaliza. Além de depender de Finalizar, que quase nunca acontece.
+  // Quem aprende da edição agora é o cluster (edit-diff.ts + ETL), sem portão de nota e sem
+  // depender deste botão.
+  //
+  // O ramo da OBSERVAÇÃO ESCRITA fica: é um porquê declarado pelo usuário, o sinal mais
+  // barato e mais confiável do produto, e não tem nada a ver com diff.
   try {
     const { data: script } = await appDb
       .from("vm_generated_scripts")
@@ -225,29 +227,19 @@ export async function finalizeSession(
       .eq("id", scriptId)
       .single();
     const trace = (script?.pipeline_trace ?? {}) as TraceEdicao;
-    // original = texto que a sala gerou (preservado pelo updateScript na 1ª edição inline)
-    const original = trace.roteiro_original ?? script?.roteiro ?? "";
-    // editada = versão colada no feedback OU o roteiro atual quando houve edição HUMANA.
-    // O portão é `edicao_humana`, não `roteiro_original` (§16.1): a correção factual também
-    // preserva o original, e lê-lo aqui faria o Professor aprender com a máquina.
     const editada = form.edited_version.trim() || (houveEdicaoHumana(trace) ? script!.roteiro : "");
     const notes = form.notes?.trim() ?? "";
 
-    let learnings: Awaited<ReturnType<typeof extractFromEdit>> = [];
-    let source_kind = "edicao";
-    let source_title = "Edição humana de roteiro (sessão avaliada)";
-    let origem = "edicao";
+    let learnings: ExtractedLearning[] = [];
+    const source_kind = "correcao";
+    const source_title = "Observação ao finalizar sessão";
+    const origem = "correcao";
     let transcript = editada;
 
-    if ((form.rating ?? 0) >= 4 && original && editada && isSubstantiveEdit(original, editada)) {
-      learnings = await extractFromEdit({ original, editada, notes: notes || undefined });
-    } else if (notes.length >= 15) {
+    if (notes.length >= 15) {
       // ponytail: piso de 15 chars descarta "ok"/"bom"; suba se aparecer ruído
-      learnings = await extractFromNotes({ nota: notes, roteiro: editada || original });
-      source_kind = "correcao";
-      source_title = "Observação ao finalizar sessão";
-      origem = "correcao";
-      transcript = editada || original || notes;
+      learnings = await extractFromNotes({ nota: notes, roteiro: editada || script?.roteiro || "" });
+      transcript = editada || script?.roteiro || notes;
     }
 
     if (learnings.length) {
@@ -628,6 +620,22 @@ export async function updateSessionClient(sessionId: string, clientId: string | 
   await exigirAcesso({ sessao: sessionId });
   const { error } = await appDb.from("vm_sessions").update({ client_id: clientId }).eq("id", sessionId);
   if (error) throw new Error(error.message);
+  // O script guarda uma CÓPIA de client_id, gravada uma vez no insert da geração
+  // (pipeline/index.ts). Sem propagar, atribuir cliente depois deixava a sessão certa e o
+  // script errado — e são cinco leitores do campo do script, não um:
+  //   · título da página pública (o sintoma relatado: link sai sem o nome do cliente)
+  //   · vm_lessons no encerramento — lição do cliente virava GLOBAL, contaminando todo mundo
+  //   · flywheel do ETL — sem client_id não há ratio, o outcome nunca amadurece e o roteiro
+  //     publicado não ensina nada
+  //   · vm_edit_observations — cluster perde o escopo de cliente
+  //   · insight client_feedback — a avaliação humana é descartada em silêncio
+  // Os quatro últimos falham calados, que é o motivo de consertar aqui, no único violador do
+  // invariante, e não no título.
+  const { error: scriptErr } = await appDb
+    .from("vm_generated_scripts")
+    .update({ client_id: clientId })
+    .eq("session_id", sessionId);
+  if (scriptErr) throw new Error(scriptErr.message);
   revalidatePath(`/sessions/${sessionId}`);
   revalidatePath("/sessions");
 }

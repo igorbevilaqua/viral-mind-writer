@@ -107,6 +107,7 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
   // o pipeline a resolve (extrai da modelagem e pede confirmação, ou deriva do tema). O gate
   // "nenhum roteiro sem premissa" vive no pipeline, não aqui — o formulário não é pedágio.
   const [premissa, setPremissa] = useState("");
+  const [premissaAberta, setPremissaAberta] = useState(false);
   const [clientId, setClientId] = useState("");
   const [attachments, setAttachments] = useState<NewAttachment[]>([]);
   const [pending, startTransition] = useTransition();
@@ -298,25 +299,40 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
         {/* Premissa: o argumento que o vídeo defende. Preenchida, atravessa o pipeline inteiro
             sem nenhum modelo tocá-la. Em branco, o sistema a define antes de pesquisar.
             Com modelagem o campo SOME: a tese é a do material, extraída e confirmada na sessão. */}
-        {!temModelagem && (
-          <div className="px-5 pb-3 pt-1 border-t border-white/[.05]">
-            <label className="block text-[11px] uppercase tracking-wider text-white/35 mb-1.5">
-              Premissa <span className="normal-case tracking-normal text-white/25">(opcional: o que o vídeo afirma)</span>
-            </label>
-            <textarea
-              value={premissa}
-              onChange={(e) => setPremissa(e.target.value)}
-              rows={2}
-              placeholder="1 ou 2 frases afirmativas. Ex: cada ataque público do Milei é peça de uma negociação comercial que já estava em curso."
-              className="w-full bg-transparent resize-none outline-none text-[13.5px] leading-relaxed placeholder:text-white/25 overflow-y-auto"
-            />
-            <p className="text-[11px] text-white/25">
-              {premissa.trim()
-                ? "A sala vai seguir esta premissa literalmente: narrativa, pesquisa e hook servem a ela."
-                : "Em branco, a sala define a premissa antes de pesquisar, e mostra qual foi."}
-            </p>
-          </div>
-        )}
+        {/* Colapsado em uma linha até ser clicado: vazio é o caso comum (a sala resolve sozinha),
+            e o campo aberto sem uso é o que polui a tela. Premissa vinda do ideador reabre sozinha. */}
+        {!temModelagem &&
+          (premissaAberta || premissa ? (
+            <div className="px-5 pb-3 pt-1 border-t border-white/[.05]">
+              <label className="block text-[11px] uppercase tracking-wider text-white/35 mb-1.5">
+                Premissa <span className="normal-case tracking-normal text-white/25">(opcional: o que o vídeo afirma)</span>
+              </label>
+              <textarea
+                autoFocus
+                value={premissa}
+                onChange={(e) => setPremissa(e.target.value)}
+                rows={2}
+                placeholder="1 ou 2 frases afirmativas. Ex: cada ataque público do Milei é peça de uma negociação comercial que já estava em curso."
+                className="w-full bg-transparent resize-none outline-none text-[13.5px] leading-relaxed placeholder:text-white/25 overflow-y-auto"
+              />
+              <p className="text-[11px] text-white/25">
+                {premissa.trim()
+                  ? "A sala vai seguir esta premissa literalmente: narrativa, pesquisa e hook servem a ela."
+                  : "Em branco, a sala define a premissa antes de pesquisar, e mostra qual foi."}
+              </p>
+            </div>
+          ) : (
+            <button
+              onClick={() => setPremissaAberta(true)}
+              title="Fixar a tese que o vídeo defende. Em branco, a sala define sozinha."
+              className="flex w-full items-center gap-2 px-5 py-2.5 border-t border-white/[.05] text-left text-[12px] text-white/30 hover:text-white/60 transition-colors"
+            >
+              <svg width="11" height="11" viewBox="0 0 16 16" fill="none" className="shrink-0">
+                <path d="M8 3v10M3 8h10" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+              </svg>
+              Definir a premissa <span className="text-white/20">(opcional — o que o vídeo afirma)</span>
+            </button>
+          ))}
         <div className="flex items-center gap-2.5 px-3.5 py-3 border-t border-white/[.07] bg-white/[.02] flex-wrap">
           <select
             value={clientId}

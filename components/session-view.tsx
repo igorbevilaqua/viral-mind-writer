@@ -1717,8 +1717,8 @@ function ScriptCard({
             <textarea
               value={draft.fontes}
               onChange={(e) => setDraft((d) => ({ ...d, fontes: e.target.value }))}
-              // 3 linhas por fonte (nome, link, "Sustenta:") — com rows={4} só a primeira caberia.
-              rows={9}
+              // 1 linha por fonte (o que ela comprova + link), com linha em branco entre elas.
+              rows={7}
               className={`${taCls} mt-2.5 font-mono text-[11.5px]`}
             />
           ) : (

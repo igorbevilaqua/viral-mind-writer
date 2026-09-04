@@ -1,34 +1,20 @@
 import { describe, expect, it } from "vitest";
-import { attributeLessons, changedRatio, computeCalibration, isSubstantiveEdit, rankHookMechanisms, hookMechanismOutcomes } from "@/lib/learning-loop";
+import { attributeLessons, changedRatio, computeCalibration, marcarOrigemEdicao, rankHookMechanisms, hookMechanismOutcomes, textoPreHumano } from "@/lib/learning-loop";
 
 // WP-E: funções puras do ciclo de autoaprimoramento (plano 012, onda 3)
 
-describe("isSubstantiveEdit / changedRatio", () => {
+// `isSubstantiveEdit` saiu no plano 019, Fase 4 (o portão de 10% descartava a troca de
+// palavra). `changedRatio` continua, agora como distância de pareamento do edit-diff.
+describe("changedRatio", () => {
   const base = Array.from({ length: 50 }, (_, i) => `palavra${i}`).join(" ");
 
-  it("texto idêntico → 0, não substantivo", () => {
+  it("texto idêntico → 0", () => {
     expect(changedRatio(base, base)).toBe(0);
-    expect(isSubstantiveEdit(base, base)).toBe(false);
   });
 
-  it("mudança pequena (1 palavra em 50) → abaixo do limiar de 10%", () => {
-    const editada = base.replace("palavra7", "trocada7");
-    expect(isSubstantiveEdit(base, editada)).toBe(false);
-  });
-
-  it("reescrita de metade do texto → substantivo", () => {
-    const metade = base.split(" ").slice(0, 25).join(" ");
-    const editada = `${metade} ${Array.from({ length: 25 }, (_, i) => `novotexto${i}`).join(" ")}`;
-    expect(isSubstantiveEdit(base, editada)).toBe(true);
-  });
-
-  it("corte de metade do texto → substantivo (mede pela versão maior)", () => {
+  it("corte de metade do texto mede pela versão maior", () => {
     const editada = base.split(" ").slice(0, 25).join(" ");
     expect(changedRatio(base, editada)).toBeGreaterThan(0.4);
-  });
-
-  it("strings vazias → não substantivo", () => {
-    expect(isSubstantiveEdit("", "")).toBe(false);
   });
 
   it("reordenação pura conta como igual (limitação deliberada do multiset)", () => {

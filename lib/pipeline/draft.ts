@@ -4,6 +4,20 @@ import { anexoModelagem, anexoReplicar } from "./replicar";
 import { FRASE_LONGA, MAX_LONGAS_SEGUIDAS, PARAGRAFO_MAX_PALAVRAS, type EcoNumerico, type ParagrafoLongo, type SequenciaLonga } from "./slop-lint";
 import type { GenerationContext, ScriptSections } from "./types";
 
+// Bloco FONTES, o mesmo nos dois formatos de saída — só muda como o texto se chama lá.
+// Uma linha por fonte: a afirmação e o link. O nome do veículo saiu porque quem lê o roteiro
+// quer saber o QUE a fonte comprova, não quem a publicou — o domínio da URL já diz isso.
+const fontesFormat = (alvo: string) => `## FONTES
+(Uma linha por fonte e nada mais: UMA frase (até 25 palavras) dizendo qual afirmação ${alvo} essa fonte comprova, com o dado e onde ele aparece — quem for conferir precisa saber o que procurar na página —, seguida de dois-pontos e do link completo (URL) (o dossiê traz os links). Sem rótulo antes da frase e sem o nome do veículo: a linha começa direto na afirmação. Uma linha em branco antes da próxima fonte.
+Uma frase só, nunca um parágrafo. Não copie a manchete e NUNCA diga de que seção do dossiê veio.
+Fonte que sustenta mais de uma afirmação: a MESMA frase cobre as duas. Nunca atribua a uma fonte afirmação que ela não sustenta.
+O dossiê NÃO é fonte: use o link do veículo ou instituição original que ele aponta.
+Fonte que veio de material do brief e não tem URL entra só com a frase, sem link e sem dois-pontos no fim.
+Exemplo:
+Os 74% de profissionais que trocam de emprego em dois anos, citado no segundo beat: https://theharrispoll.com/exemplo
+
+A data da audiência e o nome do juiz que negou o pedido: https://nytimes.com/exemplo)`;
+
 // Formato final do roteiro montado (usado por revisão e humanização).
 export const OUTPUT_FORMAT = `Responda EXATAMENTE neste formato (headers literais):
 
@@ -24,20 +38,7 @@ export const OUTPUT_FORMAT = `Responda EXATAMENTE neste formato (headers literai
 ## COMANDO
 (o CTA final, com benefício explícito escrito na própria frase)
 
-## FONTES
-(Um bloco por fonte, TRÊS linhas e nada mais: o nome do veículo ou instituição; o link completo (URL) na linha seguinte; e "Sustenta: " seguido de UMA frase (até 25 palavras) dizendo qual afirmação do roteiro essa fonte comprova, com o dado e onde ele aparece — quem for conferir precisa saber o que procurar na página. Uma linha em branco antes da próxima fonte.
-Uma frase só, nunca um parágrafo. Não copie a manchete e NUNCA diga de que seção do dossiê veio.
-Fonte que sustenta mais de uma afirmação: a MESMA frase cobre as duas. Nunca atribua a uma fonte afirmação que ela não sustenta.
-O dossiê NÃO é fonte: cite o veículo ou instituição original que ele aponta, com o link dele.
-Fonte que veio de material do brief e não tem URL entra com o nome e o "Sustenta:", sem link.
-Exemplo:
-Harris Poll
-https://theharrispoll.com/exemplo
-Sustenta: os 74% de profissionais que trocam de emprego em dois anos, citado no segundo beat.
-
-New York Times
-https://nytimes.com/exemplo
-Sustenta: a data da audiência e o nome do juiz que negou o pedido.)`;
+${fontesFormat("do roteiro")}`;
 
 // Formato do roteirista-chefe: ele escreve só o corpo — hook e comando vêm dos especialistas.
 const WRITER_FORMAT = `Responda EXATAMENTE neste formato (headers literais):
@@ -48,20 +49,7 @@ const WRITER_FORMAT = `Responda EXATAMENTE neste formato (headers literais):
 ## CORPO
 (o corpo do roteiro, começando imediatamente após o hook, pronto para ser lido em voz alta; NÃO escreva o hook nem o CTA)
 
-## FONTES
-(Um bloco por fonte, TRÊS linhas e nada mais: o nome do veículo ou instituição; o link completo (URL) na linha seguinte (o dossiê traz os links); e "Sustenta: " seguido de UMA frase (até 25 palavras) dizendo qual afirmação do corpo essa fonte comprova, com o dado e onde ele aparece — quem for conferir precisa saber o que procurar na página. Uma linha em branco antes da próxima fonte.
-Uma frase só, nunca um parágrafo. Não copie a manchete e NUNCA diga de que seção do dossiê veio.
-Fonte que sustenta mais de uma afirmação: a MESMA frase cobre as duas. Nunca atribua a uma fonte afirmação que ela não sustenta.
-O dossiê NÃO é fonte: cite o veículo ou instituição original que ele aponta, com o link dele.
-Fonte que veio de material do brief e não tem URL entra com o nome e o "Sustenta:", sem link.
-Exemplo:
-Harris Poll
-https://theharrispoll.com/exemplo
-Sustenta: os 74% de profissionais que trocam de emprego em dois anos, citado no segundo beat.
-
-New York Times
-https://nytimes.com/exemplo
-Sustenta: a data da audiência e o nome do juiz que negou o pedido.)`;
+${fontesFormat("do corpo")}`;
 
 // Bloco compartilhado da sala: playbooks + estilo + proibições (sem persona — cada agente traz a sua).
 // Dieta do playbook: o PLAYBOOK DE STORYTELLING (~52KB) saiu daqui — a estrutura é decisão do
@@ -566,7 +554,7 @@ export function stripLeadingHook(roteiro: string, hook: string | null): string {
 
 // FONTES é procedência, não prosa. Revisão (critique.ts) e humanização (humanize.ts) recebem o
 // OUTPUT_FORMAT e reescrevem o roteiro INTEIRO — mas nenhuma das duas viu o dossiê nem abriu a
-// URL, então reescrever a linha "Sustenta:" ou trocar um link é assinar o que não se apurou.
+// URL, então reescrever a frase da fonte ou trocar um link é assinar o que não se apurou.
 // É o mesmo furo que `sanitizarVeredicto` fecha na verificação: quem não apurou não assina.
 // Vale o bloco do rascunho, escrito pelo único agente que teve o dossiê em mãos — e nada que os
 // dois modelos ponham ali sobrevive, nem uma seção inventada onde o rascunho não tinha fonte
