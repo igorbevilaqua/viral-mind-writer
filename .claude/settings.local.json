@@ -50,7 +50,24 @@
       "Bash(node codex-updates/cli.mjs add --type improvement --summary \"Sistema renomeado para CODEX - Viral Mind \\(nav, login, título da aba e pasta do projeto\\)\")",
       "Bash(cp -R \"/Users/igorbevilaqua/.claude/projects/-Users-igorbevilaqua-Projetos-Viral-Mind-Writer\" \"/Users/igorbevilaqua/.claude/projects/-Users-igorbevilaqua-Projetos-CODEX---Viral-Mind\")",
       "Bash(mv \"/Users/igorbevilaqua/Projetos/Viral Mind Writer\" \"/Users/igorbevilaqua/Projetos/CODEX - Viral Mind\")",
-      "Read(//Users/igorbevilaqua/Projetos/CODEX - Viral Mind/**)"
+      "Read(//Users/igorbevilaqua/Projetos/CODEX - Viral Mind/**)",
+      "Bash(rsync -az --itemize-changes -e \"ssh -i ~/.ssh/vml_revisor_vps -o BatchMode=yes\" --exclude node_modules --exclude .next --exclude .git --exclude '.env*.local' --exclude '*.tsbuildinfo' --exclude 'Dashboard Viral Media Labs*' ./ root@179.197.76.53:/opt/painel-vm/)",
+      "Bash(ssh -i ~/.ssh/vml_revisor_vps -o BatchMode=yes root@179.197.76.53 'cd /opt/painel-vm && npm ci 2>&1 | tail -3 && npm run build 2>&1 | tail -12')",
+      "Bash(ssh -i ~/.ssh/vml_revisor_vps -o BatchMode=yes root@179.197.76.53 'systemctl restart painel && sleep 4 && systemctl is-active painel && systemctl status painel --no-pager | head -12')",
+      "Bash(curl -s -o /dev/null -w \"login → %{http_code}\\\\n\" --max-time 20 https://adm.viralmindlabs.com/login)",
+      "Bash(curl -s -o /dev/null -w \"clientes \\(sem sessao, deve redirecionar\\) → %{http_code} %{redirect_url}\\\\n\" --max-time 20 https://adm.viralmindlabs.com/clientes)",
+      "Bash(curl -s --max-time 20 https://adm.viralmindlabs.com/login)",
+      "Bash(cd \"/Users/igorbevilaqua/Projetos/Painel VM\" && grep -oE 'https://[a-z0-9]+\\\\.supabase\\\\.co' .env.local | sort -u; echo \"--- vars definidas \\(sem valores\\) ---\"; sed -E 's/=.*/=/' .env.local)",
+      "Bash(curl -s -o /dev/null -w \"codex.viralmindlabs.com/login  → %{http_code}\\\\n\" --max-time 20 https://codex.viralmindlabs.com/login)",
+      "Bash(curl -s -o /dev/null -w \"adm.viralmindlabs.com/login    → %{http_code}\\\\n\" --max-time 20 https://adm.viralmindlabs.com/login)",
+      "Bash(ssh -i ~/.ssh/vml_revisor_vps -o BatchMode=yes root@179.197.76.53 'grep -c \"vml-card\" /opt/painel-vm/app/globals.css && systemctl is-active painel')",
+      "Bash(sed -i '' 's|import { sc } from \"./modelagens/buscar\";|import { sc } from \"./scrapecreators\";|' lib/carrossel.ts)",
+      "Bash(sed -i '' 's|import { sc } from \"../modelagens/buscar\";|import { sc } from \"../scrapecreators\";|' lib/pipeline/kasparov-video.ts)",
+      "Bash(sed -i '' 's|import { sc } from \"@/lib/modelagens/buscar\";|import { sc } from \"@/lib/scrapecreators\";|' tests/scrapecreators-sem-credito.test.ts)",
+      "Bash(npm test *)"
+    ],
+    "additionalDirectories": [
+      "/Users/igorbevilaqua/Projetos/CODEX - Viral Mind"
     ]
   },
   "mcpServers": {

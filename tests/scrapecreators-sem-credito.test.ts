@@ -7,7 +7,7 @@ beforeAll(() => {
 });
 afterEach(() => vi.unstubAllGlobals());
 
-import { sc } from "@/lib/modelagens/buscar";
+import { sc } from "@/lib/scrapecreators";
 
 const responde = (status: number, body: unknown) =>
   vi.stubGlobal("fetch", vi.fn(async () => new Response(JSON.stringify(body), { status })));

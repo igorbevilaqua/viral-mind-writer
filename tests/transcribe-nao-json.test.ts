@@ -45,4 +45,21 @@ describe("fetchTranscript: Instagram", () => {
     vi.stubGlobal("fetch", async () => new Response(HTML_502, { status: 502 }));
     await expect(fetchTranscript(REEL)).rejects.toThrow(/ScrapeCreators respondeu 502 sem JSON/);
   });
+
+  // O bug relatado: o usuário viu "Looks like you're out of credits :(" — o inglês do
+  // serviço — numa tela em português, porque este caminho tinha o próprio fetch e não passava
+  // pelo `sc`, que já traduzia o 402.
+  test("conta sem crédito: a mensagem é a nossa, em português, e não o inglês do serviço", async () => {
+    vi.stubGlobal("fetch", async (input: string | URL | Request) =>
+      String(input).includes("supadata")
+        ? new Response(HTML_502, { status: 502 })
+        : Response.json(
+            { success: false, message: "Looks like you're out of credits :( You'll need to buy more." },
+            { status: 402 }
+          )
+    );
+    const erro = await fetchTranscript(REEL).catch((e: Error) => e.message);
+    expect(erro).toMatch(/sem créditos/);
+    expect(erro).not.toMatch(/out of credits/);
+  });
 });

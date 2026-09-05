@@ -10,9 +10,7 @@
 // id/url/title/viewCount — sem canal, data, duração ou inscritos, ou seja, sem nada do
 // que o ranking precisa. Enriquecer custaria 1 crédito por vídeo (61 contra 1 da busca).
 
-import { jsonOuErro } from "../transcribe";
-
-const BASE = "https://api.scrapecreators.com";
+import { creditosVistos, sc } from "../scrapecreators";
 
 export type Plataforma = "tiktok" | "instagram";
 
@@ -47,44 +45,7 @@ export interface Busca {
 }
 
 const CONCORRENCIA = 8;
-const ALERTA_CREDITOS = 2000;
 const IG_PAGINA_MAX = 11; // page >= 12 responde 400
-
-// ─── HTTP ────────────────────────────────────────────────────────────────────
-
-// A resposta traz o saldo; sem logar isso os créditos acabam em silêncio no meio de uma
-// sugestão e a caça simplesmente para de trazer resultado, sem erro visível.
-let creditosVistos: number | null = null;
-
-export async function sc<T>(path: string, params: Record<string, string | number>, sinal?: AbortSignal): Promise<T> {
-  const chave = process.env.SCRAPECREATORS_API_KEY;
-  if (!chave) throw new Error("SCRAPECREATORS_API_KEY não configurada");
-
-  const url = new URL(path, BASE);
-  for (const [k, v] of Object.entries(params)) url.searchParams.set(k, String(v));
-
-  const res = await fetch(url, { headers: { "x-api-key": chave }, signal: sinal });
-  if (!res.ok) {
-    // O status sozinho esconde o motivo, e era só ele que chegava à tela: um carrossel morreu
-    // com "ScrapeCreators respondeu 402 em /v1/instagram/post" e a sugestão de colar o texto à
-    // mão — quando o fato acionável era que a CONTA está sem crédito e nada que passa por aqui
-    // funciona (busca, transcrição, carrossel). 402 tem um significado só nesta API, então é
-    // dito em português; o resto herda a mensagem do próprio serviço, como
-    // `transcribeViaScrapeCreators` já fazia.
-    if (res.status === 402)
-      throw new Error("a conta ScrapeCreators está sem créditos: nenhuma busca, transcrição ou carrossel funciona até recarregar em scrapecreators.com");
-    const corpo = await jsonOuErro(res, "ScrapeCreators");
-    throw new Error(corpo.message ?? corpo.error ?? `ScrapeCreators respondeu ${res.status} em ${path}`);
-  }
-
-  const data = (await res.json()) as T & { credits_remaining?: number };
-  if (typeof data.credits_remaining === "number") {
-    creditosVistos = data.credits_remaining;
-    if (data.credits_remaining < ALERTA_CREDITOS)
-      console.warn(`[modelagens] créditos ScrapeCreators baixos: ${data.credits_remaining}`);
-  }
-  return data;
-}
 
 // ─── TikTok ──────────────────────────────────────────────────────────────────
 
@@ -251,5 +212,5 @@ export async function buscarCandidatos(queries: string[], opts: BuscaOpts = {}):
   if (falhas.length)
     console.warn(`[modelagens] ${falhas.length}/${tarefas.length} buscas falharam`, falhas.slice(0, 3));
 
-  return { candidatos: [...porChave.values()], creditos_restantes: creditosVistos, falhas };
+  return { candidatos: [...porChave.values()], creditos_restantes: creditosVistos(), falhas };
 }

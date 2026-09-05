@@ -1,5 +1,5 @@
 import { ANALYST_MODEL, trackedCreate, type UsageLog } from "./anthropic";
-import { sc } from "./modelagens/buscar";
+import { sc } from "./scrapecreators";
 
 // Carrossel do Instagram como fonte de modelagem.
 //

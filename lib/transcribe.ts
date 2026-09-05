@@ -1,5 +1,6 @@
 import { platformVideoId, youtubeId } from "./video-url";
 import { viralData } from "./db";
+import { jsonOuErro, sc } from "./scrapecreators";
 
 // Transcrição de links de vídeo — fonte única usada pela rota /api/transcribe-link
 // (fluxo Ensinar) e pela modelagem no pipeline (busca a transcrição na hora de conjurar).
@@ -22,20 +23,9 @@ function decodeEntities(s: string) {
 
 type CaptionTrack = { baseUrl: string; languageCode: string; kind?: string };
 
-// Erro upstream costuma vir em HTML (página 502/504, challenge do Cloudflare, redirect pra
-// landing page). `res.json()` direto estoura "Unexpected token '<', "<!DOCTYPE "..." e é ESSE
-// texto que chega ao usuário na tela — em vez do status do serviço e do que fazer a respeito.
-export async function jsonOuErro(res: Response, quem: string) {
-  const body = await res.text();
-  try {
-    return JSON.parse(body);
-  } catch {
-    throw new Error(
-      `${quem} respondeu ${res.status} sem JSON (${body.slice(0, 120).replace(/\s+/g, " ").trim()}) — ` +
-        `provável instabilidade do serviço; tente de novo ou cole a transcrição manualmente`
-    );
-  }
-}
+// Mora em lib/scrapecreators.ts junto do cliente que mais depende dela. Reexportado porque
+// Supadata e YouTube (aqui embaixo) também passam por ela, e o teste a importa por este nome.
+export { jsonOuErro };
 
 async function transcribeYouTube(videoId: string): Promise<Transcript> {
   const res = await fetch("https://www.youtube.com/youtubei/v1/player?prettyPrint=false", {
@@ -101,18 +91,12 @@ async function transcribeViaSupadata(url: string, platform: string): Promise<Tra
 // Plano B do Supadata para Instagram, com a chave que a caça de modelagens JÁ usa: 1 crédito
 // por reel. Existe porque o Supadata é o elo mais fraco do fluxo (plano gratuito, e devolvendo
 // HTML de gateway em produção) — e sem plano B a modelagem morre pedindo transcrição manual.
+//
+// Passa pelo `sc` compartilhado (lib/scrapecreators.ts). Tinha o próprio fetch, com o próprio
+// tratamento de erro, e por isso continuou devolvendo o inglês do serviço ("Looks like you're
+// out of credits") na tela depois que o `sc` já traduzia o 402.
 async function transcribeViaScrapeCreators(url: string): Promise<Transcript> {
-  const key = process.env.SCRAPECREATORS_API_KEY;
-  if (!key) throw new Error("SCRAPECREATORS_API_KEY não configurada");
-  const res = await fetch(
-    `https://api.scrapecreators.com/v2/instagram/media/transcript?url=${encodeURIComponent(url)}`,
-    { headers: { "x-api-key": key } }
-  );
-  const data = await jsonOuErro(res, "ScrapeCreators");
-  if (!res.ok) throw new Error(data.message ?? data.error ?? `ScrapeCreators respondeu ${res.status}`);
-  // crédito acabando some em silêncio: sem este log a transcrição volta a falhar sem motivo visível
-  if (typeof data.credits_remaining === "number" && data.credits_remaining < 100)
-    console.warn(`[transcribe] créditos ScrapeCreators baixos: ${data.credits_remaining}`);
+  const data = await sc<{ transcripts?: { text?: string }[] }>("/v2/instagram/media/transcript", { url });
   const text = data.transcripts?.[0]?.text;
   if (typeof text !== "string" || !text.trim())
     throw new Error("ScrapeCreators não retornou transcrição; cole a transcrição manualmente");

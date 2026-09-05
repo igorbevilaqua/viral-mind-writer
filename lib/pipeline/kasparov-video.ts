@@ -2,7 +2,7 @@ import { appDb, viralData } from "../db";
 import { fmtNum } from "../format";
 import { VIDEO_URL_RE, platformVideoId } from "../video-url";
 import { autopsiaDeUrl, transcricaoDeUrl, type ModelagemResult } from "./modelagem";
-import { sc } from "../modelagens/buscar";
+import { sc } from "../scrapecreators";
 import type { UsageLog } from "../anthropic";
 
 // ────────────────────────────────────────────────────────────────────────────
