@@ -396,7 +396,8 @@ export async function runPipeline(
 
     // ── Hook e comando em paralelo, ambos vendo o roteiro pronto ──
     emit({ type: "phase", phase: "hook_comando" });
-    const [hookRes, comando] = await Promise.all([designHook(ctx, corpo), writeComando(ctx, corpo)]);
+    const recentes = await hookRecentes(ctx.clientId, sessionId);
+    const [hookRes, comando] = await Promise.all([designHook(ctx, corpo, recentes), writeComando(ctx, corpo)]);
 
     // hook escolhido x abertura do corpo, ANTES da montagem: logo abaixo o hook é colado na frente
     // do corpo de propósito, e depois disso os dois lados deixam de ser distinguíveis.
@@ -478,6 +479,10 @@ export async function runPipeline(
             hook_racional: hookRes.racional,
             // Fase 3: mecanismo do hook (taxonomia canônica) → o flywheel atribui ratio × mecanismo
             hook_mecanismo: hookRes.mecanismo,
+            // WP-F: o que o anti-colapso viu e por que escolheu — sem isso "por que não Contraste
+            // Extremo de novo" não tem resposta no rastro.
+            hook_recentes: recentes,
+            hook_motivo: hookRes.motivo,
             hook_formato: hookRes.formato,
             hook_mecanismos_variantes: hookRes.mecanismosVariantes,
             // 015 §4.1: o rastro de proveniência. Custo zero de LLM — é serialização do que os
@@ -616,6 +621,27 @@ export async function runPipeline(
     await appDb.from("vm_sessions").update({ debug }).eq("id", sessionId);
     await registrarAtividade("erro", { sessaoId: sessionId, userId: hubUser, payload: { error_message: message, etapa: currentPhase } });
     emit({ type: "error", message });
+  }
+}
+
+// WP-F: mecanismos dos últimos 5 hooks deste cliente (fora da sessão atual — "gerar nova versão"
+// não pode penalizar a própria escolha). Alimenta o anti-colapso do selectHook. Fail-soft:
+// sem cliente ou com erro devolve [] e a seleção cai no lift puro — nunca derruba a geração.
+async function hookRecentes(clientId: string | null, sessionId: string): Promise<string[]> {
+  if (!clientId) return [];
+  try {
+    const { data, error } = await appDb
+      .from("vm_generated_scripts")
+      .select("mecanismo:pipeline_trace->>hook_mecanismo")
+      .eq("client_id", clientId)
+      .neq("session_id", sessionId)
+      .order("created_at", { ascending: false })
+      .limit(5);
+    if (error) throw error;
+    return ((data ?? []) as unknown as { mecanismo: string | null }[]).map((r) => r.mecanismo).filter((m): m is string => !!m);
+  } catch (e) {
+    console.warn("hook: falha ao buscar mecanismos recentes do cliente, seguindo sem anti-colapso", e);
+    return [];
   }
 }
 

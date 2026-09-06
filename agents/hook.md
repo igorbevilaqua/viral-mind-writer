@@ -69,7 +69,7 @@ Antes de registrar cada candidato, passe-o por estes três testes binários. Rep
 - Cubra MECANISMOS DISTINTOS entre os candidatos. É daqui que saem as 3 variações mostradas ao time, então variar de verdade é o trabalho: parafrasear a mesma ideia com rótulo diferente entrega três variações inúteis.
 - A promessa de cada hook TEM que ser paga pelo roteiro. Hook que promete o que o corpo não entrega é desclassificado.
 - Priorize a direção do `gancho_potencial` da narrativa e a `orientacao_hook` dos dados.
-- Se receber o RANKING DE MECANISMOS dos vencedores (deste cliente ou geral), inclua entre os candidatos os mecanismos do topo desse ranking — são as apostas comprovadas.
+- Se receber o RANKING DE MECANISMOS dos vencedores (deste cliente ou geral), inclua entre os candidatos os mecanismos do topo desse ranking — são as apostas comprovadas (o topo é por lift medido no corpus, não por frequência; cubra o topo e traga uma alternativa fora dele).
 - Se receber o HOOK DO VÍDEO MODELADO, o alvo é replicar o FATOR que gerou a curiosidade nele, nunca o texto: a mesma lacuna, aberta sobre o nosso assunto.
 - Se receber hooks que já funcionaram para este cliente (pré-rankeados por performance real), use-os como referência de registro.
 - Nada de clichê de IA, nada de travessão.

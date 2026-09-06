@@ -26,9 +26,10 @@ export const HOOK_FORMATS = ["Personagem Central", "Visual", "Nenhum"] as const;
 export type HookFormat = (typeof HOOK_FORMATS)[number];
 
 // Seleção do hook a partir dos candidatos gerados (função pura, testável).
-// Regra: o PRINCIPAL é o candidato cujo mecanismo pontua mais alto no ranking de
-// vencedores (garante repetição do padrão comprovado); as VARIANTES são candidatos
-// de mecanismos DISTINTOS entre si (garante diversidade). Sem ranking (cliente novo /
+// Regra (WP-F, plano 020): score = lift_lb do mecanismo × 0.6^usos recentes. Lift em vez de
+// share porque share mede prevalência, não eficácia (Contraste Extremo: 93% dos hooks do Codex,
+// lift 1.04 sem evidência). A penalidade por uso recente existe porque, com UM só mecanismo
+// acima de 1 no corpus, lift puro trocaria um monopólio por outro. Sem ranking (cliente novo /
 // adaptação), cai na ordem em que o modelo devolveu.
 export interface HookCandidate {
   hook: string;
@@ -102,21 +103,61 @@ export function filtrarCandidatos(
   if (aprovados.length >= minimo) return { candidatos: aprovados, descartados };
   return { candidatos: [...aprovados, ...reprovados], descartados };
 }
+const PENALIDADE_USO = 0.6; // score × 0.6 por cada aparição nos últimos hooks do cliente
+const FOLGA_FORA_DO_RANKING = 0.05; // fora do top-6/n<10: abaixo de quem tem evidência, nunca zero
+const LIMIAR_REGRA_DURA = 3; // mecanismo em ≥3 dos últimos 5 não é principal se houver alternativa forte
+const ALTERNATIVA_FORTE = 0.8; // ...alternativa = base ≥ 0.8 × base do topo
+
+const fmtLift = (n: number) => n.toFixed(2).replace(".", ",");
+
 export function selectHook(
   candidatos: HookCandidate[],
-  rankShare: Map<string, number>,
-  nVariantes = 3
-): { principal: HookCandidate; variantes: HookCandidate[] } | null {
+  rankScore: Map<string, number>, // mecanismo → lift_lb (IC inferior do lift)
+  opts: { recentes?: string[]; nVariantes?: number } = {}
+): { principal: HookCandidate; variantes: HookCandidate[]; motivo: string } | null {
+  const { recentes = [], nVariantes = 3 } = opts;
   const valid = candidatos.filter((c) => c?.hook?.trim());
   if (!valid.length) return null;
-  const score = (c: HookCandidate) => rankShare.get(c.mecanismo) ?? 0;
+
+  // Base: lift_lb do ranking. Fora dele, o menor lift_lb presente menos a folga — zero nunca
+  // seria escolhido, empate daria a quem não tem evidência o mesmo peso de quem tem.
+  // Piso positivo: base negativa inverteria a penalidade (mais usos → score maior).
+  const piso = rankScore.size ? Math.max(0.01, Math.min(...rankScore.values()) - FOLGA_FORA_DO_RANKING) : 0;
+  const base = (m: string) => rankScore.get(m) ?? piso;
+  const usos = (m: string) => recentes.filter((r) => r === m).length;
+  const score = (c: HookCandidate) => base(c.mecanismo) * PENALIDADE_USO ** usos(c.mecanismo);
+
   // ordem estável: score desc, preservando a ordem original no empate
-  const ordered = valid.map((c, i) => ({ c, i })).sort((a, b) => score(b.c) - score(a.c) || a.i - b.i).map((x) => x.c);
-  const principal = ordered[0];
+  const ordenar = (f: (c: HookCandidate) => number) =>
+    valid.map((c, i) => ({ c, i })).sort((a, b) => f(b.c) - f(a.c) || a.i - b.i).map((x) => x.c);
+  const ordered = ordenar(score);
+  const topo = ordenar((c) => base(c.mecanismo))[0]; // maior score BRUTO, sem penalidade
+
+  // Regra dura: o topo bruto saturado (≥3 dos últimos 5) só cede se houver alternativa com
+  // evidência comparável — sem ela, repetir o que funciona ainda é a melhor aposta. Com 0.6^usos
+  // e 5 recentes a penalidade já garante isso sozinha; a regra é o invariante que sobrevive se
+  // alguém afrouxar a constante.
+  const saturado = usos(topo.mecanismo) >= LIMIAR_REGRA_DURA;
+  const alternativaForte = valid.some(
+    (c) => c.mecanismo !== topo.mecanismo && base(c.mecanismo) >= ALTERNATIVA_FORTE * base(topo.mecanismo)
+  );
+  const principal =
+    (saturado && alternativaForte ? ordered.find((c) => c.mecanismo !== topo.mecanismo) : undefined) ?? ordered[0];
+
+  // motivo: só o que veio do ranking ou dos recentes — nada inventado
+  const lb = rankScore.get(principal.mecanismo);
+  let motivo: string;
+  if (!rankScore.size) motivo = "sem ranking: ordem do modelo";
+  else if (principal.mecanismo !== topo.mecanismo)
+    motivo =
+      `${topo.mecanismo} penalizado: ${usos(topo.mecanismo)} dos últimos ${recentes.length} hooks deste cliente; ` +
+      `principal ${principal.mecanismo}${lb != null ? ` (IC inferior do lift ${fmtLift(lb)})` : " (fora do ranking)"}`;
+  else if (lb != null) motivo = `${principal.mecanismo}: IC inferior do lift ${fmtLift(lb)}`;
+  else motivo = `${principal.mecanismo}: fora do ranking (sem evidência mínima), ordem do modelo`;
 
   // variantes: mecanismos distintos entre si E do principal, priorizando os mais bem
   // ranqueados; completa com o que sobrar se faltarem mecanismos distintos.
-  const restantes = ordered.slice(1);
+  const restantes = ordered.filter((c) => c !== principal);
   const variantes: HookCandidate[] = [];
   const usados = new Set<string>([principal.mecanismo]);
   for (const c of restantes) {
@@ -129,5 +170,5 @@ export function selectHook(
     if (variantes.length === nVariantes) break;
     if (!variantes.includes(c)) variantes.push(c);
   }
-  return { principal, variantes };
+  return { principal, variantes, motivo };
 }

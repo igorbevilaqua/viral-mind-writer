@@ -11,30 +11,92 @@ import {
 const c = (hook: string, mecanismo: string): HookCandidate => ({ hook, mecanismo });
 
 describe("selectHook", () => {
-  it("principal = candidato do mecanismo mais bem ranqueado", () => {
-    const cands = [c("a", "Urgência"), c("b", "Contraste Extremo"), c("d", "Revelação Secreta"), c("e", "Superlativo")];
-    const rank = new Map([["Contraste Extremo", 0.58], ["Revelação Secreta", 0.26], ["Superlativo", 0.16]]);
+  // ranking global de set/2026 (lift_lb): o único acima de 1 é Conflito Declarado
+  const rank = new Map([
+    ["Conflito Declarado", 1.13],
+    ["Urgência", 1.06],
+    ["Contraste Extremo", 1.0],
+    ["Elemento Controverso", 1.0],
+    ["Apelo à Autoridade", 0.96],
+    ["Ultra Especificidade", 0.95],
+  ]);
+  const cands = [c("ce", "Contraste Extremo"), c("cd", "Conflito Declarado"), c("ur", "Urgência"), c("rs", "Revelação Secreta"), c("ee", "Ultra Especificidade")];
+
+  it("principal = candidato do mecanismo de maior lift_lb; variantes distintas", () => {
     const out = selectHook(cands, rank)!;
-    expect(out.principal.hook).toBe("b"); // Contraste Extremo, maior share
+    expect(out.principal.hook).toBe("cd");
     expect(out.variantes).toHaveLength(3);
-    // variantes de mecanismos distintos
     expect(new Set(out.variantes.map((v) => v.mecanismo)).size).toBe(3);
+    expect(out.variantes[0].hook).toBe("ur"); // 2º maior lift_lb
+    expect(out.motivo).toBe("Conflito Declarado: IC inferior do lift 1,13");
   });
 
-  it("sem ranking → ordem estável (principal = 1º candidato)", () => {
-    const cands = [c("a", "Urgência"), c("b", "Contraste Extremo"), c("d", "Revelação Secreta"), c("e", "Superlativo")];
+  it("recentes=[] reproduz o comportamento anterior (só lift)", () => {
+    expect(selectHook(cands, rank, { recentes: [] })).toEqual(selectHook(cands, rank));
+  });
+
+  it("sem ranking → ordem estável (principal = 1º candidato) e motivo honesto", () => {
     const out = selectHook(cands, new Map())!;
-    expect(out.principal.hook).toBe("a");
-    expect(out.variantes.map((v) => v.hook)).toEqual(["b", "d", "e"]);
+    expect(out.principal.hook).toBe("ce");
+    expect(out.variantes.map((v) => v.hook)).toEqual(["cd", "ur", "rs"]);
+    expect(out.motivo).toBe("sem ranking: ordem do modelo");
+  });
+
+  it("penalidade 0.6^usos muda a ordem: 1 uso do topo (1.13×0.6=0.68) perde para Urgência (1.06)", () => {
+    const out = selectHook(cands, rank, { recentes: ["Conflito Declarado"] })!;
+    expect(out.principal.hook).toBe("ur");
+    expect(out.motivo).toBe("Conflito Declarado penalizado: 1 dos últimos 1 hooks deste cliente; principal Urgência (IC inferior do lift 1,06)");
+    expect(out.principal.mecanismo).not.toBe("Conflito Declarado");
+  });
+
+  it("regra dura: topo em ≥3 dos recentes com alternativa ≥0.8× não é principal", () => {
+    // Com 0.6^usos e ≤5 recentes a penalidade sozinha já derruba o topo saturado; a regra dura é o
+    // invariante que sobrevive se a constante mudar. Isolada aqui: os dois igualmente penalizados
+    // (3 usos cada), o topo ainda venceria por score (0.244 vs 0.229) — a regra impede.
+    const dois = [c("cd", "Conflito Declarado"), c("ur", "Urgência")];
+    const recentes = ["Conflito Declarado", "Urgência", "Conflito Declarado", "Urgência", "Conflito Declarado", "Urgência"];
+    const out = selectHook(dois, rank, { recentes })!;
+    expect(out.principal.hook).toBe("ur");
+    expect(out.motivo).toBe("Conflito Declarado penalizado: 3 dos últimos 6 hooks deste cliente; principal Urgência (IC inferior do lift 1,06)");
+  });
+
+  it("regra dura sem alternativa forte mantém o topo", () => {
+    // alternativa com lb 0.2 (< 0.8×1.13 e < 1.13×0.6³=0.244): nem regra dura nem penalidade trocam
+    const fraco = new Map([["Conflito Declarado", 1.13], ["Ultra Especificidade", 0.2]]);
+    const recentes = ["Conflito Declarado", "Conflito Declarado", "Conflito Declarado", "Urgência", "Urgência"];
+    const out = selectHook([c("cd", "Conflito Declarado"), c("ee", "Ultra Especificidade")], fraco, { recentes })!;
+    expect(out.principal.hook).toBe("cd");
+    expect(out.motivo).toBe("Conflito Declarado: IC inferior do lift 1,13");
+  });
+
+  it("mecanismo fora do ranking recebe min−0.05: abaixo de quem tem evidência, nunca zero", () => {
+    // Revelação Secreta não está no ranking → base 0.95−0.05=0.90; ganha do topo penalizado 2× (1.13×0.36=0.41)
+    // e de Ultra Especificidade penalizado 1× (0.95×0.6=0.57), mas perde de Ultra sem penalidade.
+    const out = selectHook([c("cd", "Conflito Declarado"), c("rs", "Revelação Secreta"), c("ee", "Ultra Especificidade")], rank, {
+      recentes: ["Conflito Declarado", "Conflito Declarado", "Ultra Especificidade"],
+    })!;
+    expect(out.principal.hook).toBe("rs");
+    expect(out.motivo).toBe("Conflito Declarado penalizado: 2 dos últimos 3 hooks deste cliente; principal Revelação Secreta (fora do ranking)");
+    const semPen = selectHook([c("rs", "Revelação Secreta"), c("ee", "Ultra Especificidade")], rank)!;
+    expect(semPen.principal.hook).toBe("ee"); // 0.95 > 0.90
+    // todos fora do ranking → ordem do modelo, motivo diz que não há evidência
+    const fora = selectHook([c("rs", "Revelação Secreta"), c("su", "Superlativo")], rank)!;
+    expect(fora.principal.hook).toBe("rs");
+    expect(fora.motivo).toBe("Revelação Secreta: fora do ranking (sem evidência mínima), ordem do modelo");
+  });
+
+  it("determinismo: mesma entrada → mesma saída", () => {
+    const recentes = ["Conflito Declarado", "Urgência", "Conflito Declarado"];
+    const a = selectHook(cands, rank, { recentes });
+    const b = selectHook(cands, rank, { recentes });
+    expect(a).toEqual(b);
   });
 
   it("mecanismos repetidos → variantes preferem distintos, completam com o resto", () => {
-    const cands = [c("a", "Contraste Extremo"), c("b", "Contraste Extremo"), c("d", "Revelação Secreta"), c("e", "Contraste Extremo")];
-    const rank = new Map([["Contraste Extremo", 0.58], ["Revelação Secreta", 0.26]]);
-    const out = selectHook(cands, rank)!;
+    const reps = [c("a", "Contraste Extremo"), c("b", "Contraste Extremo"), c("d", "Revelação Secreta"), c("e", "Contraste Extremo")];
+    const out = selectHook(reps, new Map([["Contraste Extremo", 1.0], ["Revelação Secreta", 0.9]]))!;
     expect(out.principal.mecanismo).toBe("Contraste Extremo");
     expect(out.variantes).toHaveLength(3);
-    // primeira variante deve ser o mecanismo distinto (Revelação), depois completa
     expect(out.variantes[0].mecanismo).toBe("Revelação Secreta");
   });
 

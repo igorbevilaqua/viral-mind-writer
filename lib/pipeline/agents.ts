@@ -232,10 +232,11 @@ export function hookExamplesBlock(ctx: GenerationContext, n = 5): string {
     .join("\n");
 }
 
-// Ranking de mecanismos de hook (Fase 2, insight hook_mechanism_ranking do ETL): os
-// mecanismos que mais caracterizam os hooks VENCEDORES deste cliente (ou global como
-// fallback). É o sinal que garante a repetição dos padrões comprovados a cada geração.
-export interface HookRank { mecanismo: string; n: number; share: number }
+// Ranking de mecanismos de hook (insight hook_mechanism_ranking do ETL): lift do mecanismo no
+// top quartil deste cliente (ou global como fallback), ordenado por lift_lb (IC inferior).
+// Lift e não share: share mede prevalência, e prevalência foi o que colapsou o Codex em 93%
+// de Contraste Extremo (plano 020). `share` ainda vem no payload, mas ninguém aqui lê.
+export interface HookRank { mecanismo: string; n: number; lift: number; lift_lb: number }
 export function hookMechanismRanking(ctx: GenerationContext): { doCliente: boolean; ranking: HookRank[] } | null {
   const rows = ctx.insights.filter((i) => i.insight_type === "hook_mechanism_ranking");
   if (!rows.length) return null;
@@ -246,13 +247,17 @@ export function hookMechanismRanking(ctx: GenerationContext): { doCliente: boole
   return { doCliente: chosen.scope.startsWith("client:"), ranking };
 }
 
+const fmt2 = (n: number) => n.toFixed(2).replace(".", ",");
+export const liftTxt = (x: HookRank) => `lift ${fmt2(x.lift)}× (IC inferior ${fmt2(x.lift_lb)}; n=${x.n})`;
+
 export function hookMechanismBlock(ctx: GenerationContext): string {
   const r = hookMechanismRanking(ctx);
   if (!r) return "";
   const escopo = r.doCliente ? "deste cliente" : "no geral (corpus)";
   return (
-    `Mecanismos mais presentes nos hooks vencedores ${escopo} (aposte no topo; use um deles no principal):\n` +
-    r.ranking.map((x) => `- ${x.mecanismo} — ${Math.round(x.share * 100)}% dos vencedores`).join("\n")
+    `Mecanismos de hook por lift medido nos vencedores ${escopo} (lift = quanto acima da base o mecanismo aparece no top quartil):\n` +
+    r.ranking.map((x) => `- ${x.mecanismo} — ${liftTxt(x)}${x.lift_lb < 1 ? " — sem evidência (IC cruza 1)" : ""}`).join("\n") +
+    `\nCubra os 3 mecanismos do topo entre os candidatos e traga pelo menos 1 fora deles; a escolha final é do código, não sua.`
   );
 }
 
@@ -831,11 +836,14 @@ const HOOK_TOOL = {
 
 export async function designHook(
   ctx: GenerationContext,
-  corpo: string
+  corpo: string,
+  // mecanismos dos últimos hooks deste cliente (anti-colapso do selectHook); [] = só lift
+  recentes: string[] = []
 ): Promise<{
   hook: string;
   variantes: string[];
   racional: string;
+  motivo: string;
   mecanismo: string;
   formato: string;
   mecanismosVariantes: string[];
@@ -892,7 +900,7 @@ ${rankingMecanismos ? `\n${rankingMecanismos}` : ""}${preferencias ? `\n${prefer
 CORPO DO ROTEIRO (o hook precisa emendar na primeira frase e ser pago pelo final):
 ${corpo}
 
-Gere de 5 a 6 candidatos a hook, cada um com um MECANISMO DISTINTO da taxonomia, rotulando mecanismo e formato. Priorize os mecanismos do topo do ranking. Antes de registrar cada um, passe pelo self-check de 3 testes (curiosidade, impacto, simplicidade) e reescreva o que reprovar. A seleção do principal e das variantes é feita depois pelos dados.`,
+Gere de 5 a 6 candidatos a hook, cada um com um MECANISMO DISTINTO da taxonomia, rotulando mecanismo e formato. Inclua os 3 do topo e 1 fora deles. Antes de registrar cada um, passe pelo self-check de 3 testes (curiosidade, impacto, simplicidade) e reescreva o que reprovar. A seleção do principal e das variantes é feita depois pelos dados.`,
         },
       ],
     },
@@ -916,12 +924,12 @@ Gere de 5 a 6 candidatos a hook, cada um com um MECANISMO DISTINTO da taxonomia,
         descartados.map((d) => `"${d.hook.slice(0, 60)}" (${d.motivos.join(", ")})`).join(" | ")
     );
 
-  // seleção guiada pelos dados: share do mecanismo no ranking de vencedores (cliente > global)
+  // seleção guiada pelos dados: lift_lb do mecanismo (cliente > global) × penalidade por uso recente
   const rank = hookMechanismRanking(ctx);
-  const rankShare = new Map((rank?.ranking ?? []).map((r) => [r.mecanismo, r.share]));
-  const escolha = selectHook(candidatos, rankShare);
+  const rankLift = new Map((rank?.ranking ?? []).map((r) => [r.mecanismo, r.lift_lb]));
+  const escolha = selectHook(candidatos, rankLift, { recentes });
   if (!escolha) throw new Error("hook: seleção vazia");
-  const { principal, variantes } = escolha;
+  const { principal, variantes, motivo } = escolha;
 
   registrarBloco(ctx, "hook", {
     licoes: licaoRefs(licoesPara(ctx, "hook")),
@@ -930,12 +938,15 @@ Gere de 5 a 6 candidatos a hook, cada um com um MECANISMO DISTINTO da taxonomia,
     paleta_emocional: paleta || null,
   });
 
-  // racional: o do modelo + a justificativa de dados da escolha
+  // racional: o do modelo + a justificativa de dados da escolha. Só números do ranking —
+  // o selectHook só vê lift_lb; lift e n entram daqui quando o principal está ranqueado.
+  const linha = rank?.ranking.find((r) => r.mecanismo === principal.mecanismo);
   const notaDados = rank
-    ? ` Mecanismo "${principal.mecanismo}" priorizado pelo ranking de vencedores ${rank.doCliente ? "do cliente" : "geral"}.`
+    ? ` Escolha por dados (ranking ${rank.doCliente ? "do cliente" : "geral"}): ${motivo}${linha ? `; ${liftTxt(linha)}` : ""}.`
     : "";
   return {
     descartados,
+    motivo,
     hook: principal.hook,
     variantes: variantes.map((v) => v.hook),
     racional: `${principal.racional ?? ""}${notaDados}`.trim(),
