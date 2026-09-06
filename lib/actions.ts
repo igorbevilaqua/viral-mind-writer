@@ -325,9 +325,11 @@ export async function saveLesson(input: {
 export async function setLearningActive(id: string, active: boolean) {
   // Regra 2: lição ativa entra no prompt de todos os clientes.
   await exigirAcesso({ adm: "ativar ou desativar uma lição" });
+  const now = new Date().toISOString();
+  // ativada_em (0038) é o marco que medirRecorrencia (etl.ts) lê; sem gravá-lo a medição nunca liga.
   const { error } = await appDb
     .from("vm_lesson_learnings")
-    .update({ active, updated_at: new Date().toISOString() })
+    .update({ active, updated_at: now, ativada_em: active ? now : null })
     .eq("id", id);
   if (error) throw new Error(error.message);
   revalidatePath("/ensinar");

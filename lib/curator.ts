@@ -1,7 +1,7 @@
 import { appDb } from "./db";
 import { anthropic, ANALYST_MODEL } from "./anthropic";
 import { agentPrompt, toolInput, toolArray } from "./pipeline/agents";
-import { DIMENSOES, type Dimensao } from "./pipeline/teach";
+import { DIMENSOES, type Dimensao, type ExtractedLearning } from "./pipeline/teach";
 import { comDestinatarios } from "./pipeline/destinatarios";
 import { hookMechanismOutcomes } from "./learning-loop";
 
@@ -124,23 +124,55 @@ ${jaEnsinado || "(nenhuma)"}`;
     .slice(0, 3);
   if (!licoes.length) return { ran: true, proposed: 0 };
 
+  const r = await proporLicoes({
+    clientId: null, // lições do curador são globais nesta rodada
+    sourceTitle: `Curador mensal — ${new Date().toLocaleDateString("pt-BR")}`,
+    transcript: digest,
+    licoes,
+  });
+  return { ran: true, proposed: r.proposed, ...(r.reason ? { reason: r.reason } : {}) };
+}
+
+export interface ProporLicoesInput {
+  clientId: string | null;
+  sourceTitle: string;
+  // trilha de auditoria no /ensinar (digest do curador, evidência do estudo). Nullable desde a 0027.
+  transcript: string | null;
+  contextNote?: string | null;
+  licoes: ExtractedLearning[];
+}
+
+/**
+ * Grava uma lição proposta por máquina: vm_lessons(source_kind:'curador') + learnings
+ * SEMPRE active:false. Quem propõe (curador mensal, scripts/propose-lessons-from-study.ts)
+ * nunca ativa — a proposta cai em `licoesPendentesDb` e o Kasparov oferece na conversa;
+ * ativar é decisão humana no /ensinar (plano 020, princípio da 2.0).
+ */
+export async function proporLicoes({
+  clientId,
+  sourceTitle,
+  transcript,
+  contextNote,
+  licoes,
+}: ProporLicoesInput): Promise<{ lessonId: string | null; proposed: number; reason?: string }> {
+  if (!licoes.length) return { lessonId: null, proposed: 0 };
   const { data: lesson, error: lErr } = await appDb
     .from("vm_lessons")
     .insert({
-      client_id: null, // lições do curador são globais nesta rodada
+      client_id: clientId,
       source_kind: "curador",
-      source_title: `Curador mensal — ${new Date().toLocaleDateString("pt-BR")}`,
-      transcript: digest,
+      source_title: sourceTitle,
+      transcript,
+      context_note: contextNote ?? null,
     })
     .select("id")
     .single();
-  if (lErr || !lesson) return { ran: true, proposed: 0, reason: `vm_lessons: ${lErr?.message}` };
-  // active:false — toda proposta passa pela curadoria humana existente no /ensinar
+  if (lErr || !lesson) return { lessonId: null, proposed: 0, reason: `vm_lessons: ${lErr?.message}` };
   const ins = await appDb.from("vm_lesson_learnings").insert(
     comDestinatarios(licoes.map((l) => ({ ...l, origem: "curador", active: false, lesson_id: lesson.id })))
   );
-  if (ins.error) return { ran: true, proposed: 0, reason: ins.error.message };
-  return { ran: true, proposed: licoes.length };
+  if (ins.error) return { lessonId: lesson.id, proposed: 0, reason: ins.error.message };
+  return { lessonId: lesson.id, proposed: licoes.length };
 }
 
 // ── Fase 4: curador do playbook de hook ──────────────────────────────────────
