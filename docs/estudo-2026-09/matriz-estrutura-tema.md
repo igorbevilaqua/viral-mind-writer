@@ -1,0 +1,27 @@
+# Matriz estrutura × tema (encolhida)
+
+Base: 3238 vídeos com estrutura e tema rotulados, todas as plataformas, `top` = quartil superior no estrato (cliente, plataforma). Célula = P(top | estrutura, tema) encolhida com K=15 para o prior `clamp(p_tema + p_estr − 0.25, .05, .95)`. **Negrito** = n ≥ 15 (única célula que o plano permite ler); as demais mostram só o n. Base esperada por construção: 25%.
+
+| estrutura \ tema | CASE EMPRESARIAL (n=1133) | BRANDING (n=463) | HISTÓRIA DE EMPRESA/EMPRESÁRIO (n=464) | CIÊNCIA E INOVAÇÃO (n=345) | ECONOMIA (n=354) | EDUCAÇÃO (n=264) | E-COMMERCE (n=279) | INOVAÇÃO (n=206) | CARREIRA (n=163) | CHINA (n=175) | BRASIL (n=158) | INTELIGÊNCIA ARTIFICIAL (n=135) | DICAS DE USO DE IA (n=84) | AGRONEGÓCIO (n=141) | ESTRATÉGIA DE NEGÓCIO (n=105) |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| A1 Jornada do Herói | **22%** (n=153, bruto 22%) | **25%** (n=72, bruto 25%) | **23%** (n=161, bruto 24%) | **35%** (n=28, bruto 39%) | · (n=14) | **15%** (n=34, bruto 15%) | **19%** (n=26, bruto 19%) | · (n=5) | **25%** (n=15, bruto 27%) | · (n=1) | · (n=6) | · | · (n=1) | · (n=14) | **21%** (n=28, bruto 21%) |
+| A2 Herói Improvável | **25%** (n=48, bruto 25%) | **21%** (n=18, bruto 17%) | **29%** (n=90, bruto 30%) | **36%** (n=66, bruto 38%) | · (n=3) | **13%** (n=58, bruto 12%) | · (n=5) | **40%** (n=25, bruto 44%) | · (n=12) | · (n=3) | · (n=9) | · | · | **17%** (n=22, bruto 18%) | · (n=6) |
+| A3 Herói Esquecido | · (n=14) | · (n=4) | **24%** (n=19, bruto 26%) | **26%** (n=35, bruto 26%) | · | **12%** (n=22, bruto 9%) | · | · (n=6) | · (n=1) | · | · (n=7) | · (n=1) | · | · (n=1) | · |
+| B1 Davi e Golias | **28%** (n=72, bruto 28%) | **35%** (n=32, bruto 38%) | **19%** (n=22, bruto 14%) | **37%** (n=31, bruto 39%) | **36%** (n=16, bruto 44%) | **26%** (n=29, bruto 28%) | **20%** (n=19, bruto 16%) | **36%** (n=17, bruto 35%) | · (n=4) | · (n=6) | · (n=12) | · (n=3) | · (n=3) | · (n=9) | · (n=12) |
+| B2 Conflito Imprevisível | · (n=9) | · (n=8) | · | · (n=4) | · | · | · (n=5) | · (n=4) | · | · (n=4) | · (n=2) | · (n=1) | · (n=3) | · (n=2) | · |
+| B3 Queda do Gigante | **22%** (n=82, bruto 22%) | · (n=14) | **23%** (n=30, bruto 23%) | · (n=2) | **22%** (n=23, bruto 22%) | · | **32%** (n=22, bruto 41%) | · (n=2) | · (n=1) | · (n=4) | · (n=5) | · (n=1) | · (n=1) | · (n=2) | · (n=7) |
+| C1 O Iconoclasta | **22%** (n=59, bruto 22%) | **23%** (n=30, bruto 23%) | · (n=9) | · (n=13) | **27%** (n=27, bruto 30%) | **21%** (n=20, bruto 25%) | · (n=8) | · (n=4) | **23%** (n=22, bruto 23%) | **20%** (n=26, bruto 15%) | · (n=14) | · (n=10) | · (n=10) | · (n=3) | · (n=5) |
+| C2 Estratégia Oculta | **29%** (n=229, bruto 29%) | **24%** (n=100, bruto 24%) | **21%** (n=38, bruto 21%) | · (n=6) | **25%** (n=35, bruto 26%) | · (n=4) | **17%** (n=44, bruto 16%) | · (n=5) | · (n=6) | · (n=14) | **43%** (n=18, bruto 56%) | · (n=3) | · (n=2) | **10%** (n=15, bruto 7%) | **26%** (n=17, bruto 29%) |
+| C3 Investigação & Escândalo | **15%** (n=50, bruto 14%) | · (n=8) | · (n=9) | · (n=8) | **10%** (n=21, bruto 5%) | · | · (n=10) | · (n=1) | · (n=7) | · (n=7) | · (n=14) | **28%** (n=15, bruto 33%) | · (n=9) | · (n=6) | · |
+| D1 Urgência & Alerta | **17%** (n=17, bruto 12%) | · (n=1) | · (n=1) | · (n=11) | **22%** (n=53, bruto 23%) | · (n=9) | **36%** (n=26, bruto 46%) | · (n=10) | **24%** (n=29, bruto 24%) | · (n=8) | · (n=12) | **30%** (n=28, bruto 32%) | · (n=11) | · (n=5) | · (n=3) |
+| D2 Evento Global | · (n=4) | · | · | · (n=8) | **28%** (n=70, bruto 29%) | · (n=10) | **25%** (n=15, bruto 27%) | · (n=13) | · (n=5) | **33%** (n=27, bruto 33%) | **31%** (n=16, bruto 31%) | **29%** (n=17, bruto 29%) | · (n=2) | · (n=14) | · |
+| D3 Efeito Dominó | · (n=14) | · (n=1) | · | · | **24%** (n=46, bruto 24%) | · (n=1) | **24%** (n=32, bruto 25%) | · (n=6) | · (n=6) | · (n=10) | · (n=5) | · (n=1) | · | · (n=8) | · |
+| E1 Paradoxo Contraintuitivo | **22%** (n=128, bruto 22%) | **26%** (n=73, bruto 26%) | **22%** (n=23, bruto 22%) | · (n=13) | **23%** (n=26, bruto 23%) | **25%** (n=16, bruto 31%) | **21%** (n=24, bruto 21%) | · (n=12) | **24%** (n=25, bruto 24%) | **34%** (n=19, bruto 37%) | · (n=10) | · (n=9) | · (n=4) | · (n=7) | · (n=4) |
+| E2 Inovação & Sacada Genial | **22%** (n=176, bruto 22%) | **22%** (n=76, bruto 21%) | **27%** (n=36, bruto 28%) | **31%** (n=95, bruto 32%) | · (n=2) | **17%** (n=48, bruto 17%) | **15%** (n=25, bruto 12%) | **33%** (n=89, bruto 34%) | · (n=14) | **35%** (n=23, bruto 39%) | **25%** (n=18, bruto 22%) | **26%** (n=35, bruto 26%) | **30%** (n=37, bruto 32%) | **16%** (n=31, bruto 16%) | **28%** (n=19, bruto 32%) |
+| E3 Narrativa Filosófica | · (n=6) | · (n=2) | · | · (n=2) | · | · (n=4) | · | · (n=1) | · (n=11) | · (n=2) | · (n=1) | · (n=3) | · (n=1) | · | · |
+| F1 Erro Fatal | **23%** (n=62, bruto 24%) | **15%** (n=16, bruto 13%) | **17%** (n=18, bruto 17%) | · | · (n=7) | · | · (n=2) | · (n=1) | · (n=1) | · | · (n=2) | · | · | · (n=1) | · (n=4) |
+| F2 Dois Mundos | · (n=6) | · (n=4) | · (n=2) | · (n=6) | · (n=10) | · (n=8) | · (n=13) | · (n=2) | · (n=2) | **28%** (n=21, bruto 29%) | · (n=6) | · (n=6) | · | · (n=1) | · |
+| F3 O Profeta Ignorado | · | · | · (n=2) | **31%** (n=15, bruto 33%) | · (n=1) | · | · | · (n=1) | · (n=2) | · | · | · (n=2) | · | · | · |
+| F4 Transformação de Identidade | · (n=4) | · (n=4) | · (n=4) | · (n=2) | · | · (n=1) | · (n=3) | · (n=2) | · | · | · (n=1) | · | · | · | · |
+
+Nota: soma dos n por tema conta o vídeo uma vez por estrutura (multi-rótulo marginal).

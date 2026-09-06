@@ -37,6 +37,18 @@ export function wilsonLower(wins: number, n: number): number {
   return Math.max(0, (centro - margem) / (1 + z2 / n));
 }
 
+// Limite superior do mesmo intervalo — o estudo (plano 020) precisa dos dois lados para
+// escrever "IC cruzando 1 = sem evidência".
+export function wilsonUpper(wins: number, n: number): number {
+  if (n <= 0) return 1;
+  const z = 1.96;
+  const p = wins / n;
+  const z2 = z * z;
+  const centro = p + z2 / (2 * n);
+  const margem = z * Math.sqrt((p * (1 - p) + z2 / (4 * n)) / n);
+  return Math.min(1, (centro + margem) / (1 + z2 / n));
+}
+
 export interface PrefStat {
   scope: string; // "global" | "client:<id>"
   axis: CalibAxis;
