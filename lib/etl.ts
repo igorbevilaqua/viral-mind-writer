@@ -7,7 +7,7 @@ import {
   attributeLessons,
   computeCalibration,
   houveEdicaoHumana,
-  rankHookMechanisms,
+  rankByLift,
   textoPreHumano,
   type TraceEdicao,
 } from "./learning-loop";
@@ -15,6 +15,7 @@ import { chaveDoCluster, observacoesDaEdicao, type TipoMudanca } from "./edit-di
 import { aggregatePreferences, axisValue, type CalibAxis, type CalibOption } from "./calibration";
 import { syncScriptPerformance } from "./script-performance";
 import { casarRoteiros } from "./script-matches";
+import { ESTRUTURAS } from "./pipeline/taxonomia";
 
 // ETL semanal: materializa insights do corpus em vm_viral_insights
 // (globais + por cliente, categorizados e pontuados) e sincroniza
@@ -206,41 +207,96 @@ async function clientInsightRows(cliente: { id: string; nome: string }): Promise
   return rows;
 }
 
-// Fase 2: ranking de mecanismos de hook por cliente + global, a partir das
-// classificações canônicas (vm_hook_classifications) casadas com o cliente do vídeo.
-// Melhor esforço: tabela vazia/ausente → nenhum row, ETL segue.
-const MEC_PRETTY: Record<string, string> = {}; // mecanismos já vêm com nome limpo do playbook
-async function hookMechanismRankingRows(): Promise<InsightRow[]> {
-  const { data: cls, error } = await appDb.from("vm_hook_classifications").select("video_id, mecanismos");
-  if (error) {
-    console.warn(`vm_hook_classifications: ${error.message} — aplicar migration 0020; sem ranking de hook`);
-    return [];
+// PostgREST devolve no máximo 1000 linhas por chamada: pagina por .range() com ordem estável.
+async function paginar<T>(
+  nome: string,
+  query: (from: number, to: number) => PromiseLike<{ data: T[] | null; error: { message: string } | null }>
+): Promise<T[]> {
+  const out: T[] = [];
+  for (let from = 0; ; from += 1000) {
+    const { data, error } = await query(from, from + 999);
+    if (error) throw new Error(`${nome}: ${error.message}`);
+    out.push(...(data ?? []));
+    if (!data || data.length < 1000) return out;
   }
-  if (!cls?.length) return [];
+}
 
-  // cliente de cada vídeo classificado (paginado; vm_video_stats tem cliente_id)
+// Plano 020, WP-E: lift por mecanismo de hook e por estrutura, global + por cliente.
+// Fonte: vm_video_classifications (taxonomia canônica, 0041) × oraculo.fato_video, cujo
+// coeficiente_viral = views ÷ mediana móvel 180d do MESMO canal e origem — mede o vídeo, não a
+// circunstância. `top` = quartil superior do coeficiente dentro do estrato (cliente, plataforma),
+// então P(top)=0.25 por construção e a confusão por audiência/plataforma sai de graça.
+// Melhor esforço: tabela/MV ausente → nenhum row, ETL segue.
+const BASE_TOP = 0.25;
+const MIN_ESTRATO = 8; // estrato menor que isto não tem quartil que preste
+async function liftRankingRows(): Promise<InsightRow[]> {
+  type Cls = { video_id: string; hook_mecanismos: string[] | null; estruturas: string[] | null; fonte_hook: string | null; fonte_estruturas: string | null };
+  type Fato = { video_id: string; cliente_id: string | null; plataforma: string | null; coeficiente_viral: number | string | null; views_total: number | null; maturando: boolean | null };
+  const cls = await paginar<Cls>("vm_video_classifications", (a, b) =>
+    appDb.from("vm_video_classifications").select("video_id, hook_mecanismos, estruturas, fonte_hook, fonte_estruturas").order("video_id").range(a, b)
+  );
+  if (!cls.length) return [];
+  const fato = await paginar<Fato>("oraculo.fato_video", (a, b) =>
+    viralData.schema("oraculo").from("fato_video").select("video_id, cliente_id, plataforma, coeficiente_viral, views_total, maturando").order("video_id").range(a, b)
+  );
+
+  // top quartil por estrato: agrupa, ordena por coeficiente desc, marca os 25% de cima
+  const estratos = new Map<string, { video_id: string; coef: number }[]>();
+  for (const f of fato) {
+    const coef = Number(f.coeficiente_viral);
+    if (f.maturando || !f.views_total || !Number.isFinite(coef)) continue; // <7d ou sem views: não mede nada
+    const k = `${f.cliente_id ?? ""}|${f.plataforma ?? ""}`;
+    estratos.set(k, [...(estratos.get(k) ?? []), { video_id: f.video_id, coef }]);
+  }
+  const topByVideo = new Map<string, boolean>();
   const clienteByVideo = new Map<string, string | null>();
-  const ids = cls.map((c) => c.video_id);
-  for (let i = 0; i < ids.length; i += 1000) {
-    const { data } = await viralData.from("vm_video_stats").select("video_id, cliente_id").in("video_id", ids.slice(i, i + 1000));
-    for (const s of data ?? []) clienteByVideo.set(s.video_id, s.cliente_id ?? null);
+  for (const [k, list] of estratos) {
+    if (list.length < MIN_ESTRATO) continue;
+    list.sort((a, b) => b.coef - a.coef);
+    const corte = Math.round(list.length * BASE_TOP);
+    list.forEach((v, i) => {
+      topByVideo.set(v.video_id, i < corte);
+      clienteByVideo.set(v.video_id, k.split("|")[0] || null);
+    });
   }
 
-  const rows = cls.map((c) => ({
-    mecanismos: Array.isArray(c.mecanismos) ? (c.mecanismos as string[]) : [],
-    clienteId: clienteByVideo.get(c.video_id) ?? null,
-  }));
-  return rankHookMechanisms(rows).map(({ scope, total, ranking }) => ({
-    scope,
-    insight_type: "hook_mechanism_ranking",
-    payload: {
-      titulo: "Mecanismos de hook que mais aparecem nos vencedores",
-      total_analisado: total,
-      ranking: ranking.map((r) => ({ mecanismo: MEC_PRETTY[r.mecanismo] ?? r.mecanismo, n: r.n, share: r.share })),
-      score: 0,
-      destaque: false,
-    },
-  }));
+  // uma linha por vídeo rotulado na dimensão; 'Outro' é o rótulo-lixo do classificador
+  const linhas = (rotulado: (c: Cls) => boolean, labels: (c: Cls) => string[]) =>
+    cls
+      .filter((c) => rotulado(c) && topByVideo.has(c.video_id))
+      .map((c) => ({ labels: labels(c).filter((l) => l !== "Outro"), clienteId: clienteByVideo.get(c.video_id) ?? null, top: topByVideo.get(c.video_id)! }));
+  const hooks = rankByLift(linhas((c) => c.fonte_hook != null, (c) => c.hook_mecanismos ?? []));
+  const estruturas = rankByLift(linhas((c) => c.fonte_estruturas != null, (c) => c.estruturas ?? []));
+  const nomeDe = new Map(ESTRUTURAS.map((e) => [e.code, e.nome]));
+
+  return [
+    ...hooks.map(({ scope, total, ranking }) => ({
+      scope,
+      insight_type: "hook_mechanism_ranking",
+      payload: {
+        titulo: "Mecanismos de hook com maior lift no top quartil",
+        total_analisado: total,
+        base_top: BASE_TOP,
+        // `share` = top_n/n é transição: hookMechanismBlock (lib/pipeline/agents.ts) ainda imprime
+        // share; sai quando o WP-F passar a ler lift_lb.
+        ranking: ranking.map((r) => ({ mecanismo: r.label, n: r.n, top_n: r.top_n, lift: r.lift, lift_lb: r.lift_lb, share: Math.round((r.top_n / r.n) * 100) / 100 })),
+        score: 0,
+        destaque: false,
+      },
+    })),
+    ...estruturas.map(({ scope, total, ranking }) => ({
+      scope,
+      insight_type: "estrutura_lift",
+      payload: {
+        titulo: "Estruturas narrativas com maior lift no top quartil",
+        total_analisado: total,
+        base_top: BASE_TOP,
+        ranking: ranking.map((r) => ({ estrutura: r.label, nome: nomeDe.get(r.label) ?? r.label, n: r.n, top_n: r.top_n, lift: r.lift, lift_lb: r.lift_lb })),
+        score: 0,
+        destaque: false,
+      },
+    })),
+  ];
 }
 
 // Fatia 1: agrega os votos de calibração em preferências confiáveis (Wilson) por
@@ -429,11 +485,11 @@ export async function runWeeklyEtl() {
     }
   }
 
-  // Ranking de mecanismos de hook (Fase 2): global + por cliente, dos vencedores classificados.
+  // Lift de mecanismos de hook e estruturas (plano 020): global + por cliente.
   try {
-    rows.push(...(await hookMechanismRankingRows()));
+    rows.push(...(await liftRankingRows()));
   } catch (e) {
-    console.error("ranking de mecanismos de hook falhou, seguindo sem", e);
+    console.error("ranking por lift (hook/estrutura) falhou, seguindo sem", e);
   }
   // Preferências de calibração (Fatia 1): votos → pref_hook por escopo.
   try {

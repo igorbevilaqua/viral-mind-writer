@@ -50,5 +50,8 @@ hostingerconfig.claude.json*
 clientes-preferencias.html
 sistema-de-roteiro-multiagente/project/
 
-# leaderboard de análise de hooks (regenerável via scripts/analyze-hooks.ts)
+# leaderboard da análise de hooks de 2026-07 (o script que gerava saiu no plano 020)
 hooks-analysis.json
+
+# plano 020: dados brutos do estudo (9 MB+); só os .md do estudo entram no git
+docs/estudo-*/*.json

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { attributeLessons, changedRatio, computeCalibration, marcarOrigemEdicao, rankHookMechanisms, hookMechanismOutcomes, textoPreHumano } from "@/lib/learning-loop";
+import { attributeLessons, changedRatio, computeCalibration, marcarOrigemEdicao, rankByLift, hookMechanismOutcomes, textoPreHumano } from "@/lib/learning-loop";
 
 // WP-E: funções puras do ciclo de autoaprimoramento (plano 012, onda 3)
 
@@ -106,65 +106,75 @@ describe("attributeLessons", () => {
   });
 });
 
-describe("rankHookMechanisms", () => {
-  const mk = (mecs: string[], cli: string | null) => ({ mecanismos: mecs, clienteId: cli });
+describe("rankByLift", () => {
+  const mk = (labels: string[], top: boolean, cli: string | null = null) => ({ labels, clienteId: cli, top });
+  // 100 vídeos, 25 no top (P(top)=0.25 por construção do estrato). "Prevalente" está em TODOS
+  // (lift 1.0 exato); "Raro" está em 12 (i<12), 10 deles no top (i<10; os outros 15 tops vêm de 12..26).
+  const rows = Array.from({ length: 100 }, (_, i) => mk(i < 12 ? ["Prevalente", "Raro"] : ["Prevalente"], i < 10 || (i >= 12 && i < 27)));
 
-  it("rankeia por frequência e computa share por escopo", () => {
-    const rows = [
-      ...Array.from({ length: 6 }, () => mk(["Contraste Extremo"], "c1")),
-      ...Array.from({ length: 4 }, () => mk(["Revelação Secreta"], "c1")),
-    ];
-    const out = rankHookMechanisms(rows, 8, 6);
-    const global = out.find((o) => o.scope === "global")!;
-    expect(global.total).toBe(10);
-    expect(global.ranking[0]).toEqual({ mecanismo: "Contraste Extremo", n: 6, share: 0.6 });
-    expect(global.ranking[1].mecanismo).toBe("Revelação Secreta");
-    // cliente c1 tem o mesmo perfil
-    expect(out.find((o) => o.scope === "client:c1")).toBeTruthy();
+  it("rótulo 100% prevalente com lift 1.0 fica abaixo do raro com lift alto", () => {
+    const global = rankByLift(rows).find((o) => o.scope === "global")!;
+    expect(global.total).toBe(100);
+    expect(global.ranking[0].label).toBe("Raro");
+    expect(global.ranking[0]).toMatchObject({ n: 12, top_n: 10 });
+    expect(global.ranking[0].lift).toBeGreaterThan(3);
+    expect(global.ranking[1]).toMatchObject({ label: "Prevalente", n: 100, top_n: 25, lift: 1 });
+    // share diria o contrário: Prevalente em 100% dos vencedores
   });
 
-  it("escopo abaixo de minSample não emite ranking", () => {
-    const out = rankHookMechanisms([mk(["Urgência"], "c9"), mk(["Urgência"], "c9")], 8, 6);
-    expect(out.find((o) => o.scope === "client:c9")).toBeUndefined();
-    expect(out.find((o) => o.scope === "global")).toBeUndefined(); // 2 < 8
+  it("n < 10 fica fora, mesmo com 100% no top", () => {
+    const extra = Array.from({ length: 9 }, () => mk(["Pouquinho"], true));
+    const global = rankByLift([...rows, ...extra]).find((o) => o.scope === "global")!;
+    expect(global.ranking.find((r) => r.label === "Pouquinho")).toBeUndefined();
   });
 
-  it("mecanismos repetidos no mesmo hook contam uma vez", () => {
-    const rows = Array.from({ length: 8 }, () => mk(["Contraste Extremo", "Contraste Extremo"], null));
-    const global = rankHookMechanisms(rows, 8, 6).find((o) => o.scope === "global")!;
-    expect(global.ranking[0].n).toBe(8);
+  it("IC cruzando 1 → lift_lb < 1 (lift pontual 1.2 não é evidência com n=20)", () => {
+    const list = Array.from({ length: 40 }, (_, i) => mk(i < 20 ? ["Fraco"] : [], i < 6 || (i >= 20 && i < 24)));
+    const fraco = rankByLift(list).find((o) => o.scope === "global")!.ranking.find((r) => r.label === "Fraco")!;
+    expect(fraco.lift).toBe(1.2); // 6/20 = 0.3 → 1.2×
+    expect(fraco.lift_lb).toBeLessThan(1);
+    expect(fraco.lift_lb).toBeLessThan(fraco.lift);
+  });
+
+  it("escopo abaixo do mínimo não emite; cliente exige mais amostra que global", () => {
+    const c1 = Array.from({ length: 35 }, (_, i) => mk(["X"], i < 9, "c1"));
+    const out = rankByLift(c1, 30, 6, 0.25, 40);
+    expect(out.find((o) => o.scope === "global")).toBeTruthy(); // 35 ≥ 30
+    expect(out.find((o) => o.scope === "client:c1")).toBeUndefined(); // 35 < 40
+    expect(rankByLift(c1.slice(0, 10))).toEqual([]);
+  });
+
+  it("rótulo repetido no mesmo vídeo conta uma vez", () => {
+    const list = Array.from({ length: 40 }, (_, i) => mk(["A", "A"], i < 10));
+    expect(rankByLift(list)[0].ranking[0]).toMatchObject({ label: "A", n: 40, top_n: 10 });
   });
 });
 
 describe("hookMechanismOutcomes", () => {
-  it("classifica mecanismo por ratio mediano da sala", () => {
-    const out = hookMechanismOutcomes(
-      [
-        { ratio: 1.5, mecanismo: "Contraste Extremo" },
-        { ratio: 1.3, mecanismo: "Contraste Extremo" },
-        { ratio: 1.4, mecanismo: "Contraste Extremo" },
-        { ratio: 0.5, mecanismo: "Urgência" },
-        { ratio: 0.6, mecanismo: "Urgência" },
-        { ratio: 0.7, mecanismo: "Urgência" },
-      ],
-      3
-    );
-    const ce = out.find((o) => o.mecanismo === "Contraste Extremo")!;
-    const urg = out.find((o) => o.mecanismo === "Urgência")!;
-    expect(ce.verdict).toBe("promover"); // mediana 1.4 > 1.2
-    expect(urg.verdict).toBe("derrubar"); // mediana 0.6 < 0.8
-    expect(out[0].mecanismo).toBe("Contraste Extremo"); // ordenado por ratio desc
+  const rep = (mec: string, ratios: number[]) => ratios.map((ratio) => ({ ratio, mecanismo: mec }));
+
+  it("promove só quando mais da metade repete com Wilson acima de 0.5; derruba no espelho", () => {
+    const out = hookMechanismOutcomes([
+      ...rep("Contraste Extremo", [1.5, 1.3, 1.4, 1.6, 1.3, 1.5, 1.4, 1.3, 1.7, 1.5]), // 10/10 > 1.2
+      ...rep("Urgência", [0.5, 0.6, 0.7, 0.4, 0.5, 0.6, 0.3, 0.7, 0.5, 0.6]), // 10/10 < 0.8
+    ]);
+    expect(out.find((o) => o.mecanismo === "Contraste Extremo")!.verdict).toBe("promover");
+    expect(out.find((o) => o.mecanismo === "Urgência")!.verdict).toBe("derrubar");
+    expect(out[0].mecanismo).toBe("Contraste Extremo"); // ordenado por ratio mediano desc
   });
 
-  it("ignora mecanismos abaixo do mínimo de amostra e ratios/mecanismo inválidos", () => {
-    const out = hookMechanismOutcomes(
-      [
-        { ratio: 2, mecanismo: "Superlativo" }, // só 1 → abaixo do mínimo
-        { ratio: null, mecanismo: "Revelação Secreta" },
-        { ratio: 1, mecanismo: null },
-      ],
-      3
-    );
+  it("mediana boa mas IC cruzando 0.5 → neutro (7 de 10 repetem)", () => {
+    const out = hookMechanismOutcomes(rep("Superlativo", [1.5, 1.4, 1.3, 1.6, 1.5, 1.4, 1.3, 1.0, 0.9, 1.1]));
+    expect(out[0].ratio_mediano).toBeGreaterThan(1.2);
+    expect(out[0].verdict).toBe("neutro");
+  });
+
+  it("abaixo de 10 por mecanismo não opina; ratios/mecanismo inválidos saem", () => {
+    const out = hookMechanismOutcomes([
+      ...rep("Superlativo", [2, 2, 2, 2, 2, 2, 2, 2, 2]), // 9 → abaixo do mínimo
+      { ratio: null, mecanismo: "Revelação Secreta" },
+      { ratio: 1, mecanismo: null },
+    ]);
     expect(out).toEqual([]);
   });
 });

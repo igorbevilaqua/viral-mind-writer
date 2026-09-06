@@ -19,9 +19,13 @@ const opt = (hook: string, mecanismo: string): CalibOption => {
 };
 
 async function main() {
-  const { data: cls, error } = await appDb.from("vm_hook_classifications").select("video_id, mecanismos");
-  if (error) throw new Error(`vm_hook_classifications: ${error.message} (aplicar migration 0020)`);
-  if (!cls?.length) throw new Error("sem classificações — rode analyze-hooks.ts --persist antes");
+  // taxonomia canônica (0041); só vídeos com hook rotulado
+  const { data: cls, error } = await appDb
+    .from("vm_video_classifications")
+    .select("video_id, mecanismos:hook_mecanismos")
+    .not("fonte_hook", "is", null);
+  if (error) throw new Error(`vm_video_classifications: ${error.message} (aplicar migration 0041)`);
+  if (!cls?.length) throw new Error("sem classificações — rode seed-classifications-from-oraculo.ts antes");
 
   // hook + cliente + views de cada vídeo classificado
   const ids = cls.map((c) => c.video_id);

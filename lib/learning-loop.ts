@@ -1,5 +1,6 @@
 // Funções puras do ciclo de autoaprimoramento (plano 012, WP-E).
 // Sem imports de Supabase/Anthropic — testáveis em vitest puro (padrão etl-gate.ts).
+import { wilsonLower } from "./calibration";
 
 // ── WP-E.4: decisão de edição substantiva ────────────────────────────────────
 
@@ -192,37 +193,59 @@ export function computeCalibration(
   return { n, correlacao_direcional: correlacao, vies, resumo };
 }
 
-// ── Fase 2: ranking de mecanismos de hook por escopo ─────────────────────────
-// A partir das classificações canônicas dos hooks de ALTA PERFORMANCE (vm_hook_classifications,
-// só entram vencedores), rankeia por FREQUÊNCIA o mecanismo que caracteriza os vencedores de
-// cada cliente + global. Frequência entre vencedores = "aposte neste mecanismo aqui".
-export interface HookMecRank {
-  mecanismo: string;
-  n: number;
-  share: number; // fração dos hooks vencedores do escopo que usam este mecanismo
+// ── Plano 020, WP-E: ranking de rótulos por LIFT, não por share ──────────────
+// `rankHookMechanisms` rankeava por frequência entre os vencedores. Share mede prevalência,
+// não eficácia — "Contraste Extremo" em 58% dos vencedores estava também em 58% dos perdedores,
+// e a sala colapsou nele (134/144 roteiros). Aqui cada linha é UM vídeo rotulado, com `top` =
+// quartil superior de coeficiente_viral dentro do estrato (cliente, plataforma), então
+// P(top) = baseTop por construção e lift = P(top | rótulo) / baseTop. Ordena por `lift_lb`
+// (Wilson 95%, limite inferior): amostra pequena com lift alto não passa na frente de amostra
+// grande com lift moderado. lift_lb < 1 = IC cruza 1 = sem evidência (pré-registro do plano).
+export interface LiftRank {
+  label: string;
+  n: number; // vídeos do escopo com o rótulo
+  top_n: number; // desses, quantos no quartil superior do estrato
+  lift: number; // (top_n/n) / baseTop
+  lift_lb: number; // wilsonLower(top_n, n) / baseTop
 }
 
-export function rankHookMechanisms(
-  rows: { mecanismos: string[]; clienteId: string | null }[],
-  minSample = 8,
-  topK = 6
-): { scope: string; total: number; ranking: HookMecRank[] }[] {
+const MIN_LABEL_N = 10; // abaixo disto o rótulo não entra (n<10 suprime — plano 020)
+
+export function rankByLift(
+  rows: { labels: string[]; clienteId: string | null; top: boolean }[],
+  minSample = 30,
+  topK = 6,
+  baseTop = 0.25,
+  minSampleCliente = 40 // rótulo de hook tem ~52% de concordância entre fontes; cliente pede mais amostra
+): { scope: string; total: number; ranking: LiftRank[] }[] {
   // agrupa por escopo: "global" (todos) + "client:<id>" (cada cliente)
-  const buckets = new Map<string, { mecanismos: string[] }[]>();
-  const push = (scope: string, r: { mecanismos: string[] }) => buckets.set(scope, [...(buckets.get(scope) ?? []), r]);
+  const buckets = new Map<string, { labels: string[]; top: boolean }[]>();
+  const push = (scope: string, r: { labels: string[]; top: boolean }) => buckets.set(scope, [...(buckets.get(scope) ?? []), r]);
   for (const r of rows) {
     push("global", r);
     if (r.clienteId) push(`client:${r.clienteId}`, r);
   }
 
-  const out: { scope: string; total: number; ranking: HookMecRank[] }[] = [];
+  const r2 = (x: number) => Math.round(x * 100) / 100;
+  const out: { scope: string; total: number; ranking: LiftRank[] }[] = [];
   for (const [scope, list] of buckets) {
-    if (list.length < minSample) continue; // amostra insuficiente: não emite ranking ruidoso
-    const count = new Map<string, number>();
-    for (const r of list) for (const m of new Set(r.mecanismos)) count.set(m, (count.get(m) ?? 0) + 1);
+    if (list.length < (scope === "global" ? minSample : minSampleCliente)) continue;
+    const count = new Map<string, { n: number; top_n: number }>();
+    for (const r of list)
+      for (const l of new Set(r.labels)) {
+        const c = count.get(l) ?? { n: 0, top_n: 0 };
+        count.set(l, { n: c.n + 1, top_n: c.top_n + (r.top ? 1 : 0) });
+      }
     const ranking = [...count.entries()]
-      .map(([mecanismo, n]) => ({ mecanismo, n, share: Math.round((n / list.length) * 100) / 100 }))
-      .sort((a, b) => b.n - a.n)
+      .filter(([, c]) => c.n >= MIN_LABEL_N)
+      .map(([label, c]) => ({
+        label,
+        n: c.n,
+        top_n: c.top_n,
+        lift: r2(c.top_n / c.n / baseTop),
+        lift_lb: r2(wilsonLower(c.top_n, c.n) / baseTop),
+      }))
+      .sort((a, b) => b.lift_lb - a.lift_lb || b.n - a.n)
       .slice(0, topK);
     out.push({ scope, total: list.length, ranking });
   }
@@ -231,8 +254,11 @@ export function rankHookMechanisms(
 
 // ── Fase 4: performance dos mecanismos de hook NA PRÓPRIA SALA ───────────────
 // Junta os outcomes maduros (ratio real) com o mecanismo do hook gravado no
-// pipeline_trace (Fase 3). É o feedback mais direto que existe: mecanismo com
-// ratio mediano >1.2 é padrão a promover no playbook; <0.8 é anti-padrão.
+// pipeline_trace (Fase 3). É o feedback mais direto que existe. Veredito só com
+// evidência (plano 020): "mediana > 1.2" é o mesmo que "mais da metade repete (ratio > 1.2)",
+// então `promover` exige wilsonLower(#repetir, n) > 0.5; `derrubar`, simetricamente,
+// wilsonLower(#evitar (ratio < 0.8), n) > 0.5. IC cruzando 0.5 = neutro, por mais que a
+// mediana pareça boa — 3 roteiros com 1.4x não são padrão, são sorte.
 export interface HookMecOutcome {
   mecanismo: string;
   n: number;
@@ -241,7 +267,7 @@ export interface HookMecOutcome {
 }
 export function hookMechanismOutcomes(
   outcomes: { ratio: number | null | undefined; mecanismo: string | null | undefined }[],
-  minPorMecanismo = 3
+  minPorMecanismo = 10
 ): HookMecOutcome[] {
   const byMec = new Map<string, number[]>();
   for (const o of outcomes) {
@@ -256,12 +282,18 @@ export function hookMechanismOutcomes(
   return [...byMec.entries()]
     .filter(([, r]) => r.length >= minPorMecanismo)
     .map(([mecanismo, r]) => {
-      const ratio = Math.round(med(r) * 100) / 100;
+      const repetir = r.filter((x) => x > 1.2).length;
+      const evitar = r.filter((x) => x < 0.8).length;
       return {
         mecanismo,
         n: r.length,
-        ratio_mediano: ratio,
-        verdict: ratio > 1.2 ? ("promover" as const) : ratio < 0.8 ? ("derrubar" as const) : ("neutro" as const),
+        ratio_mediano: Math.round(med(r) * 100) / 100,
+        verdict:
+          wilsonLower(repetir, r.length) > 0.5
+            ? ("promover" as const)
+            : wilsonLower(evitar, r.length) > 0.5
+              ? ("derrubar" as const)
+              : ("neutro" as const),
       };
     })
     .sort((a, b) => b.ratio_mediano - a.ratio_mediano);
