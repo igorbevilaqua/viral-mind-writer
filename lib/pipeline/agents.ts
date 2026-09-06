@@ -248,7 +248,7 @@ export function hookMechanismRanking(ctx: GenerationContext): { doCliente: boole
 }
 
 const fmt2 = (n: number) => n.toFixed(2).replace(".", ",");
-export const liftTxt = (x: HookRank) => `lift ${fmt2(x.lift)}× (IC inferior ${fmt2(x.lift_lb)}; n=${x.n})`;
+export const liftTxt = (x: { n: number; lift: number; lift_lb: number }) => `lift ${fmt2(x.lift)}× (IC inferior ${fmt2(x.lift_lb)}; n=${x.n})`;
 
 export function hookMechanismBlock(ctx: GenerationContext): string {
   const r = hookMechanismRanking(ctx);
@@ -259,6 +259,20 @@ export function hookMechanismBlock(ctx: GenerationContext): string {
     r.ranking.map((x) => `- ${x.mecanismo} — ${liftTxt(x)}${x.lift_lb < 1 ? " — sem evidência (IC cruza 1)" : ""}`).join("\n") +
     `\nCubra os 3 mecanismos do topo entre os candidatos e traga pelo menos 1 fora deles; a escolha final é do código, não sua.`
   );
+}
+
+// Matriz estrutura × tema (insight estrutura_tema_lift, plano 020 WP-H). O ETL só emite células
+// que passaram no corte (n mínimo e lift_lb > 1), então aqui é só formatar. Cliente precede global.
+export function estruturaTemaBlock(ctx: GenerationContext): string {
+  type Cel = { code: string; nome: string; n: number; lift: number; lift_lb: number };
+  const rows = ctx.insights.filter((i) => i.insight_type === "estrutura_tema_lift");
+  const chosen = rows.find((i) => i.scope.startsWith("client:")) ?? rows[0];
+  const temas = (chosen?.payload as { temas?: { tema: string; estruturas?: Cel[] }[] } | undefined)?.temas ?? [];
+  const linhas = temas
+    .filter((t) => t.estruturas?.length)
+    .map((t) => `- ${t.tema}: ${t.estruturas!.map((e) => `${e.code}. ${e.nome} — ${liftTxt(e)}`).join("; ")}`);
+  if (!linhas.length) return "";
+  return `ESTRUTURAS COM MELHOR RESULTADO POR TEMA (lift medido no corpus; n entre parênteses)\n${linhas.join("\n")}`;
 }
 
 // Preferências do time coletadas na calibração (insight pref_hook). GOSTO humano —
@@ -599,6 +613,7 @@ export async function proposeNarratives(
   const dadosCliente = clientInsightBlock(ctx, ["storytelling", "tema"], 8);
   const ensinado = taughtBlock(ctx, "storytelling");
   const resultadosSala = scriptResultBlock(ctx, "estrutura");
+  const matrizTema = estruturaTemaBlock(ctx);
 
   const messages = [
     {
@@ -611,7 +626,7 @@ export async function proposeNarratives(
 
 DOSSIÊ DE PESQUISA:
 ${dossie || "(pesquisa indisponível — proponha narrativas sustentáveis pelo material do usuário)"}
-${resultadosSala ? `\nRESULTADOS REAIS DESTA SALA (estruturas de roteiros já publicados para este cliente — repita o que performou, evite o marcado como EVITE):\n${resultadosSala}\n` : ""}${dadosCliente ? `\nO QUE JÁ FUNCIONA PARA ESTE CLIENTE (dados reais, pré-rankeados por performance+recência — evidência forte ao escolher estruturas):\n${dadosCliente}\n` : ""}${ensinado ? `\nAPRENDIZADOS ENSINADOS PELO TIME (curadoria humana de virais analisados — se conflitar com heurística, isto prevalece):\n${ensinado}\n` : ""}${refs ? `\nMATERIAIS FORNECIDOS PELO USUÁRIO:\n${refs}` : ""}${
+${resultadosSala ? `\nRESULTADOS REAIS DESTA SALA (estruturas de roteiros já publicados para este cliente — repita o que performou, evite o marcado como EVITE):\n${resultadosSala}\n` : ""}${dadosCliente ? `\nO QUE JÁ FUNCIONA PARA ESTE CLIENTE (dados reais, pré-rankeados por performance+recência — evidência forte ao escolher estruturas):\n${dadosCliente}\n` : ""}${matrizTema ? `\n${matrizTema}\n` : ""}${ensinado ? `\nAPRENDIZADOS ENSINADOS PELO TIME (curadoria humana de virais analisados — se conflitar com heurística, isto prevalece):\n${ensinado}\n` : ""}${refs ? `\nMATERIAIS FORNECIDOS PELO USUÁRIO:\n${refs}` : ""}${
         ctx.modelagemBriefs.length
           ? `\nARQUITETURA-MODELO PEDIDA PELO USUÁRIO (as candidatas devem respeitá-la — use a ESTRUTURA-BASE indicada no brief como estrutura das candidatas, salvo incompatibilidade justificada):\n${ctx.modelagemBriefs.join("\n---\n")}`
           : ""

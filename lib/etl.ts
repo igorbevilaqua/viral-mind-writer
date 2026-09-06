@@ -12,7 +12,8 @@ import {
   type TraceEdicao,
 } from "./learning-loop";
 import { chaveDoCluster, observacoesDaEdicao, type TipoMudanca } from "./edit-diff";
-import { aggregatePreferences, axisValue, type CalibAxis, type CalibOption } from "./calibration";
+import { aggregatePreferences, axisValue, wilsonLower, type CalibAxis, type CalibOption } from "./calibration";
+import { celulaEncolhida } from "./study-stats";
 import { syncScriptPerformance } from "./script-performance";
 import { casarRoteiros } from "./script-matches";
 import { ESTRUTURAS } from "./pipeline/taxonomia";
@@ -230,10 +231,10 @@ async function paginar<T>(
 const BASE_TOP = 0.25;
 const MIN_ESTRATO = 8; // estrato menor que isto não tem quartil que preste
 async function liftRankingRows(): Promise<InsightRow[]> {
-  type Cls = { video_id: string; hook_mecanismos: string[] | null; estruturas: string[] | null; fonte_hook: string | null; fonte_estruturas: string | null };
+  type Cls = { video_id: string; hook_mecanismos: string[] | null; estruturas: string[] | null; tema: string | null; fonte_hook: string | null; fonte_estruturas: string | null };
   type Fato = { video_id: string; cliente_id: string | null; plataforma: string | null; coeficiente_viral: number | string | null; views_total: number | null; maturando: boolean | null };
   const cls = await paginar<Cls>("vm_video_classifications", (a, b) =>
-    appDb.from("vm_video_classifications").select("video_id, hook_mecanismos, estruturas, fonte_hook, fonte_estruturas").order("video_id").range(a, b)
+    appDb.from("vm_video_classifications").select("video_id, hook_mecanismos, estruturas, tema, fonte_hook, fonte_estruturas").order("video_id").range(a, b)
   );
   if (!cls.length) return [];
   const fato = await paginar<Fato>("oraculo.fato_video", (a, b) =>
@@ -268,13 +269,24 @@ async function liftRankingRows(): Promise<InsightRow[]> {
     // uma linha por vídeo rotulado na dimensão; 'Outro' é o rótulo-lixo do classificador
     return cls
       .filter((c) => topByVideo.has(c.video_id))
-      .map((c) => ({ labels: labels(c).filter((l) => l !== "Outro"), clienteId: fatoById.get(c.video_id)!.cliente, top: topByVideo.get(c.video_id)! }));
+      .map((c) => ({ labels: labels(c).filter((l) => l !== "Outro"), clienteId: fatoById.get(c.video_id)!.cliente, top: topByVideo.get(c.video_id)!, tema: c.tema }));
   };
   const hooks = rankByLift(linhas((c) => c.fonte_hook != null, (c) => c.hook_mecanismos ?? []));
-  const estruturas = rankByLift(linhas((c) => c.fonte_estruturas != null, (c) => c.estruturas ?? []));
+  const linhasEstrutura = linhas((c) => c.fonte_estruturas != null, (c) => c.estruturas ?? []);
+  const estruturas = rankByLift(linhasEstrutura);
   const nomeDe = new Map(ESTRUTURAS.map((e) => [e.code, e.nome]));
 
+  // WP-H: a matriz estrutura × tema sai do MESMO conjunto rotulado em estrutura (mesmo `top`).
+  // Isolada num try para uma falha dela não derrubar os dois rankings acima.
+  let matriz: InsightRow[] = [];
+  try {
+    matriz = estruturaTemaRows(linhasEstrutura);
+  } catch (e) {
+    console.error("matriz estrutura × tema falhou, seguindo sem", e);
+  }
+
   return [
+    ...matriz,
     ...hooks.map(({ scope, total, ranking }) => ({
       scope,
       insight_type: "hook_mechanism_ranking",
@@ -302,6 +314,79 @@ async function liftRankingRows(): Promise<InsightRow[]> {
       },
     })),
   ];
+}
+
+// Plano 020, WP-H: matriz estrutura × tema → insight estrutura_tema_lift (global + cliente).
+// Célula = P(top | estrutura, tema); só entra com n mínimo E Wilson inferior do p bruto acima da
+// base (lift_lb > 1) — comparações múltiplas (19 × ~15 células) pedem o IC, não o ponto.
+// p_encolhido é o mesmo do estudo (celulaEncolhida, K=15, prior = p_tema + p_estr − base).
+// Escopo sem nenhuma célula que passe → não emite (STOP do plano). Puro: dá para testar.
+const MIN_CELULA_GLOBAL = 15;
+const MIN_CELULA_CLIENTE = 8;
+type LinhaEstrutura = { labels: string[]; clienteId: string | null; top: boolean; tema: string | null };
+function estruturaTemaRows(rows: LinhaEstrutura[]): InsightRow[] {
+  const nomeDe = new Map(ESTRUTURAS.map((e) => [e.code, e.nome]));
+  const r2 = (x: number) => Math.round(x * 100) / 100;
+  const escopos = new Map<string, LinhaEstrutura[]>();
+  for (const r of rows) {
+    if (!r.tema) continue;
+    escopos.set("global", [...(escopos.get("global") ?? []), r]);
+    if (r.clienteId) escopos.set(`client:${r.clienteId}`, [...(escopos.get(`client:${r.clienteId}`) ?? []), r]);
+  }
+
+  const out: InsightRow[] = [];
+  for (const [scope, list] of escopos) {
+    const minN = scope === "global" ? MIN_CELULA_GLOBAL : MIN_CELULA_CLIENTE;
+    type NK = { n: number; k: number };
+    const soma = (m: Map<string, NK>, key: string, top: boolean) => {
+      const c = m.get(key) ?? { n: 0, k: 0 };
+      m.set(key, { n: c.n + 1, k: c.k + (top ? 1 : 0) });
+    };
+    const porTema = new Map<string, NK>();
+    const porEstr = new Map<string, NK>();
+    const celulas = new Map<string, NK>(); // `${code}|${tema}`
+    for (const r of list) {
+      soma(porTema, r.tema!, r.top);
+      for (const code of new Set(r.labels)) {
+        soma(porEstr, code, r.top);
+        soma(celulas, `${code}|${r.tema}`, r.top);
+      }
+    }
+    const pTop = (c: NK | undefined) => (c?.n ? c.k / c.n : BASE_TOP);
+
+    const temas = [...porTema.entries()]
+      .map(([tema, t]) => {
+        const estruturas = [...celulas.entries()]
+          .filter(([key, c]) => key.endsWith(`|${tema}`) && c.n >= minN)
+          .map(([key, c]) => {
+            const code = key.slice(0, key.indexOf("|"));
+            const pBruto = c.k / c.n;
+            return {
+              code,
+              nome: nomeDe.get(code) ?? code,
+              n: c.n,
+              top_n: c.k,
+              p_bruto: r2(pBruto),
+              p_encolhido: r2(celulaEncolhida(c.k, c.n, pTop(t), pTop(porEstr.get(code))).p),
+              lift: r2(pBruto / BASE_TOP),
+              lift_lb: r2(wilsonLower(c.k, c.n) / BASE_TOP),
+            };
+          })
+          .filter((e) => e.lift_lb > 1)
+          .sort((a, b) => b.lift_lb - a.lift_lb || b.n - a.n)
+          .slice(0, 3);
+        return { tema, n: t.n, estruturas };
+      })
+      .filter((t) => t.estruturas.length)
+      .sort((a, b) => b.n - a.n);
+    if (!temas.length) continue;
+    out.push({
+      scope,
+      insight_type: "estrutura_tema_lift",
+      payload: { titulo: "Estruturas com melhor resultado por tema (lift no top quartil)", base_top: BASE_TOP, temas, score: 0, destaque: false },
+    });
+  }
+  return out;
 }
 
 // Fatia 1: agrega os votos de calibração em preferências confiáveis (Wilson) por

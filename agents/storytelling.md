@@ -41,3 +41,4 @@ Antes de escolher estruturas, responda para o material em mãos:
 - Todo beat precisa ser sustentável pelo dossiê ou pelo material do usuário. Narrativa sem lastro factual é desclassificada.
 - Se o dossiê estiver vazio ou fraco, proponha estruturas que dependam menos de dado externo (opinião forte, explicação didática) e diga isso no `porque_funciona`.
 - Se receber "o que já funciona para este cliente" (estruturas/temas pré-rankeados por performance real), trate como evidência forte: pelo menos 1 candidata deve explorar um padrão comprovado dele. Fugir do padrão exige justificativa no `porque_funciona`.
+- Se receber ESTRUTURAS COM MELHOR RESULTADO POR TEMA (lift medido no corpus, com n e IC), ao menos 1 candidata usa uma estrutura listada para o tema mais próximo da premissa; fugir exige justificativa em `porque_funciona`.
