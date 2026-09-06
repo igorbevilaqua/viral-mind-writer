@@ -2,14 +2,14 @@
 // (lib/etl.ts); este script existe para conferir a lista a olho antes de gravar.
 // Rodar: npx tsx --env-file=.env.local scripts/backfill-matches.ts [--dry-run]
 import { appDb } from "../lib/db";
-import { casarRoteiros, decidirCasamentos, MATCH_PENDENTE, type MatchRow } from "../lib/script-matches";
+import { casarRoteiros, decidirCasamentos, type MatchRow } from "../lib/script-matches";
 import { syncScriptPerformance } from "../lib/script-performance";
 
 const dryRun = process.argv.includes("--dry-run");
 const corta = (s: string | null) => (s ?? "—").replace(/\s+/g, " ").trim().slice(0, 80);
 
 async function main() {
-  const { data, error } = await appDb.rpc("vm_match_scripts", { p_min: MATCH_PENDENTE });
+  const { data, error } = await appDb.rpc("vm_match_scripts");
   if (error) throw new Error(`vm_match_scripts: ${error.message} — aplicar migration 0040`);
   const casos = decidirCasamentos((data ?? []) as MatchRow[]);
 
@@ -18,7 +18,7 @@ async function main() {
     console.log(`\n== ${auto ? "AUTO" : "PENDENTE"} (${grupo.length}) ==`);
     for (const c of grupo)
       console.log(
-        `${c.score.toFixed(2)} · ${c.plataforma ?? "?"}${c.principal ? " ★" : ""} · ${corta(c.hook_codex)} · ${corta(c.hook_video)}`
+        `ov ${c.sobreposicao.toFixed(2)} (ts ${c.score.toFixed(2)}) · ${c.plataforma ?? "?"}${c.principal ? " ★" : ""} · ${corta(c.hook_codex)} · ${corta(c.hook_video)}`
       );
   }
   if (dryRun) {

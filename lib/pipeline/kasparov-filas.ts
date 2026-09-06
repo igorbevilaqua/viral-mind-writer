@@ -27,7 +27,7 @@ export type Pendencia =
   // isso hoje. Ela reaparece até a métrica existir; se incomodar, a saída é uma coluna
   // `metrica_dispensada_em` em vm_generated_scripts, não um estado em memória.
   | { tipo: "metrica"; scriptId: string; url: string; dias: number; restantes: number }
-  // Plano 020, WP-A: zona cinza do casamento por texto (0,4–0,8). O humano vê os dois hooks e
+  // Plano 020, WP-A: zona cinza do casamento por texto (sobreposição 0,02–0,08). O humano vê os dois hooks e
   // decide; "é este" grava published_url e o roteiro entra no flywheel.
   | {
       tipo: "casamento";
@@ -95,7 +95,7 @@ export type CasamentoPendente = Omit<Extract<Pendencia, { tipo: "casamento" }>, 
 async function casamentosPendentesDb(clientId: string | null): Promise<CasamentoPendente[]> {
   const { data, error } = await appDb
     .from("vm_script_matches")
-    .select("script_id, video_id, score, plataforma, vm_generated_scripts!inner(hook, client_id)")
+    .select("script_id, video_id, score, sobreposicao, plataforma, vm_generated_scripts!inner(hook, client_id)")
     .is("confirmado", null)
     .limit(50);
   if (error) throw new Error(error.message);
@@ -118,7 +118,8 @@ async function casamentosPendentesDb(clientId: string | null): Promise<Casamento
       hookCodex: (s?.hook as string | null) ?? null,
       hookVideo: (v?.hook as string | null) ?? null,
       link: (v?.link_video as string | null) ?? null,
-      score: Number(m.score),
+      // a semelhança que o humano vê é a literal (5-gramas), não o ts_rank que gerou o candidato
+      score: Number(m.sobreposicao ?? m.score),
       plataforma: (m.plataforma as string | null) ?? null,
     };
   });
