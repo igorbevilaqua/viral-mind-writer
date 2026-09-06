@@ -34,7 +34,7 @@ export async function middleware(request: NextRequest) {
   const isPublic = PUBLIC_PATHS.some((p) => pathname === p || pathname.startsWith(p + "/"));
 
   // Acesso = linha em hub.permissoes (app='writer'), cacheada em cookie assinado
-  // por 5 min. Usuários/permissões geridos no Painel VML (adm.viralmindlabs.com).
+  // por 5 min. Usuários/permissões geridos no Cockpit VM (adm.viralmindlabs.com).
   let papel: string | null = null; // papel do hub ou 'none' (negativa cacheada)
   let setCookie = false;
   if (user) {

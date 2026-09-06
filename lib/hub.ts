@@ -4,7 +4,7 @@ import { appDb } from "./db";
 import { createClient } from "./supabase/server";
 import { HUB_COOKIE, verificarPermissao } from "./hub-cookie";
 
-// Papel padrão no writer é 'usuario' (gestão no Painel VML — adm.viralmindlabs.com).
+// Papel padrão no writer é 'usuario' (gestão no Cockpit VM — adm.viralmindlabs.com).
 export type Papel = string;
 
 // Papel do usuário logado no writer (null = sem acesso). Lê o cookie assinado
