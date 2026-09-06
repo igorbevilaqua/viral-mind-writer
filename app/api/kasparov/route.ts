@@ -15,6 +15,7 @@ import {
   type Resposta,
 } from "@/lib/pipeline/kasparov-filas";
 import { blocoDeVideo, urlDeVideo } from "@/lib/pipeline/kasparov-video";
+import { confirmarCasamento } from "@/lib/script-matches";
 
 // Transcrição + autópsia + debate longo. É o teto do /api/generate, pela mesma razão.
 export const maxDuration = 300;
@@ -38,6 +39,7 @@ const FILAS: FilasDeps = {
   votar: submitCalibrationVote,
   ativarLicao: setLearningActive,
   comparacaoCriterio: comparacaoFewShot,
+  confirmarCasamento,
   // quem decidiu fica na linha: é a única forma de saber depois de quem foi a troca de critério
   decidirCriterio: async (criterio, amostra) => decidirCriterioDb(criterio, amostra, await currentUserId()),
 };
@@ -50,6 +52,8 @@ const RESPOSTAS: Resposta[] = ["a", "b", "skip", "ativar", "rejeitar"];
 const PENDENCIA_DE_ADM: Record<string, string> = {
   licao: "ativar uma lição",
   criterio: "trocar o critério do few-shot",
+  // confirmar grava published_url e o roteiro entra no flywheel de todos — é decisão de dado, não de gosto
+  casamento: "confirmar o vídeo publicado de um roteiro",
 };
 
 // Forma do payload, e SÓ isso — `responder` roteia por `p.tipo` e leva o id direto ao banco,
@@ -61,6 +65,10 @@ function pendenciaValida(p: unknown): p is Pendencia {
   if (!o || typeof o !== "object") return false;
   if (o.tipo === "calibracao") return typeof (o as { pairId?: unknown }).pairId === "string";
   if (o.tipo === "licao") return typeof (o as { learningId?: unknown }).learningId === "string";
+  if (o.tipo === "casamento") {
+    const c = o as { scriptId?: unknown; videoId?: unknown };
+    return typeof c.scriptId === "string" && UUID_RE.test(c.scriptId) && typeof c.videoId === "string" && UUID_RE.test(c.videoId);
+  }
   // A pendência de critério não leva id a lugar nenhum — ela vira a coluna `amostra` (jsonb) da
   // linha da decisão. O que precisa ser barrado aqui é payload fora de forma, não id forjado.
   if (o.tipo === "criterio") {

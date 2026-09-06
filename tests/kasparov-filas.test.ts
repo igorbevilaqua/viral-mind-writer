@@ -324,3 +324,46 @@ describe("fila do critério do few-shot", () => {
     expect(gravadas).toEqual([]);
   });
 });
+
+// ── Plano 020, WP-A: zona cinza do casamento Codex → vídeo ───────────────────
+describe("fila de casamento pendente", () => {
+  const semOutras = { proximoPar: async () => null, licoesPendentes: async () => [], metricasFaltando: async () => [] };
+  const dupla = {
+    scriptId: "s1",
+    videoId: "v1",
+    hookCodex: "o banco cobra 3% ao mês",
+    hookVideo: "o banco te cobra 3% todo mês",
+    link: "https://ig/p/1",
+    score: 0.62,
+    plataforma: "Instagram",
+  };
+
+  test("dupla pendente vira pendência com os dois hooks e o link", async () => {
+    const p = await proximaPendencia("c1", { ...semOutras, casamentosPendentes: async () => [dupla] });
+    expect(p).toEqual({ tipo: "casamento", ...dupla, restantes: 1 });
+  });
+
+  test("ativar confirma, rejeitar nega, skip não grava e a dupla volta", async () => {
+    const gravadas: [string, string, boolean][] = [];
+    const d = {
+      ...semOutras,
+      casamentosPendentes: async () => [dupla],
+      confirmarCasamento: async (s: string, v: string, ok: boolean) => void gravadas.push([s, v, ok]),
+    };
+    const p = (await proximaPendencia("c1", d))!;
+    await responder(p, "skip", "c1", d);
+    expect(gravadas).toEqual([]);
+    expect(await proximaPendencia("c1", d)).toEqual(p);
+    await responder(p, "ativar", "c1", d);
+    await responder(p, "rejeitar", "c1", d);
+    expect(gravadas).toEqual([
+      ["s1", "v1", true],
+      ["s1", "v1", false],
+    ]);
+  });
+
+  test("voto a/b não pertence a esta fila", async () => {
+    const p = { tipo: "casamento" as const, ...dupla, restantes: 1 };
+    await expect(responder(p, "a", null, {})).rejects.toThrow(/só aceita/);
+  });
+});

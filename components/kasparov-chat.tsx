@@ -390,6 +390,50 @@ function FilaCard({ p, onResponder }: { p: Pendencia; onResponder: (r: Resposta)
             sustentar uma posição em vez de só opinar.
           </p>
         </>
+      ) : p.tipo === "casamento" ? (
+        <>
+          {/* Plano 020: zona cinza do casamento por texto. Os dois hooks lado a lado porque é a
+              única evidência que o humano precisa — "é este" grava o vídeo como publicado. */}
+          <p className="text-[13px] text-white/70">
+            Acho que este roteiro foi publicado{p.plataforma ? ` no ${p.plataforma}` : ""}, mas o texto só bate em
+            parte (semelhança {p.score.toFixed(2)}). É ele?{" "}
+            <span className="text-white/35">({p.restantes} esperando)</span>
+          </p>
+          <div className="grid gap-2.5 sm:grid-cols-2">
+            {(
+              [
+                ["hook do Codex", p.hookCodex],
+                ["hook do vídeo", p.hookVideo],
+              ] as const
+            ).map(([titulo, hook]) => (
+              <div key={titulo} className="rounded-[10px] border border-white/10 p-2.5">
+                <p className="kicker text-[10px] text-gold mb-1.5">{titulo}</p>
+                <p className="text-[12px] leading-snug text-white/60">{hook ?? "—"}</p>
+              </div>
+            ))}
+          </div>
+          {p.link && (
+            <a
+              href={p.link}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-block text-[12.5px] text-gold underline underline-offset-2 hover:text-cream"
+            >
+              abrir o vídeo
+            </a>
+          )}
+          <div className="flex flex-wrap gap-2">
+            <button
+              onClick={() => onResponder("ativar")}
+              className="btn-gold rounded-[10px] px-4 py-2 text-[13px] font-semibold"
+            >
+              É este
+            </button>
+            <button onClick={() => onResponder("rejeitar")} className={opcao}>
+              Não é
+            </button>
+          </div>
+        </>
       ) : p.tipo === "criterio" ? (
         <>
           {/* Os DOIS conjuntos na mesa, com o número que os separa. Sem isso a troca de critério

@@ -14,6 +14,7 @@ import {
 import { chaveDoCluster, observacoesDaEdicao, type TipoMudanca } from "./edit-diff";
 import { aggregatePreferences, axisValue, type CalibAxis, type CalibOption } from "./calibration";
 import { syncScriptPerformance } from "./script-performance";
+import { casarRoteiros } from "./script-matches";
 
 // ETL semanal: materializa insights do corpus em vm_viral_insights
 // (globais + por cliente, categorizados e pontuados) e sincroniza
@@ -441,6 +442,10 @@ export async function runWeeklyEtl() {
     console.error("preferências de calibração falharam, seguindo sem", e);
   }
 
+  // ── Plano 020, WP-A: casa roteiro do Codex com o vídeo publicado por texto. Antes do
+  // Flywheel 1/3 de propósito: o que casar aqui já entra como publicado no mesmo run.
+  const casados = await casarRoteiros();
+
   // ── Flywheel 1/3: os roteiros publicados que o resto do ciclo usa.
   // Aqui existia uma escrita em videos.crm_script_id, que NÃO é nossa: quem casa vídeo↔roteiro
   // naquela coluna é o coletor, do outro app que divide este Supabase. Marcar um vídeo ainda
@@ -679,5 +684,6 @@ export async function runWeeklyEtl() {
     clientInsights,
     scriptsSynced: synced,
     scriptsSemCorpus: naoCasaram.length,
+    casados,
   };
 }

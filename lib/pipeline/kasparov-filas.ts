@@ -1,4 +1,4 @@
-import { appDb } from "@/lib/db";
+import { appDb, viralData } from "@/lib/db";
 import type { ComparacaoCriterio, CriterioFewShot } from "./few-shot";
 
 // As filas que o Kasparov drena (018 §8). Nenhuma ganha tela nova: são assunto entre um turno
@@ -27,6 +27,19 @@ export type Pendencia =
   // isso hoje. Ela reaparece até a métrica existir; se incomodar, a saída é uma coluna
   // `metrica_dispensada_em` em vm_generated_scripts, não um estado em memória.
   | { tipo: "metrica"; scriptId: string; url: string; dias: number; restantes: number }
+  // Plano 020, WP-A: zona cinza do casamento por texto (0,4–0,8). O humano vê os dois hooks e
+  // decide; "é este" grava published_url e o roteiro entra no flywheel.
+  | {
+      tipo: "casamento";
+      scriptId: string;
+      videoId: string;
+      hookCodex: string | null;
+      hookVideo: string | null;
+      link: string | null;
+      score: number;
+      plataforma: string | null;
+      restantes: number;
+    }
   // Critério do few-shot: trocar views por taxa de compartilhamento troca ~4 dos 5 exemplos que
   // o roteirista imita (e os 2 que viram a voz do humanizador). Decisão de uma vez só, e por
   // isso ela chega com os DOIS conjuntos na mesa — botão no escuro é pior que nenhum botão.
@@ -70,6 +83,45 @@ export interface FilasDeps {
   comparacaoCriterio?: (clientId: string | null) => Promise<ComparacaoCriterio | null>;
   /** grava a decisão do critério; default escreve em vm_fewshot_criterio sem autor */
   decidirCriterio?: (criterio: CriterioFewShot, amostra: unknown) => Promise<void>;
+  casamentosPendentes?: (clientId: string | null) => Promise<CasamentoPendente[]>;
+  /** `confirmarCasamento` (lib/script-matches.ts) */
+  confirmarCasamento?: (scriptId: string, videoId: string, aceito: boolean) => Promise<void>;
+}
+
+export type CasamentoPendente = Omit<Extract<Pendencia, { tipo: "casamento" }>, "tipo" | "restantes">;
+
+// Zona cinza do vm_match_scripts: confirmado null. Hook do roteiro vem junto; hook e link do
+// vídeo vêm do corpus (viralData), que é outro client.
+async function casamentosPendentesDb(clientId: string | null): Promise<CasamentoPendente[]> {
+  const { data, error } = await appDb
+    .from("vm_script_matches")
+    .select("script_id, video_id, score, plataforma, vm_generated_scripts!inner(hook, client_id)")
+    .is("confirmado", null)
+    .limit(50);
+  if (error) throw new Error(error.message);
+  const rows = (data ?? []).filter((m) => {
+    const s = Array.isArray(m.vm_generated_scripts) ? m.vm_generated_scripts[0] : m.vm_generated_scripts;
+    return clientId === null || s?.client_id === clientId;
+  });
+  if (!rows.length) return [];
+  const { data: videos } = await viralData
+    .from("videos")
+    .select("id, hook, link_video")
+    .in("id", rows.map((m) => m.video_id));
+  const video = new Map((videos ?? []).map((v) => [v.id as string, v]));
+  return rows.map((m) => {
+    const s = Array.isArray(m.vm_generated_scripts) ? m.vm_generated_scripts[0] : m.vm_generated_scripts;
+    const v = video.get(m.video_id as string);
+    return {
+      scriptId: m.script_id as string,
+      videoId: m.video_id as string,
+      hookCodex: (s?.hook as string | null) ?? null,
+      hookVideo: (v?.hook as string | null) ?? null,
+      link: (v?.link_video as string | null) ?? null,
+      score: Number(m.score),
+      plataforma: (m.plataforma as string | null) ?? null,
+    };
+  });
 }
 
 export interface MetricaFaltando {
@@ -149,10 +201,11 @@ async function ouNada<T>(p: Promise<T>, oque: string): Promise<T | null> {
 }
 
 export async function proximaPendencia(clientId: string | null, deps: FilasDeps = {}): Promise<Pendencia | null> {
-  const [par, licoes, metricas, criterio] = await Promise.all([
+  const [par, licoes, metricas, casamentos, criterio] = await Promise.all([
     deps.proximoPar ? ouNada(deps.proximoPar(clientId), "calibração") : null,
     ouNada((deps.licoesPendentes ?? licoesPendentesDb)(clientId), "lições"),
     ouNada((deps.metricasFaltando ?? metricasFaltandoDb)(clientId), "métricas"),
+    ouNada((deps.casamentosPendentes ?? casamentosPendentesDb)(clientId), "casamentos"),
     deps.comparacaoCriterio ? ouNada(deps.comparacaoCriterio(clientId), "critério do few-shot") : null,
   ]);
 
@@ -176,6 +229,11 @@ export async function proximaPendencia(clientId: string | null, deps: FilasDeps 
     // chega ela sai da fila de vez — ao contrário da lição, que o usuário pode só não querer.
     const m = [...metricas].sort((a, b) => b.dias - a.dias)[0];
     candidatas.push({ tipo: "metrica", scriptId: m.scriptId, url: m.url, dias: m.dias, restantes: metricas.length });
+  }
+  if (casamentos?.length) {
+    // sorteada, como a lição: `skip` na primeira da lista viraria nag na mesma dupla.
+    const c = casamentos[Math.floor(Math.random() * casamentos.length)];
+    candidatas.push({ tipo: "casamento", ...c, restantes: casamentos.length });
   }
   // Uma decisão só, e ela some da fila assim que for tomada (a leitura da decisão é o primeiro
   // if de comparacaoFewShot). Enquanto não for, divide o assunto com as outras filas.
@@ -208,6 +266,14 @@ export async function responder(
       resposta === "ativar" ? "taxa_compartilhamento" : "views",
       p
     );
+    return;
+  }
+  // Casamento: "é este" e "não é" gravam (confirmado true/false); skip devolve a dupla à fila.
+  if (p.tipo === "casamento") {
+    if (resposta === "skip") return;
+    if (resposta !== "ativar" && resposta !== "rejeitar")
+      throw new Error("casamento só aceita ativar, rejeitar ou skip");
+    await deps.confirmarCasamento?.(p.scriptId, p.videoId, resposta === "ativar");
     return;
   }
   if (p.tipo === "calibracao") {
