@@ -240,31 +240,36 @@ async function liftRankingRows(): Promise<InsightRow[]> {
     viralData.schema("oraculo").from("fato_video").select("video_id, cliente_id, plataforma, coeficiente_viral, views_total, maturando").order("video_id").range(a, b)
   );
 
-  // top quartil por estrato: agrupa, ordena por coeficiente desc, marca os 25% de cima
-  const estratos = new Map<string, { video_id: string; coef: number }[]>();
-  for (const f of fato) {
-    const coef = Number(f.coeficiente_viral);
-    if (f.maturando || !f.views_total || !Number.isFinite(coef)) continue; // <7d ou sem views: não mede nada
-    const k = `${f.cliente_id ?? ""}|${f.plataforma ?? ""}`;
-    estratos.set(k, [...(estratos.get(k) ?? []), { video_id: f.video_id, coef }]);
-  }
-  const topByVideo = new Map<string, boolean>();
-  const clienteByVideo = new Map<string, string | null>();
-  for (const [k, list] of estratos) {
-    if (list.length < MIN_ESTRATO) continue;
-    list.sort((a, b) => b.coef - a.coef);
-    const corte = Math.round(list.length * BASE_TOP);
-    list.forEach((v, i) => {
-      topByVideo.set(v.video_id, i < corte);
-      clienteByVideo.set(v.video_id, k.split("|")[0] || null);
-    });
-  }
+  const fatoById = new Map(
+    fato
+      .filter((f) => !f.maturando && f.views_total && Number.isFinite(Number(f.coeficiente_viral))) // <7d ou sem views: não mede nada
+      .map((f) => [f.video_id, { cliente: f.cliente_id ?? null, plataforma: f.plataforma ?? "", coef: Number(f.coeficiente_viral) }])
+  );
 
-  // uma linha por vídeo rotulado na dimensão; 'Outro' é o rótulo-lixo do classificador
-  const linhas = (rotulado: (c: Cls) => boolean, labels: (c: Cls) => string[]) =>
-    cls
-      .filter((c) => rotulado(c) && topByVideo.has(c.video_id))
-      .map((c) => ({ labels: labels(c).filter((l) => l !== "Outro"), clienteId: clienteByVideo.get(c.video_id) ?? null, top: topByVideo.get(c.video_id)! }));
+  // O quartil é calculado DENTRO do conjunto rotulado na dimensão, por estrato (cliente ×
+  // plataforma). Sobre a população não serve: o classificador priorizou vm_script='sim' e
+  // extremos, então P(top | rotulado) sai de 25% e todo rótulo ganha lift espúrio — foi o que
+  // a 1ª rodada do ETL fez (seis mecanismos acima de 1). Assim, P(top) = 0,25 por construção.
+  const linhas = (rotulado: (c: Cls) => boolean, labels: (c: Cls) => string[]) => {
+    const estratos = new Map<string, { video_id: string; coef: number }[]>();
+    for (const c of cls) {
+      const f = fatoById.get(c.video_id);
+      if (!f || !rotulado(c)) continue;
+      const k = `${f.cliente ?? ""}|${f.plataforma}`;
+      estratos.set(k, [...(estratos.get(k) ?? []), { video_id: c.video_id, coef: f.coef }]);
+    }
+    const topByVideo = new Map<string, boolean>();
+    for (const list of estratos.values()) {
+      if (list.length < MIN_ESTRATO) continue;
+      list.sort((a, b) => b.coef - a.coef);
+      const corte = Math.round(list.length * BASE_TOP);
+      list.forEach((v, i) => topByVideo.set(v.video_id, i < corte));
+    }
+    // uma linha por vídeo rotulado na dimensão; 'Outro' é o rótulo-lixo do classificador
+    return cls
+      .filter((c) => topByVideo.has(c.video_id))
+      .map((c) => ({ labels: labels(c).filter((l) => l !== "Outro"), clienteId: fatoById.get(c.video_id)!.cliente, top: topByVideo.get(c.video_id)! }));
+  };
   const hooks = rankByLift(linhas((c) => c.fonte_hook != null, (c) => c.hook_mecanismos ?? []));
   const estruturas = rankByLift(linhas((c) => c.fonte_estruturas != null, (c) => c.estruturas ?? []));
   const nomeDe = new Map(ESTRUTURAS.map((e) => [e.code, e.nome]));
