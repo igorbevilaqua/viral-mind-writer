@@ -34,6 +34,8 @@ commitado e os excerpts reconciliados.
 | 015  | Ensino em sessão: explicar, mudar, ensinar (2.0, peça 1/4 — carrega a espinha) | P1 | L | — | SPEC (design aprovado 2026-08-15; aguarda plano de implementação) |
 | 016  | Escrita: material antes, veredito depois (2.0, peça 2/4 — estudos, grandeza, eco numérico) | P1 | M | 015 | SPEC (escrito 2026-08-15; aguarda plano de implementação) |
 | 017  | Verificação factual: checar o que o roteirista inventou (2.0, peça 3/4 — regime C, delta) | P1 | M | 015 | SPEC (escrito 2026-08-15; aguarda plano de implementação) |
+| 019  | Edição livre como motor de aprendizado | P2 | L | 015 | IN PROGRESS (Fase 1 mergeada, 0038) |
+| 020  | Evolução da escrita por dados: casamento Codex→vídeo, rótulos canônicos (Oráculo), estudo de lift, share→lift + anti-colapso, few-shot por cliente | P1 | L | — | IN PROGRESS (aprovado 2026-09-05; onda 1 em execução) |
 
 Status: TODO | IN PROGRESS | DONE | BLOCKED (motivo) | REJECTED (motivo)
 
