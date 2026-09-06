@@ -6,9 +6,11 @@ import {
   rankFewShot,
   resumirComparacao,
   CRITERIO_PADRAO,
+  escopoFewShot,
   type CandidatoFewShot,
   type ComparacaoCriterio,
   type CriterioFewShot,
+  type EscopoFewShot,
   type ExemploFewShot,
   type MetricasVideo,
 } from "./few-shot";
@@ -28,29 +30,30 @@ async function embed(text: string): Promise<number[]> {
 type DocRow = { content?: string | null; video_id?: string | null; metadata?: unknown };
 
 // Compartilhamento não vive em documents.metadata (3,7% de cobertura, inviável): vive em
-// metricas_diarias, e o RPC já devolve `video_id`. Uma segunda query pelos 20 ids dá ~46% de
-// cobertura. A plataforma vem junto porque é ela que decide se 0 é zero ou ausência de dado.
+// metricas_diarias, e o RPC já devolve `video_id`. Uma segunda query pelos 60 ids dá ~46% de
+// cobertura. A plataforma vem junto porque é ela que decide se 0 é zero ou ausência de dado;
+// o cliente vem junto porque é ele que separa few-shot "do cliente" de "global" (WP-G).
 async function metricasDosCandidatos(rows: DocRow[]): Promise<Map<string, MetricasVideo>> {
   const mapa = new Map<string, MetricasVideo>();
   const ids = [...new Set(rows.map((r) => r.video_id).filter((v): v is string => !!v))];
   if (!ids.length) return mapa;
   const { data, error } = await viralData
     .from("videos")
-    .select("id, canais(plataforma), metricas_diarias(views_no_dia, fb_views_no_dia, compartilhamentos_no_dia)")
+    .select("id, canais(plataforma, cliente_id), metricas_diarias(views_no_dia, fb_views_no_dia, compartilhamentos_no_dia)")
     .in("id", ids);
   if (error) {
     // Sem métrica o ranking cai no critério de hoje sozinho (candidato sem dado ⇒ fallback).
     console.error("métricas dos candidatos indisponíveis, few-shot segue por views", error.message);
     return mapa;
   }
-  const linhas = (data ?? []) as unknown as {
-    id: string;
-    canais: { plataforma?: string | null } | { plataforma?: string | null }[] | null;
-    metricas_diarias: Diaria[] | null;
-  }[];
+  type Canal = { plataforma?: string | null; cliente_id?: string | null };
+  const linhas = (data ?? []) as unknown as { id: string; canais: Canal | Canal[] | null; metricas_diarias: Diaria[] | null }[];
   for (const v of linhas) {
     const canal = Array.isArray(v.canais) ? v.canais[0] : v.canais;
-    mapa.set(v.id, agregarDiarias(v.metricas_diarias ?? [], canal?.plataforma ?? null));
+    mapa.set(v.id, {
+      ...agregarDiarias(v.metricas_diarias ?? [], canal?.plataforma ?? null),
+      clienteId: canal?.cliente_id ?? null,
+    });
   }
   return mapa;
 }
@@ -59,7 +62,7 @@ async function candidatosFewShot(prompt: string): Promise<CandidatoFewShot[]> {
   const queryEmbedding = await embed(prompt);
   const corpus = await viralData.rpc("match_documents", {
     query_embedding: queryEmbedding,
-    match_count: 20, // sobra pra pós-filtrar por performance; threshold inalterado
+    match_count: 60, // sobra pra pós-filtrar por performance E por cliente (WP-G); threshold inalterado
     match_threshold: 0.3,
   });
   const rows = (corpus.data ?? []) as DocRow[];
@@ -83,22 +86,22 @@ export async function criterioFewShot(): Promise<CriterioFewShot> {
   return data?.criterio === "taxa_compartilhamento" ? "taxa_compartilhamento" : CRITERIO_PADRAO;
 }
 
-// Few-shot vencedor: 20 por similaridade, 5 pelo critério vigente. Vale para os DOIS
-// consumidores — o roteirista (draft.ts) e a referência de voz do humanizador (humanize.ts),
-// que lê os 2 primeiros desta mesma lista.
+// Few-shot vencedor: 60 por similaridade, 5 pelo critério vigente — os do cliente primeiro
+// quando há ≥3 deles. Vale para os DOIS consumidores — o roteirista (draft.ts) e a referência de
+// voz do humanizador (humanize.ts), que lê os 2 primeiros desta mesma lista.
 async function fetchFewShot(
   prompt: string,
   clientId: string | null
-): Promise<{ exemplos: ExemploFewShot[]; criterio: CriterioFewShot }> {
+): Promise<{ exemplos: ExemploFewShot[]; criterio: CriterioFewShot; escopo: EscopoFewShot }> {
   // adaptação sem tema: nada pra embutir; embeddings rejeita string vazia
-  if (!prompt.trim()) return { exemplos: [], criterio: CRITERIO_PADRAO };
+  if (!prompt.trim()) return { exemplos: [], criterio: CRITERIO_PADRAO, escopo: "global" };
   try {
-    void clientId; // ponytail: filtro de few-shot por cliente adiado — entra com match_documents_v2 (WP-C.7)
     const [candidatos, criterio] = await Promise.all([candidatosFewShot(prompt), criterioFewShot()]);
-    return { exemplos: rankFewShot(candidatos, criterio), criterio };
+    const exemplos = rankFewShot(candidatos, criterio, clientId);
+    return { exemplos, criterio, escopo: escopoFewShot(exemplos) };
   } catch (e) {
     console.error("few-shot search failed, seguindo sem exemplos vetoriais", e);
-    return { exemplos: [], criterio: CRITERIO_PADRAO };
+    return { exemplos: [], criterio: CRITERIO_PADRAO, escopo: "global" };
   }
 }
 
@@ -287,6 +290,9 @@ export async function loadContext(sessionId: string): Promise<GenerationContext>
     ...(await loadEstadoComum(session.client_id, modoModelagem)),
     fewShot: fewShot.exemplos,
     fewShotCriterio: fewShot.criterio,
+    // Escopo efetivo do few-shot → pipeline_trace.proveniencia.blocos.few_shot (index.ts já
+    // serializa `blocos`; registrarBloco preserva esta chave). STOP do WP-G lê daqui.
+    blocos: { few_shot: { escopo: fewShot.escopo } },
     attachments: (attachments.data ?? []) as Attachment[],
     modelagemBriefs: [],
     modelagemHooks: [],

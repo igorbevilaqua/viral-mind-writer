@@ -1,16 +1,18 @@
 import { describe, expect, it } from "vitest";
 import {
   candidatosDeDocumentos,
+  escopoFewShot,
   rankFewShot,
   resumirComparacao,
   taxaCompartilhamento,
   type CandidatoFewShot,
 } from "@/lib/pipeline/few-shot";
 
-const c = (roteiro: string, views: number, compartilhamentos: number | null = null): CandidatoFewShot => ({
+const c = (roteiro: string, views: number, compartilhamentos: number | null = null, clienteId: string | null = null): CandidatoFewShot => ({
   roteiro,
   views,
   compartilhamentos,
+  clienteId,
 });
 
 describe("rankFewShot — critério views (o de hoje)", () => {
@@ -91,7 +93,49 @@ describe("rankFewShot — critério taxa de compartilhamento", () => {
     const pool = Array.from({ length: 12 }, (_, i) => c(`r${i}`, (i + 1) * 1000, i * 10));
     expect(rankFewShot(pool, "views")).toHaveLength(5);
     expect(rankFewShot(pool, "taxa_compartilhamento")).toHaveLength(5);
-    expect(rankFewShot(pool, "taxa_compartilhamento", 2)).toHaveLength(2);
+    expect(rankFewShot(pool, "taxa_compartilhamento", null, 2)).toHaveLength(2);
+  });
+});
+
+describe("rankFewShot — few-shot por cliente (WP-G)", () => {
+  const CLI = "cliente-a";
+  // globais fortes de propósito: se o filtro por cliente falhar, eles tomam as 5 vagas
+  const globais = Array.from({ length: 10 }, (_, i) => c(`global ${i}`, (i + 1) * 1_000_000, (i + 1) * 1000, i % 2 ? "outro" : null));
+  const doCliente = [c("cli baixo", 10_000, 900, CLI), c("cli alto", 90_000, 900, CLI), c("cli médio", 50_000, 900, CLI)];
+
+  it("≥3 do cliente: os dele primeiro (pelo critério), globais completam; origem e escopo marcados", () => {
+    const out = rankFewShot([...globais, ...doCliente], "views", CLI);
+    expect(out.map((o) => o.roteiro)).toEqual(["cli alto", "cli médio", "cli baixo", "global 9", "global 8"]);
+    expect(out.map((o) => o.escopo)).toEqual(["cliente", "cliente", "cliente", "global", "global"]);
+    expect(out[0].origem).toBe("roteiro publicado (corpus, cliente) — 90k views, entrou por views");
+    expect(out[3].origem).toBe("roteiro publicado (corpus, global) — 10.0M views, entrou por views");
+    expect(escopoFewShot(out)).toBe("cliente");
+  });
+
+  it("critério taxa_compartilhamento vale dentro de cada grupo", () => {
+    const out = rankFewShot([...globais, ...doCliente], "taxa_compartilhamento", CLI);
+    // 900/10k = 9% > 900/50k = 1,8% > 900/90k = 1%; globais: taxa constante 0,1% → ordem estável
+    expect(out.slice(0, 3).map((o) => o.roteiro)).toEqual(["cli baixo", "cli médio", "cli alto"]);
+    expect(out.slice(3).every((o) => o.escopo === "global" && o.criterio === "taxa_compartilhamento")).toBe(true);
+    expect(out[0].origem).toBe(
+      "roteiro publicado (corpus, cliente) — 9.00% de compartilhamento em 10k views, entrou por taxa de compartilhamento"
+    );
+  });
+
+  it("<3 do cliente: fallback global inteiro, sem fingir — escopo 'global' e origem 'global'", () => {
+    const out = rankFewShot([...globais, ...doCliente.slice(0, 2)], "views", CLI);
+    expect(out.map((o) => o.roteiro)).toEqual(["global 9", "global 8", "global 7", "global 6", "global 5"]);
+    expect(out.every((o) => o.escopo === "global")).toBe(true);
+    expect(out[0].origem).toBe("roteiro publicado (corpus, global) — 10.0M views, entrou por views");
+    expect(escopoFewShot(out)).toBe("global");
+  });
+
+  it("sem clientId: comportamento anterior, origem sem marca de escopo", () => {
+    const out = rankFewShot([...globais, ...doCliente], "views");
+    expect(out.map((o) => o.roteiro)).toEqual(["global 9", "global 8", "global 7", "global 6", "global 5"]);
+    expect(out[0].origem).toBe("roteiro publicado (corpus) — 10.0M views, entrou por views");
+    expect(out[0].escopo).toBeNull();
+    expect(escopoFewShot(out)).toBe("global");
   });
 });
 
@@ -111,11 +155,11 @@ describe("candidatosDeDocumentos", () => {
         { content: null, video_id: "v2", metadata: { views: 9 } },
         { content: "c", video_id: null, metadata: {} },
       ],
-      new Map([["v1", { views: 4000, compartilhamentos: 100 }]])
+      new Map([["v1", { views: 4000, compartilhamentos: 100, clienteId: "cli-1" }]])
     );
     expect(out).toEqual([
-      { roteiro: "a", views: 5000, compartilhamentos: 100 },
-      { roteiro: "c", views: 0, compartilhamentos: null },
+      { roteiro: "a", views: 5000, compartilhamentos: 100, clienteId: "cli-1" },
+      { roteiro: "c", views: 0, compartilhamentos: null, clienteId: null },
     ]);
   });
 });
