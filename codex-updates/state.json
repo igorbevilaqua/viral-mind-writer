@@ -1,7 +1,40 @@
 {
   "version": "2.6",
   "codexUrl": "https://codex.viralmindlabs.com",
-  "pending": [],
+  "pending": [
+    {
+      "id": "mtq50b65",
+      "type": "fix",
+      "summary": "O Codex passou a descobrir sozinho quais roteiros dele foram publicados",
+      "detail": "So 2 de 157 roteiros tinham link colado. Agora o ETL semanal casa o roteiro com o video publicado pelo texto (14 roteiros, 36 videos encontrados de cara) e a performance real entra no aprendizado sem ninguem colar URL. Caso duvidoso vira pergunta no Kasparov.",
+      "commit": "3674f0d",
+      "addedAt": "2026-09-06T18:20:30.989Z"
+    },
+    {
+      "id": "mtq50b6u",
+      "type": "fix",
+      "summary": "Hooks deixam de sair 93% em Contraste Extremo",
+      "detail": "O ranking de mecanismos era por frequencia entre vencedores, e o mais comum ganhava sempre. Agora e por lift medido no corpus (com intervalo de confianca) e o Codex penaliza o mecanismo repetido nos ultimos 5 hooks do cliente. O racional do hook cita o numero real.",
+      "commit": "859546b",
+      "addedAt": "2026-09-06T18:20:31.014Z"
+    },
+    {
+      "id": "mtq50b7f",
+      "type": "improvement",
+      "summary": "Exemplos que o roteirista imita agora vem do proprio cliente",
+      "detail": "Quando ha 3+ videos parecidos do cliente no corpus, eles entram primeiro; antes os 5 exemplos eram do corpus inteiro para qualquer cliente.",
+      "commit": "a00956b",
+      "addedAt": "2026-09-06T18:20:31.035Z"
+    },
+    {
+      "id": "mtq50b7z",
+      "type": "feature",
+      "summary": "Estudo de dados: o que funciona por mecanismo, estrutura e tema, global e por cliente",
+      "detail": "7.702 videos rotulados, lift com intervalo, matriz estrutura x tema. O agente de storytelling recebe as celulas com evidencia; 5 licoes por cliente e uma proposta de playbook aguardam sua confirmacao (Kasparov e /ensinar).",
+      "commit": "3343596",
+      "addedAt": "2026-09-06T18:20:31.055Z"
+    }
+  ],
   "lastRelease": {
     "version": "2.5",
     "git": "091a92e",

@@ -10,6 +10,7 @@ import { appDb, viralData } from "../lib/db";
 import { changedRatio } from "../lib/learning-loop";
 import { ESTRUTURAS } from "../lib/pipeline/taxonomia";
 import { wilsonLower, wilsonUpper } from "../lib/calibration";
+import { ACERTO_MIN, codexVsCanal, ULTIMOS_N, type Processo, type Resumo, type RoteiroCvc } from "../lib/codex-vs-canal";
 import {
   bottomNoEstrato,
   celulaEncolhida,
@@ -69,6 +70,7 @@ interface Script {
     predicted_score?: number | null;
     edicao_humana?: boolean;
     roteiro_original?: string;
+    proveniencia?: { blocos?: { few_shot?: { escopo?: string } } };
   } | null;
 }
 interface Match { script_id: string; video_id: string; plataforma: string | null; sobreposicao: number | null }
@@ -392,6 +394,19 @@ function analiseCodex(d: Awaited<ReturnType<typeof carregar>>, fatoPorId: Map<st
     .map((s) => ({ script_id: s.id, cliente: nomeCliente(clienteDe(s)), changed_ratio: changedRatio(s.pipeline_trace!.roteiro_original!, s.roteiro!), casado: casados.has(s.id) }))
     .sort((a, b) => b.changed_ratio - a.changed_ratio);
 
+  // Fase 4 (WP-J): a MESMA função pura do insight `codex_vs_canal` do ETL — relatório e prompt não divergem.
+  const vsCanal = codexVsCanal(
+    scripts.map((s): RoteiroCvc => ({
+      id: s.id,
+      created_at: s.created_at,
+      hook_mecanismo: s.pipeline_trace?.hook_mecanismo ?? null,
+      estrutura: s.pipeline_trace?.narrativa_escolhida?.estrutura ?? null,
+      fewshot_escopo: s.pipeline_trace?.proveniencia?.blocos?.few_shot?.escopo ?? null,
+    })),
+    d.matches,
+    d.fato
+  );
+
   const predicted = scripts.filter((s) => typeof s.pipeline_trace?.predicted_score === "number").map((s) => s.pipeline_trace!.predicted_score as number);
   const ratings = d.feedback.map((f) => f.rating).filter((r): r is number => r != null);
 
@@ -405,6 +420,7 @@ function analiseCodex(d: Awaited<ReturnType<typeof carregar>>, fatoPorId: Map<st
     total_casados: casados.size,
     roteiros,
     vs_humanos: vsHumanos,
+    vs_canal: vsCanal,
     editados,
     predicted_score: { n: predicted.length, quartis: predicted.length ? quartis(predicted) : null },
     feedback: { n: d.feedback.length, com_rating: ratings.length, ratings },
@@ -417,6 +433,7 @@ function codexMd(c: Codex, liftIG: Record<Dim, LiftResult[]>) {
   const dist = (rows: Codex["hook"]) => tabela(["rótulo", "Codex n", "Codex %", "prevalência corpus IG", "lift corpus IG [IC95]"], rows.map((r) => [r.nome, r.codex_n, pct(r.codex_share), pct(r.corpus_prevalencia), fmtL(r.lift)]));
   const melhores = (d: Dim) => visiveis(liftIG[d]).filter((r) => r.lift_lb > 1).sort((a, b) => b.lift_lb - a.lift_lb);
   const v = c.vs_humanos;
+  const vc = c.vs_canal;
   const editQ = c.editados.length ? quartis(c.editados.map((e) => e.changed_ratio)) : null;
   return [
     "## 5. Codex: onde ele está concentrado e o que aconteceu com o que foi publicado",
@@ -475,8 +492,25 @@ function codexMd(c: Codex, liftIG: Record<Dim, LiftResult[]>) {
     tabela(["cliente", "changedRatio", "casado"], c.editados.map((e) => [e.cliente, f2(e.changed_ratio), e.casado ? "sim" : "não"])),
     "",
     `\`vm_script_feedback\`: ${c.feedback.n} linhas, ${c.feedback.com_rating} com rating (${c.feedback.ratings.join(", ")}). Sem massa para análise.`,
+    "",
+    `### 5.7 Codex vs canal (Fase 4, corte ${vc.corte})`,
+    "",
+    `Unidade = roteiro (mediana dos posts maduros em \`coeficiente_viral\`; \`maturando\` fora); acerto = coef ≥ ${ACERTO_MIN}, o mesmo limiar da \`classificacao='acerto'\` da MV. Pré/pós pelo \`created_at\` do roteiro. Semana = segunda-feira ISO.`,
+    "",
+    tabela(["semana", "roteiros maduros", "posts", "coef mediano", "% acerto"], vc.semanas.map((s) => [s.semana, s.n_roteiros, s.n_videos, s.coef_mediano ?? "–", pct(s.pct_acerto ?? NaN)])),
+    "",
+    tabela(
+      ["período", "roteiros maduros", "posts", "coef mediano", "% acerto", "gerados", "top mecanismo (share)", "estruturas distintas", "few-shot cliente"],
+      ([["pré", vc.pre], ["pós", vc.pos]] as const).map(([nome, p]) => [nome, ...linhaCanal(p)])
+    ),
+    "",
+    `Processo (últimos ${ULTIMOS_N} roteiros, casados ou não): ${procTxt(vc.processo.ultimos_30)}.`,
+    "",
+    `**Veredito (regra fixa: n<30 = sem dado; pós ≥1.15× pré e acerto não cai = melhorou; ≤0.87× = piorou):** ${vc.veredito}.`,
   ].join("\n");
 }
+const procTxt = (p: Processo) => `${p.top_mecanismo ?? "–"} ${pct(p.share_top_mecanismo ?? NaN)}, ${p.estruturas_distintas} estruturas distintas, few-shot por cliente ${pct(p.fewshot_cliente_pct ?? NaN)}`;
+const linhaCanal = (p: Resumo & Processo) => [p.n_roteiros, p.n_videos, p.coef_mediano ?? "–", pct(p.pct_acerto ?? NaN), p.n, `${p.top_mecanismo ?? "–"} (${pct(p.share_top_mecanismo ?? NaN)})`, p.estruturas_distintas, pct(p.fewshot_cliente_pct ?? NaN)];
 
 // ── Main ─────────────────────────────────────────────────────────────────────
 async function main() {

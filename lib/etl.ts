@@ -17,6 +17,7 @@ import { celulaEncolhida } from "./study-stats";
 import { syncScriptPerformance } from "./script-performance";
 import { casarRoteiros } from "./script-matches";
 import { ESTRUTURAS } from "./pipeline/taxonomia";
+import { codexVsCanal, type FatoCvc, type RoteiroCvc } from "./codex-vs-canal";
 
 // ETL semanal: materializa insights do corpus em vm_viral_insights
 // (globais + por cliente, categorizados e pontuados) e sincroniza
@@ -536,6 +537,27 @@ async function medirRecorrencia(): Promise<void> {
 /** Edições do mesmo tipo depois da lição valer: acima disto, a regra não pegou. */
 const RECORRENCIA_SUSPEITA = 3;
 
+// Plano 020, Fase 4: `coeficiente_viral` da MV do Oráculo (views ÷ mediana móvel 180d do MESMO
+// canal e origem) mede o vídeo, não a circunstância. Uma leitura em lote, chunks de 200 (teto
+// confortável de URL do PostgREST). Melhor esforço: erro → Map parcial e quem chama usa o fallback.
+async function fatoPorVideo(ids: string[]): Promise<Map<string, FatoCvc>> {
+  const out = new Map<string, FatoCvc>();
+  const unicos = [...new Set(ids)];
+  for (let i = 0; i < unicos.length; i += 200) {
+    const { data, error } = await viralData
+      .schema("oraculo")
+      .from("fato_video")
+      .select("video_id, coeficiente_viral, maturando")
+      .in("video_id", unicos.slice(i, i + 200));
+    if (error) {
+      console.warn(`oraculo.fato_video: ${error.message} — seguindo sem coeficiente_viral`);
+      break;
+    }
+    for (const f of (data ?? []) as FatoCvc[]) out.set(f.video_id, f);
+  }
+  return out;
+}
+
 export async function runWeeklyEtl() {
   // MV vm_video_stats alimenta as fns vm_* (migration 0013) — refresh antes de tudo.
   // PGRST202 = migration não aplicada: as fns ainda usam a definição antiga, seguir com warning.
@@ -614,6 +636,7 @@ export async function runWeeklyEtl() {
   const synced = perfRows.length;
   if (naoCasaram.length)
     console.warn(`${naoCasaram.length} roteiro(s) publicados sem vídeo no corpus (a sessão mostra quais)`);
+  const fatoPerf = await fatoPorVideo(perfRows.map((p) => p.viral_data_video_id));
 
   // ── Flywheel 3/3: resultado real dos roteiros da sala vira insight do agente Dados
   // (regenerado a cada run junto do snapshot — o wipe abaixo não é problema).
@@ -631,8 +654,15 @@ export async function runWeeklyEtl() {
   for (const p of perfRows) {
     const s = scriptById.get(p.script_id);
     const clientId: string | null = s?.client_id ?? null;
+    // Fase 4 (WP-J): ratio = coeficiente_viral da MV quando o vídeo está nela; o cálculo antigo
+    // (views ÷ média geral do cliente) fica só como fallback. `ratio_origem` no payload diz qual foi.
     let ratio: number | null = null;
-    if (clientId) {
+    let ratioOrigem: "coeficiente_viral" | "media_cliente" | null = null;
+    const coef = fatoPerf.get(p.viral_data_video_id)?.coeficiente_viral;
+    if (coef != null) {
+      ratio = Math.round(coef * 100) / 100;
+      ratioOrigem = "coeficiente_viral";
+    } else if (clientId) {
       if (!mediaByClient.has(clientId)) {
         try {
           const { data: panel } = await viralData.rpc("vm_client_panel", { p_cliente_id: clientId });
@@ -642,7 +672,10 @@ export async function runWeeklyEtl() {
         }
       }
       const media = mediaByClient.get(clientId);
-      if (media) ratio = Math.round((p.views / media) * 100) / 100;
+      if (media) {
+        ratio = Math.round((p.views / media) * 100) / 100;
+        ratioOrigem = "media_cliente";
+      }
     }
     const trace = (s?.pipeline_trace ?? {}) as {
       narrativa_escolhida?: { estrutura?: string };
@@ -670,7 +703,7 @@ export async function runWeeklyEtl() {
       payload: {
         titulo: `Roteiro publicado: "${s?.headline ?? s?.hook?.slice(0, 60) ?? p.script_id.slice(0, 6)}"`,
         descricao: [
-          `${fmtNum(p.views)} views${ratio ? ` (${ratio}x a média do cliente)` : ""}`,
+          `${fmtNum(p.views)} views${ratio ? ` (${ratio}x ${ratioOrigem === "coeficiente_viral" ? "a mediana do canal" : "a média do cliente"})` : ""}`,
           gate.em_observacao ? "em observação (<14 dias)" : null,
           estrutura ? `estrutura: ${estrutura}` : null,
           p.retencao_hook != null ? `retenção hook ${Math.round(p.retencao_hook)}%` : null,
@@ -682,6 +715,7 @@ export async function runWeeklyEtl() {
         hook: s?.hook ?? null,
         views: p.views,
         performance_ratio: ratio,
+        ratio_origem: ratioOrigem,
         retencao_hook: p.retencao_hook,
         retencao_final: p.retencao_final,
         seguidores_ganhos: p.seguidores_ganhos,
@@ -690,6 +724,31 @@ export async function runWeeklyEtl() {
         score: gate.score, // maduro: ratio ordena (>1 padrão, <1 anti-padrão); em observação: 0
       },
     });
+  }
+
+  // ── Plano 020, Fase 4 (WP-J): o Codex melhorou depois do corte? Insight global pela MESMA
+  // função pura que `study-lift --codex` imprime. Do trace só os campos que ela usa (JSON arrows):
+  // o pipeline_trace inteiro tem KBs por roteiro.
+  try {
+    const [{ data: matches, error: mErr }, { data: scripts, error: sErr }] = await Promise.all([
+      appDb.from("vm_script_matches").select("script_id, video_id").eq("confirmado", true),
+      // ponytail: 158 roteiros hoje, cabe no teto de 1000 linhas do PostgREST; paginar quando passar
+      appDb
+        .from("vm_generated_scripts")
+        .select(
+          "id, created_at, hook_mecanismo:pipeline_trace->>hook_mecanismo, estrutura:pipeline_trace->narrativa_escolhida->>estrutura, fewshot_escopo:pipeline_trace->proveniencia->blocos->few_shot->>escopo"
+        ),
+    ]);
+    if (mErr) throw new Error(`vm_script_matches: ${mErr.message}`);
+    if (sErr) throw new Error(`vm_generated_scripts: ${sErr.message}`);
+    const fatos = await fatoPorVideo((matches ?? []).map((m) => m.video_id));
+    rows.push({
+      scope: "global",
+      insight_type: "codex_vs_canal",
+      payload: codexVsCanal((scripts ?? []) as unknown as RoteiroCvc[], matches ?? [], [...fatos.values()]),
+    });
+  } catch (e) {
+    console.error("codex_vs_canal falhou, seguindo sem", e);
   }
 
   // ── WP-E.2/3/5: outcomes maduros → calibração do Dados + atribuição lição×outcome.
