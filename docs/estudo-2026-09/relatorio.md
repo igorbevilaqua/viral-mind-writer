@@ -1,6 +1,6 @@
 # Estudo 2026-09 — o que os dados sustentam sobre hook, estrutura, comando, tema e comunicação
 
-Gerado em 2026-09-06T17:35:51.839Z por `scripts/study-lift.ts` (plano 020, WP-D). Todo número deste arquivo está em `lift.json`.
+Gerado em 2026-09-06T18:30:57.490Z por `scripts/study-lift.ts` (plano 020, WP-D). Todo número deste arquivo está em `lift.json`.
 
 ## 0. Base e regras aplicadas
 
@@ -510,7 +510,7 @@ Controles = vídeos do mesmo cliente e plataforma, ±45 dias, `vm_script='sim'`,
 
 ### 5.6 Os roteiros editados por humano
 
-24 roteiros com `edicao_humana`; `changedRatio` (fração da massa de palavras alterada, `lib/learning-loop.ts`) entre `roteiro_original` e `roteiro`: quartis 0.13 / 0.21 / 0.34; 2 com ≥50% alterado, 5 com <10%. Editados que casaram com vídeo publicado: 4/24 (vs 14/158 no total).
+25 roteiros com `edicao_humana`; `changedRatio` (fração da massa de palavras alterada, `lib/learning-loop.ts`) entre `roteiro_original` e `roteiro`: quartis 0.11 / 0.19 / 0.33; 2 com ≥50% alterado, 6 com <10%. Editados que casaram com vídeo publicado: 4/25 (vs 14/158 no total).
 
 | cliente | changedRatio | casado |
 |---|---|---|
@@ -536,10 +536,32 @@ Controles = vídeos do mesmo cliente e plataforma, ±45 dias, `vm_script='sim'`,
 | Pedro Elero | 0.07 | não |
 | Túlio Lichenstein | 0.06 | não |
 | Pedro Elero | 0.05 | não |
+| sem cliente | 0.04 | não |
 | Patrick Diorio | 0.02 | não |
 | Marcos Pelozato | 0.01 | não |
 
 `vm_script_feedback`: 8 linhas, 5 com rating (4, 5, 1, 1, 4). Sem massa para análise.
+
+### 5.7 Codex vs canal (Fase 4, corte 2026-09-06)
+
+Unidade = roteiro (mediana dos posts maduros em `coeficiente_viral`; `maturando` fora); acerto = coef ≥ 1.5, o mesmo limiar da `classificacao='acerto'` da MV. Pré/pós pelo `created_at` do roteiro. Semana = segunda-feira ISO.
+
+| semana | roteiros maduros | posts | coef mediano | % acerto |
+|---|---|---|---|---|
+| 2026-07-27 | 2 | 5 | 59.38 | 100% |
+| 2026-08-03 | 4 | 7 | 1.08 | 25% |
+| 2026-08-10 | 2 | 5 | 12.8 | 100% |
+| 2026-08-17 | 1 | 3 | 0.72 | 0% |
+| 2026-08-24 | 2 | 4 | 17.98 | 100% |
+
+| período | roteiros maduros | posts | coef mediano | % acerto | gerados | top mecanismo (share) | estruturas distintas | few-shot cliente |
+|---|---|---|---|---|---|---|---|---|
+| pré | 11 | 24 | 10.2 | 64% | 157 | Contraste Extremo (93%) | 17 | – |
+| pós | 0 | 0 | – | – | 1 | Contraste Extremo (100%) | 1 | – |
+
+Processo (últimos 30 roteiros, casados ou não): Contraste Extremo 100%, 13 estruturas distintas, few-shot por cliente –.
+
+**Veredito (regra fixa: n<30 = sem dado; pós ≥1.15× pré e acerto não cai = melhorou; ≤0.87× = piorou):** sem dado suficiente (n=0 de 60).
 
 ## 6. Conclusões
 
@@ -555,7 +577,7 @@ Controles = vídeos do mesmo cliente e plataforma, ±45 dias, `vm_script='sim'`,
 
 6. **Codex vs humanos VM.** 10 roteiros com percentil, P(pct>0,5)=0.70 [0.40–0.89]. **Sem evidência de melhor/pior.** Taxa de publicação 14/158 (9%) é a métrica que existe. Não permite ranking de clientes nem de mecanismos pelo resultado dos casados.
 
-7. **Edição humana.** 24 editados, changedRatio mediano 0.21; 4 deles publicados. Não permite dizer que edição melhora resultado (n).
+7. **Edição humana.** 25 editados, changedRatio mediano 0.19; 4 deles publicados. Não permite dizer que edição melhora resultado (n).
 
 ## 7. Recomendações para a Fase 3 (por WP) e STOPs
 
