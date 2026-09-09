@@ -33,6 +33,14 @@
       "detail": "7.702 videos rotulados, lift com intervalo, matriz estrutura x tema. O agente de storytelling recebe as celulas com evidencia; 5 licoes por cliente e uma proposta de playbook aguardam sua confirmacao (Kasparov e /ensinar).",
       "commit": "3343596",
       "addedAt": "2026-09-06T18:20:31.055Z"
+    },
+    {
+      "id": "mtth790p",
+      "type": "improvement",
+      "summary": "Roteiros não abrem mais com antecipação vazia (\"agora vem a parte que piora tudo\")",
+      "detail": "Detector determinístico corta a frase que promete algo grande e não diz nada, empurrando o fato pra frase seguinte. A antecipação que se paga (fala inteira, com curiosidade real) continua passando.",
+      "commit": "9026b8e",
+      "addedAt": "2026-09-09T02:25:08.724Z"
     }
   ],
   "lastRelease": {
