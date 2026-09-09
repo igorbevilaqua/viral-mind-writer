@@ -47,6 +47,12 @@ export function slopLint(text: string, phrases: BannedPhrase[]): LintViolation[]
     }
   }
 
+  // ANÚNCIO VAZIO (ver bloco abaixo): mesma família das figuras — defeito de FORMA, detectado
+  // em código porque a banlist por string não segura uma construção que muda de palavra.
+  for (const frase of anunciosVazios(text)) {
+    violations.push({ label: LABEL_ANUNCIO, match: frase, severity: "block" });
+  }
+
   return violations;
 }
 
@@ -171,6 +177,81 @@ const ELLIPSIS_FIGURES: EllipsisFigure[] = [
     },
   },
 ];
+
+// ── Anúncio vazio (antecipação artificial) ─────────────────────────────────────
+// "Agora vem a parte que piora tudo." "E aqui entra o detalhe." "E tem mais." A frase promete
+// que algo grande vem A SEGUIR e não diz nada: o conteúdo fica na PRÓXIMA frase. É o tique de
+// IA que o time chamou de antecipação artificial.
+//
+// Mora em código, e não na banlist do banco, pelo mesmo motivo do eixo da elipse: a banlist é
+// por STRING e esta é uma construção. Já existem cinco linhas ativas mirando ela ("e aqui
+// mora", "e é aí que", "que ninguém te conta", "muda o jogo", "mas calma,") e o modelo só
+// troca a superfície — "vem a parte" vira "entra a peça" vira "chega o detalhe" — com a figura
+// intacta. Uma LIÇÃO em prompt também não segurou (vm_lesson_learnings, ativa e chegando ao
+// roteirista e ao revisor desde 06/09/2026): 22 dos 80 roteiros seguintes trazem a figura.
+// Instrução em prompt é probabilística; o defeito é contável, então quem cobra é o detector.
+//
+// A FORMA é catáfora oca: verbo de CHEGADA ou imperativo de ATENÇÃO grudado num
+// substantivo-placebo ("parte", "detalhe", "coisa", "número"), numa frase que não carrega
+// conteúdo próprio nenhum.
+//
+// A ADJACÊNCIA (2 a 4 palavras) é o que separa o tique da antecipação que se paga, e é
+// deliberada: "Mas agora presta atenção que eu vou te falar a pior parte" tem oito palavras
+// entre o imperativo e o substantivo — é fala inteira, com voz, e passa. O que não passa é o
+// enfeite de quatro palavras que só empurra o fato pra frente.
+const PLACEBO = `(?:parte|detalhe|coisa|n[úu]meros?|dados?|hist[óo]ria|pe[çc]a|l[óo]gica|consequ[êe]ncia|resposta|motivo|raz[ãa]o|recado|ponto|trecho|momento|segredo|verdade|problema|situa[çc][ãa]o|resultado|virada|jogada|pulo\\s+do\\s+gato)`;
+const CHEGADA = `(?:vem|v[êe]m|chega|chegam|entra|entram|come[çc]a|come[çc]am)`;
+const ATENCAO = `(?:presta|preste|repara|repare|guarda|guarde|segura|segure|anota|anote|olha|olhe)`;
+const ADIANTE = `(?:agora|a\\s+seguir|em\\s+seguida|depois|adiante|j[áa]\\s+j[áa])`;
+const PALAVRA = `(?:[\\wÀ-ú]+\\s+)`;
+// O imperativo tem que ABRIR uma oração. Sem esta trava, "quando você olha os números" e
+// "a borra ainda guarda muita coisa" acusavam: ali o verbo é indicativo, não chamada de atenção.
+const ABRE_ORACAO = `(?:^|[.!?,;]\\s*|\\b(?:e|mas|a[íi]|ent[ãa]o|agora|s[óo]\\s+que|porque)\\s+)`;
+
+const ANUNCIOS: RegExp[] = [
+  // "Agora vem a parte que piora tudo." · "E aqui entra a consequência final."
+  new RegExp(`\\b${CHEGADA}\\s+${PALAVRA}{0,2}${PLACEBO}${FIM}`, "i"),
+  // "Só que o detalhe mais grave vem agora."
+  new RegExp(`\\b${PLACEBO}\\s+${PALAVRA}{0,3}${CHEGADA}\\s+${ADIANTE}${FIM}`, "i"),
+  // "Agora repara numa coisa." · "Agora presta atenção no número que devia estar no jornal."
+  new RegExp(`${ABRE_ORACAO}${ATENCAO}\\s+${PALAVRA}{0,4}${PLACEBO}${FIM}`, "i"),
+  // Lexicalizados: a frase inteira é o anúncio. "E tem mais" COM conteúdo depois ("e tem mais:
+  // 6 mil empresas…") não casa aqui — só o "E tem mais." que termina em si mesmo.
+  /^(?:e|mas|s[óo]\s+que|a[íi]|ent[ãa]o)?[,\s]*tem\s+mais\s*[.!?]*$/i,
+  /\b(?:mas\s+calma|segura\s+essa|espera\s+s[óo]|prepara\s+o\s+cora[çc][ãa]o)\b/i,
+];
+
+// Dois-pontos seguido de três palavras ou mais = o fato veio junto, no mesmo fôlego. É a
+// diferença entre "Agora vem um detalhe: o funcionário também sai ganhando" (legítimo) e
+// "Agora vem a parte que piora tudo." (vazio) — e é a régua que o próprio corpus sustenta.
+const CONTEUDO_APOS_DOISPONTOS = /:\s*\S+(?:\s+\S+){2,}/;
+
+// Conteúdo próprio da frase: número, nome próprio (maiúscula fora da primeira palavra) ou o
+// fato entregue depois dos dois-pontos. Com qualquer um deles a frase não é só promessa.
+function carregaFato(frase: string): boolean {
+  if (/\d/.test(frase)) return true;
+  if (CONTEUDO_APOS_DOISPONTOS.test(frase)) return true;
+  const palavras = frase.replace(/[^\wÀ-ú\s]/g, " ").trim().split(/\s+/);
+  return palavras.slice(1).some((p) => /^[A-ZÀ-Ú]/.test(p));
+}
+
+export const LABEL_ANUNCIO = "anúncio vazio (promete o que vem e não diz nada) — corte, ou diga o fato na mesma frase";
+
+/** Frases que anunciam o que vem a seguir sem entregar nada. VERBATIM: o passe cirúrgico as substitui (ou corta) literalmente. */
+export function anunciosVazios(texto: string): string[] {
+  try {
+    const out: string[] = [];
+    for (const bruta of texto.split(/(?<=[.!?])\s+|\n+/)) {
+      const frase = bruta.trim();
+      // Mesma guarda das outras figuras: citação com link e header não são prosa do roteiro.
+      if (!frase || /https?:\/\/|^#{1,3}\s/.test(frase)) continue;
+      if (ANUNCIOS.some((r) => r.test(frase)) && !carregaFato(frase)) out.push(frase);
+    }
+    return out;
+  } catch {
+    return []; // detector com bug nunca derruba a geração (016 §7)
+  }
+}
 
 // ── Eco numérico ───────────────────────────────────────────────────────────────
 // Defeito RELACIONAL: a mesma quantidade vestindo dois fatos diferentes. O ouvinte não

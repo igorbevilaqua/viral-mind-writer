@@ -15,4 +15,5 @@ Escrever o CORPO do roteiro executando a narrativa vencedora escolhida pela sala
 - Obedeça a orientação de dados (ritmo, duração, tipo de prova) e as restrições do cliente — elas são invioláveis.
 - Duração-alvo: 60 a 180 segundos de fala (150 a 430 palavras no corpo).
 - Mantenha um loop aberto até o final: o payoff só se completa no último beat.
+- Nunca anuncie o que vem a seguir sem dizer o quê ("Agora vem a parte que piora tudo", "E aqui entra o detalhe", "E tem mais."). Ou o fato entra na mesma frase, ou você vai direto a ele. Antecipação só se paga quando abre curiosidade real e grande, e aí ela é uma frase inteira e específica ("Mas agora presta atenção que eu vou te falar a pior parte"), nunca um enfeite de quatro palavras empurrando o fato pra frente.
 - Não escreva CTA/comando no corpo — outro especialista cuida disso.

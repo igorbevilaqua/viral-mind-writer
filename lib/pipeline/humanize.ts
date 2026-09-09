@@ -5,6 +5,7 @@ import {
   slopLint,
   blockCount,
   dedash,
+  LABEL_ANUNCIO,
   paragrafosLongos,
   sequenciasLongas,
   MAX_LONGAS_SEGUIDAS,
@@ -39,6 +40,23 @@ export const TETO_TRECHOS_RITMO = 3;
 // A quebra de parágrafo é a única correção que não cabe na resposta de uma linha por item, daí
 // o marcador: o modelo escreve "||" onde entra a linha em branco e a aplicação a devolve.
 const MARCA_PARAGRAFO = "||";
+// O anúncio vazio é o único defeito cuja correção certa costuma ser CORTAR: o fato que ele
+// promete já está na frase seguinte, então trocá-lo por outra frase só troca uma enrolação por
+// outra. Só ele aceita a resposta "[CORTAR]" — mandar o modelo apagar um parágrafo longo ou uma
+// sequência de frases jogaria conteúdo fora.
+const CORTAR = /^\[?\s*CORTAR\s*\]?[.!?]*$/i;
+
+// Remove o trecho e fecha o buraco: parágrafo inteiro cortado deixa três quebras de linha, e
+// frase no meio do parágrafo deixa espaço duplo.
+const removerTrecho = (texto: string, trecho: string) =>
+  texto
+    .split(trecho)
+    .join("")
+    .replace(/[ \t]{2,}/g, " ")
+    .replace(/[ \t]+\n/g, "\n")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+
 const aplicarMarca = (s: string) =>
   s.split(MARCA_PARAGRAFO).map((p) => p.trim()).filter(Boolean).join("\n\n");
 
@@ -140,6 +158,7 @@ REGRA CENTRAL: elimine a CONSTRUÇÃO, não a palavra. Trocar sinônimo, pontua�
 - negação seguida de assertiva ("não é X, é Y" / "não são X. Aquilo é Y") → afirme direto o que É, sem passar pela negação.
 - pergunta curta usada como transição ("O resultado?") → diga a transição falando: "E adivinha o que aconteceu depois", "E a consequência disso ninguém esperava".
 - itens justapostos por vírgula ("carros na rua, garotos jogando bola") → amarre com conectivo e verbo: "de um lado você vê X, de outro Y, mas se der bobeira Z".
+- anúncio vazio ("Agora vem a parte que piora tudo", "E aqui entra o detalhe", "E tem mais.") → a frase promete algo grande e não diz nada, empurrando o fato pra frase seguinte. Duas saídas: CORTE a frase e vá direto ao fato (responda "N. [CORTAR]" — só vale para ESTE item), ou reescreva para ela já carregar o fato que anuncia ("Agora presta atenção, porque nesse mesmo período o governo reduziu impostos em 2,5% do PIB"). Não troque uma antecipação genérica por outra.
 
 RITMO E PARÁGRAFO são outra família e pedem outra correção:
 - parágrafo acima do teto de palavras → quebre em dois ou três parágrafos, escrevendo "${MARCA_PARAGRAFO}" onde entra a linha em branco. Se der, corte o que não carrega a ideia. NÃO invente informação para preencher.
@@ -153,10 +172,15 @@ O roteiro é LIDO EM VOZ ALTA: se a frase só funciona porque o olho reconstrói
     );
     for (const line of textOf(fix).split("\n")) {
       const m = line.match(/^(\d+)[.)]\s+(.*\S)/);
-      const alvo = m && targets[Number(m[1]) - 1];
+      if (!m) continue;
+      const alvo = targets[Number(m[1]) - 1];
       // ponytail: substituição literal de todas as ocorrências do match; se o modelo
       // devolver linha a menos/mais, o trecho fica e o próximo lint/dedash decide.
-      if (alvo && m[2]) current = current.split(alvo.match).join(aplicarMarca(m[2]));
+      if (!alvo) continue;
+      current =
+        CORTAR.test(m[2].trim()) && alvo.label === LABEL_ANUNCIO
+          ? removerTrecho(current, alvo.match)
+          : current.split(alvo.match).join(aplicarMarca(m[2]));
     }
     violations = slopLint(current, ctx.bannedPhrases);
     ritmo = ritmoTargets(current);
