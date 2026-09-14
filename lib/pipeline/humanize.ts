@@ -14,6 +14,7 @@ import {
 } from "./slop-lint";
 import type { GenerationContext } from "./types";
 import { OUTPUT_FORMAT, buildStaticSystemBlock } from "./draft";
+import type { FallbackInfo } from "./critique";
 
 // Trecho violado com contexto ao redor — o modelo precisa ver a frase pra encaixar a substituição.
 export function excerptAround(text: string, match: string, pad = 120): string {
@@ -88,7 +89,7 @@ export function ritmoTargets(text: string): LintViolation[] {
 export async function humanize(
   ctx: GenerationContext,
   script: string
-): Promise<{ text: string; violations: LintViolation[] }> {
+): Promise<{ text: string; violations: LintViolation[]; fallback: FallbackInfo | null }> {
   // Este é o segundo consumidor do few-shot, e é o que decide a VOZ do produto: os 2 primeiros
   // exemplos do mesmo ranking do roteirista. Troca de critério vale aqui também, por construção.
   const referencias = ctx.fewShot.slice(0, 2);
@@ -125,7 +126,12 @@ export async function humanize(
   );
   const next = textOf(res);
   // Guarda: só adota a reescrita se ela preservou o formato do roteiro.
-  if (/##\s*ROTEIRO/i.test(next)) current = next;
+  const humanizou = /##\s*ROTEIRO/i.test(next);
+  if (humanizou) current = next;
+  // 021 §0.3: descartar a humanização em silêncio foi o que deixou F1 viver 187 gerações.
+  const fallback: FallbackInfo | null = humanizou
+    ? null
+    : { motivo: "reescrita sem seção ROTEIRO", stop_reason: res.stop_reason ?? null, output_tokens: res.usage.output_tokens };
 
   let violations = slopLint(current, ctx.bannedPhrases);
   let ritmo = ritmoTargets(current);
@@ -189,5 +195,5 @@ O roteiro é LIDO EM VOZ ALTA: se a frase só funciona porque o olho reconstrói
   // Varredura determinística final: se ainda sobrou travessão de slop, elimina
   // (preservando fala de personagem). Recalcula as violações sobre o texto de fato salvo.
   const cleaned = dedash(current);
-  return { text: cleaned, violations: slopLint(cleaned, ctx.bannedPhrases) };
+  return { text: cleaned, violations: slopLint(cleaned, ctx.bannedPhrases), fallback };
 }

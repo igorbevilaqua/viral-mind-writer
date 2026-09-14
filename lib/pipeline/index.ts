@@ -424,10 +424,10 @@ export async function runPipeline(
     const estudos = extrairEstudos(artifacts?.dossie ?? "");
 
     emit({ type: "phase", phase: "revisao" });
-    const { revised, critica } = await critiqueAndRewrite(ctx, assembled, sinais);
+    const { revised, critica, fallback: fbRevisao, hookMexido } = await critiqueAndRewrite(ctx, assembled, sinais);
 
     emit({ type: "phase", phase: "humanizacao" });
-    const { text: final, violations } = await humanize(ctx, revised);
+    const { text: final, violations, fallback: fbHumanizacao } = await humanize(ctx, revised);
 
     emit({ type: "phase", phase: "salvando" });
     // A FONTES do rascunho volta ANTES do parse: revisão e humanização reescrevem o documento
@@ -473,6 +473,11 @@ export async function runPipeline(
           pipeline_trace: {
             assembled,
             revised,
+            // 021 §0.3: só existe quando ALGUMA fase caiu no fallback — `pipeline_trace ? 'fallbacks'`
+            // lista as gerações degradadas. Era a ausência disso que deixou a revisão morta 187 vezes.
+            ...(fbRevisao || fbHumanizacao
+              ? { fallbacks: { ...(fbRevisao && { revisao: fbRevisao }), ...(fbHumanizacao && { humanizacao: fbHumanizacao }) } }
+              : {}),
             final,
             violations,
             narrativa_escolhida: { indice: artifacts?.escolhida ?? null, titulo: narrativa?.titulo, estrutura: narrativa?.estrutura },
@@ -483,6 +488,8 @@ export async function runPipeline(
             // Extremo de novo" não tem resposta no rastro.
             hook_recentes: recentes,
             hook_motivo: hookRes.motivo,
+            // Guarda do hook na revisão: true = o revisor tentou reescrever e foi desfeito.
+            hook_mexido_na_revisao: hookMexido,
             hook_formato: hookRes.formato,
             hook_mecanismos_variantes: hookRes.mecanismosVariantes,
             // 015 §4.1: o rastro de proveniência. Custo zero de LLM — é serialização do que os

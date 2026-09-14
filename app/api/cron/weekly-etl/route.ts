@@ -1,6 +1,7 @@
 import { runWeeklyEtl } from "@/lib/etl";
 import { runMonthlyCurator, runHookPlaybookCurator, type CuratorResult, type HookCuratorResult } from "@/lib/curator";
 import { runProbeTopup } from "@/lib/calibration-probe";
+import { appDb } from "@/lib/db";
 
 export const maxDuration = 300;
 export const dynamic = "force-dynamic";
@@ -11,6 +12,15 @@ export async function GET(req: Request) {
   if (!secret || req.headers.get("authorization") !== `Bearer ${secret}`) {
     return new Response("unauthorized", { status: 401 });
   }
+  // 021 §0.4: a segunda janela de segunda-feira existe só para cobrir a primeira que falhou
+  // (um `curl (28)` custou a semana de 07/09). Se a primeira deu certo, esta sai cedo.
+  const { data: recente } = await appDb
+    .from("vm_insight_runs")
+    .select("run_at")
+    .gte("run_at", new Date(Date.now() - 12 * 3600_000).toISOString())
+    .limit(1);
+  if (recente?.length) return Response.json({ skipped: "run recente", run_at: recente[0].run_at });
+
   const result = await runWeeklyEtl();
   // WP-E.6: curador mensal pega carona no cron semanal (roda no máx 1x/30 dias).
   // Melhor esforço — falha do curador nunca derruba o resultado do ETL.

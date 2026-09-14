@@ -36,8 +36,8 @@ export default async function EnsinarPage() {
   }
 
   // WP-G: lições que a sala derivou sozinha do ciclo (edições do usuário e resultados publicados)
-  const derived = (allLessons ?? []).filter((l) => l.source_kind === "edicao" || l.source_kind === "curador");
-  const lessons = (allLessons ?? []).filter((l) => l.source_kind !== "edicao" && l.source_kind !== "curador");
+  const derived = (allLessons ?? []).filter((l) => l.source_kind === "edicao" || l.source_kind === "curador" || l.source_kind === "correcao");
+  const lessons = (allLessons ?? []).filter((l) => l.source_kind !== "edicao" && l.source_kind !== "curador" && l.source_kind !== "correcao");
   const pendentes = derived.reduce((n, l) => {
     const c = counts.get(l.id);
     return n + (c ? c.total - c.ativos : 0);

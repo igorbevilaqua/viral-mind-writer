@@ -19,6 +19,9 @@ name: ETL semanal
 on:
   schedule:
     - cron: "0 9 * * 1" # toda segunda 09:00 UTC = 06:00 BRT
+    # 021 §0.4: segunda janela no mesmo dia. Se a primeira deu certo, a rota devolve
+    # {"skipped":"run recente"} e este run é barato. Se falhou, esta é a rede.
+    - cron: "0 15 * * 1"
   workflow_dispatch: {} # botão "Run workflow" para disparar à mão
 
 concurrency:
@@ -53,9 +56,18 @@ jobs:
           # não fez nada é pior que um vermelho — é assim que robô parado passa meses sem ninguém ver.
           # --max-time acima do maxDuration 300 da rota. Sem -L de propósito: seguir redirect faria
           # o curl descartar o Authorization ao mudar de host, e o 401 resultante mentiria a causa.
-          code=$(curl -sS --max-time 600 -o resultado.json -w '%{http_code}' \
-            -H "Authorization: Bearer ${CRON_SECRET}" \
-            "${APP_URL}/api/cron/weekly-etl")
+          # 3 tentativas com espera crescente: em 07/09 um curl (28) (timeout de rede) matou o
+          # run e ninguém viu por 7 dias. Falha de rede não é motivo para perder a semana.
+          for tentativa in 1 2 3; do
+            # `|| echo ""` mantém o `set -e` fora do caminho: falha de curl vira código vazio,
+            # que o teste abaixo trata, em vez de matar o job na primeira tentativa.
+            code=$(curl -sS --max-time 600 -o resultado.json -w '%{http_code}' \
+              -H "Authorization: Bearer ${CRON_SECRET}" \
+              "${APP_URL}/api/cron/weekly-etl" || echo "")
+            if [ "$code" = "200" ]; then break; fi
+            echo "::warning::tentativa ${tentativa} falhou (http='${code:-sem resposta}')"
+            [ "$tentativa" = 3 ] || sleep $((tentativa * 60))
+          done
           cat resultado.json
           echo
           if [ "$code" != "200" ]; then

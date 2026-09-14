@@ -41,6 +41,14 @@
       "detail": "Detector determinístico corta a frase que promete algo grande e não diz nada, empurrando o fato pra frase seguinte. A antecipação que se paga (fala inteira, com curiosidade real) continua passando.",
       "commit": "9026b8e",
       "addedAt": "2026-09-09T02:25:08.724Z"
+    },
+    {
+      "id": "mu0k9itu",
+      "type": "improvement",
+      "summary": "O comando final do roteiro agora é escrito por dados de conversão, não por preferência",
+      "detail": "Analisamos 10.812 vídeos com CTA e os 1.376 que têm seguidores ganhos registrados. Descoberta: medir comando por views mede o canal, não o comando, porque ele fica no fim do vídeo. A régua virou seguidores por mil views contra a mediana do próprio canal. Resultado: o CTA mais usado do mercado, segue para não perder o próximo vídeo, está entre os piores em conversão. Condição mais promessa específica converte 49% acima da média. O Codex passou a escrever por esse padrão.",
+      "commit": "f894181",
+      "addedAt": "2026-09-14T01:25:16.829Z"
     }
   ],
   "lastRelease": {
