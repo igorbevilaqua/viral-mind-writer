@@ -55,3 +55,6 @@ hooks-analysis.json
 
 # plano 020: dados brutos do estudo (9 MB+); só os .md do estudo entram no git
 docs/estudo-*/*.json
+
+# graphify: grafo gerado localmente, artefato
+graphify-out/

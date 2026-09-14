@@ -64,7 +64,13 @@
       "Bash(sed -i '' 's|import { sc } from \"./modelagens/buscar\";|import { sc } from \"./scrapecreators\";|' lib/carrossel.ts)",
       "Bash(sed -i '' 's|import { sc } from \"../modelagens/buscar\";|import { sc } from \"../scrapecreators\";|' lib/pipeline/kasparov-video.ts)",
       "Bash(sed -i '' 's|import { sc } from \"@/lib/modelagens/buscar\";|import { sc } from \"@/lib/scrapecreators\";|' tests/scrapecreators-sem-credito.test.ts)",
-      "Bash(npm test *)"
+      "Bash(npm test *)",
+      "Bash(git commit *)",
+      "Bash(curl -s -o /tmp/b.json -w '%{http_code}\\\\n' --max-time 25 -H 'Authorization: Bearer 3QPJnRz3RH24yT3ka6Y1el90Ma2pkEj75nEpvnbo8bb8857a' https://developers.hostinger.com/api/hosting/v1/accounts/u903534293/websites/codex.viralmindlabs.com/nodejs/builds?per_page=2)",
+      "Read(//tmp/**)",
+      "Bash(curl -s -o /tmp/w.json -w '%{http_code}\\\\n' --max-time 25 -H 'Authorization: Bearer 3QPJnRz3RH24yT3ka6Y1el90Ma2pkEj75nEpvnbo8bb8857a' https://developers.hostinger.com/api/hosting/v1/accounts/u903534293/websites)",
+      "Bash(curl -s --max-time 25 -H 'Authorization: Bearer 3QPJnRz3RH24yT3ka6Y1el90Ma2pkEj75nEpvnbo8bb8857a' https://developers.hostinger.com/api/hosting/v1/accounts/u903534293/websites/codex.viralmindlabs.com/nodejs/builds?per_page=4)",
+      "Bash(python3 -c ' *)"
     ],
     "additionalDirectories": [
       "/Users/igorbevilaqua/Projetos/CODEX - Viral Mind"
