@@ -15,9 +15,58 @@ interface Learning {
   origem: "extraido" | "manual" | "edicao" | "curador";
   active: boolean;
   needs_review?: boolean; // WP-E.5: flopou em ≥2 roteiros publicados — revisão humana
+  grupo?: string | null;
 }
 
-function LearningRow({ l, isAdmin }: { l: Learning; isAdmin: boolean }) {
+// Teste da regra deste grupo contra o acervo (vm_licao_vereditos). Informa a decisão de ativar;
+// nunca decide por ela: os efeitos medidos ficam na casa de 5%, longe de sustentar automação.
+export interface Veredito {
+  grupo: string;
+  regra: string;
+  n_segue: number;
+  n_nao_segue: number;
+  lift: number;
+  lift_lb: number;
+  lift_ub: number;
+  veredito: "confirma" | "contraria" | "nao_separa" | "amostra_fina";
+}
+
+const VEREDITO_CLS: Record<Veredito["veredito"], string> = {
+  confirma: "border-emerald-500/40 bg-emerald-500/[.08] text-emerald-300",
+  contraria: "border-rose-500/40 bg-rose-500/[.08] text-rose-300",
+  nao_separa: "border-white/15 text-white/45",
+  amostra_fina: "border-white/15 text-white/45",
+};
+
+const VEREDITO_TXT: Record<Veredito["veredito"], string> = {
+  confirma: "anda com vídeos melhores",
+  contraria: "anda com vídeos piores",
+  nao_separa: "não separa nada",
+  amostra_fina: "amostra fina",
+};
+
+function VereditoBadge({ v }: { v: Veredito }) {
+  // Percentual e não o lift cru: "+6%" é o que um sócio lê, 1.059 não é.
+  const pct = Math.round((v.lift - 1) * 100);
+  return (
+    <details className="mt-1">
+      <summary
+        className={`inline-flex cursor-pointer select-none items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-[10.5px] ${VEREDITO_CLS[v.veredito]}`}
+      >
+        no acervo: {VEREDITO_TXT[v.veredito]}
+        {v.veredito !== "nao_separa" && v.veredito !== "amostra_fina" ? ` (${pct > 0 ? "+" : ""}${pct}%)` : ""}
+      </summary>
+      <p className="mt-1.5 text-[11.5px] leading-relaxed text-white/45">
+        Medido em {(v.n_segue + v.n_nao_segue).toLocaleString("pt-BR")} vídeos maduros do acervo: {v.n_segue.toLocaleString("pt-BR")} seguem
+        a regra <span className="text-white/60">“{v.regra}”</span>, {v.n_nao_segue.toLocaleString("pt-BR")} não. Chance de ficar no
+        quartil superior do próprio cliente: {v.lift}× (intervalo de confiança {v.lift_lb} a {v.lift_ub}).
+        {" "}A regra testada é uma aproximação da lição, não a lição inteira: use como sinal, não como veredito final.
+      </p>
+    </details>
+  );
+}
+
+function LearningRow({ l, isAdmin, vereditos }: { l: Learning; isAdmin: boolean; vereditos: Veredito[] }) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
   const [editing, setEditing] = useState(false);
@@ -120,6 +169,9 @@ function LearningRow({ l, isAdmin }: { l: Learning; isAdmin: boolean }) {
             {l.titulo}
           </p>
           <p className="text-[12.5px] leading-relaxed text-white/65">{l.descricao}</p>
+          {vereditos.map((v) => (
+            <VereditoBadge key={v.regra} v={v} />
+          ))}
           {l.evidencia && (
             <details>
               <summary className="cursor-pointer text-[11px] text-white/40 select-none hover:text-white/60">
@@ -208,6 +260,7 @@ function AddLearningBox({ lessonId }: { lessonId: string }) {
 export default function LessonView({
   lesson,
   learnings,
+  vereditos = [],
   isAdmin,
 }: {
   lesson: {
@@ -220,6 +273,8 @@ export default function LessonView({
     clientNome: string | null;
   };
   learnings: Learning[];
+  /** Teste das regras contra o acervo, por grupo. Vazio quando ninguém rodou scripts/testar-licoes.ts. */
+  vereditos?: Veredito[];
   /** Regra 2: ativar e adicionar aprendizado são decisões globais. Cortesia — quem barra é a action. */
   isAdmin: boolean;
 }) {
@@ -274,7 +329,7 @@ export default function LessonView({
 
       <div className="space-y-3">
         {ordered.map((l) => (
-          <LearningRow key={l.id} l={l} isAdmin={isAdmin} />
+          <LearningRow key={l.id} l={l} isAdmin={isAdmin} vereditos={vereditos.filter((v) => v.grupo && v.grupo === l.grupo)} />
         ))}
         {!learnings.length && <p className="text-white/40 text-sm">Nenhum aprendizado nesta lição.</p>}
         {isAdmin && <AddLearningBox lessonId={lesson.id} />}

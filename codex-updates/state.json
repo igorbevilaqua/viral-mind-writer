@@ -49,6 +49,46 @@
       "detail": "Analisamos 10.812 vídeos com CTA e os 1.376 que têm seguidores ganhos registrados. Descoberta: medir comando por views mede o canal, não o comando, porque ele fica no fim do vídeo. A régua virou seguidores por mil views contra a mediana do próprio canal. Resultado: o CTA mais usado do mercado, segue para não perder o próximo vídeo, está entre os piores em conversão. Condição mais promessa específica converte 49% acima da média. O Codex passou a escrever por esse padrão.",
       "commit": "f894181",
       "addedAt": "2026-09-14T01:25:16.829Z"
+    },
+    {
+      "id": "mu1vkjwp",
+      "type": "improvement",
+      "summary": "A revisao final do roteiro voltou a funcionar, depois de 187 roteiros sem revisar nenhum",
+      "detail": "Existia uma etapa de revisao no pipeline que nunca entregou nada: o modelo gastava todo o limite pensando e nao sobrava espaco pra escrever a correcao. Em 187 roteiros, so 1 chegou revisado. Agora ela aponta os problemas (paragrafo longo demais, frase que so repete o hook, comando generico sem beneficio) e reescreve o roteiro aplicando o checklist eliminatorio. De quebra, a etapa ficou 3x mais rapida (24s contra 82s) e usa 1/3 dos tokens, porque antes estourava o limite pra nao entregar nada.",
+      "commit": "a669dc1",
+      "addedAt": "2026-09-14T23:29:33.396Z"
+    },
+    {
+      "id": "mu1vkjxj",
+      "type": "improvement",
+      "summary": "O revisor foi proibido de mexer no hook",
+      "detail": "O hook e escolhido por um agente proprio, com dado de qual mecanismo esta performando e trava anti-repeticao. O revisor estava reescrevendo por cima e trocando afirmacao concreta por teaser generico. Agora o hook volta intacto da revisao, por trava no codigo e nao so por instrucao no prompt.",
+      "commit": "a669dc1",
+      "addedAt": "2026-09-14T23:29:33.426Z"
+    },
+    {
+      "id": "mu1vkjyd",
+      "type": "improvement",
+      "summary": "O acervo inteiro virou fonte de exemplo, e nao mais a metade",
+      "detail": "O sistema escreve olhando exemplos de videos que performaram. Metade do acervo (5.601 de 11.805 videos com roteiro) estava fora do indice de busca, entao nunca podia ser exemplo. O indice foi completado: os 12.261 videos estao disponiveis. O roteirista e o humanizador passam a escolher referencia num universo duas vezes maior.",
+      "commit": "a669dc1",
+      "addedAt": "2026-09-14T23:29:33.456Z"
+    },
+    {
+      "id": "mu1vkjz9",
+      "type": "fix",
+      "summary": "A tela de aprovar aprendizados escondia 98 das 126 licoes",
+      "detail": "A maquina propoe licoes a partir das suas correcoes de roteiro, e voce aprova no /ensinar. Um filtro errado na tela mostrava so as licoes vindas de edicao e do curador, escondendo as vindas de correcao, que sao a maior fonte. Voce via 27 de 126. Agora aparecem todas.",
+      "commit": "a669dc1",
+      "addedAt": "2026-09-14T23:29:33.488Z"
+    },
+    {
+      "id": "mu1vkk03",
+      "type": "fix",
+      "summary": "O robo semanal de performance parou de falhar calado",
+      "detail": "Em 07/09 o robo que traz a performance real dos roteiros publicados caiu por problema de rede e ninguem viu por 7 dias, entao a semana inteira ficou sem dado. Agora ele tenta 3 vezes com espera crescente e roda de novo a tarde se a manha falhar. Alem disso, qualquer etapa da geracao que falha e cai no plano B agora grava o motivo, em vez de degradar em silencio.",
+      "commit": "a669dc1",
+      "addedAt": "2026-09-14T23:29:33.517Z"
     }
   ],
   "lastRelease": {

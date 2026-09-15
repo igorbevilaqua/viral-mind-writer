@@ -190,14 +190,27 @@ async function loadEstadoComum(clientId: string | null, modoModelagem: boolean):
   try {
     const { data } = await appDb
       .from("vm_lesson_learnings")
-      .select("id, dimensao, destinatarios, titulo, descricao, created_at, vm_lessons!inner(client_id)")
+      .select("id, dimensao, destinatarios, titulo, descricao, grupo, created_at, vm_lessons!inner(client_id)")
       .eq("active", true)
       .order("created_at", { ascending: false });
     const rows = (data ?? [])
       .map((t) => ({ ...t, lessonClient: (Array.isArray(t.vm_lessons) ? t.vm_lessons[0] : t.vm_lessons)?.client_id ?? null }))
-      .filter((t) => t.lessonClient === null || (!modoModelagem && t.lessonClient === clientId))
-      // client-scoped antes de global; dentro do grupo, mais novos primeiro (já ordenado)
-      .sort((a, b) => Number(!!b.lessonClient) - Number(!!a.lessonClient));
+      .filter((t) => t.lessonClient === null || (!modoModelagem && t.lessonClient === clientId));
+    // Recorrência: quantas lições ATIVAS do mesmo grupo disputam esta geração. É o número que
+    // substitui "a mais recente ganha" no teto de 3 por agente (licoesPara). Lição sem grupo
+    // conta como grupo próprio, recorrência 1: nunca vira favorita por falta de dado.
+    const recorrencia = new Map<string, number>();
+    for (const t of rows) {
+      const g = t.grupo ?? t.id;
+      recorrencia.set(g, (recorrencia.get(g) ?? 0) + 1);
+    }
+    // client-scoped antes de global; depois o que o piloto pediu mais vezes; empate por data
+    // (o `order` do select já trouxe mais novos primeiro, e o sort do JS é estável).
+    rows.sort(
+      (a, b) =>
+        Number(!!b.lessonClient) - Number(!!a.lessonClient) ||
+        (recorrencia.get(b.grupo ?? b.id) ?? 1) - (recorrencia.get(a.grupo ?? a.id) ?? 1)
+    );
     // sem .slice(): o teto agora é por destinatário, aplicado em taughtBlock, com o excedente
     // registrado. O corte global de 12 escondia lição ativa sem dizer a ninguém.
     lessonIds.push(...rows.map((t) => t.id));
@@ -211,6 +224,8 @@ async function loadEstadoComum(clientId: string | null, modoModelagem: boolean):
           descricao: t.descricao,
           destinatarios: t.destinatarios ?? [],
           dimensao: t.dimensao,
+          grupo: t.grupo ?? null,
+          recorrencia: recorrencia.get(t.grupo ?? t.id) ?? 1,
         },
       }))
     );

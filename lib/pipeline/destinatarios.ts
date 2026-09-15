@@ -18,6 +18,11 @@ export interface TaughtPayload {
   descricao: string;
   destinatarios?: string[];
   dimensao?: string;
+  // vm_lesson_learnings.grupo: lições que dizem a mesma coisa compartilham o slug. Usado por
+  // licoesPara para não gastar as 3 vagas de um agente com três versões da mesma queixa.
+  grupo?: string | null;
+  // tamanho do grupo entre as lições ativas desta geração (quantas vezes o piloto pediu isto)
+  recorrencia?: number;
 }
 
 // `dados` (formatInsightsForDados, agents.ts:136) agrupa TODO taught_* — por isso aparece em

@@ -50,13 +50,28 @@ export function clientInsightBlock(ctx: GenerationContext, categorias: string[],
 // n = 3 é o teto de hoje, mantido de propósito: esta mudança é de ROTEAMENTO, não de volume.
 // Subir o teto é mudança separada, justificada por licoes_excedidas no trace.
 export function licoesPara(ctx: GenerationContext, agente: Destinatario, n = 3): TaughtPayload[] {
-  const rows = ctx.insights
+  const todas = ctx.insights
     .filter((i) => i.insight_type === "taught")
     .map((i) => i.payload as TaughtPayload)
     .filter((p) => (p.destinatarios ?? []).includes(agente));
+  // Uma lição por grupo: com 50 candidatas disputando 3 vagas (o caso real do agente `dados`
+  // de um cliente), a ordem por data podia gastar as três em variações da MESMA queixa.
+  // Dedup aqui e não em context.ts porque o grupo é semântico e o destinatário não: duas
+  // lições do mesmo grupo podem servir a agentes diferentes, e cortar antes perderia uma delas.
+  const vistos = new Set<string>();
+  const rows = todas.filter((p) => {
+    const g = p.grupo ?? p.id ?? p.titulo;
+    if (vistos.has(g)) return false;
+    vistos.add(g);
+    return true;
+  });
+  const usadas = rows.slice(0, n);
   // Nenhum corte é silencioso: o excedente vai ao trace (proveniencia.licoes_excedidas) e à tela.
-  if (rows.length > n) ctx.licoesExcedidas = { ...(ctx.licoesExcedidas ?? {}), [agente]: rows.length - n };
-  return rows.slice(0, n);
+  // Conta sobre `todas` e não sobre `rows`: o dedup também é corte, e esconder o que ele tirou
+  // seria trocar um corte invisível por outro.
+  if (todas.length > usadas.length)
+    ctx.licoesExcedidas = { ...(ctx.licoesExcedidas ?? {}), [agente]: todas.length - usadas.length };
+  return usadas;
 }
 
 export function taughtBlock(ctx: GenerationContext, agente: Destinatario, n = 3): string {
