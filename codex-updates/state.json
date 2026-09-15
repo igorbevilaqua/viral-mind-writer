@@ -1,128 +1,119 @@
 {
-  "version": "2.6",
+  "version": "2.7",
   "codexUrl": "https://codex.viralmindlabs.com",
-  "pending": [
-    {
-      "id": "mtq50b65",
-      "type": "fix",
-      "summary": "O Codex passou a descobrir sozinho quais roteiros dele foram publicados",
-      "detail": "So 2 de 157 roteiros tinham link colado. Agora o ETL semanal casa o roteiro com o video publicado pelo texto (14 roteiros, 36 videos encontrados de cara) e a performance real entra no aprendizado sem ninguem colar URL. Caso duvidoso vira pergunta no Kasparov.",
-      "commit": "3674f0d",
-      "addedAt": "2026-09-06T18:20:30.989Z"
-    },
-    {
-      "id": "mtq50b6u",
-      "type": "fix",
-      "summary": "Hooks deixam de sair 93% em Contraste Extremo",
-      "detail": "O ranking de mecanismos era por frequencia entre vencedores, e o mais comum ganhava sempre. Agora e por lift medido no corpus (com intervalo de confianca) e o Codex penaliza o mecanismo repetido nos ultimos 5 hooks do cliente. O racional do hook cita o numero real.",
-      "commit": "859546b",
-      "addedAt": "2026-09-06T18:20:31.014Z"
-    },
-    {
-      "id": "mtq50b7f",
-      "type": "improvement",
-      "summary": "Exemplos que o roteirista imita agora vem do proprio cliente",
-      "detail": "Quando ha 3+ videos parecidos do cliente no corpus, eles entram primeiro; antes os 5 exemplos eram do corpus inteiro para qualquer cliente.",
-      "commit": "a00956b",
-      "addedAt": "2026-09-06T18:20:31.035Z"
-    },
-    {
-      "id": "mtq50b7z",
-      "type": "feature",
-      "summary": "Estudo de dados: o que funciona por mecanismo, estrutura e tema, global e por cliente",
-      "detail": "7.702 videos rotulados, lift com intervalo, matriz estrutura x tema. O agente de storytelling recebe as celulas com evidencia; 5 licoes por cliente e uma proposta de playbook aguardam sua confirmacao (Kasparov e /ensinar).",
-      "commit": "3343596",
-      "addedAt": "2026-09-06T18:20:31.055Z"
-    },
-    {
-      "id": "mtth790p",
-      "type": "improvement",
-      "summary": "Roteiros não abrem mais com antecipação vazia (\"agora vem a parte que piora tudo\")",
-      "detail": "Detector determinístico corta a frase que promete algo grande e não diz nada, empurrando o fato pra frase seguinte. A antecipação que se paga (fala inteira, com curiosidade real) continua passando.",
-      "commit": "9026b8e",
-      "addedAt": "2026-09-09T02:25:08.724Z"
-    },
-    {
-      "id": "mu0k9itu",
-      "type": "improvement",
-      "summary": "O comando final do roteiro agora é escrito por dados de conversão, não por preferência",
-      "detail": "Analisamos 10.812 vídeos com CTA e os 1.376 que têm seguidores ganhos registrados. Descoberta: medir comando por views mede o canal, não o comando, porque ele fica no fim do vídeo. A régua virou seguidores por mil views contra a mediana do próprio canal. Resultado: o CTA mais usado do mercado, segue para não perder o próximo vídeo, está entre os piores em conversão. Condição mais promessa específica converte 49% acima da média. O Codex passou a escrever por esse padrão.",
-      "commit": "f894181",
-      "addedAt": "2026-09-14T01:25:16.829Z"
-    },
-    {
-      "id": "mu1vkjwp",
-      "type": "improvement",
-      "summary": "A revisao final do roteiro voltou a funcionar, depois de 187 roteiros sem revisar nenhum",
-      "detail": "Existia uma etapa de revisao no pipeline que nunca entregou nada: o modelo gastava todo o limite pensando e nao sobrava espaco pra escrever a correcao. Em 187 roteiros, so 1 chegou revisado. Agora ela aponta os problemas (paragrafo longo demais, frase que so repete o hook, comando generico sem beneficio) e reescreve o roteiro aplicando o checklist eliminatorio. De quebra, a etapa ficou 3x mais rapida (24s contra 82s) e usa 1/3 dos tokens, porque antes estourava o limite pra nao entregar nada.",
-      "commit": "a669dc1",
-      "addedAt": "2026-09-14T23:29:33.396Z"
-    },
-    {
-      "id": "mu1vkjxj",
-      "type": "improvement",
-      "summary": "O revisor foi proibido de mexer no hook",
-      "detail": "O hook e escolhido por um agente proprio, com dado de qual mecanismo esta performando e trava anti-repeticao. O revisor estava reescrevendo por cima e trocando afirmacao concreta por teaser generico. Agora o hook volta intacto da revisao, por trava no codigo e nao so por instrucao no prompt.",
-      "commit": "a669dc1",
-      "addedAt": "2026-09-14T23:29:33.426Z"
-    },
-    {
-      "id": "mu1vkjyd",
-      "type": "improvement",
-      "summary": "O acervo inteiro virou fonte de exemplo, e nao mais a metade",
-      "detail": "O sistema escreve olhando exemplos de videos que performaram. Metade do acervo (5.601 de 11.805 videos com roteiro) estava fora do indice de busca, entao nunca podia ser exemplo. O indice foi completado: os 12.261 videos estao disponiveis. O roteirista e o humanizador passam a escolher referencia num universo duas vezes maior.",
-      "commit": "a669dc1",
-      "addedAt": "2026-09-14T23:29:33.456Z"
-    },
-    {
-      "id": "mu1vkjz9",
-      "type": "fix",
-      "summary": "A tela de aprovar aprendizados escondia 98 das 126 licoes",
-      "detail": "A maquina propoe licoes a partir das suas correcoes de roteiro, e voce aprova no /ensinar. Um filtro errado na tela mostrava so as licoes vindas de edicao e do curador, escondendo as vindas de correcao, que sao a maior fonte. Voce via 27 de 126. Agora aparecem todas.",
-      "commit": "a669dc1",
-      "addedAt": "2026-09-14T23:29:33.488Z"
-    },
-    {
-      "id": "mu1vkk03",
-      "type": "fix",
-      "summary": "O robo semanal de performance parou de falhar calado",
-      "detail": "Em 07/09 o robo que traz a performance real dos roteiros publicados caiu por problema de rede e ninguem viu por 7 dias, entao a semana inteira ficou sem dado. Agora ele tenta 3 vezes com espera crescente e roda de novo a tarde se a manha falhar. Alem disso, qualquer etapa da geracao que falha e cai no plano B agora grava o motivo, em vez de degradar em silencio.",
-      "commit": "a669dc1",
-      "addedAt": "2026-09-14T23:29:33.517Z"
-    }
-  ],
+  "pending": [],
   "lastRelease": {
-    "version": "2.5",
-    "git": "091a92e",
-    "productSummary": "O Codex voltou a aprender com as suas edicoes, ganhou um jeito de banir frase batida com um clique, e agora modela ou replica um roteiro pronto sem sair da tela.",
-    "message": "*Codex 2.5*\n\n👉 *Faca no menu de seleção:* achou uma frase batida no roteiro? Seleciona o trecho e clica na 🔪. Ela entra na lista de proibidas, e o Codex passa a checar isso em toda geração seguinte, então o clichê não volta. Antes, cada frase genérica era uma correção manual que se repetia sessão após sessão.\n\n👉 *As lições que saem das suas edições voltaram a chegar nos roteiros:* elas eram geradas, apareciam para aprovação e, mesmo aprovadas, eram descartadas em silêncio na hora de montar o prompt. Na prática, só o botão Ensinar ensinava alguma coisa. Agora todo caminho de aprendizado chega aos agentes.\n\n👉 *Modelar e Replicar direto do roteiro aberto:* dois botões na barra do roteiro abrem uma sessão nova em outra aba, já usando o roteiro da tela como material. Modelar reinterpreta a arquitetura por outro caminho narrativo, Replicar reescreve beat a beat com execução melhor. Antes era copiar, colar no formulário e recomeçar.\n\n👉 *Autosave no editor:* você para de digitar, a sala grava sozinha, e a tela mostra \"salvo automaticamente\". O botão Salvar continua ali para fechar a edição.\n\n👉 *Erro ao salvar não apaga mais o seu texto:* uma edição inteira se perdeu porque a falha derrubava a tela junto com o texto. Agora ele fica guardado no navegador, e depois de recarregar aparece uma faixa oferecendo Retomar edição.\n\n👉 *Cancelar passou a desfazer de verdade:* como o autosave já gravou parte do caminho, ele devolve o texto que existia antes de você começar a editar.\n\n👉 *Sugerir tema não cai mais com erro de rede:* a busca ficava até 90 segundos em silêncio e a conexão era cortada por parecer ociosa; agora o servidor dá sinal de vida durante o trabalho, e isso vale para todas as telas que mostram progresso.\n\n👉 *Modelagem que volta pela metade tenta de novo sozinha,* em vez de travar a sessão pedindo uma transcrição que você já tinha colado; e quando desiste, diz o motivo real.\n\n👉 *Parágrafos mais curtos e ritmo menos monótono:* os parágrafos vinham com 51 palavras em média (o maior tinha 126) e havia trechos de até 14 frases longas seguidas sem nenhuma curta quebrando a inércia. Agora vale o teto de três linhas por parágrafo e no máximo três frases longas seguidas.\n\n👉 *A página de compartilhamento mostra o nome do cliente* no topo, e o título do link no WhatsApp vira \"CODEX · CLIENTE · HEADLINE\".\n\nhttps://codex.viralmindlabs.com\n",
+    "version": "2.6",
+    "git": "7ee6884",
+    "productSummary": "O Codex passou a decidir por dado no lugar de opinião: hook, comando e exemplos agora saem do que realmente performou no acervo. E a revisão final do roteiro, que existia no papel mas nunca tinha entregue nada, voltou a funcionar.",
+    "message": "🪄 *Codex: Nova Versão Disponível (v2.6)*\n🔖 Git: 7ee6884\n\nO Codex passou a decidir por dado no lugar de opinião: hook, comando e exemplos agora saem do que realmente performou no acervo. E a revisão final do roteiro, que existia no papel mas nunca tinha entregue nada, voltou a funcionar.\n\n📋 *O que mudou:*\n\n⚡ *A revisão final voltou a funcionar.* Existia uma etapa de revisão que gastava todo o limite pensando e não sobrava espaço pra escrever a correção: em 187 roteiros, só 1 chegou revisado. Agora ela aplica o checklist eliminatório (parágrafo longo demais, frase que só repete o hook, comando genérico) e ainda ficou 3x mais rápida.\n\n💅 *O revisor foi proibido de mexer no hook.* O hook tem agente próprio, com dado de mecanismo e trava anti repetição. O revisor reescrevia por cima e trocava afirmação concreta por teaser. Agora volta intacto, por trava no código.\n\n⚡ *O comando final é escrito por conversão, não por preferência.* Analisamos 10.812 vídeos com CTA. Descoberta: medir comando por views mede o canal, não o comando. A régua virou seguidores ganhos por mil views. O CTA mais usado do mercado (\"segue para não perder o próximo\") está entre os piores; condição mais promessa específica converte 49% acima da média.\n\n⚡ *O acervo inteiro virou fonte de exemplo.* Metade dos vídeos com roteiro (5.601 de 11.805) estava fora do índice e nunca podia servir de referência. Agora são 12.261 disponíveis, o dobro de repertório na hora de escrever.\n\n⚡ *Exemplos vêm do próprio cliente.* Havendo 3 ou mais vídeos parecidos do cliente no acervo, eles entram primeiro. Antes os exemplos vinham do acervo inteiro, para qualquer cliente.\n\n🔧 *Hooks deixaram de sair 93% no mesmo mecanismo.* O ranking era por frequência, então o mais comum vencia sempre. Agora é por lift medido (com intervalo de confiança) e o Codex penaliza o mecanismo repetido nos últimos 5 hooks do cliente.\n\n🚀 *Estudo de dados: o que funciona por mecanismo, estrutura e tema.* 7.702 vídeos rotulados, lift com intervalo, matriz estrutura x tema, global e por cliente. O agente de storytelling recebe as células com evidência.\n\n💅 *Roteiros não abrem mais com antecipação vazia.* Frase do tipo \"agora vem a parte que piora tudo\", que promete e não diz nada, é cortada automaticamente. A antecipação que se paga continua passando.\n\n🐛 *O Codex descobre sozinho quais roteiros dele foram publicados.* Só 2 de 157 tinham link colado. Agora o robô semanal casa roteiro com vídeo publicado pelo texto, e a performance real entra no aprendizado sem ninguém colar URL.\n\n🐛 *A tela de aprovar aprendizados escondia 98 das 126 lições.* Filtro errado mostrava só parte das lições e escondia justamente a maior fonte, as que nascem das suas correções. Agora aparecem todas.\n\n🔧 *O robô semanal parou de falhar calado.* Em 07/09 ele caiu por rede e ninguém viu por 7 dias, perdendo a semana de dados. Agora tenta 3 vezes e roda de novo à tarde se a manhã falhar. Qualquer etapa que cai no plano B também grava o motivo.\n\n🚀 *Cada lição agora mostra se a regra dela se sustenta nos dados.* Testamos as regras contra 10.618 vídeos maduros, medindo a chance de ficar no quartil superior do próprio cliente. No /ensinar, ao lado do botão de ativar, aparece se a regra anda com vídeos melhores, piores ou se não muda nada, com o n e o intervalo de confiança. Primeira descoberta que contraria a intuição: roteiros que falam direto com o espectador logo na abertura performam 11% pior.\n\n⚡ *As lições pararam de competir por data.* Cada agente recebe no máximo 3 lições, e com 127 aprovadas um agente teria 50 candidatas para 3 vagas, escolhidas pela mais recente. Agora elas são agrupadas por semelhança (127 viraram 64 grupos) e as vagas vão para queixas diferentes, priorizando o que você pediu mais vezes.\n\n👉 Acesse agora em https://codex.viralmindlabs.com\n",
     "changes": [
       {
-        "id": "mt21d7mb",
-        "type": "feature",
-        "summary": "Faca no menu de selecao: marcar uma expressao generica bane ela dos proximos roteiros",
-        "detail": "Seleciona o trecho no roteiro, clica na faca, e a expressao entra na banlist que o lint aplica em toda geracao seguinte. So administrador.",
-        "commit": "4980658",
-        "addedAt": "2026-08-20T21:32:06.239Z"
-      },
-      {
-        "id": "mt2x0lvx",
+        "id": "mtq50b65",
         "type": "fix",
-        "summary": "As licoes tiradas das suas edicoes voltaram a chegar nos roteiros",
-        "detail": "Desde marco, licao gerada por edicao, correcao na sala ou curador nascia sem destinatario e era descartada em silencio na hora de montar o prompt. So o botao Ensinar funcionava.",
-        "commit": "091a92e",
-        "addedAt": "2026-08-21T12:18:05.915Z"
+        "summary": "O Codex passou a descobrir sozinho quais roteiros dele foram publicados",
+        "detail": "So 2 de 157 roteiros tinham link colado. Agora o ETL semanal casa o roteiro com o video publicado pelo texto (14 roteiros, 36 videos encontrados de cara) e a performance real entra no aprendizado sem ninguem colar URL. Caso duvidoso vira pergunta no Kasparov.",
+        "commit": "3674f0d",
+        "addedAt": "2026-09-06T18:20:30.989Z"
       },
       {
-        "id": "mt2x0lx2",
+        "id": "mtq50b6u",
+        "type": "fix",
+        "summary": "Hooks deixam de sair 93% em Contraste Extremo",
+        "detail": "O ranking de mecanismos era por frequencia entre vencedores, e o mais comum ganhava sempre. Agora e por lift medido no corpus (com intervalo de confianca) e o Codex penaliza o mecanismo repetido nos ultimos 5 hooks do cliente. O racional do hook cita o numero real.",
+        "commit": "859546b",
+        "addedAt": "2026-09-06T18:20:31.014Z"
+      },
+      {
+        "id": "mtq50b7f",
+        "type": "improvement",
+        "summary": "Exemplos que o roteirista imita agora vem do proprio cliente",
+        "detail": "Quando ha 3+ videos parecidos do cliente no corpus, eles entram primeiro; antes os 5 exemplos eram do corpus inteiro para qualquer cliente.",
+        "commit": "a00956b",
+        "addedAt": "2026-09-06T18:20:31.035Z"
+      },
+      {
+        "id": "mtq50b7z",
         "type": "feature",
-        "summary": "Modelar e Replicar direto do roteiro aberto, em aba nova",
-        "detail": "Dois botoes na barra do roteiro abrem uma sessao nova usando o roteiro da tela como material.",
-        "commit": "091a92e",
-        "addedAt": "2026-08-21T12:18:05.952Z"
+        "summary": "Estudo de dados: o que funciona por mecanismo, estrutura e tema, global e por cliente",
+        "detail": "7.702 videos rotulados, lift com intervalo, matriz estrutura x tema. O agente de storytelling recebe as celulas com evidencia; 5 licoes por cliente e uma proposta de playbook aguardam sua confirmacao (Kasparov e /ensinar).",
+        "commit": "3343596",
+        "addedAt": "2026-09-06T18:20:31.055Z"
+      },
+      {
+        "id": "mtth790p",
+        "type": "improvement",
+        "summary": "Roteiros não abrem mais com antecipação vazia (\"agora vem a parte que piora tudo\")",
+        "detail": "Detector determinístico corta a frase que promete algo grande e não diz nada, empurrando o fato pra frase seguinte. A antecipação que se paga (fala inteira, com curiosidade real) continua passando.",
+        "commit": "9026b8e",
+        "addedAt": "2026-09-09T02:25:08.724Z"
+      },
+      {
+        "id": "mu0k9itu",
+        "type": "improvement",
+        "summary": "O comando final do roteiro agora é escrito por dados de conversão, não por preferência",
+        "detail": "Analisamos 10.812 vídeos com CTA e os 1.376 que têm seguidores ganhos registrados. Descoberta: medir comando por views mede o canal, não o comando, porque ele fica no fim do vídeo. A régua virou seguidores por mil views contra a mediana do próprio canal. Resultado: o CTA mais usado do mercado, segue para não perder o próximo vídeo, está entre os piores em conversão. Condição mais promessa específica converte 49% acima da média. O Codex passou a escrever por esse padrão.",
+        "commit": "f894181",
+        "addedAt": "2026-09-14T01:25:16.829Z"
+      },
+      {
+        "id": "mu1vkjwp",
+        "type": "improvement",
+        "summary": "A revisao final do roteiro voltou a funcionar, depois de 187 roteiros sem revisar nenhum",
+        "detail": "Existia uma etapa de revisao no pipeline que nunca entregou nada: o modelo gastava todo o limite pensando e nao sobrava espaco pra escrever a correcao. Em 187 roteiros, so 1 chegou revisado. Agora ela aponta os problemas (paragrafo longo demais, frase que so repete o hook, comando generico sem beneficio) e reescreve o roteiro aplicando o checklist eliminatorio. De quebra, a etapa ficou 3x mais rapida (24s contra 82s) e usa 1/3 dos tokens, porque antes estourava o limite pra nao entregar nada.",
+        "commit": "a669dc1",
+        "addedAt": "2026-09-14T23:29:33.396Z"
+      },
+      {
+        "id": "mu1vkjxj",
+        "type": "improvement",
+        "summary": "O revisor foi proibido de mexer no hook",
+        "detail": "O hook e escolhido por um agente proprio, com dado de qual mecanismo esta performando e trava anti-repeticao. O revisor estava reescrevendo por cima e trocando afirmacao concreta por teaser generico. Agora o hook volta intacto da revisao, por trava no codigo e nao so por instrucao no prompt.",
+        "commit": "a669dc1",
+        "addedAt": "2026-09-14T23:29:33.426Z"
+      },
+      {
+        "id": "mu1vkjyd",
+        "type": "improvement",
+        "summary": "O acervo inteiro virou fonte de exemplo, e nao mais a metade",
+        "detail": "O sistema escreve olhando exemplos de videos que performaram. Metade do acervo (5.601 de 11.805 videos com roteiro) estava fora do indice de busca, entao nunca podia ser exemplo. O indice foi completado: os 12.261 videos estao disponiveis. O roteirista e o humanizador passam a escolher referencia num universo duas vezes maior.",
+        "commit": "a669dc1",
+        "addedAt": "2026-09-14T23:29:33.456Z"
+      },
+      {
+        "id": "mu1vkjz9",
+        "type": "fix",
+        "summary": "A tela de aprovar aprendizados escondia 98 das 126 licoes",
+        "detail": "A maquina propoe licoes a partir das suas correcoes de roteiro, e voce aprova no /ensinar. Um filtro errado na tela mostrava so as licoes vindas de edicao e do curador, escondendo as vindas de correcao, que sao a maior fonte. Voce via 27 de 126. Agora aparecem todas.",
+        "commit": "a669dc1",
+        "addedAt": "2026-09-14T23:29:33.488Z"
+      },
+      {
+        "id": "mu1vkk03",
+        "type": "fix",
+        "summary": "O robo semanal de performance parou de falhar calado",
+        "detail": "Em 07/09 o robo que traz a performance real dos roteiros publicados caiu por problema de rede e ninguem viu por 7 dias, entao a semana inteira ficou sem dado. Agora ele tenta 3 vezes com espera crescente e roda de novo a tarde se a manha falhar. Alem disso, qualquer etapa da geracao que falha e cai no plano B agora grava o motivo, em vez de degradar em silencio.",
+        "commit": "a669dc1",
+        "addedAt": "2026-09-14T23:29:33.517Z"
+      },
+      {
+        "id": "mu2lkmsd",
+        "type": "improvement",
+        "summary": "As licoes do /ensinar deixaram de competir por data de criacao",
+        "detail": "Cada agente recebe no maximo 3 licoes. Com as 127 aprovadas, o agente de dados de um cliente teria 50 candidatas para 3 vagas, e as 3 eram escolhidas pela mais recente, podendo gastar as tres na mesma queixa dita de tres jeitos. Agora as licoes sao agrupadas por semelhanca (127 viraram 64 grupos, 7 deles com mais de uma licao) e as vagas vao para queixas DIFERENTES, priorizando o que voce pediu mais vezes.",
+        "commit": "7ee6884",
+        "addedAt": "2026-09-15T11:37:27.143Z"
+      },
+      {
+        "id": "mu2lkmtf",
+        "type": "feature",
+        "summary": "Cada licao agora mostra se a regra dela se sustenta no acervo",
+        "detail": "Testamos as regras contra 10.812 videos maduros, medindo a chance de o video ficar no quartil superior do proprio cliente. No /ensinar, ao lado do botao de ativar, aparece se aquela regra anda com videos melhores, piores ou se nao muda nada, com o numero de videos e o intervalo de confianca. Uma descoberta ja contraria uma pratica pedida varias vezes: roteiros que falam diretamente com o espectador logo na abertura performam 11% PIOR. O veredito informa a decisao, nao decide sozinho: os efeitos medidos ficam na casa de 5%.",
+        "commit": "7ee6884",
+        "addedAt": "2026-09-15T11:37:27.184Z"
       }
     ],
-    "releasedAt": "2026-08-21T12:18:43.824Z"
+    "releasedAt": "2026-09-15T11:37:44.772Z"
   },
   "history": [
     {
@@ -818,6 +809,39 @@
         }
       ],
       "releasedAt": "2026-08-20T00:33:37.769Z"
+    },
+    {
+      "version": "2.5",
+      "git": "091a92e",
+      "productSummary": "O Codex voltou a aprender com as suas edicoes, ganhou um jeito de banir frase batida com um clique, e agora modela ou replica um roteiro pronto sem sair da tela.",
+      "message": "*Codex 2.5*\n\n👉 *Faca no menu de seleção:* achou uma frase batida no roteiro? Seleciona o trecho e clica na 🔪. Ela entra na lista de proibidas, e o Codex passa a checar isso em toda geração seguinte, então o clichê não volta. Antes, cada frase genérica era uma correção manual que se repetia sessão após sessão.\n\n👉 *As lições que saem das suas edições voltaram a chegar nos roteiros:* elas eram geradas, apareciam para aprovação e, mesmo aprovadas, eram descartadas em silêncio na hora de montar o prompt. Na prática, só o botão Ensinar ensinava alguma coisa. Agora todo caminho de aprendizado chega aos agentes.\n\n👉 *Modelar e Replicar direto do roteiro aberto:* dois botões na barra do roteiro abrem uma sessão nova em outra aba, já usando o roteiro da tela como material. Modelar reinterpreta a arquitetura por outro caminho narrativo, Replicar reescreve beat a beat com execução melhor. Antes era copiar, colar no formulário e recomeçar.\n\n👉 *Autosave no editor:* você para de digitar, a sala grava sozinha, e a tela mostra \"salvo automaticamente\". O botão Salvar continua ali para fechar a edição.\n\n👉 *Erro ao salvar não apaga mais o seu texto:* uma edição inteira se perdeu porque a falha derrubava a tela junto com o texto. Agora ele fica guardado no navegador, e depois de recarregar aparece uma faixa oferecendo Retomar edição.\n\n👉 *Cancelar passou a desfazer de verdade:* como o autosave já gravou parte do caminho, ele devolve o texto que existia antes de você começar a editar.\n\n👉 *Sugerir tema não cai mais com erro de rede:* a busca ficava até 90 segundos em silêncio e a conexão era cortada por parecer ociosa; agora o servidor dá sinal de vida durante o trabalho, e isso vale para todas as telas que mostram progresso.\n\n👉 *Modelagem que volta pela metade tenta de novo sozinha,* em vez de travar a sessão pedindo uma transcrição que você já tinha colado; e quando desiste, diz o motivo real.\n\n👉 *Parágrafos mais curtos e ritmo menos monótono:* os parágrafos vinham com 51 palavras em média (o maior tinha 126) e havia trechos de até 14 frases longas seguidas sem nenhuma curta quebrando a inércia. Agora vale o teto de três linhas por parágrafo e no máximo três frases longas seguidas.\n\n👉 *A página de compartilhamento mostra o nome do cliente* no topo, e o título do link no WhatsApp vira \"CODEX · CLIENTE · HEADLINE\".\n\nhttps://codex.viralmindlabs.com\n",
+      "changes": [
+        {
+          "id": "mt21d7mb",
+          "type": "feature",
+          "summary": "Faca no menu de selecao: marcar uma expressao generica bane ela dos proximos roteiros",
+          "detail": "Seleciona o trecho no roteiro, clica na faca, e a expressao entra na banlist que o lint aplica em toda geracao seguinte. So administrador.",
+          "commit": "4980658",
+          "addedAt": "2026-08-20T21:32:06.239Z"
+        },
+        {
+          "id": "mt2x0lvx",
+          "type": "fix",
+          "summary": "As licoes tiradas das suas edicoes voltaram a chegar nos roteiros",
+          "detail": "Desde marco, licao gerada por edicao, correcao na sala ou curador nascia sem destinatario e era descartada em silencio na hora de montar o prompt. So o botao Ensinar funcionava.",
+          "commit": "091a92e",
+          "addedAt": "2026-08-21T12:18:05.915Z"
+        },
+        {
+          "id": "mt2x0lx2",
+          "type": "feature",
+          "summary": "Modelar e Replicar direto do roteiro aberto, em aba nova",
+          "detail": "Dois botoes na barra do roteiro abrem uma sessao nova usando o roteiro da tela como material.",
+          "commit": "091a92e",
+          "addedAt": "2026-08-21T12:18:05.952Z"
+        }
+      ],
+      "releasedAt": "2026-08-21T12:18:43.824Z"
     }
   ]
 }
