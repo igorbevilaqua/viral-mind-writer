@@ -13,7 +13,8 @@ import type { Attachment, GenerationContext, ModelagemAnalysis } from "./types";
 // A modelagem extrai o MECANISMO do sucesso, nunca o conteúdo: o esqueleto é a parte
 // que viaja para outro tema/rosto/semana. Campos que descreviam o que o vídeo DIZ
 // (beats.resumo, argumentos, hook.texto) saíram de propósito — eram a origem da cópia.
-function modelagemTool() {
+/** Exportada para scripts/checa-modelagem-estrita.ts: o schema estrito precisa de um teste real. */
+export function modelagemTool() {
   const props: Record<string, unknown> = {
     compreensao: {
       type: "object",
@@ -175,12 +176,49 @@ function modelagemTool() {
   return {
     name: "registrar_modelagem",
     description: "Registra a autópsia de um vídeo viral: o que ele entregou à audiência e a mecânica que fez isso funcionar.",
-    input_schema: {
+    // `strict: true` faz do `required` um CONTRATO validado pelo servidor, e não uma sugestão
+    // no prompt. Sem ele a API aceita um tool_use bem formado com metade dos campos, e foi
+    // exatamente o que derrubou duas sessões (27/08 e 21/09/2026): `stop_reason: "tool_use"`,
+    // resposta inteira, `chaves: ["compreensao"]` e nenhum esqueleto. O retry não salvava
+    // porque ele só dobra max_tokens, remédio para truncamento, e nunca houve truncamento.
+    strict: true,
+    input_schema: estrito({
       type: "object" as const,
       properties: props,
       required: ["compreensao", "diagnostico", "esqueleto", "nao_transferivel", "timing"],
-    },
+    }),
   };
+}
+
+/**
+ * `additionalProperties: false` em TODO objeto do schema, que é o que o modo strict exige —
+ * inclusive nos aninhados (o esqueleto tem quatro níveis). À mão seriam nove pontos para
+ * errar em silêncio no próximo campo novo; aqui é uma passada só.
+ */
+function estrito<T>(no: T): T {
+  if (Array.isArray(no)) return no.map(estrito) as unknown as T;
+  if (!no || typeof no !== "object") return no;
+  const o = { ...(no as Record<string, unknown>) };
+  for (const [k, v] of Object.entries(o)) o[k] = estrito(v);
+  if (o.type === "object" && o.properties) o.additionalProperties = false;
+
+  // O modo strict aceita `minItems` só em 0 ou 1, e recusa o schema inteiro com 400 quando
+  // encontra outro valor. A contagem NÃO se perde: vira exigência na `description`, que é onde
+  // ela já agia de fato — sem strict, `minItems` nunca foi validado por ninguém, era texto
+  // para o modelo do mesmo jeito. Trocamos uma regra que não pegava por uma que o modelo lê,
+  // e ganhamos a validação dos campos obrigatórios, que é o que faltava.
+  if (o.type === "array" && (Number(o.minItems) > 1 || o.maxItems !== undefined)) {
+    const min = Number(o.minItems) || 0;
+    const max = Number(o.maxItems) || 0;
+    const exigencia =
+      min && max ? (min === max ? `Exatamente ${min} itens.` : `De ${min} a ${max} itens.`)
+      : min ? `No mínimo ${min} itens.`
+      : `No máximo ${max} itens.`;
+    o.description = [o.description, exigencia].filter(Boolean).join(" ");
+    delete o.minItems;
+    delete o.maxItems;
+  }
+  return o as unknown as T;
 }
 
 type ClassJson = Record<string, { classificacoes?: { tipo: string; confianca: string }[] }> | null;

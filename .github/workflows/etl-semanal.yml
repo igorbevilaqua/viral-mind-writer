@@ -18,10 +18,15 @@ name: ETL semanal
 
 on:
   schedule:
-    - cron: "0 9 * * 1" # toda segunda 09:00 UTC = 06:00 BRT
-    # 021 §0.4: segunda janela no mesmo dia. Se a primeira deu certo, a rota devolve
-    # {"skipped":"run recente"} e este run é barato. Se falhou, esta é a rede.
-    - cron: "0 15 * * 1"
+    # Tres janelas na segunda, bem espacadas. Nao e paranoia: o host caiu duas vezes
+    # (curl (28), SYN descartado por 133s) e uma vez devolveu 500, sempre por volta das
+    # 15h UTC. E o GitHub atrasa schedule em horas -- 31/08 saiu 7h43 tarde, 07/09 5h48 --
+    # entao tres alvos distantes sao tres chances de pegar o servidor de pe.
+    # A rota se defende sozinha: se ja rodou nas ultimas 24h ela devolve
+    # {"skipped":"run recente"} e o run extra custa um segundo. Um ETL por semana continua.
+    - cron: "0 9 * * 1" # segunda 09:00 UTC = 06:00 BRT
+    - cron: "0 15 * * 1" # 12:00 BRT
+    - cron: "0 21 * * 1" # 18:00 BRT
   workflow_dispatch: {} # botão "Run workflow" para disparar à mão
 
 concurrency:

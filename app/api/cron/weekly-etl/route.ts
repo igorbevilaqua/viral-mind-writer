@@ -12,12 +12,14 @@ export async function GET(req: Request) {
   if (!secret || req.headers.get("authorization") !== `Bearer ${secret}`) {
     return new Response("unauthorized", { status: 401 });
   }
-  // 021 §0.4: a segunda janela de segunda-feira existe só para cobrir a primeira que falhou
-  // (um `curl (28)` custou a semana de 07/09). Se a primeira deu certo, esta sai cedo.
+  // 021 §0.4: as janelas extras de segunda-feira existem só para cobrir a primeira que
+  // falhou (um `curl (28)` custou a semana de 07/09). Se uma deu certo, as outras saem cedo.
+  // 24h e não 12h: as três janelas cobrem 09:00-21:00 UTC e o GitHub ainda atrasa schedule
+  // em horas, então 12h deixava a última janela rodar o ETL de novo no mesmo dia.
   const { data: recente } = await appDb
     .from("vm_insight_runs")
     .select("run_at")
-    .gte("run_at", new Date(Date.now() - 12 * 3600_000).toISOString())
+    .gte("run_at", new Date(Date.now() - 24 * 3600_000).toISOString())
     .limit(1);
   if (recente?.length) return Response.json({ skipped: "run recente", run_at: recente[0].run_at });
 
