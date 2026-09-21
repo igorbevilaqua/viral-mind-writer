@@ -60,6 +60,14 @@ describe("agregarDiarias", () => {
     expect(agregarDiarias(dias, "Instagram").views).toBe(23364 + 90);
   });
 
+  // 0047: fb_views_no_dia fora do Instagram é ruído de coleta (31 vídeos do TikTok o têm),
+  // e num vídeo do Facebook as views próprias já SÃO o Facebook.
+  test("espelho do Facebook só conta em post do Instagram", () => {
+    expect(agregarDiarias(dias, "TikTok").views).toBe(23364);
+    expect(agregarDiarias(dias, "Facebook").views).toBe(23364);
+    expect(agregarDiarias(dias, null).views).toBe(23364);
+  });
+
   test("compartilhamentos também são pico, não soma", () => {
     expect(agregarDiarias(dias, "Instagram").compartilhamentos).toBe(41);
     expect(agregarDiarias(dias, "TikTok").compartilhamentos).toBe(41);

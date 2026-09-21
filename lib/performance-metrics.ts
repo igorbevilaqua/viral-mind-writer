@@ -28,10 +28,16 @@ export function agregarDiarias(
   plataforma: string | null
 ): { views: number; compartilhamentos: number | null } {
   return {
-    // mesma fórmula da MV vm_video_stats (0013): pico de views + pico do espelho no Facebook
+    // Mesma fórmula da MV vm_video_stats: pico de views + pico do espelho no Facebook.
+    // O espelho só vale para post do INSTAGRAM (migration 0047): 31 vídeos do TikTok têm
+    // fb_views_no_dia preenchido, que é ruído de coleta, e num vídeo cujo canal já é o
+    // Facebook as views próprias JÁ são o Facebook — somar contaria duas vezes. Plataforma
+    // desconhecida não soma: sem saber a rede, o espelho não se sustenta.
     views:
       (totalAcumulado(rows.map((r) => r.views_no_dia)) ?? 0) +
-      (totalAcumulado(rows.map((r) => r.fb_views_no_dia)) ?? 0),
+      (/instagram/i.test(plataforma ?? "")
+        ? (totalAcumulado(rows.map((r) => r.fb_views_no_dia)) ?? 0)
+        : 0),
     // YouTube não tem coleta de compartilhamento nenhuma (0 de 2.266 vídeos do corpus):
     // 0 ali é ausência de dado, não zero real — vira null para a UI não mentir.
     compartilhamentos: /youtube/i.test(plataforma ?? "")
