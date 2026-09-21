@@ -549,10 +549,16 @@ export async function autopsiaDeUrl(url: string | null, opts: AutopsiaOpts = {})
     // persistido em vm_sessions.debug.detail pelo catch do runPipeline. O debate avulso (Kasparov)
     // segue tolerante: ele já chama isto dentro de um .catch e continua sem análise.
     const falta = oQueFaltouNaAutopsia(analysis) || "a análise voltou sem conteúdo utilizável";
+    // A mensagem OLHA o material antes de pedir qualquer coisa. Ela mandava colar a
+    // transcrição sempre, e em 21/09/2026 mandou isso para quem tinha colado 3.962 caracteres
+    // à mão: além de não ajudar, culpava a pessoa por um defeito nosso. Só pede o que falta.
+    const temTexto = transcript.trim().length > 200;
     throw Object.assign(
       new Error(
         `A autópsia do ${peca} voltou incompleta duas vezes (${falta}). ` +
-          `Isso é falha do analista, não do material: conjure de novo. Se repetir, cole a transcrição no campo do material.`
+          (temTexto
+            ? `O material está aqui e completo (${transcript.trim().length} caracteres), então não é ele: é falha do analista. Conjure de novo, e se repetir avise que é problema nosso.`
+            : `Conjure de novo. Se repetir, cole a transcrição no campo do material: sem texto, não há o que analisar.`)
       ),
       { debug: { step: "modelagem", stop_reason: stop, falta, chaves: Object.keys(analysis ?? {}) } }
     );

@@ -163,10 +163,7 @@ begin
 end
 $mig$;
 
--- FICA PENDENTE, de propósito: o bloco `cross_post` no payload do vm_client_panel (quantos
--- vídeos rodaram nas duas redes, média em cada uma, quantos renderam metade ou mais no
--- Facebook). São 311 dos 597 e é o sinal novo que esta migration torna possível, mas
--- acrescentá-lo exige reescrever o jsonb_build_object inteiro — a operação que esta migration
--- acabou de aprender a não fazer às cegas. Entra numa migration própria, com a definição
--- vigente em mãos.
--- ponytail: os dados já estão na MV (views_rede, views_fb_espelho, cross_post); falta só expor.
+-- O bloco `cross_post` no payload do vm_client_panel (quantos vídeos rodaram nas duas redes,
+-- média em cada uma, quantos renderam metade ou mais no Facebook) saiu na migration 0048, no
+-- mesmo dia: ele exigia mexer no jsonb_build_object inteiro, e esta migration acabara de
+-- aprender a não fazer isso às cegas.

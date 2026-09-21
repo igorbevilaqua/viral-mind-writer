@@ -20,6 +20,17 @@ export interface ClientPanel {
   media_views_30d: number | null;
   media_views_geral: number | null;
   plataformas: { plataforma: string; username: string | null; seguidores: number | null }[];
+  /**
+   * O conteúdo que rodou no Instagram E no Facebook. Existe desde que o cross-post deixou de
+   * ser contado como dois vídeos (migration 0047): antes o painel via dois vídeos sem relação
+   * e a pergunta "o que funcionou nas duas redes?" não tinha como ser feita.
+   */
+  cross_post: {
+    videos: number;
+    media_views_instagram: number | null;
+    media_views_facebook: number | null;
+    rendeu_metade_ou_mais_no_fb: number;
+  } | null;
   top_temas: ClassRow[];
   top_storytelling: ClassRow[];
   top_hook: ClassRow[];
@@ -96,6 +107,15 @@ export default function ClientDataPanel({ panel, clientId }: { panel: ClientPane
           value={String(panel.videos_analisados)}
           hint={`de ${panel.total_videos} (base das análises abaixo)`}
         />
+        {/* Só quando existe: cliente que não replica no Facebook não precisa de um tile zerado
+            todo dia. O hint compara as duas redes, que é a leitura que interessa. */}
+        {panel.cross_post && panel.cross_post.videos > 0 && (
+          <StatTile
+            label="RODOU NAS DUAS REDES"
+            value={String(panel.cross_post.videos)}
+            hint={`${panel.cross_post.rendeu_metade_ou_mais_no_fb} renderam metade ou mais no Facebook · média ${fmt(panel.cross_post.media_views_instagram)} IG contra ${fmt(panel.cross_post.media_views_facebook)} FB`}
+          />
+        )}
       </div>
 
       {panel.plataformas.length > 0 && (
