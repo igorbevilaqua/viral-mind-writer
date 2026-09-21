@@ -637,7 +637,7 @@ export async function proposeNarratives(
         compreensao
           ? `MODELAGEM DE VÍDEO — a autópsia do vídeo de referência está abaixo. Vamos publicar sobre o MESMO assunto defendendo a MESMA TESE (a premissa acima saiu dela e foi confirmada pelo usuário), numa execução melhor. Cada candidata é um CAMINHO NARRATIVO diferente para sustentar essa tese, não uma tese alternativa: trocar o argumento é desclassificação. A recompensa emocional entregue pelo original é o piso, não o teto.\n\n${compreensao}`
           : `TEMA DO VÍDEO: ${ctx.prompt}`
-      }
+      }${ctx.estrategia ? `\n\n${ctx.estrategia}` : ""}
 
 DOSSIÊ DE PESQUISA:
 ${dossie || "(pesquisa indisponível — proponha narrativas sustentáveis pelo material do usuário)"}
@@ -756,7 +756,7 @@ export async function rankNarratives(
     max_tokens: 6000,
     tools: [RANKING_TOOL],
     tool_choice: { type: "tool", name: "registrar_ranking" },
-    system: `${agentPrompt("dados")}\n\n# INSIGHTS DE PERFORMANCE (dados reais dos +6 mil vídeos)\n${insights}`,
+    system: `${agentPrompt("dados")}${ctx.estrategia ? `\n\n${ctx.estrategia}\n\nEm empate técnico entre candidatas, vence a que serve à aposta do ciclo.` : ""}\n\n# INSIGHTS DE PERFORMANCE (dados reais dos +6 mil vídeos)\n${insights}`,
     messages: [
       {
         role: "user",

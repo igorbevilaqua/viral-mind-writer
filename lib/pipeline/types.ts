@@ -175,6 +175,9 @@ export interface GenerationContext {
   premissaContraintuitivo?: string | null;
   clientId: string | null;
   clientPrefs: ClientPrefs | null;
+  // Briefing do ciclo vindo do Cockpit (hub.planos + pulsos), já formatado em lib/pipeline/
+  // estrategia.ts. "" quando o cliente não tem plano valendo, que hoje é o caso comum.
+  estrategia: string;
   // A sessão pediu modelagem. Quem manda no roteiro passa a ser o vídeo modelado, não o
   // repertório do cliente: os insights/lições escopados a ele nem são carregados (context.ts)
   // e o cliente entra só como veto + identidade (clientPrefsBlock em draft.ts).

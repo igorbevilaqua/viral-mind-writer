@@ -14,6 +14,7 @@ import {
   type ExemploFewShot,
   type MetricasVideo,
 } from "./few-shot";
+import { carregarEstrategia } from "./estrategia";
 import type { Attachment, BannedPhrase, ClientPrefs, GenerationContext } from "./types";
 
 async function embed(text: string): Promise<number[]> {
@@ -135,11 +136,11 @@ export async function comparacaoFewShot(clientId: string | null): Promise<Compar
 // (loadContextAvulso) — duas cópias divergiriam no primeiro campo novo.
 type EstadoComum = Pick<
   GenerationContext,
-  "playbooks" | "playbookVersions" | "bannedPhrases" | "clientPrefs" | "insights" | "lessonIds" | "insightRunId" | "bullets"
+  "playbooks" | "playbookVersions" | "bannedPhrases" | "clientPrefs" | "insights" | "lessonIds" | "insightRunId" | "bullets" | "estrategia"
 >;
 
 async function loadEstadoComum(clientId: string | null, modoModelagem: boolean): Promise<EstadoComum> {
-  const [playbooksRes, bannedRes, prefsRes, lastRun, bulletsRes] = await Promise.all([
+  const [playbooksRes, bannedRes, prefsRes, lastRun, bulletsRes, estrategia] = await Promise.all([
     appDb.from("vm_playbooks").select("slug, content, version").eq("active", true),
     appDb.from("vm_banned_phrases").select("pattern, label, severity, motivo").eq("active", true),
     clientId
@@ -155,6 +156,10 @@ async function loadEstadoComum(clientId: string | null, modoModelagem: boolean):
     // Paleta emocional votada pelo time (migration 0033). ponytail: a lista inteira vem e o
     // escopo é filtrado em memória — são dezenas de palavras, não vale um .or() escapado.
     appDb.from("vm_bullets").select("termo, client_id, vm_bullet_votes(valor)"),
+    // A estratégia vigente do cliente, decidida no Cockpit. Entra aqui junto do resto porque
+    // vale para TODA geração da conta, inclusive em modelagem: ela diz a direção (apostas,
+    // territórios, o que está em teste), não repete o repertório que a modelagem suprime.
+    carregarEstrategia(clientId),
   ]);
 
   // Falha de query aqui gerava roteiro silenciosamente SEM playbooks/banned.
@@ -249,6 +254,7 @@ async function loadEstadoComum(clientId: string | null, modoModelagem: boolean):
 
   return {
     bullets,
+    estrategia,
     playbooks,
     playbookVersions,
     bannedPhrases: (bannedRes.data ?? []) as BannedPhrase[],

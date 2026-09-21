@@ -179,6 +179,10 @@ export function buildDynamicSystemBlock(ctx: GenerationContext): string {
   const premissa = premissaBlock(ctx);
   if (premissa) parts.push(premissa);
 
+  // A direção da conta vem logo depois da tese e antes do dossiê: é o enquadramento sob o
+  // qual tudo abaixo é lido. Vazio quando o cliente não tem plano valendo.
+  if (ctx.estrategia) parts.push(ctx.estrategia);
+
   if (ctx.artifacts) {
     const a = ctx.artifacts;
     if (a.dossie) parts.push(`# DOSSIÊ DE PESQUISA (fatos verificados em tempo real)\n${a.dossie}`);
