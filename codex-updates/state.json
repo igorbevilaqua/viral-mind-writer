@@ -1,7 +1,40 @@
 {
   "version": "2.7",
   "codexUrl": "https://codex.viralmindlabs.com",
-  "pending": [],
+  "pending": [
+    {
+      "id": "mupi78qp",
+      "type": "feature",
+      "summary": "Seletor de modelo na home: escolha quem escreve cada roteiro",
+      "detail": "No topo do formulario, antes de conjurar. Opus 5.5 por padrao, Fable 5 a um clique. A escolha vale para a sessao inteira: regenerar, pedir ajuda ao Bob e reescrever trecho usam o mesmo modelo.",
+      "commit": "8c6a66f",
+      "addedAt": "2026-10-01T12:21:45.614Z"
+    },
+    {
+      "id": "mupi78rq",
+      "type": "improvement",
+      "summary": "Novo modelo padrao de escrita, com o caminho de geracao perto de 60% mais barato",
+      "detail": "Opus 5.5 no lugar do Fable 5: mesmo 1M de contexto, custo por token bem menor e cache de leitura 60% mais barato. Quem preferir a prosa do Fable troca no seletor.",
+      "commit": "8c6a66f",
+      "addedAt": "2026-10-01T12:21:45.648Z"
+    },
+    {
+      "id": "mupirn76",
+      "type": "feature",
+      "summary": "Tela de configuracao: veja e troque qual LLM faz cada parte do Codex",
+      "detail": "Engrenagem no topo, so para admin. Lista as 13 funcoes que usam LLM com nome e explicacao (Escrita do roteiro, Checagem de fatos, Autopsia de video...) e o modelo de cada uma. A lista de opcoes ja exclui modelo que quebraria aquela funcao.",
+      "commit": "f9e63f5",
+      "addedAt": "2026-10-01T12:37:37.470Z"
+    },
+    {
+      "id": "mupirn84",
+      "type": "improvement",
+      "summary": "Kasparov temporariamente em manutencao",
+      "detail": "O item continua na barra mas avisa em vez de abrir. Volta sem precisar de deploy novo.",
+      "commit": "f9e63f5",
+      "addedAt": "2026-10-01T12:37:37.503Z"
+    }
+  ],
   "lastRelease": {
     "version": "2.6",
     "git": "7ee6884",
