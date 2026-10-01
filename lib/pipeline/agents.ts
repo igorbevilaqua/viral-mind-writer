@@ -905,7 +905,9 @@ export async function designHook(
       // 1500 truncava o hook+variantes; 4000 dá folga (ver mesmo problema no ideador/storytelling).
       max_tokens: 4000,
       tools: [HOOK_TOOL],
-      tool_choice: { type: "tool", name: "registrar_hooks" },
+      // `auto` e não forçado: opus-5-5 rejeita tool_choice `tool`/`any` com 400. Quem pede a
+      // tool é a última linha do prompt; a leitura abaixo já tratava a ausência de tool_use.
+      tool_choice: { type: "auto" },
       // block 1 estático + cache: as tools entram no prefixo antes do system, então o hook não
       // compartilha cache com os outros agentes — mas "gerar nova versão" re-roda o hook com o
       // mesmo prefixo e reusa. Persona no block 2, fora do trecho cacheado que muda menos.
@@ -930,7 +932,7 @@ ${rankingMecanismos ? `\n${rankingMecanismos}` : ""}${preferencias ? `\n${prefer
 CORPO DO ROTEIRO (o hook precisa emendar na primeira frase e ser pago pelo final):
 ${corpo}
 
-Gere de 5 a 6 candidatos a hook, cada um com um MECANISMO DISTINTO da taxonomia, rotulando mecanismo e formato. Inclua os 3 do topo e 1 fora deles. Antes de registrar cada um, passe pelo self-check de 3 testes (curiosidade, impacto, simplicidade) e reescreva o que reprovar. A seleção do principal e das variantes é feita depois pelos dados.`,
+Gere de 5 a 6 candidatos a hook, cada um com um MECANISMO DISTINTO da taxonomia, rotulando mecanismo e formato. Inclua os 3 do topo e 1 fora deles. Antes de registrar cada um, passe pelo self-check de 3 testes (curiosidade, impacto, simplicidade) e reescreva o que reprovar. A seleção do principal e das variantes é feita depois pelos dados. Responda chamando registrar_hooks.`,
         },
       ],
     },

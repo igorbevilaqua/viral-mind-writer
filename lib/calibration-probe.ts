@@ -34,9 +34,9 @@ export async function generateMechanismAlternative(
         },
       },
     ],
-    tool_choice: { type: "tool", name: "registrar_alternativa" },
+    tool_choice: { type: "auto" }, // forçado dá 400 no opus-5-5; quem pede a tool é o prompt
     system: "Você é especialista em hooks virais. Reescreva o hook mantendo EXATAMENTE o mesmo tema, fato central e personagem, mudando só o MECANISMO de curiosidade (outro gatilho). Falado, natural. Nada de travessão.",
-    messages: [{ role: "user", content: `HOOK ORIGINAL (mecanismo: ${mecanismoOriginal}):\n${hook}\n\nReescreva com um mecanismo diferente, o mesmo assunto.` }],
+    messages: [{ role: "user", content: `HOOK ORIGINAL (mecanismo: ${mecanismoOriginal}):\n${hook}\n\nReescreva com um mecanismo diferente, o mesmo assunto. Responda chamando registrar_alternativa.` }],
   });
   const tu = res.content.find((b) => b.type === "tool_use");
   if (!tu || tu.type !== "tool_use") return null;
@@ -86,9 +86,9 @@ async function generateProbe(hook: string, axis: CalibAxis): Promise<{
     model: WRITER_MODEL,
     max_tokens: 2000,
     tools: [tool],
-    tool_choice: { type: "tool", name: "registrar_variante" },
+    tool_choice: { type: "auto" }, // idem: ver generateMechanismAlternative acima
     system: "Você é especialista em hooks virais. Mantenha tema e mecanismo; mude só o eixo pedido. Nada de travessão.",
-    messages: [{ role: "user", content: `HOOK ORIGINAL:\n${hook}\n\n${INSTRUCAO[axis]}` }],
+    messages: [{ role: "user", content: `HOOK ORIGINAL:\n${hook}\n\n${INSTRUCAO[axis]}\n\nResponda chamando registrar_variante.` }],
   });
   const toolUse = res.content.find((b) => b.type === "tool_use");
   if (!toolUse || toolUse.type !== "tool_use") return null;
