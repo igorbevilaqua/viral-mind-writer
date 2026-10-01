@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { createSession, type NewAttachment } from "@/lib/actions";
 import { fmtNum, fmtRatio } from "@/lib/format";
-import { MODELOS_ESCRITA, MODELO_PADRAO } from "@/lib/generation";
+import { opcoesDe } from "@/lib/llm-catalogo";
 import type { ThemeSuggestion } from "@/lib/pipeline/suggest";
 
 const KIND_LABELS: Record<NewAttachment["kind"], { label: string; placeholder: string }> = {
@@ -101,7 +101,16 @@ function QuillIcon({ dark }: { dark?: boolean }) {
   );
 }
 
-export default function HomeForm({ clients }: { clients: { id: string; nome: string }[] }) {
+export default function HomeForm({
+  clients,
+  // O padrão vem do servidor porque quem o define é a configuração de LLM (função "escrita"),
+  // não o bundle: hardcodar aqui faria a tela continuar oferecendo o modelo antigo depois de o
+  // adm trocar, e a sessão nasceria com um modelo que ninguém escolheu.
+  modeloPadrao,
+}: {
+  clients: { id: string; nome: string }[];
+  modeloPadrao: string;
+}) {
   const router = useRouter();
   const [prompt, setPrompt] = useState("");
   // Premissa é OPCIONAL: preenchida, é adotada literalmente e nenhum modelo a reescreve; vazia,
@@ -110,7 +119,7 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
   const [premissa, setPremissa] = useState("");
   const [premissaAberta, setPremissaAberta] = useState(false);
   const [clientId, setClientId] = useState("");
-  const [modelo, setModelo] = useState<string>(MODELO_PADRAO);
+  const [modelo, setModelo] = useState<string>(modeloPadrao);
   const [attachments, setAttachments] = useState<NewAttachment[]>([]);
   const [pending, startTransition] = useTransition();
   const [extracting, setExtracting] = useState<number | null>(null);
@@ -287,7 +296,7 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
           title="Qual modelo escreve o roteiro desta sessão. A escolha vale para a geração, o Bob e as reescritas dela."
           className="rounded-[9px] border border-white/[.14] bg-white/[.03] px-2.5 py-1.5 text-[12px] text-white/60 outline-none cursor-pointer hover:border-gold/40 hover:text-white/90 transition-colors"
         >
-          {MODELOS_ESCRITA.map((m) => (
+          {opcoesDe("escrita").map((m) => (
             <option key={m.id} value={m.id} className="bg-neutral-900 text-white">
               {m.nome} — {m.nota}
             </option>

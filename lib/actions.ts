@@ -8,7 +8,9 @@ import { rewriteFragment } from "./pipeline/rewrite-fragment";
 import { extractFromNotes, type ExtractedLearning } from "./pipeline/teach";
 import { houveEdicaoHumana, marcarOrigemEdicao, aplicarCorrecaoLiteral, type TraceEdicao } from "./learning-loop";
 import { registrarAtividade, currentUserId } from "./hub";
-import { modeloEscritaValido } from "./generation";
+import { modeloValidoPara } from "./llm-catalogo";
+import { modelosConfigurados, salvarModelo } from "./llm-config";
+import { writerScope } from "./hub";
 import { exigirAcesso, ErroDeAcesso } from "./autorizacao";
 import { createClient } from "./supabase/server";
 import { runProbeTopup } from "./calibration-probe";
@@ -111,7 +113,7 @@ export async function createSession(input: {
       client_id: input.clientId,
       // Validado aqui e não só na tela: é input de cliente, e o id inválido só apareceria
       // como 404 no meio da geração. Fora da lista = null, que é "usa o padrão do servidor".
-      modelo: modeloEscritaValido(input.modelo),
+      modelo: modeloValidoPara("escrita", input.modelo),
       user_id: userId,
     })
     .select("id")
@@ -1146,4 +1148,24 @@ export async function voteBullet(bulletId: string, valor: 1 | -1): Promise<void>
 
   await registrarAtividade("bullet_votado", { userId, payload: { bullet_id: bulletId, valor: atual?.valor === valor ? 0 : valor } });
   revalidatePath("/bullets");
+}
+
+// ─── Configuração de LLM (só adm) ──────────────────────────────────────────
+// A tela é um popover que abre sobre qualquer página, então os dados vêm por server action e
+// não por props de uma rota: não existe "a página" onde ela mora.
+
+/** O mapa vigente, para a tela desenhar o estado atual. Leitura é livre para quem está logado:
+ *  saber qual modelo escreve não é poder de decisão, e o popover só aparece para adm de todo
+ *  jeito — a guarda que importa é a da escrita, abaixo. */
+export async function configLLMAtual(): Promise<Record<string, string>> {
+  return modelosConfigurados();
+}
+
+/** Troca o modelo de uma função. Vale para todo mundo, então é decisão de adm. */
+export async function trocarModeloLLM(slug: string, modeloId: string): Promise<void> {
+  await exigirAcesso({ adm: "trocar o modelo de uma função do Codex" });
+  const { userId } = await writerScope();
+  await salvarModelo(slug, modeloId, userId);
+  // A home mostra o padrão da escrita no seletor; sem isto ela continuaria servindo o antigo.
+  revalidatePath("/");
 }

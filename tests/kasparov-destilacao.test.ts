@@ -120,7 +120,10 @@ describe("desfecho vazio é válido, e é o comum (018 §3, §12.4)", () => {
   test("debate sem acordo não produz proposta nem gravação", async () => {
     expect(await debate("NADA NOVO")).toBeNull();
     expect(rpc).not.toHaveBeenCalled();
-    expect(tabela).not.toHaveBeenCalled();
+    // vm_config_llm fica de fora: a destilação lê de lá QUAL modelo a responde, e ler
+    // configuração não é a "porta nova de gravação" que §12.2 proíbe. Qualquer outra tabela
+    // tocada aqui é, e continua reprovando.
+    expect(tabela.mock.calls.flat().filter((t) => t !== "vm_config_llm")).toEqual([]);
   });
 
   test("resposta sem marcador não vira lição por acidente", () => {

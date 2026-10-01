@@ -2,6 +2,7 @@ import { ANALYST_MODEL, trackedStream, type UsageLog } from "../anthropic";
 import { agentPrompt, taughtBlock } from "./agents";
 import { clientPrefsBlock } from "./draft";
 import type { GenerationContext } from "./types";
+import { modeloDe } from "../llm-config";
 
 // O que o turno do Kasparov recebe além do estado que já vive no GenerationContext:
 // o roteiro em discussão (quando existe) e o assunto corrente da thread, em UMA linha.
@@ -124,7 +125,7 @@ export async function turnoKasparov(args: {
     args.log ?? args.ctx.usageLog,
     "kasparov",
     {
-      model: ANALYST_MODEL,
+      model: await modeloDe("kasparov"),
       // Análise e crítica = sonnet (lib/anthropic.ts). Teto folgado porque o modelo
       // pensa antes de responder e o thinking sai do mesmo orçamento: 2000 truncava
       // debate longo no meio.
@@ -220,7 +221,7 @@ export async function proporDestilacao(args: {
   log?: UsageLog;
 }): Promise<PropostaDeDestilacao | null> {
   const bruto = await trackedStream(args.log ?? args.ctx.usageLog, "kasparov-destilacao", {
-    model: ANALYST_MODEL,
+    model: await modeloDe("kasparov"),
     // Uma frase de saída. Teto baixo de propósito: destilação longa é sintoma de resumo
     // da conversa, que é exatamente o que não pode virar lição.
     max_tokens: 300,

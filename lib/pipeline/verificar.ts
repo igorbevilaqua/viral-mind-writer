@@ -4,6 +4,7 @@ import { falhaDeInfra } from "../grok";
 import { procedencia } from "./estudos";
 import { grokPesquisa } from "./grok-search";
 import { ehRastreada } from "./delta";
+import { modeloDe } from "../llm-config";
 
 // Verificação factual (017): as duas chamadas Anthropic do pipeline de 5 passos, o passo 3
 // (busca) e a orquestração 1→4. Passo 1 extrai as alegações do roteiro FINAL; passo 4 julga o
@@ -176,7 +177,7 @@ export async function extrairAlegacoes(
   log?: UsageLog
 ): Promise<string[]> {
   const res = await trackedCreate(log, "verificacao_alegacoes", {
-    model: ANALYST_MODEL,
+    model: await modeloDe("checagem"),
     max_tokens: MAX_TOKENS,
     tools: [ALEGACOES_TOOL],
     tool_choice: { type: "tool", name: "registrar_alegacoes" },
@@ -242,7 +243,7 @@ FONTES: ${it.busca.fontes.length ? it.busca.fontes.join(", ") : "(nenhuma)"}`
     .join("\n\n");
 
   const res = await trackedCreate(log, "verificacao_classificacao", {
-    model: ANALYST_MODEL,
+    model: await modeloDe("checagem"),
     max_tokens: MAX_TOKENS,
     tools: [VERIFICACAO_TOOL],
     tool_choice: { type: "tool", name: "registrar_verificacao" },

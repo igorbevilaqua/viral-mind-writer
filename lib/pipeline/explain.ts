@@ -3,6 +3,7 @@ import { houveEdicaoHumana } from "../learning-loop";
 import type { Etapa } from "../provenance";
 import { agentPrompt, toolInput } from "./agents";
 import type { LintViolation } from "./slop-lint";
+import { modeloDe } from "../llm-config";
 
 // Agente "por quê" (015 §4.3): recebe um trecho e a etapa que já foi determinada por
 // `atribuirEtapa`, e devolve a causa SAINDO DO RASTRO. Não julga o texto e não sugere nada.
@@ -163,7 +164,7 @@ export async function explicar(input: {
     undefined,
     "explicacao",
     {
-      model: ANALYST_MODEL,
+      model: await modeloDe("modelagem"),
       max_tokens: 1000,
       tools: [EXPLICACAO_TOOL],
       tool_choice: { type: "tool", name: "registrar_explicacao" },

@@ -1,10 +1,14 @@
 import { appDb } from "@/lib/db";
+import { modeloDe } from "@/lib/llm-config";
 import HomeForm from "@/components/home-form";
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const { data: clients } = await appDb.from("clientes").select("id, nome").eq("ativo", true).order("nome");
+  const [{ data: clients }, modeloPadrao] = await Promise.all([
+    appDb.from("clientes").select("id, nome").eq("ativo", true).order("nome"),
+    modeloDe("escrita"),
+  ]);
   return (
     <div
       className="flex-1 flex flex-col items-center px-4 py-12 sm:py-16"
@@ -17,7 +21,7 @@ export default async function Home() {
         </h1>
         <p className="text-sm text-white/45 mt-3">Roteiros embasados em um corpus de 6 mil vídeos publicados.</p>
       </div>
-      <HomeForm clients={clients ?? []} />
+      <HomeForm clients={clients ?? []} modeloPadrao={modeloPadrao} />
     </div>
   );
 }

@@ -18,6 +18,7 @@ import { syncScriptPerformance } from "./script-performance";
 import { casarRoteiros } from "./script-matches";
 import { ESTRUTURAS } from "./pipeline/taxonomia";
 import { codexVsCanal, type FatoCvc, type RoteiroCvc } from "./codex-vs-canal";
+import { modeloDe } from "./llm-config";
 
 // ETL semanal: materializa insights do corpus em vm_viral_insights
 // (globais + por cliente, categorizados e pontuados) e sincroniza
@@ -99,7 +100,7 @@ async function generateBoasPraticas(
   stats: ClientStat[]
 ): Promise<{ titulo: string; descricao: string }[]> {
   const res = await anthropic.messages.create({
-    model: ANALYST_MODEL,
+    model: await modeloDe("aprendizado"),
     max_tokens: 4000, // thinking divide o teto — 1200 truncava o tool_use
     tools: [PRATICAS_TOOL],
     tool_choice: { type: "tool", name: "registrar_boas_praticas" },

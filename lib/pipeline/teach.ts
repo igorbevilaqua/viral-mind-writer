@@ -1,6 +1,7 @@
 import { anthropic, ANALYST_MODEL } from "../anthropic";
 import { appDb } from "../db";
 import { agentPrompt, toolInput, toolArray } from "./agents";
+import { modeloDe } from "../llm-config";
 
 // Agente Professor: extrai aprendizados generalizáveis de um viral (menu Ensinar).
 // Os aprovados pelo usuário são destilados na sala via loadContext (taught_*).
@@ -66,7 +67,7 @@ async function runProfessor(userContent: string, minItems = 4): Promise<Extracte
     .join("\n\n");
 
   const res = await anthropic.messages.create({
-    model: ANALYST_MODEL,
+    model: await modeloDe("aprendizado"),
     max_tokens: 8000, // thinking divide o teto — 3000 truncava o tool_use
     tools: [tool],
     tool_choice: { type: "tool", name: "registrar_aprendizados" },

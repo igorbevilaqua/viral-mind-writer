@@ -7,6 +7,7 @@ import { toolInput } from "./pipeline/agents";
 import { dedash } from "./pipeline/slop-lint";
 import { HOOK_MECHANISMS } from "./pipeline/hook-mechanisms";
 import type { CalibAxis } from "./calibration";
+import { modeloDe } from "./llm-config";
 
 // Cold-start same-theme: reescreve um hook REAL mantendo EXATAMENTE o tema/fato/personagem
 // mas trocando o MECANISMO de curiosidade. Assim o par compara mecanismo, não assunto
@@ -18,7 +19,7 @@ export async function generateMechanismAlternative(
 ): Promise<{ variante: string; mecanismo: string } | null> {
   const outros = HOOK_MECHANISMS.filter((m) => m !== mecanismoOriginal && m !== "Outro");
   const res = await anthropic.messages.create({
-    model: WRITER_MODEL,
+    model: await modeloDe("calibracao"),
     max_tokens: 1500,
     tools: [
       {
@@ -83,7 +84,7 @@ async function generateProbe(hook: string, axis: CalibAxis): Promise<{
 } | null> {
   const tool = probeTool(axis);
   const res = await anthropic.messages.create({
-    model: WRITER_MODEL,
+    model: await modeloDe("calibracao"),
     max_tokens: 2000,
     tools: [tool],
     tool_choice: { type: "auto" }, // idem: ver generateMechanismAlternative acima

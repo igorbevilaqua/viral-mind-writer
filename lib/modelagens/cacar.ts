@@ -20,6 +20,7 @@ import { agentPrompt, toolArray, toolInput } from "../pipeline/agents";
 import { buscarCandidatos, type Candidato } from "./buscar";
 import { rankear, type AplicabilidadeBr, type CandidatoRankeavel, type TimingClasse } from "./rank";
 import { garantirSearchQueries } from "./queries";
+import { modeloDe } from "../llm-config";
 
 const LIMITE_PADRAO = 15;
 const MAX_CLASSIFICAR = 40; // finalistas que entram na chamada de classificação
@@ -147,7 +148,7 @@ async function classificar(
 
   const res = await anthropic.messages.create(
     {
-      model: ANALYST_MODEL,
+      model: await modeloDe("modelagem"),
       max_tokens: 8000, // 40 vídeos × ~5 campos; thinking divide o teto (AGENTS.md §5)
       tools: [CLASSIFICACAO_TOOL],
       tool_choice: { type: "tool", name: "registrar_classificacao" },

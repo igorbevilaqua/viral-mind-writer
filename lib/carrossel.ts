@@ -1,5 +1,6 @@
 import { ANALYST_MODEL, trackedCreate, type UsageLog } from "./anthropic";
 import { sc } from "./scrapecreators";
+import { modeloDe } from "./llm-config";
 
 // Carrossel do Instagram como fonte de modelagem.
 //
@@ -104,7 +105,7 @@ export async function lerCarrossel(url: string, log?: UsageLog): Promise<Leitura
     log,
     "carrossel",
     {
-      model: ANALYST_MODEL,
+      model: await modeloDe("carrossel"),
       max_tokens: 8000,
       messages: [
         {

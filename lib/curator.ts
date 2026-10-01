@@ -4,6 +4,7 @@ import { agentPrompt, toolInput, toolArray } from "./pipeline/agents";
 import { DIMENSOES, type Dimensao, type ExtractedLearning } from "./pipeline/teach";
 import { comDestinatarios } from "./pipeline/destinatarios";
 import { hookMechanismOutcomes } from "./learning-loop";
+import { modeloDe } from "./llm-config";
 
 // Curador mensal (plano 012, WP-E.6): lê winners/losers de vm_outcomes + lições
 // já ativas e propõe até 3 lições novas — SEMPRE active:false, curadoria humana
@@ -105,7 +106,7 @@ LIÇÕES JÁ ATIVAS NA SALA (não repita):
 ${jaEnsinado || "(nenhuma)"}`;
 
   const res = await anthropic.messages.create({
-    model: ANALYST_MODEL,
+    model: await modeloDe("aprendizado"),
     max_tokens: 4000, // thinking divide o teto (padrão do repo)
     tools: [CURADOR_TOOL],
     tool_choice: { type: "tool", name: "propor_licoes" },
@@ -238,7 +239,7 @@ export async function runHookPlaybookCurator(): Promise<HookCuratorResult> {
     .map((m) => `- ${m.mecanismo}: ratio mediano ${m.ratio_mediano}x em ${m.n} roteiros → ${m.verdict}`)
     .join("\n");
   const res = await anthropic.messages.create({
-    model: ANALYST_MODEL,
+    model: await modeloDe("aprendizado"),
     max_tokens: 8000, // playbook inteiro + thinking dividem o teto
     tools: [PLAYBOOK_TOOL],
     tool_choice: { type: "tool", name: "registrar_playbook" },

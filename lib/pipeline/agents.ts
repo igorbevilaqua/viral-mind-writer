@@ -19,6 +19,7 @@ import { HOOK_MECHANISMS, HOOK_FORMATS, filtrarCandidatos, selectHook, type Hook
 import { clientPrefsBlock } from "./draft";
 import { anexoModelagem, anexoReplicar } from "./replicar";
 import { selecionarBullets } from "../bullets";
+import { modeloDe } from "../llm-config";
 
 // Os prompts dos agentes vivem em agents/*.md — fonte única consumida pelo app e pela skill /goal.
 const promptCache = new Map<string, string>();
@@ -656,9 +657,10 @@ Proponha as narrativas candidatas.`,
   // Sem cache_control: prefixo one-shot — o playbook (~15k tokens) pagaria +25% de escrita
   // em toda geração pra economizar só no retry raro de truncamento. Regeneração não re-roda
   // storytelling (artifacts cacheados em vm_sessions).
+  const modeloNarrativas = await modeloDe("narrativas");
   const call = (maxTokens: number) =>
     trackedCreate(ctx.usageLog, "narrativas", {
-      model: ANALYST_MODEL,
+      model: modeloNarrativas,
       max_tokens: maxTokens,
       tools: [NARRATIVAS_TOOL],
       tool_choice: { type: "tool", name: "registrar_narrativas" },
@@ -750,7 +752,7 @@ export async function rankNarratives(
 
   // Sem cache_control: one-shot por geração (regenerar reusa artifacts, não re-roda o Dados).
   const res = await trackedCreate(ctx.usageLog, "ranking", {
-    model: ANALYST_MODEL,
+    model: await modeloDe("narrativas"),
     // mesmo risco de truncamento do storytelling: ranking de N candidatas + 2 orientações
     // longas, dividindo o teto com o thinking adaptativo do sonnet-5. 2500 → 6000.
     max_tokens: 6000,
@@ -1011,14 +1013,14 @@ export async function writeComando(ctx: GenerationContext, corpo: string): Promi
       ? `MODO REPLICAR — ADAPTE O COMANDO DO ORIGINAL. Ele fechava assim: ${r.descricao}.\nMantenha o mesmo tipo de pedido e a mesma posição; melhore a execução (benefício explícito na própria frase, verbo mais concreto, promessa que o roteiro pagou). Nenhuma frase literal do original pode sobreviver.\n\n`
       : `MODO REPLICAR — CRIE O COMANDO: ${r.descricao}. É o ponto onde a nossa versão ganha dele.\nO pedido tem que soar CONSEQUÊNCIA natural do que o vídeo acabou de dizer, não apêndice colado no fim: quem entendeu a tese já quer fazer o que você vai pedir.\n\n`;
   const direcaoComando = direcaoBlock(ctx, "sugestão de comando — um palpite de CTA, que você julga como julgaria os seus");
-  // CTA é fórmula curta sobre padrões dados no contexto: ANALYST_MODEL + effort low bastam
+  // CTA é fórmula curta sobre padrões dados no contexto: modelo de análise + effort low bastam
   // (era WRITER_MODEL/fable, ~3x o preço, pra 2-3 frases). Sem cache_control: prompt pequeno
   // (provavelmente abaixo do mínimo cacheável) e agora no modelo barato — write premium não paga.
   const res = await trackedCreate(
     ctx.usageLog,
     "comando",
     {
-      model: ANALYST_MODEL,
+      model: await modeloDe("comando"),
       // thinking adaptativo divide o mesmo teto; 2000 garante o texto do CTA além do raciocínio.
       max_tokens: 2000,
       system: `${agentPrompt("comando")}\n\n# PLAYBOOK DE COMANDOS\n${ctx.playbooks.comando ?? "(sem playbook)"}`,

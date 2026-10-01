@@ -18,6 +18,7 @@
 import { appDb, viralData } from "../db";
 import { anthropic, ANALYST_MODEL } from "../anthropic";
 import { agentPrompt, toolArray, toolInput } from "../pipeline/agents";
+import { modeloDe } from "../llm-config";
 
 const VALIDADE_DIAS = 7;
 const DIA_MS = 86_400_000;
@@ -265,7 +266,7 @@ export async function garantirSearchQueries(clientId: string, agora = new Date()
   if (!semente) return [];
 
   const res = await anthropic.messages.create({
-    model: ANALYST_MODEL,
+    model: await modeloDe("modelagem"),
     max_tokens: 4000, // thinking divide o teto (AGENTS.md §5)
     tools: [QUERIES_TOOL],
     tool_choice: { type: "tool", name: "registrar_queries" },

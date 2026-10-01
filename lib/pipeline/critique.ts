@@ -2,6 +2,7 @@ import { ANALYST_MODEL, trackedCreate } from "../anthropic";
 import { agentPrompt, toolArray, toolInput } from "./agents";
 import { OUTPUT_FORMAT, buildStaticSystemBlock, buildReviewDynamicBlock } from "./draft";
 import type { GenerationContext } from "./types";
+import { modeloDe } from "../llm-config";
 
 // 021 §1.1: crítica e reescrita saem em DUAS saídas estruturadas. O `split` por marcador de texto
 // era o ponto frágil — e desde 2026-07-06 nunca chegou a ser exercitado, porque o thinking do
@@ -81,7 +82,7 @@ export async function critiqueAndRewrite(
     ctx.usageLog,
     "revisao",
     {
-      model: ANALYST_MODEL,
+      model: await modeloDe("critica"),
       // O documento revisado tem ~4,3 KB (~1,2k tokens) e o thinking do sonnet-5 come o resto.
       // 8000 nunca bastou: era o teto inteiro, não folga (AGENTS.md §5).
       max_tokens: 16000,

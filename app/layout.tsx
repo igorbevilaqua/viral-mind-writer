@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Cinzel, Cormorant_Garamond } from "next/font/google";
 import Nav, { MobileTabs } from "@/components/nav";
 import { BUILD_TAG } from "@/lib/version";
+import { writerScope } from "@/lib/hub";
 import "./globals.css";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
@@ -27,14 +28,17 @@ export const viewport: Viewport = {
   viewportFit: "cover",
 };
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+// Async por causa da engrenagem: só o adm a vê, e quem é adm só o servidor sabe. Todas as
+// páginas já são force-dynamic, então isto não troca nada de estático por dinâmico.
+export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  const { isAdmin } = await writerScope();
   return (
     <html
       lang="pt-BR"
       className={`${geistSans.variable} ${geistMono.variable} ${cinzel.variable} ${cormorant.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <Nav />
+        <Nav admin={isAdmin} />
         <main className="flex-1 flex flex-col">{children}</main>
         <MobileTabs />
       </body>

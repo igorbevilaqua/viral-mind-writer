@@ -9,6 +9,7 @@ import { composeBrief, oQueFaltouNaAutopsia } from "./modelagem-brief";
 import { HOOK_MECHANISMS } from "./hook-mechanisms";
 import { resolverModo, SEM_COMANDO } from "./replicar";
 import type { Attachment, GenerationContext, ModelagemAnalysis } from "./types";
+import { modeloDe } from "../llm-config";
 
 // A modelagem extrai o MECANISMO do sucesso, nunca o conteúdo: o esqueleto é a parte
 // que viaja para outro tema/rosto/semana. Campos que descreviam o que o vídeo DIZ
@@ -498,9 +499,10 @@ export async function autopsiaDeUrl(url: string | null, opts: AutopsiaOpts = {})
       `Em diagnostico.gargalo, seja preciso: é a camada onde o original era mais fraco, e é exatamente ali que ` +
       `a nossa versão tem que ganhar dele.`;
 
+  const modeloModelagem = await modeloDe("modelagem");
   const chamar = (maxTokens: number) =>
     trackedCreate(opts.usageLog, "modelagem", {
-      model: ANALYST_MODEL,
+      model: modeloModelagem,
       // análise estruturada via tool forçada; o sonnet-5 pensa por padrão no mesmo teto.
       // 8000 dá folga para o tool_use não truncar.
       max_tokens: maxTokens,

@@ -3,6 +3,7 @@ import { agentPrompt, clientInsightBlock, taughtBlock, toolInput } from "./agent
 import { clientPrefsBlock } from "./draft";
 import { dedash } from "./slop-lint";
 import type { GenerationContext } from "./types";
+import { modeloDe } from "../llm-config";
 
 // A PREMISSA é o argumento que o vídeo defende — 1-2 frases, afirmativa, falsificável.
 // Não é o tema (assunto), não é o ângulo (recorte), não é o gancho (isca): é a tese.
@@ -138,7 +139,7 @@ export async function derivePremissa(ctx: GenerationContext): Promise<PremissaDe
     );
 
   const res = await trackedCreate(ctx.usageLog, "premissa", {
-    model: ANALYST_MODEL,
+    model: await modeloDe("premissa"),
     // Resposta curtíssima (1-2 frases + listas), mas o sonnet-5 divide o teto com o thinking —
     // e aqui pensar é o trabalho todo. 4000 dá folga sem desperdício.
     max_tokens: 4000,

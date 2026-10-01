@@ -1,6 +1,7 @@
 import { anthropic, ANALYST_MODEL } from "../anthropic";
 import { agentPrompt, toolInput } from "./agents";
 import { DESTINATARIOS, type Destinatario } from "./destinatarios";
+import { modeloDe } from "../llm-config";
 
 // Classificador de ensino: pega o que o usuário ensinou em palavras cruas no meio da sessão e
 // devolve UM registro estruturado. Não grava nada — a escrita passa por confirmação humana
@@ -71,7 +72,7 @@ export async function classificarEnsinamento(input: {
   clienteNome?: string;
 }): Promise<Ensinamento> {
   const res = await anthropic.messages.create({
-    model: ANALYST_MODEL,
+    model: await modeloDe("aprendizado"),
     max_tokens: 2000,
     tools: [ENSINAMENTO_TOOL],
     tool_choice: { type: "tool", name: "registrar_ensinamento" },

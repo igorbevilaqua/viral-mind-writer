@@ -15,8 +15,8 @@ import {
   type MetricasVideo,
 } from "./few-shot";
 import { carregarEstrategia } from "./estrategia";
-import { WRITER_MODEL } from "../anthropic";
-import { modeloEscritaValido } from "../generation";
+import { modeloValidoPara } from "../llm-catalogo";
+import { modeloDe } from "../llm-config";
 import type { Attachment, BannedPhrase, ClientPrefs, GenerationContext } from "./types";
 
 async function embed(text: string): Promise<number[]> {
@@ -311,7 +311,7 @@ export async function loadContext(sessionId: string): Promise<GenerationContext>
     clientId: session.client_id,
     // A escolha da home. Sessão sem modelo gravado é sessão anterior ao seletor: cai no
     // padrão do servidor, que é onde ela já estava.
-    modelo: modeloEscritaValido(session.modelo) ?? WRITER_MODEL,
+    modelo: modeloValidoPara("escrita", session.modelo) ?? (await modeloDe("escrita")),
     modoModelagem,
     ...(await loadEstadoComum(session.client_id, modoModelagem)),
     fewShot: fewShot.exemplos,
@@ -339,7 +339,7 @@ export async function loadContextAvulso(clientId: string | null): Promise<Genera
     premissa: "",
     premissaOrigem: null,
     clientId,
-    modelo: WRITER_MODEL, // sem sessão não há escolha a herdar
+    modelo: await modeloDe("escrita"), // sem sessão não há escolha a herdar
     modoModelagem: false,
     ...(await loadEstadoComum(clientId, false)),
     fewShot: [],
