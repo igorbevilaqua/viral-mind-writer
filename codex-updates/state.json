@@ -33,6 +33,14 @@
       "detail": "O item continua na barra mas avisa em vez de abrir. Volta sem precisar de deploy novo.",
       "commit": "f9e63f5",
       "addedAt": "2026-10-01T12:37:37.503Z"
+    },
+    {
+      "id": "mupzknck",
+      "type": "fix",
+      "summary": "Deploy voltou a funcionar: as atualizacoes do Codex param de ficar presas",
+      "detail": "O build no servidor falhava em silencio desde hoje de manha, entao nada do que era publicado chegava no ar. Corrigido na raiz, e as tres entregas de hoje subiram juntas.",
+      "commit": "e8811f8",
+      "addedAt": "2026-10-01T20:28:04.546Z"
     }
   ],
   "lastRelease": {
