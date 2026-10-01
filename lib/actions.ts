@@ -8,7 +8,6 @@ import { rewriteFragment } from "./pipeline/rewrite-fragment";
 import { extractFromNotes, type ExtractedLearning } from "./pipeline/teach";
 import { houveEdicaoHumana, marcarOrigemEdicao, aplicarCorrecaoLiteral, type TraceEdicao } from "./learning-loop";
 import { registrarAtividade, currentUserId } from "./hub";
-import { modeloValidoPara } from "./llm-catalogo";
 import { modelosConfigurados, salvarModelo } from "./llm-config";
 import { writerScope } from "./hub";
 import { exigirAcesso, ErroDeAcesso } from "./autorizacao";
@@ -90,7 +89,6 @@ export async function createSession(input: {
   prompt: string;
   premissa?: string;
   clientId: string | null;
-  modelo?: string | null;
   attachments: NewAttachment[];
 }): Promise<string> {
   const userId = await currentUserId();
@@ -111,9 +109,6 @@ export async function createSession(input: {
       premissa,
       premissa_origem: premissa ? "digitada" : null,
       client_id: input.clientId,
-      // Validado aqui e não só na tela: é input de cliente, e o id inválido só apareceria
-      // como 404 no meio da geração. Fora da lista = null, que é "usa o padrão do servidor".
-      modelo: modeloValidoPara("escrita", input.modelo),
       user_id: userId,
     })
     .select("id")

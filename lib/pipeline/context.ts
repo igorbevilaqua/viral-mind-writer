@@ -309,8 +309,9 @@ export async function loadContext(sessionId: string): Promise<GenerationContext>
     premissa: (session.premissa ?? "").trim(),
     premissaOrigem: (session.premissa_origem ?? null) as GenerationContext["premissaOrigem"],
     clientId: session.client_id,
-    // A escolha da home. Sessão sem modelo gravado é sessão anterior ao seletor: cai no
-    // padrão do servidor, que é onde ela já estava.
+    // A coluna só é LIDA hoje: o seletor da home saiu quando a tela de configuração passou a
+    // mandar em quem escreve. As sessões criadas enquanto ele existiu têm valor gravado e
+    // continuam honrando a escolha delas; todas as outras seguem a configuração vigente.
     modelo: modeloValidoPara("escrita", session.modelo) ?? (await modeloDe("escrita")),
     modoModelagem,
     ...(await loadEstadoComum(session.client_id, modoModelagem)),

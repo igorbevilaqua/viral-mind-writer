@@ -175,9 +175,9 @@ export interface GenerationContext {
   premissaContraintuitivo?: string | null;
   clientId: string | null;
   clientPrefs: ClientPrefs | null;
-  // Quem ESCREVE esta sessão (vm_sessions.modelo, escolhido na home; WRITER_MODEL quando a
-  // sessão não escolheu). Só os agentes de escrita o leem — análise e crítica são sonnet por
-  // decisão de arquitetura, e não é o seletor da home que muda isso.
+  // Quem ESCREVE esta sessão: a função "escrita" da configuração de LLM, ou o modelo gravado
+  // em vm_sessions.modelo nas sessões criadas enquanto a home teve seletor. Só os agentes de
+  // escrita o leem — as outras funções têm cada uma a sua linha na mesma tela.
   modelo: string;
   // Briefing do ciclo vindo do Cockpit (hub.planos + pulsos), já formatado em lib/pipeline/
   // estrategia.ts. "" quando o cliente não tem plano valendo, que hoje é o caso comum.
