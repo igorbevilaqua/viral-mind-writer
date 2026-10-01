@@ -3,6 +3,12 @@
 
 export const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
+// O Kasparov está fora do ar por decisão, não por falha. Desligar só o link deixaria a rota
+// aberta para quem tem o endereço salvo (e para o histórico do navegador), então a página
+// também responde manutenção — um lugar para a decisão, dois lugares que a obedecem.
+export const KASPAROV_EM_MANUTENCAO = true;
+export const RECADO_MANUTENCAO = "O Kasparov está em manutenção. Volta em breve.";
+
 // ─── Quem escreve o roteiro ────────────────────────────────────────────────
 // Escolha de quem conjura, não do deploy: o seletor da home grava vm_sessions.modelo e o
 // pipeline inteiro lê de ctx.modelo. O PRIMEIRO da lista é o padrão da tela — a ordem aqui é
@@ -20,6 +26,8 @@ export const MODELO_PADRAO = MODELOS_ESCRITA[0].id;
 
 export const modeloEscritaValido = (m: unknown): string | null =>
   typeof m === "string" && MODELOS_ESCRITA.some((x) => x.id === m) ? m : null;
+
+
 
 // generating há mais que isso = geração morta (deploy, crash, timeout) → recuperável.
 export const STALE_GENERATION_MS = 10 * 60_000;

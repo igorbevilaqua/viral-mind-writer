@@ -2,9 +2,12 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
 import Logo from "./logo";
 import ReportProblem from "./report-problem";
 import { BUILD_TAG } from "@/lib/version";
+import Configuracoes from "./configuracoes";
+import { KASPAROV_EM_MANUTENCAO, RECADO_MANUTENCAO } from "@/lib/generation";
 
 // Destinos principais — mesma fonte de verdade pro topo (desktop) e pra barra
 // inferior (celular, alcance do polegar). No topo do celular só cabe a marca +
@@ -33,6 +36,9 @@ const DESTINOS = [
   {
     href: "/kasparov",
     label: "Kasparov",
+    // Desligado por decisão: o item continua na barra (sumir levantaria "cadê?") mas não
+    // navega — avisa. Ver KASPAROV_EM_MANUTENCAO em lib/generation.ts.
+    manutencao: true,
     icon: (
       <svg width="19" height="19" viewBox="0 0 16 16" fill="none">
         <path d="M2 5.5A2.5 2.5 0 0 1 4.5 3h7A2.5 2.5 0 0 1 14 5.5v3A2.5 2.5 0 0 1 11.5 11H6l-3 2.5V11h-.5" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" />
@@ -78,9 +84,22 @@ function useAtivo() {
     "exact" in d && d.exact ? pathname === d.href : pathname.startsWith("match" in d ? d.match : d.href);
 }
 
-export default function Nav() {
+/** O aviso que substitui a navegação de uma área desligada. Some sozinho. */
+function useRecado() {
+  const [recado, setRecado] = useState<string | null>(null);
+  return {
+    recado,
+    avisar: (texto: string) => {
+      setRecado(texto);
+      setTimeout(() => setRecado(null), 3600);
+    },
+  };
+}
+
+export default function Nav({ admin }: { admin: boolean }) {
   const pathname = usePathname();
   const ativo = useAtivo();
+  const { recado, avisar } = useRecado();
   // Rota pública de leitura não mostra a navegação interna do app.
   if (pathname.startsWith("/r/")) return null;
 
@@ -93,15 +112,26 @@ export default function Nav() {
         </span>
       </Link>
       <span className="hidden sm:flex items-center gap-7">
-        {DESTINOS.filter((d) => d.href !== "/").map((d) => (
-          <Link
-            key={d.href}
-            href={d.href}
-            className={ativo(d) ? "text-gold font-medium" : "text-white/55 hover:text-white"}
-          >
-            {d.label}
-          </Link>
-        ))}
+        {DESTINOS.filter((d) => d.href !== "/").map((d) =>
+          "manutencao" in d && KASPAROV_EM_MANUTENCAO ? (
+            <button
+              key={d.href}
+              onClick={() => avisar(RECADO_MANUTENCAO)}
+              title={RECADO_MANUTENCAO}
+              className="text-white/25 hover:text-white/40 cursor-not-allowed"
+            >
+              {d.label}
+            </button>
+          ) : (
+            <Link
+              key={d.href}
+              href={d.href}
+              className={ativo(d) ? "text-gold font-medium" : "text-white/55 hover:text-white"}
+            >
+              {d.label}
+            </Link>
+          )
+        )}
       </span>
       <span className="ml-auto flex items-center gap-4 sm:gap-5">
         <span className="hidden md:block font-mono text-[11px] text-white/35">
@@ -110,6 +140,7 @@ export default function Nav() {
         <span className="hidden sm:block font-mono text-[10px] text-white/25" title="versão do sistema · git">
           {BUILD_TAG}
         </span>
+        {pathname !== "/login" && admin && <Configuracoes />}
         {pathname !== "/login" && <ReportProblem />}
         {pathname !== "/login" && (
           <form action="/auth/signout" method="post">
@@ -126,6 +157,14 @@ export default function Nav() {
           </form>
         )}
       </span>
+      {recado && (
+        <span
+          role="status"
+          className="absolute left-1/2 top-[calc(100%+8px)] -translate-x-1/2 whitespace-nowrap rounded-[9px] border border-amber-400/30 bg-[#1a1710] px-3.5 py-2 text-[12.5px] text-amber-200/90 shadow-lg"
+        >
+          {RECADO_MANUTENCAO}
+        </span>
+      )}
     </nav>
   );
 }
@@ -136,12 +175,32 @@ export default function Nav() {
 export function MobileTabs() {
   const pathname = usePathname();
   const ativo = useAtivo();
+  const { recado, avisar } = useRecado();
   if (pathname.startsWith("/r/") || pathname === "/login") return null;
 
   return (
-    <nav className="sm:hidden sticky bottom-0 z-30 grid grid-cols-6 border-t border-white/[.08] bg-[#0b0b0f]/95 backdrop-blur-sm pb-[env(safe-area-inset-bottom)]">
+    <nav className="sm:hidden sticky bottom-0 z-30 relative grid grid-cols-6 border-t border-white/[.08] bg-[#0b0b0f]/95 backdrop-blur-sm pb-[env(safe-area-inset-bottom)]">
+      {recado && (
+        <span
+          role="status"
+          className="absolute bottom-[calc(100%+8px)] left-1/2 -translate-x-1/2 whitespace-nowrap rounded-[9px] border border-amber-400/30 bg-[#1a1710] px-3.5 py-2 text-[12.5px] text-amber-200/90 shadow-lg"
+        >
+          {RECADO_MANUTENCAO}
+        </span>
+      )}
       {DESTINOS.map((d) => {
         const on = ativo(d);
+        if ("manutencao" in d && KASPAROV_EM_MANUTENCAO)
+          return (
+            <button
+              key={d.href}
+              onClick={() => avisar(RECADO_MANUTENCAO)}
+              className="flex flex-col items-center justify-center gap-1 py-2.5 min-h-[54px] text-white/20"
+            >
+              {d.icon}
+              <span className="text-[10.5px] leading-none">{d.label}</span>
+            </button>
+          );
         return (
           <Link
             key={d.href}

@@ -3,6 +3,8 @@ import { appDb } from "@/lib/db";
 import { writerScope } from "@/lib/hub";
 import { origemDoDebate } from "@/lib/pipeline/kasparov";
 import KasparovChat from "@/components/kasparov-chat";
+import EmManutencao from "@/components/em-manutencao";
+import { KASPAROV_EM_MANUTENCAO } from "@/lib/generation";
 
 export const dynamic = "force-dynamic";
 
@@ -14,6 +16,8 @@ export const dynamic = "force-dynamic";
 // continua vendo o estado do sistema e o assunto corrente, nunca o histórico (018 §4). Guardar
 // a conversa serve para o USUÁRIO reler, e é exatamente o que esta tela faz.
 export default async function ThreadDoKasparov({ params }: { params: Promise<{ id: string }> }) {
+  if (KASPAROV_EM_MANUTENCAO) return <EmManutencao area="Kasparov" />;
+
   const { id } = await params;
 
   const { isAdmin, userId } = await writerScope();
