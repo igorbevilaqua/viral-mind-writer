@@ -1,4 +1,4 @@
-import { anthropic, WRITER_MODEL } from "../anthropic";
+import { anthropic } from "../anthropic";
 import { agentPrompt } from "./agents";
 import { buildStaticSystemBlock, buildDynamicSystemBlock } from "./draft";
 import { loadContext } from "./context";
@@ -13,7 +13,7 @@ export async function rewriteFragment(
 ): Promise<string> {
   const ctx = await loadContext(sessionId);
   const res = await anthropic.messages.create({
-    model: WRITER_MODEL,
+    model: ctx.modelo,
     max_tokens: 2000,
     // reescrita pontual e bem especificada — effort low corta o custo do fable aqui
     output_config: { effort: "low" },

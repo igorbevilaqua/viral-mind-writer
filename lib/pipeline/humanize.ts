@@ -1,5 +1,5 @@
 import type Anthropic from "@anthropic-ai/sdk";
-import { WRITER_MODEL, trackedCreate } from "../anthropic";
+import { trackedCreate } from "../anthropic";
 import { agentPrompt, registrarBloco } from "./agents";
 import {
   slopLint,
@@ -114,7 +114,7 @@ export async function humanize(
     ctx.usageLog,
     "humanizacao",
     {
-      model: WRITER_MODEL,
+      model: ctx.modelo,
       // reescreve o roteiro inteiro (headline+hook+corpo+variações+comando+fontes) e o
       // fable-5 pensa sempre no mesmo teto — 4000 arriscava truncar. 8000 dá folga.
       max_tokens: 8000,
@@ -151,8 +151,8 @@ export async function humanize(
       ctx.usageLog,
       "humanizacao",
       {
-        model: WRITER_MODEL,
-        // resposta curta (1 linha por trecho), mas o thinking do fable divide o teto — 4000.
+        model: ctx.modelo,
+        // resposta curta (1 linha por trecho), mas os dois modelos pensam dentro do mesmo teto — 4000.
         max_tokens: 4000,
         system, // mesmo prefixo → cache read
         messages: [

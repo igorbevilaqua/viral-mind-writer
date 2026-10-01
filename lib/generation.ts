@@ -3,6 +3,24 @@
 
 export const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
+// ─── Quem escreve o roteiro ────────────────────────────────────────────────
+// Escolha de quem conjura, não do deploy: o seletor da home grava vm_sessions.modelo e o
+// pipeline inteiro lê de ctx.modelo. O PRIMEIRO da lista é o padrão da tela — a ordem aqui é
+// a decisão, não uma preferência de exibição.
+//
+// Fora desta lista nada vale: o valor vem do cliente, e um id arbitrário só apareceria como
+// 404 no meio da geração, depois de a sessão já estar criada. Sessão sem modelo gravado
+// (anterior a esta feature) cai no WRITER_MODEL do servidor.
+export const MODELOS_ESCRITA = [
+  { id: "claude-opus-5-5", nome: "Opus 5.5", nota: "mais barato, mais direto" },
+  { id: "claude-fable-5", nome: "Fable 5", nota: "prosa mais literária" },
+] as const;
+
+export const MODELO_PADRAO = MODELOS_ESCRITA[0].id;
+
+export const modeloEscritaValido = (m: unknown): string | null =>
+  typeof m === "string" && MODELOS_ESCRITA.some((x) => x.id === m) ? m : null;
+
 // generating há mais que isso = geração morta (deploy, crash, timeout) → recuperável.
 export const STALE_GENERATION_MS = 10 * 60_000;
 

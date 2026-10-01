@@ -15,6 +15,8 @@ import {
   type MetricasVideo,
 } from "./few-shot";
 import { carregarEstrategia } from "./estrategia";
+import { WRITER_MODEL } from "../anthropic";
+import { modeloEscritaValido } from "../generation";
 import type { Attachment, BannedPhrase, ClientPrefs, GenerationContext } from "./types";
 
 async function embed(text: string): Promise<number[]> {
@@ -280,7 +282,7 @@ async function carregarAnexos(sessionId: string) {
 export async function loadContext(sessionId: string): Promise<GenerationContext> {
   const { data: session, error } = await appDb
     .from("vm_sessions")
-    .select("id, user_id, prompt, client_id, artifacts, premissa, premissa_origem")
+    .select("id, user_id, prompt, client_id, artifacts, premissa, premissa_origem, modelo")
     .eq("id", sessionId)
     .single();
   if (error || !session) throw new Error(`sessão não encontrada: ${error?.message}`);
@@ -307,6 +309,9 @@ export async function loadContext(sessionId: string): Promise<GenerationContext>
     premissa: (session.premissa ?? "").trim(),
     premissaOrigem: (session.premissa_origem ?? null) as GenerationContext["premissaOrigem"],
     clientId: session.client_id,
+    // A escolha da home. Sessão sem modelo gravado é sessão anterior ao seletor: cai no
+    // padrão do servidor, que é onde ela já estava.
+    modelo: modeloEscritaValido(session.modelo) ?? WRITER_MODEL,
     modoModelagem,
     ...(await loadEstadoComum(session.client_id, modoModelagem)),
     fewShot: fewShot.exemplos,
@@ -334,6 +339,7 @@ export async function loadContextAvulso(clientId: string | null): Promise<Genera
     premissa: "",
     premissaOrigem: null,
     clientId,
+    modelo: WRITER_MODEL, // sem sessão não há escolha a herdar
     modoModelagem: false,
     ...(await loadEstadoComum(clientId, false)),
     fewShot: [],

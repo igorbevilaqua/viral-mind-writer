@@ -1,5 +1,5 @@
 import Anthropic from "@anthropic-ai/sdk";
-import { anthropic, WRITER_MODEL } from "../anthropic";
+import { anthropic } from "../anthropic";
 import { grokPesquisa } from "./grok-search";
 import { agentPrompt, hookMechanismBlock, hookPreferenceBlock } from "./agents";
 import { buildStaticSystemBlock, buildDynamicSystemBlock } from "./draft";
@@ -83,7 +83,7 @@ ${input.instrucao}`;
   // turn 1 escreve). Sem pesquisa, resolve em 1 chamada.
   for (let turn = 0; turn < 2; turn++) {
     const res = await anthropic.messages.create({
-      model: WRITER_MODEL,
+      model: ctx.modelo,
       max_tokens: 2000,
       system: [
         // mesma ordem block1-estático/block2-persona do roteirista → reusa o prefixo cacheado

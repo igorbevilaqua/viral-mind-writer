@@ -8,6 +8,7 @@ import { rewriteFragment } from "./pipeline/rewrite-fragment";
 import { extractFromNotes, type ExtractedLearning } from "./pipeline/teach";
 import { houveEdicaoHumana, marcarOrigemEdicao, aplicarCorrecaoLiteral, type TraceEdicao } from "./learning-loop";
 import { registrarAtividade, currentUserId } from "./hub";
+import { modeloEscritaValido } from "./generation";
 import { exigirAcesso, ErroDeAcesso } from "./autorizacao";
 import { createClient } from "./supabase/server";
 import { runProbeTopup } from "./calibration-probe";
@@ -87,6 +88,7 @@ export async function createSession(input: {
   prompt: string;
   premissa?: string;
   clientId: string | null;
+  modelo?: string | null;
   attachments: NewAttachment[];
 }): Promise<string> {
   const userId = await currentUserId();
@@ -107,6 +109,9 @@ export async function createSession(input: {
       premissa,
       premissa_origem: premissa ? "digitada" : null,
       client_id: input.clientId,
+      // Validado aqui e não só na tela: é input de cliente, e o id inválido só apareceria
+      // como 404 no meio da geração. Fora da lista = null, que é "usa o padrão do servidor".
+      modelo: modeloEscritaValido(input.modelo),
       user_id: userId,
     })
     .select("id")

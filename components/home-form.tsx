@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { createSession, type NewAttachment } from "@/lib/actions";
 import { fmtNum, fmtRatio } from "@/lib/format";
+import { MODELOS_ESCRITA, MODELO_PADRAO } from "@/lib/generation";
 import type { ThemeSuggestion } from "@/lib/pipeline/suggest";
 
 const KIND_LABELS: Record<NewAttachment["kind"], { label: string; placeholder: string }> = {
@@ -109,6 +110,7 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
   const [premissa, setPremissa] = useState("");
   const [premissaAberta, setPremissaAberta] = useState(false);
   const [clientId, setClientId] = useState("");
+  const [modelo, setModelo] = useState<string>(MODELO_PADRAO);
   const [attachments, setAttachments] = useState<NewAttachment[]>([]);
   const [pending, startTransition] = useTransition();
   const [extracting, setExtracting] = useState<number | null>(null);
@@ -264,6 +266,7 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
         prompt: prompt.trim(),
         premissa: premissa.trim(),
         clientId: clientId || null,
+        modelo,
         attachments: attachments.filter(isUsable),
       });
       router.push(`/sessions/${id}?start=1`);
@@ -272,6 +275,26 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
 
   return (
     <div className="w-full max-w-2xl mt-9">
+      {/* Quem escreve. Fica ACIMA do card e não na barra de baixo (com cliente e anexos) de
+          propósito: aquela barra é o que entra no roteiro, esta linha é quem o escreve — e é
+          uma decisão que se toma antes de digitar, não depois. Discreta porque o padrão serve
+          para quase toda sessão; quem troca, troca sabendo por quê. */}
+      <div className="flex items-center justify-end gap-2 mb-2 px-1">
+        <span className="text-[11px] uppercase tracking-wider text-white/30">Escrito por</span>
+        <select
+          value={modelo}
+          onChange={(e) => setModelo(e.target.value)}
+          title="Qual modelo escreve o roteiro desta sessão. A escolha vale para a geração, o Bob e as reescritas dela."
+          className="rounded-[9px] border border-white/[.14] bg-white/[.03] px-2.5 py-1.5 text-[12px] text-white/60 outline-none cursor-pointer hover:border-gold/40 hover:text-white/90 transition-colors"
+        >
+          {MODELOS_ESCRITA.map((m) => (
+            <option key={m.id} value={m.id} className="bg-neutral-900 text-white">
+              {m.nome} — {m.nota}
+            </option>
+          ))}
+        </select>
+      </div>
+
       {/* prompt */}
       <div className="rounded-[18px] border border-white/[.12] bg-white/[.03] overflow-hidden focus-within:border-gold/40 transition-colors">
         {temModelagem && (

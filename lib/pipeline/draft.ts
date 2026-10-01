@@ -1,4 +1,4 @@
-import { anthropic, WRITER_MODEL, recordUsage } from "../anthropic";
+import { anthropic, recordUsage } from "../anthropic";
 import { agentPrompt, bulletsBlock, clientInsightBlock, direcaoBlock, formatNarrativa, licaoRefs, licoesPara, premissaBlock, registrarBloco } from "./agents";
 import { anexoModelagem, anexoReplicar } from "./replicar";
 import { FRASE_LONGA, MAX_LONGAS_SEGUIDAS, PARAGRAFO_MAX_PALAVRAS, type EcoNumerico, type ParagrafoLongo, type SequenciaLonga } from "./slop-lint";
@@ -482,7 +482,7 @@ export async function generateDraft(
 
   const t0 = Date.now();
   const stream = anthropic.messages.stream({
-    model: WRITER_MODEL,
+    model: ctx.modelo,
     // streaming, mas o teto ainda cobre thinking (sempre on no fable-5) + o corpo escrito.
     // 4000 podia truncar o corpo no meio; 8000 dá folga (streaming evita timeout de HTTP).
     // effort mantém o default (high): o draft é a peça de qualidade da geração.
@@ -508,7 +508,7 @@ export async function generateDraft(
 
   stream.on("text", onToken);
   const final = await stream.finalMessage();
-  recordUsage(ctx.usageLog, "roteiro", WRITER_MODEL, Date.now() - t0, final.usage);
+  recordUsage(ctx.usageLog, "roteiro", ctx.modelo, Date.now() - t0, final.usage);
   const block = final.content.find((b) => b.type === "text");
   const text = block?.type === "text" ? block.text : "";
 

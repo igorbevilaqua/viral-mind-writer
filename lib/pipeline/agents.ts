@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import type Anthropic from "@anthropic-ai/sdk";
-import { ANALYST_MODEL, WRITER_MODEL, recordUsage, trackedCreate } from "../anthropic";
+import { ANALYST_MODEL, recordUsage, trackedCreate } from "../anthropic";
 import { falhaDeInfra, grokClient, RESEARCH_MODEL } from "../grok";
 import { fmtNum } from "../format";
 import type { CalibrationPayload } from "../learning-loop";
@@ -900,7 +900,7 @@ export async function designHook(
     ctx.usageLog,
     "hook",
     {
-      model: WRITER_MODEL,
+      model: ctx.modelo,
       // fable-5 tem thinking sempre ligado, dividindo o teto de max_tokens com o tool_use.
       // 1500 truncava o hook+variantes; 4000 dá folga (ver mesmo problema no ideador/storytelling).
       max_tokens: 4000,

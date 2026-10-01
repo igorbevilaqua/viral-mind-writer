@@ -3,7 +3,15 @@ import Anthropic from "@anthropic-ai/sdk";
 export const anthropic = new Anthropic();
 
 // Rascunho e humanizador = qualidade de escrita; análise e crítica = sonnet.
-export const WRITER_MODEL = process.env.VM_WRITER_MODEL ?? "claude-fable-5";
+//
+// opus-5-5 (21/09/2026) no lugar do fable-5: 1M de contexto e thinking adaptativo igual, a
+// US$ 4/20 por MTok contra 10/50 — e cache de leitura a US$ 0,20, que é o que o prefixo
+// estático do roteirista mais usa. O que ele NÃO aceita é `tool_choice` forçado: os três
+// agentes do writer que pediam tool obrigatória agora pedem pelo prompt (`auto`), o que
+// também vale no fable — dá para voltar só pela env se a escrita cair no A/B.
+export const WRITER_MODEL = process.env.VM_WRITER_MODEL ?? "claude-opus-5-5";
+// A lista que o seletor da home oferece mora em lib/generation.ts: ela é dado puro e o
+// seletor é client component — importá-la daqui arrastaria o SDK para o bundle do browser.
 export const ANALYST_MODEL = process.env.VM_ANALYST_MODEL ?? "claude-sonnet-5";
 
 // ── Telemetria de custo por fase (persistida em pipeline_trace.usage) ──

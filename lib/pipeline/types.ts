@@ -175,6 +175,10 @@ export interface GenerationContext {
   premissaContraintuitivo?: string | null;
   clientId: string | null;
   clientPrefs: ClientPrefs | null;
+  // Quem ESCREVE esta sessão (vm_sessions.modelo, escolhido na home; WRITER_MODEL quando a
+  // sessão não escolheu). Só os agentes de escrita o leem — análise e crítica são sonnet por
+  // decisão de arquitetura, e não é o seletor da home que muda isso.
+  modelo: string;
   // Briefing do ciclo vindo do Cockpit (hub.planos + pulsos), já formatado em lib/pipeline/
   // estrategia.ts. "" quando o cliente não tem plano valendo, que hoje é o caso comum.
   estrategia: string;
