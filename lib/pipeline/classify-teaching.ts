@@ -1,4 +1,4 @@
-import { anthropic, ANALYST_MODEL } from "../anthropic";
+import { anthropic } from "../anthropic";
 import { agentPrompt, toolInput } from "./agents";
 import { DESTINATARIOS, type Destinatario } from "./destinatarios";
 import { modeloDe } from "../llm-config";

@@ -1,4 +1,4 @@
-import { ANALYST_MODEL, trackedCreate, type UsageLog } from "../anthropic";
+import { trackedCreate, type UsageLog } from "../anthropic";
 import { agentPrompt, fontesBlock, toolArray, toolInput } from "./agents";
 import { falhaDeInfra } from "../grok";
 import { procedencia } from "./estudos";

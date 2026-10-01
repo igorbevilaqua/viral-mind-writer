@@ -1,4 +1,4 @@
-import { ANALYST_MODEL, trackedCreate, type UsageLog } from "../anthropic";
+import { trackedCreate, type UsageLog } from "../anthropic";
 import { appDb, viralData } from "../db";
 import { platformVideoId } from "../video-url";
 import { fetchTranscript } from "../transcribe";

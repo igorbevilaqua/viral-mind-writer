@@ -15,7 +15,7 @@
 // "usar com modelagem" — descobre 600, transcreve 1.
 
 import { appDb, viralData } from "../db";
-import { anthropic, ANALYST_MODEL } from "../anthropic";
+import { anthropic } from "../anthropic";
 import { agentPrompt, toolArray, toolInput } from "../pipeline/agents";
 import { buscarCandidatos, type Candidato } from "./buscar";
 import { rankear, type AplicabilidadeBr, type CandidatoRankeavel, type TimingClasse } from "./rank";

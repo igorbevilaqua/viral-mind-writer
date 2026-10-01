@@ -1,4 +1,4 @@
-import { ANALYST_MODEL, trackedCreate } from "../anthropic";
+import { trackedCreate } from "../anthropic";
 import { houveEdicaoHumana } from "../learning-loop";
 import type { Etapa } from "../provenance";
 import { agentPrompt, toolInput } from "./agents";

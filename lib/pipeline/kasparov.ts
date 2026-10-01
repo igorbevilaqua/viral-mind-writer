@@ -1,4 +1,4 @@
-import { ANALYST_MODEL, trackedStream, type UsageLog } from "../anthropic";
+import { trackedStream, type UsageLog } from "../anthropic";
 import { agentPrompt, taughtBlock } from "./agents";
 import { clientPrefsBlock } from "./draft";
 import type { GenerationContext } from "./types";

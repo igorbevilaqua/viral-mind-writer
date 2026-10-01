@@ -1,4 +1,4 @@
-import { ANALYST_MODEL, trackedCreate } from "../anthropic";
+import { trackedCreate } from "../anthropic";
 import { agentPrompt, clientInsightBlock, taughtBlock, toolInput } from "./agents";
 import { clientPrefsBlock } from "./draft";
 import { dedash } from "./slop-lint";

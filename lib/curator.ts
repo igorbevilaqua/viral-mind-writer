@@ -1,5 +1,5 @@
 import { appDb } from "./db";
-import { anthropic, ANALYST_MODEL } from "./anthropic";
+import { anthropic } from "./anthropic";
 import { agentPrompt, toolInput, toolArray } from "./pipeline/agents";
 import { DIMENSOES, type Dimensao, type ExtractedLearning } from "./pipeline/teach";
 import { comDestinatarios } from "./pipeline/destinatarios";

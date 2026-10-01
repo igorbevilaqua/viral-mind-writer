@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import type Anthropic from "@anthropic-ai/sdk";
-import { ANALYST_MODEL, recordUsage, trackedCreate } from "../anthropic";
+import { recordUsage, trackedCreate } from "../anthropic";
 import { falhaDeInfra, grokClient, RESEARCH_MODEL } from "../grok";
 import { fmtNum } from "../format";
 import type { CalibrationPayload } from "../learning-loop";

@@ -1,4 +1,4 @@
-import { ANALYST_MODEL, trackedCreate } from "../anthropic";
+import { trackedCreate } from "../anthropic";
 import { agentPrompt, toolArray, toolInput } from "./agents";
 import { OUTPUT_FORMAT, buildStaticSystemBlock, buildReviewDynamicBlock } from "./draft";
 import type { GenerationContext } from "./types";

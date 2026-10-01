@@ -1,4 +1,4 @@
-import { ANALYST_MODEL, trackedCreate, type UsageLog } from "./anthropic";
+import { trackedCreate, type UsageLog } from "./anthropic";
 import { sc } from "./scrapecreators";
 import { modeloDe } from "./llm-config";
 

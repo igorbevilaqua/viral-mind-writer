@@ -2,7 +2,7 @@
 // que inverte UM eixo (comprimento / personagem / especificidade) → novo par de
 // calibração mais fino. Batch/assíncrono (nunca por voto) para não pagar latência.
 import { appDb } from "./db";
-import { anthropic, WRITER_MODEL } from "./anthropic";
+import { anthropic } from "./anthropic";
 import { toolInput } from "./pipeline/agents";
 import { dedash } from "./pipeline/slop-lint";
 import { HOOK_MECHANISMS } from "./pipeline/hook-mechanisms";

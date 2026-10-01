@@ -16,7 +16,7 @@
 // sozinho, com ou sem views — é requisito, não otimização.
 
 import { appDb, viralData } from "../db";
-import { anthropic, ANALYST_MODEL } from "../anthropic";
+import { anthropic } from "../anthropic";
 import { agentPrompt, toolArray, toolInput } from "../pipeline/agents";
 import { modeloDe } from "../llm-config";
 

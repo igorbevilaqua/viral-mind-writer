@@ -1,5 +1,5 @@
 import { appDb, viralData } from "./db";
-import { anthropic, ANALYST_MODEL } from "./anthropic";
+import { anthropic } from "./anthropic";
 import { agentPrompt, toolInput, toolArray } from "./pipeline/agents";
 import { fmtNum } from "./format";
 import { maturityGate } from "./etl-gate";
