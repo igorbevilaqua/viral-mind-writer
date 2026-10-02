@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { configLLMAtual, trocarModeloLLM } from "@/lib/actions";
-import { FUNCOES_LLM, nomeDoModelo, opcoesDe } from "@/lib/llm-catalogo";
+import { FUNCOES_LLM, custoDaFuncao, custoDoRoteiro, emDolar, nomeDoModelo, opcoesDe } from "@/lib/llm-catalogo";
 import { KASPAROV_EM_MANUTENCAO } from "@/lib/generation";
 import { BUILD_TAG } from "@/lib/version";
 
@@ -141,6 +141,10 @@ function AbaLLM() {
           const atual = mapa?.[f.slug];
           const fixo = "fixo" in f;
           const opcoes = opcoesDe(f.slug);
+          // Zero em duas situações diferentes: função que não entra num roteiro (Kasparov,
+          // carrossel, aprendizado) e a pesquisa, que roda no Grok e não devolve contagem de
+          // tokens. Nos dois casos a coluna fica vazia em vez de mostrar "US$ 0,00".
+          const custo = atual ? custoDaFuncao(f.slug, atual) : 0;
           return (
             <div
               key={f.slug}
@@ -150,6 +154,12 @@ function AbaLLM() {
                 <span className="block text-[13.5px] font-medium text-white/90">{f.nome}</span>
                 <span className="block text-[11.5px] leading-snug text-white/35">{f.resumo}</span>
               </div>
+              <span
+                title={custo > 0 ? "quanto esta função custa em um roteiro, com o modelo escolhido" : undefined}
+                className="shrink-0 w-[58px] text-right font-mono text-[11.5px] text-white/35 tabular-nums"
+              >
+                {custo > 0 ? emDolar(custo) : ""}
+              </span>
               {!mapa ? (
                 <span className="text-[12px] text-white/25">carregando…</span>
               ) : fixo ? (
@@ -178,6 +188,20 @@ function AbaLLM() {
         })}
       </div>
 
+      {mapa && (
+        <div className="mt-3 flex items-baseline justify-between gap-4 border-t border-white/[.14] pt-3">
+          <span className="text-[13px] font-medium text-ivory">Um roteiro, com esta escolha</span>
+          <span className="font-mono text-[15px] font-semibold text-gold tabular-nums">
+            {emDolar(custoDoRoteiro(mapa))}
+          </span>
+        </div>
+      )}
+      <p className="mt-2 text-[11px] leading-relaxed text-white/25">
+        A conta é a mediana do que 165 roteiros gastaram de verdade em cada etapa, pelo preço de
+        tabela da Anthropic. Vale para um roteiro completo: um que já venha com a tese digitada,
+        ou que replique um vídeo, gasta menos. A pesquisa fica fora porque roda no Grok, que não
+        devolve a contagem de tokens.
+      </p>
       <p className="mt-3 text-[11px] leading-relaxed text-white/25">
         A lista de cada função só oferece modelos que aguentam o que ela faz: as que arrancam
         dados estruturados não aceitam a geração 5.5, que recusa resposta obrigatória por
