@@ -898,14 +898,15 @@ export async function designHook(
   // O hook era o ÚNICO agente da sala cego às proibições e ao tom de voz do cliente.
   const prefsCliente = clientPrefsBlock(ctx);
 
-  const res = await trackedCreate(
+  // O thinking divide o teto de max_tokens com o tool_use. 1500 truncava no fable-5; 4000
+  // truncou no opus-5-5 em effort high (sessão d6e8c5e9: tool_use cortado → input vazio →
+  // "nenhum candidato válido"). Mesmo remédio do storytelling: folga e, se truncou, dobra.
+  const call = (maxTokens: number) => trackedCreate(
     ctx.usageLog,
     "hook",
     {
       model: ctx.modelo,
-      // fable-5 tem thinking sempre ligado, dividindo o teto de max_tokens com o tool_use.
-      // 1500 truncava o hook+variantes; 4000 dá folga (ver mesmo problema no ideador/storytelling).
-      max_tokens: 4000,
+      max_tokens: maxTokens,
       tools: [HOOK_TOOL],
       // `auto` e não forçado: opus-5-5 rejeita tool_choice `tool`/`any` com 400. Quem pede a
       // tool é a última linha do prompt; a leitura abaixo já tratava a ausência de tool_use.
@@ -942,11 +943,23 @@ Gere de 5 a 6 candidatos a hook, cada um com um MECANISMO DISTINTO da taxonomia,
     // cada candidato no self-check de 3 testes. É a fase de maior alavancagem do pipeline.
     "high"
   );
+  const ler = (res: Anthropic.Message) => {
+    const toolUse = res.content.find((b) => b.type === "tool_use");
+    const brutos =
+      toolUse?.type === "tool_use"
+        ? toolArray<HookCandidate>(toolInput(toolUse), "candidatos").filter((c) => c?.hook?.trim())
+        : [];
+    return { brutos, debug: { step: "hook", stop_reason: res.stop_reason, output_tokens: res.usage?.output_tokens, tool_use: !!toolUse } };
+  };
 
-  const toolUse = res.content.find((b) => b.type === "tool_use");
-  if (!toolUse || toolUse.type !== "tool_use") throw new Error("hook: sem saída estruturada");
-  const brutos = toolArray<HookCandidate>(toolInput(toolUse), "candidatos").filter((c) => c?.hook?.trim());
-  if (!brutos.length) throw new Error("hook: nenhum candidato válido");
+  let { brutos, debug } = ler(await call(8000));
+  if (!brutos.length && debug.stop_reason === "max_tokens") {
+    console.warn("hook truncou em 8000 tokens, tentando com 16000", debug);
+    ({ brutos, debug } = ler(await call(16000)));
+  }
+  // debug anexado → o pipeline grava em vm_sessions.debug (ver index.ts)
+  if (!brutos.length)
+    throw Object.assign(new Error(debug.tool_use ? "hook: nenhum candidato válido" : "hook: sem saída estruturada"), { debug });
 
   // critérios de eliminação em código, ANTES da seleção: sem isso um candidato reprovado
   // (saudação genérica, travessão, 6 frases) vira o hook principal só por ter o mecanismo
