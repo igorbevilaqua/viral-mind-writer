@@ -484,9 +484,11 @@ export async function generateDraft(
   const stream = anthropic.messages.stream({
     model: ctx.modelo,
     // streaming, mas o teto ainda cobre thinking (sempre on no fable-5) + o corpo escrito.
-    // 4000 podia truncar o corpo no meio; 8000 dá folga (streaming evita timeout de HTTP).
+    // 4000 podia truncar o corpo no meio. 8000 também truncou: no banco de prova do plano 024,
+    // 24 de 123 rascunhos bateram o teto (o thinking cresce com playbook maior), perderam FONTES
+    // e um saiu só com o hook. Paga-se o que se usa, não o teto.
     // effort mantém o default (high): o draft é a peça de qualidade da geração.
-    max_tokens: 8000,
+    max_tokens: 16000,
     system: [
       // block 1 = estático idêntico compartilhado (cacheado): humanizador e rewriteFragment usam
       // o MESMO block 1 no MESMO modelo (fable) → leem este prefixo com ~90% de desconto.
@@ -508,6 +510,7 @@ export async function generateDraft(
 
   stream.on("text", onToken);
   const final = await stream.finalMessage();
+  if (final.stop_reason === "max_tokens") console.warn("roteiro truncou em 16000 tokens", final.usage);
   recordUsage(ctx.usageLog, "roteiro", ctx.modelo, Date.now() - t0, final.usage);
   const block = final.content.find((b) => b.type === "text");
   const text = block?.type === "text" ? block.text : "";
