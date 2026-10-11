@@ -41,6 +41,54 @@
       "detail": "O build no servidor falhava em silencio desde hoje de manha, entao nada do que era publicado chegava no ar. Corrigido na raiz, e as tres entregas de hoje subiram juntas.",
       "commit": "e8811f8",
       "addedAt": "2026-10-01T20:28:04.546Z"
+    },
+    {
+      "id": "mv4c80wh",
+      "type": "improvement",
+      "summary": "Roteiros mais claros: pais pelo nome (nao Pequim/Washington), empresa e sigla explicadas, menos numeros e mais arredondados",
+      "detail": "",
+      "commit": "ca4bd6e",
+      "addedAt": "2026-10-11T21:30:57.041Z"
+    },
+    {
+      "id": "mv4c80x3",
+      "type": "fix",
+      "summary": "O hook nao se repete mais no comeco do roteiro",
+      "detail": "",
+      "commit": "ca4bd6e",
+      "addedAt": "2026-10-11T21:30:57.063Z"
+    },
+    {
+      "id": "mv4c80xm",
+      "type": "improvement",
+      "summary": "Hook escrito primeiro e o roteiro continua dele; roteiros guiados pelos roteiros da casa que mais viralizaram",
+      "detail": "",
+      "commit": "ca4bd6e",
+      "addedAt": "2026-10-11T21:30:57.082Z"
+    },
+    {
+      "id": "mv4c80y5",
+      "type": "improvement",
+      "summary": "Playbooks novos do estudo de outubro (2.713 roteiros da casa): hook, subhook, conclusao, payoff e pauta",
+      "detail": "",
+      "commit": "ca4bd6e",
+      "addedAt": "2026-10-11T21:30:57.101Z"
+    },
+    {
+      "id": "mv4c80yo",
+      "type": "feature",
+      "summary": "Caixa Clareza na sessao aponta o trecho que precisa de ajuste, e botao Nao vou usar este roteiro para contar o porque",
+      "detail": "",
+      "commit": "ca4bd6e",
+      "addedAt": "2026-10-11T21:30:57.120Z"
+    },
+    {
+      "id": "mv4c80z8",
+      "type": "fix",
+      "summary": "Roteiro nao sai mais cortado nem sem fontes quando o modelo pensa demais",
+      "detail": "",
+      "commit": "ca4bd6e",
+      "addedAt": "2026-10-11T21:30:57.140Z"
     }
   ],
   "lastRelease": {
