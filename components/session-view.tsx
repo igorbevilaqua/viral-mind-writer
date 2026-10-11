@@ -58,6 +58,8 @@ interface Script {
   // extraídos de pipeline_trace no server component (WP-F.4/.3)
   violations: LintViolation[];
   edicao_humana: boolean;
+  // Plano 024, 2.9: trechos que o piso de clareza ainda aponta (capital, sigla, número, hook repetido)
+  clareza: { label: string; match: string }[];
   // 017 §9: coluna `verificacao` (0029). null = nunca verificado — e a tela diz isso.
   verificacao: RegistroVerificacao | null;
 }
@@ -2523,6 +2525,23 @@ export default function SessionView({
                   </ul>
                 </details>
               )}
+            </div>
+          )}
+
+          {(script.clareza ?? []).length > 0 && (
+            <div className="rounded-xl border border-amber-500/30 bg-amber-500/[.06] px-4 py-3">
+              <div className="inline-flex items-center gap-2 text-xs text-amber-300 font-medium">Clareza</div>
+              <p className="text-xs text-white/55 mt-1.5">
+                {script.clareza.length} {script.clareza.length === 1 ? "trecho pode" : "trechos podem"} travar quem ouve uma vez só.
+              </p>
+              <ul className="mt-1.5 space-y-1">
+                {script.clareza.map((c, i) => (
+                  <li key={i} className="text-[12px] leading-relaxed text-white/60">
+                    <span className="text-amber-300/90">{c.label}</span> ·{" "}
+                    <span className="font-mono text-[11.5px] text-white/55">&ldquo;{c.match}&rdquo;</span>
+                  </li>
+                ))}
+              </ul>
             </div>
           )}
 
