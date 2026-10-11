@@ -1,3 +1,4 @@
+import { readFileSync } from "node:fs";
 import { describe, it, expect } from "vitest";
 import { preservarHook } from "../lib/pipeline/critique";
 
@@ -67,5 +68,23 @@ describe("preservarHook", () => {
     const { texto, mexeu } = preservarHook("## ROTEIRO\nsem hook", revised);
     expect(texto).toBe(revised);
     expect(mexeu).toBe(false);
+  });
+});
+
+// O humanizador também reescreve o documento inteiro. Sem o mesmo trinco depois dele, a cópia do
+// hook no topo do ROTEIRO sai reescrita e o vídeo abre repetindo o hook (09/10).
+describe("o trinco do hook vale depois da humanização", () => {
+  it("index.ts passa a saída do humanizador por preservarHook", () => {
+    const index = readFileSync("lib/pipeline/index.ts", "utf8");
+    expect(index).toMatch(/preservarHook\(\s*revised,\s*humanizado\s*\)/);
+  });
+});
+
+describe("preservarHook não apaga corpo", () => {
+  it("se o modelo apagou a cópia do hook, o hook volta na frente e o 1º parágrafo fica", () => {
+    const montado = "## HOOK\nO Lula assinou a medida provisória das bets na sexta.\n\n## ROTEIRO\nO Lula assinou a medida provisória das bets na sexta.\n\nOs sites saem do ar em outubro.\n\nMais corpo.\n";
+    const semCopia = "## HOOK\nO Lula assinou a medida provisória das bets na sexta.\n\n## ROTEIRO\nOs sites saem do ar em outubro.\n\nMais corpo.\n";
+    const { texto } = preservarHook(montado, semCopia);
+    expect(texto).toContain("O Lula assinou a medida provisória das bets na sexta.\n\nOs sites saem do ar em outubro.\n\nMais corpo.");
   });
 });

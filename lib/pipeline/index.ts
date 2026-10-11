@@ -15,7 +15,7 @@ import { anexoModelagem, anexoReplicar, comandoDoOriginal, exigirEsqueletoDoOrig
 import { registrarBloco, research, proposeNarratives, rankNarratives, designHook, writeComando } from "./agents";
 import { pairFromCandidates } from "../calibration";
 import { blocoSinaisRevisor, comFontesDoRascunho, generateDraft, hookEcoaAbertura, parseSections, semEcoDaAbertura, stripLeadingHook, stripTrailingComando, TETO_ECOS, TETO_RITMO } from "./draft";
-import { critiqueAndRewrite } from "./critique";
+import { critiqueAndRewrite, preservarHook } from "./critique";
 import { extrairEstudos } from "./estudos";
 import { extractFromCorrection } from "./teach";
 import { humanize } from "./humanize";
@@ -427,7 +427,12 @@ export async function runPipeline(
     const { revised, critica, fallback: fbRevisao, hookMexido } = await critiqueAndRewrite(ctx, assembled, sinais);
 
     emit({ type: "phase", phase: "humanizacao" });
-    const { text: final, violations, fallback: fbHumanizacao } = await humanize(ctx, revised);
+    const { text: humanizado, violations, fallback: fbHumanizacao } = await humanize(ctx, revised);
+    // O humanizador reescreve o documento inteiro, inclusive a cópia do hook no topo do ROTEIRO.
+    // Reescrita, a cópia deixa de bater com o hook e o corte do stripLeadingHook não a reconhece:
+    // o vídeo abria dizendo a mesma coisa duas vezes (delator do Master, 09/10). E o hook em si
+    // pode sair reescrito sem passar de novo pelo placar. O mesmo trinco da revisão resolve os dois.
+    const { texto: final } = preservarHook(revised, humanizado);
 
     emit({ type: "phase", phase: "salvando" });
     // A FONTES do rascunho volta ANTES do parse: revisão e humanização reescrevem o documento

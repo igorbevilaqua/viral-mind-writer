@@ -543,16 +543,24 @@ export function stripTrailingComando(roteiro: string, comando: string): string {
 // emenda hook→corpo. Mas salvar as duas cópias mostrava o hook duas vezes na tela e deixava
 // as duas divergirem (editar só o campo HOOK não mexia na cópia de dentro do roteiro).
 // A coluna `hook` é a fonte única; o roteiro guarda só o desenvolvimento.
+/**
+ * O bloco é a cópia do hook (literal, entre aspas, ou reescrita por revisão/humanização)?
+ * Divergiu de verdade → não é: hook repetido é menos grave que parágrafo do corpo perdido.
+ * Reescrito (mesma primeira frase, resto picado) ainda é: `ecoa` pega esse caso.
+ */
+export function ehCopiaDoHook(hook: string, bloco: string): boolean {
+  const norm = (s: string) => s.toLowerCase().replace(/[^a-zà-ú0-9]+/gi, " ").trim();
+  const b = norm(bloco);
+  const h = norm(hook);
+  if (b.length < 12) return false; // curto demais → risco de falso positivo
+  return b === h || h.includes(b) || b.includes(h) || ecoa(hook, bloco);
+}
+
 export function stripLeadingHook(roteiro: string, hook: string | null): string {
   if (!hook) return roteiro;
-  const norm = (s: string) => s.toLowerCase().replace(/[^a-zà-ú0-9]+/gi, " ").trim();
   const blocks = roteiro.split(/\n\s*\n/);
   if (blocks.length < 2) return roteiro; // um bloco só: cortar esvaziaria o roteiro
-  const first = norm(blocks[0]);
-  const h = norm(hook);
-  if (first.length < 12) return roteiro; // curto demais → risco de falso positivo
-  // divergiu de verdade → não corta: hook repetido é menos grave que parágrafo do corpo perdido
-  if (first === h || h.includes(first) || first.includes(h)) blocks.shift();
+  if (ehCopiaDoHook(hook, blocks[0])) blocks.shift();
   return blocks.join("\n\n").trimStart();
 }
 

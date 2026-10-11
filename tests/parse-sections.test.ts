@@ -24,6 +24,15 @@ describe("stripLeadingHook", () => {
     expect(stripLeadingHook(hook, hook)).toBe(hook);
   });
 
+  test("hook reescrito pelo humanizador ainda é cortado (delator do Master, 09/10)", () => {
+    const hookReal =
+      "O próprio delator do Banco Master derrubou a defesa favorita da campanha do Lula. Ele separou o caso do Flávio do caso do Lula e disse qual dos dois foi errado.";
+    const copia =
+      "O próprio delator do Banco Master derrubou a defesa favorita da campanha do Lula. Ele separou os dois casos. E disse qual deles foi errado.";
+    const corpo = "No depoimento, o banqueiro Daniel Vorcaro conta que foram R$ 30 milhões em dinheiro vivo.";
+    expect(stripLeadingHook(`${copia}\n\n${corpo}`, hookReal)).toBe(corpo);
+  });
+
   test("sem hook, devolve o roteiro", () => {
     expect(stripLeadingHook("Corpo.\n\nMais corpo.", null)).toBe("Corpo.\n\nMais corpo.");
   });

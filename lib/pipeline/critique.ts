@@ -1,6 +1,6 @@
 import { trackedCreate } from "../anthropic";
 import { agentPrompt, toolArray, toolInput } from "./agents";
-import { OUTPUT_FORMAT, buildStaticSystemBlock, buildReviewDynamicBlock } from "./draft";
+import { OUTPUT_FORMAT, buildStaticSystemBlock, buildReviewDynamicBlock, ehCopiaDoHook } from "./draft";
 import type { GenerationContext } from "./types";
 import { modeloDe } from "../llm-config";
 
@@ -51,7 +51,8 @@ export function preservarHook(assembled: string, revised: string): { texto: stri
   const hook = corpoDaSecao(assembled, "HOOK");
   if (!hook) return { texto: revised, mexeu: false };
 
-  const mexeu = corpoDaSecao(revised, "HOOK") !== hook;
+  const hookDoModelo = corpoDaSecao(revised, "HOOK");
+  const mexeu = hookDoModelo !== hook;
   let out = trocarSecao(revised, "HOOK", hook);
 
   const variacoes = corpoDaSecao(assembled, "VARIACOES_DE_HOOK");
@@ -59,10 +60,16 @@ export function preservarHook(assembled: string, revised: string): { texto: stri
 
   // `## ROTEIRO` abre com o hook colado na frente do corpo (index.ts monta assim). Sem trocar
   // aqui também, o roteiro entregue sai com dois hooks diferentes.
+  // Só troca o 1º bloco quando ele é a cópia do hook: se o modelo apagou a cópia, o 1º bloco é
+  // corpo de verdade, e trocá-lo pelo hook apagaria um parágrafo. Nesse caso o hook vai na frente.
   const roteiro = corpoDaSecao(out, "ROTEIRO");
+  const primeiro = roteiro?.split(/\n\s*\n/)[0] ?? "";
   const semPrimeiro = roteiro?.replace(/^[\s\S]*?\n\s*\n/, "");
   if (roteiro && semPrimeiro && semPrimeiro !== roteiro) {
-    out = trocarSecao(out, "ROTEIRO", `${hook}\n\n${semPrimeiro}`);
+    // cópia = o hook original OU o hook que o próprio modelo reescreveu na seção HOOK
+    const ehCopia = ehCopiaDoHook(hook, primeiro) || (!!hookDoModelo && ehCopiaDoHook(hookDoModelo, primeiro));
+    const resto = ehCopia ? semPrimeiro : roteiro;
+    out = trocarSecao(out, "ROTEIRO", `${hook}\n\n${resto}`);
   }
   return { texto: out, mexeu };
 }
