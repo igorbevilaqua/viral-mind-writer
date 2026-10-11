@@ -3,7 +3,8 @@
 // sessão e sem gravar nada no banco. Cada braço é o código do worktree em que o script roda,
 // mais os playbooks pedidos em CODEX_BANCADA_PLAYBOOKS.
 //
-// Saída: <saida>/<braco>/<pauta>.json, um por pauta, com o roteiro, o piso medido e o custo.
+// Saída: <saida>/<braco>/<pauta>.json, um por pauta, com o roteiro e o custo. O piso e o juiz
+// rodam depois, em scripts/bancada-placar.ts: assim o braço A (produção) não precisa do verificador.
 // Pauta que já tem arquivo é pulada (retomar uma rodada é rodar de novo).
 //
 // --montante <dir> reaproveita premissa, dossiê, narrativas e ranking de outra rodada: o
@@ -20,7 +21,6 @@ import { research, proposeNarratives, rankNarratives } from "../lib/pipeline/age
 import { generateDraft } from "../lib/pipeline/draft";
 import { escolherVencedora, finalizarRoteiro } from "../lib/pipeline/index";
 import { deepDedash } from "../lib/pipeline/slop-lint";
-import { medirPiso } from "../lib/pipeline/piso";
 import { PRECO_POR_MTOK } from "../lib/llm-catalogo";
 import type { SessionArtifacts } from "../lib/pipeline/types";
 import type { UsageLog } from "../lib/anthropic";
@@ -121,7 +121,6 @@ async function rodar(p: Pauta) {
     roteiro: s.roteiro,
     comando: s.comando,
     fontes: s.fontes,
-    piso: medirPiso(s.hook, s.roteiro ?? ""),
     fallbacks: { revisao: r.fbRevisao, humanizacao: r.fbHumanizacao },
     hook_mecanismo: r.hookRes.mecanismo,
     custo_usd: custo(ctx.usageLog ?? {}),
@@ -144,7 +143,7 @@ void (async () => {
       const out = await rodar(p);
       writeFileSync(arq, JSON.stringify(out, null, 1));
       gasto += out.custo_usd;
-      console.log(`${p.id} ok ${Math.round((Date.now() - t0) / 1000)}s US$ ${out.custo_usd} | piso: ${out.piso.violacoes.length} violações | total US$ ${gasto.toFixed(2)}`);
+      console.log(`${p.id} ok ${Math.round((Date.now() - t0) / 1000)}s US$ ${out.custo_usd} | total US$ ${gasto.toFixed(2)}`);
     } catch (e) {
       console.error(`${p.id} FALHOU: ${e instanceof Error ? e.message : e}`);
     }
