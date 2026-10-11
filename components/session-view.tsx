@@ -78,7 +78,7 @@ export interface ScriptPerformance {
 
 // "verificacao" roda DEPOIS do save e depois do `done` (017 §8), mas ainda dentro do stream:
 // sem ela na lista, o stepper cai no fallback e mostra "Preparando" durante a verificação.
-const TODAS_AS_FASES = ["premissa", "pesquisa", "modelagem", "narrativas", "roteiro", "hook_comando", "revisao", "humanizacao", "salvando", "verificacao"] as const;
+const TODAS_AS_FASES = ["premissa", "pesquisa", "modelagem", "narrativas", "hook_comando", "roteiro", "revisao", "humanizacao", "salvando", "verificacao"] as const;
 
 // Replicar não passa por storytelling nem pelo agente Dados: a narrativa é a do original, montada
 // em código. Anunciar "Narrativas" numa trilha que nunca vai acender é mentir para quem espera.
@@ -98,7 +98,7 @@ const PHASE_LABELS: Record<string, string> = {
   modelagem: "Buscando a transcrição e fazendo a autópsia do vídeo: o que funcionou e por quê...",
   narrativas: "Storytelling propõe narrativas; o agente de dados rankeia pelo histórico de +6 mil vídeos...",
   roteiro: "Roteirista-chefe executando a narrativa vencedora...",
-  hook_comando: "Especialistas desenhando o hook e o comando sobre o roteiro pronto...",
+  hook_comando: "Especialista desenhando o hook que abre o vídeo; o roteiro vai continuar dele...",
   revisao: "Sala de revisão: hook, storytelling, comando, ritmo, restrições...",
   humanizacao: "Passe final de naturalidade...",
   salvando: "Salvando...",

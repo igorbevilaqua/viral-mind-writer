@@ -18,8 +18,7 @@ import { appDb } from "../lib/db";
 import { loadContextBancada } from "../lib/pipeline/context";
 import { derivePremissa, teseAceitavel } from "../lib/pipeline/premissa";
 import { research, proposeNarratives, rankNarratives } from "../lib/pipeline/agents";
-import { generateDraft } from "../lib/pipeline/draft";
-import { escolherVencedora, finalizarRoteiro } from "../lib/pipeline/index";
+import { escolherVencedora, escreverRoteiro } from "../lib/pipeline/index";
 import { deepDedash } from "../lib/pipeline/slop-lint";
 import { PRECO_POR_MTOK } from "../lib/llm-catalogo";
 import type { SessionArtifacts } from "../lib/pipeline/types";
@@ -107,8 +106,7 @@ async function rodar(p: Pauta) {
   }
   ctx.artifacts = artifacts;
 
-  const rascunho = await generateDraft(ctx, () => {}, undefined);
-  const r = await finalizarRoteiro(ctx, SESSAO_FANTASMA, rascunho, artifacts, () => {});
+  const r = await escreverRoteiro(ctx, SESSAO_FANTASMA, artifacts, () => {});
   const s = r.sections;
   return {
     pauta: p,

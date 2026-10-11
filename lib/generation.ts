@@ -32,7 +32,7 @@ export const PHASE_SHORT: Record<string, string> = {
   modelagem: "Autópsia",
   narrativas: "Narrativas",
   roteiro: "Roteiro",
-  hook_comando: "Hook + CTA",
+  hook_comando: "Hook",
   revisao: "Revisão",
   humanizacao: "Humanização",
   salvando: "Salvando",

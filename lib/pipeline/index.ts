@@ -379,14 +379,10 @@ export async function runPipeline(
       }
     }
 
-    // ── Roteirista-chefe escreve o corpo (streaming) ──
-    emit({ type: "phase", phase: "roteiro" });
-    const { headline, corpo, fontes } = await generateDraft(ctx, (t) => emit({ type: "token", text: t }), revision);
-
     const {
       sections, assembled, revised, final, critica, fbRevisao, fbHumanizacao, hookMexido, violations,
       hookRes, recentes, ecos, ecoHookAbertura, paragrafos, sequencias, estudos,
-    } = await finalizarRoteiro(ctx, sessionId, { headline, corpo, fontes }, artifacts, emit);
+    } = await escreverRoteiro(ctx, sessionId, artifacts, emit, revision);
 
     const narrativa = artifacts ? (artifacts.candidatas[artifacts.escolhida] ?? null) : null;
     // unique (session_id, version): conflito com escrita concorrente → recalcula a version e tenta de novo
@@ -675,6 +671,26 @@ export function escolherVencedora(valid: { indice: number; score: number; servic
     : 0;
 }
 
+// Da narrativa escolhida ao roteiro entregue: hook primeiro (plano 024, 2.4), corpo que continua
+// dele, e finalizarRoteiro. É o trecho que o banco de prova roda, então runPipeline e
+// scripts/bancada.ts passam pelo MESMO código.
+export async function escreverRoteiro(
+  ctx: GenerationContext,
+  sessionId: string,
+  artifacts: SessionArtifacts | null,
+  emit: (e: PipelineEvent) => void,
+  revision?: { anterior: string; feedback: string }
+) {
+  emit({ type: "phase", phase: "hook_comando" });
+  const recentes = await hookRecentes(ctx.clientId, sessionId);
+  const hookRes = await designHook(ctx, null, recentes);
+
+  emit({ type: "phase", phase: "roteiro" });
+  const rascunho = await generateDraft(ctx, (t) => emit({ type: "token", text: t }), revision, hookRes.hook);
+  const r = await finalizarRoteiro(ctx, sessionId, rascunho, artifacts, emit, { hookRes, recentes });
+  return r;
+}
+
 // Do rascunho do roteirista ao roteiro entregue: hook ∥ comando, montagem, sinais
 // determinísticos, revisão, humanização, trinco do hook e parse. Sai de runPipeline para o
 // banco de prova (plano 024, 1.1) rodar EXATAMENTE o mesmo caminho sem sessão nem gravação.
@@ -683,12 +699,17 @@ export async function finalizarRoteiro(
   sessionId: string,
   { headline, corpo, fontes }: { headline: string | null; corpo: string; fontes: string | null },
   artifacts: SessionArtifacts | null,
-  emit: (e: PipelineEvent) => void
+  emit: (e: PipelineEvent) => void,
+  // Hook já escrito antes do corpo (plano 024, 2.4). Sem ele, o hook sai daqui vendo o corpo.
+  pronto?: { hookRes: Awaited<ReturnType<typeof designHook>>; recentes: string[] }
 ) {
-  // ── Hook e comando em paralelo, ambos vendo o roteiro pronto ──
-  emit({ type: "phase", phase: "hook_comando" });
-  const recentes = await hookRecentes(ctx.clientId, sessionId);
-  const [hookRes, comando] = await Promise.all([designHook(ctx, corpo, recentes), writeComando(ctx, corpo)]);
+  // ── Comando vendo o roteiro pronto (e o hook, quando ele ainda não existe) ──
+  if (!pronto) emit({ type: "phase", phase: "hook_comando" });
+  const recentes = pronto?.recentes ?? (await hookRecentes(ctx.clientId, sessionId));
+  const [hookRes, comando] = await Promise.all([
+    pronto?.hookRes ?? designHook(ctx, corpo, recentes),
+    writeComando(ctx, corpo),
+  ]);
 
   // hook escolhido x abertura do corpo, ANTES da montagem: logo abaixo o hook é colado na frente
   // do corpo de propósito, e depois disso os dois lados deixam de ser distinguíveis.

@@ -460,7 +460,10 @@ export interface WriterOutput {
 export async function generateDraft(
   ctx: GenerationContext,
   onToken: (t: string) => void,
-  revision?: { anterior: string; feedback: string }
+  revision?: { anterior: string; feedback: string },
+  // Plano 024, 2.4: o hook é escrito ANTES e o corpo continua dele. Sem isso o agente de hook
+  // copiava a abertura do corpo e o vídeo dizia a mesma coisa duas vezes (Embraer, Sabrina Sato).
+  hook?: string
 ): Promise<WriterOutput> {
   // Replicar é outro trabalho, não outro parágrafo de instrução: prompt próprio (AGENTS.md §5).
   const replicando = anexoReplicar(ctx.attachments);
@@ -501,6 +504,10 @@ export async function generateDraft(
           // Com modelagem o texto digitado já entrou como ORIENTAÇÃO na task: repeti-lo como
           // BRIEF seria oferecer ao roteirista um tema novo, que é justamente o que a Regra 3 proíbe.
           ctx.prompt.trim() && !modelando ? `\n\nBRIEF:\n${ctx.prompt}` : ""
+        }${
+          hook
+            ? `\n\nO HOOK JÁ ESTÁ ESCRITO e abre o vídeo. Não o repita, não reabra com outra manchete: sua primeira frase continua dele, e o corpo paga o que ele promete. O fecho retoma palavras dele.\nHOOK:\n${hook}`
+            : ""
         }\n\n${WRITER_FORMAT}`,
       },
     ],

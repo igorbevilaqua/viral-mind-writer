@@ -868,7 +868,8 @@ const HOOK_TOOL = {
 
 export async function designHook(
   ctx: GenerationContext,
-  corpo: string,
+  // null = hook primeiro (plano 024, 2.4): o corpo ainda não existe e vai ser escrito a partir dele
+  corpo: string | null,
   // mecanismos dos últimos hooks deste cliente (anti-colapso do selectHook); [] = só lift
   recentes: string[] = []
 ): Promise<{
@@ -932,8 +933,11 @@ ORIENTAÇÃO DOS DADOS SOBRE HOOKS:
 ${orientacaoHook}
 ${rankingMecanismos ? `\n${rankingMecanismos}` : ""}${preferencias ? `\n${preferencias}` : ""}${paleta ? `\n${paleta}` : ""}${hookCampeoes ? `\nHOOKS CAMPEÕES DESTE CLIENTE (literais — a primeira frase real dos vídeos de mais views; use como referência de registro, nunca copie):\n${hookCampeoes}` : ""}${resultadosHook ? `\nHOOKS DE ROTEIROS DESTA SALA JÁ PUBLICADOS (resultado real — evite o marcado como EVITE):\n${resultadosHook}` : ""}${clientInsightBlock(ctx, ["hook"]) ? `\nHOOKS QUE JÁ FUNCIONARAM PARA ESTE CLIENTE (pré-rankeados por performance+recência):\n${clientInsightBlock(ctx, ["hook"])}` : ""}${taughtBlock(ctx, "hook") ? `\nAPRENDIZADOS DE HOOK ENSINADOS PELO TIME (curadoria humana — prevalecem sobre padrões do corpus em conflito):\n${taughtBlock(ctx, "hook")}` : ""}
 
-CORPO DO ROTEIRO (o hook precisa emendar na primeira frase e ser pago pelo final):
-${corpo}
+${
+            corpo
+              ? `CORPO DO ROTEIRO (o hook precisa emendar na primeira frase e ser pago pelo final):\n${corpo}`
+              : `O CORPO AINDA NÃO EXISTE: o roteirista vai escrevê-lo a partir do hook escolhido, continuando dele e pagando o que ele promete. Prometa só o que os fatos abaixo sustentam.\n\nFATOS DISPONÍVEIS (dossiê da pesquisa):\n${(a?.dossie ?? "").slice(0, 6000)}`
+          }
 
 Gere de 5 a 6 candidatos a hook com FÓRMULAS DIFERENTES do playbook (seção 2), cada um com placar +2 ou mais quando o fato permitir, rotulando mecanismo e formato; variar o mecanismo ajuda as variações, mas nunca à custa do placar. Antes de registrar cada um, conte o placar (seção 1) e passe pelo self-check de 3 testes (curiosidade, impacto, simplicidade); reescreva o que reprovar. A seleção é feita depois em código: primeiro pelo placar, depois pelos dados de mecanismo. Responda chamando registrar_hooks.`,
         },

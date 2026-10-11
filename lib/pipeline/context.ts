@@ -1,3 +1,4 @@
+import { fmtNum } from "../format";
 import OpenAI from "openai";
 import { appDb, viralData } from "../db";
 import { agregarDiarias, type Diaria } from "../performance-metrics";
@@ -92,10 +93,65 @@ export async function criterioFewShot(): Promise<CriterioFewShot> {
 // Few-shot vencedor: 60 por similaridade, 5 pelo critério vigente — os do cliente primeiro
 // quando há ≥3 deles. Vale para os DOIS consumidores — o roteirista (draft.ts) e a referência de
 // voz do humanizador (humanize.ts), que lê os 2 primeiros desta mesma lista.
+// Plano 024, 2.5: a voz se aprende com o que a CASA escreveu para ESTE cliente e viralizou no
+// perfil DELE, não com o vídeo mais visto do corpus inteiro (views absolutos medem a audiência
+// herdada, não o roteiro). Os 3 roteiros VM do cliente com maior coeficiente viral nos últimos
+// 180 dias, um por roteiro. É o registro que se imita; o tema vem do dossiê.
+// ponytail: transcrição do vídeo (ASR, sem parágrafo), porque o Codex não tem acesso ao texto
+// escrito do CRM. Upgrade: ler crm.scripts (texto com parágrafos) quando a chave existir aqui.
+const FEW_SHOT_DA_CASA = 3;
+const JANELA_DA_CASA_DIAS = 180;
+
+async function fewShotDaCasa(clientId: string): Promise<ExemploFewShot[]> {
+  const desde = new Date(Date.now() - JANELA_DA_CASA_DIAS * 864e5).toISOString();
+  const { data: topo, error } = await viralData
+    .schema("oraculo")
+    .from("fato_video")
+    .select("video_id, coeficiente_viral, views_total")
+    .eq("cliente_id", clientId)
+    .eq("vm_script", "sim")
+    .eq("maturando", false)
+    .gte("data_publicacao", desde)
+    .order("coeficiente_viral", { ascending: false })
+    .limit(30);
+  if (error || !topo?.length) return [];
+  const { data: videos } = await viralData
+    .from("videos")
+    .select("id, roteiro, crm_script_id")
+    .in("id", topo.map((t) => t.video_id));
+  const porId = new Map((videos ?? []).map((v) => [v.id, v]));
+  const vistos = new Set<string>();
+  const out: ExemploFewShot[] = [];
+  for (const t of topo) {
+    const v = porId.get(t.video_id);
+    const chave = (v?.crm_script_id as string | null) ?? (t.video_id as string);
+    if (!v?.roteiro || (v.roteiro as string).length < 600 || vistos.has(chave)) continue;
+    vistos.add(chave);
+    out.push({
+      roteiro: v.roteiro as string,
+      origem: `roteiro da casa para este cliente — ${Number(t.coeficiente_viral).toFixed(1)}x a média do canal, ${fmtNum(Number(t.views_total))} views`,
+      views: Number(t.views_total) || 0,
+      taxa: null,
+      criterio: "views",
+      escopo: "cliente",
+    });
+    if (out.length === FEW_SHOT_DA_CASA) break;
+  }
+  return out;
+}
+
 async function fetchFewShot(
   prompt: string,
   clientId: string | null
 ): Promise<{ exemplos: ExemploFewShot[]; criterio: CriterioFewShot; escopo: EscopoFewShot }> {
+  if (clientId) {
+    try {
+      const casa = await fewShotDaCasa(clientId);
+      if (casa.length === FEW_SHOT_DA_CASA) return { exemplos: casa, criterio: "views", escopo: "cliente" };
+    } catch (e) {
+      console.error("few-shot da casa falhou, seguindo pelo corpus", e);
+    }
+  }
   // adaptação sem tema: nada pra embutir; embeddings rejeita string vazia
   if (!prompt.trim()) return { exemplos: [], criterio: CRITERIO_PADRAO, escopo: "global" };
   try {
