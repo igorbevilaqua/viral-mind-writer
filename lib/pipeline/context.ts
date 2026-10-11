@@ -169,6 +169,23 @@ async function loadEstadoComum(clientId: string | null, modoModelagem: boolean):
   if (playbooksRes.error) throw new Error(`falha ao carregar playbooks: ${playbooksRes.error.message}`);
   if (bannedRes.error) throw new Error(`falha ao carregar frases banidas: ${bannedRes.error.message}`);
 
+  // Banco de prova (plano 024, 1.1): CODEX_BANCADA_PLAYBOOKS='{"hook":4,"style_guide":5}' troca
+  // a versão ATIVA pela pedida, sem ativar nada no banco. Só existe em script; produção não seta.
+  const pedidas = process.env.CODEX_BANCADA_PLAYBOOKS
+    ? (JSON.parse(process.env.CODEX_BANCADA_PLAYBOOKS) as Record<string, number>)
+    : null;
+  if (pedidas) {
+    const { data: versoes, error: erroVersoes } = await appDb
+      .from("vm_playbooks")
+      .select("slug, content, version")
+      .in("slug", Object.keys(pedidas));
+    if (erroVersoes) throw new Error(`banco de prova: falha ao carregar playbooks pedidos: ${erroVersoes.message}`);
+    const escolhidas = (versoes ?? []).filter((v) => Number(v.version) === pedidas[v.slug]);
+    const faltando = Object.keys(pedidas).filter((slug) => !escolhidas.some((v) => v.slug === slug));
+    if (faltando.length) throw new Error(`banco de prova: versão pedida não existe para ${faltando.join(", ")}`);
+    playbooksRes.data = [...(playbooksRes.data ?? []).filter((p) => !(p.slug in pedidas)), ...escolhidas];
+  }
+
   const playbooks: Record<string, string> = {};
   for (const p of playbooksRes.data ?? []) playbooks[p.slug] = p.content;
   // WP-E.1: slug+version dos playbooks usados — parte do fingerprint do roteiro
@@ -350,5 +367,19 @@ export async function loadContextAvulso(clientId: string | null): Promise<Genera
     modelagemHooks: [],
     artifacts: null,
     usageLog: {},
+  };
+}
+
+// Banco de prova (plano 024, 1.1): o contexto de uma pauta sem sessão. Mesmo estado comum e
+// mesmo few-shot da geração real; sem anexos (as pautas do banco são tema digitado).
+export async function loadContextBancada(clientId: string, prompt: string): Promise<GenerationContext> {
+  const [ctx, fewShot] = await Promise.all([loadContextAvulso(clientId), fetchFewShot(prompt, clientId)]);
+  return {
+    ...ctx,
+    prompt,
+    modelo: await modeloDe("escrita"),
+    fewShot: fewShot.exemplos,
+    fewShotCriterio: fewShot.criterio,
+    blocos: { few_shot: { escopo: fewShot.escopo } },
   };
 }

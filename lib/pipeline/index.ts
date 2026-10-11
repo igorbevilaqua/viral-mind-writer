@@ -24,7 +24,7 @@ import { verificarRoteiro, type Regime, type RegistroVerificacao } from "./verif
 import { blockCount, dedash, deepDedash, ecosNumericos, paragrafosLongos, sequenciasLongas } from "./slop-lint";
 import { APP_VERSION, GIT_SHA } from "../version";
 import { registrarAtividade } from "../hub";
-import type { PipelineEvent, SessionArtifacts } from "./types";
+import type { GenerationContext, PipelineEvent, SessionArtifacts } from "./types";
 
 // Piso de serviço à premissa para uma candidata ser elegível a vencer. Abaixo disso a narrativa
 // pode ser boa de views e ainda assim defender mal a tese — e o roteiro sai sem fio condutor.
@@ -316,18 +316,7 @@ export async function runPipeline(
         const candidatas = await proposeNarratives(ctx, dossie, compreensao || undefined);
         const rank = await rankNarratives(ctx, dossie, candidatas);
         const valid = rank.ranking.filter((r) => candidatas[r.indice]);
-        // Dois eixos, hierarquia clara: servir a premissa é RESTRIÇÃO, viralizar é o critério.
-        // Candidata que sustenta mal a tese está fora por viral que seja — era exatamente esse o
-        // furo de antes, quando o único eixo era `score` de views. Entre as que servem, ganha a
-        // mais viral. Se nenhuma passa do piso, ganha a que menos mal serve, nunca a mais viral.
-        // `?? 100` mantém rankings pré-Etapa C (sem o campo) elegíveis.
-        const servem = valid.filter((r) => (r.servico_a_premissa ?? 100) >= SERVICO_PREMISSA_MIN);
-        const pool = servem.length ? servem : valid;
-        const vencedora = pool.length
-          ? [...pool].sort((a, b) =>
-              servem.length ? b.score - a.score : (b.servico_a_premissa ?? 0) - (a.servico_a_premissa ?? 0)
-            )[0].indice
-          : 0;
+        const vencedora = escolherVencedora(valid);
 
         artifacts = {
           dossie,
@@ -394,63 +383,10 @@ export async function runPipeline(
     emit({ type: "phase", phase: "roteiro" });
     const { headline, corpo, fontes } = await generateDraft(ctx, (t) => emit({ type: "token", text: t }), revision);
 
-    // ── Hook e comando em paralelo, ambos vendo o roteiro pronto ──
-    emit({ type: "phase", phase: "hook_comando" });
-    const recentes = await hookRecentes(ctx.clientId, sessionId);
-    const [hookRes, comando] = await Promise.all([designHook(ctx, corpo, recentes), writeComando(ctx, corpo)]);
-
-    // hook escolhido x abertura do corpo, ANTES da montagem: logo abaixo o hook é colado na frente
-    // do corpo de propósito, e depois disso os dois lados deixam de ser distinguíveis.
-    const ecoHookAbertura = hookEcoaAbertura(hookRes.hook, corpo);
-
-    const assembled = [
-      `## HEADLINE\n${headline ?? ""}`,
-      `## HOOK\n${hookRes.hook}`,
-      `## ROTEIRO\n${hookRes.hook}\n\n${corpo}`,
-      `## VARIACOES_DE_HOOK\n${hookRes.variantes.map((v, i) => `${i + 1}. ${v}`).join("\n")}`,
-      `## COMANDO\n${comando}`,
-      `## FONTES\n${fontes ?? ""}`,
-    ].join("\n\n");
-
-    // Detectores determinísticos sobre o roteiro montado, antes da revisão (016 §4.2): o que
-    // ADICIONA texto entrou no dossiê, o que REMOVE é julgado aqui. Custo zero de LLM.
-    const ecos = ecosNumericos(assembled);
-    // Ritmo e parágrafo: sinal para o revisor aqui, e teto determinístico no humanizador depois.
-    const paragrafos = paragrafosLongos(assembled);
-    // Sequências de frases longas seguem MEDIDAS no rastro, mas não vão mais ao revisor: o teto
-    // picava o texto (reclamação do time) e o estudo de outubro não achou efeito (plano 024, 0.4).
-    const sequencias = sequenciasLongas(assembled);
-    const sinais = blocoSinaisRevisor(ecos, ecoHookAbertura, paragrafos);
-    // Portão de forma e procedência sobre a seção ESTUDOS do dossiê. Determinístico, sem LLM,
-    // e sem abrir a URL — confirmar que a página existe e diz aquilo é a peça 3.
-    const estudos = extrairEstudos(artifacts?.dossie ?? "");
-
-    emit({ type: "phase", phase: "revisao" });
-    const { revised, critica, fallback: fbRevisao, hookMexido } = await critiqueAndRewrite(ctx, assembled, sinais);
-
-    emit({ type: "phase", phase: "humanizacao" });
-    const { text: humanizado, violations, fallback: fbHumanizacao } = await humanize(ctx, revised);
-    // O humanizador reescreve o documento inteiro, inclusive a cópia do hook no topo do ROTEIRO.
-    // Reescrita, a cópia deixa de bater com o hook e o corte do stripLeadingHook não a reconhece:
-    // o vídeo abria dizendo a mesma coisa duas vezes (delator do Master, 09/10). E o hook em si
-    // pode sair reescrito sem passar de novo pelo placar. O mesmo trinco da revisão resolve os dois.
-    const { texto: final } = preservarHook(revised, humanizado);
-
-    emit({ type: "phase", phase: "salvando" });
-    // A FONTES do rascunho volta ANTES do parse: revisão e humanização reescrevem o documento
-    // inteiro e nenhuma das duas apurou a procedência. `final` segue cru no `pipeline_trace`
-    // (é o rastro do que o modelo devolveu); o que é SALVO é o bloco que teve dossiê em mãos.
-    const sections = parseSections(comFontesDoRascunho(final, fontes));
-    // o comando fica só na seção COMANDO — remove a repetição do fim do roteiro
-    if (sections.comando && sections.roteiro) {
-      sections.roteiro = stripTrailingComando(sections.roteiro, sections.comando);
-    }
-    // e o hook fica só na coluna `hook` — o roteiro salvo é o desenvolvimento
-    if (sections.roteiro) sections.roteiro = stripLeadingHook(sections.roteiro, sections.hook);
-    // variação que só reescreve a abertura do corpo nem chega a ser oferecida: guardada ela é
-    // inofensiva, mas no dia em que alguém troca o hook por ela (swapHook) o vídeo diz a mesma
-    // coisa duas vezes seguidas. Aconteceu em produção.
-    sections.hookVariants = semEcoDaAbertura(sections.hookVariants, sections.roteiro);
+    const {
+      sections, assembled, revised, final, critica, fbRevisao, fbHumanizacao, hookMexido, violations,
+      hookRes, recentes, ecos, ecoHookAbertura, paragrafos, sequencias, estudos,
+    } = await finalizarRoteiro(ctx, sessionId, { headline, corpo, fontes }, artifacts, emit);
 
     const narrativa = artifacts ? (artifacts.candidatas[artifacts.escolhida] ?? null) : null;
     // unique (session_id, version): conflito com escrita concorrente → recalcula a version e tenta de novo
@@ -722,4 +658,93 @@ export async function verificarScriptSalvo(
   if (upErr) throw new Error(`verificação feita, mas não gravada: ${upErr.message}`);
 
   return { registro, sessionId: script.session_id };
+}
+
+// Dois eixos, hierarquia clara: servir a premissa é RESTRIÇÃO, viralizar é o critério.
+// Candidata que sustenta mal a tese está fora por viral que seja — era exatamente esse o
+// furo de antes, quando o único eixo era `score` de views. Entre as que servem, ganha a
+// mais viral. Se nenhuma passa do piso, ganha a que menos mal serve, nunca a mais viral.
+// `?? 100` mantém rankings pré-Etapa C (sem o campo) elegíveis.
+export function escolherVencedora(valid: { indice: number; score: number; servico_a_premissa?: number }[]): number {
+  const servem = valid.filter((r) => (r.servico_a_premissa ?? 100) >= SERVICO_PREMISSA_MIN);
+  const pool = servem.length ? servem : valid;
+  return pool.length
+    ? [...pool].sort((a, b) =>
+        servem.length ? b.score - a.score : (b.servico_a_premissa ?? 0) - (a.servico_a_premissa ?? 0)
+      )[0].indice
+    : 0;
+}
+
+// Do rascunho do roteirista ao roteiro entregue: hook ∥ comando, montagem, sinais
+// determinísticos, revisão, humanização, trinco do hook e parse. Sai de runPipeline para o
+// banco de prova (plano 024, 1.1) rodar EXATAMENTE o mesmo caminho sem sessão nem gravação.
+export async function finalizarRoteiro(
+  ctx: GenerationContext,
+  sessionId: string,
+  { headline, corpo, fontes }: { headline: string | null; corpo: string; fontes: string | null },
+  artifacts: SessionArtifacts | null,
+  emit: (e: PipelineEvent) => void
+) {
+  // ── Hook e comando em paralelo, ambos vendo o roteiro pronto ──
+  emit({ type: "phase", phase: "hook_comando" });
+  const recentes = await hookRecentes(ctx.clientId, sessionId);
+  const [hookRes, comando] = await Promise.all([designHook(ctx, corpo, recentes), writeComando(ctx, corpo)]);
+
+  // hook escolhido x abertura do corpo, ANTES da montagem: logo abaixo o hook é colado na frente
+  // do corpo de propósito, e depois disso os dois lados deixam de ser distinguíveis.
+  const ecoHookAbertura = hookEcoaAbertura(hookRes.hook, corpo);
+
+  const assembled = [
+    `## HEADLINE\n${headline ?? ""}`,
+    `## HOOK\n${hookRes.hook}`,
+    `## ROTEIRO\n${hookRes.hook}\n\n${corpo}`,
+    `## VARIACOES_DE_HOOK\n${hookRes.variantes.map((v, i) => `${i + 1}. ${v}`).join("\n")}`,
+    `## COMANDO\n${comando}`,
+    `## FONTES\n${fontes ?? ""}`,
+  ].join("\n\n");
+
+  // Detectores determinísticos sobre o roteiro montado, antes da revisão (016 §4.2): o que
+  // ADICIONA texto entrou no dossiê, o que REMOVE é julgado aqui. Custo zero de LLM.
+  const ecos = ecosNumericos(assembled);
+  // Ritmo e parágrafo: sinal para o revisor aqui, e teto determinístico no humanizador depois.
+  const paragrafos = paragrafosLongos(assembled);
+  // Sequências de frases longas seguem MEDIDAS no rastro, mas não vão mais ao revisor: o teto
+  // picava o texto (reclamação do time) e o estudo de outubro não achou efeito (plano 024, 0.4).
+  const sequencias = sequenciasLongas(assembled);
+  const sinais = blocoSinaisRevisor(ecos, ecoHookAbertura, paragrafos);
+  // Portão de forma e procedência sobre a seção ESTUDOS do dossiê. Determinístico, sem LLM,
+  // e sem abrir a URL — confirmar que a página existe e diz aquilo é a peça 3.
+  const estudos = extrairEstudos(artifacts?.dossie ?? "");
+
+  emit({ type: "phase", phase: "revisao" });
+  const { revised, critica, fallback: fbRevisao, hookMexido } = await critiqueAndRewrite(ctx, assembled, sinais);
+
+  emit({ type: "phase", phase: "humanizacao" });
+  const { text: humanizado, violations, fallback: fbHumanizacao } = await humanize(ctx, revised);
+  // O humanizador reescreve o documento inteiro, inclusive a cópia do hook no topo do ROTEIRO.
+  // Reescrita, a cópia deixa de bater com o hook e o corte do stripLeadingHook não a reconhece:
+  // o vídeo abria dizendo a mesma coisa duas vezes (delator do Master, 09/10). E o hook em si
+  // pode sair reescrito sem passar de novo pelo placar. O mesmo trinco da revisão resolve os dois.
+  const { texto: final } = preservarHook(revised, humanizado);
+
+  emit({ type: "phase", phase: "salvando" });
+  // A FONTES do rascunho volta ANTES do parse: revisão e humanização reescrevem o documento
+  // inteiro e nenhuma das duas apurou a procedência. `final` segue cru no `pipeline_trace`
+  // (é o rastro do que o modelo devolveu); o que é SALVO é o bloco que teve dossiê em mãos.
+  const sections = parseSections(comFontesDoRascunho(final, fontes));
+  // o comando fica só na seção COMANDO — remove a repetição do fim do roteiro
+  if (sections.comando && sections.roteiro) {
+    sections.roteiro = stripTrailingComando(sections.roteiro, sections.comando);
+  }
+  // e o hook fica só na coluna `hook` — o roteiro salvo é o desenvolvimento
+  if (sections.roteiro) sections.roteiro = stripLeadingHook(sections.roteiro, sections.hook);
+  // variação que só reescreve a abertura do corpo nem chega a ser oferecida: guardada ela é
+  // inofensiva, mas no dia em que alguém troca o hook por ela (swapHook) o vídeo diz a mesma
+  // coisa duas vezes seguidas. Aconteceu em produção.
+  sections.hookVariants = semEcoDaAbertura(sections.hookVariants, sections.roteiro);
+
+  return {
+    sections, assembled, revised, final, critica, fbRevisao, fbHumanizacao, hookMexido, violations,
+    hookRes, recentes, ecos, ecoHookAbertura, paragrafos, sequencias, estudos,
+  };
 }

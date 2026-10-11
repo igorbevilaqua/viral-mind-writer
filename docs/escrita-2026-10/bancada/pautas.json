@@ -1,0 +1,292 @@
+{
+ "descricao": "Banco de prova do plano 024 (1.1). humano_topo: tema de roteiro humano do quartil de cima de coeficiente (90 dias), o roteiro humano é o gabarito. codex_reclamado: sessão real com edição humana ou regeneração; o prompt é lido da sessão na hora.",
+ "pautas": [
+  {
+   "id": "h1",
+   "tipo": "humano_topo",
+   "client_id": "220775c1-9ddd-4cb8-bf73-882f6976b24f",
+   "crm_script_id": "5aadaa77-e168-4843-b18f-87bf70aee472",
+   "titulo": "Os indianos estão treinando robôs para te substituir",
+   "prompt": "O vídeo expõe como mulheres na Índia são pagas para filmar suas tarefas domésticas, servindo como fonte de dados para o treinamento de robôs humanoides, e discute as implicações dessa prática para o futuro do trabalho e da automação."
+  },
+  {
+   "id": "h2",
+   "tipo": "humano_topo",
+   "client_id": "220775c1-9ddd-4cb8-bf73-882f6976b24f",
+   "crm_script_id": "8c4c9950-d2b9-41b8-8b7f-aa70c3be4a97",
+   "titulo": "China e IA declaram o fim dessa profissão",
+   "prompt": "O vídeo explora como a robótica e a inteligência artificial na China estão revolucionando a odontologia e o impacto dessa tecnologia na substituição de profissões repetitivas a nível global."
+  },
+  {
+   "id": "h3",
+   "tipo": "humano_topo",
+   "client_id": "2dc6917a-7f9f-48a5-a5aa-2ba29464281b",
+   "crm_script_id": "af046ca8-227a-4854-b082-cfcd71a95e69",
+   "titulo": "A decisão que matou o Playcenter",
+   "prompt": "A história do Play Center, o icônico parque de São Paulo, sua ascensão, queda, a criação acidental de um concorrente, seu fechamento e a nova fase sob o grupo Cacau Show."
+  },
+  {
+   "id": "h4",
+   "tipo": "humano_topo",
+   "client_id": "2dc6917a-7f9f-48a5-a5aa-2ba29464281b",
+   "crm_script_id": "a5ad2fd4-16a0-4d84-88ca-1db6d3aec0a8",
+   "titulo": "O sorvete da sua infância que a Nestlé sacrificou",
+   "prompt": "Explicação da história e do desaparecimento da marca de sorvetes Yopa devido a estratégias de mercado e decisões da Nestlé."
+  },
+  {
+   "id": "h5",
+   "tipo": "humano_topo",
+   "client_id": "2dc6917a-7f9f-48a5-a5aa-2ba29464281b",
+   "crm_script_id": "84cc13d2-1103-4304-a602-eae317ac82d5",
+   "titulo": "Chinês troca de carro quase como celular",
+   "prompt": "Análise sobre o porquê dos carros elétricos na China serem trocados tão rapidamente, comparando-os a produtos de tecnologia como celulares."
+  },
+  {
+   "id": "h6",
+   "tipo": "humano_topo",
+   "client_id": "4333482d-3c47-4c41-a2ad-8c965c3b24a6",
+   "crm_script_id": "0e9882b9-a21f-4cb7-b6c9-d0f1aa5799d9",
+   "titulo": "O carregador chinês que vai mudar o mercado de carros elétricos no Brasil",
+   "prompt": "O vídeo explica como a BYD está resolvendo o problema da demora na recarga de carros elétricos com uma nova tecnologia de carregadores ultra rápidos no Brasil."
+  },
+  {
+   "id": "h7",
+   "tipo": "humano_topo",
+   "client_id": "4747cfd1-0808-4170-b8d1-ba7d0737cc90",
+   "crm_script_id": "dfc6c418-e683-4ad8-9995-8c5c4e7cc330",
+   "titulo": "A China humilhou o planeta com essas 3 tecnologias.",
+   "prompt": "O vídeo explora três tecnologias chinesas inovadoras (diagnóstico por IA, produção de robôs humanoides e um 'sol artificial') que, segundo o autor, colocam a China anos-luz à frente e mudam a forma como o planeta vive."
+  },
+  {
+   "id": "h8",
+   "tipo": "humano_topo",
+   "client_id": "5237ca35-6bba-436c-9030-d267b914843d",
+   "crm_script_id": "d8a9cc2e-4d9d-42ae-a3e4-ca9aeb6d0327",
+   "titulo": "O que ninguém te contou sobre o Paraguai",
+   "prompt": "O vídeo aborda o fenômeno de brasileiros, incluindo o Ratinho, que buscam residência ou cidadania no Paraguai visando benefícios fiscais, alertando sobre a diferença entre residência legal e residência fiscal."
+  },
+  {
+   "id": "h9",
+   "tipo": "humano_topo",
+   "client_id": "5237ca35-6bba-436c-9030-d267b914843d",
+   "crm_script_id": "e6d7aab9-31d4-43ff-8086-1c628845ea3e",
+   "titulo": "MARVEL DECLAROU NO TRIBUNAL: X-MEN NÃO SÃO HUMANOS",
+   "prompt": "Um caso real e inusitado em que a Marvel argumentou que os X-Men não são humanos para economizar em impostos de importação de bonecos, destacando a importância do conhecimento tributário."
+  },
+  {
+   "id": "h10",
+   "tipo": "humano_topo",
+   "client_id": "6c5182af-2afd-428e-b224-d1efd7fe7355",
+   "crm_script_id": "2e1939c7-869f-4d68-8a1c-88935cb0c163",
+   "titulo": "O imposto que te livra de impostos",
+   "prompt": "Análise de um caso real onde a Receita Federal usou um documento de tax-free europeu para identificar e penalizar a entrada não declarada de um relógio de luxo no Brasil, destacando a complexidade dos impostos internacionais."
+  },
+  {
+   "id": "h11",
+   "tipo": "humano_topo",
+   "client_id": "6c5182af-2afd-428e-b224-d1efd7fe7355",
+   "crm_script_id": "fabc8ead-754e-4a23-8bef-cde88add0b09",
+   "titulo": "Luciano Hang à Casas Bahia: Só pode ser Piada",
+   "prompt": "Análise da situação financeira da Casas Bahia em contraste com a Havan, focando nos modelos de negócio e na controvérsia das demissões suspensas judicialmente."
+  },
+  {
+   "id": "h12",
+   "tipo": "humano_topo",
+   "client_id": "7f7847d4-da31-46b9-9f9a-b634c888be2d",
+   "crm_script_id": "cf340ff0-9cbb-4831-b536-dc2dcd5d5351",
+   "titulo": "O Palmeiras acabou de superar Real Madrid e Barcelona",
+   "prompt": "O vídeo detalha como o Palmeiras superou Barcelona e Real Madrid em vendas de jogadores, explicando o sucesso de sua eficiente base de formação e modelo de negócios."
+  },
+  {
+   "id": "h13",
+   "tipo": "humano_topo",
+   "client_id": "7f7847d4-da31-46b9-9f9a-b634c888be2d",
+   "crm_script_id": "cc2e993d-a046-4540-a7b7-d3b968355f18",
+   "titulo": "Uma marca de cosméticos virou personagem da Globo",
+   "prompt": "Análise da estratégia inovadora da Globo e do Boticário ao utilizar naming rights para integrar uma marca ao nome de uma personagem de novela, explorando as táticas de marketing por trás dessa decisão."
+  },
+  {
+   "id": "h14",
+   "tipo": "humano_topo",
+   "client_id": "c491d466-d04d-40ae-9250-08e91053ad9f",
+   "crm_script_id": "ab768085-2599-4706-aae0-ee34fca1cab1",
+   "titulo": "A Geração Z trocou a casa pelo perfume caro",
+   "prompt": "O vídeo discute como os hábitos de consumo impulsivo da Geração Z em produtos de beleza afetam sua capacidade de poupar para a casa própria, em meio ao aumento dos custos imobiliários."
+  },
+  {
+   "id": "h15",
+   "tipo": "humano_topo",
+   "client_id": "c491d466-d04d-40ae-9250-08e91053ad9f",
+   "crm_script_id": "b82347fc-4dad-480e-b970-65a08fa0196b",
+   "titulo": "O fim do Honda Civic no Brasil",
+   "prompt": "O vídeo analisa as razões para a queda nas vendas e o 'declínio' do Honda Civic no mercado brasileiro."
+  },
+  {
+   "id": "h16",
+   "tipo": "humano_topo",
+   "client_id": "c7903b1d-930e-43d3-8576-ff0c0b275f1f",
+   "crm_script_id": "b9c67392-a129-46ca-a5fa-64ea52c0e773",
+   "titulo": "Seu imposto vai salvar os correios",
+   "prompt": "O vídeo detalha o crescente prejuízo dos Correios, um empréstimo com garantia do Tesouro Nacional e como as perdas da estatal podem impactar o bolso do contribuinte."
+  },
+  {
+   "id": "h17",
+   "tipo": "humano_topo",
+   "client_id": "c7903b1d-930e-43d3-8576-ff0c0b275f1f",
+   "crm_script_id": "6f169ee0-7e85-4936-9ede-0293a0df6905",
+   "titulo": "Uma decisão em Tóquio já ameaça seu dinheiro",
+   "prompt": "Análise sobre como a mudança na política monetária do Japão e seus juros crescentes podem desestabilizar o mercado financeiro global e afetar investimentos pessoais."
+  },
+  {
+   "id": "h18",
+   "tipo": "humano_topo",
+   "client_id": "c7903b1d-930e-43d3-8576-ff0c0b275f1f",
+   "crm_script_id": "2bd10e8a-d65a-493b-bae1-048a6918fff1",
+   "titulo": "Já está tudo definido?",
+   "prompt": "Análise de uma declaração impactante de Gilberto Kassab sobre as chances de Flávio Bolsonaro, explorando os bastidores da política, o papel do STF e as movimentações do 'centrão' na eleição presidencial."
+  },
+  {
+   "id": "h19",
+   "tipo": "humano_topo",
+   "client_id": "e0d04683-5282-43cf-a67a-aba3193bf01f",
+   "crm_script_id": "f6c6f6a0-2f2a-4e46-8045-60bd01c686ba",
+   "titulo": "O Nubank deixou de ser 100% do Brasil",
+   "prompt": "Análise da expansão oficial do Nubank para os EUA e o lançamento da NU Global, detalhando suas implicações estratégicas."
+  },
+  {
+   "id": "h20",
+   "tipo": "humano_topo",
+   "client_id": "e0d04683-5282-43cf-a67a-aba3193bf01f",
+   "crm_script_id": "49deeb4a-102d-4b64-8d6a-e0e1283f7b4f",
+   "titulo": "O Vitória arrancou sua cor para criar a melhor campanha do Brasil",
+   "prompt": "Vídeo sobre uma campanha de marketing inovadora do Sport Clube Vitória para incentivar a doação de sangue, usando o uniforme do time como ferramenta de engajamento."
+  },
+  {
+   "id": "c1",
+   "tipo": "codex_reclamado",
+   "client_id": "c7903b1d-930e-43d3-8576-ff0c0b275f1f",
+   "sessao": "18f291d6-9faf-4fcc-8d74-de6100ceba94"
+  },
+  {
+   "id": "c2",
+   "tipo": "codex_reclamado",
+   "client_id": "e0d04683-5282-43cf-a67a-aba3193bf01f",
+   "sessao": "1a1b257a-8531-4b9f-b98a-ba85874cbdd2"
+  },
+  {
+   "id": "c3",
+   "tipo": "codex_reclamado",
+   "client_id": "c491d466-d04d-40ae-9250-08e91053ad9f",
+   "sessao": "1a335ca9-60c3-4020-be4c-0bd073d49c70"
+  },
+  {
+   "id": "c4",
+   "tipo": "codex_reclamado",
+   "client_id": "c7903b1d-930e-43d3-8576-ff0c0b275f1f",
+   "sessao": "2317432f-3ed1-4ac6-ab0c-7f87f957cf15"
+  },
+  {
+   "id": "c5",
+   "tipo": "codex_reclamado",
+   "client_id": "7f7847d4-da31-46b9-9f9a-b634c888be2d",
+   "sessao": "fdbbc4ca-227d-41c8-be57-f6e65fc1468b"
+  },
+  {
+   "id": "c6",
+   "tipo": "codex_reclamado",
+   "client_id": "421ca796-4154-40e9-b532-299f6a4b745a",
+   "sessao": "9aa03d9e-3c2a-48f2-b125-148b5c505dfa"
+  },
+  {
+   "id": "c7",
+   "tipo": "codex_reclamado",
+   "client_id": "6c5182af-2afd-428e-b224-d1efd7fe7355",
+   "sessao": "cdc47b29-25c0-403b-ac88-0cb3410069c4"
+  },
+  {
+   "id": "c8",
+   "tipo": "codex_reclamado",
+   "client_id": "8de0a02e-bc01-4430-b2ea-233edd67f587",
+   "sessao": "40392ca7-fe9c-4139-91d1-61bbf093721b"
+  },
+  {
+   "id": "c9",
+   "tipo": "codex_reclamado",
+   "client_id": "c7903b1d-930e-43d3-8576-ff0c0b275f1f",
+   "sessao": "1d9fda0e-c787-48fd-9d97-da838995a16e"
+  },
+  {
+   "id": "c10",
+   "tipo": "codex_reclamado",
+   "client_id": "c491d466-d04d-40ae-9250-08e91053ad9f",
+   "sessao": "5ea04b60-fa6c-4542-ac2f-8b3b010fcc6b"
+  },
+  {
+   "id": "c11",
+   "tipo": "codex_reclamado",
+   "client_id": "c7903b1d-930e-43d3-8576-ff0c0b275f1f",
+   "sessao": "da98caa9-cc1e-4d36-965b-9e149b452d27"
+  },
+  {
+   "id": "c12",
+   "tipo": "codex_reclamado",
+   "client_id": "56e457bd-c0f9-4064-89fe-dd5ce22de337",
+   "sessao": "1d73445b-15df-45f8-9b0c-557677620be3"
+  },
+  {
+   "id": "c13",
+   "tipo": "codex_reclamado",
+   "client_id": "1f2210c5-8e6c-4aa4-b144-aace8f00de44",
+   "sessao": "4ae5fbb9-4c24-48ad-b819-1368706fbbfd"
+  },
+  {
+   "id": "c14",
+   "tipo": "codex_reclamado",
+   "client_id": "c491d466-d04d-40ae-9250-08e91053ad9f",
+   "sessao": "98b0bcfb-e786-467c-ac87-c0dfa3b2cab9"
+  },
+  {
+   "id": "c15",
+   "tipo": "codex_reclamado",
+   "client_id": "c491d466-d04d-40ae-9250-08e91053ad9f",
+   "sessao": "35ff9141-1aa6-4ecb-bc7a-3acc83bc08c7"
+  },
+  {
+   "id": "c16",
+   "tipo": "codex_reclamado",
+   "client_id": "2dc6917a-7f9f-48a5-a5aa-2ba29464281b",
+   "sessao": "376ae52f-52a6-4685-96e4-7cb0aa7526ab"
+  },
+  {
+   "id": "c17",
+   "tipo": "codex_reclamado",
+   "client_id": "c491d466-d04d-40ae-9250-08e91053ad9f",
+   "sessao": "c01a80f3-8d08-43d9-bc6b-6a42aeadeeec"
+  },
+  {
+   "id": "c18",
+   "tipo": "codex_reclamado",
+   "client_id": "2dc6917a-7f9f-48a5-a5aa-2ba29464281b",
+   "sessao": "0b6bd934-9df6-456f-b444-3030573d098c"
+  },
+  {
+   "id": "c19",
+   "tipo": "codex_reclamado",
+   "client_id": "2dc6917a-7f9f-48a5-a5aa-2ba29464281b",
+   "sessao": "67ce38ae-f004-4b29-84a8-97667ba4a176"
+  },
+  {
+   "id": "c20",
+   "tipo": "codex_reclamado",
+   "client_id": "2dc6917a-7f9f-48a5-a5aa-2ba29464281b",
+   "sessao": "bb62bca6-7d4e-4b4a-8d71-0534f700ba46"
+  },
+  {
+   "id": "c21",
+   "tipo": "codex_reclamado",
+   "client_id": null,
+   "sessao": "171cb4a6-c0fc-49fb-97bb-487bd44b3eb0",
+   "nota": "China/Pequim do Felipe, 10/10"
+  }
+ ]
+}
