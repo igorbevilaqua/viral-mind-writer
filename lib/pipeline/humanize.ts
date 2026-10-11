@@ -19,6 +19,17 @@ function corpoSemHook(doc: string): string {
   const roteiro = doc.match(/##\s*ROTEIRO\s*\n([\s\S]*?)(?=\n##\s|$)/i)?.[1] ?? "";
   return roteiro.split(/\n\s*\n/).slice(1).join("\n\n");
 }
+const hookDe = (doc: string) => doc.match(/##\s*HOOK\s*\n([\s\S]*?)(?=\n##\s|$)/i)?.[1]?.trim() ?? null;
+const alvosPiso = (doc: string) => alvosDoPiso(corpoSemHook(doc), hookDe(doc));
+
+// Troca só DEPOIS da cópia do hook que abre o ROTEIRO. O alvo do piso é medido no corpo, e a
+// frase do corpo que repete o hook existe, por definição, também na seção HOOK e na cópia:
+// trocar em todo o documento reescreveria o hook travado.
+function trocarNoCorpo(doc: string, trecho: string, novo: string): string {
+  const m = doc.match(/##\s*ROTEIRO\s*\n[\s\S]*?\n\s*\n/i);
+  const corte = m ? (m.index ?? 0) + m[0].length : 0;
+  return doc.slice(0, corte) + doc.slice(corte).split(trecho).join(novo);
+}
 import { buildStaticSystemBlock } from "./draft";
 import type { FallbackInfo } from "./critique";
 
@@ -118,14 +129,14 @@ export async function humanize(
 
   let violations = slopLint(current, ctx.bannedPhrases);
   let ritmo = ritmoTargets(current);
-  let piso = alvosDoPiso(corpoSemHook(current));
+  let piso = alvosPiso(current);
   for (let attempt = 0; attempt < 2 && blockCount(violations) + ritmo.length + piso.length > 0; attempt++) {
     // Só re-chama o LLM se restarem violações que o dedash final não resolve (travessões
     // são determinísticos — não pagam outra chamada).
     const targets = [
       ...slopLint(dedash(current), ctx.bannedPhrases).filter((v) => v.severity === "block"),
       ...ritmo,
-      ...piso.map((a) => ({ ...a, severity: "block" as const })),
+      ...piso.map((a) => ({ ...a, severity: "block" as const, piso: true })),
     ];
     if (!targets.length) break;
 
@@ -156,6 +167,7 @@ CLAREZA é a família que o time mais reclama: quem ouve uma vez não pode preci
 - sigla ou nome sem explicação → cole o que ele é na mesma frase ("a CPFL, que distribui a luz de metade de São Paulo"), ou troque pelo que ele é.
 - número exato demais → arredonde como se fala ("mais de 25 mil", "quase 2 bilhões"); não invente número novo.
 - "Ou seja" repetido → diga a consequência direto.
+- frase que repete o hook → o espectador acabou de ouvir aquilo: escreva a frase que vem DEPOIS dele, puxando a ideia adiante com informação nova.
 
 RITMO E PARÁGRAFO são outra família e pedem outra correção:
 - parágrafo acima do teto de palavras → quebre em dois ou três parágrafos, escrevendo "${MARCA_PARAGRAFO}" onde entra a linha em branco. Se der, corte o que não carrega a ideia. NÃO invente informação para preencher.
@@ -176,11 +188,13 @@ O roteiro é LIDO EM VOZ ALTA: se a frase só funciona porque o olho reconstrói
       current =
         CORTAR.test(m[2].trim()) && alvo.label === LABEL_ANUNCIO
           ? removerTrecho(current, alvo.match)
-          : current.split(alvo.match).join(aplicarMarca(m[2]));
+          : "piso" in alvo
+            ? trocarNoCorpo(current, alvo.match, aplicarMarca(m[2]))
+            : current.split(alvo.match).join(aplicarMarca(m[2]));
     }
     violations = slopLint(current, ctx.bannedPhrases);
     ritmo = ritmoTargets(current);
-    piso = alvosDoPiso(corpoSemHook(current));
+    piso = alvosPiso(current);
   }
 
   // Varredura determinística final: se ainda sobrou travessão de slop, elimina

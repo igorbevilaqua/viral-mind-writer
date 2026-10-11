@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { alvosDoPiso, medirPiso } from "@/lib/pipeline/piso";
+import { alvosDoPiso } from "@/lib/pipeline/piso";
 import { appDb, viralData } from "@/lib/db";
 import { emailsPorUsuario, writerScope } from "@/lib/hub";
 import { nomeDeEmail } from "@/lib/usuarios";
@@ -88,11 +88,7 @@ export default async function SessionPage({
       // Plano 024, 2.9: o que o piso de clareza ainda aponta no texto entregue. Medido aqui, na
       // hora, e não salvo: vale também para roteiro antigo, e a régua nova não exige migration.
       // Só o que cabe numa frase (o que o humano corrige olhando o trecho); tamanho e ritmo não.
-      clareza: alvosDoPiso(s.roteiro ?? "").map((a) => ({ label: a.label, match: a.match })).concat(
-        medirPiso(s.hook, s.roteiro ?? "").hook_duplicado
-          ? [{ label: "a abertura do corpo repete o hook", match: (s.roteiro ?? "").split(/\n\s*\n/)[0] ?? "" }]
-          : []
-      ),
+      clareza: alvosDoPiso(s.roteiro ?? "", s.hook).map((a) => ({ label: a.label, match: a.match })),
       // 017 §9: null enquanto ninguém verificou (ou enquanto a 0029 não estiver aplicada).
       // A tela trata null como "não verificado" — nunca como "verificado, 0 problemas".
       verificacao: (verificacao ?? null) as RegistroVerificacao | null,

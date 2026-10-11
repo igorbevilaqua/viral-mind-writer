@@ -196,12 +196,27 @@ export interface AlvoPiso {
 }
 export const TETO_ALVOS_PISO = 6;
 
-export function alvosDoPiso(corpo: string): AlvoPiso[] {
+// Hook escrito primeiro (2.4): o corpo às vezes abre repetindo a última frase do hook, que o
+// espectador acabou de ouvir. `ehCopiaDoHook` trata "bloco contido no hook" como a cópia do topo
+// do ROTEIRO; aqui o corpo já vem sem ela, então frase da abertura contida no hook é repetição.
+// Só o 1º parágrafo: no fecho, retomar palavras do hook é costura pedida ao roteirista.
+export function frasesQueRepetemOHook(hook: string | null, corpo: string): string[] {
+  const norm = (s: string) => s.toLowerCase().replace(/[^a-zà-ú0-9]+/gi, " ").trim();
+  const h = hook ? norm(hook) : "";
+  if (!h) return [];
+  return dividirFrases(corpo.split(/\n\s*\n/)[0] ?? "").filter((f) => norm(f).length >= 20 && h.includes(norm(f)));
+}
+
+export function alvosDoPiso(corpo: string, hook: string | null = null): AlvoPiso[] {
   const frases = dividirFrases(corpo);
   const out: AlvoPiso[] = [];
   const add = (label: string, frase: string | undefined) => {
     if (frase && !out.some((a) => a.match === frase)) out.push({ label, match: frase });
   };
+  // Primeiro: é o que o espectador nota na hora, e o teto de alvos não pode deixá-lo de fora.
+  // Reescrever, não cortar: cortar deixava a abertura começando no meio da ideia.
+  for (const f of frasesQueRepetemOHook(hook, corpo))
+    add("repete o hook, que acabou de ser dito: reescreva para CONTINUAR dele, com informação nova, sem repetir a ideia", f);
   for (const f of frases)
     if (metonimias(f).length) add('capital no lugar do país: diga o país ("a China", "os Estados Unidos", "o governo")', f);
   for (const sigla of siglasSemAposto(corpo))

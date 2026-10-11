@@ -91,4 +91,16 @@ describe("alvos locais do piso", () => {
     expect(alvos.some((a) => /Ou seja/.test(a.label) && a.match === "Ou seja, de novo.")).toBe(true);
     for (const a of alvos) expect(corpo).toContain(a.match);
   });
+
+  test("aponta a frase da abertura que repete o hook, e só a da abertura", async () => {
+    const { alvosDoPiso, frasesQueRepetemOHook } = await import("@/lib/pipeline/piso");
+    const hook = "A NIO leva menos de três anos pra criar um carro. Na China, o carro elétrico tá virando aparelho de usar até sair a próxima versão.";
+    const corpo =
+      "Na China, o carro elétrico tá virando aparelho de usar até sair a próxima versão.\n\nE essa velocidade abriu uma briga.\n\n" +
+      "No fim, na China, o carro elétrico tá virando aparelho de usar até sair a próxima versão.";
+    expect(frasesQueRepetemOHook(hook, corpo)).toEqual(["Na China, o carro elétrico tá virando aparelho de usar até sair a próxima versão."]);
+    expect(alvosDoPiso(corpo, hook)[0].label).toMatch(/repete o hook/);
+    expect(frasesQueRepetemOHook(hook, "E essa velocidade abriu uma briga dentro da própria China.")).toEqual([]);
+    expect(frasesQueRepetemOHook(null, corpo)).toEqual([]);
+  });
 });
