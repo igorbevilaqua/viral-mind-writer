@@ -268,7 +268,7 @@ Os itens de maior retorno por esforço são 0.1, 0.6, 1.2, 2.4, 2.5 e 3.1.
 | 1.2 verificador de piso | feito | `lib/pipeline/piso.ts`, calibrado no acervo (`scripts/piso-acervo.ts`) |
 | 1.3 juiz de teto | feito | `lib/pipeline/juiz.ts`. Calibração nos 232 pares cegos: Sonnet 5.5 68% [60 a 74] decidindo 73%; **Opus 5.5 75% [67 a 82] decidindo 59%** (confiança 3: 92%). Passa dos 62%. Ressalva: os critérios vieram do mesmo acervo dos pares |
 | 1.4 painel humano | adiado | decisão do Igor |
-| 1.5 placar de base | rodando | A (produção) contra B (estudo de outubro + Onda 0) |
+| 1.5 placar de base | feito | ver §9 |
 | 2.1 playbooks de outubro | no A/B | via `CODEX_BANCADA_PLAYBOOKS`, sem ativar no banco |
 | 2.2 premissa decide o teto | adiado | o payoff v1 e a pauta v1 do estudo já entram no braço B; decidir depois do placar |
 | 2.3 esqueleto causal | parcial | a cadeia causal entrou como regra do roteirista (2.6); mudar o storytelling fica para depois do placar |
@@ -281,3 +281,26 @@ Os itens de maior retorno por esforço são 0.1, 0.6, 1.2, 2.4, 2.5 e 3.1.
 | 3.1 lição do pedido | feito (C) | o texto regenerado pela IA deixou de ser gabarito |
 | 3.2 / 3.3 | coberto em parte | a lição de clareza virou doutrina permanente (2.6) e chega ao hook |
 | 4.1 / 4.2 | pendente | último roteiro marcado como publicado no Codex: 11/09 |
+
+## 9. Placar do banco de prova (11/10/2026)
+
+41 pautas, três braços. A = produção (main 29dbdfb). B = playbooks de outubro + Onda 0. C = B + Onda 2 e 3 (hook primeiro, few-shot da casa, doutrina, revisor por edição, humanizador cirúrgico), reusando premissa e dossiê de B (`--montante`). Juiz: Opus 5.5, voto nas duas ordens.
+
+| | A | B | C | casa |
+|---|---|---|---|---|
+| números por 100 palavras | 3,45 | 3,10 | **2,46** | 1,7 |
+| números exatos por roteiro | 2,39 | 2,10 | **0,41** | |
+| viradas por 100 palavras | 0,40 | 0,51 | **0,70** | 0,70 |
+| sigla sem aposto (% roteiros) | 22 | 17 | **5** | |
+| capital no lugar do país (%) | 2 | 7 | **0** | |
+| hook repetido na abertura (%) | 12 | 5 | 10 | 0 |
+| "Ou seja" abrindo frase (% roteiros) | 59 | 93 | 85 | 17 |
+| custo por roteiro (US$) | 1,63 | 1,92 | **1,23** | |
+
+Juiz, pareado na mesma pauta: **C 20 × 0 A** (21 empates); B 6 × 6 C (29 empates). Contra o roteiro humano de topo (20 pautas h*): A 2 × 5; B 6 × 1; C 3 × 0 e 7 × 0 em duas rodadas (o juiz oscila nos empates; C não perdeu nenhuma). Ressalva: o juiz foi calibrado em humano × humano.
+
+Leitura:
+- C é o melhor braço no piso e não perde no teto. B × C empata no juiz: o ganho da C é clareza e custo, não teto.
+- Os playbooks de outubro viram fórmula: "Ou seja" (93% em B, 85% em C), "pra você" (49/41%), "enquanto todo" (39/29%), "até que" (39% em B). Causa: style_guide v5, storytelling v3, conclusao v1 e checklist v4 dão a frase pronta como ordem ("abra a frase com 'Ou seja,'", molde "Enquanto todo mundo [...]") e o limite ("paleta, não carimbo") vem depois. Corrigir antes de ativar: descrever a função, não a frase.
+- Hook repetido em C (c5, h1, h5): com o hook pronto, o corpo abre repetindo a última frase dele. `ehCopiaDoHook` não corta porque o bloco é só parte do hook dividida em parágrafo próprio.
+- Redator truncava em 8000 tokens: 1 em A, 14 em B, 9 em C (FONTES perdidas, corpo curto, C/h8 saiu só com o hook). Corrigido em ae47484 (16000). Os truncados ficaram no placar: penaliza B e C, não A.
