@@ -11,7 +11,15 @@ import {
   type LintViolation,
 } from "./slop-lint";
 import type { GenerationContext } from "./types";
-import { OUTPUT_FORMAT, buildStaticSystemBlock } from "./draft";
+import { alvosDoPiso } from "./piso";
+
+// O corpo do documento montado, sem a cópia do hook que abre o ROTEIRO: o hook é travado em
+// código depois (preservarHook), então corrigir frase dele seria trabalho jogado fora.
+function corpoSemHook(doc: string): string {
+  const roteiro = doc.match(/##\s*ROTEIRO\s*\n([\s\S]*?)(?=\n##\s|$)/i)?.[1] ?? "";
+  return roteiro.split(/\n\s*\n/).slice(1).join("\n\n");
+}
+import { buildStaticSystemBlock } from "./draft";
 import type { FallbackInfo } from "./critique";
 
 // Trecho violado com contexto ao redor — o modelo precisa ver a frase pra encaixar a substituição.
@@ -102,38 +110,22 @@ export async function humanize(
   ];
 
   let current = script;
-
-  const res = await trackedCreate(
-    ctx.usageLog,
-    "humanizacao",
-    {
-      model: ctx.modelo,
-      // reescreve o roteiro inteiro (headline+hook+corpo+variações+comando+fontes) e o
-      // fable-5 pensa sempre no mesmo teto — 4000 arriscava truncar. 8000 dá folga.
-      max_tokens: 8000,
-      system,
-      messages: [{ role: "user", content: `${OUTPUT_FORMAT}\n\nROTEIRO:\n${current}` }],
-    },
-    // re-textura segue regras mecânicas do guia de estilo — medium basta, high só encarecia
-    "medium"
-  );
-  const next = textOf(res);
-  // Guarda: só adota a reescrita se ela preservou o formato do roteiro.
-  const humanizou = /##\s*ROTEIRO/i.test(next);
-  if (humanizou) current = next;
-  // 021 §0.3: descartar a humanização em silêncio foi o que deixou F1 viver 187 gerações.
-  const fallback: FallbackInfo | null = humanizou
-    ? null
-    : { motivo: "reescrita sem seção ROTEIRO", stop_reason: res.stop_reason ?? null, output_tokens: res.usage.output_tokens };
+  // Plano 024, 2.8: o humanizador deixou de reescrever o roteiro inteiro. A re-textura completa
+  // era a terceira reescrita em série (roteirista, revisor, humanizador), cada uma com os
+  // próprios tiques, e foi ela que reescreveu a cópia do hook e duplicou a abertura (09/10).
+  // Agora ele só corrige o que foi MEDIDO: slop, parágrafo longo e o piso de clareza.
+  const fallback: FallbackInfo | null = null;
 
   let violations = slopLint(current, ctx.bannedPhrases);
   let ritmo = ritmoTargets(current);
-  for (let attempt = 0; attempt < 2 && blockCount(violations) + ritmo.length > 0; attempt++) {
+  let piso = alvosDoPiso(corpoSemHook(current));
+  for (let attempt = 0; attempt < 2 && blockCount(violations) + ritmo.length + piso.length > 0; attempt++) {
     // Só re-chama o LLM se restarem violações que o dedash final não resolve (travessões
     // são determinísticos — não pagam outra chamada).
     const targets = [
       ...slopLint(dedash(current), ctx.bannedPhrases).filter((v) => v.severity === "block"),
       ...ritmo,
+      ...piso.map((a) => ({ ...a, severity: "block" as const })),
     ];
     if (!targets.length) break;
 
@@ -151,13 +143,19 @@ export async function humanize(
         messages: [
           {
             role: "user",
-            content: `Um roteiro já humanizado ainda viola regras de estilo APENAS nos trechos abaixo. Para cada item, reescreva SÓ o texto marcado como [TRECHO: …].
+            content: `Um roteiro pronto viola regras de estilo e de clareza APENAS nos trechos abaixo. Para cada item, reescreva SÓ o texto marcado como [TRECHO: …].
 
 REGRA CENTRAL: elimine a CONSTRUÇÃO, não a palavra. Trocar sinônimo, pontuação ou número mantendo a mesma forma NÃO resolve — a forma é o problema. Reescreva a frase por inteiro:
 - negação seguida de assertiva ("não é X, é Y" / "não são X. Aquilo é Y") → afirme direto o que É, sem passar pela negação.
 - pergunta curta usada como transição ("O resultado?") → diga a transição falando: "E adivinha o que aconteceu depois", "E a consequência disso ninguém esperava".
 - itens justapostos por vírgula ("carros na rua, garotos jogando bola") → amarre com conectivo e verbo: "de um lado você vê X, de outro Y, mas se der bobeira Z".
 - anúncio vazio ("Agora vem a parte que piora tudo", "E aqui entra o detalhe", "E tem mais.") → a frase promete algo grande e não diz nada, empurrando o fato pra frase seguinte. Duas saídas: CORTE a frase e vá direto ao fato (responda "N. [CORTAR]" — só vale para ESTE item), ou reescreva para ela já carregar o fato que anuncia ("Agora presta atenção, porque nesse mesmo período o governo reduziu impostos em 2,5% do PIB"). Não troque uma antecipação genérica por outra.
+
+CLAREZA é a família que o time mais reclama: quem ouve uma vez não pode precisar traduzir nada.
+- capital no lugar do país → diga o país ou o governo pelo nome.
+- sigla ou nome sem explicação → cole o que ele é na mesma frase ("a CPFL, que distribui a luz de metade de São Paulo"), ou troque pelo que ele é.
+- número exato demais → arredonde como se fala ("mais de 25 mil", "quase 2 bilhões"); não invente número novo.
+- "Ou seja" repetido → diga a consequência direto.
 
 RITMO E PARÁGRAFO são outra família e pedem outra correção:
 - parágrafo acima do teto de palavras → quebre em dois ou três parágrafos, escrevendo "${MARCA_PARAGRAFO}" onde entra a linha em branco. Se der, corte o que não carrega a ideia. NÃO invente informação para preencher.
@@ -182,6 +180,7 @@ O roteiro é LIDO EM VOZ ALTA: se a frase só funciona porque o olho reconstrói
     }
     violations = slopLint(current, ctx.bannedPhrases);
     ritmo = ritmoTargets(current);
+    piso = alvosDoPiso(corpoSemHook(current));
   }
 
   // Varredura determinística final: se ainda sobrou travessão de slop, elimina

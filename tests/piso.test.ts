@@ -78,3 +78,17 @@ describe("fórmula repetida entre roteiros", () => {
     expect(aberturasRepetidas(["Só que a. Só que b."])).toEqual([]);
   });
 });
+
+describe("alvos locais do piso", () => {
+  test("cada alvo é uma frase exata do corpo", async () => {
+    const { alvosDoPiso } = await import("@/lib/pipeline/piso");
+    const corpo =
+      "A State Grid controla a CPFL desde 2017. A luz passa por um fio que responde a Pequim.\n\n" +
+      "Foram 25.680 pessoas e 1,79 bilhão de reais. Ou seja, muita coisa. Depois veio o resto. Ou seja, de novo.";
+    const alvos = alvosDoPiso(corpo);
+    expect(alvos.map((a) => a.label).join(" | ")).toMatch(/capital no lugar do país/);
+    expect(alvos.some((a) => /CPFL/.test(a.label))).toBe(true);
+    expect(alvos.some((a) => /Ou seja/.test(a.label) && a.match === "Ou seja, de novo.")).toBe(true);
+    for (const a of alvos) expect(corpo).toContain(a.match);
+  });
+});

@@ -18,3 +18,17 @@ Escrever o CORPO do roteiro executando a narrativa vencedora escolhida pela sala
 - Mantenha um loop aberto até o final: o payoff só se completa no último beat.
 - Nunca anuncie o que vem a seguir sem dizer o quê ("Agora vem a parte que piora tudo", "E aqui entra o detalhe", "E tem mais."). Ou o fato entra na mesma frase, ou você vai direto a ele. Antecipação só se paga quando abre curiosidade real e grande, e aí ela é uma frase inteira e específica ("Mas agora presta atenção que eu vou te falar a pior parte"), nunca um enfeite de quatro palavras empurrando o fato pra frente.
 - Não escreva CTA/comando no corpo — outro especialista cuida disso.
+
+## Clareza e fluxo (o que o time reescreve quando falta)
+
+O espectador ouve UMA vez, sem voltar. Tudo abaixo existe porque um roteiro do Codex foi reescrito por isso.
+
+- **Cadeia, não lista.** Cada parágrafo responde à pergunta que o anterior deixou no ar ("por quê?", "e o que isso causou?", "mas e…?"). Teste: se dois parágrafos podem trocar de lugar sem quebrar nada, é lista, e lista não segura ninguém. Nada de "primeira peça, segunda peça".
+- **A virada vem de um fato que contraria**, dita com "mas" ou "só que", mais ou menos uma a cada 100 palavras. A palavra não faz a virada; o fato faz.
+- **Costure, não pique.** Frase longa ligada por "porque", "então", "enquanto", "e aí" é fala natural; três frases curtas soltas seguidas soam robô.
+- **País pelo nome, nunca pela capital** ("a China", não "Pequim"; "os Estados Unidos", não "Washington").
+- **Nome que o público não conhece ganha o que ele é na primeira vez** ("a CPFL, que distribui a luz de metade de São Paulo"; "o Cade, o órgão que autoriza compra de empresa"). Sigla que não é do dia a dia: diga a função.
+- **Número só com função**: contraste, dimensão de algo grande demais para sentir, prova de uma afirmação surpreendente, ou autoridade. Sem função, sai. Dois números com a mesma função, fica o mais forte. Arredonde para a fala ("mais de 25 mil", não "25.680"); um número exato pode ficar como âncora. Os roteiros da casa que mais viralizam usam menos de 2 números a cada 100 palavras.
+- **"Ou seja," no máximo uma vez**, e só para traduzir um número ou fato na consequência para quem assiste.
+- **Comece pelo conflito, não pela origem.** "Nasceu em", "começou como", "foi aí que" em sequência derrubam o vídeo; a origem entra só se explica a virada.
+- **Um rosto.** Um personagem nomeado carrega a história; massa de eventos e números não emociona.

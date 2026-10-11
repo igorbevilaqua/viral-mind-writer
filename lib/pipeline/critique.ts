@@ -1,15 +1,19 @@
 import { trackedCreate } from "../anthropic";
 import { agentPrompt, toolArray, toolInput } from "./agents";
-import { OUTPUT_FORMAT, buildStaticSystemBlock, buildReviewDynamicBlock, ehCopiaDoHook } from "./draft";
+import { buildStaticSystemBlock, buildReviewDynamicBlock, ehCopiaDoHook } from "./draft";
 import type { GenerationContext } from "./types";
 import { modeloDe } from "../llm-config";
 
 // 021 §1.1: crítica e reescrita saem em DUAS saídas estruturadas. O `split` por marcador de texto
 // era o ponto frágil — e desde 2026-07-06 nunca chegou a ser exercitado, porque o thinking do
 // sonnet comia os 8000 tokens antes de emitir bloco de texto nenhum (181 de 181 no teto).
+// Plano 024, 2.7: a revisão devolve EDIÇÕES localizadas (trecho → substituto), não o documento
+// inteiro. Reescrever tudo era a segunda reescrita em série e cada uma deixava os próprios
+// tiques; com edição localizada o código aplica só o que o revisor apontou, e o resto do texto
+// do roteirista fica intacto por construção.
 const REVISAO_TOOL = {
   name: "registrar_revisao",
-  description: "Registra os problemas encontrados pela sala de revisão e a versão corrigida completa do roteiro.",
+  description: "Registra os problemas encontrados pela sala de revisão e as edições localizadas que os corrigem.",
   input_schema: {
     type: "object" as const,
     properties: {
@@ -18,14 +22,54 @@ const REVISAO_TOOL = {
         items: { type: "string" },
         description: "Problemas objetivos encontrados, um por item, no formato 'CHAPÉU: problema'. Curto.",
       },
-      roteiro_revisado: {
-        type: "string",
-        description: "Roteiro completo corrigido, com TODAS as seções no formato de saída exigido.",
+      edicoes: {
+        type: "array",
+        description: "Uma edição por problema que se resolve trocando um trecho. Vazio se nada precisa mudar.",
+        items: {
+          type: "object",
+          properties: {
+            trecho: { type: "string", description: "Texto EXATO copiado do roteiro (uma frase ou um parágrafo), sem mudar nada." },
+            substituto: { type: "string", description: "O texto que entra no lugar. Vazio para cortar o trecho." },
+            motivo: { type: "string", description: "Qual problema esta edição resolve, em poucas palavras." },
+          },
+          required: ["trecho", "substituto", "motivo"],
+        },
       },
     },
-    required: ["problemas", "roteiro_revisado"],
+    required: ["problemas", "edicoes"],
   },
 };
+
+export interface EdicaoRevisao {
+  trecho: string;
+  substituto: string;
+  motivo: string;
+}
+
+// Aplica as edições do revisor. Só entra edição cujo trecho aparece UMA vez, fora do HOOK e das
+// VARIAÇÕES (o hook é decidido por dado em outro agente). Trecho que não casa é descartado e
+// contado: é o sinal de que o revisor parafraseou em vez de copiar.
+export function aplicarEdicoes(doc: string, edicoes: EdicaoRevisao[]): { texto: string; aplicadas: number; descartadas: EdicaoRevisao[] } {
+  const travado = [corpoDaSecao(doc, "HOOK"), corpoDaSecao(doc, "VARIACOES_DE_HOOK")].filter((x): x is string => !!x);
+  let texto = doc;
+  let aplicadas = 0;
+  const descartadas: EdicaoRevisao[] = [];
+  for (const e of edicoes) {
+    const t = e.trecho?.trim();
+    const ocorrencias = t ? texto.split(t).length - 1 : 0;
+    // A cópia do hook abre o ROTEIRO: a 1ª ocorrência dele no corpo também é território travado.
+    if (!t || ocorrencias !== 1 || travado.some((h) => h.includes(t) || t.includes(h))) {
+      descartadas.push(e);
+      continue;
+    }
+    texto = texto
+      .replace(t, () => e.substituto.trim())
+      .replace(/[ \t]{2,}/g, " ")
+      .replace(/\n{3,}/g, "\n\n");
+    aplicadas++;
+  }
+  return { texto, aplicadas, descartadas };
+}
 
 // O que a fase degradou e por quê — 021 §0.3. Sem isto, F1 volta a acontecer em silêncio.
 export type FallbackInfo = { motivo: string; stop_reason: string | null; output_tokens: number };
@@ -104,12 +148,12 @@ export async function critiqueAndRewrite(
       messages: [
         {
           role: "user",
-          content: `Revise o roteiro montado pela sala. Checklist eliminatório (qualquer item reprovado precisa ser corrigido na reescrita):
+          content: `Revise o roteiro montado pela sala. Checklist eliminatório (qualquer item reprovado precisa de edição):
 ${ctx.playbooks.checklist ?? "(sem checklist)"}
 
-NÃO reescreva o HOOK nem as VARIACOES_DE_HOOK: eles são decididos por outro agente, com dado de mecanismo e anti-colapso. O que você devolver neles é descartado. Revise o CORPO, o COMANDO e a HEADLINE.
+Você NÃO reescreve o roteiro. Você devolve EDIÇÕES localizadas: para cada problema que se resolve trocando um trecho, copie o trecho EXATO (uma frase ou um parágrafo, letra por letra) e escreva o substituto. Substituto vazio corta o trecho. Edição cujo trecho não for cópia exata é descartada. Mexa só no que tem problema: o que não estiver numa edição fica como o roteirista escreveu.
 
-${OUTPUT_FORMAT}
+NÃO edite o HOOK nem as VARIACOES_DE_HOOK: eles são decididos por outro agente, com dado de mecanismo e anti-colapso. Edite o CORPO, o COMANDO e a HEADLINE.
 
 ROTEIRO MONTADO:
 ${draft}`,
@@ -122,27 +166,24 @@ ${draft}`,
 
   const block = res.content.find((b) => b.type === "tool_use");
   const input = block ? toolInput(block) : {};
-  const revised = typeof input.roteiro_revisado === "string" ? input.roteiro_revisado.trim() : "";
-  // A crítica por chapéu: é ela que responde "por que o revisor reescreveu isto" no rastro de
-  // proveniência (015 §4.1).
-  const critica = toolArray<string>(input, "problemas").join("\n");
-  // Guarda: reescrita truncada/ausente nunca pode zerar o roteiro — o trabalho
-  // dos especialistas (montado) segue em frente e a humanização cuida do resto.
-  // A crítica vai junto mesmo nesse caminho: é ela que explica por que a revisão falhou.
-  const ok = /##\s*ROTEIRO/i.test(revised);
-  const { texto, mexeu } = ok ? preservarHook(draft, revised) : { texto: draft, mexeu: false };
+  // A crítica por chapéu: é ela que responde "por que o revisor mexeu nisto" no rastro de
+  // proveniência (015 §4.1). As edições descartadas vão junto, marcadas.
+  const edicoes = toolArray<EdicaoRevisao>(input, "edicoes").filter((e) => typeof e?.trecho === "string");
+  const { texto, aplicadas, descartadas } = aplicarEdicoes(draft, edicoes);
+  const critica = [
+    ...toolArray<string>(input, "problemas"),
+    ...descartadas.map((e) => `[edição descartada: trecho não casou] ${e.motivo}`),
+  ].join("\n");
+  // Sem tool nenhuma é falha (o roteiro segue montado, e o motivo vai ao rastro). Tool com zero
+  // edições é revisão que aprovou o texto, não falha.
+  const ok = !!block;
   return {
     revised: texto,
-    critica,
-    // Mede se a instrução do prompt basta: se `mexeu` for raro, a guarda é cinto de segurança;
-    // se for a regra, o prompt está sendo ignorado e vale saber.
-    hookMexido: mexeu,
+    critica: `${critica}${edicoes.length ? `\n(${aplicadas} de ${edicoes.length} edições aplicadas)` : ""}`,
+    // O hook não é editável por construção (aplicarEdicoes recusa o trecho dele).
+    hookMexido: descartadas.some((e) => (corpoDaSecao(draft, "HOOK") ?? "").includes(e.trecho.trim())),
     fallback: ok
       ? null
-      : {
-          motivo: revised ? "roteiro_revisado sem seção ROTEIRO" : "sem saída da tool",
-          stop_reason: res.stop_reason ?? null,
-          output_tokens: res.usage.output_tokens,
-        },
+      : { motivo: "sem saída da tool", stop_reason: res.stop_reason ?? null, output_tokens: res.usage.output_tokens },
   };
 }

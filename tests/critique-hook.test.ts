@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { describe, it, expect } from "vitest";
-import { preservarHook } from "../lib/pipeline/critique";
+import { aplicarEdicoes, preservarHook } from "../lib/pipeline/critique";
 
 const assembled = `## HEADLINE
 Headline original
@@ -86,5 +86,29 @@ describe("preservarHook não apaga corpo", () => {
     const semCopia = "## HOOK\nO Lula assinou a medida provisória das bets na sexta.\n\n## ROTEIRO\nOs sites saem do ar em outubro.\n\nMais corpo.\n";
     const { texto } = preservarHook(montado, semCopia);
     expect(texto).toContain("O Lula assinou a medida provisória das bets na sexta.\n\nOs sites saem do ar em outubro.\n\nMais corpo.");
+  });
+});
+
+describe("aplicarEdicoes (plano 024, 2.7)", () => {
+  const doc = "## HOOK\nA China comprou o Brasil.\n\n## ROTEIRO\nA China comprou o Brasil.\n\nO fio responde a Pequim. E segue.\n\nOutro parágrafo.\n\n## COMANDO\nSegue.\n";
+  it("aplica o trecho exato e deixa o resto intacto", () => {
+    const r = aplicarEdicoes(doc, [{ trecho: "O fio responde a Pequim.", substituto: "O fio responde à China.", motivo: "clareza" }]);
+    expect(r.aplicadas).toBe(1);
+    expect(r.texto).toContain("O fio responde à China. E segue.");
+    expect(r.texto).toContain("Outro parágrafo.");
+  });
+  it("recusa trecho que não casa e trecho do hook", () => {
+    const r = aplicarEdicoes(doc, [
+      { trecho: "O fio responde a pequim", substituto: "x", motivo: "parafraseou" },
+      { trecho: "A China comprou o Brasil.", substituto: "Outro hook.", motivo: "hook" },
+    ]);
+    expect(r.aplicadas).toBe(0);
+    expect(r.descartadas).toHaveLength(2);
+    expect(r.texto).toBe(doc);
+  });
+  it("substituto vazio corta", () => {
+    const r = aplicarEdicoes(doc, [{ trecho: "Outro parágrafo.", substituto: "", motivo: "corte" }]);
+    expect(r.texto).not.toContain("Outro parágrafo.");
+    expect(r.texto).not.toMatch(/\n{3,}/);
   });
 });

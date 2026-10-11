@@ -19,6 +19,7 @@ import { critiqueAndRewrite, preservarHook } from "./critique";
 import { extrairEstudos } from "./estudos";
 import { extractFromCorrection } from "./teach";
 import { humanize } from "./humanize";
+import { medirPiso } from "./piso";
 import { derivePremissa, origemDaPremissa, teseAceitavel } from "./premissa";
 import { verificarRoteiro, type Regime, type RegistroVerificacao } from "./verificar";
 import { blockCount, dedash, deepDedash, ecosNumericos, paragrafosLongos, sequenciasLongas } from "./slop-lint";
@@ -732,7 +733,14 @@ export async function finalizarRoteiro(
   // Sequências de frases longas seguem MEDIDAS no rastro, mas não vão mais ao revisor: o teto
   // picava o texto (reclamação do time) e o estudo de outubro não achou efeito (plano 024, 0.4).
   const sequencias = sequenciasLongas(assembled);
-  const sinais = blocoSinaisRevisor(ecos, ecoHookAbertura, paragrafos);
+  // Plano 024, 1.2: o piso de clareza medido em código vai ao revisor junto dos outros sinais.
+  const piso = medirPiso(hookRes.hook, corpo);
+  const sinais = [
+    blocoSinaisRevisor(ecos, ecoHookAbertura, paragrafos),
+    piso.violacoes.length ? `PISO DE CLAREZA (medido em código, corrija com edição):\n${piso.violacoes.map((v) => `- ${v}`).join("\n")}` : "",
+  ]
+    .filter(Boolean)
+    .join("\n\n");
   // Portão de forma e procedência sobre a seção ESTUDOS do dossiê. Determinístico, sem LLM,
   // e sem abrir a URL — confirmar que a página existe e diz aquilo é a peça 3.
   const estudos = extrairEstudos(artifacts?.dossie ?? "");

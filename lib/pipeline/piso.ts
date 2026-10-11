@@ -185,3 +185,31 @@ export function aberturasRepetidas(textos: string[], min = 5): { abertura: strin
 function trecho(texto: string, i: number, n: number, pad = 35): string {
   return texto.slice(Math.max(0, i - pad), i + n + pad).replace(/\s+/g, " ").trim();
 }
+
+// ── Alvos locais para correção cirúrgica (plano 024, 2.7 e 2.8) ─────────────────────────────
+// O que o piso aponta e cabe numa FRASE vira alvo com o trecho exato: capital agindo, sigla sem
+// explicação na primeira menção, número exato demais, "Ou seja" repetido. O que é do texto
+// inteiro (pouca virada, tamanho) não vira alvo local: vai ao revisor como sinal.
+export interface AlvoPiso {
+  label: string;
+  match: string;
+}
+export const TETO_ALVOS_PISO = 6;
+
+export function alvosDoPiso(corpo: string): AlvoPiso[] {
+  const frases = dividirFrases(corpo);
+  const out: AlvoPiso[] = [];
+  const add = (label: string, frase: string | undefined) => {
+    if (frase && !out.some((a) => a.match === frase)) out.push({ label, match: frase });
+  };
+  for (const f of frases)
+    if (metonimias(f).length) add('capital no lugar do país: diga o país ("a China", "os Estados Unidos", "o governo")', f);
+  for (const sigla of siglasSemAposto(corpo))
+    add(`"${sigla}" aparece sem dizer o que é: cole a função na primeira menção, ou use só a função`, frases.find((f) => new RegExp(`\\b${sigla}\\b`).test(f)));
+  const exatos = frases.filter((f) => (f.match(NUMERO) ?? []).some(exato));
+  if (exatos.length > PISO.numerosExatos)
+    for (const f of exatos.slice(PISO.numerosExatos)) add("número exato demais para a fala: arredonde (\"mais de 25 mil\", \"quase 2 bilhões\")", f);
+  const ouSeja = frases.filter((f) => /^ou seja\b/i.test(f));
+  for (const f of ouSeja.slice(PISO.ouSeja)) add('"Ou seja" repetido: diga a consequência direto, sem a muleta', f);
+  return out.slice(0, TETO_ALVOS_PISO);
+}
