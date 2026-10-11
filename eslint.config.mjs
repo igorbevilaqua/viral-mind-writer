@@ -15,6 +15,8 @@ const eslintConfig = defineConfig([
     // Artefatos de handoff: untracked do git, mas ainda no disco.
     "sistema-de-roteiro-multiagente/",
     "clientes-preferencias.html",
+    // Scripts de análise dos estudos (plano 024): rodam à parte, não entram no app.
+    "docs/**",
   ]),
 ]);
 
