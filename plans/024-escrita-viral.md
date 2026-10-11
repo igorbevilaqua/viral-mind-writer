@@ -320,3 +320,22 @@ D = C + playbooks em `docs/escrita-2026-10/playbooks/` (movimento no lugar da fr
 Ainda falta:
 - Paráfrase do hook: c5 e h1 não repetem mais a frase, mas a abertura do corpo diz de novo a mesma ideia com outras palavras. O detector só pega o literal. Os dois hooks têm três frases e já carregam conteúdo de corpo.
 - Frase abrindo com "E o" / "E a" em 80% dos roteiros (casa: 30% e 13%). Vem da doutrina "costure" (2.6); não é frase prescrita, é a costura virando tique.
+
+### 9.2 Braço E (11/10/2026): expressão coloquial sim, carimbo não; hook até 40 palavras
+
+E = D com a correção do Igor (as expressões coloquiais voltam; cada uma no máximo uma vez por roteiro) + hook até 40 palavras + costura dentro da frase. Hook regerado. 15 pautas, US$ 21,53.
+
+| mesmas 15 pautas (% roteiros) | C | D | E | 20 humanos de topo* |
+|---|---|---|---|---|
+| "Ou seja" | 87 | 0 | 47 | 45 |
+| "Enquanto todo mundo" | 33 | 0 | 33 | 5 |
+| "A resposta" | 27 | 0 | 33 | 5 |
+| "Como é que" | 33 | 0 | 27 | 0 |
+| "Pra você ter ideia" | 40 | 0 | abaixo de 20 | 5 |
+| frases abrindo com "E" (por roteiro) | 4,7 | 5,6 | 4,4 | 2,4 |
+| hook repetido (literal ou paráfrase) | 4 de 15 | 2 de 15 (paráfrase) | 0 | |
+| palavras do hook (média / máx.) | 35 / 54 | 35 / 54 | 33 / 38 | |
+
+\* Os 20 roteiros humanos das pautas h*, no CRM, em qualquer posição da frase (o placar conta só abertura de frase).
+
+Leitura: "Ou seja" chegou na taxa dos humanos de topo. A paráfrase do hook sumiu (as aberturas de c5, h1 e h5 continuam a história). Ficam acima do humano: "Enquanto todo mundo", "A resposta", "Como é que" (5 a 6 vezes a taxa humana) e "E" abrindo frase (quase o dobro). O limite por roteiro não controla isso, porque o excesso está ENTRE roteiros: o mesmo cliente recebe a mesma expressão toda vez. Remédio candidato: mostrar ao roteirista as expressões dos últimos roteiros do cliente, como o anti-colapso do hook já faz com mecanismos.
