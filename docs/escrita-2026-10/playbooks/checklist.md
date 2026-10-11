@@ -88,7 +88,7 @@ Preferidos: somar um dado que eleva a aposta; o grupo agindo como "eles"; frase 
 Os fatos não podem ser listados sem conexão. Cada bloco responde "e então?" ou "mas por quê?".
 Aprovado: A empresa perdeu 40% em bolsa porque o CEO foi investigado. Mas ninguém esperava que a investigação revelaria algo ainda maior.
 Reprovado: A empresa perdeu 40% em bolsa. O CEO tem 53 anos. A sede é em SP.
-Alvos que seguram até o fim: uma virada a cada dois ou três parágrafos (mais de uma a cada 100 palavras não soma), pular o tempo morto em vez de contar ano a ano, marcar a virada com o fato que muda a história, ao menos uma pergunta completa (com verbo) no corpo. Expressão-moldura ("Ou seja,", "Pra você ter ideia,", "Enquanto todo mundo", "Até que", "Anos depois,", "Como é que"): no máximo UMA no roteiro inteiro; duas ou mais reprova.
+Alvos que seguram até o fim: uma virada a cada dois ou três parágrafos (mais de uma a cada 100 palavras não soma), pular o tempo morto em vez de contar ano a ano, marcar a virada com o fato que muda a história, ao menos uma pergunta completa (com verbo) no corpo. Expressões coloquiais ("Ou seja,", "Pra você ter ideia,", "Enquanto todo mundo", "Até que", "Anos depois,", "Como é que") são bem-vindas quando cabem; a MESMA expressão duas vezes no roteiro reprova.
 
 **CONCLUSÃO**
 Fórmulas e a meta de cada uma no playbook de conclusão. Tamanho seguro: 16 a 35 palavras. A moral explícita fecha 46% dos vídeos da casa e derruba comentários.

@@ -41,7 +41,7 @@ valeu)
 2. Personagem em situação desfavorável
 3. Decisão contraintuitiva - “todos chamaram de louco”
 4. Escalada com dados concretos
-5. Fecho no caso: contraste entre o óbvio que todo mundo fazia e o contrário que o personagem fez (com as palavras do caso, não com molde), frase-síntese do caso ou o estado atual do personagem. Lição explícita só se for a própria decisão contraintuitiva, em uma frase
+5. Fecho no caso: contraste entre o óbvio que todo mundo fazia e o contrário que o personagem fez ("Enquanto todo mundo..." é uma das formas; varie), frase-síntese do caso ou o estado atual do personagem. Lição explícita só se for a própria decisão contraintuitiva, em uma frase
 Fundamento psicológico
 Ativa auto-eficácia vicária Bandura): ao ver alguém semelhante superar um
 obstáculo, o espectador atualiza a crença sobre o que ele próprio é capaz de
@@ -974,8 +974,8 @@ Tamanho
 - Ritmo real de fala: 3 palavras por segundo (450 palavras dão cerca de 150 segundos).
 
 O que funciona no corpo (movimentos, não frases)
-A medida vem do banco de prova de 10/2026: dada ao modelo como frase, a expressão vira carimbo ("Ou seja" abriu frase em 93% dos roteiros, "Enquanto todo mundo" em 39%; na casa, 17% e 2%). O que ajuda é o MOVIMENTO, não a expressão: faça-o com as palavras do próprio roteiro. As expressões-moldura ("Ou seja,", "Pra você ter ideia,", "Enquanto todo mundo", "Até que", "Anos depois,", "Como é que") somam no máximo UMA por roteiro, e o padrão é nenhuma.
-- Depois do fato mais forte, dizer o que ele muda para o bolso, o país ou o mercado (OR 1,30, 17 de 20 clientes). Direto, sem moldura.
+"Ou seja,", "Pra você ter ideia,", "Enquanto todo mundo", "Até que", "Anos depois,", "Como é que" são fala natural e dão o tom coloquial da casa: use quando couberem. O que deu errado no banco de prova de 10/2026 foi outro: dadas como ordem, apareceram em quase todo roteiro, no mesmo lugar ("Ou seja" em 93% dos roteiros; na casa, 17%). O que ajuda é o MOVIMENTO, e o mesmo movimento cabe em várias formas: varie entre os roteiros. Cada expressão no máximo uma vez por roteiro, e nenhuma é obrigatória.
+- Depois do fato mais forte, dizer o que ele muda para o bolso, o país ou o mercado (OR 1,30, 17 de 20 clientes). Com "Ou seja,", "Na prática," ou direto: varie.
 - Número grande demais para sentir ganha comparação com algo que o brasileiro conhece (OR 1,25).
 - Nomes próprios: 7 ou mais a cada 100 palavras (OR 1,20; em Negócios e Dinheiro). Troque "uma empresa chinesa" por Geely.
 - Exatamente uma data, no ponto de virada (OR 1,18). As outras viram tempo relativo, dito com as palavras do caso.

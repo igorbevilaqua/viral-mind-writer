@@ -18,7 +18,7 @@ Sem meta declarada no pedido, a meta é viralizar.
 
 | meta | fecho | efeito |
 |---|---|---|
-| viralizar | **Contraste: o óbvio que todo mundo fazia contra o contrário que o personagem fez**, com as palavras do caso (os topos variam a forma; molde fixo vira carimbo) | OR 1,44, replica; YouTube 1,86, TikTok 1,37; vale em Negócios (1,95) e Dinheiro; em Tecnologia, não (0,70) |
+| viralizar | **Contraste: o óbvio que todo mundo fazia contra o contrário que o personagem fez**, ("Enquanto todo mundo [fazia o óbvio], [personagem] [fez o contrário]" é uma das formas; os topos variam) | OR 1,44, replica; YouTube 1,86, TikTok 1,37; vale em Negócios (1,95) e Dinheiro; em Tecnologia, não (0,70) |
 | viralizar | **Eco do hook:** hook e conclusão dividem 20% ou mais das palavras de conteúdo (o objeto, o número, o lugar) | OR 1,28, replica; TikTok 1,48; vale em Dinheiro e Negócios, neutro em Tecnologia |
 | viralizar | **Escala global: "o mundo inteiro", "do planeta"** | OR 1,33; não use em Dinheiro (0,88) |
 | viralizar (hipótese) | **Revisão de crença: "[Crença] nem sempre [é verdade]. Às vezes, [o achado da história]."** | qualquer "nem" na conclusão: OR 1,54, replica; o molde exato tem só 23 roteiros |
@@ -32,7 +32,7 @@ Regra de convivência com o comando: pergunta sim, pedido não. A conclusão pod
 
 ## Exemplos reais de topo
 
-- Contraste: "Enquanto todo mundo procura natureza intocada em lugares distantes, Manaus escondeu uma floresta de verdade dentro de um shopping." (Rodrigo Waughan, TikTok, coef 142). O contraste é o fato (floresta no shopping contra a natureza distante), não a palavra "Enquanto": abra do jeito que o caso pedir.
+- Contraste: "Enquanto todo mundo procura natureza intocada em lugares distantes, Manaus escondeu uma floresta de verdade dentro de um shopping." (Rodrigo Waughan, TikTok, coef 142). O contraste é o fato (floresta no shopping contra a natureza distante); o "Enquanto" é uma das formas de dizê-lo.
 - Eco do hook: hook "O mundo tem exatamente 40 dias até o petróleo acabar." e conclusão "Neste momento o mundo inteiro está acompanhando de perto o que vai acontecer nas próximas horas." (Fernando Pereira, TikTok, coef 3.661)
 - Frase-síntese: "E foi assim que a marca que dominou os recreios brasileiros por décadas chegou ao fim." (Franklin Tomich, Instagram, coef 62)
 - Virada final, dita como afirmação com "mas": "O Bompreço morreu para o público, mas o império da família só cresceu." (Cadu Neiva, Instagram, coef 740)
@@ -54,7 +54,7 @@ Regra de convivência com o comando: pergunta sim, pedido não. A conclusão pod
 
 Reescrita: "A lição é clara: quem blinda a sua base, constrói um império inquebrável." vira "O mercado inteiro corria atrás de cliente novo. [A empresa da história] fez o caminho contrário e blindou quem já comprava, e é por isso que ela ainda está de pé." (troque pelos fatos do próprio roteiro).
 
-A medida vem do banco de prova de 10/2026: dada ao modelo como frase, a expressão vira carimbo ("Ou seja" abriu frase em 93% dos roteiros, "Enquanto todo mundo" em 39%; na casa, 17% e 2%). O que ajuda é o MOVIMENTO, não a expressão: faça-o com as palavras do próprio roteiro. As expressões-moldura ("Ou seja,", "Pra você ter ideia,", "Enquanto todo mundo", "Até que", "Anos depois,", "Como é que") somam no máximo UMA por roteiro, e o padrão é nenhuma.
+"Ou seja,", "Pra você ter ideia,", "Enquanto todo mundo", "Até que", "Anos depois,", "Como é que" são fala natural e dão o tom coloquial da casa: use quando couberem. O que deu errado no banco de prova de 10/2026 foi outro: dadas como ordem, apareceram em quase todo roteiro, no mesmo lugar ("Ou seja" em 93% dos roteiros; na casa, 17%). O que ajuda é o MOVIMENTO, e o mesmo movimento cabe em várias formas: varie entre os roteiros. Cada expressão no máximo uma vez por roteiro, e nenhuma é obrigatória.
 
 ## Por payoff (ver playbook de payoff)
 

@@ -224,9 +224,15 @@ export function alvosDoPiso(corpo: string, hook: string | null = null): AlvoPiso
   const exatos = frases.filter((f) => (f.match(NUMERO) ?? []).some(exato));
   if (exatos.length > PISO.numerosExatos)
     for (const f of exatos.slice(PISO.numerosExatos)) add("número exato demais para a fala: arredonde (\"mais de 25 mil\", \"quase 2 bilhões\")", f);
-  // Expressões que o estudo de outubro achou nos topos e que, prescritas, viraram carimbo
-  // (plano 024 §9): somadas, no máximo uma por roteiro.
-  const molduras = frases.filter((f) => /^(ou seja|pra você ter ideia|enquanto todo mundo|até que|anos depois|como é que)\b/i.test(f));
-  for (const f of molduras.slice(PISO.ouSeja)) add('moldura repetida ("Ou seja", "Até que", "Enquanto todo mundo"...): diga direto, sem a muleta', f);
+  // Expressões coloquiais que o estudo de outubro achou nos topos. Uma de cada é tom de conversa
+  // (pedido do Igor, 11/10); a MESMA repetida no roteiro é muleta.
+  const vistas = new Set<string>();
+  for (const f of frases) {
+    const m = f.match(/^(ou seja|pra você ter ideia|enquanto todo mundo|até que|anos depois|como é que)\b/i);
+    if (!m) continue;
+    const chave = m[1].toLowerCase();
+    if (vistas.has(chave)) add(`"${m[1]}" repetido no roteiro: nesta segunda vez, diga de outro jeito`, f);
+    vistas.add(chave);
+  }
   return out.slice(0, TETO_ALVOS_PISO);
 }

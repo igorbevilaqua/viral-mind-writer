@@ -166,7 +166,7 @@ CLAREZA é a família que o time mais reclama: quem ouve uma vez não pode preci
 - capital no lugar do país → diga o país ou o governo pelo nome.
 - sigla ou nome sem explicação → cole o que ele é na mesma frase ("a CPFL, que distribui a luz de metade de São Paulo"), ou troque pelo que ele é.
 - número exato demais → arredonde como se fala ("mais de 25 mil", "quase 2 bilhões"); não invente número novo.
-- moldura repetida ("Ou seja", "Até que", "Enquanto todo mundo"...) → diga a consequência, a comparação ou a virada direto, sem a expressão.
+- expressão repetida ("Ou seja" pela segunda vez etc.) → mantenha o sentido e diga de outro jeito; a primeira ocorrência fica.
 - frase que repete o hook → o espectador acabou de ouvir aquilo: escreva a frase que vem DEPOIS dele, puxando a ideia adiante com informação nova.
 
 RITMO E PARÁGRAFO são outra família e pedem outra correção:

@@ -35,11 +35,11 @@ O texto escrito tolera omissão porque o olho reconstrói. A fala não: a boca p
 
 ## Perguntas
 Faça **pelo menos uma pergunta completa, com verbo**, no corpo: ela ajuda a viralização (OR 1,21) e os comentários (1,23). Roteiro sem nenhuma pergunta perde comentários (0,78). O antigo teto de "uma pergunta por roteiro" saiu. Nunca a pergunta elíptica.
-- Bom: "E por que uma das maiores varejistas do país deixou a dívida chegar nesse ponto?" / "Quem ia pagar essa conta, se o governo não pagasse?" (varie a forma: pergunta que começa sempre igual vira carimbo)
+- Bom: "E por que uma das maiores varejistas do país deixou a dívida chegar nesse ponto?" / "Quem ia pagar essa conta, se o governo não pagasse?" / "Como é que uma das maiores varejistas do país chega nesse ponto?" (varie a forma entre roteiros)
 
 ## Princípios positivos
 - **Especificidade de nome vence número.** Densidade de números não muda nada; o que funciona é nome próprio (pessoa, empresa, cidade: 7 ou mais a cada 100 palavras do corpo, OR 1,20, em Negócios e Dinheiro) e número traduzido. Troque "uma empresa chinesa", "um empresário", "uma cidade do Nordeste" por Geely, Luiz Seabra, Caruaru.
-- **Traduza o número.** Logo depois do fato mais forte, diga o que ele muda para o bolso, o país ou o mercado (OR 1,30). Quando o número for grande demais para sentir, compare com algo que o brasileiro conhece (1,25). A tradução é o que funciona, não a moldura que a anuncia: diga a consequência direto ("Isso é mais do que o Brasil inteiro gasta com merenda num ano").
+- **Traduza o número.** Logo depois do fato mais forte, diga o que ele muda para o bolso, o país ou o mercado (OR 1,30). Quando o número for grande demais para sentir, compare com algo que o brasileiro conhece (1,25). Formas que a casa usa: "Ou seja,", "Na prática,", "Isso quer dizer que", "Pra você ter ideia," ou a consequência dita direto ("Isso é mais do que o Brasil inteiro gasta com merenda num ano"). Varie: a forma que aparece em todo roteiro vira assinatura de máquina.
 - **Uma data, no ponto de virada** (exatamente um ano citado: OR 1,18). Linha do tempo com várias datas não ajuda: troque as demais por "anos depois", "meses depois".
 - **No corpo, narre em 3ª pessoa.** "Você" frequente no corpo derruba a retenção final (OR 0,55). O personagem faz, o país sofre; o "você" entra na conclusão, onde gera comentário.
 - Uma ideia por frase, mas a RELAÇÃO entre as ideias tem que ser dita. Frase com vírgula demais não se resolve fatiando: subordine.
@@ -48,7 +48,7 @@ Faça **pelo menos uma pergunta completa, com verbo**, no corpo: ela ajuda a vir
 
 ## Frases que ajudam e frases que derrubam
 
-A medida vem do banco de prova de 10/2026: dada ao modelo como frase, a expressão vira carimbo ("Ou seja" abriu frase em 93% dos roteiros, "Enquanto todo mundo" em 39%; na casa, 17% e 2%). O que ajuda é o MOVIMENTO, não a expressão: faça-o com as palavras do próprio roteiro. As expressões-moldura ("Ou seja,", "Pra você ter ideia,", "Enquanto todo mundo", "Até que", "Anos depois,", "Como é que") somam no máximo UMA por roteiro, e o padrão é nenhuma. A força de cada movimento também varia: traduzir e comparar número não ajudam em Dinheiro; a enumeração tem 51 roteiros; pular tempo e marcar a virada movem a retenção no Instagram, não a viralização.
+"Ou seja,", "Pra você ter ideia,", "Enquanto todo mundo", "Até que", "Anos depois,", "Como é que" são fala natural e dão o tom coloquial da casa: use quando couberem. O que deu errado no banco de prova de 10/2026 foi outro: dadas como ordem, apareceram em quase todo roteiro, no mesmo lugar ("Ou seja" em 93% dos roteiros; na casa, 17%). O que ajuda é o MOVIMENTO, e o mesmo movimento cabe em várias formas: varie entre os roteiros. Cada expressão no máximo uma vez por roteiro, e nenhuma é obrigatória. A força de cada movimento também varia: traduzir e comparar número não ajudam em Dinheiro; a enumeração tem 51 roteiros; pular tempo e marcar a virada movem a retenção no Instagram, não a viralização.
 
 | movimentos que ajudam | efeito |
 |---|---|
