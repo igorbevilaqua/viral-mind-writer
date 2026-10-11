@@ -304,3 +304,19 @@ Leitura:
 - Os playbooks de outubro viram fórmula: "Ou seja" (93% em B, 85% em C), "pra você" (49/41%), "enquanto todo" (39/29%), "até que" (39% em B). Causa: style_guide v5, storytelling v3, conclusao v1 e checklist v4 dão a frase pronta como ordem ("abra a frase com 'Ou seja,'", molde "Enquanto todo mundo [...]") e o limite ("paleta, não carimbo") vem depois. Corrigir antes de ativar: descrever a função, não a frase.
 - Hook repetido em C (c5, h1, h5): com o hook pronto, o corpo abre repetindo a última frase dele. `ehCopiaDoHook` não corta porque o bloco é só parte do hook dividida em parágrafo próprio.
 - Redator truncava em 8000 tokens: 1 em A, 14 em B, 9 em C (FONTES perdidas, corpo curto, C/h8 saiu só com o hook). Corrigido em ae47484 (16000). Os truncados ficaram no placar: penaliza B e C, não A.
+
+### 9.1 Braço D (11/10/2026): molduras como função e gancho repetido
+
+D = C + playbooks em `docs/escrita-2026-10/playbooks/` (movimento no lugar da frase) + molduras somadas no máximo uma + frase que repete o hook vira alvo do humanizador (reescreve, não corta). 15 pautas, reusando premissa, dossiê e hook da C (`--montante runs/C --com-hook`), sem juiz. US$ 12,04 (C nas mesmas 15: US$ 18,40).
+
+| mesmas 15 pautas | C | D |
+|---|---|---|
+| "Ou seja" abrindo frase (% roteiros) | 87 | **0** |
+| "pra você" / "enquanto todo" / "como é" (%) | 40 / 33 / 33 | **0 / 0 / 0** |
+| hook repetido literal na abertura (%) | 27 | **0** |
+| números por 100 palavras | 2,86 | 2,83 |
+| viradas por 100 palavras | 0,74 | 0,60 |
+
+Ainda falta:
+- Paráfrase do hook: c5 e h1 não repetem mais a frase, mas a abertura do corpo diz de novo a mesma ideia com outras palavras. O detector só pega o literal. Os dois hooks têm três frases e já carregam conteúdo de corpo.
+- Frase abrindo com "E o" / "E a" em 80% dos roteiros (casa: 30% e 13%). Vem da doutrina "costure" (2.6); não é frase prescrita, é a costura virando tique.
