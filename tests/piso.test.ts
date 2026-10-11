@@ -104,3 +104,12 @@ describe("alvos locais do piso", () => {
     expect(frasesQueRepetemOHook(null, corpo)).toEqual([]);
   });
 });
+
+describe("hook longo", () => {
+  test("acima de 40 palavras reprova no lint do hook", async () => {
+    const { hookLint } = await import("@/lib/pipeline/hook-mechanisms");
+    const longo = "A InHouse Market já tem mil e oitocentas lojas sem nenhum funcionário dentro, e o salário que ela não paga é o que menos importa nessa conta. O que tá matando o supermercado comum é o produto que falta na prateleira.";
+    expect(hookLint(longo).join()).toMatch(/palavras/);
+    expect(hookLint("O Ratinho virou paraguaio no papel. Só que a Receita tem uma regra contra esse atalho.")).toEqual([]);
+  });
+});

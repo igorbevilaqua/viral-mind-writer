@@ -55,7 +55,7 @@ Candidato é eliminado automaticamente se:
 - Contém travessão ou ponto e vírgula.
 - Você mesmo não consegue nomear qual mecanismo está usando.
 - Apresenta o TEMA em vez do IMPACTO.
-- Passa de 4 frases.
+- Passa de 4 frases ou de 40 palavras. O hook abre a história, não conta o começo do corpo: o que explica vai para o corpo, que é escrito depois dele e começa onde ele para.
 
 Especificidade é a régua: nome próprio > categoria · lugar exato > "o Brasil" · idade > "jovem" · "acabou de" > data. Número exato não separa hook bom de ruim nos roteiros da casa; nome, lugar e idade separam.
 

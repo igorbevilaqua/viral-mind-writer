@@ -69,6 +69,8 @@ export function contarFrases(hook: string): number {
 }
 
 // Devolve os motivos de reprovação. Vazio = passou.
+export const MAX_PALAVRAS_HOOK = 40;
+
 export function hookLint(hook: string): string[] {
   const motivos: string[] = [];
   const t = (hook ?? "").trim();
@@ -78,6 +80,10 @@ export function hookLint(hook: string): string[] {
   if (/;/.test(t)) motivos.push("ponto e vírgula");
   const n = contarFrases(t);
   if (n > MAX_FRASES) motivos.push(`${n} frases (máximo ${MAX_FRASES})`);
+  // Estudo de outubro: acima de 40 palavras faladas o resultado cai. Com o hook escrito antes do
+  // corpo (plano 024, 2.4) ele passou a carregar o começo do corpo, e o corpo o repetia.
+  const palavras = t.split(/\s+/).length;
+  if (palavras > MAX_PALAVRAS_HOOK) motivos.push(`${palavras} palavras (máximo ${MAX_PALAVRAS_HOOK})`);
   return motivos;
 }
 
