@@ -1,0 +1,2322 @@
+[
+ {
+  "par": "P154",
+  "gabarito": "B",
+  "vencedor": "B",
+  "confianca": 1,
+  "motivos": [
+   "Os dois hooks perdem (A abre com \"Essa\" e B com \"Todo mundo\", sem nome próprio), mas B fica no caso com uma história concreta (a filha e as compras) e um fecho de estado atual, enquanto A termina em lição de moral genérica (\"você nunca foi o usuário\") e tem tom de dica para o espectador.",
+   "Os dois hooks abrem sem nome próprio e falam de privacidade de forma genérica, mas o A tem uma ponte mais direta com o dia a dia do brasileiro (o celular \"ouvindo\") e fecha no caso, com a filha e o rastro de compras. O B abre com \"Essa\", usa \"você\" e termina em lição de moral (\"você nunca foi o usuário, foi o produto\")."
+  ]
+ },
+ {
+  "par": "P053",
+  "gabarito": "A",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "B abre com nome próprio e conflito (Apple declara guerra à OpenAI), tem briga com lados nomeados e fecha no caso (disputa na Justiça), enquanto A abre com \"A criadora do ChatGPT\", tem hook com \"2027\" em algarismo e fecho com reflexão genérica sobre o futuro.",
+   "O roteiro A abre com nome próprio e conflito entre duas empresas (Apple vs. ChatGPT) e fecha no caso, com a disputa na Justiça, enquanto o B abre sem nome, usa o ano em algarismo e fecha com uma reflexão genérica do tipo \"ponto que ninguém discute\"."
+  ]
+ },
+ {
+  "par": "P034",
+  "gabarito": "A",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "B tem ponte direta com o Brasil e com o bolso do brasileiro (americanos comprando a bolsa daqui, casas de aposta) e toma lado, enquanto A é um \"fim dos EUA\" estrangeiro, com hook sem nome próprio e fecho de lição de moral (\"você precisa diversificar\").",
+   "A tem ponte direta com o Brasil e com o bolso do espectador (americanos comprando a bolsa brasileira, casas de aposta) e um hook com conflito de lados, enquanto B é uma história estrangeira com hook sem nome (\"O império...\"), \"pode\", \"você\" e fecho de lição de moral com \"você precisa\"."
+  ]
+ },
+ {
+  "par": "P062",
+  "gabarito": "B",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "O hook de B abre com nome próprio (\"A China acabou de criar...\") no formato \"[Nome] acabou de [fato]\" e traz empresa e produto nomeados, enquanto A abre com \"Donos de pets enlutados\" sem nome próprio e fecha com uma moral genérica sobre a IA.",
+   "O hook de A abre com um nome próprio (\"A China acabou de criar...\") no formato \"[Nome] acabou de [fato]\", que é o padrão mais forte, enquanto B abre com \"Donos de pets enlutados\", sem nome, e fecha com lição de moral (\"isso prova como a IA...\")."
+  ]
+ },
+ {
+  "par": "P020",
+  "gabarito": "A",
+  "vencedor": "empate",
+  "confianca": 0,
+  "motivos": [
+   "O roteiro A trata de um tema brasileiro que mexe com o bolso, a queda do status do médico, e abre com uma tese forte e um fecho que fica no caso. O B abre com número, \"1 MILHÃO\" e \"2035\", traz fecho de dica e lição (\"vai ser essencial\", \"quem fizer isso vai sair na frente\"), e nenhum dos dois tem hook com nome próprio, mas B perde mais nos demais critérios.",
+   "O hook de A abre com \"O Brasil\", tem ponte direta com o país e o bolso de quem assiste (USP e AMB como fontes), enquanto B abre com um conceito sem nome próprio, narra a origem em ordem cronológica (\"Em 1980...\") e fecha com lição de moral sobre \"você\", embora o fecho de A também tenha tom de conselho."
+  ]
+ },
+ {
+  "par": "P004",
+  "gabarito": "B",
+  "vencedor": "empate",
+  "confianca": 0,
+  "motivos": [
+   "Os dois hooks perdem (A abre com \"Esse\" e usa \"bilionário\" no título, B abre com \"Essa\" e tem origem em ordem cronológica), mas A tem um nome próprio (Ilson Mateus) logo no corpo e uma história brasileira de superação com fecho no caso, enquanto B conta a origem em ordem (\"Tudo começou\", \"nasceu\") e fecha com lição de moral (\"nunca precisa competir no preço\"); a vantagem de A é pequena porque ela também tem ano em algarismo e origem em ordem.",
+   "A tem ponte direta com o Brasil (orgulho nordestino, com a China como rival/investidor de fora) e fecho \"Enquanto os concorrentes..., Edson...\" que fica no caso, enquanto B abre com \"Esse cara\", é superação pura e termina com lição genérica, embora A também comece com \"Essa\" e conte a origem em ordem."
+  ]
+ },
+ {
+  "par": "P072",
+  "gabarito": "B",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "A abre com nome próprio e conflito (governo de São Paulo contra o El Niño) e fecha no caso, enquanto B abre com \"Cuidado\", fala \"você\", promete vantagem ao espectador e termina com lição de moral (\"fique atento\").",
+   "B abre com nome próprio (\"O governo de São Paulo declarou guerra ao El Niño\") e tem conflito nomeado, além de fechar no caso com o estado atual da operação; A abre com \"Cuidado\", fala com \"você\" e fecha com moral (\"fique atento\"), padrões que perdem."
+  ]
+ },
+ {
+  "par": "P233",
+  "gabarito": "B",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "O hook de B abre com nome próprio (André Mendonça) e traz um conflito com os dois lados nomeados (Mendonça contra Lula e a PF), enquanto A abre com \"Um dos maiores bancos\" (sem nome), usa \"pode valer menos\" e fecha com lição de moral sobre confiança e dinheiro.",
+   "O roteiro A abre com nome próprio (André Mendonça) e traz conflito com lados nomeados (Mendonça contra a PF e Lula), com ponte direta com o Brasil, enquanto o B abre sem nome, com \"seu dinheiro pode valer menos\" e fecho de lição genérica."
+  ]
+ },
+ {
+  "par": "P128",
+  "gabarito": "B",
+  "vencedor": "empate",
+  "confianca": 0,
+  "motivos": [
+   "Os dois são pautas brasileiras de Joinville com hook sem nome próprio (\"Essa\" e \"Esses\"), origem contada em ordem e fecho com lição; A tem o hook um pouco menos fraco, com a \"Schulz\" nomeada logo na abertura e o fecho mais próximo do estado atual da empresa, enquanto B termina com moral sobre \"o ativo mais valioso\".",
+   "Os dois hooks perdem por abrirem com \"Esse/Essa\", e os dois fechos moralizam, então a diferença é pequena; A leva leve vantagem por tratar de uma marca brasileira conhecida (Busscar, ônibus) com orgulho nacional e nomes próprios no corpo, enquanto B conta a origem em ordem e tem hook com \"bilionário\" e número."
+  ]
+ },
+ {
+  "par": "P186",
+  "gabarito": "A",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "O roteiro A abre com nome próprio (\"A Geely acabou de declarar guerra\"), tem ponte direta com o Brasil e um investimento nacional concreto, enquanto o B abre com \"Essa\", usa o verbo \"vai\" no futuro e fecha com lição de moral (\"se você não consegue vencer a novidade...\").",
+   "O hook de B abre com nome próprio (\"A Geely acabou de declarar guerra\"), o formato \"[Nome] acabou de [fato]\", e traz um conflito ligado ao Brasil, enquanto A abre com \"Essa\", um dos padrões que perdem, e fecha com lição de moral (\"se você não consegue vencer a novidade...\")."
+  ]
+ },
+ {
+  "par": "P227",
+  "gabarito": "A",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "A abre com um nome próprio (O Brás), tem ponte direta com o Brasil e o fecho descreve o estado atual do caso, enquanto B abre com um hook genérico sobre a Black Friday, tem fecho de moral (\"quem não se adaptar vai ficar pra trás\") e CTA de ensinar o espectador.",
+   "B tem uma pauta brasileira concreta e nomeada (o Brás, maior centro popular de roupa do país) com a cena do estado atual (corredores vazios, placas de \"aluga-se\"), enquanto A usa um tema genérico (\"Black Friday morreu\"), sem nome próprio no hook, e termina em moral e CTA de ensino, embora B também feche com lição e o hook seja longo."
+  ]
+ },
+ {
+  "par": "P169",
+  "gabarito": "B",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "B tem briga com lado tomado (menino nordestino contra a elite científica) e orgulho brasileiro no formato Davi contra Golias, mesmo com hook começando por \"Esse\" e fecho com moral parcial; A abre com \"Esses\", fala \"você\" no título, tem dica/prevenção de benefício ao espectador e fecho com \"Entenda uma coisa\" e lição.",
+   "A tem conflito com lado tomado (adolescente nordestino e avô contra os \"doutores\" da elite científica) e orgulho brasileiro em Davi contra Golias, apesar do hook começar com \"Esse\"; B abre com \"Esses\", fala em \"você\", é tema de dica/vantagem e fecha com lição (\"Entenda uma coisa\"), sem nome próprio."
+  ]
+ },
+ {
+  "par": "P201",
+  "gabarito": "B",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "O hook de A abre com o nome \"Nike\" e coloca dois lados nomeados em conflito (Nike contra Hoka), enquanto B abre com \"Imagine\" sem nome próprio e conta a origem em ordem, e os dois fechos têm lição de moral, o que deixa a diferença menor.",
+   "B abre com nome próprio e conflito entre dois lados nomeados (Nike vs. Hoka) e fecha com o contraste \"enquanto a Nike... a Hoka...\", enquanto A abre com \"Imagine\", fala em \"você\", conta a história em ordem e fecha com lição de moral sobre autenticidade."
+  ]
+ },
+ {
+  "par": "P184",
+  "gabarito": "B",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "B abre com nomes próprios (NASA, Elon Musk), traz o orgulho brasileiro contra gigantes de fora (Davi contra Golias) e fecha no caso, enquanto A abre com Santa Catarina de forma genérica e termina com lição de moral (\"o talento não escolhe endereço\").",
+   "A abre com nomes fortes (NASA, Elon Musk), traz o orgulho brasileiro, o Davi contra Golias de dois meninos cearenses contra o gigantismo da NASA, e fecha no caso com contraste (\"não precisaram de equipamentos caros\"), enquanto B abre com o estado sem nome de pessoa, tem tema local menos conflituoso e termina com lição de moral (\"talento sem oportunidade...\")."
+  ]
+ },
+ {
+  "par": "P220",
+  "gabarito": "B",
+  "vencedor": "empate",
+  "confianca": 0,
+  "motivos": [
+   "O hook de A abre com nome próprio (\"A China conquistou o Brasil... BYD\"), tem ponte direta com o Brasil e traz o nome da marca no título e no corpo, enquanto B abre com \"A China está construindo...\" e fala \"no seu celular\", e fecha com pergunta ao espectador, sem ficar no caso, além de um CTA de venda; ambos têm fecho com moral, mas o de B é pior.",
+   "Os dois têm tema forte com ponte para o Brasil e abrem com \"A China\", mas A traz o Nordeste e o TikTok no celular de quem assiste, com um fecho que fica no caso (TikTok Shop movimentou 1 bilhão), enquanto B termina em lição de moral sobre controlar a cadeia e abre o corpo em ordem cronológica (BYD \"desde 2015\")."
+  ]
+ },
+ {
+  "par": "P163",
+  "gabarito": "A",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "B tem ponte direta com o Brasil (estudantes brasileiros) e um conflito de Davi contra Golias com as \"grandes empresas\", enquanto A é uma história de superação pura sobre Moçambique, com hook que não tem nome próprio, fecho moralista com \"você\" e abertura em ordem de origem.",
+   "A tem ponte direta com o Brasil (estudantes brasileiros, preços em reais, Davi contra Golias com as grandes empresas), enquanto B conta uma história estrangeira em Moçambique, com hook sem nome próprio, fecho com lição e \"você\", e abertura em ordem de origem; os dois fecham com moral, então a vantagem de A é moderada."
+  ]
+ },
+ {
+  "par": "P011",
+  "gabarito": "A",
+  "vencedor": "empate",
+  "confianca": 0,
+  "motivos": [
+   "Os dois têm tema brasileiro de bolso e hooks sem nome próprio, mas A abre com \"Os bancos\" (um ator nomeado) em um conflito com lados claros (bancos vs. governo vs. consumidor), enquanto B abre com \"O Governo\" sem conflito de lados e fecha com uma lição de moral sobre o empresário; os fechos de A e B perdem de forma parecida, então a vantagem é pequena.",
+   "Os dois têm tema brasileiro e de bolso, mas o hook de A abre com \"O Governo\" (um ator nomeado) e o fecho fica no caso, com o contraste \"enquanto o governo elimina... o empresário precisa...\". Já B abre com \"Os bancos\" genérico, usa \"pedágio\" e termina com \"pode\", \"provavelmente\" e \"pode sentir\", tudo isso um fecho fraco."
+  ]
+ },
+ {
+  "par": "P209",
+  "gabarito": "B",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "Apesar de abrir com \"Esse cara\", o A cita Twitter e Square, nomes próprios que dão concretude ao caso, enquanto o B é um hook genérico com \"você\" e \"bilionário\", sem nome próprio e com fecho que vira pergunta/reflexão, e nenhum dos dois tem ponte com o Brasil.",
+   "Os dois têm hooks fracos (A fala \"você\" e \"bilionário\", B abre com \"Esse\" e usa \"bilionário\"), mas B nomeia Twitter e Square, que são marcas reais, e conta um caso concreto. A é uma metáfora genérica de autoajuda com fecho em pergunta e lição, e sem nenhuma ponte com o Brasil."
+  ]
+ },
+ {
+  "par": "P063",
+  "gabarito": "A",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "O hook de B abre com nome próprio e conflito nomeado (China contra ChatGPT e Claude, com o governo americano preocupado), enquanto A abre com \"O Japão deu um golpe\" e fecha com \"A lição é estratégica\", que perde; o fecho de B é um CTA de venda, o que o prejudica, mas pesa menos que o hook e o fecho de moral de A.",
+   "O hook de A abre com nome próprio (\"A China acabou de humilhar o ChatGPT e o Claude\"), no formato \"[Nome] acabou de [fato]\" com conflito entre lados nomeados, enquanto B abre com \"O Japão deu um golpe\" (também nome, mas sem o mesmo conflito direto) e fecha com \"A lição é\" e moral, que costuma perder; o CTA de venda em A pesa contra, mas menos."
+  ]
+ },
+ {
+  "par": "P202",
+  "gabarito": "A",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "A tem ponte direta com o Brasil e com o orgulho nacional (a Amazônia vale mais que o PIB do Ceará e de 20 estados), enquanto B é uma história estrangeira sobre a Amazon, com hook sem conflito, \"bilionário\" e a origem contada em ordem; os dois fechos trazem lição de moral, então isso não desempata.",
+   "B tem ponte direta com o Brasil e com o orgulho nacional (a Zona Franca de Manaus comparada ao PIB de 20 estados e à economia do Ceará), o que pesa mais que a forma, apesar do fecho com lição de moral; A é uma história estrangeira sem lado, com hook sem conflito, palavra \"bilionário\" e fecho com lição."
+  ]
+ },
+ {
+  "par": "P224",
+  "gabarito": "A",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "O roteiro A abre com nome próprio e um fato direto (\"A Shopee ignorou São Paulo\"), com conflito entre Shopee e Mercado Livre e fecho que continua no caso (cercar o Brasil pelo lado de fora). O B abre com nome, mas o fecho traz \"A lição que essa história deixa é clara\", que costuma perder, e o corpo é mais genérico, com ano em algarismo e imposto.",
+   "O hook de B abre com nome próprio (\"A Shopee ignorou São Paulo\") e põe a Shopee contra o Mercado Livre, um conflito com os dois lados nomeados, enquanto A tem um hook longo e uma lição de moral explícita (\"A lição que essa história deixa é clara\") no fecho, mesmo com a ponte com o Brasil."
+  ]
+ },
+ {
+  "par": "P212",
+  "gabarito": "B",
+  "vencedor": "empate",
+  "confianca": 0,
+  "motivos": [
+   "O hook de A tem conflito (trocada pelo assistente que ela treinou), vingança e abre com o nome Mary Kay Ash no fim, enquanto B abre sem nome, com superação pura e \"bilionária\", e o fecho de A, apesar da lição, traz o estado atual da empresa, que pesa mais.",
+   "Os dois são histórias estrangeiras de superação sem ponte com o Brasil, mas A abre com \"O pai dela\" (sem \"Esse/Essa\"), nomeia a personagem logo no começo e fecha no contraste \"enquanto o mundo ensina...\", enquanto B abre com \"Essa mulher\", traz vários números e fecha com lição (\"a lição aqui foi...\", \"Você só precisa\")."
+  ]
+ },
+ {
+  "par": "P082",
+  "gabarito": "B",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "Nenhum dos dois tem ponte com o Brasil nem lado tomado, mas o A abre com \"E essa empresa acabou de provar isso\", cita a Lululemon pelo nome e fecha no caso, sem lição de moral, enquanto o B abre sem nome, conta a origem em ordem (\"nasceu em 2007\"), usa ano em algarismo e termina com \"A lição é essa\".",
+   "B abre com \"essa empresa acabou de provar\", cita a Lululemon pelo nome e fecha no estado atual da marca sem moral, enquanto A abre sem nome, conta a origem em ordem (\"nasceu em 2007\") e termina com \"A lição é essa\"."
+  ]
+ },
+ {
+  "par": "P146",
+  "gabarito": "B",
+  "vencedor": "empate",
+  "confianca": 0,
+  "motivos": [
+   "Os dois fechos são morais e os dois contam o caso em ordem, mas o A tem tema mais próximo do Brasil (o agro, orgulho do país) e cita uma empresa nomeada (AgroGalaxy) logo na abertura, enquanto o B abre o hook sem nome e traz um fecho que é regra/lição.",
+   "O roteiro A tem um conflito com personagens (o cobrador que derrubou a empresa e virou dono), uma reviravolta e uma empresa nomeada na abertura do corpo; já o B abre com o setor genérico (\"O agronegócio...\") e fecha com lição de moral, o que costuma perder, embora o fecho de A também seja uma regra moralizante."
+  ]
+ },
+ {
+  "par": "P108",
+  "gabarito": "B",
+  "vencedor": "empate",
+  "confianca": 0,
+  "motivos": [
+   "B tem ponte direta com o Brasil (maratona de dorama brasileira vs. China), tema de consumo cotidiano do espectador, e abre com contraste de dois lados nomeados, enquanto A é história só chinesa e fecha com moral (\"família é estratégia de Estado\"), embora B também termine com moral.",
+   "O hook de B abre com \"A China\", um nome próprio, e traz conflito de gênero, enquanto A abre com \"Por que\" e usa \"perigosa\"; o fecho de B fica no caso, no contraste \"enquanto o Ocidente debate... a China decidiu\", e o de A fecha com uma moral genérica sobre entretenimento."
+  ]
+ },
+ {
+  "par": "P124",
+  "gabarito": "B",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "Os dois são histórias de superação brasileira narradas em ordem de origem, mas A abre com \"Esse homem\", usa \"império\" e \"bilhão\" no hook e fecha com \"A grande lição é\", três padrões que perdem; B abre com \"Ele\" (sem \"Esse\"), nomeia Isaías Bernardes logo na abertura e fecha mais no caso, com o contraste contra os gigantes, apesar de ainda ter um trecho de moral.",
+   "O roteiro A abre com \"Ele\" e tem título com nome próprio (Chiquinho), mas o hook de B começa com \"Esse\", fala de superação pura, tem origem contada em ordem (\"Nascido em...\") e fecha com \"A grande lição é\", todos pontos que perdem; o fecho de A fica no caso (Isaías e o mercado que ele criou), mesmo com um pouco de moral no fim."
+  ]
+ },
+ {
+  "par": "P125",
+  "gabarito": "B",
+  "vencedor": "B",
+  "confianca": 1,
+  "motivos": [
+   "Os dois hooks abrem com \"Esse\" e o fecho de ambos tem lição de moral, mas B cita o Google (nome próprio) e fecha no caso com o contraste de Imbituba, de cortar grama por 5 reais a colocar Santa Catarina no topo da tecnologia, enquanto A depende de origem em ordem (\"nasceu\"), superação pura e fecho com \"se você tem um sonho\".",
+   "Os dois hooks abrem com \"Esse\" e trazem fechos com lição de moral, mas o A cita o Google (nome próprio) no hook, termina com o estado atual do personagem (Imbituba, de cortar grama a Santa Catarina no topo da tecnologia) e tem mais cara de orgulho brasileiro, enquanto o B é superação pura contada em ordem de origem (\"nasceu\") com fecho de \"se você tem um sonho\"."
+  ]
+ },
+ {
+  "par": "P048",
+  "gabarito": "A",
+  "vencedor": "empate",
+  "confianca": 0,
+  "motivos": [
+   "O roteiro A tem um hook com Coca-Cola nomeada e um conflito com o rival regional (Guaraná Jesus, orgulho brasileiro contra gigante de fora), apesar do fecho moralizante, enquanto o B abre com a origem em ordem cronológica (\"começa em 1924\"), tem tema regional mais restrito e fecho com lição de moral.",
+   "O hook de A abre com nome próprio (Coca-Cola, Guaraná Antarctica, Fruki) e coloca um Davi regional contra Golias, com orgulho gaúcho, enquanto B abre com \"Existe um lugar\", sem nome, e fecha com lição de moral (\"O que esse caso mostra é que...\")."
+  ]
+ },
+ {
+  "par": "P085",
+  "gabarito": "B",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "B abre com nome próprio num conflito com os dois lados nomeados (\"A Samsung acabou de vencer a guerra contra o Mark Zuckerberg\") e o fecho fica no caso, enquanto A abre com \"O Mark Zuckerberg quer copiar o seu maior vilão\", usa \"seu\" e termina com lição de moral sobre tecnologia e privacidade.",
+   "O hook de A abre com nome próprio (\"A Samsung acabou de vencer...\") e põe em conflito os dois lados nomeados, Samsung contra Zuckerberg, enquanto B abre com \"O Mark Zuckerberg quer copiar\" e termina com lição de moral sobre tecnologia e privacidade, que costuma perder."
+  ]
+ },
+ {
+  "par": "P142",
+  "gabarito": "B",
+  "vencedor": "empate",
+  "confianca": 0,
+  "motivos": [
+   "Os dois têm ponte direta com o Brasil, mas o hook de A abre com o contexto nacional (\"O Brasil vive uma epidemia...\") e nomeia o Habib's, e a abertura fica no caso atual; já B puxa a origem em ordem cronológica (\"voltar a 1988\") e termina com uma máxima quase de lição, enquanto o fecho de A, apesar da pergunta final, não traz moral explícita.",
+   "O hook de A abre com o nome próprio \"Habib's\" e traz um conflito concreto (60 dias contra uma dívida de 312 milhões), enquanto B abre com \"O Brasil vive uma epidemia\", sem nome, e fecha com pergunta genérica e moral sobre recuperação judicial, que tende a perder, embora A tenha a origem em ordem (\"voltar a 1988\") e fecho de lição."
+  ]
+ },
+ {
+  "par": "P219",
+  "gabarito": "B",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "O hook de A abre com nome próprio (\"A Shopee acabou de lançar\") e coloca a Shopee contra o TikTok no Brasil, e o fecho fica no caso com contraste (\"Enquanto todo mundo discute preço, a Shopee foi disputar a atenção\"); B abre com nome também, mas o fecho vira dica para quem compra e quem vende, e o corpo usa \"Pra você ter uma ideia\" e muitos números.",
+   "B abre com nome próprio no formato \"A Shopee acabou de lançar...\", tem conflito com os dois lados nomeados (Shopee vs TikTok) e fecha no caso com o contraste \"enquanto todo mundo discute preço, a Shopee...\", enquanto A tem fecho com vantagem para quem compra e vende, abertura do corpo com \"Esse\" e um número grande no hook."
+  ]
+ },
+ {
+  "par": "P045",
+  "gabarito": "B",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "B abre com nome próprio e um conflito Brasil contra gigante americana (orgulho brasileiro, Davi contra Golias) e fecha no estado atual do caso (\"enquanto a gigante americana empacota..., a 3Corações herda tudo\"), enquanto A abre com \"As marcas\" sem nome, conta a origem em ordem (\"começou vendendo pipoca\") e fecha com dica e lição de moral para o espectador.",
+   "A abre com conflito nomeado (General Mills americana vs. 3Corações brasileira, com orgulho brasileiro e lado tomado) e fecha no caso com contraste \"enquanto a gigante empacota...\", enquanto B abre sem nome próprio, conta a origem em ordem (\"começou vendendo pipoca\") e fecha com lição/dica para o espectador."
+  ]
+ },
+ {
+  "par": "P170",
+  "gabarito": "A",
+  "vencedor": "empate",
+  "confianca": 0,
+  "motivos": [
+   "O hook de A abre com um número e um lugar nomeado (Maranhão) e traz Davi contra Golias (\"humilharam os laboratórios mais caros do país\"), enquanto o hook de B abre com \"Antes de ter...\", fala \"você\" e o fecho é moralizante; os dois fechos tendem à lição, então a vantagem de A é pequena.",
+   "A abre com escola pública de Sergipe e traz nomes próprios (TrioCrim, Dom Juvêncio de Brito, Canindé de São Francisco) numa pauta de orgulho brasileiro, embora o hook tenha \"você\" e o fecho moralize; B tem hook sem nome próprio (\"Cinco estudantes\"), fecho com lição (\"nos ensina\") e um tom de superação e moral."
+  ]
+ },
+ {
+  "par": "P222",
+  "gabarito": "B",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "A tem ponte direta com o Brasil e nomeia Petz e Cobasi logo na abertura do corpo (fato concreto de fusão, R$ 7,9 bilhões), enquanto B é genérico, fala \"você\" no hook e não tem nome próprio, apesar de os dois terem o mesmo CTA de ensino.",
+   "B se apoia em empresas nomeadas (Petz e Cobasi) e em um fato concreto de fusão no Brasil, enquanto A abre com o \"você\" genérico, sem nome próprio, e fecha com tese de mercado em vez de ficar no caso."
+  ]
+ },
+ {
+  "par": "P177",
+  "gabarito": "B",
+  "vencedor": "empate",
+  "confianca": 0,
+  "motivos": [
+   "Ambos os hooks abrem sem nome próprio, mas A tem a tragédia real do RS em 2024 (ponte direta com o Brasil e o bolso do público) e um fecho que fica no caso, com o contraste \"o que governos e empresas não tinham feito\", enquanto B traz um desperdício genérico e um fecho moralizante (\"só continua existindo enquanto as pessoas aceitam\").",
+   "Nenhum dos dois hooks abre com nome próprio, mas o B começa com \"Esses\" e usa \"pode\", dois sinais que perdem, e o fecho dele termina em lição de moral (\"os problemas do futuro não vão esperar\"); o A tem ponte mais direta com o bolso e a escola pública brasileira, e seu fecho fica no caso, ainda que com um toque moralista."
+  ]
+ },
+ {
+  "par": "P014",
+  "gabarito": "B",
+  "vencedor": "empate",
+  "confianca": 0,
+  "motivos": [
+   "O Roteiro A abre com um caso brasileiro nomeado (Sertrading contra a Receita Federal, com um lado tomado) e fecha no caso, enquanto o B tem hook com \"você\", tom de dica e fecho com lição de moral (\"qualquer empresa pode fazer\"), apesar do nome Nívea no início.",
+   "A abre com um nome de marca conhecida no Brasil (\"A Nívea...\") e traz uma ponte direta com o bolso e o país (IPI, hidratante vs. desodorante), enquanto B abre sem nome (\"Um produto importado...\") e foca numa empresa desconhecida, com fecho genérico sobre risco."
+  ]
+ },
+ {
+  "par": "P111",
+  "gabarito": "B",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "O hook de B abre com nome próprio (China) e o fecho fica no caso, com o estado atual de Putian, enquanto A abre com \"As marcas de grife te enganaram… Você acha\", fala direto com \"você\", conta a origem em ordem (\"Tudo começa nos anos 1980\") e termina em vantagem para o consumidor.",
+   "O roteiro A abre com um nome próprio (China, Putian) e fecha dentro do caso, com o estado atual de Putian, enquanto o B abre com \"você\", usa \"anos 1980\" em algarismo e conta a origem em ordem (\"Tudo começa nos anos 1980\"), e seu fecho fala direto com o espectador."
+  ]
+ },
+ {
+  "par": "P171",
+  "gabarito": "A",
+  "vencedor": "empate",
+  "confianca": 0,
+  "motivos": [
+   "O roteiro A traz orgulho brasileiro contra um rival de fora (Coreia do Sul, vitória em torneio internacional), com Davi contra Golias implícito, enquanto o B abre com \"Esses\" e conta uma superação com origem em ordem, apesar do fecho em contraste \"enquanto muitos tratam…\".",
+   "Os dois hooks abrem com \"Esses/Essas\" e nenhum começa com nome próprio, então o desempate vem do resto: A traz um contraste concreto com Belo Monte, nomes de lugar e de escola, e um fecho que fica no caso (\"Enquanto muitos tratam cultura indígena e tecnologia como opostas...\"), enquanto B termina com moral genérica (\"deixa bem claro que fazer ciência... não depende de...\") e tem um hook com tom de promessa."
+  ]
+ },
+ {
+  "par": "P151",
+  "gabarito": "B",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "B trata de uma marca brasileira (Lupo) com ponte direta com o Brasil e fecha no caso, com a estratégia de Liliana, apesar de abrir com \"Essa\"; A é uma história estrangeira, abre com \"você\", usa \"1,5 bilhão\", conta a origem em ordem (\"nasceu\") e fecha com \"A lição é essa\".",
+   "A tem tema brasileiro (Lupo, empresa nacional) e fecho que fica no caso, com a tática da dívida como arma de negociação, apesar do hook com \"Essa\" e da abertura em ordem cronológica; B tem hook sem nome próprio no início e com \"você\", abertura com \"nasceu\", fecho com \"A lição é essa\" e tema gringo."
+  ]
+ },
+ {
+  "par": "P193",
+  "gabarito": "A",
+  "vencedor": "B",
+  "confianca": 1,
+  "motivos": [
+   "B abre com \"O governo\" e cita o iFood, uma marca conhecida com ponte direta com o bolso do brasileiro, e fecha no caso; A abre sem nome próprio, com \"trabalhadores autônomos\", usa \"ano\" em algarismo e termina em tom de alerta/dica ao espectador.",
+   "O hook de A abre com \"O governo acabou de aprovar\" e cita o iFood, uma marca conhecida, com ponte direta com o bolso do brasileiro, enquanto o hook de B abre com \"Os trabalhadores autônomos\" (sem nome próprio) e o fecho de B fica numa pauta mais genérica de aviso; ambos têm fechos de \"bolso\" parecidos, então a vantagem é pequena."
+  ]
+ },
+ {
+  "par": "P199",
+  "gabarito": "B",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "B tem ponte direta com o Brasil e com o bolso, com Heinz, o CEO nomeado e uma disputa com a concorrência no mercado brasileiro. A tem tema estrangeiro (China), abertura com \"você nunca mais vai olhar\", fecho moralista (\"Você não precisa...\") e CTA de autopromoção.",
+   "A tem ponte direta com o Brasil (Heinz no mercado brasileiro, R$ 50 milhões, 82% das casas) e abre com um nome próprio. B é uma história da China, com fecho de lição de moral (\"Você não precisa...\") e hook de \"lixo\" sem conflito com lado tomado, embora A também termine com uma pergunta e uma moral."
+  ]
+ },
+ {
+  "par": "P097",
+  "gabarito": "B",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "B abre com \"A China\" (nome próprio), faz ponte direta com o Brasil no fecho (políticos que não terminam obras, contraste \"no Brasil... mas na China\") e fecha no caso, enquanto A abre com \"Essa obra\", usa números e termina com lição de moral (\"A lição aqui é clara\").",
+   "A abre com nome próprio (\"A China transformou...\") e traz ponte direta com o Brasil no fecho (comparação com obras inacabadas daqui), ficando no caso; B abre com \"Essa\", usa fecho com \"A lição aqui é clara\" e não tem ponte com o Brasil."
+  ]
+ },
+ {
+  "par": "P195",
+  "gabarito": "A",
+  "vencedor": "empate",
+  "confianca": 0,
+  "motivos": [
+   "Os dois são do mesmo nicho tributário e ambos abrem o hook com nome (Xuxa e Boca Rosa), mas A tem o hook \"Se você...\" e um fecho com lição, enquanto B termina com contraste \"enquanto a maioria...\" e mantém o foco no caso. Em contrapartida, Xuxa tem mais apelo nacional e referência de orgulho brasileiro, além do número do salário em 1989 e a Globo como contraponto, o que dá uma leve vantagem a A.",
+   "O hook de A abre com nome próprio (Boca Rosa) e o fecho usa o contraste \"enquanto a maioria corre atrás de faturar mais...\", enquanto o hook de B abre com \"Se você acha\", que fala \"você\" e perde, e o fecho dele termina em lição (\"O segredo é entender as regras\"), embora ambos tenham tema de imposto com ponte para o bolso."
+  ]
+ },
+ {
+  "par": "P157",
+  "gabarito": "A",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "A abre com nome próprio (Nike), tem ponte direta com o Brasil (Seleção, Granja Comary, Ancelotti, chinelo de R$ 799) e fecha no caso, enquanto B usa hook com \"bilionário\" e \"2026\", conta a origem em ordem (\"começou em 1994\") e tem CTA e fecho mais genéricos, sem ligação com o Brasil.",
+   "B abre com nome próprio (\"A Nike gastou...\") e tem ponte direta com o Brasil (Seleção, Granja Comary, Ancelotti, chinelo de R$ 799) e fecha no caso, enquanto A tem hook com \"bilionária\" e \"2026\", conta a origem em ordem (\"começou em 1994\") e fecha falando com \"você\"."
+  ]
+ },
+ {
+  "par": "P001",
+  "gabarito": "B",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "Os dois hooks abrem com \"Esse\" e trazem tema brasileiro, mas A cai em vários padrões perdedores (hook com \"bilionário\", origem em ordem, fecho com \"A lição aqui é clara\" e \"nunca\"), enquanto B fecha no caso com contraste \"enquanto os grandes brigavam, Ximenes...\", que é o padrão vencedor, e traz o Davi contra Golias.",
+   "Os dois hooks abrem com \"Esse\" e nenhum tem nome próprio, mas A tem conflito (recusar 1 bilhão, o pequeno contra os grandes) e um fecho que fica no caso, no contraste \"enquanto os grandes brigavam, Ximenes construía raiz\", enquanto B abre com \"bilionário\", conta a origem em ordem e termina com lição de moral (\"A lição aqui é clara\", \"nunca\")."
+  ]
+ },
+ {
+  "par": "P223",
+  "gabarito": "A",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "A abre com um nome próprio (Drogasil) no título e traz um conflito com lado tomado (grandes redes contra farmácias de bairro), enquanto B abre com um hook genérico sem nome e fecha com uma moral abstrata; o fecho de A tem lição de moral, mas isso não compensa.",
+   "B tem um nome próprio forte no título (Drogasil), conflito nomeado entre grandes redes e farmácias de bairro e tema local brasileiro de bolso, embora o fecho com \"a lição é clara\" pese contra; já A abre sem nome, com hook genérico em \"Antigamente\", e fecha com moral sobre o concorrente perigoso."
+  ]
+ },
+ {
+  "par": "P230",
+  "gabarito": "B",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "O hook de B abre com nome próprio (\"O Renan Santos planeja...\") e monta um conflito com obstáculo concreto (PEC e 308 deputados), com fecho que fica no caso; já A abre com \"Eu\", promete revelação genérica e fecha com avaliação \"no geral\", sem lado tomado.",
+   "O A abre com nome próprio (\"O Renan Santos planeja...\") e traz conflito direto com um obstáculo concreto (308 deputados), enquanto o B abre com \"Eu estudei\", promete algo vago (\"me surpreendeu\") e fecha com avaliação genérica, sem lado tomado nem fecho dentro do caso."
+  ]
+ },
+ {
+  "par": "P228",
+  "gabarito": "B",
+  "vencedor": "B",
+  "confianca": 1,
+  "motivos": [
+   "Os dois têm tema brasileiro, mas B abre com o nome próprio \"Mercado Livre\" num hook de conflito (\"MORREU!\"), enquanto A é dica/vantagem para o espectador, com \"você\" no fecho e lição de moral (\"O que você precisa entender\"); B também tem fecho com lição, então a vantagem é pequena.",
+   "O hook de A abre com nome próprio (\"O Mercado Livre MORREU!\") e tem tom de conflito, enquanto o de B abre com número sem nome de pessoa e depois cai em dica prática (\"você\") e fecho com lição (\"o que você precisa entender\"), padrões que perdem; os dois são ponte com o Brasil, mas B é mais voltado a vantagem para o espectador."
+  ]
+ },
+ {
+  "par": "P153",
+  "gabarito": "A",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "O hook de A abre com nome próprio (\"A China acaba de colocar...\") e traz um fato novo, com a UBTECH nomeada logo na abertura, enquanto B abre com \"Imagine\", fala \"você\" e usa o título com \"Esse\"; o fecho de A também fica no caso (a disputa passou a ser sobre quem faz você se sentir menos sozinho), embora tenha um toque de reflexão.",
+   "B abre com nome próprio (\"A China acaba de colocar...\") no formato \"[Nome] acabou de [fato]\" e nomeia a UBTECH, enquanto A abre com \"Esse\" e \"Imagine\", fala \"você\" e tem hook sem nome, embora o fecho de B tenda à reflexão."
+  ]
+ },
+ {
+  "par": "P144",
+  "gabarito": "B",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "B abre com nome próprio e fato recente (\"A Marabraz... acabou de pedir socorro\"), com ponte direta com o bolso e o país (juros, 194 recuperações judiciais), enquanto A abre sem nome (\"Uma das cervejas...\") e fecha com \"só o tempo dirá\", queda de gigante sem lado.",
+   "O roteiro A abre com um nome próprio (Marabraz) e o formato \"[Nome] acabou de [fato]\", além de ter ponte direta com o bolso e o país (juros, 194 recuperações judiciais). O B abre sem nome no hook e fecha com \"só o tempo dirá\", embora tenha a ponte com o Brasil, e o fecho de A com pergunta ao espectador também é fraco."
+  ]
+ },
+ {
+  "par": "P028",
+  "gabarito": "B",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "B abre com nome próprio (Lula) num conflito com lado tomado e fecha no caso, com contraste entre o discurso calmo e a dívida subindo; A abre com \"O Brasil\" genérico, usa \"Pra você entender\" e fecha com lição de moral sobre o contribuinte.",
+   "A abre com um nome próprio (Lula), tem conflito com lado tomado e fecha no caso com contraste (\"enquanto o discurso continua calmo, a dívida sobe\"), enquanto B abre com \"O Brasil\" sem pessoa/empresa, usa pergunta genérica e fecha com lição de moral sobre o contribuinte."
+  ]
+ },
+ {
+  "par": "P067",
+  "gabarito": "A",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "O hook de A abre com nomes próprios (Elon Musk, China, Apple) e coloca um conflito com rivais nomeados, enquanto B abre com \"Isso é sinistro\", sem nome, e o fecho de B cai na explicação do CEO; o fecho de A tem a ponte com o Brasil, apesar de terminar em pergunta ao espectador.",
+   "B abre com nomes próprios (Elon Musk, China, Apple) e coloca um conflito de fundo contra a China, além de citar o Brasil no fecho; A abre com \"Isso é sinistro\" e \"Essa empresa\", sem nome no início, e o fecho dela é mais institucional, sobre o CEO. O fecho de B tem um tom de lição (\"quanto tempo até você...\"), o que o enfraquece, mas não compensa."
+  ]
+ },
+ {
+  "par": "P069",
+  "gabarito": "A",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "O hook de A abre com nome próprio (\"O ChatGPT acabou de declarar guerra ao seu cabeleireiro\") e monta um conflito com dois lados, enquanto o de B abre com número e \"pessoas usam errado\", sem lado nomeado, e seu fecho vira dica e venda de \"mapa do tesouro\" para o espectador.",
+   "B abre com nome próprio (\"O ChatGPT acabou de declarar guerra ao seu cabeleireiro\") e tem conflito com os dois lados nomeados, enquanto A abre com \"99% das pessoas\", promete ensinar, fala \"você\" e fecha com venda de dica/vantagem para o espectador."
+  ]
+ },
+ {
+  "par": "P179",
+  "gabarito": "B",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "O A abre com \"O Brasil\" e traz um tema de orgulho brasileiro com robôs da Bahia contra Alemanha e China (Davi contra Golias), além de nomear Caio Lucena e fechar no caso; já o B abre com \"Até a China reconheceu\", mas a abertura do corpo tem tom de superação e o fecho é uma lição de moral sobre educação.",
+   "B traz orgulho brasileiro contra rivais de fora nomeados (Alemanha e China) num Davi contra Golias, e termina no caso, enquanto A fecha com lição de moral (\"o Brasil precisa entender...\") e abre o hook sem nome próprio."
+  ]
+ },
+ {
+  "par": "P161",
+  "gabarito": "B",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "B tem ponte de orgulho brasileiro contra um rival nomeado (estudantes paraenses vencendo a China dentro de Pequim, Davi contra Golias), e abre o hook com nome próprio (\"China\"), enquanto A abre com \"Se você acha\", fala \"você\" e termina com lição de moral; o fecho de B também é moralizante, mas isso pesa menos.",
+   "A tem ponte brasileira com orgulho nacional contra um rival de fora (paraenses superando a China dentro de Pequim) e abre com \"Nem a China\", enquanto B abre com \"Se você acha\", fala \"você\", termina com lição de moral e é superação pura."
+  ]
+ },
+ {
+  "par": "P189",
+  "gabarito": "A",
+  "vencedor": "A",
+  "confianca": 3,
+  "motivos": [
+   "A abre com nome próprio e conflito China contra Corolla (lado tomado, ponte direta com o bolso do brasileiro), enquanto B abre com \"Antigamente\", conta uma queda de gigante sem lado e fecha com lição de moral.",
+   "B tem conflito com os dois lados nomeados (China contra Corolla/Japão), ponte direta com o bolso e o carro do brasileiro, e um fecho que fica no caso com o estado atual da disputa, enquanto A abre com \"Antigamente\", conta a queda de um gigante sem lado e fecha com lição de moral sobre estratégia."
+  ]
+ },
+ {
+  "par": "P101",
+  "gabarito": "B",
+  "vencedor": "empate",
+  "confianca": 0,
+  "motivos": [
+   "O roteiro A abre com \"A China proibiu\" (nome próprio + fato), traz uma ponte direta com o Brasil e o bolso do trabalhador, e tem um caso nomeado (Zhou em Hangzhou), enquanto o B usa um fecho de lição de moral com \"você\" e um tom alarmista genérico, sem lados claros.",
+   "O hook de A abre com nome próprio (\"A China acabou de decretar...\") no formato mais forte e traz um conflito claro, enquanto B abre com \"A China proibiu\" sem o \"acabou de\", puxa o fecho para uma ponte com o Brasil mais fraca (\"Você pode ser demitido\") e termina em pergunta e dica ao espectador, embora A também tenha fecho com \"você\" e moral."
+  ]
+ },
+ {
+  "par": "P060",
+  "gabarito": "A",
+  "vencedor": "empate",
+  "confianca": 0,
+  "motivos": [
+   "O hook de B abre com nome próprio e traz conflito com os dois lados nomeados (Google e Claude contra o ChatGPT), e a marca ChatGPT toca o bolso de quem assiste. O hook de A também abre com nome, mas a pauta é queda de profissão sem lado tomado, e o fecho é uma previsão com tom de lição; B tem fecho de dica, o que pesa contra, mas o conflito nomeado compensa.",
+   "B abre com \"O Google acabou de decretar...\" (nome próprio + fato) e tem ponte direta com o bolso e o emprego do brasileiro (atendentes de telemarketing), enquanto A traz um conflito nomeado (Google e Claude vs. ChatGPT) mas fecha com lição de moral (\"Você não precisa ficar preso...\") e fala diretamente com \"você\"."
+  ]
+ },
+ {
+  "par": "P094",
+  "gabarito": "A",
+  "vencedor": "B",
+  "confianca": 1,
+  "motivos": [
+   "Os dois são histórias de montadoras e da China, sem lado brasileiro forte no trecho visível. O A abre com \"Por décadas a China copiou\", que traz nome mas é uma queda de gigante sem lado, e fecha com lição de moral (\"a história prova\"). O B abre com pergunta sem nome próprio, mas fecha no caso, com o contraste \"enquanto o Ocidente debatia, a China já dominava os dois\" e a menção ao Brasil (\"E não é só no Brasil\"), o que dá uma ponte com o país.",
+   "O roteiro A tem ponte direta com o Brasil (\"E não é só no Brasil\"), um fecho que fica no caso com contraste \"enquanto o Ocidente debatia, a China já dominava\", e o hook, embora sem nome próprio, não cai nos padrões perdedores. O B abre sem nome, com \"Por décadas\", e fecha com lição de moral (\"a história prova\"), apesar de ter conflito nomeado entre Volkswagen e BYD."
+  ]
+ },
+ {
+  "par": "P027",
+  "gabarito": "B",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "O hook de A abre com um nome próprio (Haddad) e põe um político brasileiro no centro, o que tem ponte direta com o bolso do espectador, enquanto o de B abre com \"O Brasil\" sem pessoa ou conflito nomeado e fecha com apelo (\"entender deixou de ser opcional\"), mais parecido com lição de moral.",
+   "B abre com nome próprio (Haddad) num conflito com o governo, e seu fecho fica no caso; A abre com \"O Brasil\", sem nome de pessoa ou empresa, e termina com lição de \"entender deixou de ser opcional\", que perde."
+  ]
+ },
+ {
+  "par": "P191",
+  "gabarito": "B",
+  "vencedor": "B",
+  "confianca": 1,
+  "motivos": [
+   "Os dois hooks abrem com \"Esse/Essa\" e nenhum tem ponte direta com o Brasil, mas o B tem conflito (a academia contra os marombeiros), nomeia a Planet Fitness e fecha no caso, sem \"você precisa\"; já o A fala \"você\" no corpo, não nomeia ninguém e fecha com uma lição genérica sobre receita recorrente.",
+   "Os dois hooks abrem com \"Esse/Essa\" (ambos penalizados), mas A tem um conflito com lados definidos (a academia contra os marombeiros), cita a marca Planet Fitness logo na abertura e fecha no caso. B fala \"você\", é uma dica de negócio genérica e termina com lição de moral (\"Você cria uma máquina de receita recorrente\")."
+  ]
+ },
+ {
+  "par": "P065",
+  "gabarito": "B",
+  "vencedor": "empate",
+  "confianca": 0,
+  "motivos": [
+   "O hook de A tem conflito com os lados nomeados (Google, OpenAI e Anthropic contra a China) e abre com tema de rivalidade, enquanto B abre com \"A China acabou de CLONAR\" mas gira em torno de dica/vantagem tecnológica, e seu fecho termina em lição de moral (\"quem ignora, vira peça de museu\"); porém A também fecha com moral, então a vantagem é moderada.",
+   "O hook de A abre com um nome próprio e um fato (\"A China acabou de CLONAR...\"), enquanto o de B abre sem nome (\"Os maiores rivais...\"). Os dois fechos têm lição de moral e o tema é estrangeiro em ambos, então a vantagem de A é pequena."
+  ]
+ },
+ {
+  "par": "P211",
+  "gabarito": "B",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "O roteiro B tem ponte direta com o Brasil e orgulho brasileiro contra rivais de fora (Davi contra Golias com Nike, Adidas e Reebok nomeadas), e o fecho fica no caso com o contraste \"dono do território deles\", apesar do hook abrir com \"Esse\" e da moral final. O A é queda de gigante sem lado, com hook sem ponte com o Brasil e fecho de lição.",
+   "A tem ponte direta com o Brasil, orgulho brasileiro contra rivais gringos (Olympikus contra Nike, Adidas e Reebok) e fecho com contraste no caso, apesar do hook começar com \"Esse\" e da lição de moral no fim; B é queda de gigante estrangeira sem lado, com fecho moralista e CTA de venda."
+  ]
+ },
+ {
+  "par": "P102",
+  "gabarito": "B",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "B tem ponte direta com o Brasil (São Paulo vs. Pequim, celular proibido na escola) e fecha no contraste entre os dois países, enquanto A é uma história só chinesa, abre sem nome próprio no hook e termina com pergunta ao espectador.",
+   "O roteiro A tem ponte direta com o Brasil (São Paulo contra Pequim, o celular proibido aqui), um conflito com lados claros e um fecho que fica no caso com contraste (\"de um lado... do outro\"), enquanto o B é uma história só da China, com hook sem nome próprio, sem ligação com o Brasil e fecho em pergunta aberta."
+  ]
+ },
+ {
+  "par": "P115",
+  "gabarito": "A",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "O roteiro A abre com nome próprio (Elon Musk) e um conflito com os dois lados nomeados (Anthropic/Claude contra Grok e ChatGPT), enquanto o B abre com \"Essas\", fala \"você\", promete ensinar e usa \"bilionário\" e ano em algarismo, tudo que costuma perder.",
+   "B abre com nome próprio (Elon Musk) e coloca em jogo um conflito com os dois lados nomeados (Anthropic/Claude contra Grok), e fecha no caso, \"batendo de frente com o ChatGPT e o Grok\"; A abre com \"Essas\", fala \"você\", tem tom de dica/vantagem e cita \"bilionários\" e ano em algarismo."
+  ]
+ },
+ {
+  "par": "P165",
+  "gabarito": "A",
+  "vencedor": "empate",
+  "confianca": 0,
+  "motivos": [
+   "Os dois hooks perdem pontos (A abre com \"Essa\", B com \"Esta\" e número), mas A tem conflito nomeado com os dois lados (Sobral contra São Paulo e Rio), orgulho brasileiro e Davi contra Golias, enquanto B é história de superação pura numa cidade que o público dificilmente conhece e fecha com moral e contraste de origem.",
+   "Os dois têm tema brasileiro de educação, mas o A abre com um município nomeado (Trabiju) e fecha no estado atual do caso (\"cidade dos com-diplomas\"), enquanto o B abre com \"Essa\", usa um fecho com \"a lição é simples\" e traz o \"caso Sobral\" como queda de gigante sem lado claro."
+  ]
+ },
+ {
+  "par": "P071",
+  "gabarito": "B",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "O roteiro A abre com um hook sem nome próprio, que promete ensinar, fala \"você\" e usa \"Nunca\" no título, e fecha com venda e dica para o espectador; o B já abre no caso, com nomes de ferramentas (Claude vs ChatGPT, Manus AI) e briga com lado tomado, ainda que o fecho também seja de venda.",
+   "O roteiro A abre com formato de entrevista e cita ferramentas nomeadas (Claude, ChatGPT, Manus AI) com um lado tomado (\"esmagando o ChatGPT\"), enquanto o B tem hook sem nome próprio, voltado ao \"você\", com título em \"Nunca\" e tom de dica/vantagem para o espectador."
+  ]
+ },
+ {
+  "par": "P207",
+  "gabarito": "A",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "A tem ponte direta com o Brasil (marca brasileira de carvão e churrasco, tema do bolso e do dia a dia do público), apesar de o hook e o fecho (\"talvez\", lição) serem fracos, enquanto B é uma história estrangeira, com hook começando em \"Esse\", origem contada em ordem (\"cresceu no Brooklyn\") e fecho moralizante.",
+   "B tem ponte direta com o Brasil (marca brasileira que viralizou lá fora, com orgulho nacional), enquanto A é uma história americana de origem em ordem, com hook \"Esse cara\" e fecho de lição; B também tem hook fraco e fecho com \"talvez\", mas o tema pesa mais."
+  ]
+ },
+ {
+  "par": "P120",
+  "gabarito": "A",
+  "vencedor": "A",
+  "confianca": 1,
+  "motivos": [
+   "O A tem ponte direta com o Brasil (o \"Méqui\" e o Drive-Thru que o espectador conhece) e fecha no caso com o contraste \"enquanto isso, os gigantes...\", embora o hook comece com \"Essa\"; o B é uma história de empresa estrangeira, sem nome no início do hook, e fecha com uma moral implícita (\"até quem lidera precisa correr\").",
+   "Os dois hooks são fracos (A abre com \"A maior empresa\", B com \"Essa\" e \"bilionário\"), mas B tem tema mais próximo do brasileiro (o Méqui e o drive-thru) e fecha com o contraste \"enquanto isso, os gigantes...\", enquanto A fecha com lição de moral sobre quem lidera ter que correr."
+  ]
+ },
+ {
+  "par": "P043",
+  "gabarito": "A",
+  "vencedor": "empate",
+  "confianca": 0,
+  "motivos": [
+   "A abre com nomes próprios (Guilherme Benchimol, XP, Brazil Week, Nova York) e tem o orgulho brasileiro visto de fora, apesar do fecho com moral; B abre sem nome, usa números e termina com \"você\" e lição, tema de bolso mas sem lado nomeado.",
+   "Os dois têm pauta brasileira com ligação com o bolso, mas A abre com \"O Brasil acabou de bater um recorde\" (nome próprio + fato novo) e fala de fuga de milionários, tema concreto com tensão, enquanto B abre com \"O mundo inteiro quer…\", sem nome forte logo de cara, e fecha com lição de moral (\"O que essa história prova é que…\"), o que costuma perder."
+  ]
+ },
+ {
+  "par": "P038",
+  "gabarito": "A",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "B tem ponte direta com o Brasil e com o bolso (frete, juros, conta) e nomeia o conflito EUA x Irã, e o hook de A, apesar de ser sobre uma empresa nomeada, abre sem nome (\"A empresa mais valiosa\"), usa \"Essa é\" na abertura e fecha com \"Você ouviu. Agora decide\", que é uma lição de moral sem ponte com o Brasil; ainda assim, B tem pontos fracos (hook sem nome, \"você\", fecho com pergunta moralizante), o que reduz a confiança.",
+   "O roteiro A tem ponte direta com o Brasil e com o bolso (frete, juros, conta), cita EUA e Irã e fecha no estado atual do caso; apesar do hook com \"você\" e sem nome próprio, o tema pesa mais, enquanto B é uma história de empresa estrangeira, com hook sem nome e fecho de \"decida você\"."
+  ]
+ },
+ {
+  "par": "P080",
+  "gabarito": "B",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "B abre com um caso concreto e nomeado (Jonathan Gavalas, Gemini, Google) e tem conflito com os dois lados, enquanto A começa com \"Imagina seu pai\", fala direto com o espectador, usa \"bilhões\" e fecha com um alerta moralizante; B também fecha com lição, mas A perde em mais critérios.",
+   "O roteiro A abre com um caso concreto de conflito entre pessoa nomeada (Jonathan Gavalas) e empresa nomeada (Google/Gemini), com lados definidos, enquanto o B tem hook com \"Imagina seu pai\", fala direto com \"você\", usa \"bilhões\", promete tendência sem nome e fecha com projeção hipotética e moral."
+  ]
+ },
+ {
+  "par": "P057",
+  "gabarito": "A",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "O hook de A abre com nome próprio (\"O Elon Musk acabou de fazer...\") no formato \"[Nome] acabou de [fato]\", que é um dos mais fortes, enquanto B abre com uma citação sem nome e usa \"Nunca\", além de fechar com vantagem para o espectador; os dois fechos são de venda, então o hook decide.",
+   "B abre com nome próprio no formato \"[Nome] acabou de [fato]\" (Elon Musk), um nome muito mais forte para o público brasileiro; A abre com \"Nunca\", que perde, e só nomeia o Karpathy depois, além de ambos fecharem com venda do curso, o que não diferencia."
+  ]
+ },
+ {
+  "par": "P143",
+  "gabarito": "A",
+  "vencedor": "empate",
+  "confianca": 0,
+  "motivos": [
+   "Os dois falam de empresas brasileiras em crise e terminam com lição de moral, mas o hook de A abre com a ponte direta com o bolso do brasileiro (a empresa que vendeu parcelado para o país), e o título com \"Casas Bahia\" nomeia a marca logo de cara, enquanto o hook de B começa com \"Tem empresa que quebra\", sem nome e com formato genérico.",
+   "O hook de A abre com \"Tem empresa\" e não com nome próprio, mas o caso Americanas tem ponte forte com o Brasil e o escândalo traz um lado tomado (fraude), enquanto B abre com descrição genérica, tem fecho com lição de moral (\"Quem age cedo ainda tem saída\") e CTA de dica para o bolso do espectador, o que perde."
+  ]
+ },
+ {
+  "par": "P007",
+  "gabarito": "B",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "O hook de B abre com nomes de empresas (Claro, Vivo e Oi) e monta um Davi contra Golias com rivais nomeados, enquanto o de A começa com \"Esse\", promete ensinar o segredo e usa \"bilionário\"; o fecho de B tem uma lição de moral, mas o de A também tem, e o tema de B é mais forte por pegar a briga contra as gigantes.",
+   "O hook de A abre com nomes (Claro, Vivo e Oi) e põe um Davi contra Golias brasileiro, com ponte direta com o Brasil, enquanto B abre com \"Esse\", promete ensinar um \"segredo\" e usa \"bilionário\", embora o fecho de B fique melhor no caso do que o de A, que termina em lição de moral."
+  ]
+ },
+ {
+  "par": "P023",
+  "gabarito": "A",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "Os dois hooks abrem com \"Esse\", mas A tem briga com lado tomado (brasileiros contra Chagas, orgulho nacional, Nobel perdido por inveja) e fecha no caso (\"a doença ainda leva o seu nome\"), enquanto B abre em história americana em Cuba, tem payoff de superação e fecha com dica útil (\"não deixar água parada\").",
+   "Os dois hooks abrem com \"Esse\", mas B tem conflito com lado tomado (brasileiros destruíram o gênio por inveja), orgulho brasileiro e nomeia Carlos Chagas e Oswaldo Cruz na abertura, enquanto A tem um fecho que vira orientação (\"não deixar água parada\") e uma abertura sobre soldados americanos em Cuba, mais estrangeira, apesar de A ter a ponte com a dengue no Brasil."
+  ]
+ },
+ {
+  "par": "P159",
+  "gabarito": "A",
+  "vencedor": "empate",
+  "confianca": 0,
+  "motivos": [
+   "A abre com conflito entre dois lados nomeados (São Paulo contra o rival Palmeiras) e tem ponte direta com o Brasil e orgulho de celeiro de craques, embora comece com \"Esse\" e feche com lição; B abre com nome (Neymar), mas o fecho é lição de moral e o payoff é dica de negócios sem lado tomado.",
+   "O Roteiro A abre com o nome próprio Neymar, tem ponte direta com o Brasil e tema de grande apelo, apesar do fecho com lição; já o B abre com \"Esse jogador\" sem nome, narra a origem em ordem e fecha com moral sobre concorrência."
+  ]
+ },
+ {
+  "par": "P138",
+  "gabarito": "A",
+  "vencedor": "empate",
+  "confianca": 0,
+  "motivos": [
+   "Os dois hooks abrem com \"Essa\", mas A tem ponte mais direta com o Brasil e com o bolso (o governo que ignorou o problema, a comunidade e o lixo, num conflito implícito), enquanto B termina com lição de moral (\"talvez essa seja a maior lição\") e abre a origem em ordem (\"tudo começou com\"), e A ainda fecha mais no caso, com a personagem.",
+   "Os dois hooks abrem com \"Essa\" e têm fechos com lição, mas A tem pauta ligada a um desastre ambiental nacional (petróleo no Nordeste) com ponte direta com o Brasil, enquanto B é superação pura com fecho moralizante e abertura mais local."
+  ]
+ },
+ {
+  "par": "P039",
+  "gabarito": "A",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "O roteiro A tem ponte direta com o Brasil (governo brasileiro, STF, dólar, bolsas), com o Trump nomeado no hook e um conflito atual, enquanto o B é uma história estrangeira sobre Cuba, abre sem nome próprio (\"Os Estados Unidos\" é genérico) e fecha com lição de moral.",
+   "B tem ponte direta com o Brasil (governo brasileiro, STF, bolso e investimentos) e abre o corpo com nome próprio (Irã, Ormuz, Trump), enquanto A é uma história estrangeira sobre Cuba, sem lado tomado e com fecho de lição de moral."
+  ]
+ },
+ {
+  "par": "P068",
+  "gabarito": "A",
+  "vencedor": "B",
+  "confianca": 1,
+  "motivos": [
+   "Ambos abrem com \"Esse/Essa\" e são sobre gadgets de saúde sem ponte com o Brasil, mas o B fecha no caso (PGA Tour distribuindo mil pulseiras) e nomeia WHOOP e atleta, enquanto o A termina em aviso e recomendação, que é dica para o espectador e ainda diz que o Brasil não é suportado.",
+   "Os dois são dicas de gadget de saúde com hook \"Esse/Essa\" e sem ponte com o Brasil, mas o A cita nomes próprios (WHOOP, PGA Tour) e fecha no caso, enquanto o B fecha com recomendação e aviso ao espectador, o que tende a perder."
+  ]
+ },
+ {
+  "par": "P032",
+  "gabarito": "A",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "O hook de B nomeia os dois lados do conflito (Brasil, governo americano, China, EUA) e o fecho fica no caso, enquanto o hook de A é mais genérico e o fecho de A termina em dica/conselho (\"quem entender sai na frente\") com tom de lição.",
+   "O roteiro A tem hook com conflito nomeado (governo americano, China, Brasil) e um fecho que fica no caso (\"acusado de existir\"), enquanto o B abre com \"Brasil\" sem lado definido, usa números e fecha com lição de moral (\"quem entender sai na frente\")."
+  ]
+ },
+ {
+  "par": "P116",
+  "gabarito": "B",
+  "vencedor": "A",
+  "confianca": 1,
+  "motivos": [
+   "Os dois hooks abrem com \"Essa\" e nenhum tem nome próprio, mas A tem ponte direta com o Brasil (startup brasileira) e não traz lição de moral explícita, apesar do fecho ruim com \"Quem não conhecer\"/\"Não deixe\". Já B é história estrangeira (Medvi, Gallagher), com fecho em \"A lição para os negócios é clara\" e ano em algarismo.",
+   "Ambos abrem com \"Essa\" e sem nome próprio, mas B tem ponte direta com o Brasil (startup brasileira) e seu fecho fica no caso do concorrente, enquanto A é uma história só estrangeira (Medvi, Matthew Gallagher) que termina com \"a lição é clara\"."
+  ]
+ },
+ {
+  "par": "P114",
+  "gabarito": "B",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "O roteiro A conta um caso concreto com nome próprio (Martin DeVido, Claude vs ChatGPT) e uma história de IA \"fora de controle\", enquanto o B abre com \"Pouca gente sabe\", fala \"você\" e entrega dica de utilidade, além de fechar com lição de moral (\"ganha quem delega melhor\").",
+   "O roteiro A tem hook sem nome próprio (\"Pouca gente sabe\"), foco em \"você\", dica de vantagem para o espectador e fecho com lição de moral, enquanto o B conta um caso concreto com pessoa nomeada (Martin DeVido) e a IA rival do ChatGPT, mesmo com um fecho fraco."
+  ]
+ },
+ {
+  "par": "P213",
+  "gabarito": "A",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "O A abre com conflito nomeado (China vs Elon Musk), tem lado tomado e ponte com o Brasil no fecho (\"somos um dos principais mercados do AliExpress\"), enquanto o B abre com \"Enquanto você...\", fala \"você\" e fecha com pergunta moralizante (\"será que estamos preparados?\").",
+   "O B abre com nome próprio e conflito entre dois lados nomeados (China vs. Elon Musk), tem ponte com o Brasil (mercado do AliExpress) e fecha no caso, enquanto o A abre com \"Enquanto você...\", usa \"você\" no hook e termina com reflexão genérica e pedido de opinião."
+  ]
+ },
+ {
+  "par": "P218",
+  "gabarito": "A",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "Ambos têm hooks sem nome próprio e fechos moralizantes, mas B nomeia o Assaí logo na abertura do corpo e traz uma ponte direta com o Brasil e com o bolso (marca de varejo conhecida), enquanto A se apoia só em estatística genérica de farmácias.",
+   "O roteiro A abre o corpo com um nome próprio brasileiro (Assaí, marca nacional com números do Brasil), o que gera ponte direta com o país, enquanto B é uma queda de setor genérica sem nome, e ambos têm hooks sem nome e fechos com lição de moral, então o nome e o tema desempatam a favor de A."
+  ]
+ },
+ {
+  "par": "P205",
+  "gabarito": "B",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "O hook de A abre com um nome próprio (Zara), enquanto o de B abre com descrição genérica e o título com \"Esse\"; A fecha no caso com contraste \"enquanto a maioria das marcas...\", e B termina em lição genérica sobre a Costco, ambos com tema estrangeiro, mas Zara tem mais presença no Brasil.",
+   "O hook de B abre com nome próprio (\"A Zara\") e o fecho traz o contraste \"enquanto a maioria das marcas... a Zara fez\", que fica no caso; já A tem título com \"Esse\", hook sem nome próprio e fecho que vira conceito/moral (\"A Costco entendeu que...\")."
+  ]
+ },
+ {
+  "par": "P056",
+  "gabarito": "B",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "Os dois hooks abrem com \"A Apple\", mas B traz o fato \"vai enfiar uma câmera no seu ouvido\" e fecha com o preço em reais (R$ 2.500 no Brasil), o que cria ponte com o bolso do brasileiro; já A termina com \"Até agora, você ia até a IA\", fala em \"você\" e hesita com \"pode ser cancelada\".",
+   "O hook de A abre com o nome \"A Apple\" e traz um fato concreto, enquanto B usa um hook vago (\"algo bizarro\") sem nome na abertura, e o fecho de A fica no caso, com a ponte do preço em reais e a comparação com os AirPods Pro 3 no Brasil, enquanto B termina em tom de ressalva (\"pode ser cancelada\", \"vale prestar atenção\")."
+  ]
+ },
+ {
+  "par": "P036",
+  "gabarito": "A",
+  "vencedor": "empate",
+  "confianca": 0,
+  "motivos": [
+   "A abre com a comparação direta Noruega x Brasil, que traz ponte com o bolso e orgulho/conflito com um rival de fora, mesmo com fecho moralista e origem em ordem; B abre com \"Esse\" e sem nome próprio no hook, tem tema só estrangeiro (Guiana) e fecho com lição.",
+   "O roteiro A tem ponte direta com o Brasil (vizinho humilhando a China, com orgulho regional e rival nomeado) e um hook que mira um conflito, enquanto o B abre com \"Um bebê\", sem nome próprio, conta a origem em ordem (\"Tudo começou em 1969\") e fecha com lição de moral sobre disciplina."
+  ]
+ },
+ {
+  "par": "P187",
+  "gabarito": "A",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "A tem ponte forte com o Brasil (o Tijolão como orgulho nostálgico dos brasileiros), hook que abre com marca e um fecho que fica no caso, com o contraste \"enquanto Apple e Samsung competem, a Nokia encontrou...\", enquanto B abre com \"Esquece\", usa \"você\" e \"vai querer\", traz ano em algarismo e fecha com pergunta e reflexão genérica sobre mercado.",
+   "B abre com nome próprio (Nokia Tijolão), tem ponte com o Brasil (apelido brasileiro, nostalgia), cria um conflito nomeado (Nokia vs. iPhone) e fecha no caso com o contraste \"enquanto Apple e Samsung competem, a Nokia...\", enquanto A abre com \"Esquece\", fala \"você\", usa ano em algarismo e termina com pergunta reflexiva de tendência."
+  ]
+ },
+ {
+  "par": "P206",
+  "gabarito": "A",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "B abre com nome próprio (Elon Musk) e fecha no contraste \"enquanto a maioria pede mais tempo, a elite encurta o prazo\", já A abre com \"Pouca gente sabe\", promete um hack ao espectador e fecha falando de \"você\" e reprogramar o cérebro, o que perde.",
+   "O hook de A abre com nome próprio (Elon Musk) e o fecho tem o contraste \"enquanto a maioria... a elite\", enquanto B abre com \"Pouca gente sabe\", promete ensinar ao \"você\" e fecha com lição moral, embora ambos sejam dicas de produtividade sem ponte com o Brasil."
+  ]
+ },
+ {
+  "par": "P131",
+  "gabarito": "B",
+  "vencedor": "empate",
+  "confianca": 0,
+  "motivos": [
+   "Os dois hooks abrem com \"Esses\", e os dois fechos terminam em moral, então o desempate vem do tema: A tem ponte mais direta com o Brasil (mais de 300 mil quebradeiras de coco em quatro estados) e B conta a origem em ordem (\"tudo começou\"), o que costuma perder.",
+   "Os dois hooks abrem com \"Esses\" e ambos são de superação brasileira, mas A fecha no caso (o projeto premiado, com vaga na Espanha) e traz um fato concreto de orgulho nacional, enquanto B termina com lição de moral (\"a solução que muda tudo não é a mais cara\") e o hook tem a palavra \"pode\"."
+  ]
+ },
+ {
+  "par": "P204",
+  "gabarito": "B",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "B abre com nome próprio (Chiquinho Sorvetes), tem um ângulo de franquia brasileira que bate rivais nomeados (Hering e Havaianas) e fecha no estado atual do caso, embora termine com uma moral leve; A abre com \"Ele\" sem nome, conta a origem em ordem e fecha com lição de moral (\"os melhores negócios nem sempre nascem...\").",
+   "O hook de A abre com nome próprio (Chiquinho Sorvetes) e traz o orgulho brasileiro com comparação a Hering e Havaianas, enquanto B abre com \"Ele\" sem nome, conta a origem em ordem e fecha com lição de moral; A também tem moral no fecho, mas o contraste final de ranking segura o caso."
+  ]
+ },
+ {
+  "par": "P150",
+  "gabarito": "B",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "O hook de A abre com o nome próprio \"Bombril\", uma marca brasileira conhecida e com ponte direta com o público, enquanto B abre com \"Essa empresa\", que perde, e os dois fechos trazem lição, mas o de B é mais genérico (fala de recuperação judicial como arma).",
+   "O hook de B abre com um nome próprio (Bombril), uma marca brasileira muito querida, enquanto A abre com \"Essa empresa\", que costuma perder; o fecho de B tem lição de moral, mas o de A também tem, e o tema da marca popular com ponte direta com o Brasil pesa mais."
+  ]
+ },
+ {
+  "par": "P190",
+  "gabarito": "A",
+  "vencedor": "empate",
+  "confianca": 0,
+  "motivos": [
+   "O hook de A abre com \"O Brasil\" e \"China\" nomeados, em conflito com ponte direta com o país, enquanto B abre com \"A dona do ChatGPT\" (sem nome próprio), fecha com promessa e \"você/empresário\" e tem tom de vantagem para o espectador, embora o fecho de A também puxe para o consumidor.",
+   "O hook de A abre com um nome próprio (a dona do ChatGPT) e traz uma ponte direta com o Brasil e orgulho brasileiro frente ao mundo, enquanto B abre com \"O Brasil está bancando a China\" sem um fato novo nomeado e fecha com uma moral de \"quem compra sai ganhando\", que costuma perder."
+  ]
+ },
+ {
+  "par": "P135",
+  "gabarito": "A",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "Os dois hooks abrem com \"Essa/Essas\" e têm tema brasileiro, mas B traz o orgulho brasileiro contra os gringos e uma abertura com nome próprio (Karla Feu) e Davi contra Golias, enquanto A cai em fecho de lição (\"você pode estar financiando o concorrente\") e fala \"você\" na abertura e no fecho.",
+   "Os dois hooks abrem com \"Essa/Essas\" e têm tema brasileiro parecido, mas A tem o fecho mais ancorado no caso (estado atual: fábrica própria, marca no mercado) e o orgulho brasileiro com o toque \"dar inveja nos gringos\", enquanto B termina com lição de moral (\"você pode estar financiando o futuro do seu concorrente\") e usa \"pode\" no fecho e \"você\" no desfecho."
+  ]
+ },
+ {
+  "par": "P090",
+  "gabarito": "A",
+  "vencedor": "A",
+  "confianca": 1,
+  "motivos": [
+   "Os dois são sobre a Porsche, sem conflito nem lado tomado, e ambos perdem em vários critérios (A tem fecho de lição de moral e hook com \"Não compre\"; B conta a origem em ordem, com \"Tudo começou em 1952\"); o A sai na frente por ter uma ponte mais direta com o bolso e a realidade do Brasil (carro de 2 milhões de reais, liquidez, depreciação) e por abrir o hook com o nome da empresa e uma ação concreta.",
+   "Os dois hooks abrem com \"Porsche\" ou \"Como a Porsche\", e A conta a origem em ordem (\"Tudo começou em 1952\") e fecha com \"você\" falando de fidelização, tudo isso pesa contra. B tem a pauta mais próxima do bolso do espectador (2 milhões de reais parados, assinatura em vez de compra) e um hook de conflito, embora feche com \"A lição aqui é clara\", que é um ponto fraco."
+  ]
+ },
+ {
+  "par": "P148",
+  "gabarito": "B",
+  "vencedor": "empate",
+  "confianca": 0,
+  "motivos": [
+   "O hook de B abre com conflito entre dois lados nomeados (China vs. Volkswagen) e o fecho fica no caso, enquanto A abre com \"A China vendeu 125 bilhões\" mas puxa o \"você\" no título e no CTA, e fecha com um conselho do tipo \"é preciso se manter atento\".",
+   "B abre com \"A China vendeu...\" (nome próprio) e liga direto ao Brasil e ao bolso, que é o tema mais forte; já A é uma queda de gigante sem lado, com fecho moralizante e origem contada em ordem (\"entrou no país ainda nos anos 80\")."
+  ]
+ },
+ {
+  "par": "P140",
+  "gabarito": "B",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "Os dois hooks abrem com \"Esses/Essas\" sem nome próprio, mas B tem ponte direta com o bolso e a pele de mais da metade dos brasileiros, um Davi contra Golias (estudantes contra a indústria cosmética) e um fecho que fica no caso, com \"Enquanto o mundo busca... Valéria e Eduarda estavam...\", enquanto A termina em moral e é uma superação mais regional.",
+   "A tem ponte direta com o bolso e a saúde de mais da metade dos brasileiros (acne), um enquadramento de orgulho brasileiro contra a indústria cosmética e um fecho que fica no caso nomeando Valéria e Eduarda (\"enquanto o mundo busca inovação nas grandes capitais...\"), enquanto B é um tema regional restrito, abre com \"Esses\" e termina com lição de moral genérica."
+  ]
+ },
+ {
+  "par": "P137",
+  "gabarito": "B",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "A é um caso brasileiro com nome próprio (Wilian Biolo, Pareci Novo-RS) logo na abertura do corpo e fecha no caso, com o contraste dos dois mundos; B abre com \"Esse cara\", tem tom de superação sem nome nem lado e fecha com pergunta genérica.",
+   "O roteiro B nomeia o personagem (Wilian Biolo) e traz um contraste claro no hook e no fecho, que fica no caso. O A abre com \"Esse cara\", usa tema de dica/superação genérica e fecha com pergunta de moral para o espectador."
+  ]
+ },
+ {
+  "par": "P091",
+  "gabarito": "A",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "B abre com nome próprio (Elon Musk) num conflito com lado tomado contra a BYD e fecha no caso (\"o deboche de 2011 envelheceu mal\"), enquanto A abre com \"A era do lítio\", sem nome de pessoa ou empresa, é uma queda de gigante sem lado e fecha com moral sobre a barreira.",
+   "A abre com nome próprio (Elon Musk) num conflito com lados nomeados (Musk vs. BYD) e fecha no caso (\"o deboche de 2011 envelheceu mal\"), enquanto B abre sem nome, com tema de tecnologia genérica, e fecha com lição de moral sobre a barreira do carro elétrico."
+  ]
+ },
+ {
+  "par": "P052",
+  "gabarito": "A",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "A abre com \"O Brasil\" e traz uma ponte direta com o país, a China comprando ativos brasileiros e a Chinalco nomeada, enquanto B abre com \"Todo mundo\", conta a história em ordem e fecha com lição de moral (\"O que isso mostra é que...\").",
+   "B tem ponte direta com o Brasil e com o país de quem assiste (a China comprando ativos brasileiros, com Chinalco e CBA nomeadas), enquanto A abre com \"Todo mundo\" e fecha com lição de moral sobre crescer e comprar o futuro, embora o hook de B não comece com nome próprio."
+  ]
+ },
+ {
+  "par": "P117",
+  "gabarito": "B",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "B abre com nome próprio (Smart Fit), marca brasileira e com ponte direta com o Brasil, enquanto A abre com \"A Netflix que você conhece MORREU\" (fala \"você\") e fecha com lição de moral (\"ou você aplica a IA\"), embora B também termine em moral.",
+   "O hook de A abre com nome próprio (Smart Fit), tem ponte direta com o Brasil e com o bolso de quem assiste, enquanto o de B abre com \"A Netflix que você conhece\" (fala \"você\", história estrangeira), e os dois fechos caem em lição de moral, o que empata nesse quesito."
+  ]
+ },
+ {
+  "par": "P095",
+  "gabarito": "A",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "O hook de B abre com nome próprio (\"A China está decretando...\") e o fecho fica no caso com contraste \"enquanto o resto do mundo debate... a China domina\", enquanto A abre com \"O que está acontecendo\", tem corpo começando com \"Esse é\" e fecha com dado de custo, que é dica sem lado tomado.",
+   "O hook de A abre com um nome próprio (China) e traz um fato direto, e o fecho fica no caso com contraste \"enquanto o resto do mundo debate, a China domina\"; B abre com \"O que está acontecendo\" sem nome, usa a palavra \"insano\" e fecha só com números de custo, sem contraste ou lado tomado."
+  ]
+ },
+ {
+  "par": "P042",
+  "gabarito": "A",
+  "vencedor": "empate",
+  "confianca": 0,
+  "motivos": [
+   "A abre com nome próprio (Israel, CIA, Trump) e traz um conflito com lados nomeados, e o fecho fica no caso; B abre sem nome, com \"Muita gente\", conta a origem em ordem (\"voltar 75 anos\") e fecha com tom de lição (\"Entender essa história é o único jeito de você...\"), apesar da ponte com o Brasil no fim.",
+   "O roteiro A tem ponte direta com o bolso do brasileiro (petróleo, combustível e supermercado) e abre com os dois lados nomeados (EUA e Irã), enquanto o B é uma história estrangeira sobre Trump e Israel, com hook sem nome próprio logo no início e fecho que puxa para o \"você\" e para a lição."
+  ]
+ },
+ {
+  "par": "P012",
+  "gabarito": "B",
+  "vencedor": "empate",
+  "confianca": 0,
+  "motivos": [
+   "Os dois hooks abrem com \"A Virgínia\", mas A traz um ponto direto com o bolso e o Brasil (Receita Federal tributando os \"recebidos\" como seu salário) e um conflito com lado tomado, enquanto B tem \"bilionária\" no título, \"te enganou\" e um fecho com lição de moral (\"quem monta a estrutura certa lucra\"), que costumam perder.",
+   "Ambos abrem com \"A Virgínia te enganou\" (nome próprio, mas com \"você\"), porém A mantém o caso de Virgínia Fonseca e da WePink (marca brasileira nomeada) e fecha com o contraste \"enquanto os concorrentes focam em marketing…\", enquanto B vira dica tributária genérica para o espectador, com fecho de lição (\"quem tem estratégia protege o patrimônio\")."
+  ]
+ },
+ {
+  "par": "P078",
+  "gabarito": "B",
+  "vencedor": "B",
+  "confianca": 1,
+  "motivos": [
+   "Os dois são estrangeiros e sem ponte com o Brasil; A abre com \"Essa\" e fecha com o alerta e o \"você\", enquanto B abre com o nome \"Anthropic\" e tem um hook de conflito, mesmo com o fecho moralista (\"talvez valha repensar\") que o enfraquece.",
+   "O hook de A abre com nome próprio (\"A Anthropic\"), enquanto o de B abre com \"Essa IA\", padrão que perde; os dois são tema estrangeiro e fecham com moral ou alerta, então a vantagem é pequena."
+  ]
+ },
+ {
+  "par": "P066",
+  "gabarito": "B",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "O roteiro A abre com nome próprio (Mark Zuckerberg) e a Meta como empresa conhecida, e fecha no caso com o contraste \"enquanto todo mundo treina IA com texto e imagem, a Meta...\", enquanto o B abre com \"É oficial\", conta uma história japonesa sem ponte com o Brasil, começa pela origem (\"Em 2023\") e termina com lição de moral.",
+   "B abre com nome próprio (\"Mark Zuckerberg\", \"A Meta\") e fecha no caso com o contraste \"Enquanto todo mundo treina IA com texto e imagem, a Meta...\", enquanto A abre com \"É oficial: Seus pensamentos...\", é uma história estrangeira (Japão) e termina com lição de moral."
+  ]
+ },
+ {
+  "par": "P178",
+  "gabarito": "B",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "B tem uma pessoa nomeada (Agatha Barbosa), um lugar (Imperatriz/Maranhão) e um fecho que fica no caso, enquanto A abre com \"Essas\", promete benefício ao espectador (\"sua pele\") e fecha com lição de moral genérica sobre inovação.",
+   "O roteiro A abre com um personagem nomeado (Agatha, de Imperatriz) e fecha no caso, sem lição de moral, enquanto o B abre com \"Essas\", fala \"sua pele\", abre o corpo com tom genérico de dica e fecha com moral sobre inovação."
+  ]
+ },
+ {
+  "par": "P172",
+  "gabarito": "B",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "O hook de B abre com um nome próprio (Netflix) e traz um conflito claro (a empresa contra os chefes), enquanto o hook de A começa com pergunta genérica e o fecho com lição de moral e \"você\" também perde, embora o fecho de B também seja moralizante e o tema de ambos seja estrangeiro.",
+   "A abre com nome próprio (Netflix) e um fato direto, apesar do fecho com lição de moral; B abre com pergunta sem nome, conta superação pura com origem em ordem e fecha com moral (\"E você? Está desistindo...\")."
+  ]
+ },
+ {
+  "par": "P022",
+  "gabarito": "B",
+  "vencedor": "empate",
+  "confianca": 0,
+  "motivos": [
+   "B traz conflito Brasil x França (orgulho brasileiro contra rival de fora, Davi contra Golias) e fecho que termina no estado atual do Instituto (soro de graça no SUS), mesmo com hook \"Esse\" e \"você\" e abertura em ordem de origem; A tem hook \"Esse\" sem nome, superação pura e fecho com tom de moral.",
+   "Os dois hooks abrem com \"Esse\" e perdem nesse ponto, mas A ainda usa \"você\", \"nunca\" e uma abertura de origem em ordem (\"nascido em 1865\", \"trabalhou desde os nove anos\"), enquanto B tem conflito com o povo e a cidade, com ponte direta com o Brasil e um fecho que fica no caso (o nome que virou piada batiza a Fiocruz)."
+  ]
+ },
+ {
+  "par": "P175",
+  "gabarito": "A",
+  "vencedor": "A",
+  "confianca": 1,
+  "motivos": [
+   "Os dois são conselhos parentais sem ponte com o Brasil, sem nome próprio e sem lado tomado, e ambos fecham com lição de moral; A nomeia o YouTube e opõe desenhos clássicos e modernos, o que dá um conflito mais concreto, enquanto B abre com uma \"doença\" vaga e começa o corpo contando uma origem em ordem (\"na geração dos nossos avós\").",
+   "Os dois roteiros perdem pelos critérios (hook sem nome, \"seu filho\", fecho com lição de moral), mas B cita o YouTube, uma marca nomeada, e traz um conflito claro (desenhos clássicos vs. modernos) com lado tomado, enquanto A é uma doença vaga, sem nome e sem ponte direta com o Brasil."
+  ]
+ },
+ {
+  "par": "P059",
+  "gabarito": "B",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "B abre com nome próprio e conflito entre dois lados nomeados (Elon Musk x China), tem ponte direta com o Brasil e com o bolso (AliExpress, 13% dos usuários), enquanto A é uma queda de gigante sem lado, com fecho que vira conclusão genérica.",
+   "A abre com nome próprio (Elon Musk) em conflito com a China, traz ponte direta com o Brasil e o bolso do espectador (AliExpress, 13% dos usuários), enquanto B abre com \"A China\" sem lado nomeado e fecha com moral genérica sobre a China dominar a IA."
+  ]
+ },
+ {
+  "par": "P046",
+  "gabarito": "A",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "O roteiro A abre com nome próprio (\"A Volkswagen está no Brasil...\") e traz um conflito com ponte direta com o Brasil (BYD ultrapassando a Volkswagen no varejo brasileiro), enquanto o B abre com \"Essa\", conta a origem em ordem (\"começou em 2010\") e gira em torno de uma marca de luxo distante do bolso do público.",
+   "O hook de B abre com nome próprio (Volkswagen) e coloca um conflito com os dois lados nomeados e ponte direta com o mercado brasileiro, enquanto o de A abre com \"Essa\" e o corpo conta a origem em ordem (\"começou em 2010\"), apesar do fecho de A ficar no caso."
+  ]
+ },
+ {
+  "par": "P176",
+  "gabarito": "B",
+  "vencedor": "empate",
+  "confianca": 0,
+  "motivos": [
+   "O roteiro A abre com um nome próprio (Paraná) em formato \"[Nome] decidiu [fato]\" e tem ponte direta com o bolso do brasileiro, apesar do fecho moralizante, enquanto o B abre com número/ano em algarismo, sem nome no hook, e termina com uma lição de moral sobre o Nordeste.",
+   "A abre com um fato nacional forte (7 das 10 notas mil no Nordeste) e tem orgulho regional comparado ao resto do país, ao passo que B abre com \"O Paraná decidiu dar de graça\", que soa como dica/vantagem, tem fecho de lição de moral e payoff de política pública sem lado tomado."
+  ]
+ },
+ {
+  "par": "P079",
+  "gabarito": "B",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "O hook de A abre com o nome \"Donald Trump\" e traz um conflito de poder com ponte direta com quem usa o ChatGPT no Brasil, enquanto B abre com \"Os Estados Unidos\" mas fecha com uma moral genérica sobre a corrida tecnológica; o fecho de A também tem tom de lição, o que reduz um pouco a confiança.",
+   "O hook de B abre com nome próprio (Donald Trump) e coloca o ChatGPT, que é de uso cotidiano do público brasileiro, no centro do conflito, enquanto A abre com \"Os Estados Unidos\" e uma história de geopolítica mais distante, embora A tenha o lado EUA vs. China, que ajuda; os dois fechos moralizam, mas o de B mira o bolso do espectador."
+  ]
+ },
+ {
+  "par": "P164",
+  "gabarito": "A",
+  "vencedor": "empate",
+  "confianca": 0,
+  "motivos": [
+   "Os dois têm tema brasileiro (criança prodígio e escola pública do Ceará) e nenhum abre com nome próprio; A abre com \"Esse\" (ruim), mas traz o orgulho brasileiro nos EUA e um fecho que fica no caso (a escola pública rural), enquanto B abre sem nome, com \"ninguém esperava\", e conta a origem em ordem (\"morava em Santos\").",
+   "Os dois são parecidos (criança prodígio cearense, superação), mas o hook de A não abre com \"Esse\", e A tem o ângulo de orgulho do Ceará e o fecho que fica no caso, enquanto B abre com \"Esse menino\", conta a origem em ordem (\"nasceu\") e fecha numa lição sobre a escola pública."
+  ]
+ },
+ {
+  "par": "P173",
+  "gabarito": "B",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "B tem ponte direta com o Brasil (Amazonas, pirarucu, orgulho local) e fecha no caso com contraste \"enquanto todo mundo esperava...\", enquanto A é história estrangeira, abre o hook com \"Essa\" e termina com lição de moral.",
+   "A tem ponte direta com o Brasil (Manacapuru, pirarucu, Samsung Brasil), hook com tema local e fecho que fica no caso com o contraste \"enquanto todo mundo esperava...\", enquanto B é uma história estrangeira, abre com \"Essa\" e termina em lição de moral com \"você\"."
+  ]
+ },
+ {
+  "par": "P075",
+  "gabarito": "B",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "B abre com nome próprio e fato novo (\"Elon Musk declarou que vai começar os implantes\") e fecha no estado atual do caso, enquanto A abre com \"Esse cientista\" sem nome, usa \"pode\" e termina em lição de moral sobre os limites da IA.",
+   "A abre com nome próprio (Elon Musk) e um fato novo (\"vai começar os implantes\"), enquanto B abre com \"Esse cientista\" sem nome e fecha com lição de moral (\"Cabe à sociedade discutir\"), padrões que perdem."
+  ]
+ },
+ {
+  "par": "P029",
+  "gabarito": "B",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "O hook de A abre com nome próprio (\"Donald Trump quer destruir...\") e o fecho fica no caso (Trump dominou a Venezuela, está dominando o Irã), enquanto B abre com \"Primeiro foi...\" sem nome, usa \"pode\" no hook e fecha com a ponte Brasília/bolso numa pergunta aberta, que enfraquece o fecho.",
+   "O hook de B abre com nome próprio (\"Donald Trump quer...\") e aponta um conflito com lado definido, e o fecho fica no caso (\"Trump dominou a Venezuela... Cuba parece ser o próximo alvo\"), enquanto A abre com \"Primeiro foi Maduro\" sem fato direto e fecha com pergunta e ponte genérica com o bolso, sem tomar lado."
+  ]
+ },
+ {
+  "par": "P087",
+  "gabarito": "A",
+  "vencedor": "empate",
+  "confianca": 0,
+  "motivos": [
+   "A abre com nome próprio (Xiaomi) num conflito com os dois lados nomeados, tem o ângulo China contra Ocidente e um fecho que fica no caso, enquanto B, apesar de também abrir com nome e conflito, depende de rumor, tem hook mais fraco (\"ressuscitar um dispositivo esquecido\") e fecha com \"os próximos anos vão definir\", que soa como lição genérica.",
+   "Os dois hooks abrem com nome próprio e conflito entre duas gigantes, mas o A traz Apple contra Amazon, com um Mark Gurman e uma ponte mais direta com a casa de quem assiste, enquanto o B é história de chip chinês e Apple sem ligação com o Brasil e fecha com narrativa moralizante sobre \"cópia\"."
+  ]
+ },
+ {
+  "par": "P021",
+  "gabarito": "B",
+  "vencedor": "empate",
+  "confianca": 0,
+  "motivos": [
+   "Os dois hooks abrem com \"Esse médico\" e são histórias estrangeiras sem ponte com o Brasil, mas A fecha no caso com o contraste \"enquanto todo mundo insistia...\" (ainda que termine com uma moral leve), e o corpo traz o nome próprio logo no início, enquanto B fecha com lição geral sobre o sistema e usa \"Você deve estar se perguntando\" e a origem em ordem cronológica (\"Alemanha, 1929\").",
+   "Os dois hooks abrem com \"Esse médico\" e nenhum tem ponte com o Brasil, mas A tem uma cena de ação concreta e o nome Werner Forssmann logo na abertura, enquanto o fecho de B cai em lição de moral (\"No fim, é sobre isso: foco no paciente\"), que costuma perder; o fecho de A também tem um tom de lição, mas segue mais preso ao caso."
+  ]
+ },
+ {
+  "par": "P077",
+  "gabarito": "B",
+  "vencedor": "empate",
+  "confianca": 0,
+  "motivos": [
+   "Nenhum dos dois tem ponte com o Brasil nem hook que abre com nome próprio; B abre com \"Esse cara\" (padrão que perde) e fecha com um especulativo \"se ele está certo ou não\", enquanto A ao menos ancora o hook no conflito e na referência à Skynet, apesar do fecho com \"você\" e do hook sem nome.",
+   "Apesar de o hook de A abrir com \"Esse cara\", ele logo nomeia Ray Kurzweil e fecha no caso, com o estado atual do personagem, enquanto B tem hook sem nome, usa \"pode\", gira em torno de \"você\" e termina com dica/vantagem para o espectador e lição de moral."
+  ]
+ },
+ {
+  "par": "P192",
+  "gabarito": "B",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "B abre com um nome próprio (Tesla) e traz um conflito nomeado entre a marca e o Brasil, com fecho que fica no caso; A abre sem nome, fala \"seu dinheiro\", tem hook com tom de dica e fecha com \"a verdadeira lição\", que é moral.",
+   "O hook de A abre com um nome próprio (Tesla) e cria a ponte com o Brasil, e o fecho fica no caso (\"A Tesla não é cara...\"); o hook de B começa com \"É um absurdo, mas e você...\", fala \"você\" e o fecho traz \"a verdadeira lição\", o que costuma perder."
+  ]
+ },
+ {
+  "par": "P013",
+  "gabarito": "A",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "O hook de A abre com \"O governo\" (um ator nomeado) e tem ponte direta com o bolso do brasileiro, e o fecho fica no caso (o Impostômetro como retrato do país), enquanto B abre com \"O Brasil é um dos piores países\" e promete provar \"com números\", fala \"você\" e fecha vendendo serviço e vantagem para o espectador.",
+   "Os dois têm tema brasileiro ligado ao bolso, mas o hook de B abre com \"O governo\" (um ator nomeado) e traz um fato concreto de R$ 2 trilhões, enquanto A abre com \"O Brasil é um dos piores... eu vou te provar\" (promessa com \"você\") e fecha vendendo o serviço do advogado, o que enfraquece A."
+  ]
+ },
+ {
+  "par": "P006",
+  "gabarito": "A",
+  "vencedor": "empate",
+  "confianca": 0,
+  "motivos": [
+   "Os dois têm ponte forte com o Brasil e o sertão, mas o A tem uma marca nomeada (Fortlev) e um fecho que fica no caso, com contraste. O B perde por abrir sem nome, por contar a origem em ordem (\"nasceu\", \"foi embora\") e por ter payoff de superação pura. O hook do A também começa com \"Esse\" e usa \"bilionário\" no título, o que pesa contra, por isso a confiança é moderada.",
+   "A tem tema com ponte direta com o Brasil e um Davi sem escola contra o problema da seca, abre o corpo com nome próprio (Manoel Apolônio) e fecha no estado atual do personagem com contraste \"enquanto décadas de política pública...\", apesar de contar a origem em ordem; B abre com \"Esse\", usa \"bilionário\" no título e tem foco corporativo/religioso, com fecho de slogan."
+  ]
+ },
+ {
+  "par": "P127",
+  "gabarito": "B",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "A abre com \"Essa família paranaense\", que não tem nome próprio, mas o roteiro tem tema agrícola brasileiro com ponte para o país (André Maggi, soja, Mato Grosso) e fecho que fica no caso. B abre com \"Esse cara\" e tem origem em ordem (\"Em 1881... saíram da Alemanha\"), história estrangeira e fecho com lição de moral (\"cabe a você\", \"vantagem competitiva\").",
+   "Os dois hooks abrem sem nome próprio, mas o A começa com \"Esse cara\", tem fecho de lição de moral (\"cabe a você\") e conta a origem em ordem (1881, Alemanha); o B tem tema brasileiro de agro (Maggi, soja, Paraná/MT) e um fecho que fica mais no caso, apesar de também moralizar."
+  ]
+ },
+ {
+  "par": "P037",
+  "gabarito": "A",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "O hook de B abre com nome próprio (Trump) e põe um conflito com um rival nomeado (o \"maior inimigo dos EUA\"), enquanto o hook de A começa com \"Muita gente\" e usa \"pode\", que costuma perder; o fecho de B termina em pergunta com um tom de \"você\", o que é um ponto fraco, mas isso não compensa a vantagem do hook.",
+   "O roteiro A abre com nome próprio (\"Trump acabou de...\") e traz conflito com lados nomeados (EUA contra o maior inimigo), enquanto o B abre com \"Muita gente nem percebeu... pode\", sem nome, e fecha com moral genérica sobre o poder; o fecho do A, com pergunta ao espectador, é fraco, mas não compensa a vantagem do hook."
+  ]
+ },
+ {
+  "par": "P221",
+  "gabarito": "A",
+  "vencedor": "empate",
+  "confianca": 0,
+  "motivos": [
+   "Os dois hooks abrem com \"Esse cara\" e têm ponte com o Brasil, mas A fala do Mercado Livre e de Galperin, com logística brasileira, Correios e entregas em 48h. Já B é uma história de origem com a lição \"a importância de se arriscar\", embora seu contraste final com o Lehman Brothers seja bom.",
+   "Os dois hooks abrem com \"Esse cara\" e usam a mesma ponte com o Brasil (Mercado Livre), mas A tem conflito nomeado na abertura (Lehman Brothers, Galperin) e um fecho que fica no caso com o contraste \"enquanto isso\" (Lehman faliu, Mercado Livre bate recordes), embora termine com uma lição. B tem hook com número e \"dirigir\", fecho com lição de moral e ordem de origem, e perde mais pontos."
+  ]
+ },
+ {
+  "par": "P174",
+  "gabarito": "A",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "O roteiro A abre com um nome próprio (o Rio), traz um conflito concreto (o celular proibido nas escolas) e fecha no caso com o contraste \"enquanto todo mundo debatia...\", enquanto o B abre sem nome, com estatística genérica, e fecha com lição de moral sobre política pública.",
+   "B abre com nome próprio (Rio), traz uma ação concreta e o contraste \"enquanto todo mundo debatia tecnologia, o Rio removeu\", além de ponte direta com o Brasil; A abre sem nome, com tom de estatística genérica e fecho moralista, sem conflito nem lado tomado."
+  ]
+ },
+ {
+  "par": "P074",
+  "gabarito": "B",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "B abre com conflito entre nomes próprios (governo chinês, dono do Instagram, Manus) e um payoff de briga geopolítica com lado tomado, enquanto A é uma publi com hook \"Essa IA\", dica/vantagem para o espectador e fecho com lição de moral (\"a pergunta não é mais se você vai usar IA\").",
+   "A abre com conflito geopolítico entre nomes próprios (governo chinês, dono do Instagram) e tem história de briga com lado tomado, enquanto B é publi que abre com \"Essa IA\", vende dica/vantagem ao espectador e fecha com lição de moral sobre \"você\" usar IA."
+  ]
+ },
+ {
+  "par": "P149",
+  "gabarito": "B",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "B tem conflito Brasil x EUA/Trump com orgulho brasileiro contra um rival de fora (e cita Trump e Estados Unidos), apesar do hook sem nome na abertura e do fecho em pergunta; A tem hook sem nome próprio, queda de gigante sem lado e fecho com lição de moral (\"Nenhum setor está protegido...\").",
+   "A tem ponte direta com o Brasil e conflito nomeado (Brasil vs. Trump/EUA) com orgulho brasileiro e hook em \"Enquanto todo mundo X, ele Y\", enquanto B abre sem nome próprio, é queda de gigante sem lado e fecha com moral genérica, apesar de A terminar com pergunta ao espectador."
+  ]
+ },
+ {
+  "par": "P158",
+  "gabarito": "A",
+  "vencedor": "empate",
+  "confianca": 0,
+  "motivos": [
+   "O hook de B abre com conflito entre marcas nomeadas (Fiat, Volkswagen, Toyota) contra uma chinesa no Brasil, enquanto A abre com \"Essa\", usa \"impossível\" e traz um fecho com lição (\"2 jeitos de inovar\"), mesmo que ambos tenham ponte com o Brasil e que o fecho de B também seja moralizante.",
+   "B tem ponte direta com o bolso do brasileiro (comparação com os 12 km/l daqui), nomeia a Geely e fecha com contraste \"enquanto o mundo apostava em baterias, a Geely...\", embora o hook comece com \"Essa\"; A abre sem nome próprio de marca chinesa, tem fecho com moral e promete ensinar estratégia."
+  ]
+ },
+ {
+  "par": "P162",
+  "gabarito": "B",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "O hook de A não usa \"você\" nem promete ensinar, e o caso (as irmãs Toassa, Barueri, Londres) tem orgulho brasileiro e um fecho que volta ao caso, enquanto o hook de B abre com \"Se você acha...\" e termina em lição de moral dirigida ao espectador (\"a inspiração... da sua vida\").",
+   "O hook de A abre com \"Se você\" e fala \"você precisa\", e o fecho é lição de moral (\"a inspiração... pode estar dividindo o mesmo teto com você\"), todos padrões perdedores; B também tem fecho moralizante e conta a origem em ordem, mas seu hook é mais concreto e ancorado no Brasil (Barueri, Londres, cem crianças mais talentosas do mundo), embora sem nome próprio."
+  ]
+ },
+ {
+  "par": "P214",
+  "gabarito": "B",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "O hook de B abre com nomes próprios (Google e Shopee) no formato \"[Nome] acabou de [fato]\" e o fecho fica no caso, enquanto A abre com \"Uma das maiores consultorias\" sem nome, traz número em destaque e fecha com um contraste moralizante voltado ao vendedor.",
+   "O hook de A abre com nomes próprios (Google e Shopee) e anuncia um fato novo, enquanto o de B abre com \"Uma das maiores consultorias\" sem nome e fala de um número genérico; o fecho de B tem o contraste \"enquanto todo mundo\", mas termina em tom de lição e dica para o espectador."
+  ]
+ },
+ {
+  "par": "P070",
+  "gabarito": "B",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "O B abre com um nome próprio (\"O Google liberou...\") e traz uma ferramenta nomeada (Antigravity), enquanto o A abre com número, promete ensinar, fala \"você\" e termina em dica/vantagem para o espectador; ambos têm fecho fraco, mas o A perde em mais critérios.",
+   "Os dois são dicas de IA com vantagem para o espectador, mas A abre com um nome próprio (Google), cita o Antigravity e fecha no caso, enquanto B abre com número, usa \"você\", ensina e termina em lista de dicas sem nome."
+  ]
+ },
+ {
+  "par": "P182",
+  "gabarito": "A",
+  "vencedor": "B",
+  "confianca": 1,
+  "motivos": [
+   "Os dois hooks abrem com \"Essas/Esses\", sem nome próprio, e os fechos são de lição ou vantagem, então os pontos fortes e fracos se equilibram; B leva por pouco ao ligar-se a uma crise nacional atual (metanol no Brasil) que mexe com o bolso e a segurança de quem assiste, enquanto A é superação pura com fecho moralizante (\"às vezes, a solução... nasce quando alguém decide\").",
+   "A tem pauta de crise nacional atual (metanol no Brasil) com ponte direta com o bolso e a saúde de quem assiste, e o fecho fica no caso do canudo de R$ 2; B tem hook \"Essas\" sem nome, conta a origem em ordem (\"decidiram participar\", \"elas partiram para as pesquisas\") e fecha com lição de moral (\"Às vezes, a solução mais importante...\")."
+  ]
+ },
+ {
+  "par": "P145",
+  "gabarito": "A",
+  "vencedor": "A",
+  "confianca": 1,
+  "motivos": [
+   "O hook de A abre com nome próprio (\"O Madero\") e traz um contraste forte (lotado e afundado em dívidas), e o fecho fica no caso; o hook de B não abre com nome e usa \"bilionária\" (palavra que perde), e o fecho de B termina em moral genérica sobre empresas.",
+   "Os dois são casos de queda de empresa brasileira sem lado tomado, mas B abre com o nome próprio (\"O Madero...\") e traz um contraste forte no hook (lotado e afundado em dívidas), enquanto A abre com descrição genérica (\"Uma das maiores redes...\") e o fecho de A é mais moralizante (\"mostra uma coisa importante\"), embora B também tenha um fecho com lição."
+  ]
+ },
+ {
+  "par": "P215",
+  "gabarito": "A",
+  "vencedor": "empate",
+  "confianca": 0,
+  "motivos": [
+   "Os dois abrem com \"Mercado Livre\" e têm tema brasileiro de vendedor, mas o hook de B traz \"R$57 bilhões\" e \"bilhões\" (número grande) e promete efeito no bolso do espectador, além de um fecho com lição (\"A verdade é dura... quem ignorar\"), enquanto A tem um hook de afirmação nomeada sobre o Brasil e um fecho um pouco mais preso ao caso, embora ainda com tom de dica.",
+   "Os dois abrem com \"O Mercado Livre\" e têm payoff de dica para o vendedor e fecho com lição, então quase empatam; A tem a ponte mais direta com o Brasil e o bolso (R$57 bilhões investidos no país), enquanto B abre com uma construção mais vaga e fala em \"entender\", o que pesa a favor de A por pouco."
+  ]
+ },
+ {
+  "par": "P160",
+  "gabarito": "A",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "A tem ponte direta com o Brasil (\"ninguém fazendo isso no Brasil\") e a China como rival nomeada, além de um fecho que fica no caso; B é história estrangeira sem nome próprio no hook, fala em \"você\"/bolso, e termina com lição de moral.",
+   "B tem ponte direta com o Brasil (\"Por que não tem ninguém fazendo isso no Brasil?\"), cita a China como rival e fecha no caso, sem moral. A abre com \"Eu\"/\"esse copo\", fala \"você\" e fecha com lição de moral e dica ao espectador, características de roteiros perdedores."
+  ]
+ },
+ {
+  "par": "P054",
+  "gabarito": "A",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "B abre com comparações entre marcas nomeadas (Grok x Claude, Leonardo x Nano Banana) e fecha no caso, com os dois lados nomeados, enquanto A tem hook sem nome, uma pergunta vaga, e fecha com venda de curso e vantagem para o espectador (\"você ainda garante um certificado\").",
+   "O roteiro A abre com nomes próprios (Grok x Claude) e faz um confronto entre marcas nomeadas ao longo do texto, enquanto B abre sem nome, com \"Para pesquisas?\", e fecha em oferta de venda (\"37 reais\", \"não precisa saber nada\") no estilo dica/vantagem para o espectador, que perde."
+  ]
+ },
+ {
+  "par": "P210",
+  "gabarito": "A",
+  "vencedor": "A",
+  "confianca": 1,
+  "motivos": [
+   "Os dois fecham com lição de moral e têm temas gringos sem ponte direta com o Brasil, mas A abre com \"O Subway acaba de humilhar o McDonald's e o KFC\" (nome próprio + fato + conflito com lados nomeados), enquanto B usa número em algarismo (\"14 mil\") e conta a história em ordem cronológica (\"Em 2018...\").",
+   "O hook de B abre com nome próprio e conflito com os dois lados nomeados (\"O Subway acaba de humilhar o McDonald's e o KFC\"), com a estrutura \"[Nome] acabou de [fato]\"; A também abre com nome, mas traz número e termina em lição de moral, assim como B, então a vantagem é pequena."
+  ]
+ },
+ {
+  "par": "P232",
+  "gabarito": "B",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "B tem fato com nomes próprios (Eli Lilly, AtaiBeckley) e um fecho que fica no caso, enquanto A abre com \"O maior mercado financeiro\", sem nome, e tem tema estrangeiro genérico, com fecho em tom de lição.",
+   "O roteiro A abre com um nome próprio de peso (Eli Lilly, AtaiBeckley) e fecha no caso, com o contraste entre a festa clandestina e a clínica e a Eli Lilly criando a tendência, enquanto o B abre sem nome, com hook genérico e fecho que cai em conclusão moralizante (\"quem entendeu que autoestima vale...\")."
+  ]
+ },
+ {
+  "par": "P155",
+  "gabarito": "B",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "O B abre com \"O Botafogo acabou de...\" e traz um conflito com os dois clubes nomeados (Botafogo x Palmeiras), com dinheiro e dívida reais, enquanto o A abre com \"O Palmeiras te enganou\", que fala \"você\", e fecha com lição de moral sobre quem entende o processo; apesar de o fecho do B também moralizar, o hook e o tema pesam mais.",
+   "O A abre com nome próprio (\"O Botafogo acabou de...\") e tem conflito com os dois lados nomeados (Botafogo x Palmeiras) e orgulho de clube, enquanto o B abre com \"O Palmeiras te enganou\" (usa \"você\"), tem payoff de superação/redenção e fecho com lição de moral; o fecho moralizante do A pesa contra, mas menos."
+  ]
+ },
+ {
+  "par": "P031",
+  "gabarito": "A",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "O roteiro A abre com nome próprio (Vladimir Putin), tem conflito nomeado (EUA, Israel, Irã, Rússia) e fecha no caso (Ucrânia e Trump), enquanto o B abre sem nome, promete um plano, usa \"nunca\" e \"ninguém te conta\" e fecha com lição de moral.",
+   "B abre com nome próprio (Vladimir Putin) e um conflito com lados nomeados (EUA/Israel x Irã, Rússia lucrando), e o fecho fica no caso (Ucrânia, Trump), enquanto A abre com \"O mundo\" genérico, tem tom de ensinar o espectador (\"você\", \"nunca\") e fecha com lição de moral."
+  ]
+ },
+ {
+  "par": "P044",
+  "gabarito": "A",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "O hook de A abre com nome próprio (\"A dona da Johnnie Walker\"), põe um cearense contra um gigante estrangeiro (Davi contra Golias) e fecha no caso, com o vendedor ficando com a fábrica; já B abre sem nome claro, tem fecho de lição de moral e narra a origem em ordem.",
+   "B tem conflito com os dois lados nomeados (Diageo/Johnnie Walker contra o cearense Everardo Telles) e um Davi contra Golias, com um fecho que volta ao caso e mostra o estado atual dos personagens. Já A abre com \"A empresa\" sem nome próprio, conta a origem em ordem e termina com lição de moral (\"Esse é o manual...\")."
+  ]
+ },
+ {
+  "par": "P024",
+  "gabarito": "A",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "A tem ponte direta com o Brasil e um orgulho/injustiça nacional (médicos brasileiros esquecidos), apesar do hook com \"Você nunca\" e do fecho com tom moral; B abre com número, fala \"você\", não tem nome próprio nem ligação com o Brasil e fecha com lição de moral (\"nunca se esqueça\").",
+   "B tem ponte direta com o Brasil e orgulho brasileiro num contexto de guerra, com um fecho que permanece no caso (médicos voltando a um país que não os reconheceu), enquanto A é um tema genérico de saúde que abre com algarismo e \"você\" e termina em lição de moral (\"nunca se esqueça\")."
+  ]
+ },
+ {
+  "par": "P152",
+  "gabarito": "A",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "B abre com um nome próprio (Amazon) e um fato concreto de demissão, com Andy Jassy nomeado na abertura, enquanto A abre com \"O governo americano\", sem nome, sobre dados dos EUA, e termina com lição de moral e dica; os dois fechos moralizam, mas o hook de B é mais forte.",
+   "O hook de A abre com nome próprio (Amazon) e tem pauta de empresa conhecida, enquanto B abre com \"O governo americano\" genérico, usa \"50 mil brasileiros\" como promessa e traz dado estrangeiro; ambos fecham com lição, então o hook com nome decide."
+  ]
+ },
+ {
+  "par": "P129",
+  "gabarito": "A",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "B abre com a marca Caloi e uma ponte direta com o bolso e com o país (o dinheiro não fica no Brasil), além de citar a rival Monark, enquanto A abre com \"Antigamente\", conta a queda de um gigante sem lado e fecha com lição de moral (\"Entenda uma coisa\").",
+   "A abre com a Caloi (nome próprio) e liga direto ao bolso do brasileiro (o dinheiro que sai do país) e fecha no estado atual da marca, enquanto B começa com \"Antigamente\", conta a queda de um gigante sem lado e termina com lição de moral."
+  ]
+ },
+ {
+  "par": "P133",
+  "gabarito": "B",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "Os dois hooks são fracos (A sem nome e com \"pode\", B abre com \"Esse\"), mas B tem ponte direta com o Brasil e com o bolso, cita um caso nomeado (São Sebastião, Lucas) e fecha no caso com um contraste implícito contra o governo, enquanto A termina com lição de moral sobre talento e incentivo.",
+   "Os dois hooks são fracos (A abre com \"Esse\", B usa \"pode\" e número), mas A tem tema com ponte direta com o Brasil (tragédia real em São Sebastião, governo omisso, R$ 250 no bolso) e fecho que fica no caso e no personagem, enquanto B termina em lição de moral genérica (\"o que falta é incentivo\") e o tema é mais difuso."
+  ]
+ },
+ {
+  "par": "P122",
+  "gabarito": "A",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "Os dois hooks abrem com \"Esse\" e são fracos, mas A soma \"você\", conta a origem em ordem (\"chegou\", \"passou os primeiros anos\") e fecha com lição de moral, enquanto B tem orgulho regional brasileiro, estado minúsculo contra gigantes, e um fecho que fica nos números do caso, mesmo com um toque de moral no final.",
+   "Os dois hooks começam com \"Esse\" e nenhum abre com nome próprio, mas A tem tema de orgulho brasileiro, com Santa Catarina como potência industrial, e termina nos números do caso. B conta a origem em ordem (\"chegou\", \"passou os primeiros anos\"), usa \"você\" no hook e fecha com lamento e moral."
+  ]
+ },
+ {
+  "par": "P109",
+  "gabarito": "A",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "A tem ponte direta com o Brasil (China no Nordeste brasileiro, com dinheiro e território do país), enquanto B é um tema global sobre a China, com título e hook que falam \"você\" e usam \"nunca/nem percebeu\"; o fecho de A tem lição de moral, o que pesa contra, mas o tema pesa mais.",
+   "B tem ponte direta com o Brasil (China no Nordeste brasileiro, com dinheiro e país de quem assiste), enquanto A é uma história global sobre a China com hook e título que falam \"você\", embora o fecho de B tenha lição de moral, o que pesa contra."
+  ]
+ },
+ {
+  "par": "P033",
+  "gabarito": "A",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "O hook de A abre com dois países nomeados em conflito e o payoff é de orgulho brasileiro frente a EUA e China (Brasil como trunfo), enquanto B abre sem nome próprio (\"O governo brasileiro\"), conta uma queda sem lado claro e fecha com lição de moral (\"O que essa situação revela é que...\").",
+   "O hook de B abre com nomes próprios (China e Estados Unidos) e traz orgulho brasileiro diante de dois rivais de fora, com ponte direta com o Brasil e o bolso, enquanto A abre com \"O governo brasileiro\", fecha com lição de moral (\"O que essa situação revela é que...\") e conta uma queda sem lado claro."
+  ]
+ },
+ {
+  "par": "P050",
+  "gabarito": "B",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "B tem ponte direta com o Brasil (Ping Pong, recreio brasileiro), rivalidade nomeada com o Ploc e fecho que fica no caso, enquanto A é uma história americana (Topps/Push Pop) com hook sem nome, \"você\" e fecho com lição de moral.",
+   "A tem ponte direta com o Brasil (Ping Pong, Ploc, nostalgia dos recreios) e uma queda de gigante com culpada nomeada (Mondelez) e fecho que fica no caso, enquanto B é sobre um doce americano, o hook abre com \"O que aconteceu\", usa \"você\", e o fecho termina em lição de moral (\"A crise não destruiu o valor\")."
+  ]
+ },
+ {
+  "par": "P156",
+  "gabarito": "A",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "O hook de A abre com o nome \"Palmeiras\" e um fato concreto (\"acabou de fechar o semestre devendo R$124 milhões\") e o fecho fica no caso (\"mais verde do que nunca\"). B tem hook com \"você não pode\" e termina em lição de moral para o negócio do espectador (\"Isso vale direto pro seu negócio\"), padrões que perdem.",
+   "Os dois abrem com \"O Palmeiras\", mas o hook de B é \"[Nome] acabou de [fato]\" sem \"você\" nem \"pode\", e o fecho fica no caso (\"no vermelho, mas mais verde do que nunca\"), enquanto A usa \"você não pode ignorar\" e fecha com lição de moral para o negócio do espectador."
+  ]
+ },
+ {
+  "par": "P188",
+  "gabarito": "B",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "B abre com um conflito entre empresas nomeadas (Geely contra BYD) e tem ponte direta com o Brasil, enquanto o hook de A começa com \"Esquece\" sem nome próprio, o payoff é de tecnologia genérica e o fecho traz uma lição de moral sobre o que \"toda empresa\" faz.",
+   "O roteiro A abre com nome próprio (Geely) num conflito nomeado com a BYD e tem ponte direta com o mercado brasileiro, enquanto o B começa com \"Esquece os elétricos\", sem nome, promete uma tecnologia futura e fecha com lição genérica."
+  ]
+ },
+ {
+  "par": "P198",
+  "gabarito": "A",
+  "vencedor": "empate",
+  "confianca": 0,
+  "motivos": [
+   "Os dois são pautas brasileiras, mas A abre com \"Eles faturam\" (sem \"você\" e sem promessa de ensinar) e traz o contraste de \"geladeira de barco na Amazônia\", enquanto B abre com pergunta genérica, usa \"desconhecida\", conta origem em ordem (\"Tudo começou\") e fecha com lição de moral dirigida a \"você\", que é o padrão perdedor.",
+   "Os dois são sobre empresas brasileiras da Amazônia, mas A abre com a pergunta sobre vencer as maiores marcas do Brasil, um Davi contra Golias que remete a orgulho nacional, embora o hook não comece com nome próprio e o fecho traga lição de moral; B abre com \"Eles\" sem nome, usa \"Em 1942\" em algarismo, narra a origem em ordem e fecha com \"o resto é história\" e foco na solução, o que pesa mais contra."
+  ]
+ },
+ {
+  "par": "P106",
+  "gabarito": "A",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "B tem conflito EUA contra China (governo americano baniu e depois teve que recuar) e cita a DJI, com um fecho que volta ao estado atual do caso, apesar de abrir com \"Essa\"; A abre com \"A China\", mas é só uma curiosidade sem lado tomado e fecha com lição de moral (\"você dita as regras\").",
+   "O roteiro A tem conflito entre dois lados (China contra governo americano, com a DJI nomeada), enquanto o B abre com \"A China criou\" sem conflito e traz tema de curiosidade sem ponte com o Brasil, e ambos fecham com lição genérica, o que torna a diferença moderada."
+  ]
+ },
+ {
+  "par": "P118",
+  "gabarito": "B",
+  "vencedor": "empate",
+  "confianca": 0,
+  "motivos": [
+   "Os dois hooks abrem com nome próprio (Airbnb), mas o A tem conflito com o mundo/hotéis e fala de pandemia, tema mais próximo do público brasileiro, enquanto o B é origem em ordem cronológica (\"Era 2008\"), superação pura e fecho com lição de moral (\"A lição que fica é\", \"você já está atrasado\").",
+   "O hook de A abre com nome próprio (\"O Airbnb\") e traz um fato curioso e concreto, embora o fecho tenha lição de moral e a origem seja contada em ordem; B abre com \"Enquanto o mundo...\" sem nome, é um conflito difuso de queda e superação sem lado nomeado, e seu fecho moraliza com \"a sacada é\", então A leva por pouco."
+  ]
+ },
+ {
+  "par": "P103",
+  "gabarito": "A",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "O hook de A abre com um app chinês e já nomeia Elon Musk, iFood e Uber (ponte direta com o Brasil e conflito com o Ocidente), enquanto B abre com uma pergunta sem nome próprio e fecha com um tom meio moralizante (\"O que essa história mostra\"), embora A também tenha defeitos (origem em ordem, fecho com lição).",
+   "B abre com nomes próprios (WeChat, Elon Musk, Uber, iFood) e liga a história a marcas que o brasileiro conhece, e o fecho fica no caso (Musk tentando replicar), mesmo com a origem em ordem (\"Tudo começou em 2011\"). A abre com pergunta sem nome próprio de pessoa, tem \"você\" e fecho de reflexão (\"O que essa história mostra\"), o que costuma perder."
+  ]
+ },
+ {
+  "par": "P113",
+  "gabarito": "A",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "O roteiro A abre com nomes próprios (Elon Musk, Sam Altman, Anthropic) e uma disputa entre gigantes, enquanto o B abre com \"Esse engenheiro\" sem nome e fecha com lição de moral (\"quem não se atualizar vai ficar pra trás\"), padrões que perdem.",
+   "O hook de B abre com nomes próprios (Elon Musk, Sam Altman, Anthropic) e tem conflito entre gigantes, enquanto A abre com \"Esse engenheiro\" sem nome e fecha com lição de moral; ambos têm fecho fraco e foco em dica, então a vantagem de B é moderada."
+  ]
+ },
+ {
+  "par": "P015",
+  "gabarito": "B",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "A tem pauta com ponte direta com o Brasil e o bolso de quem assiste, com conflito entre estados e o pequeno empresário contra os grandes, e fecha no caso. B abre com \"Esse\", que perde, e fecha com contraste moralizante e vantagem para o espectador, mas A também tem \"você\" no hook, o que limita a confiança.",
+   "Os dois hooks são fracos (A abre com \"Esse\" e fala de golpe; B fala \"você\"), mas B tem conflito entre os estados do Brasil, tema que bate no bolso e fecho que fica no caso, enquanto A termina com lição de moral (\"quem entende o sistema escolhe...\") e promessa de ensinar a economizar."
+  ]
+ },
+ {
+  "par": "P203",
+  "gabarito": "B",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "B tem ponte direta com o Brasil (Guaraná Jesus do Maranhão vencendo a Coca-Cola), um Davi contra Golias com orgulho brasileiro e um fecho que fica no caso, enquanto A é uma história estrangeira de superação contada em ordem, com hook em ano e fecho moralista.",
+   "A tem ponte direta com o Brasil, orgulho brasileiro (Guaraná Jesus do Maranhão) contra a Coca-Cola como rival de fora e um fecho que permanece no caso, apesar do hook sem nome e da origem em ordem; B é história estrangeira de superação, com hook em ano algarismo e fecho de lição de moral."
+  ]
+ },
+ {
+  "par": "P008",
+  "gabarito": "B",
+  "vencedor": "A",
+  "confianca": 1,
+  "motivos": [
+   "Os dois são dicas de linguagem corporal com fecho de lição, mas o hook de A abre com o nome \"Trump\", político de peso e pauta mais próxima do espectador brasileiro, enquanto o de B abre com \"Eu finalmente descobri\", sem nome no início, e o fecho de B usa \"você\" e é mais didático.",
+   "Os dois são dicas de linguagem corporal sem ponte com o Brasil e com fecho moralizante, mas o hook de B abre com \"Existe uma razão pro Trump...\" e traz o nome de um personagem político em foco no noticiário, enquanto o de A abre com \"Eu finalmente descobri o truque secreto\" e usa a promessa de ensinar, que tende a perder."
+  ]
+ },
+ {
+  "par": "P225",
+  "gabarito": "B",
+  "vencedor": "B",
+  "confianca": 1,
+  "motivos": [
+   "B abre com um nome próprio (\"A Santa Efigênia morreu\") e traz uma pauta local, ligada ao bolso do brasileiro, enquanto o hook de A é genérico (\"As livrarias MORRERAM\") e o fecho dos dois fica na moral, mas o de A tem mais cara de dica e de lição para o espectador.",
+   "O hook de A abre com nome próprio (Santa Efigênia) e a pauta tem ponte direta com o bolso e o Brasil, enquanto B abre com \"As livrarias\" (sem nome no hook) e fecha com moral genérica; os dois fechos moralizam, então a vantagem é pequena."
+  ]
+ },
+ {
+  "par": "P121",
+  "gabarito": "B",
+  "vencedor": "empate",
+  "confianca": 0,
+  "motivos": [
+   "Os dois são histórias brasileiras de supermercado com hooks sem nome próprio, abertura em ordem de origem e fecho que não é o ideal. O A tem uma ponte mais forte com o Brasil (R$8 bi, família de imigrantes e o orgulho do armazém), e seu fecho fica no caso, com o estado atual da empresa e dos herdeiros. O B perde porque fecha com a lição de moral na frase de superação (\"as dificuldades sempre nos fizeram crescer\") e porque seu payoff é de superação pura.",
+   "Os dois são histórias brasileiras de origem em ordem cronológica, mas o hook de A tem um gancho mais dramático (a faca no olho), a abertura de A nomeia o personagem (Zefiro Giassi) e o fecho fica no caso, com o estado atual da empresa. Já B abre o hook com \"Esse casal\", sem nome, e fecha com tom de legado genérico."
+  ]
+ },
+ {
+  "par": "P058",
+  "gabarito": "B",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "O hook de B abre com nome próprio e conflito entre marcas (\"O Google HUMILHOU o Canva e o PowerPoint\"), enquanto o de A começa com \"Essa IA secreta\", fala em \"você\" e fecha com dica/vantagem para o espectador, o que costuma perder.",
+   "O hook de A abre com nome próprio (Google) e traz conflito com rivais nomeados (Canva e PowerPoint), enquanto o hook de B abre com \"Essa\", prometendo vantagem ao espectador, e o fecho de B é uma dica de utilidade."
+  ]
+ },
+ {
+  "par": "P076",
+  "gabarito": "A",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "O roteiro A nomeia a Cortical Labs e abre com um fato concreto e surpreendente, enquanto o B abre com \"Você\", \"pode\" e um tema genérico de energia da IA, sem nome próprio e com fecho em tom de lição.",
+   "O hook de A fala \"você\" e usa \"pode\", que perdem, e o fecho é genérico e sem caso concreto; B cita a Cortical Labs pelo nome e tem um tema mais curioso, apesar do hook que começa com \"Isso\" e do fecho especulativo."
+  ]
+ },
+ {
+  "par": "P009",
+  "gabarito": "A",
+  "vencedor": "empate",
+  "confianca": 0,
+  "motivos": [
+   "Os dois são dicas de comunicação sem ponte com o Brasil e com hooks fracos (ambos falam \"você\"), mas A tem um nome próprio (Rafael Ferri, criador do maior podcast financeiro do país) logo na abertura, enquanto B é pura dica de vantagem para o espectador e fecha com lição de moral; o fecho de A também é moral, então a vantagem é pequena.",
+   "Os dois são dicas de comunicação sem nome próprio nem ponte com o Brasil e com hooks fracos (\"você\", \"pode\"). O B perde mais pontos: abre com \"Se você ainda fala\", usa \"podem\" no título, fecha com moral (\"às vezes\", \"isso começa por saber o que não dizer\") e traz um CTA longo. O A também fecha com lição, mas é um pouco menos pesado nesses sinais."
+  ]
+ },
+ {
+  "par": "P016",
+  "gabarito": "B",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "B abre com um nome próprio (\"A Receita Federal\") e um fato de impacto direto no Brasil, e o fecho se mantém no caso (governo dá o CNPJ e controla o tributo), enquanto A abre com ano em algarismo, \"sua assinatura\" e \"pode\", e fecha com lição de moral sobre quem paga a conta.",
+   "O roteiro A abre com um nome próprio (Receita Federal) e tem ponte direta com o Brasil, com o governo como antagonista e um fecho que fica no caso (\"Agora, é o governo que dá o CNPJ e controla o tributo\"), enquanto o B abre com ano em algarismo, \"sua\" e \"pode\", e fecha com lição de moral sobre o consumidor."
+  ]
+ },
+ {
+  "par": "P119",
+  "gabarito": "A",
+  "vencedor": "empate",
+  "confianca": 0,
+  "motivos": [
+   "O hook de A trata de uma \"rival do ChatGPT\" (a Anthropic/Claude) contra o Excel da Microsoft, com um conflito de produtos reais, enquanto B abre com o genérico \"A inteligência artificial\" e fecha com lição de moral; os dois fechos têm moral e CTA, então a margem é pequena.",
+   "O hook de A abre com um tema ligado ao bolso de quem assiste (sites, reais, concorrente), sem usar \"você\", enquanto o de B abre com \"Essa\", sem nome próprio, e o fecho dele cai em lição de moral com \"você\" (esperto ou teimoso), embora o fecho de A também moralize um pouco."
+  ]
+ },
+ {
+  "par": "P100",
+  "gabarito": "A",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "B fecha com uma ponte direta com o Brasil, comparando o crescimento chinês com o das nossas crianças e ficando no caso (\"enquanto a China crescia... o Brasil cresceu mais devagar\"), enquanto A é só história estrangeira, abre a origem em ordem cronológica (1949, Mao) e termina com lição de moral.",
+   "O roteiro A faz ponte direta com o Brasil, com comparação de rival de fora e fecho que fica no caso (\"enquanto a China crescia, o Brasil...\"), apesar do hook fraco; o B é história só estrangeira, conta a origem em ordem (\"Em 1949\") e fecha com lição de moral sobre superação."
+  ]
+ },
+ {
+  "par": "P181",
+  "gabarito": "A",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "O roteiro A tem ponte direta com o Brasil e orgulho brasileiro contra uma marca de fora (Nike), com hook que abre com nome e lado tomado, enquanto o B é história estrangeira de queda de gigante e superação, com fecho moralizante e dica para o espectador.",
+   "B tem ponte direta com o Brasil e orgulho brasileiro contra uma marca de fora (Nike), com lado tomado, enquanto A é uma história só americana que termina em lição de moral (\"a cultura come a estratégia\") e abre contando a origem (\"Tudo começou quando\")."
+  ]
+ },
+ {
+  "par": "P010",
+  "gabarito": "B",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "A abre com o nome \"Havan\" e um fato concreto e recente (pix de R$90 milhões), com ponte direta com o Brasil, e fecha no personagem (\"Todo mundo vê o Véio como o cara do marketing...\"); já B, apesar de também abrir com \"Havan\", usa \"nunca\" no corpo e fecha com lição genérica sobre empresários que \"constroem patrimônio\".",
+   "Ambos abrem com \"A Havan\", mas B traz um fato concreto e recente (\"fez um pix de 90 milhões\"), no formato \"[Nome] acabou de [fato]\", e fecha no caso (\"Todo mundo vê o Véio como o cara do marketing, só que poucos percebem...\"), enquanto A usa um hook de conflito difuso e um fecho com tom de lição (\"os que constroem patrimônio aprendem as regras do jogo\")."
+  ]
+ },
+ {
+  "par": "P073",
+  "gabarito": "A",
+  "vencedor": "A",
+  "confianca": 1,
+  "motivos": [
+   "Os dois são fracos (hooks sem nome próprio, tom de ensinar e dica para o espectador, sem ponte com o Brasil), mas A tem um conflito leve com quem vende curso e termina em um fecho concreto sobre a ferramenta, enquanto B é só alerta genérico com CTA de venda e fecho sem caso.",
+   "Os dois são dicas de IA sem ponte com o Brasil, sem nome próprio no hook e com fecho de CTA, mas B abre com um conflito implícito (quem vende curso vai querer me processar) e fecha no caso, citando o ChatGPT e o site, enquanto A abre com \"Se eu pudesse te dar\", fala \"você\" e termina em CTA de venda."
+  ]
+ },
+ {
+  "par": "P166",
+  "gabarito": "B",
+  "vencedor": "A",
+  "confianca": 1,
+  "motivos": [
+   "Os dois hooks abrem com \"Esses estudantes\" (ambos penalizados), mas A tem ponte mais forte com o Brasil, nomeia pessoas e escola, e fecha no caso com o contraste \"enquanto o mundo inteiro... três alunos do interior do Paraná\", enquanto B abre o corpo com um problema genérico, usa \"nunca\" e fecha com lição de moral (\"Muitas vezes, o incômodo... pode virar\").",
+   "Os dois hooks abrem com \"Esses\" e têm temas parecidos de inovação brasileira, mas o fecho de B fica no caso com o contraste \"enquanto o mundo inteiro... três alunos do interior do Paraná criaram\" (Davi contra Golias), enquanto A termina com lição de moral (\"o incômodo levado a sério pode virar inovação\") e ainda o ataque genérico à indústria sem lado nomeado."
+  ]
+ },
+ {
+  "par": "P092",
+  "gabarito": "B",
+  "vencedor": "empate",
+  "confianca": 0,
+  "motivos": [
+   "O roteiro A abre com o nome \"Henry Ford\" no hook e traz um conflito de decisão, enquanto o B abre com \"Este homem\" sem nome e acaba em lição de moral sobre o valor de saber onde agir; os dois fechos moralizam, então a vantagem do A é pequena.",
+   "Os dois são histórias estrangeiras sobre Ford, mas A tem um caso concreto e uma figura nomeada (cobrança de 10 mil dólares de Henry Ford), com fecho mais ancorado no caso, enquanto B abre com \"O dia em que\", conta a origem em ordem e termina com lição de moral (\"A lição que Ford deixou...\")."
+  ]
+ },
+ {
+  "par": "P084",
+  "gabarito": "B",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "B tem ponte direta com o Brasil e com o bolso (R$31 bilhões no interior de SP), abre com o contraste \"Enquanto todo mundo olha pra China e Estados Unidos\", que nomeia rivais, e fecha no orgulho brasileiro; A abre sem nome próprio, é uma queixa de burocracia sem lado claro e termina em lição de moral.",
+   "O roteiro A abre com um hook de orgulho brasileiro contra rivais nomeados (China e Estados Unidos), e o interior de SP tem ponte direta com o Brasil; já o B abre com \"A mesma burocracia\", sem nome próprio, e fecha com lição de moral e queda sem lado."
+  ]
+ },
+ {
+  "par": "P134",
+  "gabarito": "A",
+  "vencedor": "A",
+  "confianca": 3,
+  "motivos": [
+   "O roteiro A tem ponte direta com o Brasil (cientistas brasileiros, UFMS, SUS, dinheiro público) e traz orgulho nacional contra Harvard e Cambridge, enquanto o B abre com \"Essa\", fala \"você\", é uma história estrangeira sem lado e fecha com moral emocional.",
+   "B tem ponte direta com o Brasil (cientistas brasileiros, UFMS, SUS, dinheiro público) e orgulho nacional comparado a Harvard e Cambridge, com fecho que fica no caso, enquanto A abre com \"Essa\", fala \"você\", é uma história genérica sem lado e fecha com moral emocional."
+  ]
+ },
+ {
+  "par": "P147",
+  "gabarito": "A",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "O hook de A abre com um nome próprio (Casas Bahia) e traz um fato concreto de uma marca conhecida, com ponte direta com o bolso do brasileiro; B abre com \"O agro brasileiro\" sem nome próprio e usa \"nunca\", e termina em pergunta retórica, embora o fecho de A tenha tom de lição de moral.",
+   "O hook de B abre com nome próprio (Casas Bahia), uma marca conhecida dos brasileiros e com ponte direta com o bolso, enquanto A abre com \"O agro brasileiro\" sem nome próprio e usa \"nunca\"; o fecho moralizante de B pesa contra, mas não compensa essa vantagem."
+  ]
+ },
+ {
+  "par": "P217",
+  "gabarito": "B",
+  "vencedor": "empate",
+  "confianca": 0,
+  "motivos": [
+   "O hook de A abre com dois nomes de marcas (Mercado Livre e Shopee) em um conflito entre rivais, com ponte direta com o bolso do brasileiro, e o fecho fica no caso; já B abre com nome mas gira em torno de dica/vantagem para o vendedor, com fecho em \"quem não usou... corre o risco\" (quase lição de moral) e a abertura com \"Pra você ter uma ideia\".",
+   "O hook de A abre com nome próprio e um fato concreto (lucro caiu US$ 77 milhões, mas o maior investimento da história no Brasil), com ponte direta com o Brasil, enquanto B fala em \"você\" no hook, usa o abstrato \"invadiram o mercado financeiro\" e fecha com lição de moral sobre hábito de consumo."
+  ]
+ },
+ {
+  "par": "P105",
+  "gabarito": "A",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "O hook de B abre com nome próprio (\"A China acaba de declarar...\") e põe China contra Estados Unidos, os dois lados nomeados, enquanto o de A começa com \"Enquanto o filho do brasileiro farma aura\" e o fecho dele cai em lição de moral sobre educação (\"a educação não é coisa de discurso político\"); B ainda fecha no caso, com o contraste \"enquanto os gigantes de fora crescem, o Brasil só assiste\".",
+   "O hook de A abre com nome próprio e fato novo (\"A China acaba de declarar...\"), com conflito de dois lados nomeados (China vs. Estados Unidos) e fecho que contrasta com o Brasil, enquanto B abre com \"Enquanto o filho do brasileiro farma aura\", sem nome próprio, e fecha com lição de moral sobre educação."
+  ]
+ },
+ {
+  "par": "P051",
+  "gabarito": "A",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "O hook de A abre com nomes próprios (Hapvida e NotreDame Intermédica) e traz uma pauta brasileira que mexe com o bolso de quem tem plano de saúde, enquanto B abre sem nome (\"A maior empresa...\") e fecha com lição de moral; o fecho de A também tem uma lição, mas termina no caso.",
+   "O hook de B abre com nomes próprios (Hapvida e NotreDame Intermédica) e a pauta é brasileira, ligada ao bolso de quem assiste (plano de saúde); o hook de A abre com \"A maior empresa...\" sem nome, apesar de o tema também ser brasileiro, e o fecho de A termina em lição de moral, embora o de B também caia em \"talvez\"."
+  ]
+ },
+ {
+  "par": "P226",
+  "gabarito": "A",
+  "vencedor": "empate",
+  "confianca": 0,
+  "motivos": [
+   "A abre com nome próprio (Mercado Livre) e liga a pauta direto ao bolso e ao Brasil (frete mais caro), enquanto B tem hook com \"29 anos\" e foco em Amazon, com fecho de lição genérica (\"quem recusa, provavelmente...\").",
+   "O hook de A abre com o nome próprio \"A Amazon\" e traz um conflito com um lado nomeado, a ponte com o Brasil (300 galpões nos estados) e um fecho que fica no caso. B abre com nome também, mas puxa o \"frete vai ficar mais caro\" para o bolso do espectador, usa \"pode\" e ano em algarismo, e fecha com a lição \"quem controla o espaço controla o jogo\"."
+  ]
+ },
+ {
+  "par": "P194",
+  "gabarito": "B",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "Os dois têm ponte direta com o bolso do brasileiro, mas B abre com nomes próprios (Casas de Aposta, Receita Federal) em conflito com dois lados e traz a Lei 14.790 e o ComprovaBet, enquanto A abre com \"Existe um jogador\" e \"você\" e fecha com lamento e moral sobre o governo.",
+   "O A abre com nomes próprios (Casas de Aposta, Receita Federal, Lei 14.790, ComprovaBet) e traz um conflito com os dois lados nomeados e uma ponte direta com o bolso do brasileiro; o B abre sem nome (\"Existe um jogador\") e fecha com lamento moralista, sem ficar no caso."
+  ]
+ },
+ {
+  "par": "P035",
+  "gabarito": "A",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "A abre com nome próprio (Itaú, Milton Maluhy Filho) e tem ponte direta com o bolso do Brasil, enquanto B abre com \"Tem uma mancha...\", fala \"você\", e fecha com lição (\"quem entende essa cadeia consegue agir\").",
+   "B abre com o nome do Itaú e de Milton Maluhy, mostra um conflito com lados nomeados (banco x juros altos) e fecha no caso, com o contraste \"o sistema lucra enquanto a família paga\". A abre com \"Tem uma mancha\", usa \"pode\" e \"você\", é tema estrangeiro (Pacífico) e fecha com lição (\"quem entende essa cadeia consegue agir\")."
+  ]
+ },
+ {
+  "par": "P017",
+  "gabarito": "A",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "A conta uma história de conflito com lado tomado (empresa do interior gaúcho contra o governo), com a Olfar nomeada e ponte direta com o Brasil, apesar do hook abrir com \"Essa\" e do fecho moralizante; B é dica de vantagem para o espectador, com hook sem nome e fecho de lição (\"você está perdendo dinheiro\").",
+   "B tem uma história de Davi contra Golias nomeada (a Olfar, empresa gaúcha, contra o governo), com ponte direta com o Brasil e fecho que fica no caso. O hook de B abre com \"Essa\", que pesa contra. A tem hook com \"Já imaginou\", foco em dica/vantagem para o espectador e fecho com lição de moral (\"você está perdendo dinheiro\"), três fatores que perdem."
+  ]
+ },
+ {
+  "par": "P003",
+  "gabarito": "B",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "O roteiro A tem ponte direta com o Brasil e um hook com fato forte (uma das maiores empresas do mundo foi a Sergipe comprar o que ele construiu), além de um fecho que fica no estado atual do personagem, apesar da lição de moral no meio; já o B abre com \"Essa empresa\", tem hook sem nome, fecho genérico e CTA de dicas.",
+   "O hook de A abre com \"Essa empresa\" (padrão que perde), tem payoff de superação/sucesso sem lado e CTA de dicas de marketing; B tem ponte brasileira com uma gigante estrangeira comprando uma empresa nordestina (orgulho/Davi vs Golias) e fecha no estado atual do personagem, apesar de abrir com a história de origem e ter uma frase de moral no meio do fecho."
+  ]
+ },
+ {
+  "par": "P049",
+  "gabarito": "A",
+  "vencedor": "empate",
+  "confianca": 0,
+  "motivos": [
+   "O roteiro A tem ponte direta com o Brasil e traz o Walmart, uma empresa nomeada, que fracassou aqui, com um hook forte sobre o prejuízo de US$4,5 bilhões. O fecho com lição de moral pesa contra ele. Já o B abre com \"Essa\", conta a origem em ordem (\"nasceu\") e é um caso de superação pura, ainda que o fecho fique no caso.",
+   "A é uma pauta brasileira com orgulho nacional e Davi contra Golias (rede mineira que cresce sobre o erro do concorrente) e fecha no caso com contraste, apesar de abrir com \"Essa\" e contar a origem em ordem; B é queda de gigante estrangeiro sem lado e fecha com lição de moral (\"Esse caso mostra que...\")."
+  ]
+ },
+ {
+  "par": "P185",
+  "gabarito": "B",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "B abre com nome próprio (Ancelotti), traz uma pauta ligada à seleção brasileira e à Copa, com polêmica e lado tomado, e fecha com o contraste \"enquanto a maioria...\", enquanto A abre sem nome, trata de um tema mais estrangeiro e fecha com lição de moral (\"Fracasso não é errar, mas parar de tentar\").",
+   "A abre com nome próprio (Ancelotti) e traz uma polêmica brasileira sobre a Seleção e Neymar, com tema próximo do público, enquanto B abre sem nome, com tema de recorde estrangeiro e fecho de lição de moral (\"Fracasso não é errar, mas sim parar de tentar\")."
+  ]
+ },
+ {
+  "par": "P208",
+  "gabarito": "B",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "B trata de uma marca brasileira (Estrela) e tem ponte direta com o Brasil, apesar de o hook não abrir com nome próprio e de contar a origem em ordem; já A abre com \"Essa\", é história estrangeira (Pop Mart) e fecha com lição de moral sobre \"experiência\".",
+   "A tem ponte direta com o Brasil (Estrela, marca brasileira conhecida) e abre com uma marca nomeada, enquanto B abre com \"Essa\", tem tema estrangeiro (Pop Mart/Labubu) e fecha com lição e CTA voltados ao espectador, embora A conte a origem em ordem e termine com lição de moral."
+  ]
+ },
+ {
+  "par": "P112",
+  "gabarito": "B",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "O Roteiro A abre com um conflito entre dois povos nomeados (chineses vs. japoneses) e traz uma história curiosa e estrangeira, sem lição direta. O B abre sem nome próprio, fala de dica prática ao espectador (\"você tem um celular...\") e fecha com lição de moral e pergunta, todos padrões que perdem, apesar da ponte com o Brasil.",
+   "B abre com um nome próprio (\"Os Chineses\" contra os japoneses, com os dois lados nomeados), traz um conflito de nações e fecha no caso, enquanto A abre com \"É assim\", tem foco em dica para o espectador e fecha com lição de moral e pergunta com \"você\"."
+  ]
+ },
+ {
+  "par": "P104",
+  "gabarito": "A",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "O roteiro A abre com \"A China\" (nome próprio), traz a empresa nomeada (iFLYTEK) e fecha com contraste Brasil x China (\"Enquanto o Brasil ainda discute celulares...\") que é a ponte direta com o país, enquanto B é uma história só estrangeira, sem nome no hook e termina com pergunta ao espectador.",
+   "B tem ponte direta com o Brasil (fecho \"enquanto o Brasil ainda discute celulares nas escolas, a China já prepara seus alunos\" fica no caso e compara com um rival de fora) e nomeia a empresa iFLYTEK logo na abertura, enquanto A começa sem nome, termina com pergunta ao espectador (\"você viveria essa experiência?\") e fica numa história só chinesa."
+  ]
+ },
+ {
+  "par": "P055",
+  "gabarito": "B",
+  "vencedor": "A",
+  "confianca": 1,
+  "motivos": [
+   "Os dois são vendas de curso de IA sem ponte com o Brasil e com hooks fracos, mas A abre com um nome próprio (ChatGPT) e B abre com \"Você\", que perde; os dois fechos são venda, então o desempate vem pelo hook.",
+   "Os dois são ofertas de curso com hook fraco e fecho de venda, mas A abre com \"Você acha que sabe...\" e \"Eu garanto que você não faz ideia\", que é o padrão que perde, enquanto B abre com o nome \"ChatGPT\" e traz uma dor concreta, mesmo com \"99%\" e a promessa de ensinar."
+  ]
+ },
+ {
+  "par": "P093",
+  "gabarito": "B",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "O roteiro A tem ponte direta com o bolso do brasileiro (R$ 200 de academia e R$ 1000 de personal) e um fecho que fica no caso, nomeando a Fiture como gigante de tecnologia, enquanto o B termina com \"você precisa\" e pergunta ao espectador, sem nomear ninguém, e leva \"Esse\" no título.",
+   "Os dois hooks começam com \"A China\" e são quase idênticos, mas B tem ponte direta com o bolso do brasileiro (R$ 200 de academia e R$ 1000 de personal) e fecha no caso, com a Fiture nomeada e o que ela virou, enquanto A fecha com lição de moral (\"você precisa prestar atenção\") e pergunta ao espectador."
+  ]
+ },
+ {
+  "par": "P025",
+  "gabarito": "B",
+  "vencedor": "B",
+  "confianca": 1,
+  "motivos": [
+   "Nenhum dos dois hooks abre com nome próprio e os dois fechos são fracos, mas o A cai em mais critérios negativos (hook com \"você\", fecho com lição de moral \"mais do que nunca... essencial\" e dica de poupar), enquanto o B tem conflito geopolítico mais concreto (Irã sequestrando o mar, ataque ao líder supremo) e fecha no estado atual do mundo.",
+   "O roteiro A tem um hook sem \"você\" e sem lição de moral explícita, e nomeia o Irã e os EUA em conflito já na abertura; o B abre com \"você imagina\", fecha com conselho (\"ter dinheiro guardado... essencial\") e a queda de gigante fica sem lado, embora tenha a ponte com o Brasil."
+  ]
+ },
+ {
+  "par": "P231",
+  "gabarito": "A",
+  "vencedor": "A",
+  "confianca": 3,
+  "motivos": [
+   "O roteiro A tem tema brasileiro e político com lado tomado, abre com \"O governo\" e nomeia Lula, Bolsonaro e STF, enquanto o B abre com \"Esse vídeo\", fala \"você\" e fecha com alerta e lição de moral.",
+   "B abre com \"O governo acabou de...\" e trata de conflito político nomeado (Lula, Bolsonaro, STF) com ponte direta com o bolso do brasileiro, enquanto A abre com \"Esse vídeo\", fala \"você\", é um alerta genérico sem lado tomado e fecha com lição de moral."
+  ]
+ },
+ {
+  "par": "P019",
+  "gabarito": "A",
+  "vencedor": "A",
+  "confianca": 1,
+  "motivos": [
+   "Os dois têm hook sem nome próprio, abrem com \"Já imaginou\" e fecham com moral voltada ao espectador, mas A tem tema mais concreto (locadoras e ICMS, ligado ao Brasil), enquanto B termina com \"A lição é simples\" e uma dica de vantagem, que o histórico mostra perder.",
+   "Os dois seguem o mesmo molde (hook \"Já imaginou\", dica fiscal, fecho com lição de moral), então quase empatam; B leva por pouco por trazer um caso concreto com as locadoras nomeadas e um fecho mais preso ao caso (veículos sempre novos, isenção do ICMS), enquanto A é uma dica pura com \"A lição é simples\" e um limite técnico."
+  ]
+ },
+ {
+  "par": "P200",
+  "gabarito": "B",
+  "vencedor": "B",
+  "confianca": 1,
+  "motivos": [
+   "Os dois hooks abrem com \"Essa/Esse\" e têm fecho com lição e dica para o espectador, mas B tem a ponte com a Bovespa (referência brasileira) e uma história concreta de bar, enquanto A é só dica de negócio com \"você\" e \"Pare de competir\", que pesa mais contra.",
+   "Os dois erram no hook (\"Esse cara\" e \"Essa mulher\", sem nome próprio) e no fecho com lição ou moral, mas o A tem um caso mais concreto e conhecido (bar que vira Bovespa, com ponte para o Brasil), enquanto o B é uma dica para o espectador (\"você pode aplicar no seu negócio\", \"Pare de competir por centavos\") e perde mais."
+  ]
+ },
+ {
+  "par": "P107",
+  "gabarito": "B",
+  "vencedor": "empate",
+  "confianca": 0,
+  "motivos": [
+   "Os dois são histórias só da China, sem ponte direta com o Brasil, e ambos abrem com \"A China acabou de...\", então o hook empata no nome próprio; B perde pontos por abrir com \"Parece montagem\" e por usar o ano em algarismo, enquanto A leva a vantagem de nomear a China no hook e fechar com contraste no caso (\"a China vai rodar isso antes de todo mundo\"), embora também tenha \"você\" e um tom de alerta, o que deixa a aposta apertada.",
+   "A abre com a China e traz a empresa nomeada (DaxAI), um fecho que fica no caso com um comentário viral e um tema curioso; já B tem hook com \"você vai achar\", abertura em origem histórica (\"Por décadas\") e fecho com \"você vai interagir\" e \"provavelmente\", que são pontos fracos."
+  ]
+ },
+ {
+  "par": "P110",
+  "gabarito": "B",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "A abre com conflito entre lados nomeados (influencer brasileiro/Tigrinho contra China) e tem ponte direta com o bolso do país (Bolsa Família, bets), além de fecho que fica no caso; B abre com \"Por que\" sem nome próprio e fecha com moral e lamento (\"o Brasil está parado\").",
+   "B tem hook com ponte direta com o Brasil e nomeia o conflito (influencer brasileiro e \"Tigrinho\" contra a China, com o lado tomado), além de tocar no bolso de quem assiste (Bolsa Família, bets), enquanto A abre com \"Por que o Brasil é hoje...\", sem nome próprio forte, e fecha com tom de lição de moral sobre \"prisão mental\"."
+  ]
+ },
+ {
+  "par": "P089",
+  "gabarito": "A",
+  "vencedor": "empate",
+  "confianca": 0,
+  "motivos": [
+   "O hook de A abre com nome próprio e fato (\"A China acabou de fazer história\"), enquanto o de B começa com \"Esse\" e tem tom superlativo, que tende a perder; os dois são temas de tecnologia chinesa sem ponte clara com o Brasil, mas o fecho de B, com a corrida China contra Bolt, fica mais no caso, o que deixa a aposta em A menos segura.",
+   "Apesar de abrir com \"Esse\", o A tem o conflito nomeado (China contra Usain Bolt, um ícone esportivo que o público brasileiro conhece) e fecha no caso, com a China \"largando na frente\"; o B é tecnologia estrangeira sem ponte com o Brasil e fecha com lição genérica (\"quando uma tecnologia resolve um conflito...\")."
+  ]
+ },
+ {
+  "par": "P040",
+  "gabarito": "B",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "A abre com \"Os juros do Brasil\" e compara diretamente o Brasil com a Rússia em guerra, uma ponte forte com o bolso do brasileiro, enquanto B abre com \"O Japão\" mas é um risco estrangeiro e difuso, com fecho de \"motivo pra atenção\" quase moralizante e sem lado tomado.",
+   "B abre com \"Os juros do Brasil\" e traz uma comparação direta com a Rússia, tema que toca o bolso e o orgulho do país, enquanto A abre com o Japão (decisão estrangeira, com \"pode abalar\" e um fecho com \"você\") e depende de uma ponte indireta com o Brasil."
+  ]
+ },
+ {
+  "par": "P030",
+  "gabarito": "A",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "O roteiro A tem ponte direta com o Brasil e com o bolso do espectador (BRICS Pay baseado no PIX contra o domínio americano) e abre com \"O Brasil\", um nome próprio, enquanto o B é uma história genérica de \"maiores economias\" sem nome, com um fecho que explica o motivo em vez de ficar no caso.",
+   "B tem ponte direta com o Brasil, abre com \"O Brasil\" (nome próprio) e põe o orgulho brasileiro em conflito com os EUA, enquanto A é um hook genérico (\"As maiores economias\") sobre dólar e euro, sem lado tomado e com fecho explicativo; o fecho de B, com pergunta moralizante, pesa um pouco contra."
+  ]
+ },
+ {
+  "par": "P141",
+  "gabarito": "B",
+  "vencedor": "empate",
+  "confianca": 0,
+  "motivos": [
+   "Os dois hooks perdem por não abrirem com nome próprio (\"Esses pesquisadores\" e \"Essa maranhense\"), mas B é pior no resto: fecha com moral e superação pura (\"Imagina quantas Sofias existem...\") e conta a origem em ordem (\"nasceu no interior\"), enquanto A tem ponte direta com o orgulho e o bolso do Brasil (tecnologia nacional contra dependência de importação), embora também tenha fecho com lição e \"você\" no hook.",
+   "Os dois hooks abrem com \"Esse/Essa\" e nenhum tem nome próprio, mas A traz uma personagem humana (maranhense de 16 anos), um problema que atinge milhões de brasileiros e o ângulo Davi contra Golias (sem laboratório de ponta, chegou mais longe que pesquisadores adultos). B abre com \"você\", tem tom de lição de moral no hook e no fecho (\"a prova que você precisava\") e cai em dica/tese genérica sobre investimento."
+  ]
+ },
+ {
+  "par": "P132",
+  "gabarito": "B",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "B tem ponte direta com o Brasil (maior polo de helicópteros da América Latina, agronegócio) e nomeia Robinson e R88 logo na abertura do corpo, enquanto A abre com \"Antigamente\", sem nome próprio, e fecha com lição de moral (\"quem não se preparar...\") sobre uma história estrangeira.",
+   "A tem ponte direta com o Brasil (maior polo de helicópteros da América Latina) e nomeia Robinson e R88 já na abertura, ainda que o hook comece sem nome; B abre com \"Antigamente\", sem nome próprio, usa nostalgia genérica e fecha com lição de moral (\"quem não se preparar...\")."
+  ]
+ },
+ {
+  "par": "P099",
+  "gabarito": "A",
+  "vencedor": "B",
+  "confianca": 1,
+  "motivos": [
+   "B abre com \"A China acabou de revelar\" e traz a Alibaba nomeada, o formato \"[Nome] acabou de [fato]\" que o histórico mostra como mais forte. A abre com \"Isso é perturbador\" e fecha com análise de negócios sem lado tomado, mas tem uma história humana forte, por isso a confiança não é máxima.",
+   "O hook de A abre com nome próprio (\"A China acabou de revelar\") e o corpo nomeia a Alibaba, que é o padrão \"[Nome] acabou de [fato]\", enquanto B abre com \"Isso é perturbador\" e o fecho de B tem tom de moral sobre Ocidente x Ásia, mas B tem uma história humana forte e nomeia a Super Brain, então a aposta é apertada."
+  ]
+ },
+ {
+  "par": "P026",
+  "gabarito": "A",
+  "vencedor": "A",
+  "confianca": 3,
+  "motivos": [
+   "O roteiro A abre com nome próprio (Alemanha) e tem ponte direta com o Brasil, com orgulho brasileiro frente à Europa, enquanto o B abre sem nome nenhum, com um \"país\" genérico, e fecha com moral de lição geral.",
+   "B abre com nome próprio (Alemanha) e tem ponte direta com o Brasil e orgulho brasileiro diante de um rival de fora, enquanto A tem hook sem nome, tema estrangeiro genérico e fecho com tom de lição."
+  ]
+ },
+ {
+  "par": "P061",
+  "gabarito": "A",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "O roteiro A abre com nomes próprios e conflito entre rivais (Anthropic, ChatGPT, Claude Cowork), no formato \"[Nome] acabou de [fato]\", e fecha no caso, sem lição de moral; já o B abre sem nome, fala \"você\", tem fecho e CTA de dica/vantagem pro espectador e depende de venda de curso.",
+   "O hook de B coloca a rival do ChatGPT (a Anthropic) contra as startups, com um conflito mais nomeado, enquanto A abre com \"A dona do ChatGPT\" e entrega um fecho de dica e venda (\"garanta sua vaga\", \"você pode\") que costuma perder; os dois fechos moralizam, mas A pesa mais para o lado do benefício ao espectador."
+  ]
+ },
+ {
+  "par": "P126",
+  "gabarito": "A",
+  "vencedor": "empate",
+  "confianca": 0,
+  "motivos": [
+   "Os dois hooks perdem (A fala \"você\" e B não abre com nome), mas A tem ponte direta com o bolso do brasileiro (sorvete e suco de caixinha) e fecha no caso com orgulho brasileiro contra o \"laboratório gringo\", enquanto B cai em moral de superação (\"dificuldades como convite para trabalhar mais duro\"), abre a narrativa com \"O ano era 1911\" e conta a origem em ordem.",
+   "Os dois são histórias de origem em ordem cronológica, mas A abre com uma empresa brasileira conhecida (Tramontina) e um hook que sobe a escala (Segunda Guerra, 120 países), enquanto B abre com \"Se você...\" (fala \"você\") e tem fecho de slogan; B só ganha pontos pelo orgulho brasileiro contra \"laboratório gringo\", e isso não basta."
+  ]
+ },
+ {
+  "par": "P086",
+  "gabarito": "B",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "B abre com nome próprio (Apple) e um fato concreto (a compra de uma startup israelense), enquanto A abre com \"Essa\", que costuma perder; os dois fechos tendem a perder (A com \"a medicina nunca mais será a mesma\", B com \"você tem que entender\"), mas B ao menos termina no caso da compra da Q.ai.",
+   "O roteiro A abre com nome próprio (Apple) e um fato concreto de compra de empresa israelense, enquanto o B começa com \"Essa\", promete \"a invenção mais insana\" e fecha com um tom de lição genérica (\"a medicina nunca mais será a mesma\"), embora o fecho de A tenha traços de moral (\"você tem que entender\")."
+  ]
+ },
+ {
+  "par": "P083",
+  "gabarito": "B",
+  "vencedor": "empate",
+  "confianca": 0,
+  "motivos": [
+   "O hook de A abre com um nome próprio (McDonald's), tema global conhecido e personagem nomeado (Ray Kroc), enquanto B abre com \"Essa\", fala \"você\", tem ano em algarismo e fecho que ainda puxa o espectador, embora A tenha fecho fraco com links e origem em ordem.",
+   "A tem ponte direta com o Brasil (Doutor Sofá, franquia brasileira, meta de 200 lojas) e fecha no caso com o estado atual da empresa, ainda que o hook comece com \"Essa\"; B é história estrangeira de origem em ordem cronológica (\"Em 1954, Ray Kroc era...\") com fecho de links, sem fecho no caso."
+  ]
+ },
+ {
+  "par": "P098",
+  "gabarito": "B",
+  "vencedor": "empate",
+  "confianca": 0,
+  "motivos": [
+   "A abre com um fato concreto e nomeado (China, robô G1 da Unitree) e fecha no caso com contraste \"enquanto o resto do planeta…\", apesar do hook começar com ano em algarismo; B tem hook com \"por que\", sem nome próprio forte, comparação com o Brasil genérica, \"poderosas\" e lista de 3 tecnologias sem personagem.",
+   "O hook de A abre com \"Por que a China\" (nome próprio) e faz ponte direta com o Brasil (\"enquanto aqui a gente ainda se pergunta se o 5G vai pegar\"), com orgulho comparado e fecho que fica no caso, enquanto B abre com o ano em algarismo (\"2026\"), não tem ponte com o Brasil e fecha com números em vez de lado tomado."
+  ]
+ },
+ {
+  "par": "P041",
+  "gabarito": "A",
+  "vencedor": "empate",
+  "confianca": 0,
+  "motivos": [
+   "O roteiro A tem tema de bolso e consumo brasileiro, com mudança concreta no carrinho do brasileiro (cerveja, água, miojo), e o hook abre com \"O brasileiro\", enquanto o B abre com conflito vago entre políticos e mercado, sem lado nomeado no hook, e fecha com moral genérica; ambos fecham de forma fraca, mas o A fica mais ancorado no caso.",
+   "A abre o corpo com nome próprio (XP Investimentos) e um fato recente (\"acabou de cortar\"), com ponte direta com o bolso do brasileiro, enquanto B abre com hook sem nome e fecha com lição de moral (\"planejamento é essencial\")."
+  ]
+ },
+ {
+  "par": "P047",
+  "gabarito": "A",
+  "vencedor": "empate",
+  "confianca": 0,
+  "motivos": [
+   "O hook de A abre com o nome próprio \"Ricardo Eletro\", tem ponte direta com o Brasil e fecha no estado atual da empresa (Nossa Eletro, dívida de R$ 4 bilhões), enquanto B abre com \"Todo nordestino\", conta a origem em ordem e termina com lição de moral sobre gestão.",
+   "O hook de A abre com \"Todo nordestino\" e nomeia a Insinuante, com apelo regional e orgulho de quem assiste, enquanto B abre com pergunta, usa \"bilionário\" e tem fecho com lição de moral e origem contada em ordem (\"Em 1989, abriu...\")."
+  ]
+ },
+ {
+  "par": "P197",
+  "gabarito": "B",
+  "vencedor": "A",
+  "confianca": 1,
+  "motivos": [
+   "Os dois roteiros são parecidos (caso de marketing estrangeiro, hook com \"Essa\" e fecho com lição de moral), mas A abre o hook com o nome da marca (Milka) e B só diz \"Essa marca\", que não traz nome próprio nem ponte com o Brasil; o fecho de B ainda tem o tom de dica \"se você souber como instigar seu público\".",
+   "Os dois hooks abrem com \"Essa\" e têm fecho com lição de moral, mas o B nomeia uma marca conhecida no Brasil (Milka) no hook, enquanto o A fala de uma marca ucraniana sem nome e fecha com a moral \"isso prova que\"."
+  ]
+ },
+ {
+  "par": "P196",
+  "gabarito": "B",
+  "vencedor": "empate",
+  "confianca": 0,
+  "motivos": [
+   "O hook de A abre com nome próprio (\"A Anitta\") e tem ponte direta com o bolso e o governo brasileiro, enquanto B, apesar de abrir com \"Ratinho venceu o Sistema\" e ter briga com lado tomado, promete algo ao espectador (\"até você pode repetir\") e fecha com lição de moral; A também perde pontos por \"pode\", dica e fecho de conselho, então a vantagem é pequena.",
+   "O roteiro A abre com nome próprio (Ratinho) em um conflito com lado tomado (Ratinho contra o Governo), e o fecho fica no caso, enquanto o B termina em dica prática para o espectador (\"quem se planejar, economiza\"), tem hook com \"pode\" e fecho de lição, que o histórico mostra perder."
+  ]
+ },
+ {
+  "par": "P130",
+  "gabarito": "A",
+  "vencedor": "empate",
+  "confianca": 0,
+  "motivos": [
+   "O hook de A abre com nome próprio (Azul) e traz um fato de conflito com TAM e Gol, mas o fecho com lição de moral (\"se você quer...\") pesa contra; B também abre com nome (Gol) e tem fecho de lição, porém sua abertura conta a origem em ordem (\"Antigamente... Hoje\") e o corpo é uma história familiar de origem, o que costuma perder.",
+   "Os dois têm tema brasileiro, mas o hook de A abre com um nome próprio (Gol) e traz a nostalgia do \"ônibus voador\" com orgulho brasileiro, enquanto o fecho de B é lição de moral em \"você\" (\"Se você bater de frente...\", \"Construa seu império\"), padrão que perde; A também tem um fecho moralizante, mas B é pior."
+  ]
+ },
+ {
+  "par": "P064",
+  "gabarito": "B",
+  "vencedor": "empate",
+  "confianca": 0,
+  "motivos": [
+   "Os dois hooks falham (A abre com \"Essa\", B com \"Isso\"), mas A tem personagem nomeado (Dr. David Relman, Stanford, governo dos EUA) e um conflito com lado tomado, enquanto B é uma história científica genérica que termina em lição de moral (\"o que define o resultado não é a ferramenta\"), embora A também feche com moral.",
+   "Nenhum dos dois tem ponte com o Brasil, mas o hook de A traz um fato recente (\"acabou de criar\") e nomeia o Arc Institute e Evo logo na abertura, enquanto B abre com \"Essa IA misteriosa\" e fecha com lição de moral (\"cabe a nós usá-la com consciência\"), tipo de fecho que costuma perder."
+  ]
+ },
+ {
+  "par": "P180",
+  "gabarito": "A",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "O hook de A abre com conflito entre nomes próprios (China, Estados Unidos, Ceará) e traz o orgulho brasileiro contra rivais de fora, enquanto B abre com \"A Copa do Mundo\" de forma genérica, sem lado tomado, e fecha com lição de moral (\"a melhor aula é aquela...\").",
+   "B abre com nomes (China, Estados Unidos, Ceará) e coloca o Brasil contra rivais de fora, com Davi contra Golias e orgulho brasileiro, enquanto A abre com \"A Copa\" sem conflito e fecha com lição de moral sobre aprendizado."
+  ]
+ },
+ {
+  "par": "P136",
+  "gabarito": "A",
+  "vencedor": "A",
+  "confianca": 1,
+  "motivos": [
+   "Os dois são pautas brasileiras com \"Esse\" no título, mas B abre o hook com \"Esse cara\" (padrão que perde), traz \"bilionário\" no título e narra a origem em ordem (\"tudo começou com um cara empurrando carrinho\"), enquanto A tem hook sem \"Esse\" e com um dado concreto de impacto, apesar do fecho com lição.",
+   "Os dois têm ponte com o Brasil e hook sem nome próprio, mas A abre com \"Esse cara\", conta a origem em ordem (\"tudo começou com\") e termina com uma lição sobre o detalhe que ninguém viu, enquanto B tem hook mais concreto, de gambiarra brasileira, embora o fecho moralize."
+  ]
+ },
+ {
+  "par": "P168",
+  "gabarito": "B",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "B tem conflito implícito (críticos da educação brasileira contra os adolescentes), orgulho brasileiro e fato inédito, com nomes próprios na abertura, enquanto A abre com \"Esses\", segue a ordem cronológica e fecha com lição de moral sobre talento e estudo.",
+   "O hook de A abre com um contraste (a educação brasileira \"um fracasso\" versus quatro adolescentes) e nomeia os alunos logo na abertura do corpo, com orgulho brasileiro e ponte direta com o país, enquanto B abre com \"Esses\", segue uma estrutura de origem/ordem cronológica e fecha com lição de moral sobre talento e dedicação."
+  ]
+ },
+ {
+  "par": "P167",
+  "gabarito": "B",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "Os dois hooks abrem com \"Esse/Essa\" e nenhum tem nome próprio, mas o B tem conflito com lados tomados (cearense contra grandes indústrias, a favor dos pequenos produtores) e fecho que volta ao caso, com Gabrielle e as plantas, apesar da moral no final. O A fica na superação e na solução útil, e fecha com lição (\"o tipo de ciência que o Brasil mais precisa\").",
+   "Os dois hooks abrem com \"Esse/Essa\" (ruim), mas A tem um conflito com lados tomados (cearense contra as grandes indústrias, pelos pequenos produtores) e fecha no caso, com Gabrielle e os laboratórios, apesar de uma moral leve no fim. B tem hook mais genérico, sem lado nem nome, e fecha com lição de moral (\"o tipo de ciência que o Brasil mais precisa\")."
+  ]
+ },
+ {
+  "par": "P229",
+  "gabarito": "B",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "A abre com nome próprio (Correios) e tem ponte direta com o Brasil e com o bolso do espectador, apesar do fecho com \"a lição é\"; B é uma história de empresa e disputa de mercado sem lado tomado, com hook de queda de concorrentes e fecho genérico.",
+   "B tem tema com ponte direta com o Brasil e o bolso do espectador (Correios, rombo de 8,5 bilhões), e o hook abre com nome próprio, apesar do \"você\" e da lição no fecho; A abre com \"O Mercado Livro\" (erro de grafia), mostra queda de concorrentes sem lado claro e fecha com moral genérica."
+  ]
+ },
+ {
+  "par": "P183",
+  "gabarito": "A",
+  "vencedor": "empate",
+  "confianca": 0,
+  "motivos": [
+   "Os dois hooks abrem sem nome próprio e os fechos são de lição de moral, mas A tem ponte direta com o bolso do brasileiro (calor, ar-condicionado caro) e orgulho brasileiro reconhecido nos EUA, enquanto B aposta em um conflito difuso contra a indústria e em um fecho que moraliza.",
+   "O roteiro A tem conflito com um rival nomeado (a indústria farmacêutica e o protetor mais caro) em formato Davi contra Golias, com pauta de saúde que bate no bolso do brasileiro, enquanto o B abre com \"Esses\", é superação pura e fecha com lição de moral (\"uma ideia simples... pode chegar longe\")."
+  ]
+ },
+ {
+  "par": "P088",
+  "gabarito": "A",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "O hook de A abre com nome próprio (Toyota) e traz conflito com os dois lados nomeados (BYD e Geely contra a Toyota), enquanto B abre com \"Esquece\" e gira em torno de uma curiosidade de basquete sem ponte com o Brasil, e termina com lição de moral sobre mentalidade.",
+   "B abre com \"A Toyota\" e traz conflito com rivais nomeados (BYD e Geely) e um fecho que fica no caso, enquanto A começa com \"Esquece\", usa o gancho de basquete só estrangeiro e termina com lição de moral sobre mentalidade."
+  ]
+ },
+ {
+  "par": "P216",
+  "gabarito": "B",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "Os dois têm tema brasileiro ligado ao bolso, mas o B abre com conflito nomeado (Brasil e Argentina) e fecha mais perto de \"enquanto todo mundo X\", enquanto o A abre com \"A Copa é o maior evento\", sem nome próprio forte, e fecha com dica e \"agora é só aproveitar\".",
+   "O hook de A abre com conflito nomeado (Brasil e Argentina) e traz uma virada contraintuitiva, e a análise do Santander dá um nome próprio ao caso. B abre com \"A Copa é...\" sem nome, e seu fecho é de dica e vantagem para o espectador (\"agora é só aproveitar\"), o que costuma perder."
+  ]
+ },
+ {
+  "par": "P096",
+  "gabarito": "B",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "B tem ponte direta com o Brasil e com o bolso de quem assiste (BYD em Camaçari, Dolphin Mini a R$ 999), enquanto A é uma história estrangeira. O hook de A abre com nome (Elon Musk) e tem conflito com os dois lados nomeados, mas usa \"bilionário\" e tem fecho com lição de moral, e isso pesa contra.",
+   "A tem ponte direta com o Brasil (fábrica em Camaçari, Dolphin Mini a R$ 999, mercado nacional) e abre com \"A China\", um nome próprio, enquanto B é uma briga entre dois gringos, com hook que usa \"bilionário\" e ano em algarismo, e fecho com lição de moral."
+  ]
+ },
+ {
+  "par": "P123",
+  "gabarito": "B",
+  "vencedor": "empate",
+  "confianca": 0,
+  "motivos": [
+   "Os dois têm ponte com o Brasil, mas o hook de A é uma origem em ordem (\"Com 12 anos, ele varria...\") sem nome próprio, e o corpo usa \"nasceu\" e termina com pergunta e lição de moral; B ancora em uma marca nacional que o espectador conhece (Minâncora), apesar do \"Aquela\" e do \"sua avó\", e fecha no caso da marca, embora com um toque de moral.",
+   "Ambos têm tema brasileiro e ponte com o bolso e a memória do público, mas A abre com \"Aquela\" (sem nome próprio), fala \"sua avó\", usa \"Tudo começou em 1912\" (origem em ordem) e fecha com lição de moral, enquanto B abre com um personagem concreto e o fato de faturamento, ainda que também conte a origem em ordem e feche com pergunta."
+  ]
+ },
+ {
+  "par": "P005",
+  "gabarito": "A",
+  "vencedor": "empate",
+  "confianca": 0,
+  "motivos": [
+   "Os dois roteiros têm ponte com o Brasil e orgulho nacional, mas A abre com contraste de Davi contra Golias (\"países bilionários\" x escola pública do Maranhão) e fecha ainda no caso, enquanto B abre com \"Essas\", fecha com pergunta e lição de moral, e A também tem a origem em ordem e a lição final, o que deixa a aposta apertada.",
+   "O roteiro A tem ponte direta com o orgulho brasileiro, com Davi contra Golias e hook sem \"você\" nem \"bilionário\", embora o fecho tenha pergunta e moral, enquanto o B abre com \"Enquanto países bilionários\", usa \"bilionário\" no hook, conta a origem em ordem (\"Tudo começa\") e fecha com lição de moral."
+  ]
+ },
+ {
+  "par": "P139",
+  "gabarito": "B",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "B abre com nome próprio (a italiana Parmalat) num conflito com a família dona da Betânia, com ponte direta com o Brasil e fecho que fica no caso (a retomada da empresa e a Alvoar), enquanto A abre com \"O governo brasileiro\" sem nome específico, conta a origem em ordem cronológica e fecha com lição de moral (\"quem depende de condições ideais...\").",
+   "A abre com nome próprio (Parmalat) e traz uma ponte direta com o Brasil (Betânia, Nordeste, Alvoar), com um conflito de lados nomeados e um fecho que fica no caso. Já B abre sem nome, com hook genérico sobre \"governo brasileiro\", conta a origem em ordem cronológica e fecha com lição de moral (\"quem depende de condições ideais, morre esperando\")."
+  ]
+ },
+ {
+  "par": "P018",
+  "gabarito": "A",
+  "vencedor": "A",
+  "confianca": 2,
+  "motivos": [
+   "A abre com nome próprio (Silvio Santos), um ícone brasileiro, e o caso é concreto, enquanto B abre com \"As novelas te enganaram\" (sem nome, com \"você\" no título), tem tom de dica e fecha com lição de moral.",
+   "B abre com nome próprio (Silvio Santos) e traz uma figura brasileira conhecida, com ponte direta com o Brasil, enquanto o hook de A é genérico, sem nome, e o fecho de A termina em lição de moral (\"quem tem estratégia protege...\") e em CTA voltado ao ganho do espectador."
+  ]
+ },
+ {
+  "par": "P081",
+  "gabarito": "A",
+  "vencedor": "B",
+  "confianca": 2,
+  "motivos": [
+   "B tem ponte direta com o bolso do brasileiro (preço em reais, de 1 milhão para 1500) e fecha no caso com a China, apesar do hook começar com \"Esses\"; A abre com \"O Homem mais rico\" sem nome próprio, é mais abstrato e fecha com pergunta ao espectador (\"você compraria?\").",
+   "A tem ponte direta com o bolso do brasileiro (1 milhão de reais contra 1500) e um fecho que fica no caso (a China e seus 300 milhões de idosos), apesar do hook começar com \"Esses\"; B abre sem nome no hook, depende de previsões estrangeiras e fecha com pergunta ao espectador sobre \"você compraria?\"."
+  ]
+ }
+]
