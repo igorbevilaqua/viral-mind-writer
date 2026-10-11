@@ -29,6 +29,6 @@ O espectador ouve UMA vez, sem voltar. Tudo abaixo existe porque um roteiro do C
 - **País pelo nome, nunca pela capital** ("a China", não "Pequim"; "os Estados Unidos", não "Washington").
 - **Nome que o público não conhece ganha o que ele é na primeira vez** ("a CPFL, que distribui a luz de metade de São Paulo"; "o Cade, o órgão que autoriza compra de empresa"). Sigla que não é do dia a dia: diga a função.
 - **Número só com função**: contraste, dimensão de algo grande demais para sentir, prova de uma afirmação surpreendente, ou autoridade. Sem função, sai. Dois números com a mesma função, fica o mais forte. Arredonde para a fala ("mais de 25 mil", não "25.680"); um número exato pode ficar como âncora. Os roteiros da casa que mais viralizam usam menos de 2 números a cada 100 palavras.
-- **"Ou seja," no máximo uma vez**, e só para traduzir um número ou fato na consequência para quem assiste.
+- **Moldura no máximo uma vez no roteiro inteiro, e o padrão é nenhuma.** "Ou seja,", "Pra você ter ideia,", "Enquanto todo mundo", "Até que", "Anos depois,", "Como é que" aparecem em poucos roteiros da casa; repetidas em todo roteiro, viram assinatura de máquina. Diga a consequência, a comparação ou a virada direto, com as palavras do caso.
 - **Comece pelo conflito, não pela origem.** "Nasceu em", "começou como", "foi aí que" em sequência derrubam o vídeo; a origem entra só se explica a virada.
 - **Um rosto.** Um personagem nomeado carrega a história; massa de eventos e números não emociona.

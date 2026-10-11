@@ -10,6 +10,8 @@
 // --montante <dir> reaproveita premissa, dossiê, narrativas e ranking de outra rodada: o
 // braço passa a diferir só da escrita para baixo, e o custo cai pela metade. Só vale quando
 // o braço NÃO muda pesquisa, storytelling nem ranking.
+// --com-hook reaproveita também o hook da rodada montante (sem as variações): o braço difere
+// só do corpo para baixo. Só vale quando o braço NÃO muda o agente nem o playbook de hook.
 //
 //   npx tsx --env-file=.env.local scripts/bancada.ts --braco A --saida <dir> [--so h1,c3] [--n 5] [--montante <dir>/A]
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
@@ -31,6 +33,7 @@ const arg = (nome: string) => {
 const BRACO = arg("braco") ?? "A";
 const SAIDA = arg("saida") ?? "bancada";
 const MONTANTE = arg("montante");
+const COM_HOOK = process.argv.includes("--com-hook");
 const SO = arg("so")?.split(",");
 const N = Number(arg("n") ?? Infinity);
 const PAUTAS = arg("pautas") ?? "docs/escrita-2026-10/bancada/pautas.json";
@@ -75,6 +78,7 @@ async function rodar(p: Pauta) {
   const ctx = await loadContextBancada(clientId, prompt);
 
   let artifacts: SessionArtifacts;
+  let hookPronto: Parameters<typeof escreverRoteiro>[5];
   const reuso = MONTANTE ? join(MONTANTE, `${p.id}.json`) : null;
   if (reuso && existsSync(reuso)) {
     const anterior = JSON.parse(readFileSync(reuso, "utf8"));
@@ -83,6 +87,11 @@ async function rodar(p: Pauta) {
     ctx.premissaProvas = anterior.artifacts.premissa_provas;
     ctx.premissaContraintuitivo = anterior.artifacts.premissa_contraintuitivo;
     artifacts = anterior.artifacts;
+    if (COM_HOOK)
+      hookPronto = {
+        hook: anterior.hook, variantes: [], racional: "", motivo: "reuso do banco de prova",
+        mecanismo: anterior.hook_mecanismo, formato: "Nenhum", mecanismosVariantes: [], candidatos: [], descartados: [],
+      };
   } else {
     const derivada = await derivePremissa(ctx);
     if (!teseAceitavel(derivada.premissa)) throw new Error(`premissa não é tese: ${derivada.premissa}`);
@@ -106,7 +115,7 @@ async function rodar(p: Pauta) {
   }
   ctx.artifacts = artifacts;
 
-  const r = await escreverRoteiro(ctx, SESSAO_FANTASMA, artifacts, () => {});
+  const r = await escreverRoteiro(ctx, SESSAO_FANTASMA, artifacts, () => {}, undefined, hookPronto);
   const s = r.sections;
   return {
     pauta: p,

@@ -1,3 +1,4 @@
+import { readFileSync } from "node:fs";
 import { fmtNum } from "../format";
 import OpenAI from "openai";
 import { appDb, crmDb, viralData } from "../db";
@@ -244,8 +245,10 @@ async function loadEstadoComum(clientId: string | null, modoModelagem: boolean):
 
   // Banco de prova (plano 024, 1.1): CODEX_BANCADA_PLAYBOOKS='{"hook":4,"style_guide":5}' troca
   // a versão ATIVA pela pedida, sem ativar nada no banco. Só existe em script; produção não seta.
+  // Caminho de arquivo no lugar do número testa um rascunho de playbook sem gravá-lo no banco
+  // (versão 0 no fingerprint).
   const pedidas = process.env.CODEX_BANCADA_PLAYBOOKS
-    ? (JSON.parse(process.env.CODEX_BANCADA_PLAYBOOKS) as Record<string, number>)
+    ? (JSON.parse(process.env.CODEX_BANCADA_PLAYBOOKS) as Record<string, number | string>)
     : null;
   if (pedidas) {
     const { data: versoes, error: erroVersoes } = await appDb
@@ -253,7 +256,12 @@ async function loadEstadoComum(clientId: string | null, modoModelagem: boolean):
       .select("slug, content, version")
       .in("slug", Object.keys(pedidas));
     if (erroVersoes) throw new Error(`banco de prova: falha ao carregar playbooks pedidos: ${erroVersoes.message}`);
-    const escolhidas = (versoes ?? []).filter((v) => Number(v.version) === pedidas[v.slug]);
+    const escolhidas = [
+      ...(versoes ?? []).filter((v) => Number(v.version) === pedidas[v.slug]),
+      ...Object.entries(pedidas)
+        .filter(([, v]) => typeof v === "string")
+        .map(([slug, arquivo]) => ({ slug, content: readFileSync(arquivo as string, "utf8"), version: 0 })),
+    ];
     const faltando = Object.keys(pedidas).filter((slug) => !escolhidas.some((v) => v.slug === slug));
     if (faltando.length) throw new Error(`banco de prova: versão pedida não existe para ${faltando.join(", ")}`);
     playbooksRes.data = [...(playbooksRes.data ?? []).filter((p) => !(p.slug in pedidas)), ...escolhidas];

@@ -680,11 +680,14 @@ export async function escreverRoteiro(
   sessionId: string,
   artifacts: SessionArtifacts | null,
   emit: (e: PipelineEvent) => void,
-  revision?: { anterior: string; feedback: string }
+  revision?: { anterior: string; feedback: string },
+  // Só o banco de prova passa: reusa o hook de outra rodada para testar a escrita do corpo
+  // sem pagar o agente de hook de novo.
+  hookPronto?: Awaited<ReturnType<typeof designHook>>
 ) {
   emit({ type: "phase", phase: "hook_comando" });
   const recentes = await hookRecentes(ctx.clientId, sessionId);
-  const hookRes = await designHook(ctx, null, recentes);
+  const hookRes = hookPronto ?? (await designHook(ctx, null, recentes));
 
   emit({ type: "phase", phase: "roteiro" });
   const rascunho = await generateDraft(ctx, (t) => emit({ type: "token", text: t }), revision, hookRes.hook);

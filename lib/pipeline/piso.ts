@@ -224,7 +224,9 @@ export function alvosDoPiso(corpo: string, hook: string | null = null): AlvoPiso
   const exatos = frases.filter((f) => (f.match(NUMERO) ?? []).some(exato));
   if (exatos.length > PISO.numerosExatos)
     for (const f of exatos.slice(PISO.numerosExatos)) add("número exato demais para a fala: arredonde (\"mais de 25 mil\", \"quase 2 bilhões\")", f);
-  const ouSeja = frases.filter((f) => /^ou seja\b/i.test(f));
-  for (const f of ouSeja.slice(PISO.ouSeja)) add('"Ou seja" repetido: diga a consequência direto, sem a muleta', f);
+  // Expressões que o estudo de outubro achou nos topos e que, prescritas, viraram carimbo
+  // (plano 024 §9): somadas, no máximo uma por roteiro.
+  const molduras = frases.filter((f) => /^(ou seja|pra você ter ideia|enquanto todo mundo|até que|anos depois|como é que)\b/i.test(f));
+  for (const f of molduras.slice(PISO.ouSeja)) add('moldura repetida ("Ou seja", "Até que", "Enquanto todo mundo"...): diga direto, sem a muleta', f);
   return out.slice(0, TETO_ALVOS_PISO);
 }
