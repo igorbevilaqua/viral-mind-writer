@@ -8,6 +8,7 @@ import {
   criarSessaoDoRoteiro,
   finalizeSession,
   markPublished,
+  markNaoUsado,
   quickFeedback,
   swapHook,
   updateScript,
@@ -589,8 +590,18 @@ function PublishBox({
 }) {
   const router = useRouter();
   const [url, setUrl] = useState("");
+  const [motivo, setMotivo] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
+
+  if (script.status === "descartado") {
+    return (
+      <div className="rounded-2xl border border-white/[.08] bg-white/[.02] p-4 sm:p-5">
+        <span className="kicker text-white/40">NÃO USADO</span>
+        <span className="ml-2.5 text-xs text-white/55">o motivo foi registrado e ensina a sala</span>
+      </div>
+    );
+  }
 
   if (script.status !== "published") {
     return (
@@ -625,6 +636,36 @@ function PublishBox({
             {pending ? "Marcando..." : "Marcar como publicado"}
           </button>
         </div>
+        <details className="pt-1">
+          <summary className="cursor-pointer text-[12px] text-white/45 select-none hover:text-white/70">
+            Não vou usar este roteiro
+          </summary>
+          <div className="mt-2 flex items-center gap-2.5 flex-wrap">
+            <input
+              value={motivo}
+              onChange={(e) => setMotivo(e.target.value)}
+              placeholder="Por quê? (pauta, texto confuso, hook fraco, tempo...)"
+              className="w-full sm:w-auto sm:flex-1 sm:min-w-[240px] rounded-[10px] border border-white/[.12] bg-transparent px-3.5 py-2.5 text-[12.5px] outline-none placeholder:text-white/30 focus:border-gold/40"
+            />
+            <button
+              onClick={() =>
+                startTransition(async () => {
+                  try {
+                    setError(null);
+                    await markNaoUsado(script.id, motivo);
+                    router.refresh();
+                  } catch (e) {
+                    setError(e instanceof Error ? e.message : String(e));
+                  }
+                })
+              }
+              disabled={pending}
+              className="w-full sm:w-auto rounded-[10px] border border-white/[.15] px-4 py-3 sm:py-2.5 text-[13px] text-white/70 hover:text-white disabled:opacity-40"
+            >
+              {pending ? "Registrando..." : "Registrar"}
+            </button>
+          </div>
+        </details>
         {error && <p className="text-xs text-red-300">{error}</p>}
       </div>
     );

@@ -385,6 +385,28 @@ export async function markPublished(scriptId: string, url: string) {
   revalidatePath(`/sessions/${data.session_id}`);
 }
 
+// Plano 024, 4.2: roteiro que não vai ao ar também é dado. Hoje 91% dos roteiros somem sem
+// registro e não dá para saber se o problema foi o texto, a pauta ou o tempo. O motivo vai como
+// nota de feedback (sem nota de 1 a 5: "não usei" não é avaliação), e o status muda para que o
+// ETL e o banco de prova saibam que ele foi rejeitado e não esquecido.
+export async function markNaoUsado(scriptId: string, motivo: string) {
+  await exigirAcesso({ script: scriptId });
+  const { data, error } = await appDb
+    .from("vm_generated_scripts")
+    .update({ status: "descartado" })
+    .eq("id", scriptId)
+    .neq("status", "published")
+    .select("session_id")
+    .single();
+  if (error) throw new Error(error.message);
+  const nota = motivo.trim();
+  const { error: erroNota } = await appDb
+    .from("vm_script_feedback")
+    .insert({ script_id: scriptId, notes: `[não usado]${nota ? ` ${nota}` : ""}` });
+  if (erroNota) throw new Error(erroNota.message);
+  revalidatePath(`/sessions/${data.session_id}`);
+}
+
 // WP-F.3: feedback 1-clique por versão — 👍 grava rating 5, 👎 grava 1, sem encerrar a sessão.
 // Cada clique insere uma linha nova; a UI mostra o rating mais recente por script.
 export async function quickFeedback(scriptId: string, sessionId: string, thumb: "up" | "down") {
