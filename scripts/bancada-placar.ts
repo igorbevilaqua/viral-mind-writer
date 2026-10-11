@@ -83,9 +83,11 @@ void (async () => {
     pautas: comuns.length,
     custo_usd: { [A]: +comuns.reduce((s, id) => s + ra.get(id)!.custo_usd, 0).toFixed(2), [B]: +comuns.reduce((s, id) => s + rb.get(id)!.custo_usd, 0).toFixed(2) },
     piso: { [A]: resumoPiso(pisoA), [B]: resumoPiso(pisoB) },
+    // Só o que é FALADO de autoria do roteirista (hook + corpo): o título na tela e o comando
+    // ("Se você quer...") repetem por formato e poluiriam a contagem de fórmula.
     formulas: {
-      [A]: aberturasRepetidas(comuns.map((id) => falado(ra.get(id)!))),
-      [B]: aberturasRepetidas(comuns.map((id) => falado(rb.get(id)!))),
+      [A]: aberturasRepetidas(comuns.map((id) => `${ra.get(id)!.hook ?? ""}\n\n${ra.get(id)!.roteiro ?? ""}`)),
+      [B]: aberturasRepetidas(comuns.map((id) => `${rb.get(id)!.hook ?? ""}\n\n${rb.get(id)!.roteiro ?? ""}`)),
     },
   };
 
