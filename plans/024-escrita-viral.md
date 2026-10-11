@@ -1,6 +1,8 @@
 # Plano 024: Evolução da escrita para viralização (11/10/2026)
 
-Status: SPEC. Pedido do Igor depois de uma rodada de reclamações do time sobre roteiros ruins.
+Status: EM EXECUÇÃO (11/10/2026). Pedido do Igor depois de uma rodada de reclamações do time sobre roteiros ruins.
+
+**Onde está o código:** branch `escrita-024` (Onda 0, banco de prova, estudo de outubro = braço B) e `escrita-dev` (Onda 2 e 3.1 = braço C), em worktrees ao lado do repo. Nada foi para a main. Ver §8 para o andamento.
 Evidência completa em `docs/escrita-2026-10/`:
 - `licoes.md`: o que os usuários ensinaram e corrigiram (42 lições, 148 aprendizados, 34 pares antes/depois da edição humana, 168 observações de edição).
 - `dados-lacuna.md`: Codex contra roteiros da casa (topo e base de coeficiente viral), inventário de sinais, Codex contra desfecho.
@@ -249,3 +251,33 @@ Os itens de maior retorno por esforço são 0.1, 0.6, 1.2, 2.4, 2.5 e 3.1.
 - **Não usar o juiz LLM como portão de teto** sem passar dos 62% nos 232 pares.
 - **Não perseguir paridade de estilo com o humano** (frase média, perguntas, siglas). Entre humanos isso não prevê resultado. Só vale o que é piso (reclamação, edição) ou o que replica no dado.
 - **Não medir sucesso por roteiro publicado sem controlar a edição.** O percentil 0,66 dos 21 publicados é do texto editado, de pauta escolhida a dedo.
+
+---
+
+## 8. Andamento (execução de 11/10/2026)
+
+| item | estado | nota |
+|---|---|---|
+| 0.1 hook duplicado | feito | trinco do hook depois da humanização + cópia reconhecida por eco |
+| 0.2 WIP do estudo | feito | commit próprio no `escrita-024`, é o braço B |
+| 0.3 estudo commitado | feito | |
+| 0.4 contradições | feito | teto de frases longas seguidas saiu do revisor e do humanizador |
+| 0.5 observações de edição | alarme falso | ETL semanal; latência vira 3.4 |
+| 0.6 pesquisador | feito | número com função marcada, "o que é" de cada sigla, país pelo nome |
+| 1.1 banco de prova | feito | `scripts/bancada.ts`, 41 pautas em `docs/escrita-2026-10/bancada/pautas.json`; ~US$ 1,6 por roteiro |
+| 1.2 verificador de piso | feito | `lib/pipeline/piso.ts`, calibrado no acervo (`scripts/piso-acervo.ts`) |
+| 1.3 juiz de teto | feito | `lib/pipeline/juiz.ts`. Calibração nos 232 pares cegos: Sonnet 5.5 68% [60 a 74] decidindo 73%; **Opus 5.5 75% [67 a 82] decidindo 59%** (confiança 3: 92%). Passa dos 62%. Ressalva: os critérios vieram do mesmo acervo dos pares |
+| 1.4 painel humano | adiado | decisão do Igor |
+| 1.5 placar de base | rodando | A (produção) contra B (estudo de outubro + Onda 0) |
+| 2.1 playbooks de outubro | no A/B | via `CODEX_BANCADA_PLAYBOOKS`, sem ativar no banco |
+| 2.2 premissa decide o teto | adiado | o payoff v1 e a pauta v1 do estudo já entram no braço B; decidir depois do placar |
+| 2.3 esqueleto causal | parcial | a cadeia causal entrou como regra do roteirista (2.6); mudar o storytelling fica para depois do placar |
+| 2.4 hook primeiro | feito (C) | `escreverRoteiro` é o caminho único de runPipeline e do banco |
+| 2.5 few-shot da casa | feito (C) | 3 roteiros VM do cliente com maior coeficiente em 180 dias. **Desvio:** transcrição do vídeo, não texto do CRM, porque o Codex não tem chave do CRM (decisão pendente) |
+| 2.6 doutrina no prompt | feito (C) | roteirista.md e hook.md |
+| 2.7 revisor por edição | feito (C) | edição localizada aplicada em código, recebe o piso como sinal |
+| 2.8 humanizador cirúrgico | feito (C) | sem re-textura completa; corrige slop, parágrafo e alvos do piso |
+| 2.9 aviso na tela | feito (C) | caixa "Clareza" na sessão |
+| 3.1 lição do pedido | feito (C) | o texto regenerado pela IA deixou de ser gabarito |
+| 3.2 / 3.3 | coberto em parte | a lição de clareza virou doutrina permanente (2.6) e chega ao hook |
+| 4.1 / 4.2 | pendente | último roteiro marcado como publicado no Codex: 11/09 |
