@@ -173,15 +173,15 @@ Regras:
 - Se for regra específica deste cliente (ex.: "nunca fale mal de juízes"), registre como regra do cliente, não como princípio global.
 - Classifique na dimensão certa (hook, comando, storytelling, tema, ritmo, geral).
 - Extraia SÓ o que o pedido sustenta. 1 aprendizado sólido vale mais que vários inventados. NÃO invente.
-- Use o antes→depois apenas como evidência de como a correção foi aplicada.
+- O ROTEIRO DEPOIS foi escrito pela IA tentando atender o pedido: ele NÃO é gabarito e NÃO é exemplo a seguir. Nunca transforme frase, recurso, estrutura ou marcador do DEPOIS em regra ("use 'essa foi a primeira peça'", "nomeie as peças como uma rede"). Ele só mostra o que a IA fez; o que a sala deve aprender está no PEDIDO e no problema do ANTES que motivou o pedido.
 
 PEDIDO DO USUÁRIO:
 ${input.pedido}
 
-=== ROTEIRO ANTES ===
+=== ROTEIRO ANTES (o que o humano quis corrigir) ===
 ${input.antes.slice(0, 12_000)}
 
-=== ROTEIRO DEPOIS (já corrigido) ===
+=== ROTEIRO DEPOIS (tentativa da IA; não é gabarito) ===
 ${input.depois.slice(0, 12_000)}`,
     1
   );
