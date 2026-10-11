@@ -1,6 +1,6 @@
 import { fmtNum } from "../format";
 import OpenAI from "openai";
-import { appDb, viralData } from "../db";
+import { appDb, crmDb, viralData } from "../db";
 import { agregarDiarias, type Diaria } from "../performance-metrics";
 import {
   candidatosDeDocumentos,
@@ -97,10 +97,25 @@ export async function criterioFewShot(): Promise<CriterioFewShot> {
 // perfil DELE, não com o vídeo mais visto do corpus inteiro (views absolutos medem a audiência
 // herdada, não o roteiro). Os 3 roteiros VM do cliente com maior coeficiente viral nos últimos
 // 180 dias, um por roteiro. É o registro que se imita; o tema vem do dossiê.
-// ponytail: transcrição do vídeo (ASR, sem parágrafo), porque o Codex não tem acesso ao texto
-// escrito do CRM. Upgrade: ler crm.scripts (texto com parágrafos) quando a chave existir aqui.
+// O texto vem do CRM (escrito, com parágrafos) quando CRM_SUPABASE_URL/CRM_SERVICE_ROLE_KEY
+// existem; sem elas, da transcrição do vídeo (ASR, sem parágrafo), que ensina a voz igual.
 const FEW_SHOT_DA_CASA = 3;
 const JANELA_DA_CASA_DIAS = 180;
+
+// Notas de edição do CRM vêm entre parênteses/colchetes no meio do texto ("(corta pra b-roll)"),
+// e links de referência soltos entre os parágrafos: nada disso é fala.
+const limparNotasDoCrm = (t: string) =>
+  t.replace(/https?:\/\/\S+/g, " ").replace(/\([^)]*\)|\[[^\]]*\]|\*/g, " ").replace(/[ \t]+/g, " ").trim();
+
+async function textosDoCrm(ids: string[]): Promise<Map<string, string>> {
+  if (!crmDb || !ids.length) return new Map();
+  const { data, error } = await crmDb.from("scripts").select("id, script_text").in("id", ids);
+  if (error) {
+    console.error("few-shot: CRM indisponível, seguindo com a transcrição", error.message);
+    return new Map();
+  }
+  return new Map((data ?? []).filter((r) => r.script_text).map((r) => [r.id as string, limparNotasDoCrm(r.script_text as string)]));
+}
 
 async function fewShotDaCasa(clientId: string): Promise<ExemploFewShot[]> {
   const desde = new Date(Date.now() - JANELA_DA_CASA_DIAS * 864e5).toISOString();
@@ -120,16 +135,18 @@ async function fewShotDaCasa(clientId: string): Promise<ExemploFewShot[]> {
     .select("id, roteiro, crm_script_id")
     .in("id", topo.map((t) => t.video_id));
   const porId = new Map((videos ?? []).map((v) => [v.id, v]));
+  const escritos = await textosDoCrm((videos ?? []).map((v) => v.crm_script_id as string | null).filter((x): x is string => !!x));
   const vistos = new Set<string>();
   const out: ExemploFewShot[] = [];
   for (const t of topo) {
     const v = porId.get(t.video_id);
     const chave = (v?.crm_script_id as string | null) ?? (t.video_id as string);
-    if (!v?.roteiro || (v.roteiro as string).length < 600 || vistos.has(chave)) continue;
+    const texto = (v?.crm_script_id && escritos.get(v.crm_script_id as string)) || (v?.roteiro as string | undefined);
+    if (!texto || texto.length < 600 || vistos.has(chave)) continue;
     vistos.add(chave);
     out.push({
-      roteiro: v.roteiro as string,
-      origem: `roteiro da casa para este cliente — ${Number(t.coeficiente_viral).toFixed(1)}x a média do canal, ${fmtNum(Number(t.views_total))} views`,
+      roteiro: texto,
+      origem: `roteiro ${escritos.has(chave) ? "escrito" : "transcrito"} da casa para este cliente — ${Number(t.coeficiente_viral).toFixed(1)}x a média do canal, ${fmtNum(Number(t.views_total))} views`,
       views: Number(t.views_total) || 0,
       taxa: null,
       criterio: "views",
