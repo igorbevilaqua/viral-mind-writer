@@ -154,7 +154,7 @@ export function associarModelagens(
 export async function suggestThemes(clientId: string, emit: (e: SuggestEvent) => void): Promise<void> {
   try {
     emit({ type: "phase", phase: "dados" });
-    const [clienteRes, prefsRes, insightsRes, hitsRes] = await Promise.all([
+    const [clienteRes, prefsRes, insightsRes, hitsRes, pautaRes] = await Promise.all([
       appDb.from("clientes").select("nome").eq("id", clientId).single(),
       appDb
         .from("vm_client_preferences")
@@ -167,8 +167,11 @@ export async function suggestThemes(clientId: string, emit: (e: SuggestEvent) =>
         .eq("scope", `client:${clientId}`)
         .like("insight_type", "client_%"),
       viralData.rpc("vm_cross_client_hits", { p_cliente_id: clientId, p_limit: 12 }),
+      // playbook de pauta (territórios e repetição), só quando há versão ativa
+      appDb.from("vm_playbooks").select("content").eq("slug", "pauta").eq("active", true).maybeSingle(),
     ]);
     if (clienteRes.error || !clienteRes.data) throw new Error("cliente não encontrado");
+    const pauta = pautaRes.data?.content ? `\n\n# PLAYBOOK DE PAUTA (territórios que funcionam, que evitar, regra de repetição)\n${pautaRes.data.content}` : "";
 
     const nome = clienteRes.data.nome;
     const prefs = prefsRes.data;
@@ -236,7 +239,7 @@ Traga as oportunidades de pauta.`,
       max_tokens: 6000, // thinking divide o teto — 4000 truncava o tool_use
       tools: [SUGESTOES_TOOL],
       tool_choice: { type: "tool", name: "registrar_sugestoes" },
-      system: [{ type: "text", text: agentPrompt("ideador"), cache_control: { type: "ephemeral" } }],
+      system: [{ type: "text", text: `${agentPrompt("ideador")}${pauta}`, cache_control: { type: "ephemeral" } }],
       messages: [
         {
           role: "user",
@@ -247,7 +250,7 @@ ${prefs?.proibicoes?.length ? `PROIBIÇÕES (INVIOLÁVEIS): ${prefs.proibicoes.j
 ${validados || "(sem insights materializados — rode o ETL; aposte no nicho declarado)"}
 
 2. HITS DE CLIENTES AFINS (mesmos temas, views comprovadas — arquiteturas reaproveitáveis;
-itens PRODUÇÃO VM são roteiros nossos publicados — dê peso principal a esses padrões):
+itens PRODUÇÃO VM são roteiros nossos publicados. O sucesso de outro cliente quase não se repete aqui (use pela arquitetura, não pelo tema); tema que falhou em outro cliente costuma falhar de novo):
 ${
   hits.length
     ? hits

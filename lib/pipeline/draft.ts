@@ -25,7 +25,7 @@ export const OUTPUT_FORMAT = `Responda EXATAMENTE neste formato (headers literai
 (texto de tela exibido no início do vídeo, MÁXIMO 9 palavras, caixa alta, gera curiosidade lida isolada — não é o primeiro parágrafo do roteiro)
 
 ## HOOK
-(o hook falado, 2 a 4 frases (a maioria com duas), seguindo pelo menos 1 MGC)
+(o hook falado, 2 a 4 frases, o padrão é duas, com placar não negativo pelo playbook de hooks)
 
 ## ROTEIRO
 (o roteiro falado do início ao fim, começando com o hook — mas SEM o comando/CTA final: ele vai APENAS na seção COMANDO, nunca repetido aqui)
@@ -76,7 +76,7 @@ Todo texto de saída — roteiro, hook, headline, comando, variações — SEMPR
 
 # PLAYBOOK DE HOOKS
 ${ctx.playbooks.hook ?? "(sem playbook)"}
-
+${ctx.playbooks.subhook ? `\n# PLAYBOOK DE SUBHOOK (o primeiro parágrafo do corpo)\n${ctx.playbooks.subhook}\n` : ""}${ctx.playbooks.conclusao ? `\n# PLAYBOOK DE CONCLUSÃO (o último parágrafo do corpo)\n${ctx.playbooks.conclusao}\n` : ""}
 # PLAYBOOK DE COMANDO/CTA
 ${ctx.playbooks.comando ?? "(sem playbook)"}
 
@@ -375,7 +375,7 @@ export function buildReviewDynamicBlock(ctx: GenerationContext, sinais = ""): st
   const premissa = premissaBlock(ctx);
   if (premissa)
     parts.push(
-      `${premissa}\n\nITEM ELIMINATÓRIO: o roteiro sustenta esta premissa do início ao fim? A abertura chama atenção para ela, o meio a prova, o fim entrega a consequência dela? Se ele defende outra tese, ou se dilui em duas, reescreva para a premissa acima.`
+      `${premissa}\n\nITEM ELIMINATÓRIO: o roteiro sustenta esta premissa do início ao fim? A abertura chama atenção para ela, o meio a prova, o fim fecha a lacuna dela no próprio caso? Se ele defende outra tese, ou se dilui em duas, reescreva para a premissa acima.`
     );
   const replicando = anexoReplicar(ctx.attachments);
   if (ctx.modelagemBriefs.length) {
@@ -497,7 +497,7 @@ export async function generateDraft(
     messages: [
       {
         role: "user",
-        content: `${task} Duração-alvo: 60 a 180 segundos de fala (150 a 430 palavras no corpo — fora disso o roteiro é eliminado na revisão).${
+        content: `${task} Tamanho-alvo: 370 a 430 palavras no corpo, para o roteiro inteiro (com hook e comando) ficar entre 420 e 500, cerca de 140 a 165 segundos de fala. Corpo abaixo de 250 palavras é eliminado na revisão.${
           // Com modelagem o texto digitado já entrou como ORIENTAÇÃO na task: repeti-lo como
           // BRIEF seria oferecer ao roteirista um tema novo, que é justamente o que a Regra 3 proíbe.
           ctx.prompt.trim() && !modelando ? `\n\nBRIEF:\n${ctx.prompt}` : ""

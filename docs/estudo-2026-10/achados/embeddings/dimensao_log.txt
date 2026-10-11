@@ -1,0 +1,4 @@
+d=256: sobreposição média dos 10 vizinhos com a versão 3072 = 64.1% (pior roteiro 20%)
+d=512: sobreposição média dos 10 vizinhos com a versão 3072 = 79.8% (pior roteiro 40%)
+d=768: sobreposição média dos 10 vizinhos com a versão 3072 = 89.8% (pior roteiro 60%)
+d=1536: sobreposição média dos 10 vizinhos com a versão 3072 = 95.5% (pior roteiro 70%)

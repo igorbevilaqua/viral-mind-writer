@@ -1,0 +1,110 @@
+{
+ "pares": 260,
+ "pares_ig_tt": 227,
+ "clientes": 27,
+ "por_plataforma": {
+  "TikTok": 100,
+  "Instagram": 127,
+  "YouTube": 33
+ },
+ "por_cliente": {
+  "Izabela Anholett": 25,
+  "Rafael Rodrigues": 25,
+  "Lincoln Fracari": 24,
+  "Fernando Pereira": 19,
+  "Rodrigo Waughan": 19,
+  "Thiago Franco": 18,
+  "Marcio Grazino": 17,
+  "Marcos Pelozato": 13,
+  "Manoel Victor": 13,
+  "Franklin Tomich": 12,
+  "Dilson Peres": 12,
+  "Marcelo Germano": 8,
+  "Cadu Neiva": 7,
+  "Leonardo Cirino": 6,
+  "Pedro Elero": 6,
+  "Drielle Castelani": 5,
+  "Ricardo Schumacher": 5,
+  "Renato Mendes": 5,
+  "João Felipe Marques": 4,
+  "Túlio Lichenstein": 4,
+  "Patrick Diorio": 3,
+  "Leonardo Nogueira": 3,
+  "Café com Ferri": 2,
+  "João Paulo Albuquerque": 2,
+  "Renato Torres": 1,
+  "Thainá Iansen": 1,
+  "Thiago Bisewski": 1
+ },
+ "limiar_por_cliente": {
+  "Rodrigo Waughan": 0.78,
+  "Rafael Rodrigues": 0.785,
+  "Marcos Pelozato": 0.8,
+  "Ricardo Schumacher": 0.806,
+  "Fernando Pereira": 0.801,
+  "Thiago Franco": 0.831,
+  "Lincoln Fracari": 0.803,
+  "Izabela Anholett": 0.805,
+  "Patrick Diorio": 0.793,
+  "Renato Mendes": 0.785,
+  "Pedro Elero": 0.78,
+  "Marcio Grazino": 0.78,
+  "Túlio Lichenstein": 0.782,
+  "Marcelo Germano": 0.785,
+  "Manoel Victor": 0.78,
+  "Leonardo Cirino": 0.804,
+  "Renato Torres": 0.78,
+  "Franklin Tomich": 0.78,
+  "Café com Ferri": 0.845,
+  "João Paulo Albuquerque": 0.78,
+  "Thainá Iansen": 0.78,
+  "Dilson Peres": 0.812,
+  "Leonardo Nogueira": 0.792,
+  "João Felipe Marques": 0.793,
+  "Drielle Castelani": 0.78,
+  "Cadu Neiva": 0.78,
+  "Lerry Granville": 0.78,
+  "Thiago Bisewski": 0.78,
+  "Leonardo Martins": 0.785
+ },
+ "similaridade": {
+  "min": 0.78,
+  "mediana": 0.818,
+  "max": 0.93
+ },
+ "distancia_dias": {
+  "mediana": 35,
+  "p90": 109
+ },
+ "pq_medio": {
+  "vencedor": 0.8982230769230773,
+  "perdedor": 0.15139999999999998
+ },
+ "vencedor_melhor_na_media_das_redes": 258,
+ "clientes_sem_par": [
+  "Lerry Granville",
+  "Leonardo Martins"
+ ]
+}
+
+conferência a olho (5 pares sorteados):
+
+P180 Pedro Elero TikTok sim 0.785
+  V (pq 0,83, coef 21.43): Jogador de 18 anos acaba de trocar São Paulo pelo Palmeiras | Esse jogador de 18 anos cresceu no São Paulo, mas acabou de trocar o Tricolor pelo rival Palmeiras… Mas o que quase ninguém ficou sabendo fo
+  P (pq 0,14, coef 0.44): O Neymar se aposentou?! | O Neymar não é mais jogador de futebol! É isso que muito jornalista diz por aí e talvez eles estejam certos.
+
+P201 Rafael Rodrigues Instagram sim 0.795
+  V (pq 0,88, coef 40.12): O Ceará pode mudar o futuro tecnológico do Brasil | Enquanto China e Estados Unidos dominam a inteligência artificial, o Ceará vai garantir que o Brasil não fique para trás.
+  P (pq 0,01, coef 0.11): A ideia do Ceará que transformou a Copa do Mundo em aula de tecnologia | A Copa do Mundo vai muito além do futebol. E essa iniciativa do Ceará mostrou que o maior evento do mundo também é palco para inovação.
+
+P058 Izabela Anholett Instagram sim 0.899
+  V (pq 0,97, coef 48.42): O “ChatGPT” tornará o Iphone lixo em 2027 | A criadora do ChatGPT está preparando um golpe que vai destruir o iPhone em 2027: um celular com IA e sem apps tradicionais.
+  P (pq 0,20, coef 0.67): A Apple quer destruir a nova criação do ChatGPT | A Apple acabou de declarar guerra ao ChatGPT e o motivo é um "robô" diferente de tudo o que você já viu, ele foi feito para morar na sua cas
+
+P163 Marcos Pelozato TikTok sim 0.83
+  V (pq 0,83, coef 4.84): Mais uma gigante ACABA de cair! | A Marabraz, uma gigante do varejo com 135 lojas, acabou de pedir socorro na Justiça com 140 milhões em dívidas. E isso aconteceu por um moti
+  P (pq 0,22, coef 0.54): A cerveja mais famosa do Brasil quase sumiu. | Uma das cervejas mais conhecidas do Brasil quase morreu.
+
+P023 Drielle Castelani Instagram sim 0.851
+  V (pq 1,00, coef 120.19): O médico que usou o próprio coração como cobaia | Esse médico esperou o chefe ir embora, trancou a sala, e enfiou um tubo dentro do próprio coração.
+  P (pq 0,26, coef 0.68): O aparelho que salva seu coração nasceu numa cozinha | Esse médico alemão construiu à mão, na cozinha de casa, um instrumento que nenhum hospital acreditava que funcionaria, e entrou com ele numa

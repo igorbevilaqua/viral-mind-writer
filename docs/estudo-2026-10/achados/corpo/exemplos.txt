@@ -1,0 +1,154 @@
+
+## ou_seja
+  Fernando Pereira | TikTok | coef 3661,10 | Ou seja, o preço do mercado e da sua gasolina pode estar nos próximos dias.
+  Marcos Pelozato | TikTok | coef 1356,26 | Ou seja, quase 30% de toda a rede fechou as portas num único anúncio.
+  Pedro Elero | TikTok | coef 486,17 | Ou seja, é uma marca grande, com potencial enorme e que tem tudo para, em breve, trazer esse tipo de "carro mágico" para a gente aqui.
+  Renato Mendes | TikTok | coef 482,90 | Ou seja, quem comprou, está gostando e compartilhando com os amigos.
+
+## ou_seja_pior
+  Rodrigo Waughan | TikTok | coef 0,06 | Ou seja: os carros irão para colecionadores, mas o dinheiro vai para quem precisa.
+  Dilson Peres | YouTube | coef 0,06 | Ou seja, a empresa vendia em toda europa, mas não pagava impostos nesses países, obtendo um desconto tributário ENORME.
+
+## pra_voce_ter_ideia
+  Marcos Pelozato | TikTok | coef 1356,26 | Para você ter noção do tamanho disso: a empresa tinha cerca de mil lojas no Brasil.
+  Rafael Rodrigues | YouTube | coef 866,71 | Para você ter uma ideia do quão grande é o projeto, 2.1 bilhões de pessoas no mundo não têm acesso à água potável.
+  Rafael Rodrigues | TikTok | coef 630,14 | Para você ter uma ideia, a primeira camisa da Seleção Brasileira com a Nike foi lançada em 1997.
+
+## detalhe
+  Marcio Grazino | TikTok | coef 740,21 | Só que com um detalhe: eles colocaram tecnologia de elite mundial lá dentro, mas com um preço justo.
+  Leonardo Nogueira | YouTube | coef 358,63 | Só que tinha um detalhe: a autonomia era de 400 quilômetros, enquanto as versões a lítio do mesmo carro chegavam a 630.
+  Rodrigo Waughan | Instagram | coef 176,87 | Só que aí vem o detalhe: Se tivesse um único M&Ms que fosse marrom, o contrato previa que o show poderia ser cancelado e a banda receberia o pagamento integral.
+
+## enumeracao
+  Lincoln Fracari | TikTok | coef 291,10 | Primeiro… sol e vento sobram no Nordeste. Energia limpa, barata e quase infinita.
+  Marcelo Germano | TikTok | coef 188,90 | A primeira é "The Playbook: Estratégias para Vencer”,.
+  Fernando Pereira | YouTube | coef 125,48 | Primeiro: empresas de petróleo fora do Oriente Médio viram seus lucros explodirem nesse cenário. Petrobras, Exxon, Shell.
+
+## pergunta_corpo
+  Marcos Pelozato | TikTok | coef 1356,26 | Como é que uma das maiores varejistas do país chega nesse ponto?
+  Rafael Rodrigues | TikTok | coef 630,14 | Sabe aquele uniforme lendário do penta em 2002?
+  Rafael Rodrigues | Instagram | coef 438,39 | “Por que não criar algo que ajude pessoas cegas a detectar obstáculos?”
+
+## um_ano
+  Rafael Rodrigues | YouTube | coef 866,71 | Em 2022, o Colégio Santa Maria, uma instituição referência na capital pernambucana, desafiou os seus alunos a criarem um projeto com impacto social.
+  Leonardo Nogueira | Instagram | coef 438,27 | Em 2013, ele comprou um Toyota Etios 1.5 manual em Brasília.
+  Leonardo Nogueira | YouTube | coef 358,63 | Só que agora, em fevereiro de 2026, a Changan, uma das maiores montadoras da China, anunciou o Nevo A06, o primeiro carro fabricado em escala comercial com bateria de sódio.
+
+## nomes
+  Cadu Neiva | Instagram | coef 740,22 | Enquanto os gigantes globais brigavam para mudar as fachadas para Atacadão ou Sam's Club, a família Paes Mendonça já estava em outro patamar.
+  Renato Mendes | TikTok | coef 482,90 | O BYD King emplacou 1.433 unidades e ficou com 42,6% do segmento, enquanto o Corolla vendeu apenas 855 carros e ficou com 25,4%.
+  João Paulo Albuquerque | TikTok | coef 384,31 | Com o anúncio, o Grupo MK, empresa brasileira dona da Mondial, comprou a fábrica e, meses depois, conseguiu o direito de usar o nome Aiwa no país.
+
+## biografia
+  Rafael Rodrigues | Instagram | coef 0,08 | Só que Naomi percebeu que precisava ir além dos muros da faculdade. / Foi aí que nasceu a Missão Mulher Saudável, um projeto de saúde ginecológica voltado às mulheres do interior do Ceará.
+  Rafael Rodrigues | YouTube | coef 0,10 | Durante a experiência, o estudante percebeu que na região amazônica, muitas escolas não têm conexão à internet, justamente por serem ribeirinhas. / Foi aí que ele decidiu ajudar oferecendo conectividade.
+  Thainá Iansen | Instagram | coef 0,12 | Tudo começou nos anos 50, quando a grande maioria das bonecas nas lojas americanas era bebê, com corpinho rechonchudo, fraldas e mamadeiras. / Ruth percebeu que a filha Barbara e suas amiguinhas passavam um bom tempo brincando com bonecas de papel: figurinhas planas de mulheres adultas.
+
+## foi_ai_que
+  Rodrigo Waughan | TikTok | coef 0,01 | Foi aí que ele teve uma ideia: criar uma padaria drive-thru.
+  Leonardo Nogueira | Instagram | coef 0,02 | Foi aí que o seu principal diretor e futuro CEO, Stephen Scherr, decidiu DOBRAR A APOSTA.
+  Manoel Victor | YouTube | coef 0,04 | Foi então que, em março de 2026, eles fizeram parceria com a NVIDIA, líder mundial em chips de inteligência artificial, levando a IA, que já usavam em outras áreas, direto pra criação de novos produtos.
+
+## anos_depois_ret
+  Franklin Tomich | Instagram | coef 62,21 | ret_final_cond 0.5 | Anos depois, a Kraft se reestruturou e virou Mondelez International, um dos maiores grupos de alimentos do planeta.
+  Ricardo Schumacher | Instagram | coef 1,66 | ret_final_cond 0.3 | Só que anos depois, o número mudou.
+  Drielle Castelani | Instagram | coef 2,31 | ret_final_cond 0.5 | Cinco anos depois, já era professor na mesma faculdade onde tinha sido aluno.
+
+## ate_que_ret
+  Franklin Tomich | Instagram | coef 62,21 | ret_final_cond 0.5 | Até que finalmente, em 2015, a Mondelez simplesmente parou de fabricar e vender o produto, sem aviso ou explicação.
+  Marcelo Germano | Instagram | coef 38,28 | ret_final_cond 0.4 | Até que nos anos 90, veio o pesadelo: o Brasil se abriu para o mercado extrangeiro e as gigantes suíças invadiram o país com bilhões de dólares.
+  Marcio Grazino | Instagram | coef 11,92 | ret_final_cond 0.5 | Durante essa pesquisa, ela encontrou o método SODIS, uma técnica suíça em que garrafas plásticas são expostas ao sol até que os raios solares eliminem as bactérias.
+
+## voce_corpo_ret_pior
+  Leonardo Nogueira | Instagram | coef 0,03 | ret_final_cond 0.2 | Quando você tira o peso da repetição das costas do seu time, sobra tempo para o que realmente traz lucro: estratégia, criatividade e crescimento.
+  Manoel Victor | Instagram | coef 0,82 | ret_final_cond 0 | Pararam de olhar só pro produto e focaram em você, literalmente.
+  Rafael Rodrigues | Instagram | coef 1,31 | ret_final_cond 0 | Aí você vai para o mercado de trabalho com esse medo na mochila.
+
+## antitese2_ret_pior
+  Ricardo Schumacher | Instagram | coef 0,98 | ret_final_cond 0 | não é só dinheiro. É quanto poder a família consegue manter nas próprias mãos, em vez de deixar a Ju
+  Fernando Pereira | Instagram | coef 2,24 | ret_final_cond 0.1 | não é só ganhar tudo de uma vez, é investir e criar renda antes de gastar com qualquer coisa
+  Marcos Pelozato | Instagram | coef 1,75 | ret_final_cond 0 | não foi qualquer IPO, foi um dos maiores da história americana, levantando mais de 20 bilhões de dólares
+
+## antitese_coef_top
+  Marcio Grazino | TikTok | coef 740,21 | não era americano nem alemão. Era brasileiro
+  Thiago Bisewski | YouTube | coef 713,36 | Não é uma coisa muito funcional, é como uma cozinha onde cada utensílio fica numa gaveta diferente da casa, o que
+  Rafael Rodrigues | Instagram | coef 438,39 | não é sobre tecnologia. É um soco na cara de quem terceiriza os próprios problemas
+
+## eliptica_compart
+  Manoel Victor | Instagram | coef 0,03 | E adivinha? No ano seguinte, a Apple sai de cerca de 1 bilhão em prejuizo pra +300 milhões de LUCRO.
+  Rafael Rodrigues | YouTube | coef 0,07 | O resultado? Hoje a LEGO vale bilhões de dólares e virou a fabricante de brinquedos mais lucrativa do mundo, a “Apple dos brinquedos”.
+  Izabela Anholett | Instagram | coef 0,10 | E adivinha? O custo mais alto de qualquer empresa de tecnologia é a folha de pagamento, sendo um dos grandes motivos pra demissões em massa como essa, por mais que isso não saia na grande mídia.
+
+## paragrafo_E
+  Fernando Pereira | TikTok | coef 3661,10 | O preço do barril de petróleo disparou 10%. / E tem muitos especialistas dizendo que esse pode ser o início de uma crise brutal.
+  Thiago Bisewski | YouTube | coef 713,36 | o funcional, é como uma cozinha onde cada utensílio fica numa gaveta diferente da casa, o que acaba criando algumas barreiras na eficiência. / E aí é que está: o Thunder jogou tudo isso num único bloco compacto de menos de 33 centímetros de altura.
+  Rafael Rodrigues | TikTok | coef 630,14 | a relevar, porém, eles decidiram que não. Trouxeram na camisa principal um grito de guerra que ninguém cantava: “Vai Brasa”, outro fracasso. / E sabe o nosso amarelo canarinho? Virou Canary, mais uma vez, trazendo a cultura dos Estados Unidos para o Brasil.
+
+## c_enquanto
+  Pedro Elero | YouTube | coef 1237,73 | Enquanto todo mundo gasta rios de dinheiro em propaganda, a Comet faz o próprio cliente virar propaganda: ela vende a sensação de fazer parte de algo raro, e quem participa de algo raro costuma fazer questão de contar para todo mundo.
+  Pedro Elero | TikTok | coef 486,17 | Enquanto o mundo apostava suas fichas em baterias elétricas, a Geely investiu pesado em tornar o motor a gasolina mais eficiente do que nunca, quebrando um recorde mundial com isso.
+  Rodrigo Waughan | TikTok | coef 142,16 | Enquanto todo mundo procura natureza intocada em lugares distantes, Manaus escondeu uma floresta de verdade dentro de um shopping.
+
+## c_retomada
+  Fernando Pereira | TikTok | coef 3661,10 | HOOK: O mundo tem exatamente 40 dias até o petróleo acabar. || CONCLUSÃO: Neste momento o mundo inteiro está acompanhando de perto o que vai acontecer nas próximas horas.
+  Renato Torres | Instagram | coef 243,99 | HOOK: Esse é o cara mais odiado do mundo pelos donos de academia! || CONCLUSÃO: Mostrando que nicho não é limitação. É valor. Porque quando você para de tentar servir todo mundo, pra atingir o cliente certo, o preço sobe.
+  Marcelo Germano | TikTok | coef 188,90 | HOOK: A Netflix tem três séries absurdas sobre mentalidade, desenvolvimento e caráter que, se você é líder ou quer crescer de verdade na carreira, precisa ver imediatamente. || CONCLUSÃO: Envie esse vídeo pra alguém que você quer ver liderar este ano e crescer na carreira.
+
+## c_nem_sempre
+  Rafael Rodrigues | Instagram | coef 438,39 | Mas João nos prova que a escassez nem sempre é um limite. Às vezes, ela obriga você a pensar de um jeito que ninguém pensou antes para criar o seu produto.
+  Marcio Grazino | YouTube | coef 143,74 | A inovação que muda o mundo nem sempre sai de Harvard ou de Cambridge. Às vezes ela sai de um laboratório público brasileiro que quase ninguém conhecia até ontem.
+  Franklin Tomich | Instagram | coef 96,47 | Nem sempre uma empresa familiar quebra por causa do mercado. Muitas vezes, o negócio se desfaz justamente quando os parentes esquecem que empresa e família são coisas diferentes. E quando isso acontece, não tem slogan que segure.
+
+## c_era_hoje
+  Rafael Rodrigues | YouTube | coef 396,74 | O imiquimod já estava aprovado pelo governo há anos. O problema não era a ciência, era a acessibilidade. Ao mudar de creme caro para sabonete barato, ele agora pode salvar milhões de pessoas que antes não teriam acesso.
+  Izabela Anholett | TikTok | coef 65,11 | O computador era do tamanho de uma sala. Depois coube no bolso. Agora muito em breve vai caber no seu olho.
+  Rodrigo Waughan | TikTok | coef 7,97 | O crescimento rápido demais nem sempre é prêmio. Às vezes, é o teste que revela se o negócio tem base ou se era só barulho bonito. Que bom que o Sampa Burger recebeu o Choque de Gestão a tempo e agora está pronta pra continuar crescendo…
+
+## c_mundo
+  Fernando Pereira | TikTok | coef 3661,10 | Neste momento o mundo inteiro está acompanhando de perto o que vai acontecer nas próximas horas.
+  Leonardo Nogueira | YouTube | coef 358,63 | A barreira que manteve o carro elétrico fora do alcance da maioria nunca foi a tecnologia, foi a dependência de um único material que poucos países controlavam e o mundo inteiro precisava. Essa barreira está cada vez mais perto do fim!
+  Marcio Grazino | TikTok | coef 128,47 | No fim, a falta de terreno obrigou o Real Madrid a criar um sistema que não existia em nenhum outro estádio do mundo, provando que eles são os maiores não apenas no futebol, mas também na gestão.
+
+## c_pode_ser_pior
+  Café com Ferri | Instagram | coef 0,00 | Uma coisa eu posso te afirmar: a comunicação não é um talento nato, ela é uma habilidade. E assim como qualquer outra, ela pode ser aprendida, treinada e aperfeiçoada. Quem aprende isso desde cedo, sai na frente na corrida da vida.
+  Marcio Grazino | YouTube | coef 0,01 | Se a resposta for não, talvez seja aí que você está perdendo dinheiro.
+
+## c_diferenca_pior
+  Café com Ferri | YouTube | coef 0,07 | A verdade é que o mercado está cheio de empresas com bons produtos e poucos clientes fiéis. A diferença entre elas e as que dominam quase sempre está na mesma coisa: alguém com coragem de aparecer e tornar a marca humana.
+  Marcio Grazino | TikTok | coef 0,10 | A diferença entre os dois era de 0,2 milímetro, tecnicamente quase nada, mas ninguém brigava pelo grafite. Brigava pela versão de si mesmo que aquele grafite representava.
+
+## c_voce_precisa_pior
+  Manoel Victor | YouTube | coef 0,04 | A L’Oréal já liderava o setor, mas entendeu que até quem lidera precisa correr pra não ficar pra trás com os avanços da IA.
+  Rafael Rodrigues | Instagram | coef 0,08 | Essa história mostra que, quando a periferia ocupa a universidade pública e usa o conhecimento para alterar a história, consegue mudar a vida de quem mais precisa.
+
+## c_curta_pior
+  Marcio Grazino | YouTube | coef 0,01 | Se a resposta for não, talvez seja aí que você está perdendo dinheiro.
+  Rodrigo Waughan | YouTube | coef 0,01 | A lição é clara: Quem blinda a sua base, constrói um império inquebrável.
+
+## c_licao_pior
+  Rodrigo Waughan | YouTube | coef 0,01 | A lição é clara: Quem blinda a sua base, constrói um império inquebrável.
+  Renato Torres | YouTube | coef 0,06 | A lição que fica é essa: quem faz o produto se distribuir sozinho controla o custo de aquisição que nenhum concorrente vai conseguir pagar.
+
+## c_quem_ret_pior
+  João Paulo Albuquerque | Instagram | coef 1,21 | ret_final_cond 0.1 | A lição é essa: quem vende só produto vive brigando por preço e desconto. Quem constrói identidade vende cultura, estilo e pertencimento. O marketing mais forte não empurra produto na sua cara. Ele cria um mundo em que você implora para entrar.
+  Fernando Pereira | Instagram | coef 0,77 | ret_final_cond 0.1 | Quem controla as regras, controla o mundo e, pela primeira vez em quase um século, os Estados Unidos não são os únicos segurando o poder.
+
+## c_personagem_ret
+  Marcio Grazino | Instagram | coef 11,92 | ret_final_cond 0.5 | O detalhe é que Anna não inventou um produto extremamente tecnológico. Ela simplesmente conectou o que já existia a um problema que ninguém tinha parado para enxergar. E, às vezes, é exatamente isso que falta pra nossa sociedade.
+  Pedro Elero | Instagram | coef 1,09 | ret_final_cond 0.3 | Hoje, seu patrimônio é de US$ 2 bilhões, o maior entre todas as mulheres da música no mundo. E não é só pelo talento. É porque ela entendeu que poder nos negócios não se pede e não se espera, se constrói!
+  Manoel Victor | Instagram | coef 0,96 | ret_final_cond 0.9 | Eles provaram que, quando você domina a vida do seu cliente de uma forma que trocar pra concorrência se torna um pesadelo, o controle é totalmente seu. Você manda, e ele paga.
+
+## c_opiniao_coment
+  Thiago Franco | TikTok | coef 5,62 | coment/mil 19.6 | O Xbox saiu da briga pelo primeiro lugar no mercado e agora luta pra não virar uma marca irrelevante. Mas o que você acha? É o fim do Xbox ou os caras vão conseguir dar a volta por cima?
+  Fernando Pereira | TikTok | coef 3,63 | coment/mil 11.4 | Mas me diz você, quem você acha que vai administrar o Brasil nos próximos 4 anos?
+  Izabela Anholett | Facebook | coef 0,31 | coment/mil 3 | E aí, você usaria uma IA para "conversar" com seu pet depois que ele partisse?
+
+## c_brasil_coment
+  Fernando Pereira | YouTube | coef 0,51 | coment/mil 16.6 | Com tudo isso, o investidor estrangeiro coloca cada vez mais dinheiro aqui, reforçando um possível protagonismo do Brasil nos investimentos ao longo dos próximos meses.
+  Lincoln Fracari | YouTube | coef 1,37 | coment/mil 12.5 | A conversa aqui é sobre perceber que, enquanto lá, um escândalo moral destrói uma carreira da noite pro dia, aqui a linha do que vira cultura financiada com dinheiro público está cada vez mais distante daquilo que o próprio povo brasileiro chamaria de aceitável.
+  Rafael Rodrigues | TikTok | coef 0,63 | coment/mil 12.5 | O Brasil ainda tem muito para avançar no setor educacional, porém esses números mostram que quando existe política pública séria, direcionada e com resultado mensurável, a própria educação responde rápido.
+
+## c_eu_coment
+  Marcos Pelozato | YouTube | coef 0,84 | coment/mil 8.7 | E agora eu quero saber de você: essa mudança vai melhorar o sistema ou apertar ainda mais as empresas?
+  Leonardo Cirino | TikTok | coef 2,68 | coment/mil 6.5 | Eu me chamo Leonardo Cirino, sou diretor de marketing da Exame e especialista em IA, e aqui você fica sabendo dessas mudanças antes de todo mundo.
+  Izabela Anholett | TikTok | coef 0,14 | coment/mil 16.8 | Eu testei pra criar uma apresentação pra reunião com meu chefe e foi assustador, pois ficou totalmente profissional e nem parece feito pela IA.

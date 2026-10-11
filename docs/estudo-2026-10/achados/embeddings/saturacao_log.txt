@@ -1,0 +1,16 @@
+
+caem (OR validação << descoberta):
+  k30:17 Médicos, medicina e plano de saúde | volume 3% -> 3% dos roteiros | topo 32% -> 18% | OR 1,70 [0,73-3,96] -> 0,24 [0,07-0,82] | n 60/55
+  k60:45 De vendedor humilde a bilionário do varejo | volume 2% -> 2% dos roteiros | topo 27% -> 10% | OR 1,12 [0,60-2,12] -> 0,30 [0,12-0,78] | n 55/50
+  k30:20 Marcas da infância que sumiram | volume 2% -> 3% dos roteiros | topo 35% -> 18% | OR 1,71 [0,87-3,33] -> 0,57 [0,29-1,11] | n 46/76
+  k30:16 Estudantes brasileiros que inventaram soluções premiadas | volume 6% -> 8% dos roteiros | topo 35% -> 24% | OR 2,10 [1,46-3,03] -> 0,81 [0,54-1,23] | n 246/319
+  k60:20 Carros de luxo e marcas clássicas como Ferrari | volume 2% -> 2% dos roteiros | topo 31% -> 22% | OR 1,70 [0,89-3,24] -> 0,71 [0,35-1,46] | n 80/60
+  k30:1 Pré-MBA: ChatGPT, novas IAs e empregos | volume 10% -> 5% dos roteiros | topo 24% -> 14% | OR 0,84 [0,60-1,18] -> 0,36 [0,20-0,65] | n 322/126
+
+sobem:
+  k30:2 A decisão que salvou ou afundou uma gigante brasileira | volume 3% -> 3% dos roteiros | topo 16% -> 29% | OR 0,50 [0,26-0,95] -> 1,24 [0,73-2,10] | n 79/94
+  k60:7 Erros de comunicação e como falar melhor | volume 2% -> 2% dos roteiros | topo 20% -> 30% | OR 0,73 [0,37-1,44] -> 1,79 [0,50-6,33] | n 54/54
+  k30:10 Empresas que venceram o governo no imposto | volume 5% -> 4% dos roteiros | topo 22% -> 25% | OR 0,31 [0,14-0,72] -> 0,73 [0,34-1,56] | n 180/102
+  k60:42 Marcas brasileiras vendidas para gigantes estrangeiras | volume 3% -> 4% dos roteiros | topo 24% -> 30% | OR 0,83 [0,40-1,74] -> 1,80 [0,92-3,53] | n 86/109
+  k60:6 Empresas que venceram o governo no imposto | volume 4% -> 2% dos roteiros | topo 20% -> 22% | OR 0,31 [0,16-0,62] -> 0,59 [0,26-1,36] | n 153/60
+  k30:8 Jogadas de marketing de produtos e lojas | volume 3% -> 3% dos roteiros | topo 24% -> 26% | OR 0,62 [0,30-1,27] -> 1,08 [0,58-2,02] | n 125/137

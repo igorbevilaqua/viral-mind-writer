@@ -1,0 +1,212 @@
+[
+  {
+    "id": "PL01_mesma_peca",
+    "parte": "plataforma",
+    "achado": "A casa posta o mesmo arquivo nas três redes: mesma duração (até 2 s) em 97 a 100% dos pares, mesmo fim falado em 92%, mesmo dia em 81% dos roteiros. O percentil do mesmo roteiro só se repete em parte entre redes.",
+    "numeros": "pares IG-TT 1.792 roteiros (23 clientes), IG-YT 1.726 (21), TT-YT 1.571 (19); correlação do percentil IG x TT 0,49, IG x YT 0,35, TT x YT 0,32; fim falado diferente em 386 de 5.119 pares",
+    "escopo": "global",
+    "exemplos": [],
+    "instrucao": "Tratar cada rede como público diferente para a mesma peça; as adaptações abaixo são as que o dado sustenta.",
+    "confianca": "alta"
+  },
+  {
+    "id": "PL02_china_todas",
+    "parte": "plataforma",
+    "achado": "Hook que cita China funciona igual nas três redes.",
+    "numeros": "IG 32% topo, OR 1,81 [1,28 a 2,56], n=271; TT 32%, OR 1,84 [1,19 a 2,84], n=211; YT 31%, OR 1,78 [1,16 a 2,74], n=238; pareado sem diferença (IG-TT +0,5, IG-YT +3,2, TT-YT +2,6 pp, IC em zero); não separa dentro do Lincoln Fracari (China em 88% dos hooks)",
+    "escopo": "global, três redes",
+    "exemplos": ["Thiago Bisewski: 'A China acabou de humilhar o resto do mundo mais uma vez e agora foi dando uma facada no coração da indústria automobilística.' IG coef 77,2 (p100), TT 450,5 (p100), YT 713,4 (p100)", "Izabela Anholett: 'O Elon Musk acabou de ser humilhado pela China com o que ela acabou de liberar pro mundo.' IG 27,1 (p95), TT 17,7 (p95), YT 249,1 (p100)"],
+    "instrucao": "Faça: quando a história envolve a China, diga 'China' no hook, em qualquer rede.",
+    "confianca": "alta"
+  },
+  {
+    "id": "PL03_carro_chines_todas",
+    "parte": "tema",
+    "achado": "Território carro chinês (BYD, Geely) contra montadora tradicional funciona nas três redes, mais forte no YouTube.",
+    "numeros": "IG 42% topo, OR 2,27 [1,37 a 3,74], n=72; TT 41%, OR 2,19 [1,19 a 4,05], n=49; YT 50%, OR 3,41 [1,91 a 6,08], n=54; o mesmo roteiro rende +9,6 pp mais no TT que no IG",
+    "escopo": "global, três redes",
+    "exemplos": ["Renato Mendes: 'A chinesa que está comprando o mundo deu o passo definitivo para dominar o Brasil. E agora, o império da BYD está oficialmente ameaçado.' IG coef 86,1 (p98), TT 288,7 (p98), YT 1,28 (p88)"],
+    "instrucao": "Faça: pauta de carro chinês contra marca tradicional vale para as três redes.",
+    "confianca": "alta"
+  },
+  {
+    "id": "PL04_disputa_rival_quase_todas",
+    "parte": "payoff",
+    "achado": "Briga com dois lados nomeados (payoff disputa, antagonista rival) funciona nas três redes; no Instagram fica no limite.",
+    "numeros": "disputa: IG OR 1,58 [1,00 a 2,50], TT 2,37 [1,39 a 4,05], YT 2,71 [1,60 a 4,59]; rival: IG 1,28 [1,00 a 1,63], TT 1,63 [1,22 a 2,16], YT 1,48 [1,12 a 1,96]; pareado sem diferença",
+    "escopo": "global, três redes",
+    "exemplos": ["Izabela Anholett: 'O Google e a Samsung acabaram de declarar guerra ao Mark Zuckerberg, e o seu próximo celular não vai estar no seu bolso, vai estar no seu rosto.' IG coef 14,4 (p86), TT 101,3 (p100), YT 179,3 (p96)"],
+    "instrucao": "Faça: nomeie os dois lados da briga no hook; vale em qualquer rede.",
+    "confianca": "media"
+  },
+  {
+    "id": "PL05_atrapalha_todas",
+    "parte": "subhook",
+    "achado": "Subhook que puxa o espectador ('Imagina você...') e a premissa 'fundador que vendeu a empresa por milhões' atrapalham nas três redes (e o subhook também no Facebook).",
+    "numeros": "puxa espectador: IG 16% topo OR 0,51 [0,34 a 0,76], TT 0,58 [0,37 a 0,91], YT 0,40 [0,23 a 0,68], FB 0,17 [0,04 a 0,73]; fundador que vendeu: IG 0,44 [0,24 a 0,78], TT 0,39 [0,20 a 0,76], YT 0,48 [0,24 a 0,94]; quase todas: roteiro abaixo de 300 palavras 0,76 / 0,65 / 0,67 e protagonista espectador 0,50 / 0,76 / 0,56",
+    "escopo": "global, todas as redes",
+    "exemplos": [],
+    "instrucao": "Evite: subhook que fala com o espectador; use um fato novo. Reescrita: 'Imagina você pagar R$ 200 mil num carro e ele virar sucata em 3 anos.' vira 'Em agosto, o Corolla perdeu o trono de mais vendido pela primeira vez na história.'",
+    "confianca": "alta"
+  },
+  {
+    "id": "PL06_yt_moeda_no_hook",
+    "parte": "hook",
+    "achado": "Valor em R$ ou dólares no hook ajuda só no YouTube e atrapalha no Instagram e no TikTok. É o efeito de rede mais forte e mais confirmado.",
+    "numeros": "YT 32% topo, OR 1,49 [1,11 a 2,00], d/v 1,28/1,22; IG 22%, OR 0,75 [0,58 a 0,98]; TT 21%, OR 0,72 [0,52 a 0,99]; mesmo roteiro +8,2 pp no YT contra IG [3,5 a 12,7], 13 de 18 clientes, e +8,9 pp contra TT [3,9 a 13,8], 14 de 16 clientes, nos dois períodos; milhões/bilhões sem moeda não separam em rede nenhuma",
+    "escopo": "YouTube (positivo), IG e TT (negativo)",
+    "exemplos": ["Lincoln Fracari: 'Um chinês destruiu 600 bilhões de dólares em um único dia, sem comprar uma ação, sem disparar um tiro e sem que quase ninguém soubesse quem ele era.' IG coef 0,67 (p17), YT 10,1 (p91)", "Cadu Neiva: 'Esse jovem do sertão construiu um império de R$ 10 bilhões sem um real no bolso.' IG 1,22 (p13), TT 0,27 (p22), YT 1,67 (p86)"],
+    "instrucao": "Faça no YouTube: ponha o valor em reais ou dólares no hook. No IG e no TikTok, leve o valor para o subhook. Reescrita (versão YouTube): 'A Havan fez um pix pros funcionários e quase ninguém ficou sabendo.' vira 'A Havan fez um pix de 90 milhões de reais pros funcionários e quase ninguém ficou sabendo.'",
+    "confianca": "alta"
+  },
+  {
+    "id": "PL07_yt_virada_final",
+    "parte": "conclusao",
+    "achado": "Conclusão com virada final rende mais no YouTube do que no IG e no TikTok no mesmo roteiro.",
+    "numeros": "YT OR 1,23 [0,79 a 1,92], IG 0,76, TT 0,81; mesmo roteiro +9,3 pp no YT contra IG [2,4 a 16,3] (10 de 14 clientes) e +8,8 contra TT [1,3 a 16,2] (10 de 13), replica",
+    "escopo": "YouTube",
+    "exemplos": ["Marcos Pelozato: 'A Polaroid faliu duas vezes, mas foi salva por uma tecnologia que o mundo inteiro tinha jogado fora.' IG coef 1,23 (p53), YT 11,5 (p91)"],
+    "instrucao": "Faça no YouTube: feche com uma virada (o que parecia derrota virou vitória).",
+    "confianca": "alta"
+  },
+  {
+    "id": "PL08_yt_estrangeiro_puro",
+    "parte": "tema",
+    "achado": "História só estrangeira, sem ponte com o Brasil, é punida no IG e no TikTok e não no YouTube.",
+    "numeros": "IG OR 0,73 [0,59 a 0,90], TT 0,59 [0,46 a 0,76], YT 0,93 [0,72 a 1,19]; mesmo roteiro +4,8 pp no YT contra IG [1,0 a 8,7] e +6,8 contra TT [3,0 a 10,7]; ponte Brasil x estrangeiro: IG 1,42, TT 1,35, YT 1,17",
+    "escopo": "IG e TT (precisa de ponte), YouTube (indiferente)",
+    "exemplos": ["Rafael Rodrigues: 'Pensa comigo: Nos Anos 90 uma loja de informática era escura, cheia de peças eletrônicas, e ninguém entendia o que o vendedor falava.' (Apple) IG coef 0,26 (p0), TT 0,68 (p5), YT 8,56 (p90)"],
+    "instrucao": "Faça no IG e no TikTok: amarre a história de fora ao Brasil (comparação, impacto aqui). No YouTube, a história estrangeira pode ir pura.",
+    "confianca": "alta"
+  },
+  {
+    "id": "PL09_yt_queda_volta_tempo",
+    "parte": "payoff",
+    "achado": "Queda de gigante e subhook que volta no tempo funcionam no YouTube e não no IG e no TikTok.",
+    "numeros": "queda: YT OR 1,50 [1,01 a 2,23], IG 1,05, TT 0,97, mesmo roteiro +7,1 pp no YT contra TT [0,1 a 14,2], 8 de 10 clientes; volta no tempo: YT 1,20, IG 0,80, TT 0,76, +9,0 pp no YT contra IG [4,3 a 13,8], 14 de 18 clientes",
+    "escopo": "YouTube",
+    "exemplos": ["Rodrigo Waughan: 'Uma das marcas de luxo mais desejadas do Brasil está sendo devorada por um segredo de um bilhão de reais.' IG coef 0,97 (p66), TT 1,05 (p64), YT 13,0 (p97)"],
+    "instrucao": "Faça: pauta de queda de empresa é pauta de YouTube. Volta no tempo no subhook só no YouTube; no IG e no TikTok, evite (o subagente de corpo mostra que a origem em ordem cronológica derruba no geral).",
+    "confianca": "media"
+  },
+  {
+    "id": "PL10_igtt_orgulho_nao_yt",
+    "parte": "payoff",
+    "achado": "Orgulho e estudante brasileiro inventor rendem no IG e no TikTok e não no YouTube; o mesmo roteiro perde de 7 a 16 pontos de percentil no YouTube.",
+    "numeros": "orgulho (payoff ou payoff2): IG 32% OR 1,73 [1,30 a 2,30], TT 1,69 [1,22 a 2,34], YT 1,07 [0,76 a 1,51]; mesmo roteiro -7,0 pp no YT contra IG (9 de 13 clientes) e -10,8 contra TT (9 de 12); estudante inventor: IG 1,96 [1,25 a 3,08], TT 1,72 [1,08 a 2,75], YT 0,73, -16,1 e -11,7 pp no YT (Rafael, Marcio, Cadu)",
+    "escopo": "IG e TT",
+    "exemplos": ["Rafael Rodrigues: 'Esse menino cearense de apenas 8 anos ainda não tem os dentes da frente, mas acabou de conquistar o pódio de uma olimpíada científica nos Estados Unidos.' IG coef 88,6 (p99), TT 75,0 (p95), YT 0,07 (p3)", "Marcio Grazino: 'Essa baiana pegou os restos de lixo e criou um produto que as grandes indústrias cobram fortunas pra vender' IG 63,5 (p98), TT 81,7 (p100), YT 0,16 (p3)"],
+    "instrucao": "Faça: orgulho e estudante inventor para IG e TikTok. No YouTube não conte com eles; se for testar uma versão, troque a régua de orgulho pela de dinheiro (hipótese não medida).",
+    "confianca": "alta"
+  },
+  {
+    "id": "PL11_igtt_gigante_eleva_novidade",
+    "parte": "subhook",
+    "achado": "Davi contra Golias com gigante nomeado, subhook que eleva a aposta e promessa de novidade funcionam no IG e no TikTok e não no YouTube.",
+    "numeros": "gigante: IG 1,40 [1,01 a 1,94], TT 1,51 [1,02 a 2,25], YT 1,18, mesmo roteiro -6,8 e -9,5 pp no YT; eleva a aposta: IG 1,46 [1,15 a 1,85], TT 1,24, YT 0,95, -6,8 [-11,2 a -2,7] e -5,7 pp no YT (12 de 17 clientes); novidade: IG 1,50, TT 1,72, YT 1,22, -6,2 pp no YT contra IG",
+    "escopo": "IG e TT",
+    "exemplos": ["João Paulo Albuquerque: 'Ela levou 10 anos para construir essa empresa. E um único dia para descobrir que podia ser destruída por causa da Nestlé.' IG coef 2,63 (p100), TT 441,8 (p100), YT 0,18 (p6)", "Dilson Peres: 'A Virgínia te enganou e o sucesso dela não veio das redes sociais.' IG 33,6 (p98), TT 54,4 (p100), YT 0,19 (p0)"],
+    "instrucao": "Faça no IG e no TikTok: herói contra gigante com nome e subhook que soma um dado que aumenta o que está em jogo.",
+    "confianca": "media"
+  },
+  {
+    "id": "PL12_tt_nome_no_hook",
+    "parte": "hook",
+    "achado": "Nome próprio e mega-marca/figura no hook valem mais no TikTok.",
+    "numeros": "nome próprio: TT OR 1,62 [1,25 a 2,10], IG 1,18 [0,96 a 1,46], YT 1,13; mesmo roteiro +3,3 pp no TT contra IG [0,1 a 6,3] (17 de 23 clientes) e +6,2 contra YT [2,4 a 10,3] (15 de 19), replica; mega-marca ou figura: TT 1,47 [1,16 a 1,87], IG 1,05, YT 1,26, +4,5 pp contra IG [1,1 a 7,7] (17 de 21); EUA/Trump no hook: TT 1,68 [1,02 a 2,76], n=75",
+    "escopo": "TikTok",
+    "exemplos": ["Thiago Franco: 'Em 2023, o governo disse que sua blusinha da Shein era contrabando. Criou uma taxa, arrecadou 5 bilhões, e agora, em ano de eleição, quer tirar a taxa fingindo que nunca quis ela.' IG coef 0,26 (p3), TT 7,17 (p100), YT 1,21 (p84)", "Café com Ferri: 'Existe uma razão pro Trump ser o político mais poderoso do planeta. E ela começa antes mesmo dele abrir a boca.' IG 0,06 (p10), TT 112,0 (p100), YT 0,87 (p36)"],
+    "instrucao": "Faça no TikTok: a primeira linha tem o nome que o público reconhece (Shein, Trump, BYD, Apple). Reescrita: 'Essa empresa chinesa...' vira 'A Shein...'.",
+    "confianca": "alta"
+  },
+  {
+    "id": "PL13_tt_pune_curto_e_vilao_abstrato",
+    "parte": "plataforma",
+    "achado": "O TikTok é a rede que mais pune vídeo abaixo de 90 s, vilão abstrato ('o problema') e biografia de marca global; promessa 'por que/como' também cai lá.",
+    "numeros": "abaixo de 90 s: TT OR 0,65 [0,44 a 0,95], IG 0,88, YT 0,84, mesmo roteiro -5,3 pp no TT contra IG; vilão abstrato: TT 0,64 [0,49 a 0,84], IG 0,83, YT 0,95, -3,4 pp contra IG (12 de 20 clientes); biografia de marca global: TT 0,45 [0,24 a 0,83], IG 0,68, YT 0,71, -7,7 pp contra IG (não replica); 'por que/como': TT 0,72 [0,57 a 0,90], YT 1,11, -4,2 pp contra YT; 300 a 449 palavras já rende no TT (1,29) e 450+ não ganha mais (1,02)",
+    "escopo": "TikTok",
+    "exemplos": ["Cadu Neiva: 'Um pedreiro analfabeto do sertão da Bahia fez mais pelo Brasil do que a maioria dos políticos.' IG coef 4,23 (p91), TT 0,07 (p10), YT 15,7 (p98)", "Dilson Peres (287 palavras, 88 s): 'A Havan fez um pix pros funcionários de 90 milhões de reais e quase ninguém ficou sabendo.' IG 75,9 (p100), TT 0,00 (p0)"],
+    "instrucao": "Evite no TikTok: vídeo abaixo de 90 s e vilão sem rosto. Reescrita: '...fez mais pelo Brasil do que a maioria dos políticos.' vira 'Um pedreiro analfabeto da Bahia resolveu a seca que o governo federal não resolveu em 50 anos.'",
+    "confianca": "media"
+  },
+  {
+    "id": "PL14_ig_curto_e_pre_mba",
+    "parte": "plataforma",
+    "achado": "No Instagram o roteiro curto perde menos; a série de ferramenta de IA e empregos ('Pré-MBA'), promessa de ensinar e hook de alerta caem mais no Instagram.",
+    "numeros": "abaixo de 300 palavras: IG 0,76 [0,57 a 1,01], TT 0,65, YT 0,67, mesmo roteiro +5,1 pp no IG contra TT [1,4 a 8,8] (9 de 13); Pré-MBA: IG 0,53 [0,34 a 0,82], TT 0,86, YT 0,71, -9,3 pp no IG contra TT [-15,3 a -3,5]; ensinar: IG 0,47 [0,24 a 0,90], -9,8 pp contra YT; alerta: IG 0,60 [0,42 a 0,87], TT 0,89, YT 0,82; modelagem: IG 1,34 [1,10 a 1,63], TT 1,09, YT 1,25",
+    "escopo": "Instagram",
+    "exemplos": ["Manoel Victor: 'O Google acabou de destruir o atendente de marketing!' IG coef 0,47 (p30), TT 6,83 (p100)"],
+    "instrucao": "Faça: roteiro curto vai primeiro ao IG; Pré-MBA rende no TikTok. Evite no IG: hook que promete ensinar ou que soa como alerta genérico.",
+    "confianca": "media"
+  },
+  {
+    "id": "PL15_duracao_por_rede",
+    "parte": "plataforma",
+    "achado": "Duração ideal: IG e TikTok 150 a 179 s; YouTube 120 a 149 s, sem ganho acima de 150 s. Hoje o mesmo arquivo vai para as três.",
+    "numeros": "IG 150 a 179 s: 31% topo, OR 1,43 [1,12 a 1,84], d/v 1,15/1,22 (165 a 179 s: 1,56); TT 150 a 179 s: 33%, OR 1,63 [1,20 a 2,22], d/v 1,28/1,25; TT abaixo de 90 s 0,65; YT 120 a 149 s: 29%, OR 1,27 [1,02 a 1,60], d/v 1,21/1,02; YT 90 a 119 s 0,77 [0,60 a 0,99]; YT 150 a 179 s 1,11 [0,81 a 1,50]; mesmo vídeo de 120 a 149 s +4,0 pp no YT contra IG",
+    "escopo": "por rede",
+    "exemplos": ["Franklin Tomich (148 s): 'A Coca Cola e o Guaraná Antarctica sempre ignoraram o Sul do Brasil. A Fruki aproveitou isso e montou uma das melhores estratégias do país.' IG coef 0,35 (p4), YT 129,8 (p98)"],
+    "instrucao": "Faça: com um arquivo só, mire 150 a 165 s; numa versão para o YouTube, 125 a 145 s. Em palavras, use a régua do subagente de corpo.",
+    "confianca": "alta"
+  },
+  {
+    "id": "PL16_ordem_postagem",
+    "parte": "plataforma",
+    "achado": "Instagram postado depois das outras redes rende menos; YouTube aceita atraso.",
+    "numeros": "81% dos 2.071 roteiros multi-rede saem no mesmo dia; IG primeiro em 75% dos escalonados; IG depois: 97 vídeos, 16% topo contra 27%, OR 0,42 [0,22 a 0,79], d/v 0,60/0,64, Δ -9,1 pp; IG 2+ dias depois: 8%, OR 0,19 [0,06 a 0,56]; TT depois do IG: OR 0,88 [0,57 a 1,37]; YT depois: OR 1,09 [0,75 a 1,59]; 58 dos 97 IG atrasados são do Lincoln Fracari",
+    "escopo": "Instagram",
+    "exemplos": [],
+    "instrucao": "Faça: poste o Instagram primeiro ou no mesmo dia; se precisar escalonar, atrase o YouTube.",
+    "confianca": "media"
+  },
+  {
+    "id": "PL17_acerto_e_outra_regua",
+    "parte": "plataforma",
+    "achado": "O acerto do panorama (campo acerto de videos.json) é coef acima de 3 E 10 mil views ou mais, não coef >= 1,5. Em rede onde o canal tem mediana de poucas centenas de views, acertar é quase impossível.",
+    "numeros": "regra bate em 1.405 de 1.405 vídeos com acerto (1 com coef 3,00 cravado fica fora); coef >= 1,5 marca 39% dos vídeos, o acerto da casa 21%; Waughan TT/YT: 8% e 12% com coef acima de 3, mas só 3% com 10 mil+ views; Franco TT: mediana caiu de 759 para 6 views no 3º tri",
+    "escopo": "régua do estudo e do panorama",
+    "exemplos": [],
+    "instrucao": "Antes de culpar o roteiro numa rede, olhe a mediana de views da conta lá; abaixo de 2 mil, o acerto da casa é quase impossível. Atenção: DESFECHOS.acerto da lib (coef >= 1,5) não é o KPI da casa.",
+    "confianca": "alta"
+  },
+  {
+    "id": "PL18_izabela_youtube_decolagem",
+    "parte": "plataforma",
+    "achado": "Os 46% de acerto da Izabela Anholett no YouTube são a decolagem do canal (o coef divide pela mediana dos 180 dias anteriores), não encaixe estável.",
+    "numeros": "views medianas no YT por mês: 1.324 (fev), 4.293 (abr), 27.525 (mai), 68.671 (jun), 38.825 (set); acerto 0% (fev, mar), 80% (mai), 100% (jun), 89% (jul), 43% (ago), 22% (set); no IG em set, 38%",
+    "escopo": "Izabela Anholett, YouTube",
+    "exemplos": [],
+    "instrucao": "Não copiar o mix da Izabela esperando 46% no YouTube; o que o conteúdo dela tem de YouTube é história estrangeira e curta, que o YT não pune.",
+    "confianca": "alta"
+  },
+  {
+    "id": "PL19_conteudo_explica_encaixe",
+    "parte": "plataforma",
+    "achado": "O conteúdo explica a direção do encaixe cliente x rede: contas de dinheiro e queda de empresa rendem mais no YouTube; contas de orgulho e estudante inventor rendem no IG e no TikTok e caem no YouTube; mega-marca no hook puxa o TikTok.",
+    "numeros": "YT menos IG em % de vídeos com coef acima de 3: Pelozato +14 (queda 29% contra 6% da casa, moeda no hook 34% contra 15%, empresa 66%), Dilson +9 (moeda 32%), Izabela +17 (estrangeiro 71% contra 38%, abaixo de 300 palavras 42% contra 14%); Rafael -4 (orgulho 56%, estudante 61%), Marcio -10 (orgulho 44%), Cadu -21 (orgulho 74%); Leonardo Nogueira TT 41%, IG 33%, YT 3% (mega-marca 46% contra 27%); Lincoln TT 43% contra IG 25% (ponte Brasil x estrangeiro 46% contra 21%; 58 dos 135 IG saíram depois)",
+    "escopo": "16 contas",
+    "exemplos": [],
+    "instrucao": "Conta de dinheiro e empresa: priorize o YouTube. Conta de orgulho e estudante inventor: priorize IG e TikTok. Waughan: o conteúdo (sacada de marketing estrangeira, 'por que/como' em 75%) não tem nada que rede alguma pague.",
+    "confianca": "media"
+  },
+  {
+    "id": "PL20_comando_nao_adaptado",
+    "parte": "comando",
+    "achado": "O comando não muda por rede: no YouTube a casa diz 'segue' em 73% dos vídeos e 'se inscreve' em 7. Nenhum tipo de comando falado move o coef em rede nenhuma; o pedido para compartilhar não move alcance no IG.",
+    "numeros": "comando de seguir: IG OR 1,26, TT 0,94, YT 0,89 (todos com IC em 1); 'Eu sou' falado 1,20 / 1,03 / 1,07; pedido de compartilhar no IG OR 1,57 [0,87 a 2,82], n=52",
+    "escopo": "três redes",
+    "exemplos": [],
+    "instrucao": "Teste 'se inscreve no canal' no YouTube como experimento; não espere alcance do pedido de compartilhar (ele dá compartilhamento).",
+    "confianca": "media"
+  },
+  {
+    "id": "PL21_facebook",
+    "parte": "plataforma",
+    "achado": "Facebook espelha o Instagram e o TikTok na Izabela; 'você' no hook e subhook que chama o espectador derrubam forte lá.",
+    "numeros": "276 vídeos (Izabela 213, Renato Torres 55); correlação do percentil FB x IG 0,62 e FB x TT 0,66 na Izabela, 0,06 no Renato Torres; 'você' no hook 8% topo contra 29%, OR 0,20 [0,06 a 0,67], replica; puxa espectador OR 0,17 [0,04 a 0,73]",
+    "escopo": "Facebook (um cliente dominante)",
+    "exemplos": [],
+    "instrucao": "No Facebook, trate como Instagram, sem 'você' no hook e sem subhook que chama o espectador.",
+    "confianca": "baixa"
+  }
+]

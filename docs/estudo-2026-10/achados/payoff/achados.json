@@ -1,0 +1,809 @@
+[
+ {
+  "id": "payoff-disputa",
+  "parte": "payoff",
+  "achado": "Disputa com lado (dois atores com nome em confronto e o texto toma partido ou pede que o espectador tome) é o payoff que mais viraliza; a casa usa em só 3% dos roteiros.",
+  "numeros": {
+   "lift": 1.59,
+   "ic": [
+    1.34,
+    1.86
+   ],
+   "or_mh": 2.09,
+   "or_ic": [
+    1.56,
+    2.79
+   ],
+   "desc_val": [
+    1.44,
+    1.69
+   ],
+   "n_videos": 205,
+   "n_roteiros": 90,
+   "clientes": 18,
+   "por_rede": {
+    "Instagram": 1.36,
+    "TikTok": 1.7,
+    "YouTube": 1.81
+   },
+   "por_macro_or": {
+    "Negocios": 3.55,
+    "Tecnologia": 1.93,
+    "Dinheiro": 1.71
+   },
+   "sem_china": {
+    "lift": 1.62,
+    "or_mh": 2.09
+   },
+   "tirando_cliente_or": [
+    1.82,
+    2.32
+   ],
+   "acerto_or": 1.47
+  },
+  "escopo": "global: 3 redes, 3 macro nichos, com ou sem China; payoff de alcance (não move compartilhamento, comentário nem salvamento)",
+  "exemplos": [
+   {
+    "cliente": "Renato Mendes",
+    "rede": "TikTok",
+    "coef": 482.9,
+    "texto": "A China declarou guerra ao carro mais amado do Brasil. E em agosto o Corolla perdeu o trono pela primeira vez na história. / ...se você fosse comprar um carro hoje, iria de chinês ou de japonês?"
+   },
+   {
+    "cliente": "Izabela Anholett",
+    "rede": "YouTube",
+    "coef": 195.9,
+    "texto": "O governo chinês declarou guerra ao dono do Instagram por causa de uma IA de 2 bilhões de dólares e proibiu seus fundadores de deixar o país. / Inteligência artificial é hoje a corrida do ouro..."
+   },
+   {
+    "cliente": "Leonardo Cirino",
+    "rede": "Instagram",
+    "coef": 0.2,
+    "fraco": true,
+    "texto": "A Apple decidiu declarar guerra contra a Amazon. E para isso, ela vai ressuscitar um dispositivo que caiu no esquecimento (sem placar nem lado)"
+   }
+  ],
+  "instrucao": "Faça: quando a pauta tiver dois atores grandes, escreva como briga, com os dois nomes no hook, um placar concreto e um lado no fechamento ('A Geely deixou a BYD com medo'). Evite: notícia de produto sem oponente ('A Geely anunciou nova fábrica no Brasil'). Abra com a notícia da briga (novidade 1,73, replica) e feche com frase-síntese (1,90, replica) ou pergunta de lado (1,67, replica).",
+  "confianca": "alta"
+ },
+ {
+  "id": "payoff-orgulho-com-regua",
+  "parte": "payoff",
+  "achado": "Orgulho nacional ou de grupo viraliza quando tem régua de fora (país estrangeiro, multinacional, gigante superado); orgulho só Brasil não sai da média. Não funciona no YouTube.",
+  "numeros": {
+   "geral": {
+    "lift": 1.32,
+    "ic": [
+     1.14,
+     1.51
+    ],
+    "or_mh": 1.64,
+    "or_ic": [
+     1.28,
+     2.09
+    ],
+    "desc_val": [
+     1.34,
+     1.31
+    ],
+    "n_videos": 377,
+    "n_roteiros": 144
+   },
+   "com_recorte_brasil_x_estrangeiro": {
+    "lift": 1.55,
+    "or_mh": 2.05,
+    "n_videos": 165,
+    "leitura": "replica"
+   },
+   "com_gigante_ou_rival": {
+    "lift": 1.75,
+    "or_mh": 2.45,
+    "n_videos": 82,
+    "leitura": "replica"
+   },
+   "so_brasil": {
+    "lift": 1.12,
+    "or_mh": 1.17,
+    "n_videos": 205,
+    "leitura": "sem evidência"
+   },
+   "instagram_tiktok": {
+    "lift": 1.49,
+    "or_mh": 2.09
+   },
+   "youtube": {
+    "lift": 0.93,
+    "or_mh": 0.84
+   },
+   "tecnologia_or": 1.8,
+   "compart_or": 1.71,
+   "comentarios_or": 2.12
+  },
+  "escopo": "Instagram e TikTok; mais forte em Tecnologia; Marcio Grazino (1,58) e Rafael Rodrigues (1,33)",
+  "exemplos": [
+   {
+    "cliente": "Rafael Rodrigues",
+    "rede": "TikTok",
+    "coef": 168.2,
+    "texto": "Nem a China esperava por essa. A maior potência de tecnologia do mundo acabou superada dentro de Pequim por esses estudantes paraenses."
+   },
+   {
+    "cliente": "Cadu Neiva",
+    "rede": "YouTube",
+    "coef": 18.6,
+    "texto": "A Europa gastou mais de 10 bilhões de euros tentando resolver um problema que o Nordeste do Brasil já resolveu, e quase ninguém ficou sabendo."
+   },
+   {
+    "cliente": "Cadu Neiva",
+    "rede": "TikTok",
+    "coef": 0.03,
+    "fraco": true,
+    "texto": "A farmácia mais lembrada do Rio Grande do Norte faturou R$ 870 milhões e se tornou uma das maiores redes do país."
+   }
+  ],
+  "instrucao": "Faça: orgulho sempre com régua, dizendo no hook quem o Brasil superou ('A farmácia potiguar que [a rede nacional que tentou entrar] não conseguiu tirar do Rio Grande do Norte faturou R$ 870 milhões (com o rival real, checado na fonte)'). Feche com o que isso significa para o Brasil (consequência 2,16, replica). Evite: orgulho sem comparação e orgulho como aposta no YouTube.",
+  "confianca": "alta"
+ },
+ {
+  "id": "payoff-davi-golias",
+  "parte": "payoff",
+  "achado": "Herói (estudante, inventor, empresa pequena) só viraliza quando o texto nomeia o gigante que ele superou; sem antagonista, empata com a média.",
+  "numeros": {
+   "heroi_com_gigante": {
+    "lift": 1.52,
+    "ic": [
+     1.2,
+     1.85
+    ],
+    "or_mh": 1.89,
+    "or_ic": [
+     1.31,
+     2.72
+    ],
+    "desc_val": [
+     1.86,
+     1.09
+    ],
+    "n_videos": 128,
+    "clientes": 16
+   },
+   "heroi_sem_antagonista": {
+    "lift": 1.06,
+    "or_mh": 1.08
+   },
+   "inspiracao_com_gigante_ou_rival_or": 2.22,
+   "inspiracao_sem_antagonista_or": 0.81,
+   "trio_inspiracao_comparacao_licao": {
+    "lift": 1.8,
+    "or_mh": 2.64,
+    "desc_val": [
+     1.72,
+     1.94
+    ],
+    "n_videos": 43
+   },
+   "promessa_comparacao": {
+    "lift": 1.23,
+    "or_mh": 1.37
+   }
+  },
+  "escopo": "global (IG 1,71, TT 1,51, YT 1,26)",
+  "exemplos": [
+   {
+    "cliente": "Rafael Rodrigues",
+    "rede": "Instagram",
+    "coef": 438.4,
+    "texto": "Enquanto as gigantes gastam bilhões para criar tecnologia, esse jovem de 20 anos criou uma concorrente da Apple usando restos de lixo."
+   },
+   {
+    "cliente": "Marcio Grazino",
+    "rede": "Instagram",
+    "coef": 124.3,
+    "texto": "Três estudantes de escola pública no interior da Bahia fizeram o que a indústria do chocolate não fez em 50 anos."
+   },
+   {
+    "cliente": "Rafael Rodrigues",
+    "rede": "Instagram",
+    "coef": 0.11,
+    "fraco": true,
+    "texto": "A Copa do Mundo vai muito além do futebol. E essa iniciativa do Ceará mostrou que o maior evento do mundo também é palco para inovação."
+   }
+  ],
+  "instrucao": "Faça: abra todo roteiro de estudante ou inventor com o gigante e o tamanho do gasto dele ('A NASA gasta milhões contra o calor, mas esse estudante de São Paulo resolveu com lixo'). Evite: herói sem oponente ('essa iniciativa mostrou que...').",
+  "confianca": "alta"
+ },
+ {
+  "id": "payoff-superacao",
+  "parte": "payoff",
+  "achado": "Superação pura (de pobre a bilionário, quase faliu e voltou) fica abaixo da média; a fórmula mais usada, superação aberta por porquê e fechada com lição de moral, é a pior.",
+  "numeros": {
+   "lift": 0.79,
+   "ic": [
+    0.67,
+    0.94
+   ],
+   "or_mh": 0.68,
+   "or_ic": [
+    0.54,
+    0.86
+   ],
+   "desc_val": [
+    0.85,
+    0.7
+   ],
+   "n_videos": 537,
+   "n_roteiros": 240,
+   "pct_producao": 0.09,
+   "pct_negocios": 0.15,
+   "trio_porque_licao": {
+    "lift": 0.68,
+    "or_mh": 0.57,
+    "n_videos": 290
+   },
+   "com_virada": 0.96,
+   "com_gigante_ou_rival": 0.91,
+   "tecnologia_or": 0.44,
+   "negocios_or": 0.73,
+   "comentarios_or": 0.51,
+   "tirando_cliente_or": [
+    0.69,
+    0.73
+   ]
+  },
+  "escopo": "global; pior em Tecnologia; Marcio Grazino 0,48 e Rafael Rodrigues 0,56",
+  "exemplos": [
+   {
+    "cliente": "João Paulo Albuquerque",
+    "rede": "TikTok",
+    "coef": 441.8,
+    "texto": "Ela levou 10 anos para construir essa empresa. E um único dia para descobrir que podia ser destruída por causa da Nestlé. (escapa: história aberta + gigante)"
+   },
+   {
+    "cliente": "Rodrigo Waughan",
+    "rede": "YouTube",
+    "coef": 0.01,
+    "fraco": true,
+    "texto": "Esse homem pagou plano de saúde para quem limpava chão e ficou bilionário por causa disso. / A lição é clara: quem blinda a sua base, constrói um império inquebrável."
+   }
+  ],
+  "instrucao": "Evite: superação como payoff principal e o fechamento 'a lição é...'. Faça: transforme a ascensão em briga (quem tentou destruí-lo, com nome) ou em história aberta ('até que...') e feche contando o desfecho em síntese.",
+  "confianca": "alta"
+ },
+ {
+  "id": "payoff-vantagem-salvamento",
+  "parte": "payoff",
+  "achado": "Vantagem prática para o espectador (direito, ferramenta, técnica, 'como você pode') derruba o alcance e multiplica o salvamento.",
+  "numeros": {
+   "alcance": {
+    "lift": 0.72,
+    "ic": [
+     0.58,
+     0.87
+    ],
+    "or_mh": 0.62,
+    "or_ic": [
+     0.47,
+     0.81
+    ],
+    "desc_val": [
+     0.74,
+     0.66
+    ],
+    "n_videos": 401
+   },
+   "salvamento_tiktok": {
+    "lift": 2.44,
+    "ic": [
+     2.08,
+     2.77
+    ],
+    "or_mh": 5.84,
+    "or_ic": [
+     3.91,
+     8.73
+    ],
+    "desc_val": [
+     2.65,
+     1.96
+    ],
+    "n_videos": 114
+   },
+   "utilidade_pratica_salvamento_or": 3.47,
+   "promessa_ensinar": {
+    "lift": 0.66,
+    "or_mh": 0.57
+   },
+   "promessa_ensinar_ret_hook_ig": {
+    "lift": 0.33,
+    "or_mh": 0.26
+   },
+   "dentro_vantagem": {
+    "abre_ensinar": 0.6,
+    "fecha_consequencia": 0.27
+   }
+  },
+  "escopo": "global (3 redes e 3 nichos no alcance); salvamento medido só no TikTok; Izabela Anholett 0,67",
+  "exemplos": [
+   {
+    "cliente": "Dilson Peres",
+    "rede": "YouTube",
+    "coef": 237.8,
+    "texto": "O Silvio Santos fez uma jogada genial que evitou qualquer dor de cabeça para sua família. / Planejamento sucessório não é assunto de fim de vida..."
+   },
+   {
+    "cliente": "Manoel Victor",
+    "rede": "YouTube",
+    "coef": 3.6,
+    "texto": "A BMW ficou bilionária mandando o cliente comprar na concorrência / Diga não pro cliente errado... Agora pode ser sua vez."
+   },
+   {
+    "cliente": "Manoel Victor",
+    "rede": "Instagram",
+    "coef": 0.31,
+    "fraco": true,
+    "texto": "O autor do livro 'Pai Rico, Pai Pobre' revelou o segredo pra usar IA da forma certa e que muita gente não percebe."
+   }
+  ],
+  "instrucao": "Faça: use vantagem quando a meta for salvamento, embrulhada num caso com personagem ('O Silvio Santos fez uma jogada que salvou R$ 6,4 bilhões') e fechada com instrução prática. Evite: hook que promete ensinar ('como você pode...') e vantagem como aposta de alcance.",
+  "confianca": "alta"
+ },
+ {
+  "id": "payoff-metrica",
+  "parte": "payoff",
+  "achado": "Cada payoff move uma métrica: revolta, nostalgia, orgulho e inspiração geram comentário; orgulho, futuro e inspiração geram compartilhamento; vantagem gera salvamento; queda do gigante derruba compartilhamento e salvamento.",
+  "numeros": {
+   "comentarios_or": {
+    "revolta": 2.7,
+    "nostalgia": 2.27,
+    "orgulho": 2.12,
+    "inspiracao": 1.76,
+    "alerta": 1.35,
+    "sacada": 0.51,
+    "superacao": 0.51,
+    "queda": 0.67,
+    "virada": 0.68
+   },
+   "compart_or": {
+    "orgulho": 1.71,
+    "futuro": 1.7,
+    "inspiracao": 1.58,
+    "queda": 0.42,
+    "nostalgia": 0.25
+   },
+   "salvamentos_or": {
+    "vantagem": 5.84,
+    "queda": 0.14,
+    "virada": 0.53,
+    "alerta": 0.53
+   },
+   "seguidores": "nenhum replica; futuro OR 1,77 é sinal"
+  },
+  "escopo": "global; compartilhamento em IG+TT, salvamento só TT, comentários nas 3 redes",
+  "exemplos": [
+   {
+    "cliente": "Cadu Neiva",
+    "rede": "TikTok",
+    "coef": 102,
+    "texto": "Albert Einstein veio ao Brasil e ignorou presidentes... pra almoçar com esse médico baiano. Mas você provavelmente nunca ouviu falar dele. (revolta, comentário)"
+   },
+   {
+    "cliente": "Izabela Anholett",
+    "rede": "Instagram",
+    "coef": 146.7,
+    "texto": "A Samsung lançou um par de óculos que é o começo do fim da era do celular. (futuro, compartilhamento)"
+   }
+  ],
+  "instrucao": "Faça: escolha o payoff pela métrica do vídeo. Alcance: disputa ou orgulho com régua. Compartilhamento: orgulho, futuro, exemplo inspirador. Comentário: revolta, nostalgia, pergunta de lado no fim. Salvamento: vantagem prática. Evite: queda do gigante quando a meta for engajamento.",
+  "confianca": "alta"
+ },
+ {
+  "id": "payoff-nicho",
+  "parte": "payoff",
+  "achado": "Há payoff de nicho: queda do gigante e alerta funcionam em Dinheiro e não em Tecnologia; revolta funciona em Negócios e fica abaixo da média em Dinheiro, onde é mais usada; orgulho é mais forte e superação é pior em Tecnologia.",
+  "numeros": {
+   "queda_dinheiro": {
+    "lift": 1.47,
+    "or_mh": 1.85,
+    "or_ic": [
+     1.06,
+     3.23
+    ],
+    "desc_val": [
+     1.36,
+     1.79
+    ],
+    "n_videos": 58,
+    "n_roteiros": 21,
+    "leitura": "replica"
+   },
+   "queda_tecnologia_or": 0.46,
+   "alerta_dinheiro": {
+    "lift": 1.19,
+    "ic": [
+     1,
+     1.4
+    ],
+    "or_mh": 1.4,
+    "or_ic": [
+     1.05,
+     1.86
+    ],
+    "desc_val": [
+     1.22,
+     1.15
+    ]
+   },
+   "alerta_tecnologia_or": 0.84,
+   "revolta_negocios": {
+    "lift": 1.44,
+    "or_mh": 1.77,
+    "or_ic": [
+     1.07,
+     2.93
+    ],
+    "desc_val": [
+     1.85,
+     1.19
+    ],
+    "n_roteiros": 31,
+    "leitura": "replica"
+   },
+   "revolta_dinheiro": {
+    "lift": 0.71,
+    "or_mh": 0.61
+   },
+   "orgulho_tecnologia_or": 1.8,
+   "superacao_tecnologia_or": 0.44
+  },
+  "escopo": "por macro nicho; disputa (ajuda) e vantagem (atrapalha) são globais; bastidor e sacada, os mais usados em Dinheiro e Negócios, são neutros",
+  "exemplos": [
+   {
+    "cliente": "Fernando Pereira",
+    "rede": "YouTube",
+    "coef": 19.6,
+    "texto": "Por que um dos maiores craques da história tem uma dívida de milhões que a Justiça tenta cobrar há mais de 20 anos e ainda não conseguiu? (queda, Dinheiro)"
+   },
+   {
+    "cliente": "Marcos Pelozato",
+    "rede": "TikTok",
+    "coef": 1356.3,
+    "texto": "A Casas Bahia sobreviveu a hiperinflação, plano Collor e pandemia. Agora fechou 298 lojas de uma vez, e pouca gente consegue entender o porquê. (alerta aberto pelo porquê)"
+   }
+  ],
+  "instrucao": "Faça: em Dinheiro, prefira o erro caro de alguém famoso e o alerta aberto pelo porquê; deixe a revolta para cases de marca (Negócios). Em Tecnologia, troque superação por orgulho com régua estrangeira ou Davi e Golias.",
+  "confianca": "media"
+ },
+ {
+  "id": "plataforma-payoff",
+  "parte": "plataforma",
+  "achado": "Orgulho rende no Instagram e no TikTok e não no YouTube; queda do gigante só rende no YouTube; nostalgia afunda no YouTube; disputa rende nas três.",
+  "numeros": {
+   "orgulho_ig_tt": {
+    "lift": 1.49,
+    "or_mh": 2.09,
+    "leitura": "replica"
+   },
+   "orgulho_yt": {
+    "lift": 0.93,
+    "or_mh": 0.84
+   },
+   "queda_yt": {
+    "lift": 1.26,
+    "or_mh": 1.5,
+    "or_ic": [
+     1.01,
+     2.23
+    ],
+    "desc_val": [
+     1.17,
+     1.38
+    ],
+    "leitura": "sinal"
+   },
+   "nostalgia_yt": {
+    "lift": 0.39,
+    "or_mh": 0.3,
+    "or_ic": [
+     0.1,
+     0.86
+    ],
+    "n_videos": 40,
+    "leitura": "replica, n pequeno"
+   },
+   "disputa": {
+    "Instagram": 1.36,
+    "TikTok": 1.7,
+    "YouTube": 1.81
+   }
+  },
+  "escopo": "por rede (Facebook sem volume)",
+  "exemplos": [
+   {
+    "cliente": "Franklin Tomich",
+    "rede": "YouTube",
+    "coef": 21.5,
+    "texto": "O que aconteceu com o Playcenter, o parque mais icônico de São Paulo? Ele afundou por causa de um concorrente que ele mesmo criou."
+   },
+   {
+    "cliente": "Marcio Grazino",
+    "rede": "TikTok",
+    "coef": 740.2,
+    "texto": "Você tinha vergonha de usar Olympikus na escola. Hoje em dia, ela humilha a Nike e a Adidas no Brasil."
+   }
+  ],
+  "instrucao": "Faça: na versão do YouTube de um roteiro de orgulho, troque o gancho pela briga ou pelo erro do gigante. Evite: subir nostalgia no YouTube sem reescrever.",
+  "confianca": "media"
+ },
+ {
+  "id": "subhook-puxa-espectador",
+  "parte": "subhook",
+  "achado": "Subhook que puxa para o espectador ('imagina você...', 'aquela loja que você...') derruba alcance e retenção do subhook; o que soma um dado e eleva a aposta ajuda.",
+  "numeros": {
+   "puxa_espectador": {
+    "lift": 0.59,
+    "ic": [
+     0.48,
+     0.73
+    ],
+    "or_mh": 0.5,
+    "or_ic": [
+     0.38,
+     0.65
+    ],
+    "desc_val": [
+     0.6,
+     0.59
+    ],
+    "n_videos": 457,
+    "clientes": 26,
+    "ret_sub_ig": {
+     "lift": 0.65,
+     "or_mh": 0.56
+    }
+   },
+   "eleva_aposta": {
+    "lift": 1.13,
+    "or_mh": 1.24,
+    "n_videos": 935
+   },
+   "protagonista_espectador": {
+    "lift": 0.69,
+    "or_mh": 0.59
+   }
+  },
+  "escopo": "global (3 redes), estável tirando qualquer cliente (OR 0,46 a 0,57)",
+  "exemplos": [
+   {
+    "cliente": "Marcos Pelozato",
+    "rede": "TikTok",
+    "coef": 1356.3,
+    "texto": "Subhook que eleva a aposta: 'Foram quase 300 lojas fechadas de uma só vez. Quase 2 mil funcionários demitidos em apenas dois dias.'"
+   },
+   {
+    "cliente": "Marcos Pelozato",
+    "rede": "YouTube",
+    "coef": 0.01,
+    "fraco": true,
+    "texto": "'O Brasil virou um cemitério de empresas, e o seu casamento pode ser a próxima vítima.' / 'Pode parecer exagero, mas uma empresa quebrar longe de você pode terminar dentro da sua casa.'"
+   }
+  ],
+  "instrucao": "Faça: no segundo parágrafo, some um número que aumenta a escala ou a gravidade. Evite: chamar o espectador para dentro ('imagina você', 'se você...') e colocar 'você' como protagonista.",
+  "confianca": "alta"
+ },
+ {
+  "id": "hook-promessa",
+  "parte": "hook",
+  "achado": "Hook que promete comparação ou novidade ajuda; hook que promete alerta ou ensinar atrapalha. Metade dos hooks da casa promete 'porquê/como' e fica na média.",
+  "numeros": {
+   "comparacao": {
+    "lift": 1.23,
+    "or_mh": 1.37,
+    "n_videos": 214
+   },
+   "novidade": {
+    "lift": 1.2,
+    "or_mh": 1.47,
+    "n_videos": 839
+   },
+   "alerta": {
+    "lift": 0.82,
+    "or_mh": 0.74,
+    "n_videos": 493
+   },
+   "ensinar": {
+    "lift": 0.66,
+    "or_mh": 0.57,
+    "n_videos": 182
+   },
+   "porque_como": {
+    "lift": 0.95,
+    "or_mh": 0.86,
+    "pct": 0.5
+   }
+  },
+  "escopo": "global; todos replicam",
+  "exemplos": [
+   {
+    "cliente": "Rafael Rodrigues",
+    "rede": "Instagram",
+    "coef": 438.4,
+    "texto": "Enquanto as gigantes gastam bilhões para criar tecnologia, esse jovem de 20 anos criou uma concorrente da Apple usando restos de lixo. (comparação)"
+   },
+   {
+    "cliente": "Izabela Anholett",
+    "rede": "Instagram",
+    "coef": 146.7,
+    "texto": "A Samsung lançou um par de óculos que é o começo do fim da era do celular. (novidade)"
+   }
+  ],
+  "instrucao": "Faça: abra confrontando dois lados ou dando a notícia ('acabou de'). Evite: abrir com a ameaça ('isso vai afetar você') ou com a promessa de ensinar ('como você pode').",
+  "confianca": "alta"
+ },
+ {
+  "id": "tema-antagonista-recorte",
+  "parte": "tema",
+  "achado": "Protagonista com oponente de nome (rival ou gigante) ajuda; oponente abstrato (crise, doença, natureza) atrapalha; história só estrangeira, sem ponte com o Brasil, fica abaixo.",
+  "numeros": {
+   "rival": {
+    "lift": 1.23,
+    "or_mh": 1.43,
+    "n_videos": 936
+   },
+   "gigante": {
+    "lift": 1.23,
+    "or_mh": 1.37,
+    "n_videos": 421
+   },
+   "problema": {
+    "lift": 0.89,
+    "or_mh": 0.8,
+    "n_videos": 1561
+   },
+   "so_estrangeiro": {
+    "lift": 0.89,
+    "or_mh": 0.74,
+    "n_videos": 2355,
+    "leitura": "replica"
+   },
+   "brasil_x_estrangeiro": {
+    "lift": 1.16,
+    "or_mh": 1.32,
+    "desc_val": [
+     0.99,
+     1.3
+    ],
+    "leitura": "sinal sem replicação"
+   }
+  },
+  "escopo": "global",
+  "exemplos": [
+   {
+    "cliente": "Lincoln Fracari",
+    "rede": "TikTok",
+    "coef": 291.1,
+    "texto": "A China está construindo um verdadeiro país paralelo no Nordeste brasileiro e quase ninguém tá percebendo isso. (estrangeiro com ponte no Brasil)"
+   },
+   {
+    "cliente": "Renato Mendes",
+    "rede": "TikTok",
+    "coef": 288.7,
+    "texto": "A chinesa que está comprando o mundo deu o passo definitivo para dominar o Brasil. E agora, o império da BYD está oficialmente ameaçado. (rival com nome)"
+   }
+  ],
+  "instrucao": "Faça: dê ao protagonista um oponente com nome e, em pauta de fora, faça a ponte com o Brasil no hook ou no fechamento. Evite: 'a crise' ou 'o problema' como único antagonista e história estrangeira que nunca toca o Brasil.",
+  "confianca": "media"
+ },
+ {
+  "id": "conclusao-por-metrica",
+  "parte": "conclusao",
+  "achado": "O último parágrafo tem uma função por métrica: frase-síntese segura até o fim, consequência para o espectador gera compartilhamento, pergunta gera comentário; a lição de moral, fechamento de 46% dos vídeos, derruba comentário.",
+  "numeros": {
+   "sintese_ret_final_ig": {
+    "lift": 1.54,
+    "ic": [
+     1.24,
+     1.86
+    ],
+    "or_mh": 2.07,
+    "or_ic": [
+     1.44,
+     3
+    ],
+    "desc_val": [
+     1.51,
+     1.73
+    ],
+    "n_videos": 138,
+    "controlando_tamanho": 1.55
+   },
+   "consequencia_compart": {
+    "lift": 1.21,
+    "or_mh": 1.42,
+    "n_videos": 350
+   },
+   "pergunta_comentarios": {
+    "lift": 1.34,
+    "or_mh": 1.63,
+    "n_videos": 582
+   },
+   "licao_comentarios": {
+    "lift": 0.87,
+    "or_mh": 0.68,
+    "n_videos": 2930
+   },
+   "virada_final_comentarios_or": 0.74,
+   "retomada_coef": {
+    "lift": 1.39,
+    "or_mh": 1.62,
+    "desc_val": [
+     0.93,
+     1.53
+    ],
+    "leitura": "sinal sem replicação"
+   }
+  },
+  "escopo": "retenção final só Instagram; compartilhamento IG+TT; comentários nas 3 redes",
+  "exemplos": [
+   {
+    "cliente": "Franklin Tomich",
+    "rede": "Instagram",
+    "coef": 62.2,
+    "texto": "E foi assim que a marca que dominou os recreios brasileiros por décadas chegou ao fim. (síntese)"
+   },
+   {
+    "cliente": "Leonardo Nogueira",
+    "rede": "Instagram",
+    "coef": 438.3,
+    "texto": "E se você pudesse escolher 1 carro para rodar 1 milhão de km, qual carro seria? (pergunta)"
+   }
+  ],
+  "instrucao": "Faça: escolha o fechamento pela meta (síntese do caso para reter, consequência para compartilhar, pergunta de lado para comentar). Evite: lição de moral como padrão; use só quando a lição for a própria sacada.",
+  "confianca": "alta"
+ },
+ {
+  "id": "payoff-abertura-fechamento",
+  "parte": "payoff",
+  "achado": "Combinações que replicam: futuro aberto com novidade e fechado com projeção; alerta aberto pelo porquê e fechado na consequência; queda aberta com história sem final e fechada com lição; disputa aberta com novidade e fechada em síntese ou pergunta; orgulho fechado com consequência para o Brasil. Combinações que derrubam: futuro aberto com porquê; alerta aberto com número solto ou sem fechamento; bastidor fechado com pergunta.",
+  "numeros": {
+   "futuro_novidade_futuro": {
+    "lift": 1.33,
+    "or_mh": 1.54,
+    "n_videos": 140
+   },
+   "futuro_abre_porque": 0.69,
+   "alerta_abre_porque": 1.48,
+   "alerta_fecha_consequencia": 1.22,
+   "alerta_abre_numero": 0.27,
+   "alerta_sem_fechamento": 0.47,
+   "queda_desfecho_licao": {
+    "lift": 1.46,
+    "or_mh": 1.78,
+    "n_videos": 69
+   },
+   "queda_abre_tese": 1.94,
+   "queda_fecha_sintese": 1.94,
+   "disputa_abre_novidade": 1.73,
+   "disputa_fecha_sintese": 1.9,
+   "disputa_fecha_pergunta": 1.67,
+   "orgulho_fecha_consequencia": 2.16,
+   "bastidor_porque_pergunta": 0.4
+  },
+  "escopo": "global; muitas comparações, só as que replicam viram regra",
+  "exemplos": [
+   {
+    "cliente": "Izabela Anholett",
+    "rede": "Instagram",
+    "coef": 79.1,
+    "texto": "A contagem regressiva começou. A China vai implementar no Brasil os pagamentos com a palma da mão ainda este ano. / A previsão é chegar ao mercado ainda no segundo semestre deste ano."
+   },
+   {
+    "cliente": "Ricardo Schumacher",
+    "rede": "TikTok",
+    "coef": 133.5,
+    "texto": "O Ratinho agora virou Paraguaio! Só que tem um detalhe nessa história que pode custar caro pra quem tá pensando em fazer o mesmo. / ...precisa resolver o vínculo, não só o documento."
+   }
+  ],
+  "instrucao": "Faça: use a tabela da seção 5 do achados.md como checklist de abertura e fechamento por payoff. Evite: abrir notícia de tecnologia com 'por quê' e terminar alerta sem dizer o que muda para o espectador.",
+  "confianca": "media"
+ }
+]

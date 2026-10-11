@@ -1,0 +1,30 @@
+| característica | n vídeos | % topo com vs sem | lift [IC95] | OR MH [IC95] | lift descoberta / validação | Instagram | TikTok | YouTube | leitura |
+|---|---|---|---|---|---|---|---|---|---|
+| acerto, 1ª repetição, <=21d | 78 | 47% vs 26% | 1,84 [1,43 a 2,26] | 2,62 [1,67 a 4,10] | 2,35 / 1,36 | 1,88 (n=31) | 2,01 (n=25) | 1,59 (n=22) | ajuda (replica) |
+| acerto, 1ª repetição, 21-90d | 140 | 31% vs 26% | 1,19 [0,92 a 1,50] | 1,28 [0,89 a 1,85] | 1,09 / 1,28 | 1,27 (n=58) | 1,13 (n=41) | 1,13 (n=41) | sem evidência |
+| acerto, 1ª repetição, >=90d | 13 | 31% vs 26% | 1,19 [0,49 a 2,24] | 1,28 [0,39 a 4,16] | 3,10 / 0,00 | 1,30 (n=6) | 1,29 (n=3) | 0,97 (n=4) | amostra pequena |
+| acerto, 2ª em diante, <=21d | 81 | 31% vs 26% | 1,20 [0,85 a 1,61] | 1,31 [0,81 a 2,11] | 0,94 / 1,41 | 1,26 (n=31) | 1,19 (n=26) | 1,13 (n=24) | sem evidência |
+| acerto, 2ª em diante, 21-90d | 614 | 27% vs 26% | 1,04 [0,91 a 1,18] | 1,07 [0,88 a 1,30] | 0,98 / 1,12 | 1,10 (n=234) | 1,11 (n=192) | 0,89 (n=188) | sem evidência |
+| acerto, 2ª em diante, >=90d | 186 | 37% vs 25% | 1,42 [1,16 a 1,70] | 1,73 [1,27 a 2,36] | 1,35 / 1,44 | 1,68 (n=74) | 1,48 (n=60) | 0,97 (n=52) | ajuda (replica) |
+| ROBUSTEZ mesma rede: mais parecido anterior foi topo na rede | 715 | 33% vs 25% | 1,29 [1,16 a 1,43] | 1,56 [1,32 a 1,86] | 1,19 / 1,39 | 1,51 (n=296) | 1,25 (n=236) | 1,00 (n=183) | ajuda (replica) |
+| ROBUSTEZ mesma rede: mais parecido anterior foi fraco na rede | 453 | 20% vs 26% | 0,76 [0,63 a 0,91] | 0,68 [0,53 a 0,87] | 0,87 / 0,68 | 0,66 (n=201) | 0,75 (n=124) | 0,94 (n=128) | atrapalha (replica) |
+| acerto de outro cliente do MESMO macro nicho | 921 | 27% vs 26% | 1,06 [0,95 a 1,18] | 1,11 [0,94 a 1,30] | 0,96 / 1,10 | 1,05 (n=395) | 1,16 (n=267) | 0,97 (n=259) | sem evidência |
+| acerto de outro cliente de OUTRO macro nicho | 905 | 28% vs 25% | 1,10 [0,99 a 1,22] | 1,18 [1,00 a 1,38] | 1,21 / 1,05 | 1,02 (n=395) | 1,04 (n=261) | 1,29 (n=249) | sem evidência |
+outro cliente, acerto vs fraco, com território: OR 1,34 [1,12 a 1,61]
+outro cliente, fraco vs resto, com território: OR 0,77 [0,67 a 0,90]
+
+exemplos repete acerto e acerta:
+Leonardo Cirino | anterior (2026-07-03, pq 0,81): "A briga dos chineses que mudou o Brasil para sempre" -> novo (2026-07-15, pq 0,86, sim 0.85, 12d, 0 rep): "O carregador chinês que vai mudar o mercado de carros elétricos no Brasil"
+Marcio Grazino | anterior (2026-05-23, pq 0,88): "A pernambucana que resolveu um problema de gerações usando lixo" -> novo (2026-06-26, pq 0,88, sim 0.80, 34d, 0 rep): "Ela usou uma fruta brasileira para criar o que a indústria ignorou"
+Izabela Anholett | anterior (2026-06-05, pq 0,96): "O “ChatGPT” tornará o Iphone lixo em 2027" -> novo (2026-07-07, pq 0,98, sim 0.83, 32d, 0 rep): "A Siri agora é… o Google."
+Dilson Peres | anterior (2026-03-27, pq 0,69): "Você paga mais impostos que um ator milionário?!" -> novo (2026-09-03, pq 0,98, sim 0.81, 160d, 4 rep): "O segredo da fortuna de Luciano Huck"
+Izabela Anholett | anterior (2026-05-23, pq 0,97): "ROBÔS ACESSÍVEIS LIBERADOS PRA TODO MUNDO (O Pesadelo do Elon Musk chegou no AliExpress)" -> novo (2026-07-10, pq 0,93, sim 0.85, 48d, 1 rep): "O “namorado” robô chegou na China."
+Izabela Anholett | anterior (2026-03-20, pq 0,77): "Essa IA da China REVOLUCIONOU a moda" -> novo (2026-07-09, pq 0,98, sim 0.81, 111d, 4 rep): "A China transformou seu computador em um óculos."
+
+exemplos repete fraco e erra:
+Lincoln Fracari | anterior (2026-06-04, pq 0,26): "Sem diploma, sem opinião na China." -> novo (2026-06-20, pq 0,15, sim 0.81, 16d, - rep): "A China baniu o “tigrinho”"
+Izabela Anholett | anterior (2026-03-01, pq 0,21): "Pré-MBA: 99% usam o ChatGPT errado. Aqui está o truque certo" -> novo (2026-09-01, pq 0,05, sim 0.88, 184d, - rep): "Pré-MBA: A IA está roubando seu emprego dos sonhos"
+Izabela Anholett | anterior (2026-04-18, pq 0,17): "Você passou 15 anos treinando a IA do Google e nem sabia" -> novo (2026-08-27, pq 0,10, sim 0.85, 131d, - rep): "O Google está usando seus dados, você nem percebeu"
+Izabela Anholett | anterior (2026-05-03, pq 0,10): "Pré-MBA: ​O fim do trabalho como conhecemos" -> novo (2026-09-12, pq 0,06, sim 0.86, 132d, - rep): "Pré-MBA: Quem erra nisso fica humilhantemente atrasado"
+Marcelo Germano | anterior (2026-04-07, pq 0,29): "O jovem gaúcho que vendeu sua empresa por quase 2 bilhões de reais." -> novo (2026-05-29, pq 0,02, sim 0.80, 52d, - rep): "Eles não sabiam vender e criaram a Hotmart."
+Marcos Pelozato | anterior (2026-05-20, pq 0,06): "A Latam quase faliu e voltou mais rica" -> novo (2026-06-29, pq 0,10, sim 0.80, 40d, - rep): "A Lycra afundava sem ninguém perceber e quase faliu!"

@@ -1,0 +1,52 @@
+% modelado por faixa: <300 60% (379) | 300-400 44% (1203) | 400-450 38% (811) | 450-500 38% (261) | 500+ 39% (59)
+450-500: lift 1,23 OR 1,39 | ctl modelagem OR 1,45 [1,19-1,76] | ctl roteirista OR 1,35 [1,10-1,65] | clientes n>=15: 19, lift>1: 14 | Rodrigo 2,17(37) Izabela 1,71(25) Túlio 1,58(17) Fernando 1,58(47) Lincoln 1,49(39) Patrick 1,38(17) Pedro 1,33(21) Ricardo 1,31(15) Renato 1,18(33) Marcio 1,15(27) Rafael 1,12(21) Marcelo 1,10(27) João 1,06(15) Cadu 1,06(25) Marcos 0,97(32) Franklin 0,97(60) Thainá 0,97(16) Dilson 0,74(31) Thiago 0,50(24)
+420-500: lift 1,09 OR 1,20 | ctl modelagem OR 1,25 [1,09-1,43] | ctl roteirista OR 1,26 [1,09-1,45] | clientes n>=15: 22, lift>1: 14 | Izabela 1,50(57) Lincoln 1,48(97) Rodrigo 1,39(88) Renato 1,30(54) Patrick 1,30(33) Drielle 1,23(57) Rafael 1,20(72) Marcelo 1,19(53) Marcio 1,16(87) Fernando 1,12(132) Marcos 1,08(152) Pedro 1,07(60) Cadu 1,01(60) Dilson 1,01(80) Ricardo 0,96(45) Franklin 0,93(134) João 0,91(57) Thainá 0,83(42) Renato 0,80(19) Túlio 0,79(58) Thiago 0,77(83) Leonardo 0,35(22)
+<300: lift 0,82 OR 0,70 | ctl modelagem OR 0,65 [0,54-0,79] | ctl roteirista OR 0,70 [0,58-0,85] | clientes n>=15: 11, lift>1: 2 | Manoel 1,06(141) Dilson 1,05(73) Thiago 0,89(58) Rafael 0,84(89) Izabela 0,82(273) Cadu 0,82(23) Leonardo 0,72(43) Lincoln 0,67(104) Rodrigo 0,67(63) Pedro 0,53(15) Fernando 0,36(22)
+500+: lift 0,80 OR 0,74 | ctl modelagem OR 0,80 [0,51-1,26] | ctl roteirista OR 0,68 [0,43-1,07] | clientes n>=15: 3, lift>1: 1 | Marcelo 1,24(21) Fernando 0,92(17) Izabela 0,51(23)
+
+palavras/segundo por cliente (mediana): Cadu 2.40(208) Rafael 2.50(635) Rodrigo 2.69(378) Pedro 2.73(200) Leonardo 2.90(121) Franklin 2.93(249) Drielle 2.97(121) Marcelo 2.97(144) Thainá 2.98(62) Patrick 3.02(78) Manoel 3.03(231) Lincoln 3.08(442) Renato 3.10(68) Dilson 3.11(280) Ricardo 3.13(102) Túlio 3.15(119) João 3.15(64) Izabela 3.16(650) João 3.17(167) Renato 3.21(164) Fernando 3.28(369) Marcos 3.31(366) Marcio 3.33(438) Leonardo 3.35(20) Café 3.39(51) Leonardo 3.51(132) Thiago 3.53(377) Thiago 3.66(63)
+geral: 3.07 | 450 palavras = 147 s | 500 = 163 s | 430 = 140 s
+Instagram: dur 150-180s ctl palavras: lift 1,19 OR 1,43 [1,05-1,95] d/v 1,15/1,22 n=418 | dur <100s: lift 0,90 OR 0,77 [0,51-1,16] n=497
+TikTok: dur 150-180s ctl palavras: lift 1,26 OR 1,85 [1,25-2,74] d/v 1,28/1,25 n=301 | dur <100s: lift 0,79 OR 0,57 [0,36-0,89] n=385
+YouTube: dur 150-180s ctl palavras: lift 1,06 OR 0,79 [0,53-1,17] d/v 0,94/1,14 n=332 | dur <100s: lift 0,85 OR 1,14 [0,70-1,85] n=349
+
+roteiros com marcadores de biografia: 0: 2012 1: 533 2: 140 3+: 28
+
+### biografia: 1 marcador
+coef: n=1223 vídeos / 533 roteiros / 28 clientes | 23% vs 26% | lift 0,90 [0,82-1,00] | OR MH 0,84 [0,72-0,98] | OR estrito (cli x rede x tam x roteirista) 0,80 [0,68-0,95] | desc/val 0,90/0,91 | atrapalha (replica)
+por rede (ctl tam): Instagram lift 0,89 n=528 OR 0,84 [0,66-1,06] d/v 0,89/0,89 | TikTok lift 1,01 n=352 OR 1,01 [0,77-1,34] d/v 0,92/1,09 | YouTube lift 0,81 n=343 OR 0,67 [0,49-0,90] d/v 0,91/0,73
+macro: Dinheiro, econ 1,08 (n=183) OR 1,13 | Tecnologia, IA 1,06 (n=350) OR 1,12 | Negócios, marc 0,79 (n=672) OR 0,66
+clientes com n>=15: 21, lift>1 em 9 | Thainá 1,37(17) Leonardo 1,34(29) Renato 1,30(18) Lincoln 1,25(59) Marcio 1,19(143) Fernando 1,17(60) Rafael 1,08(123) Cadu 1,07(85) Marcos 1,02(88) Renato 0,94(24) Pedro 0,94(51) João 0,75(58) Dilson 0,75(36) Marcelo 0,71(47) Franklin 0,69(51) Rodrigo 0,54(107) Manoel 0,51(31) Thiago 0,50(71) Patrick 0,43(18) Izabela 0,38(31) Drielle 0,33(24)
+ret_final (ctl tam): n=261 lift 0,99 [0,80-1,21] OR 1,04 [0,75-1,45] d/v 1,01/0,98 | sem evidência
+compart (ctl tam): n=515 lift 1,04 [0,90-1,19] OR 1,07 [0,85-1,36] d/v 0,97/1,22 | sem evidência
+comentarios (ctl tam): n=1223 lift 0,91 [0,82-1,01] OR 0,84 [0,72-0,98] d/v 0,86/0,95 | sem evidência
+  + Rafael Rodrigues | YouTube | coef 866,71 | "Foi aí que ele lembrou do filme: “O Menino Que Descobriu o Vento.”"
+  + Cadu Neiva | Instagram | coef 740,22 | "A família Paes Mendonça percebeu algo que ninguém viu: vender comida é um negócio exaustivo e de margem pequena."
+  + João Paulo Albuquerque | TikTok | coef 441,80 | "O negócio cresceu."
+  - Marcio Grazino | TikTok | coef 0,00 | "E foi exatamente dessa crise que nasceu a obsessão."
+
+### biografia: 2+ marcadores
+coef: n=377 vídeos / 168 roteiros / 21 clientes | 19% vs 26% | lift 0,75 [0,61-0,92] | OR MH 0,66 [0,51-0,87] | OR estrito (cli x rede x tam x roteirista) 0,63 [0,47-0,84] | desc/val 0,69/0,80 | atrapalha (replica)
+por rede (ctl tam): Instagram lift 0,79 n=168 OR 0,64 [0,42-0,96] d/v 0,85/0,73 | TikTok lift 0,68 n=113 OR 0,55 [0,33-0,93] d/v 0,53/0,81 | YouTube lift 0,77 n=96 OR 0,55 [0,32-0,98] d/v 0,58/0,90
+macro: Negócios, marc 0,93 (n=247) OR 0,88 | Tecnologia, IA 0,41 (n=94) OR 0,33 | Dinheiro, econ 0,36 (n=32) OR 0,29
+clientes com n>=15: 12, lift>1 em 3 | Rodrigo 1,55(42) Marcos 1,30(21) João 1,07(26) Marcelo 0,88(38) Lincoln 0,78(15) Franklin 0,73(16) Marcio 0,65(24) Thiago 0,54(22) Cadu 0,52(22) Pedro 0,50(16) Thainá 0,46(17) Rafael 0,24(50)
+ret_final (ctl tam): n=74 lift 1,04 [0,70-1,47] OR 0,99 [0,57-1,73] d/v 1,14/0,95 | sem evidência
+compart (ctl tam): n=162 lift 0,79 [0,58-1,06] OR 0,76 [0,50-1,17] d/v 0,75/0,89 | sem evidência
+comentarios (ctl tam): n=377 lift 0,80 [0,65-0,97] OR 0,70 [0,53-0,93] d/v 0,86/0,75 | atrapalha (replica)
+  + João Paulo Albuquerque | YouTube | coef 293,63 | "Só que, em 2008, durante uma viagem, ela percebeu que todas as bolsas de palha ou tecido estragavam rápido demais por causa da areia e da água."
+  + Marcio Grazino | Instagram | coef 60,95 | "Tudo começou com uma experiência pessoal: Valéria usava tomate cereja como esfoliante caseiro na própria pele para controlar cravos, espinhas e oleosidade, e o mais curioso era que funcionava."
+  + Marcos Pelozato | TikTok | coef 51,33 | "Foi aí que ela tomou uma decisão ousada: parou de pagar as promissórias."
+  - Rafael Rodrigues | Instagram | coef 0,08 | "Só que Naomi percebeu que precisava ir além dos muros da faculdade."
+
+### biografia: 3+ marcadores
+coef: n=64 vídeos / 28 roteiros / 15 clientes | 14% vs 26% | lift 0,55 [0,29-0,96] | OR MH 0,46 [0,23-0,94] | OR estrito (cli x rede x tam x roteirista) 0,40 [0,19-0,87] | desc/val 0,48/0,61 | atrapalha (replica)
+por rede (ctl tam): Instagram lift 0,69 n=28 OR 0,52 [0,19-1,45] d/v 0,74/0,64 | TikTok lift 0,19 n=20 OR 0,12 [0,01-0,89] d/v 0,00/0,36 | YouTube lift 0,73 n=16 OR 0,46 [0,10-2,14] d/v 0,55/0,86
+macro: Negócios, marc 0,63 (n=43) OR 0,55
+clientes com n>=15: 0, lift>1 em 0 | 
+ret_final (ctl tam): n=10 lift 0,77 [0,22-1,97] OR 0,84 [0,17-4,02] d/v 0,50/1,64 | amostra pequena
+compart (ctl tam): n=29 lift 0,94 [0,48-1,64] OR 1,18 [0,46-3,01] d/v 0,67/1,72 | amostra pequena
+comentarios (ctl tam): n=64 lift 0,74 [0,44-1,19] OR 0,71 [0,37-1,36] d/v 0,80/0,70 | sem evidência
+  + João Paulo Albuquerque | YouTube | coef 293,63 | "Só que, em 2008, durante uma viagem, ela percebeu que todas as bolsas de palha ou tecido estragavam rápido demais por causa da areia e da água."
+  + Rodrigo Waughan | YouTube | coef 11,28 | "Conforme a Apple crescia, Jobs percebeu que precisava de alguém com experiência para administrar uma grande corporação."
+  + Marcelo Germano | Instagram | coef 7,16 | "​Filho de um motorista e uma costureira, Felippe Prates decidiu desde cedo ajudar família trabalhando duro."
+  - Marcio Grazino | Instagram | coef 0,16 | "Lá, ele aprendeu mais sobre o processo de como era feito o fumo, desde o colhimento da planta até o seu processamento."

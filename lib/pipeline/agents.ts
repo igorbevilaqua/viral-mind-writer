@@ -664,7 +664,7 @@ Proponha as narrativas candidatas.`,
       max_tokens: maxTokens,
       tools: [NARRATIVAS_TOOL],
       tool_choice: { type: "tool", name: "registrar_narrativas" },
-      system: `${agentPrompt("storytelling")}\n\n# PLAYBOOK DE STORYTELLING\n${ctx.playbooks.storytelling ?? "(sem playbook)"}`,
+      system: `${agentPrompt("storytelling")}\n\n# PLAYBOOK DE STORYTELLING\n${ctx.playbooks.storytelling ?? "(sem playbook)"}${ctx.playbooks.payoff ? `\n\n# PLAYBOOK DE PAYOFF (a recompensa que a narrativa entrega)\n${ctx.playbooks.payoff}` : ""}${ctx.playbooks.pauta ? `\n\n# PLAYBOOK DE PAUTA (territórios e repetição)\n${ctx.playbooks.pauta}` : ""}`,
       messages,
     });
 
@@ -720,7 +720,7 @@ const RANKING_TOOL = {
                 "0-100: quão bem ESTA arquitetura faz o espectador acreditar na premissa. Eixo " +
                 "SEPARADO do potencial viral: uma narrativa com histórico ótimo que sustenta mal a " +
                 "tese pontua alto em viral e baixo aqui. Avalie os três serviços — a abertura chama " +
-                "atenção PARA a premissa, o meio a prova, o fim entrega a consequência dela — e se os " +
+                "atenção PARA a premissa, o meio a prova, o fim fecha a lacuna dela no caso — e se os " +
                 "beats têm lastro no dossiê para isso.",
             },
             justificativa: { type: "string" },
@@ -853,7 +853,7 @@ const HOOK_TOOL = {
         items: {
           type: "object",
           properties: {
-            hook: { type: "string", description: "2 a 4 frases faladas (a maioria com DUAS), emenda na 1ª frase do corpo" },
+            hook: { type: "string", description: "2 a 4 frases faladas (o padrão é duas), abre com o nome de quem age, emenda na 1ª frase do corpo" },
             mecanismo: { type: "string", enum: HOOK_MECHANISMS as unknown as string[], description: "o mecanismo de curiosidade dominante deste hook" },
             formato: { type: "string", enum: HOOK_FORMATS as unknown as string[], description: "'Personagem Central' se gira em torno de uma pessoa; 'Visual' se depende do que se vê; senão 'Nenhum'" },
             racional: { type: "string", description: "1 frase: por que este mecanismo vence para esta narrativa" },
@@ -917,7 +917,7 @@ export async function designHook(
       system: [
         {
           type: "text",
-          text: `# PLAYBOOK DE HOOKS\n${ctx.playbooks.hook ?? "(sem playbook)"}\n\n# GUIA DE ESTILO\n${ctx.playbooks.style_guide ?? ""}\n\n# PADRÕES PROIBIDOS\n${banned}`,
+          text: `# PLAYBOOK DE HOOKS\n${ctx.playbooks.hook ?? "(sem playbook)"}${ctx.playbooks.subhook ? `\n\n# PLAYBOOK DE SUBHOOK (o hook emenda nele)\n${ctx.playbooks.subhook}` : ""}${ctx.playbooks.payoff ? `\n\n# PLAYBOOK DE PAYOFF (o hook promete o que ele entrega)\n${ctx.playbooks.payoff}` : ""}\n\n# GUIA DE ESTILO\n${ctx.playbooks.style_guide ?? ""}\n\n# PADRÕES PROIBIDOS\n${banned}`,
           cache_control: { type: "ephemeral" },
         },
         { type: "text", text: agentPrompt("hook") },
@@ -935,7 +935,7 @@ ${rankingMecanismos ? `\n${rankingMecanismos}` : ""}${preferencias ? `\n${prefer
 CORPO DO ROTEIRO (o hook precisa emendar na primeira frase e ser pago pelo final):
 ${corpo}
 
-Gere de 5 a 6 candidatos a hook, cada um com um MECANISMO DISTINTO da taxonomia, rotulando mecanismo e formato. Inclua os 3 do topo e 1 fora deles. Antes de registrar cada um, passe pelo self-check de 3 testes (curiosidade, impacto, simplicidade) e reescreva o que reprovar. A seleção do principal e das variantes é feita depois pelos dados. Responda chamando registrar_hooks.`,
+Gere de 5 a 6 candidatos a hook com FÓRMULAS DIFERENTES do playbook (seção 2), cada um com placar +2 ou mais quando o fato permitir, rotulando mecanismo e formato; variar o mecanismo ajuda as variações, mas nunca à custa do placar. Antes de registrar cada um, conte o placar (seção 1) e passe pelo self-check de 3 testes (curiosidade, impacto, simplicidade); reescreva o que reprovar. A seleção é feita depois em código: primeiro pelo placar, depois pelos dados de mecanismo. Responda chamando registrar_hooks.`,
         },
       ],
     },
@@ -1015,7 +1015,7 @@ export async function writeComando(ctx: GenerationContext, corpo: string): Promi
   const clienteBloco = !p
     ? ""
     : ctx.modoModelagem
-      ? `${clientPrefsBlock(ctx)}\n\nO CTA é para o cliente acima: cite o nome "${p.nome}" na própria frase e convide o espectador a SEGUI-LO para continuar recebendo conteúdo como este. O benefício explícito continua obrigatório.\n\n`
+      ? `${clientPrefsBlock(ctx)}\n\nO CTA é para o cliente acima: cite o nome "${p.nome}" na própria frase e convide o espectador a SEGUI-LO prometendo o território do canal dele (o que ele entrega sempre), não o assunto deste vídeo. Um pedido só.\n\n`
       : `CLIENTE: ${p.nome}${p.tom_de_voz ? ` | Tom: ${p.tom_de_voz}` : ""}${p.notas_entrevista ? `\nNotas: ${p.notas_entrevista.slice(0, 800)}` : ""}\n\n`;
   // Replicar: a decisão entre ADAPTAR o CTA do original e CRIAR um já foi tomada em código
   // (comandoDoOriginal). O agente recebe a instrução pronta, nunca a dúvida.
@@ -1023,8 +1023,8 @@ export async function writeComando(ctx: GenerationContext, corpo: string): Promi
   const replicarBloco = !r
     ? ""
     : r.adaptar
-      ? `MODO REPLICAR — ADAPTE O COMANDO DO ORIGINAL. Ele fechava assim: ${r.descricao}.\nMantenha o mesmo tipo de pedido e a mesma posição; melhore a execução (benefício explícito na própria frase, verbo mais concreto, promessa que o roteiro pagou). Nenhuma frase literal do original pode sobreviver.\n\n`
-      : `MODO REPLICAR — CRIE O COMANDO: ${r.descricao}. É o ponto onde a nossa versão ganha dele.\nO pedido tem que soar CONSEQUÊNCIA natural do que o vídeo acabou de dizer, não apêndice colado no fim: quem entendeu a tese já quer fazer o que você vai pedir.\n\n`;
+      ? `MODO REPLICAR — ADAPTE O COMANDO DO ORIGINAL. Ele fechava assim: ${r.descricao}.\nMantenha a posição. Se o original pedia comentário junto do seguir, peça só o seguir (pedido duplo derruba seguidores). Prometa o território do canal, não o assunto deste vídeo. Nenhuma frase literal do original pode sobreviver.\n\n`
+      : `MODO REPLICAR — CRIE O COMANDO: ${r.descricao}. É o ponto onde a nossa versão ganha dele.\nUm pedido só, prometendo o território do canal; a ponte com o vídeo é uma palavra ("Então"), não a repetição do tema.\n\n`;
   const direcaoComando = direcaoBlock(ctx, "sugestão de comando — um palpite de CTA, que você julga como julgaria os seus");
   // CTA é fórmula curta sobre padrões dados no contexto: modelo de análise + effort low bastam
   // (era WRITER_MODEL/fable, ~3x o preço, pra 2-3 frases). Sem cache_control: prompt pequeno
@@ -1042,7 +1042,7 @@ export async function writeComando(ctx: GenerationContext, corpo: string): Promi
         role: "user",
         content: `${clienteBloco}${replicarBloco}${direcaoComando ? `${direcaoComando.trim()}\n\n` : ""}${
           clientInsightBlock(ctx, ["comando"])
-            ? `COMANDOS QUE JÁ CONVERTERAM PARA ESTE CLIENTE (pré-rankeados por seguidores ganhos):\n${clientInsightBlock(ctx, ["comando"])}\n\n`
+            ? `COMANDOS QUE ESTE CLIENTE JÁ USOU (referência de voz; o mesmo texto vai do pior ao melhor vídeo, então o ranking por vídeo não prova conversão):\n${clientInsightBlock(ctx, ["comando"])}\n\n`
             : ""
         }${
           taughtBlock(ctx, "comando")

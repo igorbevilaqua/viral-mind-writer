@@ -1,0 +1,38 @@
+quartis do pq médio por roteiro: fraco <= 0,30, topo >= 0,69
+simCli (com >=20 anteriores): p10/p25/p50/p75/p90 = 0.753 / 0.774 / 0.800 / 0.830 / 0.861
+| característica | n vídeos | % topo com vs sem | lift [IC95] | OR MH [IC95] | lift descoberta / validação | Instagram | TikTok | YouTube | leitura |
+|---|---|---|---|---|---|---|---|---|---|
+| maior sim c/ anterior do cliente 0-0.78 | 1597 | 27% vs 25% | 1,05 [0,97 a 1,14] | 1,10 [0,96 a 1,27] | 1,02 / 1,07 | 1,06 (n=658) | 1,03 (n=474) | 1,06 (n=465) | sem evidência |
+| maior sim c/ anterior do cliente 0.78-0.8 | 961 | 24% vs 26% | 0,94 [0,84 a 1,05] | 0,91 [0,77 a 1,07] | 0,93 / 0,95 | 1,01 (n=409) | 0,78 (n=278) | 1,00 (n=274) | sem evidência |
+| maior sim c/ anterior do cliente 0.8-0.82 | 898 | 28% vs 25% | 1,09 [0,98 a 1,21] | 1,15 [0,98 a 1,35] | 1,16 / 1,02 | 1,14 (n=361) | 1,12 (n=273) | 0,98 (n=264) | sem evidência |
+| maior sim c/ anterior do cliente 0.82-0.84 | 668 | 25% vs 26% | 0,98 [0,85 a 1,11] | 0,97 [0,80 a 1,16] | 0,92 / 1,02 | 1,00 (n=277) | 0,91 (n=200) | 1,01 (n=191) | sem evidência |
+| maior sim c/ anterior do cliente 0.84-0.87 | 595 | 25% vs 26% | 0,95 [0,82 a 1,09] | 0,93 [0,76 a 1,14] | 0,90 / 1,00 | 0,93 (n=238) | 0,99 (n=180) | 0,94 (n=177) | sem evidência |
+| maior sim c/ anterior do cliente 0.87-1.01 | 379 | 31% vs 25% | 1,22 [1,04 a 1,41] | 1,38 [1,09 a 1,74] | 1,30 / 1,12 | 1,16 (n=154) | 1,50 (n=116) | 1,00 (n=109) | ajuda (replica) |
+| anteriores do cliente com sim>=0,80: 0-0 | 2558 | 26% vs 26% | 1,01 [0,94 a 1,08] | 1,02 [0,91 a 1,16] | 0,99 / 1,02 | 1,04 (n=1067) | 0,94 (n=752) | 1,04 (n=739) | sem evidência |
+| anteriores do cliente com sim>=0,80: 1-1 | 844 | 28% vs 25% | 1,10 [0,98 a 1,22] | 1,16 [0,99 a 1,37] | 1,14 / 1,06 | 1,15 (n=353) | 1,07 (n=245) | 1,06 (n=246) | sem evidência |
+| anteriores do cliente com sim>=0,80: 2-3 | 742 | 27% vs 26% | 1,05 [0,93 a 1,18] | 1,08 [0,91 a 1,29] | 1,05 / 1,06 | 1,09 (n=301) | 1,10 (n=228) | 0,95 (n=213) | sem evidência |
+| anteriores do cliente com sim>=0,80: 4-7 | 508 | 28% vs 26% | 1,07 [0,93 a 1,23] | 1,12 [0,91 a 1,37] | 1,19 / 0,96 | 1,11 (n=207) | 1,07 (n=155) | 1,01 (n=146) | sem evidência |
+| anteriores do cliente com sim>=0,80: 8+ | 446 | 24% vs 26% | 0,91 [0,77 a 1,07] | 0,87 [0,69 a 1,11] | 0,80 / 1,01 | 0,76 (n=169) | 1,12 (n=141) | 0,88 (n=136) | sem evidência |
+| parecido (>=0,80) com acerto anterior do cliente | 1112 | 31% vs 25% | 1,19 [1,09 a 1,30] | 1,41 [1,21 a 1,63] | 1,13 / 1,25 | 1,29 (n=434) | 1,25 (n=347) | 0,99 (n=331) | ajuda (replica) |
+| parecido (>=0,80) com fraco anterior do cliente | 587 | 20% vs 26% | 0,78 [0,66 a 0,91] | 0,69 [0,56 a 0,86] | 0,85 / 0,72 | 0,68 (n=251) | 0,71 (n=174) | 1,00 (n=162) | atrapalha (replica) |
+| sem anterior parecido de resultado conhecido | 4606 | 25% vs 27% | 0,98 [0,93 a 1,03] | 0,90 [0,78 a 1,03] | 0,99 / 0,98 | 0,98 (n=1973) | 0,97 (n=1336) | 1,00 (n=1297) | sem evidência |
+| repete acerto, 0 repetições antes | 231 | 36% vs 25% | 1,41 [1,18 a 1,66] | 1,68 [1,28 a 2,21] | 1,63 / 1,22 | 1,47 (n=95) | 1,46 (n=69) | 1,27 (n=67) | ajuda (replica) |
+| repete acerto, 1 repetições antes | 154 | 31% vs 26% | 1,18 [0,92 a 1,48] | 1,27 [0,90 a 1,80] | 1,16 / 1,20 | 1,47 (n=66) | 1,23 (n=44) | 0,70 (n=44) | sem evidência |
+| repete acerto, 2-3 repetições antes | 224 | 31% vs 26% | 1,20 [0,97 a 1,44] | 1,30 [0,97 a 1,75] | 1,22 / 1,18 | 1,14 (n=92) | 1,39 (n=67) | 1,07 (n=65) | sem evidência |
+| repete acerto, 4+ repetições antes | 503 | 28% vs 26% | 1,09 [0,94 a 1,25] | 1,17 [0,94 a 1,46] | 0,91 / 1,33 | 1,20 (n=181) | 1,11 (n=167) | 0,92 (n=155) | sem evidência |
+| repete acerto postado 0-21 dias antes | 159 | 39% vs 25% | 1,51 [1,23 a 1,81] | 1,89 [1,37 a 2,62] | 1,65 / 1,39 | 1,57 (n=62) | 1,59 (n=51) | 1,35 (n=46) | ajuda (replica) |
+| repete acerto postado 21-45 dias antes | 362 | 28% vs 26% | 1,09 [0,92 a 1,28] | 1,15 [0,90 a 1,46] | 1,10 / 1,08 | 1,14 (n=144) | 1,10 (n=109) | 1,03 (n=109) | sem evidência |
+| repete acerto postado 45-90 dias antes | 392 | 27% vs 26% | 1,04 [0,88 a 1,22] | 1,07 [0,84 a 1,35] | 0,90 / 1,23 | 1,13 (n=148) | 1,12 (n=124) | 0,84 (n=120) | sem evidência |
+| repete acerto postado 90-999 dias antes | 199 | 36% vs 25% | 1,40 [1,16 a 1,67] | 1,70 [1,26 a 2,30] | 1,53 / 1,36 | 1,65 (n=80) | 1,47 (n=63) | 0,97 (n=56) | ajuda (replica) |
+| parecido (>=0,76) com acerto anterior de OUTRO cliente | 1826 | 28% vs 25% | 1,08 [1,00 a 1,16] | 1,17 [1,03 a 1,33] | 1,10 / 1,07 | 1,04 (n=790) | 1,10 (n=528) | 1,13 (n=508) | ajuda (replica) |
+| parecido (>=0,76) com fraco anterior de OUTRO cliente | 1574 | 22% vs 27% | 0,86 [0,78 a 0,94] | 0,77 [0,67 a 0,88] | 0,90 / 0,83 | 0,85 (n=687) | 0,90 (n=446) | 0,83 (n=441) | atrapalha (replica) |
+| sem análogo em outro cliente | 2905 | 26% vs 25% | 1,02 [0,96 a 1,09] | 1,07 [0,95 a 1,21] | 1,01 / 1,05 | 1,06 (n=1181) | 0,99 (n=883) | 1,01 (n=841) | sem evidência |
+| maior sim c/ anterior de outro cliente 0-0.72 | 195 | 28% vs 26% | 1,07 [0,85 a 1,33] | 1,12 [0,81 a 1,54] | 1,03 / 1,40 | 1,13 (n=79) | 0,98 (n=59) | 1,09 (n=57) | sem evidência |
+| maior sim c/ anterior de outro cliente 0.72-0.74 | 541 | 26% vs 26% | 1,00 [0,87 a 1,15] | 1,01 [0,82 a 1,24] | 0,95 / 1,15 | 0,97 (n=220) | 0,99 (n=168) | 1,06 (n=153) | sem evidência |
+| maior sim c/ anterior de outro cliente 0.74-0.76 | 982 | 27% vs 26% | 1,04 [0,93 a 1,15] | 1,06 [0,91 a 1,24] | 0,99 / 1,10 | 1,06 (n=397) | 1,00 (n=298) | 1,04 (n=287) | sem evidência |
+| maior sim c/ anterior de outro cliente 0.76-0.78 | 1265 | 25% vs 26% | 0,98 [0,89 a 1,07] | 0,96 [0,84 a 1,11] | 1,03 / 0,92 | 0,98 (n=532) | 0,98 (n=369) | 0,98 (n=364) | sem evidência |
+| maior sim c/ anterior de outro cliente 0.78-1.01 | 3321 | 26% vs 26% | 0,99 [0,94 a 1,05] | 0,98 [0,87 a 1,10] | 1,00 / 0,99 | 0,99 (n=1429) | 1,01 (n=963) | 0,98 (n=929) | sem evidência |
+MH controlando cliente x plataforma x território (k=30), acerto: OR 1,24 [1,05 a 1,46]
+MH controlando cliente x plataforma x território (k=30), fraco: OR 0,74 [0,59 a 0,93]
+MH controlando cliente x plataforma x território (k=30), acerto vs fraco: OR 1,42 [1,09 a 1,85]
+MH com território, acerto de outro cliente: OR 1,11 [0,97 a 1,28]

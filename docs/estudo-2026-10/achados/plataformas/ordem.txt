@@ -1,0 +1,17 @@
+## Ordem de postagem
+- roteiros em 2+ redes (IG/TT/YT): 2071; todas no mesmo dia: 1678 (81%); em dias diferentes: 393
+- quem saiu primeiro (só os escalonados): IG 195, IG+TT 79, TT+YT 45, YT 30, TT 22, IG+YT 19, IG+TT+YT 3
+- maior intervalo entre a 1ª e a última rede: mediana 2 dia(s); 1 dia 185, 2 a 7 dias 124, mais de 7 84
+- clientes com postagem escalonada: Lincoln Fracari 95/172; Rafael Rodrigues 42/213; Marcelo Germano 42/46; Cadu Neiva 36/62; Drielle Castelani 29/36; Leonardo Nogueira 20/46; Thainá Iansen 16/23; Rodrigo Waughan 14/129; Dilson Peres 13/90; Thiago Franco 13/127; Renato Torres 11/11; Marcio Grazino 10/147; Fernando Pereira 8/142; Café com Ferri 7/15; Ricardo Schumacher 7/11; Franklin Tomich 6/114; Manoel Victor 5/81; Izabela Anholett 5/219; Leonardo Cirino 5/15; Marcos Pelozato 4/127; Túlio Lichenstein 4/42; Thiago Bisewski 1/21
+
+## O vídeo que sai depois (1+ dia após outra rede) rende diferente?
+| rede | n depois | % topo depois vs mesmo dia | OR MH [IC] | Δ pq dentro do cliente [IC bootstrap] | clientes com n>=3 |
+|---|---|---|---|---|---|
+| Instagram | 97 | 16% vs 27% | 0,42 [0,22-0,79] | -9.1 [-15.2 a -3.3] | 6 |
+| TikTok | 201 | 26% vs 26% | 0,88 [0,57-1,37] | -6.6 [-12.1 a -1.0] | 13 |
+| YouTube | 182 | 27% vs 26% | 1,09 [0,75-1,59] | 0.6 [-4.4 a 5.3] | 13 |
+
+## Seleção: o vídeo da rede que saiu primeiro (com as outras depois) já era melhor?
+- Instagram: n=296, % topo 33% vs 26% (mesmo dia em todas), OR MH 1,24 [0,89-1,74]
+- TikTok: n=149, % topo 30% vs 25% (mesmo dia em todas), OR MH 1,24 [0,83-1,86]
+- YouTube: n=97, % topo 23% vs 26% (mesmo dia em todas), OR MH 0,88 [0,50-1,56]

@@ -1,0 +1,156 @@
+[
+  {
+    "id": "cmd-01-mesmo-cta",
+    "parte": "comando",
+    "achado": "O texto do comando é ajuste fino: o mesmo CTA, palavra por palavra, vai do pior ao melhor vídeo do mesmo cliente. Quem faz seguir é o vídeo.",
+    "numeros": "71 grupos de CTA escrito idêntico (312 vídeos IG+TT): variância do percentil de seguidores 0,07 dentro do grupo contra 0,08 no total (o texto explica no máximo 15%); 59% dos grupos têm o mesmo CTA no quartil de cima e na metade de baixo. Dilson Peres: 16 vídeos com o mesmo CTA, percentis de 0,01 a 0,79.",
+    "escopo": "global (Instagram e TikTok)",
+    "exemplos": [
+      "Dilson Peres, Instagram, 16 vídeos: \"Meu nome é Dilson Peres Junior, especialista em direito tributário, e eu te mostro as melhores estratégias para economizar o seu dinheiro e o da sua empresa...\" (p01 a p79)",
+      "Marcelo Germano, Instagram, 23 de 23 vídeos com \"E você, vai continuar apagando incêndio ou vai me seguir aqui?\": um p100, outro p0",
+      "JP Albuquerque, TikTok: \"Meu nome é JP Albuquerque, eu trago análises de negócio fora do óbvio...\" p100 num vídeo, p05 no outro"
+    ],
+    "instrucao": "O comando não salva vídeo fraco nem estraga vídeo forte. Siga a fórmula, evite os erros caros e não escolha o CTA de um cliente pelo vídeo campeão de seguidores: escolha pela fórmula com média medida em 10 ou mais vídeos.",
+    "confianca": "alta"
+  },
+  {
+    "id": "cmd-02-pedido-extra",
+    "parte": "comando",
+    "achado": "Pedir comentário (pergunta de opinião, 'me conta', 'comenta X') ou qualquer segundo pedido no bloco final corta seguidores; dobra comentários e não muda views.",
+    "numeros": "Comentário + segue, seguidores: lift 0,29 [0,14 a 0,57], n=94 vídeos/84 roteiros, OR MH 0,22 [0,10 a 0,48], desc 0,43 / valid 0,00, IG 0,24 (84), TT 0,78 (10), ctrl viral 0,25, ctrl trimestre 0,30. Qualquer segundo pedido: lift 0,46 [0,29 a 0,73], OR 0,36 [0,21 a 0,63], replica. Comentários: lift 2,09 [1,90 a 2,29], OR 3,73 [3,02 a 4,61], replica (IG 2,35, TT 1,58, YT 2,25). Coef: 0,91 (sem evidência). Negativo em 6 de 6 cliente x rede com volume.",
+    "escopo": "global",
+    "exemplos": [
+      "FRACO Marcio Grazino, Instagram, seguidores p0: \"Agora comenta aqui em quantos anos você acha que o carro voador deixa de ser coisa de rico. Eu sou Marcio Grazino, e se você quer ficar por dentro dessas mudanças antes delas chegarem ao seu bolso, me segue agora.\"",
+      "FRACO Thiago Franco, Instagram, p3: \"comenta aqui VENDA. E se você quer mais conteúdos como esse, me segue.\"",
+      "FRACO Marcos Pelozato, Instagram, p6: \"Agora me conta, você acredita que um rombo de 20 bilhões pode crescer durante anos sem ninguém no topo perceber? Eu sou Marcos Pelozato...\""
+    ],
+    "instrucao": "Faça: um vídeo, um pedido. No vídeo de seguidor, o bloco final não pede comentário nem faz pergunta de opinião. Evite: 'Agora me conta... Eu sou X, segue o meu perfil'. Se a pergunta for essencial, ela sobe para a conclusão, longe do comando. Vídeo de isca de comentário é outro vídeo, e aceita conversão menor.",
+    "confianca": "alta"
+  },
+  {
+    "id": "cmd-03-territorio",
+    "parte": "comando",
+    "achado": "Prometa o território do canal (o que o perfil entrega sempre), não o assunto deste vídeo. Repetir no comando palavras do hook ou do tema do vídeo converte menos.",
+    "numeros": "Território sem pedido extra: lift 1,16 [1,03 a 1,30], n=676/589 roteiros, OR 1,51 [1,19 a 1,93], desc 1,21 / valid 1,08, IG 1,14, TT 1,27, ctrl viral 1,42, ctrl trimestre 1,43; com todos os controles juntos OR 1,35 [1,05 a 1,74]. Amarrado ao assunto: OR 0,70 [0,54 a 0,90]. Repete 1+ palavra do hook: OR 0,72 [0,55 a 0,94], replica. 2+ palavras do tema fora do vocabulário fixo: lift 0,73, OR 0,61 [0,42 a 0,87], desc 0,74 / valid 0,71. Negativo em 14 de 21 cliente x rede.",
+    "escopo": "global; exceções em Marcos Pelozato no Instagram e Patrick Diorio",
+    "exemplos": [
+      "Marcos Pelozato, TikTok, p100 (110 seg/mil): \"Eu sou Marcos Pelozato, se você quer enxergar o negócio com a clareza que a maioria dos empresários nunca teve, segue o meu perfil agora.\"",
+      "Rodrigo Waughan, Instagram, p100 (85,5/mil): \"Sou Rodrigo Vaughan de Lemos e se você quiser conhecer as estratégias responsáveis por negócios multimilionários, já segue meu perfil.\"",
+      "FRACO Marcos Pelozato, Instagram, p1, vídeo sobre bilionário falido: \"Eu sou Marcos Pelozato, e se você quer entender os erros que podem deixar até bilionários pobres, segue o meu perfil agora.\""
+    ],
+    "instrucao": "Faça: a promessa do comando é a do canal; a ponte com o vídeo é uma palavra ('Então', 'E se você quer mais disso'). Evite: reescrever o assunto do vídeo no comando. Reescrita: 'se você quer entender os erros que podem deixar até bilionários pobres' vira 'se você quer continuar recebendo histórias de empresas que quase morreram e as estratégias que as tiraram do buraco'.",
+    "confianca": "alta"
+  },
+  {
+    "id": "cmd-04-todo-dia",
+    "parte": "comando",
+    "achado": "'Todo dia eu te mostro [território]' (frequência na primeira pessoa) é a fórmula de maior conversão com volume e também puxa compartilhamento.",
+    "numeros": "Todo dia (qualquer forma): lift 1,26 [1,02 a 1,52], n=210/192, OR 1,59 [1,13 a 2,24], desc 1,29 / valid 1,21, ctrl viral 1,53, ctrl trimestre 1,39 [0,98 a 1,95], estrato x trimestre 1,42 [0,98 a 2,07]. Todo dia + eu te mostro sem pedido extra: lift 1,29 [1,03 a 1,59], n=165, OR 1,64 [1,12 a 2,39], replica. Compartilhamento: 'todos os dias eu' OR 2,43 [1,64 a 3,58], replica. Positivo em 10 de 14 cliente x rede.",
+    "escopo": "global; não vale para Fernando Pereira, Ricardo Schumacher, Leonardo Nogueira, Patrick Diorio",
+    "exemplos": [
+      "Izabela Anholett, Instagram, p99 (22,3/mil, coef 30,2): \"Eu sou Izabela Anholett, todo dia eu te mostro as novidades mais incríveis da tecnologia que tá dominando o mundo. Então me segue para não perder o próximo vídeo.\"",
+      "Thiago Franco, Instagram, p97 (coef 107,7): \"Eu sou o Thiago Franco, especialista em marketplace, e eu analiso todos os dias o que as marcas no digital estão fazendo de diferente. Então segue o meu perfil pra não ficar pra trás.\"",
+      "Manoel Victor, Instagram, p97: \"Meu nome é Manoel Victor e todos os dias eu te mostro as melhores IAs e as novidades desse mercado, então já me segue para não ficar para trás.\""
+    ],
+    "instrucao": "Faça: 'Eu sou [Nome] e todo dia eu te mostro [território em 6 a 12 palavras]. Então me segue.' quando o perfil publica com frequência. Evite: prometer frequência que o perfil não cumpre.",
+    "confianca": "media"
+  },
+  {
+    "id": "cmd-05-me-segue-aqui",
+    "parte": "comando",
+    "achado": "Fechar com 'me segue aqui' converte mais que 'segue o meu perfil'.",
+    "numeros": "Lift 1,47 [1,10 a 1,89], n=86/78 roteiros, OR 2,05 [1,25 a 3,36], desc 1,57 / valid 1,35, IG 1,52 (76), TT 1,16 (10), ctrl viral 1,74, ctrl trimestre 2,34, com controle de território + pedido + todo dia 2,04 [1,22 a 3,40]; no escrito OR 2,02 [1,17 a 3,48]. 'Segue o meu perfil': 0,99. Positivo em Izabela, Patrick, Rodrigo, Franklin; não em Thiago Franco e JP Albuquerque.",
+    "escopo": "Instagram; concentrado em 5 clientes",
+    "exemplos": [
+      "Patrick Diorio, Instagram, p100: \"Meu nome é Patrick Diorio, e se você quer entender como a tecnologia está mudando o que significa ter companhia, me segue aqui.\"",
+      "Rodrigo Waughan, TikTok, p98: \"Eu sou Rodrigo Volga de Lemos, presidente do grupo Gerbera Mais e empreendedor serial. E se você quer as melhores estratégias para dominar o seu mercado, já me segue aqui.\""
+    ],
+    "instrucao": "Faça: termine com 'me segue aqui'. Reescrita: '..., segue o meu perfil.' vira '..., me segue aqui.' Meça por cliente.",
+    "confianca": "media"
+  },
+  {
+    "id": "cmd-06-apresentacao",
+    "parte": "comando",
+    "achado": "A apresentação 'Eu sou [Nome]' não ajuda nem atrapalha seguidor. Credencial genérica (CEO, empreendedor serial, presidente do grupo) é pista negativa; credencial concreta com número é pista positiva.",
+    "numeros": "Com apresentação: lift 1,01 [0,92 a 1,11], n=1.251, OR 1,12 [0,78 a 1,60]; escrito OR 1,24 [0,80 a 1,94]. Sem apresentação 0,88 (OR 0,82). Antes da promessa em 96% dos casos; depois, 17 vídeos. Número na credencial: lift 1,22 [0,90 a 1,60], OR 2,23 [1,06 a 4,70], desc 1,18 / valid 1,29, ctrl trimestre 2,28. Cargo: OR 0,67 [0,40 a 1,15]. Profissão genérica: OR 0,66 [0,39 a 1,14], ctrl trimestre 0,56 [0,33 a 0,96]. Apresentação sem promessa: 0,88, OR 0,81 [0,58 a 1,13].",
+    "escopo": "global para o nulo; credencial varia por cliente",
+    "exemplos": [
+      "Drielle Castelani, Instagram, p100 (16,9/mil): \"Meu nome é Drielle Castelani, e já treinei mais de 5 mil equipes de saúde. E se você quer mais vídeos de histórias que mudaram a medicina e impactam o brasileiro até hoje, segue o meu perfil.\"",
+      "Franklin Tomich, Instagram, p100: \"Meu nome é Franklin Tomich, tenho mais de 15 anos trabalhando com compra e venda de empresas. Se você quer aprender como grandes empresas estão redesenhando o mundo dos negócios, já segue o meu perfil.\"",
+      "FRACO Rafael Rodrigues, Instagram, p1: \"Eu sou Rafael Rodrigues, CEO e educador. E se você quer fazer parte da minoria que pensa diferente da média e busca conhecimento, já segue o meu perfil.\""
+    ],
+    "instrucao": "Faça: mantenha o nome, curto, no começo, emendado na entrega ('Eu sou [Nome] e todo dia eu te mostro...'); credencial só concreta, verificável, com número e ligada ao território. Evite: título genérico e apresentação sem promessa. Tire do playbook a regra de reescrever todo comando que abre com nome.",
+    "confianca": "media"
+  },
+  {
+    "id": "cmd-07-se-voce-gosta",
+    "parte": "comando",
+    "achado": "'Se você gosta de / gostou desse conteúdo' é o pior condicional da casa.",
+    "numeros": "Lift 0,25 [0,07 a 0,79], n=32/28 roteiros, OR 0,17 [0,04 a 0,74], desc 0,16 / valid 0,54, ctrl viral 0,18, ctrl trimestre 0,25. Manoel Victor: 16 vídeos, 6% no topo contra 31%; nos outros 9 clientes, 1 de 16 vídeos no topo.",
+    "escopo": "global, puxado por Manoel Victor",
+    "exemplos": [
+      "FRACO Manoel Victor, Instagram, p12: \"Meu nome é Manoel Victor, eu analiso estratégias de empresas vencedoras, e se você gostou desse conteúdo, considere me seguir por aqui.\"",
+      "FRACO Fernando Pereira, Instagram, p9: \"...e se você gosta desse tipo de conteúdo, eu te convido a me seguir.\""
+    ],
+    "instrucao": "Evite: condicionar o seguir ao gosto pelo vídeo. Faça: condicionar ao que a pessoa quer receber. Reescrita: 'se você gostou desse conteúdo, considere me seguir por aqui' vira 'todos os dias eu te mostro as estratégias de empresas vencedoras. Então já me segue aqui.'",
+    "confianca": "media"
+  },
+  {
+    "id": "cmd-08-manda-para-alguem",
+    "parte": "comando",
+    "achado": "Para compartilhamento, peça o envio a uma pessoa ('manda esse vídeo para alguém que...'). É o único pedido extra sem custo visível em seguidores.",
+    "numeros": "Compartilhamento: lift 1,95 [1,37 a 2,53], n=40, OR 3,07 [1,63 a 5,79], desc 1,89 / valid 2,13, IG 2,25 (12), TT 1,82 (28); escrito OR 1,71 [1,05 a 2,78], replica. Comentários OR 2,34. Seguidores 1,39 (n=17, amostra pequena).",
+    "escopo": "Instagram e TikTok; vídeos com causa ou injustiça",
+    "exemplos": [
+      "Drielle Castelani, Instagram, seguidores p93: \"...Se você acha que Semmelweis merece ser lembrado por estar certo, mande esse vídeo para alguém e já segue o meu perfil que eu te ajudo a entender os principais fatos da medicina de forma simples.\"",
+      "Marcio Grazino, Instagram, p94: \"Eu sou o Márcio Grazino e se você quer que mais pessoas conheçam a história da Marli, compartilha esse vídeo para outras pessoas e não esqueça de me seguir para receber mais vídeos como esse.\""
+    ],
+    "instrucao": "Faça: quando o vídeo tem causa (alguém merece ser lembrado, mais gente precisa saber), 'Se você acha que [X merece Y], manda esse vídeo para alguém e já segue o meu perfil.'",
+    "confianca": "media"
+  },
+  {
+    "id": "cmd-09-nulos",
+    "parte": "comando",
+    "achado": "Não mexem em seguidor na casa: tamanho do comando, condicional 'se você quer', 'para não perder o próximo vídeo', 'mais conteúdos como esse', urgência ('agora', 'já segue'), exclusividade.",
+    "numeros": "16 a 25 palavras 0,86 [0,70 a 1,05] (OR 0,77); 26 a 40 palavras 1,03 (66% dos vídeos); 41+ 1,05. Condicional sem 'eu te mostro' 0,93 (OR 0,80). 'Para não perder' 1,04 [0,86 a 1,23]. 'Mais conteúdos como esse' 0,91. Urgência 1,02. Exclusividade 0,97. Termina em 'agora' 0,98.",
+    "escopo": "global",
+    "exemplos": [],
+    "instrucao": "Pare de cortar comando por tamanho (26 a 40 palavras é a norma e é neutra; no YouTube, fique abaixo de 41). 'Para não perder o próximo vídeo' pode ficar como cauda depois de nome e promessa.",
+    "confianca": "alta"
+  },
+  {
+    "id": "cmd-10-medicao",
+    "parte": "comando",
+    "achado": "O campo comando do fato_video (LLM) corta o CTA: perde a apresentação em 41% dos vídeos em que ela foi dita e cria 'genéricos' falsos. A tabela do v2 foi medida sobre esse campo.",
+    "numeros": "Apresentação: 49% no LLM, 86% na transcrição, 93% no escrito. Genérico: 19% no LLM, 3% na transcrição. Dos 1.256 'genéricos' do LLM, 91% tinham nome e promessa na fala; dos 1.653 'para não perder', 92% tinham promessa antes.",
+    "escopo": "medição, todas as redes",
+    "exemplos": [
+      "Marcio Grazino, YouTube. LLM: \"Me segue para não perder o próximo vídeo.\" Transcrição do mesmo vídeo: \"Eu sou o Márcio Grazino e aqui eu te mostro histórias de pessoas que estão superando obstáculos para fazer do mundo um lugar melhor. Me segue para não perder o próximo vídeo.\""
+    ],
+    "instrucao": "Para medir comando, use o fim da transcrição (videos.roteiro) ou o bloco final escrito, nunca o comando do fato_video sozinho.",
+    "confianca": "alta"
+  },
+  {
+    "id": "plat-01-redes",
+    "parte": "plataforma",
+    "achado": "Instagram tem a evidência; TikTok aponta para o mesmo lado com pouca amostra; no YouTube nenhum comando mexe no coef e pedir comentário é pista de menos views. Link na bio quase não existe na casa.",
+    "numeros": "TikTok (250 vídeos com seguidores): território 1,26, todo dia 1,29, eu te mostro 1,34, 'se você quer' 0,89, amarrado ao assunto 0,83, pedir comentário 0,77; pedir comentário rende comentário 1,59 no TT contra 2,35 no IG. YouTube coef: apresentação 1,00, todo dia 0,95; pedir comentário lift 0,70 [0,48 a 1,01], OR 0,61 [0,38 a 0,99]; bloco 41+ palavras OR 0,69 [0,46 a 1,03]. 'Se inscreve': 2 vídeos. Link na bio: 9 vídeos. Promo da Izabela: IG com 'comenta EXAME' no percentil 0,90 de comentários, TT com 'link na bio' no 0,55; seguidores no IG média p38.",
+    "escopo": "por plataforma",
+    "exemplos": [],
+    "instrucao": "Instagram: aplique as fórmulas. TikTok: mesmas regras, sem pedido de comentário. YouTube: bloco até 40 palavras, sem pedido de comentário, e teste 'se inscreve no canal' (verbo nativo, nunca usado).",
+    "confianca": "media"
+  },
+  {
+    "id": "cmd-11-hipoteses",
+    "parte": "comando",
+    "achado": "Hipóteses para teste: 'para não perder a próxima [história]' (série) no lugar de 'o próximo vídeo'; 'antes de todo mundo' só para Fernando Pereira.",
+    "numeros": "'A próxima': seguidores OR 1,84 [1,01 a 3,35], desc 1,57 / valid 1,03; compartilhamento OR 1,52 e coef OR 1,61 replicam; 52 roteiros, quase todos de Marcio Grazino e Rodrigo Waughan. 'Antes de todo mundo': 1,23 (n=32) no geral; Fernando 39% contra 20%.",
+    "escopo": "cliente (Marcio Grazino, Rodrigo Waughan, Fernando Pereira)",
+    "exemplos": [
+      "Marcio Grazino, Instagram, p100 (41,2/mil): \"Eu sou Márcio Grazino e eu te mostro as inovações que estão mudando o nosso planeta. Então me segue para não perder a próxima.\"",
+      "Fernando Pereira, Instagram, p97: \"Meu nome é Fernando Pereira, especialista em mercado financeiro, e se você quer entender o que é que tá acontecendo na economia global antes de todo mundo e como isso afeta o seu bolso, segue meu perfil agora.\""
+    ],
+    "instrucao": "Teste em A/B por cliente antes de virar regra.",
+    "confianca": "baixa"
+  }
+]

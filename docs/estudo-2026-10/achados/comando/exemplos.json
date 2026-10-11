@@ -1,0 +1,410 @@
+{
+ "F1 todo dia + eu te mostro + território": {
+  "n": 118,
+  "exemplos": [
+   {
+    "cliente": "Rodrigo Waughan",
+    "plataforma": "Instagram",
+    "p_seg": 0.991,
+    "seg_por_mil": 34.94709842898365,
+    "coef": 0.97,
+    "texto": "Eu sou Rodrigo Volguem de Lemos e analiso diariamente as estratégias das grandes empresas, sejam elas boas ou ruins. Então me segue para não perder a próxima.",
+    "link": "https://www.instagram.com/reel/DW_kkVHDwmz"
+   },
+   {
+    "cliente": "Izabela Anholett",
+    "plataforma": "Instagram",
+    "p_seg": 0.988,
+    "seg_por_mil": 22.26874797814235,
+    "coef": 30.19,
+    "texto": "Eu sou Izabela Ionoletti, todo dia eu te mostro as novidades mais incríveis da tecnologia que tá dominando o mundo. Então me segue para não perder o próximo vídeo.",
+    "link": "https://www.instagram.com/reel/DafSJJZhMXs"
+   },
+   {
+    "cliente": "Franklin Tomich",
+    "plataforma": "Instagram",
+    "p_seg": 0.974,
+    "seg_por_mil": 2.430184443236982,
+    "coef": 19.25,
+    "texto": "Meu nome é Franklin Tomich, atuo com fusões e aquisições há mais de 15 anos, e aqui eu trago todos os dias um caso como este. Então me segue para não perder o próximo caso.",
+    "link": "https://www.instagram.com/reel/DZlIRExNwMk"
+   },
+   {
+    "cliente": "Thiago Franco",
+    "plataforma": "Instagram",
+    "p_seg": 0.974,
+    "seg_por_mil": 3.124631992149166,
+    "coef": 107.65,
+    "texto": "Eu sou o Thiago Franco, especialista em marketplace, e eu analiso todos os dias o que as marcas no digital estão fazendo de diferente. Então segue o meu perfil pra não ficar pra trás.",
+    "link": "https://www.instagram.com/reel/DVrU8jfj4LH"
+   }
+  ],
+  "fraco": {
+   "cliente": "Fernando Pereira",
+   "plataforma": "Instagram",
+   "p_seg": 0,
+   "texto": "Meu nome é Fernando Pereira, eu analiso geopolítica e mercado financeiro todos os dias, então não esquece de me seguir. Valeu! Legenda por Sônia Ruberti"
+  }
+ },
+ "F2 promessa do território (condicional)": {
+  "n": 322,
+  "exemplos": [
+   {
+    "cliente": "Ricardo Schumacher",
+    "plataforma": "Instagram",
+    "p_seg": 1,
+    "seg_por_mil": 8.422664624808576,
+    "coef": 1.52,
+    "texto": "Eu sou Ricardo Schumacher, Estrategista Tributário. Se você quer entender como o conhecimento tributário molda os maiores empresários brasileiros, já segue meu perfil.",
+    "link": "https://www.instagram.com/reel/Dc6sTtMu0eP"
+   },
+   {
+    "cliente": "Marcos Pelozato",
+    "plataforma": "TikTok",
+    "p_seg": 1,
+    "seg_por_mil": 110.4895104895105,
+    "coef": 5.41,
+    "texto": "Eu sou Marcos Pelozato, se você quer enxergar o negócio com a clareza que a maioria dos empresários nunca teve, segue o meu perfil agora.",
+    "link": "https://www.tiktok.com/@marcospelozato/video/7672154109994093831"
+   },
+   {
+    "cliente": "Franklin Tomich",
+    "plataforma": "Instagram",
+    "p_seg": 1,
+    "seg_por_mil": 4.028812110853376,
+    "coef": 1.4,
+    "texto": "Meu nome é Franklin Tomich, tenho mais de 15 anos trabalhando com compra e venda de empresas. Se você quer aprender como grandes empresas estão redesenhando o mundo dos negócios, já segue o meu perfil.",
+    "link": "https://www.instagram.com/reel/DaRMT8-tuVE"
+   },
+   {
+    "cliente": "Rodrigo Waughan",
+    "plataforma": "Instagram",
+    "p_seg": 1,
+    "seg_por_mil": 85.53034947884733,
+    "coef": 1.07,
+    "texto": "Sou Rodrigo Vaughan de Lemos e se você quiser conhecer as estratégias responsáveis por negócios multimilionários, já segue meu perfil.",
+    "link": "https://www.instagram.com/reel/DVs8GX3AOE3"
+   }
+  ],
+  "fraco": {
+   "cliente": "Marcos Pelozato",
+   "plataforma": "Instagram",
+   "p_seg": 0.011,
+   "texto": "Eu sou Marcos Pelozato, e se você quer entender como grandes empresas encontraram um caminho de volta em meio a crise, segue o meu perfil agora."
+  }
+ },
+ "F2-contra promessa amarrada ao assunto": {
+  "n": 411,
+  "exemplos": [
+   {
+    "cliente": "Dilson Peres",
+    "plataforma": "Instagram",
+    "p_seg": 0,
+    "seg_por_mil": 0.6505576208178439,
+    "coef": 0.35,
+    "texto": "Meu nome é Dilson Peres Jr., especialista em direito tributário e eu te ajudo a entender o sistema tributário brasileiro de forma simples. Então me segue para não perder o próximo vídeo.",
+    "link": "https://www.instagram.com/reel/Dad6kQLhjES"
+   },
+   {
+    "cliente": "Franklin Tomich",
+    "plataforma": "Instagram",
+    "p_seg": 0,
+    "seg_por_mil": 0.04412235128009972,
+    "coef": 4.58,
+    "texto": "Meu nome é Franklin Tomich, tenho mais de 15 anos de experiência em fusões e aquisições. E se você quer aprender com os erros das grandes empresas para não repeti-los nos seus negócios, segue aqui o meu perfil!",
+    "link": "https://www.instagram.com/reel/DajKasnOWPj"
+   },
+   {
+    "cliente": "Marcos Pelozato",
+    "plataforma": "Instagram",
+    "p_seg": 0.011,
+    "seg_por_mil": 0,
+    "coef": 1.15,
+    "texto": "Eu sou Marcos Pelozato, e se você quer entender os erros que podem deixar até bilionários pobres, segue o meu perfil agora.",
+    "link": "https://www.instagram.com/reel/DbWgqm9ic4D"
+   },
+   {
+    "cliente": "Izabela Anholett",
+    "plataforma": "Instagram",
+    "p_seg": 0.012,
+    "seg_por_mil": 0.25568908207619534,
+    "coef": 0.1,
+    "texto": "E se você quer saber como fazer isso, eu sou a Izabela Anholett e traduzo a inteligência artificial pro mundo real. Então me segue pra mais conteúdos como esse.",
+    "link": "https://www.instagram.com/reel/DUkxNzQDLkg"
+   }
+  ],
+  "fraco": null
+ },
+ "F3 me segue aqui": {
+  "n": 84,
+  "exemplos": [
+   {
+    "cliente": "Patrick Diorio",
+    "plataforma": "Instagram",
+    "p_seg": 1,
+    "seg_por_mil": 4.647141467632119,
+    "coef": 8.12,
+    "texto": "Meu nome é Patrick Diorio, e se você quer entender como a tecnologia está mudando o que significa ter companhia, me segue aqui.",
+    "link": "https://www.instagram.com/reel/Dc4VXL7Nm81"
+   },
+   {
+    "cliente": "Izabela Anholett",
+    "plataforma": "Instagram",
+    "p_seg": 0.977,
+    "seg_por_mil": 20.577040071928113,
+    "coef": 4.81,
+    "texto": "Se você quer se manter por dentro das inovações que vão mudar o mundo, já me segue aqui. Eu sou Isabela Inoletti e todos os dias traduzo a inteligência artificial para o mundo real.",
+    "link": "https://www.instagram.com/reel/DZCldTkBQT6"
+   },
+   {
+    "cliente": "Rodrigo Waughan",
+    "plataforma": "TikTok",
+    "p_seg": 0.977,
+    "seg_por_mil": 12.170385395537526,
+    "coef": 0.52,
+    "texto": "Eu sou Rodrigo Volga de Lemos, presidente do grupo Gerbera Mais e empreendedor serial. E se você quer as melhores estratégias para dominar o seu mercado, já me segue aqui.",
+    "link": "https://www.tiktok.com/@.rodrigowaughan/video/7609614298805046539"
+   },
+   {
+    "cliente": "Franklin Tomich",
+    "plataforma": "Instagram",
+    "p_seg": 0.923,
+    "seg_por_mil": 1.2201455556538323,
+    "coef": 40.63,
+    "texto": "Meu nome é Franklin Tomich, tenho mais de 15 anos de experiência em fusões e aquisições e se você quer entender o que está por trás das grandes transações, me segue aqui no meu perfil.",
+    "link": "https://www.instagram.com/reel/DZvoHTQuyqv"
+   }
+  ],
+  "fraco": {
+   "cliente": "Franklin Tomich",
+   "plataforma": "Instagram",
+   "p_seg": 0,
+   "texto": "Meu nome é Franklin Tomich, tenho mais de 15 anos de experiência em fusões e aquisições. E se você quer aprender com os erros das grandes empresas para não repeti-los nos seus negócios, segue aqui o meu perfil!"
+  }
+ },
+ "F4-contra pedido de comentário + seguir": {
+  "n": 82,
+  "exemplos": [
+   {
+    "cliente": "Marcio Grazino",
+    "plataforma": "Instagram",
+    "p_seg": 0,
+    "seg_por_mil": 0.42265426880811496,
+    "coef": 0.33,
+    "texto": "Agora comenta aqui em quantos anos você acha que o carro voador deixa de ser coisa de rico. Eu sou Marcio Grazino, e se você quer ficar por dentro dessas mudanças antes delas chegarem ao seu bolso, me segue agora.",
+    "link": "https://www.instagram.com/reel/DconbmeRDfE"
+   },
+   {
+    "cliente": "Thiago Franco",
+    "plataforma": "Instagram",
+    "p_seg": 0.026,
+    "seg_por_mil": 0,
+    "coef": 0.32,
+    "texto": "comenta aqui VENDA. E se você quer mais conteúdos como esse, me segue.",
+    "link": "https://www.instagram.com/reel/DY7vo_kt_Tv"
+   },
+   {
+    "cliente": "Fernando Pereira",
+    "plataforma": "Instagram",
+    "p_seg": 0.043,
+    "seg_por_mil": 0.12112403100775193,
+    "coef": 4.2,
+    "texto": "me diz você, quem é que você acha que vai administrar o Brasil nos próximos quatro anos? Pior é que muita gente nem sabe o que está acontecendo. Esse movimento dos poderosos pelo poder no Brasil. Por isso já lembra de seguir o meu perfil, pois aqui eu mostro o que dificilmente você vai ver na televisão.",
+    "link": "https://www.instagram.com/reel/DcD4jiLh_SM"
+   },
+   {
+    "cliente": "Marcos Pelozato",
+    "plataforma": "Instagram",
+    "p_seg": 0.057,
+    "seg_por_mil": 0.1587553579933323,
+    "coef": 0.64,
+    "texto": "Agora me conta, você acredita que um rombo de 20 bilhões pode crescer durante anos sem ninguém no topo perceber? Eu sou Marcos Pelozato. Se você quer entender as estruturas que sustentam ou derrubam grandes empresas, segue o meu perfil agora.",
+    "link": "https://www.instagram.com/reel/DcMlW1riCkk"
+   }
+  ],
+  "fraco": null
+ },
+ "F5 manda para alguém": {
+  "n": 17,
+  "exemplos": [
+   {
+    "cliente": "Rodrigo Waughan",
+    "plataforma": "Instagram",
+    "p_seg": 0.964,
+    "seg_por_mil": 14.55449059282925,
+    "coef": 0.87,
+    "texto": "comenta. Produto que provoca, todo mundo compartilha. Às vezes, o que parece ser um defeito é, de fato, a estratégia. Sou Rodrigo Vaughan de Lemos, presidente do Grupo Gérbera, e te mostro as estratégias mais bem-sucedidas dos negócios de todo o mundo. Então, segue o meu perfil para mais conteúdos como esse.",
+    "link": "https://www.instagram.com/reel/DXMM9npge8v"
+   },
+   {
+    "cliente": "Marcio Grazino",
+    "plataforma": "Instagram",
+    "p_seg": 0.938,
+    "seg_por_mil": 12.676798074029492,
+    "coef": 2.25,
+    "texto": "Eu sou o Márcio Grazino e se você quer que mais pessoas conheçam a história da Marli, compartilha esse vídeo para outras pessoas e não esqueça de me seguir para receber mais vídeos como esse.",
+    "link": "https://www.instagram.com/reel/Dad0hEDRAq9"
+   },
+   {
+    "cliente": "Drielle Castelani",
+    "plataforma": "Instagram",
+    "p_seg": 0.933,
+    "seg_por_mil": 4.794246903715541,
+    "coef": 0.98,
+    "texto": "Meu nome é Drielle Castelani, já treinei mais de 5.000 equipes de saúde. Se você acha que Semmelweis merece ser lembrado por estar certo, mande esse vídeo para alguém e já segue o meu perfil que eu te ajudo a entender os principais fatos da medicina de forma simples.",
+    "link": "https://www.instagram.com/reel/DbEgtt5JCoj"
+   },
+   {
+    "cliente": "Marcos Pelozato",
+    "plataforma": "TikTok",
+    "p_seg": 0.569,
+    "seg_por_mil": 1.1037527593818985,
+    "coef": 1.25,
+    "texto": "Se você acredita que empreendedores brasileiros são sobreviventes, que não prosperam por causa do governo e sim apesar dele, compartilha esse vídeo e segue o meu perfil para que mais pessoas conheçam sua história.",
+    "link": "https://www.tiktok.com/@marcospelozato/video/7675868352975293704"
+   }
+  ],
+  "fraco": {
+   "cliente": "Fernando Pereira",
+   "plataforma": "Instagram",
+   "p_seg": 0.052,
+   "texto": "E se você quer que mais pessoas saibam o que está acontecendo no Brasil agora, compartilhe esse vídeo imediatamente e aproveita e me segue para não perder mais conteúdos como esse."
+  }
+ },
+ "F6 credencial com número ou feito": {
+  "n": 105,
+  "exemplos": [
+   {
+    "cliente": "Marcelo Germano",
+    "plataforma": "Instagram",
+    "p_seg": 1,
+    "seg_por_mil": 2.005084664460114,
+    "coef": 1.71,
+    "texto": "Meu nome é Marcelo Germano e há 10 anos eu ajudo empresários a acabar com o caos na empresa através de uma equipe autogerenciada. E você, vai continuar apagando incêndio ou vai me seguir aqui nesse perfil?",
+    "link": "https://www.instagram.com/reel/DWPnFh4jvjK"
+   },
+   {
+    "cliente": "Drielle Castelani",
+    "plataforma": "Instagram",
+    "p_seg": 1,
+    "seg_por_mil": 16.9039886751603,
+    "coef": 4.69,
+    "texto": "Meu nome é Drielle Castelani, e já treinei mais de 5 mil equipes de saúde. E se você quer mais vídeos de histórias que mudaram a medicina e impactam o brasileiro até hoje, segue o meu perfil.",
+    "link": "https://www.instagram.com/reel/DbrIrx8JFZ-"
+   },
+   {
+    "cliente": "Franklin Tomich",
+    "plataforma": "Instagram",
+    "p_seg": 1,
+    "seg_por_mil": 4.028812110853376,
+    "coef": 1.4,
+    "texto": "Meu nome é Franklin Tomich, tenho mais de 15 anos trabalhando com compra e venda de empresas. Se você quer aprender como grandes empresas estão redesenhando o mundo dos negócios, já segue o meu perfil.",
+    "link": "https://www.instagram.com/reel/DaRMT8-tuVE"
+   },
+   {
+    "cliente": "Patrick Diorio",
+    "plataforma": "Instagram",
+    "p_seg": 0.948,
+    "seg_por_mil": 3.886729594669628,
+    "coef": 2.02,
+    "texto": "eu sou o Patrick Diorio. Fui de júnior a sênior em apenas dois anos e te mostro como se posicionar dentro de uma empresa para se destacar na área de I.A. Então já segue meu perfil para não ficar para trás.",
+    "link": "https://www.instagram.com/reel/DbojODIsPHd"
+   }
+  ],
+  "fraco": {
+   "cliente": "Marcelo Germano",
+   "plataforma": "Instagram",
+   "p_seg": 0,
+   "texto": "Meu nome é Marcelo Germano e há 10 anos eu ajudo empresários a acabar com o caos da empresa através de uma equipe alternativa. E você, vai continuar apagando incêndio ou vai me seguir aqui?"
+  }
+ },
+ "F7 antes de todo mundo / da maioria": {
+  "n": 32,
+  "exemplos": [
+   {
+    "cliente": "Izabela Anholett",
+    "plataforma": "Instagram",
+    "p_seg": 1,
+    "seg_por_mil": 28.981783002651785,
+    "coef": 11.76,
+    "texto": "Se você quer ficar por dentro de como a guerra pela IA vai mudar o seu trabalho e seu dinheiro antes que todo mundo perceba, bora lá, segue meu perfil!",
+    "link": "https://www.instagram.com/reel/DZFKODih104"
+   },
+   {
+    "cliente": "Fernando Pereira",
+    "plataforma": "Instagram",
+    "p_seg": 0.966,
+    "seg_por_mil": 6.850590118768383,
+    "coef": 4.6,
+    "texto": "Meu nome é Fernando Pereira, especialista em mercado financeiro, e se você quer entender o que é que tá acontecendo na economia global antes de todo mundo e como isso afeta o seu bolso, segue meu perfil agora.",
+    "link": "https://www.instagram.com/reel/Db6nDhLKllg"
+   },
+   {
+    "cliente": "Marcos Pelozato",
+    "plataforma": "Instagram",
+    "p_seg": 0.909,
+    "seg_por_mil": 4.337637732462483,
+    "coef": 4.13,
+    "texto": "Eu sou Marcos Pelozato, e se você quer entender os bastidores do dinheiro grande antes de todo mundo, segue o meu perfil agora.",
+    "link": "https://www.instagram.com/reel/DbgznWXh6ox"
+   },
+   {
+    "cliente": "Marcio Grazino",
+    "plataforma": "Instagram",
+    "p_seg": 0.821,
+    "seg_por_mil": 7.322641719567881,
+    "coef": 2.5,
+    "texto": "Eu sou Marcio Grazino e se você quer conhecer histórias de pessoas que enxergaram o futuro antes de todo mundo, segue esse perfil agora.",
+    "link": "https://www.instagram.com/reel/Dc4cT_MRSTa"
+   }
+  ],
+  "fraco": {
+   "cliente": "Marcio Grazino",
+   "plataforma": "Instagram",
+   "p_seg": 0.036,
+   "texto": "Eu sou o Marcio Grazino. E se você quer enxergar antes de todo mundo as ideias que estão redesenhando o mundo, segue o meu perfil."
+  }
+ },
+ "contra se você gosta/gostou": {
+  "n": 32,
+  "exemplos": [
+   {
+    "cliente": "Fernando Pereira",
+    "plataforma": "Instagram",
+    "p_seg": 0.086,
+    "seg_por_mil": 0.1675626614536061,
+    "coef": 19.92,
+    "texto": "Meu nome é Fernando Pereira, especialista em investimentos, e se você gosta desse tipo de conteúdo, eu te convido a me seguir. Aqui eu te mantenho sempre atualizado sobre como acontecimentos no Brasil e no mundo impactam no nosso dinheiro.",
+    "link": "https://www.instagram.com/reel/DWFLi-gjvVP"
+   },
+   {
+    "cliente": "Marcio Grazino",
+    "plataforma": "Instagram",
+    "p_seg": 0.089,
+    "seg_por_mil": 1.1703372699223322,
+    "coef": 0.65,
+    "texto": "Agora, comenta aqui, qual outra marca desapareceu, mas ainda vive na memória dos brasileiros. Eu sou Márcio Grazino e se você gosta de conhecer as marcas que construíram o Brasil antes que todo mundo esqueça, segue o meu perfil.",
+    "link": "https://www.instagram.com/reel/DcrdLnXRpiV"
+   },
+   {
+    "cliente": "Manoel Victor",
+    "plataforma": "Instagram",
+    "p_seg": 0.121,
+    "seg_por_mil": 0,
+    "coef": 1.11,
+    "texto": "Meu nome é Manoel Victor, eu analiso estratégias de empresas vencedoras, e se você gostou desse conteúdo, considere me seguir por aqui.",
+    "link": "https://www.instagram.com/reel/DURRfDFCJjl"
+   },
+   {
+    "cliente": "Drielle Castelani",
+    "plataforma": "Instagram",
+    "p_seg": 0.142,
+    "seg_por_mil": 0,
+    "coef": 0.46,
+    "texto": "Eu sou a Driely Castellani e se você gosta de conteúdo sobre saúde, bem-estar e novidades na medicina, segue agora esse perfil.",
+    "link": "https://www.instagram.com/reel/DZDxCQTJn6O"
+   }
+  ],
+  "fraco": null
+ }
+}

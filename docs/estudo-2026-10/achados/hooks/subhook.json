@@ -1,0 +1,2516 @@
+{
+ "formulas_sub": [
+  {
+   "id": "isso_porque",
+   "modelo": "Isso porque [explica a causa do hook]",
+   "coef": {
+    "or": 1.5120807157070528,
+    "lo": 1.1332277587545752,
+    "hi": 2.0175892031853406,
+    "lift": 1.310577777777778,
+    "n": 225,
+    "roteiros": 91,
+    "desc": 1.4010174003993534,
+    "val": 1.185887512899897,
+    "IG": 1.556661786237189,
+    "TT": 1.4068181818181817,
+    "YT": 0.8984252462513332,
+    "leitura": "ajuda (replica)"
+   },
+   "acerto": {
+    "or": 1.4616956597541453,
+    "leitura": "ajuda (replica)"
+   },
+   "ret_sub": {
+    "or": 1.7763141161278115,
+    "lo": 0.96049645063048,
+    "hi": 3.285063507609801,
+    "n": 49,
+    "or_tri": 2.1587652161323163,
+    "lo_tri": 1.120278058283666,
+    "hi_tri": 4.159920141185857
+   },
+   "top": [
+    {
+     "texto": "H: A China acabou de humilhar o resto do mundo mais uma vez e agora foi dando uma facada no coração da indústria automobilística. || S: Isso porque a Geely, uma das maiores montadoras chinesas, criou o sistema de propulsão Thunder.",
+     "cliente": "Thiago Bisewski",
+     "plataforma": "YouTube",
+     "coef": 713.36,
+     "views": 543225,
+     "link": "https://www.youtube.com/shorts/eF6Y3LzVvuE"
+    },
+    {
+     "texto": "H: A China agora está destruindo os computadores! || S: Isso porque ela criou os primeiros óculos com IA para programar do mundo.",
+     "cliente": "Izabela Anholett",
+     "plataforma": "YouTube",
+     "coef": 340.3,
+     "views": 1791705,
+     "link": "https://www.youtube.com/shorts/SyprPGFoWus"
+    }
+   ],
+   "fraco": [
+    {
+     "texto": "H: A Porsche agora se associou a brinquedos de criança. E tem uma lógica milionária por trás disso. || S: Isso porque ela criou três carros inspirados nos personagens do Toy Story 5, feitos em parceria com a Disney e a Pixar para estrear no tapete vermelho da première do filme em Los Angeles, no mês de Junho.",
+     "cliente": "Rodrigo Waughan",
+     "plataforma": "TikTok",
+     "coef": 0.06,
+     "views": 30,
+     "link": "https://www.tiktok.com/@.rodrigowaughan/video/7683859857656532231"
+    }
+   ]
+  },
+  {
+   "id": "isso_x",
+   "modelo": "Isso [é / significa / mudou / fez] ... (retoma o hook com 'isso')",
+   "coef": {
+    "or": 1.324289830087076,
+    "lo": 0.7434880180529174,
+    "hi": 2.358805403031034,
+    "lift": 1.2214814814814816,
+    "n": 54,
+    "roteiros": 25,
+    "desc": 0.7381246689034081,
+    "val": 1.530377302436126,
+    "IG": 1.0613603087980832,
+    "TT": 1.1053571428571427,
+    "YT": 1.5067340067340067,
+    "leitura": "sem evidência"
+   },
+   "acerto": {
+    "or": 1.9773758629473057,
+    "leitura": "ajuda (replica)"
+   },
+   "ret_sub": {
+    "or": 0.4817797008708416,
+    "lo": 0.057872926785260424,
+    "hi": 4.0107126607309205,
+    "n": 7,
+    "or_tri": 0.3943001030101866,
+    "lo_tri": 0.044971175661265544,
+    "hi_tri": 3.4571604799683944
+   },
+   "top": [
+    {
+     "texto": "H: O câncer acabou de ser enganado por cientistas brasileiros. E a armadilha funcionou tão bem que o crescimento dos tumores despencou 99,6% nos testes. || S: Isso aconteceu na Universidade Federal de Mato Grosso do Sul, num laboratório que quase ninguém no país conhecia até agora.",
+     "cliente": "Marcio Grazino",
+     "plataforma": "YouTube",
+     "coef": 143.74,
+     "views": 1563131,
+     "link": "https://www.youtube.com/shorts/DO4IWA476R0"
+    },
+    {
+     "texto": "H: Os bancos vão cobrar um pedágio do governo toda vez que alguém fizer um Pix ou passar o cartão. E adivinha quem vai pagar a conta? || S: Isso faz parte da reforma tributária, num sistema chamado split payment.",
+     "cliente": "Dilson Peres",
+     "plataforma": "Instagram",
+     "coef": 22.41,
+     "views": 886100,
+     "link": "https://www.instagram.com/reel/Ddue5rGvzRq"
+    }
+   ],
+   "fraco": [
+    {
+     "texto": "H: Uma Inteligência Artificial está prescrevendo remédios sem médico nos Estados Unidos. E o governo do estado deixou ela operar sozinha. || S: Isso está acontecendo no estado de Utah, com uma empresa chamada Doctronic, e já está valendo de verdade.",
+     "cliente": "Drielle Castelani",
+     "plataforma": "Instagram",
+     "coef": 0.42,
+     "views": 1076,
+     "link": "https://www.instagram.com/reel/DaFxnswJ-8V"
+    }
+   ]
+  },
+  {
+   "id": "essa_e_a",
+   "modelo": "Essa é a [nome] / Esse é o [nome] (apresenta o sujeito pelo nome)",
+   "coef": {
+    "or": 1.2531723307350313,
+    "lo": 0.8392819600289305,
+    "hi": 1.871171984282537,
+    "lift": 1.170689655172414,
+    "n": 116,
+    "roteiros": 48,
+    "desc": 1.1165699440615116,
+    "val": 1.2267801857585139,
+    "IG": 0.9936139061088438,
+    "TT": 1.2547297297297297,
+    "YT": 1.3318452380952381,
+    "leitura": "sem evidência"
+   },
+   "acerto": {
+    "or": 1.1805943675950379,
+    "leitura": "sem evidência"
+   },
+   "ret_sub": {
+    "or": 1.80303560293072,
+    "lo": 0.7810727455065198,
+    "hi": 4.162144184569564,
+    "n": 24,
+    "or_tri": 2.185336221877101,
+    "lo_tri": 0.886551416361976,
+    "hi_tri": 5.3868216941612586
+   },
+   "top": [
+    {
+     "texto": "H: A empresa mais valiosa do mundo acabou de emitir um alerta que ninguém queria ouvir. || S: Essa é a Saudi Aramco. Avaliada em 1,7 trilhão de dólares.",
+     "cliente": "Fernando Pereira",
+     "plataforma": "YouTube",
+     "coef": 125.48,
+     "views": 326866,
+     "link": "https://www.youtube.com/shorts/FcGY_lupK74"
+    },
+    {
+     "texto": "H: Esse homem recebe em torno de 4 milhões por mês da Globo e, mesmo assim, o salário não explica nem metade da fortuna dele. || S: Esse é Luciano Huck, e o que construiu o patrimônio dele foi uma jogada que quase ninguém percebe, mas que qualquer pessoa pode fazer.",
+     "cliente": "Dilson Peres",
+     "plataforma": "TikTok",
+     "coef": 115.71,
+     "views": 922057,
+     "link": "https://www.tiktok.com/@doutortax/video/7681408196501589268"
+    }
+   ],
+   "fraco": [
+    {
+     "texto": "H: Essa é a trágica história do plano de 4 bilhões de dólares destruído por Elon Musk. || S: Essa é a Hertz, a empresa que literalmente inventou o mercado de aluguel de carros há mais de 100 anos.",
+     "cliente": "Leonardo Nogueira",
+     "plataforma": "Instagram",
+     "coef": 0.02,
+     "views": 9351,
+     "link": "https://www.instagram.com/reel/DVwnFWcgKdq"
+    }
+   ]
+  },
+  {
+   "id": "nome_dele",
+   "modelo": "O nome dele é / Ele se chama [nome] (dá nome ao personagem do hook)",
+   "coef": {
+    "or": 1.0733307376634456,
+    "lo": 0.8234479163441941,
+    "hi": 1.3990427925639608,
+    "lift": 1.0546308724832216,
+    "n": 298,
+    "roteiros": 122,
+    "desc": 1.2500498424977073,
+    "val": 0.9153848320937571,
+    "IG": 1.275416169396016,
+    "TT": 0.9773684210526316,
+    "YT": 0.8302411873840445,
+    "leitura": "sem evidência"
+   },
+   "acerto": {
+    "or": 1.155729719041505,
+    "leitura": "sem evidência"
+   },
+   "ret_sub": {
+    "or": 1.0777399019685625,
+    "lo": 0.5807199956454856,
+    "hi": 2.0001434512413216,
+    "n": 56,
+    "or_tri": 1.0837487066796507,
+    "lo_tri": 0.5705905642480691,
+    "hi_tri": 2.0584133927584314
+   },
+   "top": [
+    {
+     "texto": "H: Um nordestino de apenas 14 anos criou uma máquina que pode salvar mais de 2 bilhões de pessoas. || S: O nome dele é Lucas Figueiredo, um recifense que usou a sua inteligência para desenvolver um projeto incrível.",
+     "cliente": "Rafael Rodrigues",
+     "plataforma": "YouTube",
+     "coef": 866.71,
+     "views": 1080789,
+     "link": "https://www.youtube.com/shorts/pdWWbMISqqI"
+    },
+    {
+     "texto": "H: O Elon Musk brasileiro existe e ele mora no interior do Paraná. || S: O nome dele é José Guilherme Pereira da Luz, um jovem de 18 anos que cresceu em Guarapuava, no interior do Paraná.",
+     "cliente": "Rafael Rodrigues",
+     "plataforma": "Instagram",
+     "coef": 157.23,
+     "views": 849109,
+     "link": "https://www.instagram.com/reel/DYuweeQpNYN"
+    }
+   ],
+   "fraco": [
+    {
+     "texto": "H: Esse bilionário odeia o fato de que as pessoas envelhecem. E agora, ele está usando todo o seu dinheiro para criar a fonte da juventude. || S: O nome dele é Bryan Johnson, um americano de 48 anos que construiu a sua fortuna vendendo a sua plataforma de pagamentos digitais, a Braintree, para o PayPal, por US$ 800 milhões em 2013.",
+     "cliente": "Marcio Grazino",
+     "plataforma": "TikTok",
+     "coef": 0,
+     "views": 7,
+     "link": "https://www.tiktok.com/@marcio.grazino/video/7652470341125541137"
+    }
+   ]
+  },
+  {
+   "id": "to_falando",
+   "modelo": "Eu tô falando do/da [nome] (dá nome com muleta)",
+   "coef": {
+    "or": 0.7717988705278334,
+    "lo": 0.5139103759877778,
+    "hi": 1.1590999605779626,
+    "lift": 0.8255319148936171,
+    "n": 141,
+    "roteiros": 62,
+    "desc": 0.5812731767614339,
+    "val": 0.9231217239370997,
+    "IG": 0.9080527086383602,
+    "TT": 0.8927884615384616,
+    "YT": 0.6457431457431457,
+    "leitura": "sem evidência"
+   },
+   "acerto": {
+    "or": 0.7293978829048536,
+    "leitura": "sem evidência"
+   },
+   "ret_sub": {
+    "or": 1.5769277267043451,
+    "lo": 0.6591413209122514,
+    "hi": 3.7726371816704494,
+    "n": 23,
+    "or_tri": 1.3335443191712912,
+    "lo_tri": 0.560631909876196,
+    "hi_tri": 3.1720285982057863
+   },
+   "top": [
+    {
+     "texto": "H: Essas estudantes do interior da Bahia usaram tomates para desafiar um problema que atinge mais da metade dos brasileiros. || S: Eu tô falando da acne, o problema de pele mais comum do país, segundo a Sociedade Brasileira de Dermatologia. Para você ter uma ideia, ele afeta cerca de 56% da população do nosso país.",
+     "cliente": "Marcio Grazino",
+     "plataforma": "Instagram",
+     "coef": 60.95,
+     "views": 728139,
+     "link": "https://www.instagram.com/reel/DagYyGqR39s"
+    },
+    {
+     "texto": "H: A China aprovou um documento que vai mudar o preço da sua comida aqui no Brasil, mas quase ninguém percebeu o risco. || S: Eu tô falando do 15º Plano Quinquenal, um sistema que a China usa desde 1953, em que, a cada 5 anos, o governo define metas, prazos e recursos para cada setor do país.",
+     "cliente": "Lincoln Fracari",
+     "plataforma": "YouTube",
+     "coef": 14.54,
+     "views": 247972,
+     "link": "https://www.youtube.com/shorts/A2-I7IIsN1Q"
+    }
+   ],
+   "fraco": [
+    {
+     "texto": "H: Elon Musk riu desses caras em 2011, mas acabou quebrando a cara! Isso porque, hoje, essa montadora já vendeu 620 mil carros elétricos a mais que o bilionário || S: Eu tô falando da chinesa BYD, que está surrando a Tesla..",
+     "cliente": "Lincoln Fracari",
+     "plataforma": "Instagram",
+     "coef": 0.26,
+     "views": 4439,
+     "link": "https://www.instagram.com/reel/DYA4f9TOqNk"
+    }
+   ]
+  },
+  {
+   "id": "so_que_mas",
+   "modelo": "Só que / Mas [vira o jogo]",
+   "coef": {
+    "or": 1.0645071183907713,
+    "lo": 0.7374672173214173,
+    "hi": 1.536577326407095,
+    "lift": 1.0416107382550337,
+    "n": 149,
+    "roteiros": 65,
+    "desc": 0.9562069574430514,
+    "val": 1.1330678104575165,
+    "IG": 0.9121065153733529,
+    "TT": 1.3456521739130434,
+    "YT": 0.8941058941058941,
+    "leitura": "sem evidência"
+   },
+   "acerto": {
+    "or": 1.1534131654044306,
+    "leitura": "sem evidência"
+   },
+   "ret_sub": {
+    "or": 0.8052530876501031,
+    "lo": 0.3639169242576067,
+    "hi": 1.7818147273387512,
+    "n": 37,
+    "or_tri": 0.761130306960119,
+    "lo_tri": 0.3344201873488327,
+    "hi_tri": 1.7323097291639231
+   },
+   "top": [
+    {
+     "texto": "H: Sabe quanto custa esconder um milhão de reais de dinheiro sujo no Brasil? Caro. Muito caro. Além de ser demorado e fácil de rastrear. || S: Mas a maior facção criminosa do Brasil descobriu como fazer de graça, com 21 milhões de pessoas assistindo.",
+     "cliente": "Fernando Pereira",
+     "plataforma": "TikTok",
+     "coef": 75.79,
+     "views": 126222,
+     "link": "https://www.tiktok.com/@fernandopereira.finance/video/7644675100234599700"
+    },
+    {
+     "texto": "H: Enquanto todo mundo olha pra China e Estados Unidos, o interior de São Paulo está se preparando para ser a próxima capital da Inteligência Artificial. || S: Só que pra entender o tamanho disso, você precisa saber de uma coisa: cada vez que você usa um ChatGPT da vida, existe um servidor dedicado em algum lugar do mundo trabalhando pra te responder.",
+     "cliente": "Leonardo Cirino",
+     "plataforma": "Instagram",
+     "coef": 63.46,
+     "views": 457392,
+     "link": "https://www.instagram.com/reel/DZLrcKDNF3R"
+    }
+   ],
+   "fraco": [
+    {
+     "texto": "H: Nos anos 2000, a Oakley não era apenas uma marca de óculos, mas sim um fenômeno cultural que parecia ter vindo do futuro. De Michael Jordan ao Brad Pitt, se você viveu essa época, provavelmente você tinha um Oakley no rosto. || S: Mas nem sempre foi assim. Jim Jannard, o fundador, começou a empresa em 1975 com apenas 300 dólares e fazendo um produto MUITO diferente dos óculos: Manoplas para guidão de motos",
+     "cliente": "Manoel Victor",
+     "plataforma": "YouTube",
+     "coef": 0.02,
+     "views": 20,
+     "link": "https://www.youtube.com/shorts/OUgH_2Rwjk8"
+    }
+   ]
+  },
+  {
+   "id": "e_continua",
+   "modelo": "E [continua a frase do hook]",
+   "coef": {
+    "or": 1.0480623540907354,
+    "lo": 0.8623883157822085,
+    "hi": 1.273712407694097,
+    "lift": 1.0284337349397592,
+    "n": 581,
+    "roteiros": 235,
+    "desc": 1.0341670016000972,
+    "val": 1.0207131872356787,
+    "IG": 1.0424074461409747,
+    "TT": 1.0169285714285714,
+    "YT": 1.0218353075495932,
+    "leitura": "sem evidência"
+   },
+   "acerto": {
+    "or": 0.9215099874329713,
+    "leitura": "sem evidência"
+   },
+   "ret_sub": {
+    "or": 0.9145076974831529,
+    "lo": 0.606164137093862,
+    "hi": 1.37969945362577,
+    "n": 138,
+    "or_tri": 0.9217921419033104,
+    "lo_tri": 0.6033449507111065,
+    "hi_tri": 1.4083166717036906
+   },
+   "top": [
+    {
+     "texto": "H: O mundo tem exatamente 40 dias até o petróleo acabar. || S: E a culpa é de um pedaço de mar que o Irã acabou de sequestrar.",
+     "cliente": "Fernando Pereira",
+     "plataforma": "TikTok",
+     "coef": 3661.1,
+     "views": 6256813,
+     "link": "https://www.tiktok.com/@fernandopereira.finance/video/7613106734680329493"
+    },
+    {
+     "texto": "H: Uma inteligência artificial convenceu um homem de que podia amá-lo. Só que por causa disso, ele foi morto algumas semanas depois. || S: É isso que a família de Jonathan Gavalas afirma. Ele tinha 36 anos, morava na Flórida, e em agosto de 2025 começou a usar o Gemini, o rival do ChatGPT feito pelo Google, para escrever, planejar viagens e fazer compras.",
+     "cliente": "João Felipe Marques",
+     "plataforma": "Instagram",
+     "coef": 59.05,
+     "views": 242239,
+     "link": "https://www.instagram.com/reel/DaS3VRUhJ_V"
+    }
+   ],
+   "fraco": [
+    {
+     "texto": "H: Essas seis garotas do Maranhão provaram que o futuro da tecnologia é feminino, tem sotaque nordestino e se constrói com peças de LEGO. || S: E tudo isso aconteceu em Jeonju, na Coreia do Sul, no Korea Open Invitational.",
+     "cliente": "Rafael Rodrigues",
+     "plataforma": "YouTube",
+     "coef": 0.03,
+     "views": 81,
+     "link": "https://www.youtube.com/shorts/-VuA4lCXq1o"
+    }
+   ]
+  },
+  {
+   "id": "volta_tempo",
+   "modelo": "Tudo começou / Em 19xx / Nos anos 80 / Há X anos (volta no tempo)",
+   "coef": {
+    "or": 0.956416402469003,
+    "lo": 0.799754517048326,
+    "hi": 1.1437663875757467,
+    "lift": 0.9751595744680851,
+    "n": 752,
+    "roteiros": 345,
+    "desc": 0.8897038419817866,
+    "val": 1.0683210784313728,
+    "IG": 0.9417123050851799,
+    "TT": 1.0132440476190476,
+    "YT": 0.9929517718462442,
+    "leitura": "sem evidência"
+   },
+   "acerto": {
+    "or": 1.13845459665239,
+    "leitura": "sem evidência"
+   },
+   "ret_sub": {
+    "or": 0.9215420557800572,
+    "lo": 0.6338633966159966,
+    "hi": 1.3397835639432194,
+    "n": 177,
+    "or_tri": 0.9003841515611927,
+    "lo_tri": 0.6154290815065151,
+    "hi_tri": 1.3172786999243984
+   },
+   "top": [
+    {
+     "texto": "H: A Nike passou vergonha ao esquecer o mais importante sobre o Brasil: Nós somos brasileiros. || S: Quando uma marca traz a cultura de outro país para bordar a camisa da maior seleção do mundo, ela não está fazendo uma simples jogada. Ela está arriscando tudo que conquistou.",
+     "cliente": "Rafael Rodrigues",
+     "plataforma": "TikTok",
+     "coef": 630.14,
+     "views": 490248,
+     "link": "https://www.tiktok.com/@rafaelrodriguesluiz/video/7622445343443029255"
+    },
+    {
+     "texto": "H: Uma banca de frutas na beira da estrada virou um negócio de 170 milhões de reais. E o segredo não estava na comida. Estava no banheiro. || S: Em 1952, José e Rosa Mamprin já eram avós quando montaram uma banquinha na beira da rodovia Anhanguera para vender as frutas do sítio da família.",
+     "cliente": "Marcos Pelozato",
+     "plataforma": "YouTube",
+     "coef": 193.22,
+     "views": 421516,
+     "link": "https://www.youtube.com/shorts/BwEr07GOOCs"
+    }
+   ],
+   "fraco": [
+    {
+     "texto": "H: O segredo que faz o mundo inteiro querer ir a Paris não é a Torre Eiffel, mas sim uma estratégia secreta que quase ninguém conhece || S: Em 2025, a França recebeu 102 milhões de turistas.",
+     "cliente": "Marcio Grazino",
+     "plataforma": "YouTube",
+     "coef": 0.01,
+     "views": 2973,
+     "link": "https://www.youtube.com/shorts/nHjQ7aoIZuw"
+    }
+   ]
+  },
+  {
+   "id": "para_entender",
+   "modelo": "Para entender / Deixa eu te explicar / Vamos entender (anuncia a explicação)",
+   "coef": {
+    "or": 1.1448772682305197,
+    "lo": 0.7352687819669199,
+    "hi": 1.7826732093869155,
+    "lift": 1.0973737373737376,
+    "n": 99,
+    "roteiros": 49,
+    "desc": 0.993629361985357,
+    "val": 1.1654411764705883,
+    "IG": 1.1592162237936512,
+    "TT": 0.9671875,
+    "YT": 1.1069882498453927,
+    "leitura": "sem evidência"
+   },
+   "acerto": {
+    "or": 1.1679885679028053,
+    "leitura": "sem evidência"
+   },
+   "ret_sub": {
+    "or": 1.2574550524964403,
+    "lo": 0.4750538672339888,
+    "hi": 3.3284503466003894,
+    "n": 20,
+    "or_tri": 1.0535024921083669,
+    "lo_tri": 0.39059348828941187,
+    "hi_tri": 2.8414900251900224
+   },
+   "top": [
+    {
+     "texto": "H: A Samsung lançou um par de óculos que é o começo do fim da era do celular. || S: Deixa eu te explicar.",
+     "cliente": "Izabela Anholett",
+     "plataforma": "Instagram",
+     "coef": 146.67,
+     "views": 9391531,
+     "link": "https://www.instagram.com/reel/DbvGvW2hRek"
+    },
+    {
+     "texto": "H: Os gênios do Brasil não estão em São Paulo ou Rio! Na verdade, eles vêm de um estado do Nordeste e isso não é por acaso. || S: Vamos entender: O ITA, o Instituto Tecnológico de Aeronáutica, é considerado o vestibular mais difícil do país. Lá são formados os engenheiros aeroespaciais, aeronáuticos e eletrônicos de elite que o Brasil exporta para o mundo.",
+     "cliente": "Rafael Rodrigues",
+     "plataforma": "Instagram",
+     "coef": 139.57,
+     "views": 620232,
+     "link": "https://www.instagram.com/reel/DXkcaK3j4ct"
+    }
+   ],
+   "fraco": [
+    {
+     "texto": "H: A Receita Federal vai fazer um raio-X em todas as suas compras que vêm da China. E, se a imagem não bater com o que o vendedor declarou, sua encomenda nem chega na sua casa. || S: Para entender por que o governo resolveu fazer isso, você precisa de um número.",
+     "cliente": "Dilson Peres",
+     "plataforma": "YouTube",
+     "coef": 0.1,
+     "views": 6881,
+     "link": "https://www.youtube.com/shorts/287pzZBTfYU"
+    }
+   ]
+  },
+  {
+   "id": "lugar_abre",
+   "modelo": "No/Na [lugar] ... (abre situando o lugar)",
+   "coef": {
+    "or": 0.6559611342225946,
+    "lo": 0.4746988657797793,
+    "hi": 0.906437829599132,
+    "lift": 0.7294400000000001,
+    "n": 250,
+    "roteiros": 104,
+    "desc": 0.8017561058778399,
+    "val": 0.6289682539682541,
+    "IG": 0.8393764533631901,
+    "TT": 0.6705833333333333,
+    "YT": 0.6368973492261163,
+    "leitura": "atrapalha (replica)"
+   },
+   "acerto": {
+    "or": 0.8561554393061661,
+    "leitura": "sem evidência"
+   },
+   "ret_sub": {
+    "or": 0.9408221000835265,
+    "lo": 0.4712752131847824,
+    "hi": 1.8781938859545324,
+    "n": 45,
+    "or_tri": 0.9278035570714182,
+    "lo_tri": 0.45920449830354726,
+    "hi_tri": 1.8745884321571915
+   },
+   "top": [
+    {
+     "texto": "H: O que o presidente da Argentina acaba de fazer está deixando os políticos do Brasil revoltados! || S: No dia 30 de julho, Javier Milei apareceu em cadeia nacional na Argentina e anunciou um projeto de lei chamado Grilhão Fiscal. Um projeto considerado por muitos uma loucura!",
+     "cliente": "Fernando Pereira",
+     "plataforma": "Instagram",
+     "coef": 56.93,
+     "views": 333407,
+     "link": "https://www.instagram.com/reel/DbeMSEzq3AI"
+    },
+    {
+     "texto": "H: A Shopee acabou de cortar pela metade o prazo de entrega. E quem não ficar atento, vai perder dinheiro. || S: No começo de abril, a empresa asiática anunciou a inauguração do seu segundo centro de distribuição em Minas Gerais.. A nova estrutura fica em Contagem, na Região Metropolitana de Belo Horizonte.",
+     "cliente": "Thiago Franco",
+     "plataforma": "TikTok",
+     "coef": 5.96,
+     "views": 4546,
+     "link": "https://www.tiktok.com/@thiagofranco.tf/video/7633886489130110228"
+    }
+   ],
+   "fraco": [
+    {
+     "texto": "H: Esse estudante brasileiro convenceu a empresa do Elon Musk a ajudar a Amazônia. || S: No Brasil, cerca de 30% das escolas públicas ainda não têm acesso adequado à internet. Grande parte dessas escolas estão na região Norte do país, onde comunidades ribeirinhas ficam isoladas por rios e florestas, e por esse motivo, a infraestrutura acaba sendo precária.",
+     "cliente": "Rafael Rodrigues",
+     "plataforma": "YouTube",
+     "coef": 0.1,
+     "views": 431,
+     "link": "https://www.youtube.com/shorts/veFgDlcUKHA"
+    }
+   ]
+  },
+  {
+   "id": "eleva_numero",
+   "modelo": "Eleva a aposta: número grande ou dinheiro no 2º parágrafo",
+   "coef": {
+    "or": 1.0018300635004984,
+    "lo": 0.8926111055741313,
+    "hi": 1.1244129384743113,
+    "lift": 1.0006746310611385,
+    "n": 2846,
+    "roteiros": 1235,
+    "desc": 0.9582296238165326,
+    "val": 1.0459087481146305,
+    "IG": 0.9753358079743382,
+    "TT": 1.0322866586538462,
+    "YT": 1.005730981009102,
+    "leitura": "sem evidência"
+   },
+   "acerto": {
+    "or": 1.0344779032558493,
+    "leitura": "sem evidência"
+   },
+   "ret_sub": {
+    "or": 1.0095468757065744,
+    "lo": 0.784968904164048,
+    "hi": 1.2983761380131176,
+    "n": 621,
+    "or_tri": 1.0121926367415452,
+    "lo_tri": 0.7810012943673211,
+    "hi_tri": 1.311821044680551
+   },
+   "top": [
+    {
+     "texto": "H: A Casas Bahia sobreviveu a hiperinflação, plano Collor e pandemia. Agora fechou 298 lojas de uma vez, e pouca gente consegue entender o porquê. || S: Foram quase 300 lojas fechadas de uma só vez. Quase 2 mil funcionários demitidos em apenas dois dias.",
+     "cliente": "Marcos Pelozato",
+     "plataforma": "TikTok",
+     "coef": 1356.26,
+     "views": 899200,
+     "link": "https://www.tiktok.com/@marcospelozato/video/7674077995404922130"
+    },
+    {
+     "texto": "H: Esse empresário nordestino 'faliu' a própria marca para ficar dez vezes mais rico || S: Se você é do Nordeste, você cresceu comprando no Bompreço. Nos anos 90, eles eram imbatíveis: mais de 100 lojas e um faturamento invejável.",
+     "cliente": "Cadu Neiva",
+     "plataforma": "Instagram",
+     "coef": 740.22,
+     "views": 2532646,
+     "link": "https://www.instagram.com/reel/DWuSVeFEdwk"
+    }
+   ],
+   "fraco": [
+    {
+     "texto": "H: Esse bilionário odeia o fato de que as pessoas envelhecem. E agora, ele está usando todo o seu dinheiro para criar a fonte da juventude. || S: O nome dele é Bryan Johnson, um americano de 48 anos que construiu a sua fortuna vendendo a sua plataforma de pagamentos digitais, a Braintree, para o PayPal, por US$ 800 milhões em 2013.",
+     "cliente": "Marcio Grazino",
+     "plataforma": "TikTok",
+     "coef": 0,
+     "views": 7,
+     "link": "https://www.tiktok.com/@marcio.grazino/video/7652470341125541137"
+    }
+   ]
+  },
+  {
+   "id": "coletivo_eles",
+   "modelo": "Eles / Elas (o sujeito coletivo age)",
+   "coef": {
+    "or": 1.4297701812660404,
+    "lo": 1.1208733818409677,
+    "hi": 1.8237945555277428,
+    "lift": 1.2649529780564264,
+    "n": 319,
+    "roteiros": 121,
+    "desc": 1.2089157237488513,
+    "val": 1.4168108419838523,
+    "IG": 1.2759522838009743,
+    "TT": 1.3438815789473686,
+    "YT": 1.177531618708089,
+    "leitura": "ajuda (replica)"
+   },
+   "acerto": {
+    "or": 1.2667694821052842,
+    "leitura": "sem evidência"
+   },
+   "ret_sub": {
+    "or": 0.9560058321587706,
+    "lo": 0.5580496524582554,
+    "hi": 1.6377523883324177,
+    "n": 77,
+    "or_tri": 1.0758925401284662,
+    "lo_tri": 0.6204631298802687,
+    "hi_tri": 1.8656140907638714
+   },
+   "top": [
+    {
+     "texto": "H: Esse empresário nordestino 'faliu' a própria marca para ficar dez vezes mais rico || S: Se você é do Nordeste, você cresceu comprando no Bompreço. Nos anos 90, eles eram imbatíveis: mais de 100 lojas e um faturamento invejável.",
+     "cliente": "Cadu Neiva",
+     "plataforma": "Instagram",
+     "coef": 740.22,
+     "views": 2532646,
+     "link": "https://www.instagram.com/reel/DWuSVeFEdwk"
+    },
+    {
+     "texto": "H: A Monster vai deixar de ser o energético dos gamers para invadir a bolsa das mulheres. || S: Com um faturamento anual de mais de 7 bilhões de dólares, a gigante percebeu uma nova oportunidade de inovar no mercado: o público feminino! Isso porque elas TAMBÉM querem energia, mas muitas vezes fogem da estética agressiva e dos ingredientes artificiais.",
+     "cliente": "Manoel Victor",
+     "plataforma": "Instagram",
+     "coef": 302.5,
+     "views": 727514,
+     "link": "https://www.instagram.com/reel/DVDzbdUiYvV"
+    }
+   ],
+   "fraco": [
+    {
+     "texto": "H: Se você acha que a maior herança que um bilionário passa pro seu filho é o dinheiro, você foi completamente enganado. || S: Grandes fortunas não se constroem sozinhas, elas exigem negociação, liderança e a capacidade de convencer pessoas. E nenhuma dessas coisas funciona sem comunicação.",
+     "cliente": "Café com Ferri",
+     "plataforma": "Instagram",
+     "coef": 0,
+     "views": 27,
+     "link": "https://www.instagram.com/reel/DbWq_RtpDqF"
+    }
+   ]
+  },
+  {
+   "id": "biografia",
+   "modelo": "Biografia de empresa: fundada em / a história da / começou como",
+   "coef": {
+    "or": 0.7620032369724483,
+    "lo": 0.5551857188892496,
+    "hi": 1.0458643178325684,
+    "lift": 0.8268852459016394,
+    "n": 244,
+    "roteiros": 107,
+    "desc": 0.7294408492692503,
+    "val": 0.8795782463928968,
+    "IG": 0.8287782658207256,
+    "TT": 0.6863911290322581,
+    "YT": 0.9424359424359424,
+    "leitura": "sem evidência"
+   },
+   "acerto": {
+    "or": 0.8949725316841894,
+    "leitura": "sem evidência"
+   },
+   "ret_sub": {
+    "or": 1.2518459642826312,
+    "lo": 0.6512012592702336,
+    "hi": 2.4065038204116744,
+    "n": 47,
+    "or_tri": 1.243876953272275,
+    "lo_tri": 0.6420974546949407,
+    "hi_tri": 2.409649600023728
+   },
+   "top": [
+    {
+     "texto": "H: A Sony matou essa empresa. Só que uma marca brasileira transformou esse nome enterrado em um negócio que já projeta faturar bilhões. || S: A Aiwa, fabricante japonesa de aparelhos de som, nasceu em 1951.",
+     "cliente": "João Paulo Albuquerque",
+     "plataforma": "TikTok",
+     "coef": 384.31,
+     "views": 177553,
+     "link": "https://www.tiktok.com/@jp_albuquerque_/video/7663512188782415111"
+    },
+    {
+     "texto": "H: A chinesa dona da Volvo comprou algumas das maiores empresas do mundo e agora chegou no Brasil. E a estratégia por trás disso é sensacional. || S: Talvez você já tenha ouvido falar da Geely, mas provavelmente não sabe o tamanho dela. Fundada em 1986, a empresa chinesa é dona da Volvo, da Lotus, tem participação na Mercedes-Benz e agora controla uma parte da Renault no Brasil.",
+     "cliente": "Franklin Tomich",
+     "plataforma": "YouTube",
+     "coef": 282.84,
+     "views": 194309,
+     "link": "https://www.youtube.com/shorts/vkNBvuQzaw4"
+    }
+   ],
+   "fraco": [
+    {
+     "texto": "H: A farmácia mais lembrada do Rio Grande do Norte faturou R$ 870 milhões e se tornou uma das maiores redes do país. || S: Tudo começou em 1955, quando João Patriota fundou a distribuidora Droguistas Potiguares na cidade de Natal, no Rio Grande do Norte.",
+     "cliente": "Cadu Neiva",
+     "plataforma": "TikTok",
+     "coef": 0.03,
+     "views": 1483,
+     "link": "https://www.tiktok.com/@caduneiva/video/7658695719104056584"
+    }
+   ]
+  },
+  {
+   "id": "voce_sub",
+   "modelo": "Você / Se você (puxa o espectador)",
+   "coef": {
+    "or": 0.7717024169074003,
+    "lo": 0.5023490466980772,
+    "hi": 1.1854797459556967,
+    "lift": 0.8248818897637796,
+    "n": 127,
+    "roteiros": 57,
+    "desc": 0.9337721715043115,
+    "val": 0.6180369875222816,
+    "IG": 0.8051698894330287,
+    "TT": 0.6273648648648649,
+    "YT": 1.0896915584415585,
+    "leitura": "sem evidência"
+   },
+   "acerto": {
+    "or": 0.6884028957412082,
+    "leitura": "sinal sem replicação"
+   },
+   "ret_sub": {
+    "or": 0.8980848096415542,
+    "lo": 0.40212217469150613,
+    "hi": 2.005749436542932,
+    "n": 34,
+    "or_tri": 0.9874167043723561,
+    "lo_tri": 0.43188201477170496,
+    "hi_tri": 2.2575419089608317
+   },
+   "top": [
+    {
+     "texto": "H: Esse empresário nordestino 'faliu' a própria marca para ficar dez vezes mais rico || S: Se você é do Nordeste, você cresceu comprando no Bompreço. Nos anos 90, eles eram imbatíveis: mais de 100 lojas e um faturamento invejável.",
+     "cliente": "Cadu Neiva",
+     "plataforma": "Instagram",
+     "coef": 740.22,
+     "views": 2532646,
+     "link": "https://www.instagram.com/reel/DWuSVeFEdwk"
+    },
+    {
+     "texto": "H: Se você acreditou que o genérico do Ozempic chegou no Brasil, você caiu na mentira do ano. || S: Você deve ter visto que o Ozivy, fabricado pela farmacêutica brasileira EMS, já chegou nas farmácias do país com a mesma substância ativa do Ozempic, a semaglutida.",
+     "cliente": "Drielle Castelani",
+     "plataforma": "TikTok",
+     "coef": 100.98,
+     "views": 80079,
+     "link": "https://www.tiktok.com/@driellecastelani/video/7654201126161517844"
+    }
+   ],
+   "fraco": [
+    {
+     "texto": "H: O seu currículo bonitinho é exatamente o que está te impedindo de ganhar MAIS. || S: Se você for conversar com alguém que está no topo da carreira, vai perceber uma coisa: é impossível essa pessoa ser rasa.",
+     "cliente": "Rafael Rodrigues",
+     "plataforma": "TikTok",
+     "coef": 0.59,
+     "views": 627,
+     "link": "https://www.tiktok.com/@rafaelrodriguesluiz/video/7610575823745158407"
+    }
+   ]
+  },
+  {
+   "id": "pergunta_sub",
+   "modelo": "Pergunta no subhook",
+   "coef": {
+    "or": 0.8083453040943848,
+    "lo": 0.5607968009556398,
+    "hi": 1.1651673646104315,
+    "lift": 0.8522543352601157,
+    "n": 173,
+    "roteiros": 67,
+    "desc": 0.7893833264661447,
+    "val": 0.9562594268476623,
+    "IG": 0.9434313855982963,
+    "TT": 0.5627272727272727,
+    "YT": 1.043123543123543,
+    "leitura": "sem evidência"
+   },
+   "acerto": {
+    "or": 0.8734949489692684,
+    "leitura": "sem evidência"
+   },
+   "ret_sub": {
+    "or": 0.6139665355141672,
+    "lo": 0.27129487472769137,
+    "hi": 1.3894656399595928,
+    "n": 40,
+    "or_tri": 0.6973624015067639,
+    "lo_tri": 0.30108230075106923,
+    "hi_tri": 1.6152205487407878
+   },
+   "top": [
+    {
+     "texto": "H: Com certeza você já foi enganado por não conhecer essa tática chinesa para ganhar dinheiro. || S: Todo mundo pensa que os produtos da China SÓ são baratos por causa do trabalho quase escravo, certo?",
+     "cliente": "Lincoln Fracari",
+     "plataforma": "YouTube",
+     "coef": 44.2,
+     "views": 90058,
+     "link": "https://www.youtube.com/shorts/FtU3S7Qe9vs"
+    },
+    {
+     "texto": "H: Essa empresa de apenas duas pessoas fatura quase 10 bilhões de reais por ano. || S: O segredo? Saber usar da forma correta a inteligência artificial.",
+     "cliente": "Manoel Victor",
+     "plataforma": "YouTube",
+     "coef": 2.41,
+     "views": 1650,
+     "link": "https://www.youtube.com/shorts/_ZMjvz-RCCU"
+    }
+   ],
+   "fraco": [
+    {
+     "texto": "H: Steve Jobs salvou a Apple jogando 90% dos produtos no lixo || S: O ano é 1997. Steve Jobs volta pra Apple. A empresa tinha caixa pra apenas 90 dias antes de quebrar. E sabe quantos produtos diferentes eles vendiam ao todo? 350.",
+     "cliente": "Manoel Victor",
+     "plataforma": "Instagram",
+     "coef": 0.03,
+     "views": 813,
+     "link": "https://www.instagram.com/reel/DTyXxckAlsf"
+    }
+   ]
+  }
+ ],
+ "combos": [
+  {
+   "hook": "hook com nome próprio",
+   "sub": "sub Isso porque",
+   "or": 1.398524131288772,
+   "lo": 1.010924260214092,
+   "hi": 1.9347342058868022,
+   "lift": 1.2315534843678355,
+   "n": 179,
+   "roteiros": 69,
+   "desc": 1.2936833470057423,
+   "val": 1.1401509283643525,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook com nome próprio",
+   "sub": "sub Isso...",
+   "or": 1.083921267568515,
+   "lo": 0.5532254530065008,
+   "hi": 2.1237007587095427,
+   "lift": 1.0577276627037626,
+   "n": 41,
+   "roteiros": 20,
+   "desc": 0.515527950310559,
+   "val": 1.3402740381738765,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook com nome próprio",
+   "sub": "sub dá nome (Essa é a / O nome dele é / Ele se chama)",
+   "or": 1.1602158748474574,
+   "lo": 0.8654597925168521,
+   "hi": 1.5553592297262493,
+   "lift": 1.1119701069449814,
+   "n": 221,
+   "roteiros": 94,
+   "desc": 1.2302371541501975,
+   "val": 1.033925686591276,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook com nome próprio",
+   "sub": "sub com nome próprio",
+   "or": 0.9677172054057297,
+   "lo": 0.8370512631091429,
+   "hi": 1.1187804509843602,
+   "lift": 0.9933021060511243,
+   "n": 2947,
+   "roteiros": 1277,
+   "desc": 0.9779086892488954,
+   "val": 1.0065972543465729,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook com nome próprio",
+   "sub": "sub com nome E data",
+   "or": 0.8628690062065533,
+   "lo": 0.7269780451359455,
+   "hi": 1.0241614954584422,
+   "lift": 0.9245720990740506,
+   "n": 985,
+   "roteiros": 436,
+   "desc": 0.8983672720601725,
+   "val": 0.9489454931728151,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook com nome próprio",
+   "sub": "sub volta no tempo (abre)",
+   "or": 0.96110607666265,
+   "lo": 0.7839598442722784,
+   "hi": 1.1782808741375423,
+   "lift": 0.9695836908117826,
+   "n": 574,
+   "roteiros": 255,
+   "desc": 0.8520531400966184,
+   "val": 1.0881525582656437,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook com nome próprio",
+   "sub": "sub com ano/data",
+   "or": 0.8662311882594884,
+   "lo": 0.7354762920189489,
+   "hi": 1.0202320314821418,
+   "lift": 0.9280712394397882,
+   "n": 1102,
+   "roteiros": 484,
+   "desc": 0.9353292406021361,
+   "val": 0.9216961462518812,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook com nome próprio",
+   "sub": "sub Só que/Mas",
+   "or": 0.8451184614451845,
+   "lo": 0.5481062625031828,
+   "hi": 1.303078002819441,
+   "lift": 0.8876252608069588,
+   "n": 114,
+   "roteiros": 49,
+   "desc": 0.7217391304347827,
+   "val": 1.0426877686810327,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook com nome próprio",
+   "sub": "sub E...",
+   "or": 1.018422055503427,
+   "lo": 0.8055692151754436,
+   "hi": 1.2875162848793058,
+   "lift": 1.0126360164145491,
+   "n": 389,
+   "roteiros": 160,
+   "desc": 1.079070758738278,
+   "val": 0.9389162991747806,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook com nome próprio",
+   "sub": "sub eleva com número/dinheiro",
+   "or": 1.059213557745673,
+   "lo": 0.9241987897473668,
+   "hi": 1.213952423827487,
+   "lift": 1.0196304182241875,
+   "n": 1999,
+   "roteiros": 860,
+   "desc": 1.0088028955717412,
+   "val": 1.0298947872283473,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook com nome próprio",
+   "sub": "sub explica porquê (porque / o motivo)",
+   "or": 1.1889356176274357,
+   "lo": 0.9308311080833831,
+   "hi": 1.5186083604078537,
+   "lift": 1.115269721505649,
+   "n": 337,
+   "roteiros": 136,
+   "desc": 1.1831789023521024,
+   "val": 1.033925686591276,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook com nome próprio",
+   "sub": "sub biografia (fundada / a história)",
+   "or": 0.7369159437049498,
+   "lo": 0.5105580263365647,
+   "hi": 1.063630537713996,
+   "lift": 0.8167012084906643,
+   "n": 177,
+   "roteiros": 78,
+   "desc": 0.6682769726247987,
+   "val": 0.8826194885535285,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook com nome próprio",
+   "sub": "sub <= 15 palavras",
+   "or": 1.2887096259265227,
+   "lo": 1.090259077102315,
+   "hi": 1.5232824333548964,
+   "lift": 1.1439082870389463,
+   "n": 853,
+   "roteiros": 353,
+   "desc": 1.0005151452709664,
+   "val": 1.2846106848483259,
+   "leitura": "ajuda (replica)"
+  },
+  {
+   "hook": "hook com nome próprio",
+   "sub": "sub 31+ palavras",
+   "or": 1.055433034835921,
+   "lo": 0.9066694604059583,
+   "hi": 1.228605285242761,
+   "lift": 1.0293763588612064,
+   "n": 1141,
+   "roteiros": 512,
+   "desc": 0.9911697922798756,
+   "val": 1.0612650677271032,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook sem nome próprio",
+   "sub": "sub Isso porque",
+   "or": 1.706239338917247,
+   "lo": 0.891784417626535,
+   "hi": 3.264525174612268,
+   "lift": 1.5055987087662666,
+   "n": 46,
+   "roteiros": 22,
+   "desc": 1.6987179487179487,
+   "val": 1.2874942316566682,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook sem nome próprio",
+   "sub": "sub dá nome (Essa é a / O nome dele é / Ele se chama)",
+   "or": 1.159952725105094,
+   "lo": 0.8121252340969851,
+   "hi": 1.656752269217205,
+   "lift": 1.1483115540434945,
+   "n": 193,
+   "roteiros": 76,
+   "desc": 1.2874493927125505,
+   "val": 1.011602610587382,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook sem nome próprio",
+   "sub": "sub com nome próprio",
+   "or": 1.1511313451607208,
+   "lo": 0.9119766823951762,
+   "hi": 1.4530013753546158,
+   "lift": 1.0386852519850278,
+   "n": 1298,
+   "roteiros": 545,
+   "desc": 1.010316214397847,
+   "val": 1.0722106101323778,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook sem nome próprio",
+   "sub": "sub com nome E data",
+   "or": 0.795068238947892,
+   "lo": 0.5926179489203627,
+   "hi": 1.066679647039597,
+   "lift": 0.8776437652202259,
+   "n": 363,
+   "roteiros": 165,
+   "desc": 0.8196988196988196,
+   "val": 0.9565044291828407,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook sem nome próprio",
+   "sub": "sub volta no tempo (abre)",
+   "or": 0.821701630234477,
+   "lo": 0.5525904424075698,
+   "hi": 1.221869792369662,
+   "lift": 0.907870382439584,
+   "n": 178,
+   "roteiros": 90,
+   "desc": 0.9582511505588428,
+   "val": 0.829331869941007,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook sem nome próprio",
+   "sub": "sub com ano/data",
+   "or": 0.741372690129705,
+   "lo": 0.5631349067889835,
+   "hi": 0.9760244997139076,
+   "lift": 0.85080424411481,
+   "n": 445,
+   "roteiros": 204,
+   "desc": 0.7699064220803351,
+   "val": 0.9589149746192893,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook sem nome próprio",
+   "sub": "sub Só que/Mas",
+   "or": 1.891388971454352,
+   "lo": 0.9258232460681751,
+   "hi": 3.863968912566843,
+   "lift": 1.5830294995028173,
+   "n": 35,
+   "roteiros": 16,
+   "desc": 1.6472416472416473,
+   "val": 1.4525575946895746,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook sem nome próprio",
+   "sub": "sub E...",
+   "or": 1.1052377322454612,
+   "lo": 0.7742325212787916,
+   "hi": 1.5777565669309108,
+   "lift": 1.082149071925754,
+   "n": 192,
+   "roteiros": 75,
+   "desc": 0.965391621129326,
+   "val": 1.2813633067440173,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook sem nome próprio",
+   "sub": "sub eleva com número/dinheiro",
+   "or": 0.8218514064591848,
+   "lo": 0.6576164812623579,
+   "hi": 1.027102807706961,
+   "lift": 0.9267045968163875,
+   "n": 847,
+   "roteiros": 375,
+   "desc": 0.8327721661054994,
+   "val": 1.0595004614674666,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook sem nome próprio",
+   "sub": "sub explica porquê (porque / o motivo)",
+   "or": 1.3854979932956966,
+   "lo": 0.9099090965052572,
+   "hi": 2.1096664455813703,
+   "lift": 1.2762907211438703,
+   "n": 123,
+   "roteiros": 59,
+   "desc": 1.5295815295815296,
+   "val": 0.8210108143897594,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook sem nome próprio",
+   "sub": "sub biografia (fundada / a história)",
+   "or": 0.8105350251146364,
+   "lo": 0.4228712887175228,
+   "hi": 1.5535862671831497,
+   "lift": 0.8269557086955015,
+   "n": 67,
+   "roteiros": 29,
+   "desc": 0.8767576509511993,
+   "val": 0.7868020304568528,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook sem nome próprio",
+   "sub": "sub <= 15 palavras",
+   "or": 0.9681927602891675,
+   "lo": 0.7488309909109601,
+   "hi": 1.2518141375746277,
+   "lift": 0.9602936302131061,
+   "n": 476,
+   "roteiros": 201,
+   "desc": 1.0144210144210144,
+   "val": 0.8919506889050036,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook sem nome próprio",
+   "sub": "sub 31+ palavras",
+   "or": 0.7641189768176702,
+   "lo": 0.58034271535669,
+   "hi": 1.0060913926937471,
+   "lift": 0.8637199059065602,
+   "n": 433,
+   "roteiros": 200,
+   "desc": 0.6920702754036088,
+   "val": 1.0442349528643946,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook Esse/Essa + pessoa",
+   "sub": "sub dá nome (Essa é a / O nome dele é / Ele se chama)",
+   "or": 1.0518536109644434,
+   "lo": 0.6543787660758513,
+   "hi": 1.690757824453449,
+   "lift": 1.044943820224719,
+   "n": 136,
+   "roteiros": 53,
+   "desc": 1.1423758865248226,
+   "val": 0.9719611528822055,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook Esse/Essa + pessoa",
+   "sub": "sub com nome próprio",
+   "or": 0.6997055821173722,
+   "lo": 0.47021445035781073,
+   "hi": 1.0412013098994675,
+   "lift": 0.9479133226324237,
+   "n": 560,
+   "roteiros": 238,
+   "desc": 0.9292889345883097,
+   "val": 0.9705858288332516,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook Esse/Essa + pessoa",
+   "sub": "sub com nome E data",
+   "or": 0.8644328494150916,
+   "lo": 0.5514601610556434,
+   "hi": 1.3550283482264025,
+   "lift": 0.9736976506639428,
+   "n": 176,
+   "roteiros": 84,
+   "desc": 0.6790593505039194,
+   "val": 1.3411228689006467,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook Esse/Essa + pessoa",
+   "sub": "sub volta no tempo (abre)",
+   "or": 0.7900064998956853,
+   "lo": 0.4051577871878025,
+   "hi": 1.5404128702779638,
+   "lift": 0.8624933119315141,
+   "n": 63,
+   "roteiros": 35,
+   "desc": 0.7839834515366431,
+   "val": 0.9656084656084656,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook Esse/Essa + pessoa",
+   "sub": "sub com ano/data",
+   "or": 0.8211394106626612,
+   "lo": 0.5321884029544974,
+   "hi": 1.266975995719082,
+   "lift": 0.9547710032510123,
+   "n": 197,
+   "roteiros": 95,
+   "desc": 0.7159475044740504,
+   "val": 1.2552910052910051,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook Esse/Essa + pessoa",
+   "sub": "sub E...",
+   "or": 0.7639414442207325,
+   "lo": 0.330277899814363,
+   "hi": 1.7670165958003312,
+   "lift": 0.9086468001954079,
+   "n": 46,
+   "roteiros": 17,
+   "desc": 1.0079787234042554,
+   "val": 0.7242063492063492,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook Esse/Essa + pessoa",
+   "sub": "sub eleva com número/dinheiro",
+   "or": 1.057057309525833,
+   "lo": 0.7258607545004219,
+   "hi": 1.5393725982485855,
+   "lift": 1.0767842136387686,
+   "n": 361,
+   "roteiros": 160,
+   "desc": 0.9927830642574575,
+   "val": 1.180188124632569,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook Esse/Essa + pessoa",
+   "sub": "sub explica porquê (porque / o motivo)",
+   "or": 0.46666933022170526,
+   "lo": 0.1817240952748984,
+   "hi": 1.1984115999594527,
+   "lift": 0.5224719101123595,
+   "n": 40,
+   "roteiros": 16,
+   "desc": 0.7330754352030948,
+   "val": 0.2414021164021164,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook Esse/Essa + pessoa",
+   "sub": "sub biografia (fundada / a história)",
+   "or": 0.9965874058977449,
+   "lo": 0.49927268494469335,
+   "hi": 1.9892665622274452,
+   "lift": 1.0236184361385003,
+   "n": 49,
+   "roteiros": 22,
+   "desc": 1.2599734042553192,
+   "val": 0.9217171717171717,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook Esse/Essa + pessoa",
+   "sub": "sub <= 15 palavras",
+   "or": 0.6632594558309357,
+   "lo": 0.4031769805671693,
+   "hi": 1.0911166235986516,
+   "lift": 0.7196964059825879,
+   "n": 151,
+   "roteiros": 62,
+   "desc": 0.8063829787234043,
+   "val": 0.6437389770723104,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook Esse/Essa + pessoa",
+   "sub": "sub 31+ palavras",
+   "or": 0.8967505923289666,
+   "lo": 0.5939665977699211,
+   "hi": 1.3538835817731496,
+   "lift": 0.9929852877273574,
+   "n": 181,
+   "roteiros": 81,
+   "desc": 0.843036750483559,
+   "val": 1.2240107310529846,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook Esse/Essa + coisa",
+   "sub": "sub dá nome (Essa é a / O nome dele é / Ele se chama)",
+   "or": 1.279148520966246,
+   "lo": 0.6724269433174481,
+   "hi": 2.433306628996403,
+   "lift": 1.1269483568075116,
+   "n": 75,
+   "roteiros": 27,
+   "desc": 1.0797101449275361,
+   "val": 1.2333333333333332,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook Esse/Essa + coisa",
+   "sub": "sub com nome próprio",
+   "or": 0.9937493165414546,
+   "lo": 0.6467754667633125,
+   "hi": 1.5268632699823748,
+   "lift": 1.006203890006707,
+   "n": 504,
+   "roteiros": 213,
+   "desc": 1.010970834458547,
+   "val": 0.9961538461538462,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook Esse/Essa + coisa",
+   "sub": "sub com nome E data",
+   "or": 0.6217241573780677,
+   "lo": 0.3788042352105063,
+   "hi": 1.0204239866871148,
+   "lift": 0.8481358740679371,
+   "n": 170,
+   "roteiros": 79,
+   "desc": 0.9376430205949656,
+   "val": 0.6475,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook Esse/Essa + coisa",
+   "sub": "sub volta no tempo (abre)",
+   "or": 0.9994397199189171,
+   "lo": 0.5757287672898018,
+   "hi": 1.7349832256146447,
+   "lift": 1.0222456232723443,
+   "n": 107,
+   "roteiros": 54,
+   "desc": 1.2674858223062382,
+   "val": 0.5452631578947368,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook Esse/Essa + coisa",
+   "sub": "sub com ano/data",
+   "or": 0.5851830756956066,
+   "lo": 0.3628953498201136,
+   "hi": 0.943630807753024,
+   "lift": 0.7823693429613212,
+   "n": 197,
+   "roteiros": 91,
+   "desc": 0.894,
+   "val": 0.5755555555555555,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook Esse/Essa + coisa",
+   "sub": "sub E...",
+   "or": 0.91267943482611,
+   "lo": 0.4343922694751201,
+   "hi": 1.9175841958721067,
+   "lift": 0.8965596859847611,
+   "n": 61,
+   "roteiros": 22,
+   "desc": 0.5949423247559893,
+   "val": 2.158333333333333,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook Esse/Essa + coisa",
+   "sub": "sub eleva com número/dinheiro",
+   "or": 0.59387733408749,
+   "lo": 0.3988186810975519,
+   "hi": 0.8843374311661077,
+   "lift": 0.8527268260727153,
+   "n": 344,
+   "roteiros": 153,
+   "desc": 0.8586488005997002,
+   "val": 0.8325,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook Esse/Essa + coisa",
+   "sub": "sub explica porquê (porque / o motivo)",
+   "or": 2.7373513309420425,
+   "lo": 1.1502715253392697,
+   "hi": 6.514194382756803,
+   "lift": 2.025560772039645,
+   "n": 27,
+   "roteiros": 13,
+   "desc": 1.7900457665903888,
+   "val": 2.59,
+   "leitura": "ajuda (replica)"
+  },
+  {
+   "hook": "hook Esse/Essa + coisa",
+   "sub": "sub biografia (fundada / a história)",
+   "or": 0.8058564414787084,
+   "lo": 0.2929853099420196,
+   "hi": 2.216509095289593,
+   "lift": 0.9943661971830987,
+   "n": 30,
+   "roteiros": 13,
+   "desc": 0.441699604743083,
+   "val": 1.363157894736842,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook Esse/Essa + coisa",
+   "sub": "sub <= 15 palavras",
+   "or": 1.124532148866331,
+   "lo": 0.7094175092902792,
+   "hi": 1.7825505252880507,
+   "lift": 1.0980731011837899,
+   "n": 163,
+   "roteiros": 62,
+   "desc": 1.0377796538623891,
+   "val": 1.2086666666666668,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook Esse/Essa + coisa",
+   "sub": "sub 31+ palavras",
+   "or": 0.7804705765067744,
+   "lo": 0.49070580472105046,
+   "hi": 1.2413432140650729,
+   "lift": 0.8985236721534023,
+   "n": 166,
+   "roteiros": 77,
+   "desc": 0.759171195652174,
+   "val": 1.1099999999999999,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook A/O + nome",
+   "sub": "sub Isso porque",
+   "or": 1.1012504749543424,
+   "lo": 0.7129899873537424,
+   "hi": 1.7009391858198288,
+   "lift": 1.1064761904761906,
+   "n": 105,
+   "roteiros": 38,
+   "desc": 1.0560632782855006,
+   "val": 1.2393029675638372,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook A/O + nome",
+   "sub": "sub dá nome (Essa é a / O nome dele é / Ele se chama)",
+   "or": 1.0612581861308326,
+   "lo": 0.4715882615890448,
+   "hi": 2.3882463355527013,
+   "lift": 1.0827586206896553,
+   "n": 29,
+   "roteiros": 13,
+   "desc": 1.876543209876543,
+   "val": 0.6641240783117214,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook A/O + nome",
+   "sub": "sub com nome próprio",
+   "or": 0.9412292231082902,
+   "lo": 0.7405510523829051,
+   "hi": 1.1962881526970954,
+   "lift": 1.001006711409396,
+   "n": 894,
+   "roteiros": 385,
+   "desc": 1.0075399784572043,
+   "val": 0.9950718153227637,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook A/O + nome",
+   "sub": "sub com nome E data",
+   "or": 0.8005684500600703,
+   "lo": 0.5953056022337186,
+   "hi": 1.0766064368061503,
+   "lift": 0.8625308641975309,
+   "n": 324,
+   "roteiros": 137,
+   "desc": 0.8209876543209877,
+   "val": 0.904059149287145,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook A/O + nome",
+   "sub": "sub volta no tempo (abre)",
+   "or": 1.059345684097628,
+   "lo": 0.752982451200651,
+   "hi": 1.490357811960786,
+   "lift": 0.9765550239234451,
+   "n": 209,
+   "roteiros": 84,
+   "desc": 0.8821356969505117,
+   "val": 1.09724847721067,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook A/O + nome",
+   "sub": "sub com ano/data",
+   "or": 0.9442296777466808,
+   "lo": 0.7117484092188987,
+   "hi": 1.2526472455569588,
+   "lift": 0.9332777777777779,
+   "n": 360,
+   "roteiros": 152,
+   "desc": 0.9091779117618911,
+   "val": 0.956444650015418,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook A/O + nome",
+   "sub": "sub Só que/Mas",
+   "or": 0.30462802030971875,
+   "lo": 0.10006952339879652,
+   "hi": 0.9273375909666265,
+   "lift": 0.4186666666666667,
+   "n": 30,
+   "roteiros": 15,
+   "desc": 0.27196278404007873,
+   "val": 0.9013112491373361,
+   "leitura": "atrapalha (replica)"
+  },
+  {
+   "hook": "hook A/O + nome",
+   "sub": "sub E...",
+   "or": 1.1672153677374162,
+   "lo": 0.8069707112912184,
+   "hi": 1.6882790113936783,
+   "lift": 1.0958389261744967,
+   "n": 149,
+   "roteiros": 62,
+   "desc": 1.3031550068587106,
+   "val": 0.9013112491373361,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook A/O + nome",
+   "sub": "sub eleva com número/dinheiro",
+   "or": 1.1441516894075723,
+   "lo": 0.9034992834189429,
+   "hi": 1.4489032945554579,
+   "lift": 1.0096307692307693,
+   "n": 650,
+   "roteiros": 275,
+   "desc": 1.0178488810967443,
+   "val": 1.0009754738015608,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook A/O + nome",
+   "sub": "sub explica porquê (porque / o motivo)",
+   "or": 1.0594287910281834,
+   "lo": 0.743391453095766,
+   "hi": 1.5098227973773175,
+   "lift": 1.0913414634146341,
+   "n": 164,
+   "roteiros": 62,
+   "desc": 1.0916996661231462,
+   "val": 1.0877894386140265,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook A/O + nome",
+   "sub": "sub biografia (fundada / a história)",
+   "or": 0.7417861580687037,
+   "lo": 0.34384946437833624,
+   "hi": 1.600254650089824,
+   "lift": 0.8722222222222223,
+   "n": 36,
+   "roteiros": 15,
+   "desc": 0.6701940035273368,
+   "val": 1.0037329819938516,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook A/O + nome",
+   "sub": "sub <= 15 palavras",
+   "or": 1.3152721096986821,
+   "lo": 0.986459716843373,
+   "hi": 1.7536861293099277,
+   "lift": 1.162135231316726,
+   "n": 281,
+   "roteiros": 114,
+   "desc": 1.0425240054869684,
+   "val": 1.3061971618357489,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook A/O + nome",
+   "sub": "sub 31+ palavras",
+   "or": 0.8864961682788577,
+   "lo": 0.6835789424561993,
+   "hi": 1.1496484276553796,
+   "lift": 0.9527704485488128,
+   "n": 379,
+   "roteiros": 166,
+   "desc": 0.9610768175582991,
+   "val": 0.944689865405978,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook acabou de",
+   "sub": "sub Isso porque",
+   "or": 1.9111064406789673,
+   "lo": 0.956456861383061,
+   "hi": 3.818601732150546,
+   "lift": 1.2787019361876193,
+   "n": 38,
+   "roteiros": 14,
+   "desc": 1.193344807802639,
+   "val": 1.33903743315508,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook acabou de",
+   "sub": "sub dá nome (Essa é a / O nome dele é / Ele se chama)",
+   "or": 1.3932901211366897,
+   "lo": 0.6670692982737481,
+   "hi": 2.9101284779268157,
+   "lift": 1.2653821243523315,
+   "n": 32,
+   "roteiros": 12,
+   "desc": 1.7542168674698793,
+   "val": 1.034710743801653,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook acabou de",
+   "sub": "sub com nome próprio",
+   "or": 1.2823836356829101,
+   "lo": 0.8697974209883998,
+   "hi": 1.8906790815711683,
+   "lift": 1.063965165144892,
+   "n": 307,
+   "roteiros": 119,
+   "desc": 1.0120481927710843,
+   "val": 1.1073443797581728,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook acabou de",
+   "sub": "sub com nome E data",
+   "or": 0.8220800376179238,
+   "lo": 0.424323472900998,
+   "hi": 1.5926896139624276,
+   "lift": 0.9416797204482468,
+   "n": 43,
+   "roteiros": 17,
+   "desc": 1.326718639262934,
+   "val": 0.6566433566433566,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook acabou de",
+   "sub": "sub com ano/data",
+   "or": 0.8595813034218943,
+   "lo": 0.48541347540620766,
+   "hi": 1.5221662657266923,
+   "lift": 0.9448186528497409,
+   "n": 60,
+   "roteiros": 24,
+   "desc": 1.1985332634887376,
+   "val": 0.769041769041769,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook acabou de",
+   "sub": "sub E...",
+   "or": 1.5804222695966508,
+   "lo": 0.9245647757155308,
+   "hi": 2.7015246695981956,
+   "lift": 1.2087232232619287,
+   "n": 67,
+   "roteiros": 26,
+   "desc": 1.063161737860533,
+   "val": 1.33903743315508,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook acabou de",
+   "sub": "sub eleva com número/dinheiro",
+   "or": 1.131062652933847,
+   "lo": 0.7713098020129853,
+   "hi": 1.6586107443766345,
+   "lift": 1.1156021994289944,
+   "n": 196,
+   "roteiros": 80,
+   "desc": 1.0692369477911647,
+   "val": 1.1522915101427498,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook acabou de",
+   "sub": "sub explica porquê (porque / o motivo)",
+   "or": 1.1506583972384472,
+   "lo": 0.6568747024902721,
+   "hi": 2.015627549844576,
+   "lift": 1.0014206919605548,
+   "n": 62,
+   "roteiros": 25,
+   "desc": 1.113788487282463,
+   "val": 0.8942857142857142,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook acabou de",
+   "sub": "sub <= 15 palavras",
+   "or": 1.0349551687995133,
+   "lo": 0.6674451328859898,
+   "hi": 1.6048243498208192,
+   "lift": 0.9876153165676734,
+   "n": 123,
+   "roteiros": 47,
+   "desc": 0.7889335118250781,
+   "val": 1.15467720685112,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook acabou de",
+   "sub": "sub 31+ palavras",
+   "or": 0.9329598719926425,
+   "lo": 0.615658605505141,
+   "hi": 1.4137934806163603,
+   "lift": 0.9260996180174729,
+   "n": 137,
+   "roteiros": 53,
+   "desc": 0.9232720355104628,
+   "val": 0.9247727272727273,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook com consequência (verbo de ação no passado)",
+   "sub": "sub Isso porque",
+   "or": 0.8729872964361424,
+   "lo": 0.46741350537154214,
+   "hi": 1.6304766785313451,
+   "lift": 0.942857142857143,
+   "n": 62,
+   "roteiros": 26,
+   "desc": 1.1170926842497797,
+   "val": 0.5992923485183547,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook com consequência (verbo de ação no passado)",
+   "sub": "sub dá nome (Essa é a / O nome dele é / Ele se chama)",
+   "or": 0.9900685853858135,
+   "lo": 0.7231458789367651,
+   "hi": 1.3555159924427667,
+   "lift": 0.9913784461152882,
+   "n": 228,
+   "roteiros": 90,
+   "desc": 1.1270344476209346,
+   "val": 0.880560224089636,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook com consequência (verbo de ação no passado)",
+   "sub": "sub com nome próprio",
+   "or": 0.8998726328695396,
+   "lo": 0.7384392768180809,
+   "hi": 1.096597622592398,
+   "lift": 0.984480034166133,
+   "n": 2007,
+   "roteiros": 865,
+   "desc": 0.990579483024737,
+   "val": 0.9776898026595556,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook com consequência (verbo de ação no passado)",
+   "sub": "sub com nome E data",
+   "or": 0.9418596192971288,
+   "lo": 0.7675380280424549,
+   "hi": 1.1557727565955394,
+   "lift": 0.9858997161778619,
+   "n": 755,
+   "roteiros": 343,
+   "desc": 0.9505603975476357,
+   "val": 1.019540795041421,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook com consequência (verbo de ação no passado)",
+   "sub": "sub volta no tempo (abre)",
+   "or": 0.994299754508512,
+   "lo": 0.7822013576444482,
+   "hi": 1.2639098515411586,
+   "lift": 0.9851837647810802,
+   "n": 447,
+   "roteiros": 207,
+   "desc": 0.9364618717736112,
+   "val": 1.0276075495700465,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook com consequência (verbo de ação no passado)",
+   "sub": "sub com ano/data",
+   "or": 0.9519114051379229,
+   "lo": 0.7806307631329649,
+   "hi": 1.1607732695480677,
+   "lift": 0.9871514320013721,
+   "n": 833,
+   "roteiros": 379,
+   "desc": 0.9767879810844364,
+   "val": 0.9968951435996086,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook com consequência (verbo de ação no passado)",
+   "sub": "sub Só que/Mas",
+   "or": 0.5805063536364642,
+   "lo": 0.2680340343383031,
+   "hi": 1.2572568533851554,
+   "lift": 0.6777639751552795,
+   "n": 46,
+   "roteiros": 19,
+   "desc": 0.16678814382896015,
+   "val": 1.2076648841354725,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook com consequência (verbo de ação no passado)",
+   "sub": "sub E...",
+   "or": 1.3257017567109408,
+   "lo": 0.9519310632401051,
+   "hi": 1.8462315346286633,
+   "lift": 1.1670588235294117,
+   "n": 187,
+   "roteiros": 75,
+   "desc": 1.16448449509674,
+   "val": 1.1830186620102587,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook com consequência (verbo de ação no passado)",
+   "sub": "sub eleva com número/dinheiro",
+   "or": 1.0894769376099285,
+   "lo": 0.9124425524160931,
+   "hi": 1.300859976818167,
+   "lift": 1.0322620775450964,
+   "n": 1378,
+   "roteiros": 603,
+   "desc": 1.0104446771773896,
+   "val": 1.0571991353619072,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook com consequência (verbo de ação no passado)",
+   "sub": "sub explica porquê (porque / o motivo)",
+   "or": 0.8837076201111291,
+   "lo": 0.6085865730539451,
+   "hi": 1.2832014251048112,
+   "lift": 0.927891156462585,
+   "n": 168,
+   "roteiros": 72,
+   "desc": 1.0112628510050636,
+   "val": 0.8318944015962549,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook com consequência (verbo de ação no passado)",
+   "sub": "sub biografia (fundada / a história)",
+   "or": 0.6771464764178652,
+   "lo": 0.4423642173944807,
+   "hi": 1.0365380663604538,
+   "lift": 0.8119047619047619,
+   "n": 144,
+   "roteiros": 66,
+   "desc": 0.7697914330567392,
+   "val": 0.825112653757155,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook com consequência (verbo de ação no passado)",
+   "sub": "sub <= 15 palavras",
+   "or": 0.9804612524235836,
+   "lo": 0.7799061979959219,
+   "hi": 1.2325895985622732,
+   "lift": 0.9723094755143438,
+   "n": 493,
+   "roteiros": 208,
+   "desc": 0.8933545214529711,
+   "val": 1.036468433527257,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook com consequência (verbo de ação no passado)",
+   "sub": "sub 31+ palavras",
+   "or": 1.0210591550817554,
+   "lo": 0.8363274480780098,
+   "hi": 1.2465952188609999,
+   "lift": 1.0190804597701149,
+   "n": 696,
+   "roteiros": 319,
+   "desc": 0.9340136054421768,
+   "val": 1.0888781742205078,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook com número",
+   "sub": "sub Isso porque",
+   "or": 0.3227801625368762,
+   "lo": 0.10776793836390193,
+   "hi": 0.9667720744134679,
+   "lift": 0.512388966806919,
+   "n": 31,
+   "roteiros": 12,
+   "desc": 0.6217021276595744,
+   "val": 0.34604105571847504,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook com número",
+   "sub": "sub dá nome (Essa é a / O nome dele é / Ele se chama)",
+   "or": 1.065221850425304,
+   "lo": 0.7537620396545877,
+   "hi": 1.5053790598734382,
+   "lift": 1.028760231283322,
+   "n": 193,
+   "roteiros": 77,
+   "desc": 1.4292002934702863,
+   "val": 0.7181984175289106,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook com número",
+   "sub": "sub com nome próprio",
+   "or": 1.054856162586671,
+   "lo": 0.8371686801001686,
+   "hi": 1.3291485338581208,
+   "lift": 1.0160440307705383,
+   "n": 1364,
+   "roteiros": 582,
+   "desc": 0.984513633243901,
+   "val": 1.0437044745057231,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook com número",
+   "sub": "sub com nome E data",
+   "or": 0.6469162378157265,
+   "lo": 0.49580283079042564,
+   "hi": 0.8440867876499732,
+   "lift": 0.7839771101573676,
+   "n": 466,
+   "roteiros": 206,
+   "desc": 0.670715988346429,
+   "val": 0.8966308243727598,
+   "leitura": "atrapalha (replica)"
+  },
+  {
+   "hook": "hook com número",
+   "sub": "sub volta no tempo (abre)",
+   "or": 0.8903698823754396,
+   "lo": 0.6487730552462866,
+   "hi": 1.22193503726863,
+   "lift": 0.9175450153711022,
+   "n": 264,
+   "roteiros": 121,
+   "desc": 0.7849774339136041,
+   "val": 1.038123167155425,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook com número",
+   "sub": "sub com ano/data",
+   "or": 0.6560866695187748,
+   "lo": 0.5089139705547545,
+   "hi": 0.8458202030708951,
+   "lift": 0.7972112428634166,
+   "n": 528,
+   "roteiros": 234,
+   "desc": 0.6934066823072567,
+   "val": 0.890566037735849,
+   "leitura": "atrapalha (replica)"
+  },
+  {
+   "hook": "hook com número",
+   "sub": "sub Só que/Mas",
+   "or": 1.1280313944662237,
+   "lo": 0.6005577332431319,
+   "hi": 2.118788513520428,
+   "lift": 1.1118840579710145,
+   "n": 50,
+   "roteiros": 25,
+   "desc": 0.9564648117839608,
+   "val": 1.268817204301075,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook com número",
+   "sub": "sub E...",
+   "or": 1.22374449826647,
+   "lo": 0.8493523814436442,
+   "hi": 1.763167596577604,
+   "lift": 1.1634819532908702,
+   "n": 157,
+   "roteiros": 63,
+   "desc": 1.2752864157119477,
+   "val": 1.038123167155425,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook com número",
+   "sub": "sub eleva com número/dinheiro",
+   "or": 0.8927064642080117,
+   "lo": 0.7242102888531838,
+   "hi": 1.1004052876695976,
+   "lift": 0.9519857163538097,
+   "n": 901,
+   "roteiros": 389,
+   "desc": 0.8375709219858156,
+   "val": 1.0759328787066125,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook com número",
+   "sub": "sub explica porquê (porque / o motivo)",
+   "or": 0.3038231257342026,
+   "lo": 0.15404164220177338,
+   "hi": 0.5992437526080749,
+   "lift": 0.40938293739728066,
+   "n": 97,
+   "roteiros": 40,
+   "desc": 0.6217021276595744,
+   "val": 0.1028770706190061,
+   "leitura": "atrapalha (replica)"
+  },
+  {
+   "hook": "hook com número",
+   "sub": "sub biografia (fundada / a história)",
+   "or": 0.4687297634236208,
+   "lo": 0.27392646702585677,
+   "hi": 0.8020677720726586,
+   "lift": 0.5921688278667683,
+   "n": 114,
+   "roteiros": 51,
+   "desc": 0.42509547190398256,
+   "val": 0.6597849462365591,
+   "leitura": "atrapalha (replica)"
+  },
+  {
+   "hook": "hook com número",
+   "sub": "sub <= 15 palavras",
+   "or": 1.2935342595012174,
+   "lo": 1.0183990924212756,
+   "hi": 1.6430011504872852,
+   "lift": 1.1566945884855735,
+   "n": 436,
+   "roteiros": 187,
+   "desc": 1.3294259333600964,
+   "val": 1.0025921658986174,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook com número",
+   "sub": "sub 31+ palavras",
+   "or": 0.8471913155471446,
+   "lo": 0.6553024715693713,
+   "hi": 1.095269980318579,
+   "lift": 0.9259764736465848,
+   "n": 446,
+   "roteiros": 206,
+   "desc": 0.8867689262741217,
+   "val": 0.9557324396034073,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook em 1 frase",
+   "sub": "sub Isso porque",
+   "or": 1.716888566572324,
+   "lo": 1.2517242582216763,
+   "hi": 2.354916692446764,
+   "lift": 1.3835436926684597,
+   "n": 189,
+   "roteiros": 75,
+   "desc": 1.4489880747620687,
+   "val": 1.2835497835497836,
+   "leitura": "ajuda (replica)"
+  },
+  {
+   "hook": "hook em 1 frase",
+   "sub": "sub Isso...",
+   "or": 1.046841659632361,
+   "lo": 0.5011320407760677,
+   "hi": 2.1868038185000676,
+   "lift": 1.0119572674703516,
+   "n": 38,
+   "roteiros": 17,
+   "desc": 0.8536673928830791,
+   "val": 1.155194805194805,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook em 1 frase",
+   "sub": "sub dá nome (Essa é a / O nome dele é / Ele se chama)",
+   "or": 0.9983165435444611,
+   "lo": 0.7461488027728358,
+   "hi": 1.3357066545049254,
+   "lift": 1.0064231261638734,
+   "n": 256,
+   "roteiros": 105,
+   "desc": 1.1640918993860172,
+   "val": 0.8384478424801005,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook em 1 frase",
+   "sub": "sub com nome próprio",
+   "or": 0.9783496598796572,
+   "lo": 0.8460830044925718,
+   "hi": 1.1312933269008174,
+   "lift": 0.9960895286107091,
+   "n": 2602,
+   "roteiros": 1085,
+   "desc": 0.9725324729047738,
+   "val": 1.0246643187321154,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook em 1 frase",
+   "sub": "sub com nome E data",
+   "or": 0.8681105897903004,
+   "lo": 0.7125503200065557,
+   "hi": 1.0576319663980078,
+   "lift": 0.9224438060299459,
+   "n": 667,
+   "roteiros": 293,
+   "desc": 0.835926138996756,
+   "val": 1.0596748213027283,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook em 1 frase",
+   "sub": "sub volta no tempo (abre)",
+   "or": 0.9120027411589611,
+   "lo": 0.7132625411357826,
+   "hi": 1.1661189981419762,
+   "lift": 0.944148366171827,
+   "n": 391,
+   "roteiros": 179,
+   "desc": 0.8264588704007501,
+   "val": 1.155194805194805,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook em 1 frase",
+   "sub": "sub com ano/data",
+   "or": 0.8551070013660924,
+   "lo": 0.7098970104610157,
+   "hi": 1.0300198099305349,
+   "lift": 0.9141608803814857,
+   "n": 774,
+   "roteiros": 341,
+   "desc": 0.8319179051663129,
+   "val": 1.042089923278042,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook em 1 frase",
+   "sub": "sub Só que/Mas",
+   "or": 1.0013524607008997,
+   "lo": 0.6556397067582471,
+   "hi": 1.5293563526064369,
+   "lift": 1.003157639057566,
+   "n": 115,
+   "roteiros": 52,
+   "desc": 0.9464573268921096,
+   "val": 1.0882269904009034,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook em 1 frase",
+   "sub": "sub E...",
+   "or": 0.9889624586287988,
+   "lo": 0.7942637324515314,
+   "hi": 1.2313878937394418,
+   "lift": 0.985393389199255,
+   "n": 480,
+   "roteiros": 193,
+   "desc": 0.9500491953053624,
+   "val": 1.0345028106222136,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook em 1 frase",
+   "sub": "sub eleva com número/dinheiro",
+   "or": 0.9841806558259868,
+   "lo": 0.8524218325525873,
+   "hi": 1.136305437416532,
+   "lift": 0.9968790428914476,
+   "n": 1651,
+   "roteiros": 704,
+   "desc": 0.934828874078367,
+   "val": 1.0958609001061832,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook em 1 frase",
+   "sub": "sub explica porquê (porque / o motivo)",
+   "or": 1.4289209029661105,
+   "lo": 1.124169119487058,
+   "hi": 1.816288058032705,
+   "lift": 1.238361266294227,
+   "n": 354,
+   "roteiros": 145,
+   "desc": 1.30883075944242,
+   "val": 1.113078327922078,
+   "leitura": "ajuda (replica)"
+  },
+  {
+   "hook": "hook em 1 frase",
+   "sub": "sub biografia (fundada / a história)",
+   "or": 0.902488481207715,
+   "lo": 0.5618371865956404,
+   "hi": 1.4496823602009117,
+   "lift": 0.9613594040968342,
+   "n": 96,
+   "roteiros": 38,
+   "desc": 0.45194156093810073,
+   "val": 1.242144951822371,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook em 1 frase",
+   "sub": "sub <= 15 palavras",
+   "or": 1.1558059188903764,
+   "lo": 0.9820740131746086,
+   "hi": 1.3602715316982044,
+   "lift": 1.0758069522036002,
+   "n": 1008,
+   "roteiros": 410,
+   "desc": 1.0021312872975277,
+   "val": 1.1738700098977235,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook em 1 frase",
+   "sub": "sub 31+ palavras",
+   "or": 0.95498517542287,
+   "lo": 0.8038272036381852,
+   "hi": 1.1345680777531304,
+   "lift": 0.9778022673368029,
+   "n": 877,
+   "roteiros": 387,
+   "desc": 0.9243352234197579,
+   "val": 1.0353160989953443,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook em 2+ frases",
+   "sub": "sub Isso porque",
+   "or": 0.8491509052432296,
+   "lo": 0.3807432093255176,
+   "hi": 1.8938151547147515,
+   "lift": 0.8771929824561402,
+   "n": 36,
+   "roteiros": 16,
+   "desc": 0.9949238578680204,
+   "val": 0.7858757062146893,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook em 2+ frases",
+   "sub": "sub dá nome (Essa é a / O nome dele é / Ele se chama)",
+   "or": 1.3912485733430098,
+   "lo": 0.9691415197728034,
+   "hi": 1.997203249823326,
+   "lift": 1.2241838774150564,
+   "n": 158,
+   "roteiros": 65,
+   "desc": 1.3265651438240271,
+   "val": 1.175141242937853,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook em 2+ frases",
+   "sub": "sub com nome próprio",
+   "or": 1.182748502186248,
+   "lo": 0.9382462669703444,
+   "hi": 1.4909667841695007,
+   "lift": 1.0282858698785917,
+   "n": 1643,
+   "roteiros": 737,
+   "desc": 1.0301140907829665,
+   "val": 1.0275651986254752,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook em 2+ frases",
+   "sub": "sub com nome E data",
+   "or": 0.8496406826276965,
+   "lo": 0.6792480345385464,
+   "hi": 1.0627771489489557,
+   "lift": 0.9332251333178762,
+   "n": 681,
+   "roteiros": 308,
+   "desc": 0.969598523304107,
+   "val": 0.909757590938187,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook em 2+ frases",
+   "sub": "sub volta no tempo (abre)",
+   "or": 0.9902676213368198,
+   "lo": 0.7602752043839887,
+   "hi": 1.2898355177354972,
+   "lift": 1.0169120863099577,
+   "n": 361,
+   "roteiros": 166,
+   "desc": 1.0160924505886164,
+   "val": 1.0180662557781202,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook em 2+ frases",
+   "sub": "sub com ano/data",
+   "or": 0.8123612750205943,
+   "lo": 0.6548121589362007,
+   "hi": 1.0078170237785455,
+   "lift": 0.9242867842309526,
+   "n": 773,
+   "roteiros": 347,
+   "desc": 0.998251362409385,
+   "val": 0.8787217812105174,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook em 2+ frases",
+   "sub": "sub Só que/Mas",
+   "or": 1.27297760191542,
+   "lo": 0.6006377618202521,
+   "hi": 2.697918908840232,
+   "lift": 1.1609907120743033,
+   "n": 34,
+   "roteiros": 13,
+   "desc": 0.9949238578680204,
+   "val": 1.2090395480225988,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook em 2+ frases",
+   "sub": "sub E...",
+   "or": 1.2641541328230879,
+   "lo": 0.8142498104114023,
+   "hi": 1.9626478890136374,
+   "lift": 1.21156852527358,
+   "n": 101,
+   "roteiros": 42,
+   "desc": 1.5241386758829247,
+   "val": 0.9459614982213851,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook em 2+ frases",
+   "sub": "sub eleva com número/dinheiro",
+   "or": 1.019551103590394,
+   "lo": 0.8354680074206362,
+   "hi": 1.2441942044455054,
+   "lift": 1.010790574763268,
+   "n": 1195,
+   "roteiros": 531,
+   "desc": 1.0190831568449479,
+   "val": 1.0061750955578905,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook em 2+ frases",
+   "sub": "sub explica porquê (porque / o motivo)",
+   "or": 0.8673865251146698,
+   "lo": 0.5427895699732251,
+   "hi": 1.386097717366998,
+   "lift": 0.8937437934458788,
+   "n": 106,
+   "roteiros": 50,
+   "desc": 1.0534487906837862,
+   "val": 0.818620527306968,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook em 2+ frases",
+   "sub": "sub biografia (fundada / a história)",
+   "or": 0.6327297703032918,
+   "lo": 0.41133109013326086,
+   "hi": 0.9732961398525799,
+   "lift": 0.7467994310099573,
+   "n": 148,
+   "roteiros": 69,
+   "desc": 0.9363989250522544,
+   "val": 0.6481449123420117,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook em 2+ frases",
+   "sub": "sub <= 15 palavras",
+   "or": 1.128318279391416,
+   "lo": 0.8589574535701019,
+   "hi": 1.4821480788336903,
+   "lift": 1.069847515986227,
+   "n": 321,
+   "roteiros": 144,
+   "desc": 0.9386074130830381,
+   "val": 1.133123111286296,
+   "leitura": "sem evidência"
+  },
+  {
+   "hook": "hook em 2+ frases",
+   "sub": "sub 31+ palavras",
+   "or": 1.0931005715340805,
+   "lo": 0.8870648319295673,
+   "hi": 1.3469915799604213,
+   "lift": 1.0363965868760854,
+   "n": 697,
+   "roteiros": 325,
+   "desc": 0.9380710659898478,
+   "val": 1.1024875015242042,
+   "leitura": "sem evidência"
+  }
+ ]
+}

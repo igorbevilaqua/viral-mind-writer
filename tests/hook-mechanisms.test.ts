@@ -3,6 +3,7 @@ import {
   contarFrases,
   filtrarCandidatos,
   hookLint,
+  placarHook,
   selectHook,
   type HookCandidate,
 } from "@/lib/pipeline/hook-mechanisms";
@@ -102,6 +103,35 @@ describe("selectHook", () => {
 
   it("candidatos vazios → null", () => {
     expect(selectHook([{ hook: "  ", mecanismo: "Outro" }], new Map())).toBeNull();
+  });
+
+  it("o placar manda: hook de placar maior vence mesmo com mecanismo de lift menor", () => {
+    const dois = [c("Essa empresa pode mudar o mercado.", "Conflito Declarado"), c("A China acabou de humilhar a Toyota.", "Contraste Extremo")];
+    const out = selectHook(dois, rank)!;
+    expect(out.principal.mecanismo).toBe("Contraste Extremo");
+    expect(out.motivo).toBe("placar +4 (o maior entre os candidatos); Contraste Extremo: IC inferior do lift 1,00");
+  });
+
+  it("anti-colapso não troca placar maior por menor", () => {
+    const recentes = ["Conflito Declarado", "Conflito Declarado", "Conflito Declarado"];
+    const dois = [c("A China declarou guerra à Toyota.", "Conflito Declarado"), c("Essa marca nunca vendeu tanto.", "Urgência")];
+    expect(selectHook(dois, rank, { recentes })!.principal.mecanismo).toBe("Conflito Declarado");
+  });
+});
+
+describe("placarHook (estudo 2026-10)", () => {
+  it("soma os elementos bons e tira os ruins", () => {
+    expect(placarHook("A China acabou de humilhar a Toyota.")).toBe(4); // nome na abertura, acabou de, embate com nome, lugar
+    expect(placarHook("Essa empresa pode mudar a vida de quem trabalha.")).toBe(-3); // Essa, empresa, pode
+    expect(placarHook("Esse menino cearense de apenas 8 anos venceu uma olimpíada.")).toBe(2); // -Esse; +embate com lugar, +lugar, +idade
+  });
+  it("'O Brasil' na abertura não conta como nome", () => {
+    expect(placarHook("O Brasil acabou de mudar a regra.")).toBe(1);
+    expect(placarHook("O Google acabou de mudar a regra.")).toBe(2);
+  });
+  it("IA só tira ponto quando a abertura não tem nome", () => {
+    expect(placarHook("Essa IA consegue prever tudo.")).toBe(-2);
+    expect(placarHook("A Samsung lançou uma IA que prevê tudo.")).toBe(1);
   });
 });
 

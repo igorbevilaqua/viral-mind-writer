@@ -1,0 +1,88 @@
+{
+ "pares": 260,
+ "pares_ig_tt": 227,
+ "clientes": 27,
+ "por_plataforma": {
+  "TikTok": 100,
+  "Instagram": 127,
+  "YouTube": 33
+ },
+ "por_cliente": {
+  "Izabela Anholett": 25,
+  "Rafael Rodrigues": 25,
+  "Lincoln Fracari": 24,
+  "Fernando Pereira": 19,
+  "Rodrigo Waughan": 19,
+  "Thiago Franco": 18,
+  "Marcio Grazino": 17,
+  "Marcos Pelozato": 13,
+  "Manoel Victor": 13,
+  "Franklin Tomich": 12,
+  "Dilson Peres": 12,
+  "Marcelo Germano": 8,
+  "Cadu Neiva": 7,
+  "Leonardo Cirino": 6,
+  "Pedro Elero": 6,
+  "Drielle Castelani": 5,
+  "Ricardo Schumacher": 5,
+  "Renato Mendes": 5,
+  "João Felipe Marques": 4,
+  "Túlio Lichenstein": 4,
+  "Patrick Diorio": 3,
+  "Leonardo Nogueira": 3,
+  "Café com Ferri": 2,
+  "João Paulo Albuquerque": 2,
+  "Renato Torres": 1,
+  "Thainá Iansen": 1,
+  "Thiago Bisewski": 1
+ },
+ "limiar_por_cliente": {
+  "Rodrigo Waughan": 0.78,
+  "Rafael Rodrigues": 0.785,
+  "Marcos Pelozato": 0.8,
+  "Ricardo Schumacher": 0.806,
+  "Fernando Pereira": 0.801,
+  "Thiago Franco": 0.831,
+  "Lincoln Fracari": 0.803,
+  "Izabela Anholett": 0.805,
+  "Patrick Diorio": 0.793,
+  "Renato Mendes": 0.785,
+  "Pedro Elero": 0.78,
+  "Marcio Grazino": 0.78,
+  "Túlio Lichenstein": 0.782,
+  "Marcelo Germano": 0.785,
+  "Manoel Victor": 0.78,
+  "Leonardo Cirino": 0.804,
+  "Renato Torres": 0.78,
+  "Franklin Tomich": 0.78,
+  "Café com Ferri": 0.845,
+  "João Paulo Albuquerque": 0.78,
+  "Thainá Iansen": 0.78,
+  "Dilson Peres": 0.812,
+  "Leonardo Nogueira": 0.792,
+  "João Felipe Marques": 0.793,
+  "Drielle Castelani": 0.78,
+  "Cadu Neiva": 0.78,
+  "Lerry Granville": 0.78,
+  "Thiago Bisewski": 0.78,
+  "Leonardo Martins": 0.785
+ },
+ "similaridade": {
+  "min": 0.78,
+  "mediana": 0.818,
+  "max": 0.93
+ },
+ "distancia_dias": {
+  "mediana": 35,
+  "p90": 109
+ },
+ "pq_medio": {
+  "vencedor": 0.8982230769230773,
+  "perdedor": 0.15139999999999998
+ },
+ "vencedor_melhor_na_media_das_redes": 258,
+ "clientes_sem_par": [
+  "Lerry Granville",
+  "Leonardo Martins"
+ ]
+}

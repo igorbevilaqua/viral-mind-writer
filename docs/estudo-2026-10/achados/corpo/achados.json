@@ -1,0 +1,465 @@
+[
+ {
+  "id": "corpo-tamanho-450-500",
+  "parte": "corpo",
+  "achado": "O ponto ótimo de tamanho é 450 a 500 palavras faladas; abaixo de 300 derruba; acima de 500 o ganho some.",
+  "numeros": "450-500: 558 vídeos, 32% de topo, lift 1,23 [1,09-1,38], OR MH 1,39 [1,15-1,69], d/v 1,12/1,30, replica; ctl modelagem OR 1,45 [1,19-1,76]; ctl roteirista OR 1,35 [1,10-1,65]; lift>1 em 14 de 19 clientes. <300: OR 0,70 (ctl modelagem 0,65; roteirista 0,70), lift<1 em 9 de 11 clientes. 500-600: 113 vídeos, lift 0,72 [0,48-1,04], OR 0,65.",
+  "escopo": "global; IG e YT mais forte; TT plano acima de 300",
+  "exemplos": [
+   "Distribuição atual: mediana 386 palavras, só 12% dos roteiros chegam a 450."
+  ],
+  "instrucao": "Escreva entre 420 e 500 palavras faladas, mire 450 a 490. Abaixo de 300 elimina. Acima de 500 só se cada parágrafo novo trouxer fato novo.",
+  "confianca": "alta"
+ },
+ {
+  "id": "plataforma-tamanho-por-rede",
+  "parte": "plataforma",
+  "achado": "Faixa ideal por rede: Instagram 450-500; YouTube 400-500; TikTok qualquer coisa de 350 a 500 (só pune <300).",
+  "numeros": "IG 450-500: lift 1,27 [1,05-1,50], OR 1,48 [1,12-1,97], replica. YT 400-450: OR 1,43 [1,13-1,82]; 450-500: OR 1,51 [1,06-2,16], ambos replicam; YT >=380 OR 1,70 [1,35-2,14]. TT: nenhuma faixa acima de 300 se destaca; >=300 OR 1,53 [1,10-2,14]. FB: 276 vídeos, sem conclusão.",
+  "escopo": "por rede",
+  "exemplos": [],
+  "instrucao": "Como o mesmo roteiro vai para as 3 redes, mire 450-490: atende IG e YT sem prejudicar TT.",
+  "confianca": "alta"
+ },
+ {
+  "id": "corpo-tamanho-por-macro",
+  "parte": "corpo",
+  "achado": "Tamanho ideal por macro nicho: Tecnologia 420-500 (500+ desaba); Dinheiro 450-500; Negócios curva plana de 350 a 500.",
+  "numeros": "Tecnologia: 400-450 lift 1,17 (OR 1,33), 450-500 1,35 (OR 1,58), YT 450-500 1,65 (OR 2,19), 500+ 0,34 (OR 0,27, 34 vídeos). Dinheiro: 450-500 1,35 (OR 1,64), IG 1,45, TT 1,41. Negócios: 450-500 1,13 (OR 1,21), TT melhor em 300-400 (1,10, OR 1,28).",
+  "escopo": "macro nicho",
+  "exemplos": [],
+  "instrucao": "Tecnologia: 420 a 500, nunca acima de 500. Dinheiro: 450 a 500. Negócios: 380 a 500 (no TikTok não precisa passar de 400).",
+  "confianca": "media"
+ },
+ {
+  "id": "plataforma-duracao-ritmo",
+  "parte": "plataforma",
+  "achado": "Ritmo real é 3,07 palavras por segundo (430 palavras = 140 s, não 180 s). Com palavras fixas, vídeo de 150 a 180 s ainda ajuda no IG e no TT; no TT abaixo de 100 s derruba.",
+  "numeros": "Pace mediano 3,07 (2,40 a 3,66 por cliente). Dur 150-180 s ctl palavras: IG OR 1,43 [1,05-1,95], TT OR 1,85 [1,25-2,74], YT 0,79. TT <100 s OR 0,57 [0,36-0,89]; TT 75-90 s lift 0,72, OR 0,61, replica. IG 165-180 s lift 1,31, OR 1,56, replica.",
+  "escopo": "IG e TT; YT não",
+  "exemplos": [
+   "Atenção: duracao do TikTok está em ms em 1.189 de 1.857 vídeos; normalizar antes de qualquer corte."
+  ],
+  "instrucao": "Conte o tempo com 3 palavras por segundo. Corte final de IG e TT entre 150 e 180 s; texto de 450 palavras com menos de 140 s indica locução corrida.",
+  "confianca": "media"
+ },
+ {
+  "id": "corpo-paragrafo-35",
+  "parte": "corpo",
+  "achado": "Parágrafo de até 35 palavras segura o espectador até o fim; acima de 45 derruba.",
+  "numeros": "Todo parágrafo <=35: ret_final IG lift 1,25 [1,06-1,46], OR 1,57 [1,18-2,09], d/v 1,17/1,45, replica; ctl tamanho OR 1,42 [1,04-1,95]; coef OR ctl 1,20 [1,04-1,39]. Algum >45: ret_final lift 0,74, OR 0,60 [0,43-0,83], replica. 16-18 parágrafos: OR ctl 1,26 [1,09-1,45], replica. 80% dos roteiros têm algum parágrafo >35 (mediana do maior: 42).",
+  "escopo": "global (retenção só IG)",
+  "exemplos": [],
+  "instrucao": "Teto duro de 35 palavras por parágrafo; acima de 45 é reescrita obrigatória. Para 450 palavras, 16 a 18 parágrafos.",
+  "confianca": "alta"
+ },
+ {
+  "id": "corpo-ou-seja",
+  "parte": "corpo",
+  "achado": "'Ou seja,' abrindo a frase para traduzir o fato em consequência ou escala.",
+  "numeros": "Qualquer 'ou seja': 1.205 vídeos / 520 roteiros / 27 clientes, 30% vs 25%, lift 1,17 [1,07-1,27], OR ctl 1,36 [1,17-1,59], estrito 1,39 [1,17-1,64], d/v 1,11/1,20, replica; IG OR 1,51; acerto OR 1,20 replica; 17 de 20 clientes. Abrindo a frase: 433 roteiros, OR estrito 1,30 [1,09-1,56], replica.",
+  "escopo": "global; Negócios 1,28, Tecnologia 1,16, Dinheiro 1,05 (neutro)",
+  "exemplos": [
+   "Ou seja, o preço do mercado e da sua gasolina pode estar nos próximos dias. (Fernando Pereira, TikTok, coef 3661)",
+   "Ou seja, quase 30% de toda a rede fechou as portas num único anúncio. (Marcos Pelozato, TikTok, coef 1356)",
+   "Contraexemplo: ...é dedutível, ou seja, pode ser deduzida da base de cálculo... (Dilson Peres, TikTok, coef 0,00)"
+  ],
+  "instrucao": "Depois do fato mais forte, abra a frase seguinte com 'Ou seja,' e diga o que aquilo muda para o bolso, o país ou o mercado. Não use para definir jargão.",
+  "confianca": "alta"
+ },
+ {
+  "id": "corpo-pra-voce-ter-ideia",
+  "parte": "corpo",
+  "achado": "'Pra você ter ideia,' + número ou comparação para dar escala.",
+  "numeros": "1.011 vídeos / 415 roteiros, lift 1,13 [1,03-1,24], OR ctl 1,18 [1,01-1,39], estrito 1,13 [0,95-1,34], replica no ctl; com número na mesma frase: 290 roteiros, lift 1,18 [1,06-1,32], OR ctl 1,25 [1,04-1,50], replica.",
+  "escopo": "Negócios e Tecnologia; Dinheiro não (0,95)",
+  "exemplos": [
+   "Para você ter noção do tamanho disso: a empresa tinha cerca de mil lojas no Brasil. (Marcos Pelozato, TikTok, coef 1356)",
+   "Para você ter uma ideia do quão grande é o projeto, 2.1 bilhões de pessoas no mundo não têm acesso à água potável. (Rafael Rodrigues, YouTube, coef 867)"
+  ],
+  "instrucao": "Quando o número for grande demais para sentir: 'Pra você ter ideia, [número] é [comparação que o brasileiro conhece]'.",
+  "confianca": "media"
+ },
+ {
+  "id": "corpo-nomes-proprios",
+  "parte": "corpo",
+  "achado": "Corpo denso em nomes próprios (7 ou mais a cada 100 palavras): pessoas, empresas, cidades.",
+  "numeros": "1.620 vídeos / 673 roteiros, lift 1,12 [1,04-1,21], OR ctl 1,26 [1,10-1,45], estrito 1,20 [1,04-1,40], d/v 1,11/1,13, replica; 14 de 21 clientes. Corpo pobre (<=3 por 100): ret_final OR 0,69, replica.",
+  "escopo": "Dinheiro 1,31 (OR 1,68), Negócios 1,17 (OR 1,41); Tecnologia 0,96 (não vale)",
+  "exemplos": [
+   "O BYD King emplacou 1.433 unidades e ficou com 42,6% do segmento, enquanto o Corolla vendeu apenas 855 carros... (Renato Mendes, TikTok, coef 483)",
+   "Com o anúncio, o Grupo MK, empresa brasileira dona da Mondial, comprou a fábrica e, meses depois, conseguiu o direito de usar o nome Aiwa no país. (João Paulo Albuquerque, TikTok, coef 384)"
+  ],
+  "instrucao": "Troque 'uma empresa chinesa', 'um empresário', 'uma cidade do Nordeste' pelo nome. Cada parágrafo do corpo com pelo menos um nome próprio.",
+  "confianca": "alta"
+ },
+ {
+  "id": "corpo-uma-data",
+  "parte": "corpo",
+  "achado": "Uma data âncora (exatamente 1 ano citado no corpo); linha do tempo com várias datas não ajuda.",
+  "numeros": "1 ano: 1.351 vídeos / 580 roteiros, lift 1,11 [1,02-1,21], OR ctl 1,23 [1,07-1,42], estrito 1,18 [1,01-1,37], replica. 2-3 anos: 0,98 (OR ctl 0,87); 4+: 1,00; nenhum: 0,95.",
+  "escopo": "global; Tecnologia 1,23 (OR 1,47)",
+  "exemplos": [
+   "Em 2013, ele comprou um Toyota Etios 1.5 manual em Brasília. (Leonardo Nogueira, Instagram, coef 438)"
+  ],
+  "instrucao": "Uma data, no ponto de virada; troque as demais por 'anos depois', 'meses depois'.",
+  "confianca": "media"
+ },
+ {
+  "id": "corpo-pergunta-completa",
+  "parte": "corpo",
+  "achado": "Uma pergunta completa (com verbo) no corpo ajuda a viralização e os comentários.",
+  "numeros": "1.547 vídeos / 658 roteiros, lift 1,09 [1,00-1,18], OR ctl 1,15 [1,00-1,31], estrito 1,21 [1,04-1,41], replica; comentários OR 1,23 [1,07-1,41], replica; 18 de 26 clientes.",
+  "escopo": "global",
+  "exemplos": [
+   "Como é que uma das maiores varejistas do país chega nesse ponto? (Marcos Pelozato, TikTok, coef 1356)",
+   "Sabe aquele uniforme lendário do penta em 2002? (Rafael Rodrigues, TikTok, coef 630)",
+   "Contraexemplo: Por que? (Marcio Grazino, YouTube, coef 0,01)"
+  ],
+  "instrucao": "Faça uma pergunta inteira, com verbo, que o espectador gostaria de fazer naquele ponto. Nunca a pergunta de duas palavras.",
+  "confianca": "media"
+ },
+ {
+  "id": "corpo-enumeracao",
+  "parte": "corpo",
+  "achado": "Enumeração falada 'Primeiro: ... Segundo: ... Terceiro:' quando há várias causas.",
+  "numeros": "2+ marcadores: 123 vídeos / 51 roteiros / 23 clientes, lift 1,42 [1,11-1,76], OR ctl 1,58 [1,08-2,32], estrito 1,50 [1,01-2,24], d/v 1,37/1,47, replica.",
+  "escopo": "Tecnologia 1,78, Dinheiro 1,33, Negócios 1,07",
+  "exemplos": [
+   "Primeiro... sol e vento sobram no Nordeste. Energia limpa, barata e quase infinita. (Lincoln Fracari, TikTok, coef 291)",
+   "Primeiro: empresas de petróleo fora do Oriente Médio viram seus lucros explodirem nesse cenário. (Fernando Pereira, YouTube, coef 125)"
+  ],
+  "instrucao": "Quando o roteiro explica um porquê com várias causas, numere em voz alta.",
+  "confianca": "media"
+ },
+ {
+  "id": "corpo-so-que-tem-um-detalhe",
+  "parte": "corpo",
+  "achado": "'Só que tem um detalhe:' como virada (hipótese; cai com controle de roteirista e derruba comentários).",
+  "numeros": "159 vídeos / 65 roteiros, lift 1,34 [1,07-1,64], OR ctl 1,46 [1,03-2,07], estrito 1,16 [0,80-1,70]; comentários OR 0,58, replica.",
+  "escopo": "YT 1,70",
+  "exemplos": [
+   "Só que tinha um detalhe: a autonomia era de 400 quilômetros, enquanto as versões a lítio do mesmo carro chegavam a 630. (Leonardo Nogueira, YouTube, coef 359)"
+  ],
+  "instrucao": "Pode usar como virada; não conte com ela para comentários.",
+  "confianca": "baixa"
+ },
+ {
+  "id": "corpo-saltos-de-tempo-ate-que",
+  "parte": "corpo",
+  "achado": "Saltos de tempo ('Anos depois', 'nos anos 90') e 'Até que' seguram o espectador até o fim.",
+  "numeros": "ret_final IG (ctl tamanho): 'anos/meses depois' 164 vídeos, 36% vs 24%, lift 1,39 [1,12-1,68], OR 1,91 [1,30-2,83], d/v 1,27/1,76, replica; 'até que' 117 vídeos, lift 1,35 [1,04-1,70], OR 1,76 [1,15-2,69], replica; 'nos anos' OR 2,47 [1,50-4,06], replica. Viralização neutra.",
+  "escopo": "Instagram (retenção)",
+  "exemplos": [
+   "Anos depois, a Kraft se reestruturou e virou Mondelez International... (Franklin Tomich, Instagram)",
+   "Até que nos anos 90, veio o pesadelo: o Brasil se abriu para o mercado estrangeiro... (Marcelo Germano, Instagram)"
+  ],
+  "instrucao": "Pule o tempo morto com 'Anos depois,' e abra a virada com 'Até que'. É a troca direta para 'Foi aí que'.",
+  "confianca": "alta"
+ },
+ {
+  "id": "corpo-viradas",
+  "parte": "corpo",
+  "achado": "Pelo menos 1 virada ('mas', 'só que', 'porém') a cada 100 palavras; o 'portanto' é neutro.",
+  "numeros": "<=0,4 viradas por 100 (25% dos roteiros): ret_final lift 0,74 [0,58-0,93], OR 0,61 [0,43-0,86], replica; coef estrito 0,85 [0,73-0,98]; YT OR 0,66. 'Só que' presente: ret_final OR 1,45 [1,09-1,91]. 'então/por isso': neutro.",
+  "escopo": "global; retenção IG",
+  "exemplos": [],
+  "instrucao": "A cada 2 parágrafos, um 'só que' ou 'mas' que muda a direção.",
+  "confianca": "alta"
+ },
+ {
+  "id": "corpo-biografia-em-ordem",
+  "parte": "corpo",
+  "achado": "Contar a história de origem em ordem cronológica com marcadores de biografia derruba, com dose-resposta.",
+  "numeros": "Marcadores: nasceu em, que nasceu, cresceu em, trabalhava como, no início, desde pequeno, percebeu que, foi nesse momento, foi aí que, foi quando, foi então que, tudo começou. OR estrito: 1 marcador 0,80 [0,68-0,95]; 2+ (168 roteiros) lift 0,75 [0,61-0,92], OR 0,63 [0,47-0,84], replica nas 3 redes, 9 de 12 clientes, comentários OR 0,70 replica; 3+ (28 roteiros) OR 0,40 [0,19-0,87]. Mineração: 'foi nesse' 0,34, 'ele percebeu' 0,35, 'que nasceu' 0,40, 'trabalhava' 0,39, 'no início' 0,52, 'percebeu que' 0,54 (todos replicam).",
+  "escopo": "global; pior em Tecnologia (0,41) e Dinheiro (0,36); Negócios 0,93",
+  "exemplos": [
+   "Contraexemplo: Só que Naomi percebeu que precisava ir além dos muros da faculdade. / Foi aí que nasceu a Missão Mulher Saudável... (Rafael Rodrigues, Instagram, coef 0,08)",
+   "Contraexemplo: Tudo começou nos anos 50... / Ruth percebeu que a filha Barbara... (Thainá Iansen, Instagram, coef 0,12)"
+  ],
+  "instrucao": "Não narre fundação em ordem. Comece pelo resultado ou pelo conflito, pule o passado com 'Anos depois,' e marque a virada com 'Até que' ou 'Só que'.",
+  "confianca": "alta"
+ },
+ {
+  "id": "corpo-foi-ai-que",
+  "parte": "corpo",
+  "achado": "'Foi aí que / foi quando / foi então que' derruba viralização, acerto e comentários.",
+  "numeros": "915 vídeos / 408 roteiros, 23% vs 26%, lift 0,87 [0,77-0,98], OR ctl 0,76 [0,64-0,91], estrito 0,78 [0,64-0,94], d/v 0,83/0,91, replica; IG OR 0,70; acerto OR 0,84 replica; comentários OR 0,72 replica; 12 de 19 clientes com lift<1.",
+  "escopo": "global (todas as macros 0,87 a 0,90)",
+  "exemplos": [
+   "Contraexemplo: Foi aí que ele teve uma ideia: criar uma padaria drive-thru. (Rodrigo Waughan, TikTok, coef 0,01)"
+  ],
+  "instrucao": "Troque 'Foi aí que' por 'Até que' (retém) ou 'Só que' (vira).",
+  "confianca": "alta"
+ },
+ {
+  "id": "corpo-voce-no-corpo",
+  "parte": "corpo",
+  "achado": "'Você' frequente no corpo derruba a retenção final no Instagram, sem ganho de viralização.",
+  "numeros": ">=0,6 por 100 palavras: ret_final lift 0,77 [0,62-0,94], OR 0,55 [0,39-0,77], d/v 0,87/0,22, replica; coef 1,01.",
+  "escopo": "Instagram",
+  "exemplos": [
+   "Contraexemplo: Aí você vai para o mercado de trabalho com esse medo na mochila. (Rafael Rodrigues, Instagram)"
+  ],
+  "instrucao": "No corpo, narre em 3ª pessoa; guarde o 'você' para a conclusão.",
+  "confianca": "media"
+ },
+ {
+  "id": "corpo-estilo-antitese",
+  "parte": "corpo",
+  "achado": "Antítese 'não é X, é Y': 1 é neutra; 2+ derrubam a retenção final.",
+  "numeros": "coef: 0 = 1,00; 1 = 0,98; 2+ = 1,00 (OR ctl 1,02). ret_final 2+: lift 0,60, OR 0,51 [0,32-0,82], replica. Nenhuma: ret_final OR 1,53. 28% dos roteiros têm 1+, 9% têm 2+.",
+  "escopo": "global (retenção IG)",
+  "exemplos": [
+   "não foi qualquer IPO, foi um dos maiores da história americana... (Marcos Pelozato, Instagram, fundo de retenção)"
+  ],
+  "instrucao": "No máximo 1 antítese por roteiro (regra do checklist pode afrouxar de zero para uma).",
+  "confianca": "media"
+ },
+ {
+  "id": "corpo-estilo-pergunta-eliptica",
+  "parte": "corpo",
+  "achado": "Pergunta elíptica ('O resultado?') derruba compartilhamento; viralização neutra.",
+  "numeros": "1+ (140 roteiros): coef 1,11, estrito 1,32 [1,00-1,75]; compart lift 0,66, OR 0,60 [0,37-0,96], replica. Até 4 palavras: compart OR 0,62 [0,44-0,87], replica.",
+  "escopo": "IG e TT (compartilhamento)",
+  "exemplos": [
+   "O resultado? Hoje a LEGO vale bilhões de dólares... (Rafael Rodrigues, YouTube, coef 0,07)",
+   "E adivinha? O custo mais alto de qualquer empresa de tecnologia é a folha de pagamento... (Izabela Anholett, Instagram, coef 0,10)"
+  ],
+  "instrucao": "Manter a proibição. Diga a transição inteira: 'E o resultado disso pegou o mercado de surpresa: ...'.",
+  "confianca": "media"
+ },
+ {
+  "id": "corpo-estilo-perguntas-teto",
+  "parte": "corpo",
+  "achado": "O teto de 1 pergunta retórica não se sustenta: zero perguntas derruba comentários; 2+ não prejudicam.",
+  "numeros": "0 perguntas: comentários OR 0,78 [0,69-0,88], replica; coef estrito 0,85. 1: comentários OR 1,25, replica. 2+: coef 1,09, acerto OR 1,20. 3+: coef estrito 1,44 [1,01-2,06].",
+  "escopo": "global",
+  "exemplos": [],
+  "instrucao": "Pelo menos 1 pergunta completa por roteiro; sem teto; nunca elíptica.",
+  "confianca": "media"
+ },
+ {
+  "id": "corpo-estilo-tricolon",
+  "parte": "corpo",
+  "achado": "Tricolon 'X, Y e Z.' fechando parágrafo: 1 é neutro; 2+ tende a piorar.",
+  "numeros": "1 (29% dos roteiros): coef 1,00. 2+ (6%): OR ctl 0,79 [0,60-1,03], acerto OR 0,76 [0,59-0,97], ret_final 0,77.",
+  "escopo": "global",
+  "exemplos": [],
+  "instrucao": "No máximo 1 tricolon por roteiro.",
+  "confianca": "baixa"
+ },
+ {
+  "id": "corpo-estilo-e-inicial",
+  "parte": "corpo",
+  "achado": "A proibição de frases seguidas com 'E' não se sustenta; parágrafo abrindo com 'E' ajuda compartilhamento e comentários.",
+  "numeros": "Frases seguidas com 'E' (157 roteiros): coef 1,12 (estrito 1,24, sem significância). Parágrafos do corpo abrindo com 'E' >=15% (731 roteiros): OR ctl 1,19 [1,04-1,36], estrito 1,25 [1,09-1,44]; compart OR 1,34 [1,09-1,63], replica; comentários OR 1,28 [1,12-1,46], replica.",
+  "escopo": "global",
+  "exemplos": [
+   "O preço do barril de petróleo disparou 10%. / E tem muitos especialistas dizendo que esse pode ser o início de uma crise brutal. (Fernando Pereira, TikTok, coef 3661)"
+  ],
+  "instrucao": "Retirar a proibição; 'E' falado como ponte de parágrafo é registro de fala.",
+  "confianca": "media"
+ },
+ {
+  "id": "corpo-estilo-frases-longas",
+  "parte": "corpo",
+  "achado": "A regra de no máximo 3 frases longas seguidas não tem efeito mensurável (90% dos roteiros violam).",
+  "numeros": "Corrida de frases >=12 palavras: <=3 = 1,03; 4-6 = 1,00; 7-9 = 1,03; 10+ = 0,95.",
+  "escopo": "global",
+  "exemplos": [],
+  "instrucao": "Sem base no dado; pode sair do guia ou ficar só como higiene de leitura.",
+  "confianca": "media"
+ },
+ {
+  "id": "conclusao-enquanto",
+  "parte": "conclusao",
+  "achado": "Fechar com contraste 'Enquanto todo mundo X, [personagem] Y.' aumenta a viralização.",
+  "numeros": "Abrindo a conclusão: 294 vídeos / 124 roteiros, 31% vs 26%, lift 1,21 [1,02-1,43], OR ctl 1,44 [1,11-1,87], estrito 1,38 [1,04-1,82], d/v 1,02/1,35, replica; acerto OR 1,50 replica; YT OR 1,86.",
+  "escopo": "Negócios 1,53 (OR 1,95) e Dinheiro 1,16; Tecnologia 0,70 (não usar)",
+  "exemplos": [
+   "Enquanto todo mundo gasta rios de dinheiro em propaganda, a Comet faz o próprio cliente virar propaganda... (Pedro Elero, YouTube, coef 1238)",
+   "Enquanto o mundo apostava suas fichas em baterias elétricas, a Geely investiu pesado em tornar o motor a gasolina mais eficiente do que nunca... (Pedro Elero, TikTok, coef 486)",
+   "Enquanto todo mundo procura natureza intocada em lugares distantes, Manaus escondeu uma floresta de verdade dentro de um shopping. (Rodrigo Waughan, TikTok, coef 142)"
+  ],
+  "instrucao": "Feche com 'Enquanto todo mundo [faz o óbvio], [personagem] [fez o contrário]'. Em Tecnologia prefira o eco do hook.",
+  "confianca": "alta"
+ },
+ {
+  "id": "conclusao-eco-do-hook",
+  "parte": "conclusao",
+  "achado": "A conclusão que repete 20% ou mais das palavras de conteúdo do hook viraliza mais.",
+  "numeros": "708 vídeos / 314 roteiros, lift 1,15 [1,02-1,28], OR ctl 1,28 [1,07-1,53], estrito 1,28 [1,05-1,55], d/v 1,00/1,26, replica; TT OR 1,48; 10 de 17 clientes. 56% das conclusões não retomam nenhuma palavra do hook.",
+  "escopo": "global; Dinheiro 1,24, Negócios 1,18, Tecnologia 1,04",
+  "exemplos": [
+   "Hook: O mundo tem exatamente 40 dias até o petróleo acabar. / Conclusão: Neste momento o mundo inteiro está acompanhando de perto o que vai acontecer nas próximas horas. (Fernando Pereira, TikTok, coef 3661)"
+  ],
+  "instrucao": "Repita na conclusão a palavra-chave do hook (o objeto, o número, o lugar).",
+  "confianca": "alta"
+ },
+ {
+  "id": "conclusao-nem-sempre",
+  "parte": "conclusao",
+  "achado": "Revisão de crença: 'X nem sempre Y. Às vezes, Z.'",
+  "numeros": "'nem' na conclusão: 89 roteiros, lift 1,40 [1,16-1,67], OR ctl 1,54 [1,14-2,09], estrito 1,69 [1,23-2,33], replica nas 3 redes. 'nem sempre': 23 roteiros, lift 1,66, OR ctl 2,72, sem replicação formal.",
+  "escopo": "global; Negócios 1,59",
+  "exemplos": [
+   "A inovação que muda o mundo nem sempre sai de Harvard ou de Cambridge. Às vezes ela sai de um laboratório público brasileiro que quase ninguém conhecia até ontem. (Marcio Grazino, YouTube, coef 144)"
+  ],
+  "instrucao": "Se a história derruba uma crença: '[Crença] nem sempre [é verdade]. Às vezes, [o achado da história].'",
+  "confianca": "media"
+ },
+ {
+  "id": "conclusao-escala-global",
+  "parte": "conclusao",
+  "achado": "Escala global no fecho ('o mundo inteiro', 'do mundo', 'planeta'): viralização e candidato a compartilhamento.",
+  "numeros": "355 vídeos / 147 roteiros, lift 1,19 [1,01-1,38], OR ctl 1,33 [1,04-1,70], replica; compart lift 1,25, OR 1,46 [1,02-2,09] (lift sem significância).",
+  "escopo": "Negócios 1,47, Tecnologia 1,23; Dinheiro 0,88",
+  "exemplos": [
+   "A barreira que manteve o carro elétrico fora do alcance da maioria nunca foi a tecnologia, foi a dependência de um único material que poucos países controlavam e o mundo inteiro precisava. (Leonardo Nogueira, YouTube, coef 359)"
+  ],
+  "instrucao": "Quando couber, feche dizendo o tamanho do efeito no mundo.",
+  "confianca": "media"
+ },
+ {
+  "id": "conclusao-hoje-personagem",
+  "parte": "conclusao",
+  "achado": "Fechar no estado atual do personagem ('hoje', 'era X, agora Y', ele/ela) segura até o fim.",
+  "numeros": "'hoje': ret_final lift 1,49, OR 1,83 [1,04-3,24], replica; coef 1,18 (YT OR 1,96). Personagem (ele/ela/dele/dela): ret_final OR 1,56 [1,17-2,08], replica. 'era... hoje/agora': 20 roteiros, lift 1,71, OR ctl 2,57, replica (n pequeno).",
+  "escopo": "Instagram (retenção), YouTube (viralização)",
+  "exemplos": [
+   "O computador era do tamanho de uma sala. Depois coube no bolso. Agora muito em breve vai caber no seu olho. (Izabela Anholett, TikTok, coef 65)"
+  ],
+  "instrucao": "Feche no presente do personagem: o que era e o que é hoje.",
+  "confianca": "media"
+ },
+ {
+  "id": "conclusao-pergunta-de-escolha",
+  "parte": "conclusao",
+  "achado": "Pergunta de escolha ou de opinião ao espectador gera comentários (custa um pouco de viralização).",
+  "numeros": "Pergunta na conclusão: comentários lift 1,21, OR 1,35 [1,12-1,64], replica. Pede opinião: comentários lift 1,40, OR 1,76 [1,21-2,58], replica; coef 0,79 (sem significância).",
+  "escopo": "global; em Dinheiro a viralização cai mais (0,48)",
+  "exemplos": [
+   "E a dúvida que fica é, se você fosse comprar um carro hoje, iria de Chines ou de Japonês? (Renato Mendes, TikTok, coef 483)",
+   "E se você pudesse escolher 1 carro para rodar 1 milhão de km, qual carro seria? (Leonardo Nogueira, Instagram, coef 438)"
+  ],
+  "instrucao": "Quando o objetivo for conversa: 'Se você fosse [decidir] hoje, iria de X ou de Y?'. Para alcance, prefira contraste ou eco do hook.",
+  "confianca": "alta"
+ },
+ {
+  "id": "conclusao-brasil",
+  "parte": "conclusao",
+  "achado": "Trazer a conclusão para o Brasil, o país ou o governo gera comentários.",
+  "numeros": "796 vídeos / 343 roteiros, comentários lift 1,36 [1,23-1,49], OR 1,66 [1,40-1,96], replica; compart OR 1,22 (sem significância); coef 1,07.",
+  "escopo": "global",
+  "exemplos": [
+   "Porque uma coisa é fato: a gente é Brasil. E não é uma marca de fora que vai mudar isso. (Rafael Rodrigues, TikTok, coef 630)"
+  ],
+  "instrucao": "Feche dizendo o que aquilo significa para o Brasil.",
+  "confianca": "alta"
+ },
+ {
+  "id": "conclusao-eu",
+  "parte": "conclusao",
+  "achado": "Opinião do narrador em 1ª pessoa na conclusão gera comentários.",
+  "numeros": "50 roteiros, comentários lift 1,70, OR 2,61 [1,76-3,88], replica. Número novo na conclusão: comentários OR 1,44, replica.",
+  "escopo": "global",
+  "exemplos": [
+   "E agora eu quero saber de você: essa mudança vai melhorar o sistema ou apertar ainda mais as empresas? (Marcos Pelozato, YouTube)"
+  ],
+  "instrucao": "Para comentário, o narrador se posiciona: 'Eu quero saber de você: ...'.",
+  "confianca": "media"
+ },
+ {
+  "id": "conclusao-tamanho",
+  "parte": "conclusao",
+  "achado": "Conclusão de 16 a 25 palavras; 15 ou menos derruba.",
+  "numeros": "<=15: 311 roteiros, lift 0,84 [0,73-0,96], OR estrito 0,77 [0,63-0,95], replica; acerto também; Tecnologia 0,63 (OR 0,51); 12 de 15 clientes com lift<1. 16-25: OR ctl 1,12 [1,00-1,27], acerto OR 1,15 replica. Mediana atual 26.",
+  "escopo": "global",
+  "exemplos": [
+   "Contraexemplo: A lição é clara: Quem blinda a sua base, constrói um império inquebrável. (Rodrigo Waughan, YouTube, coef 0,01)"
+  ],
+  "instrucao": "Conclusão entre 16 e 25 palavras; nunca menos de 15.",
+  "confianca": "alta"
+ },
+ {
+  "id": "conclusao-hesitacao",
+  "parte": "conclusao",
+  "achado": "Hesitação na conclusão ('pode ser', 'talvez') derruba a viralização.",
+  "numeros": "97 roteiros, 18% vs 26%, lift 0,71 [0,53-0,92], OR estrito 0,65 [0,45-0,94], d/v 0,61/0,78, replica; acerto OR 0,58.",
+  "escopo": "global; Dinheiro 0,27",
+  "exemplos": [
+   "Contraexemplo: Se a resposta for não, talvez seja aí que você está perdendo dinheiro. (Marcio Grazino, YouTube, coef 0,01)"
+  ],
+  "instrucao": "Proibido 'pode ser' e 'talvez' na conclusão: afirme.",
+  "confianca": "alta"
+ },
+ {
+  "id": "conclusao-a-diferenca",
+  "parte": "conclusao",
+  "achado": "Sermão comparativo 'A diferença (entre X e Y) está em...' derruba a viralização.",
+  "numeros": "70 roteiros, 15% vs 26%, lift 0,58 [0,39-0,83], OR estrito 0,55 [0,35-0,88], replica.",
+  "escopo": "global",
+  "exemplos": [
+   "Contraexemplo: A diferença entre elas e as que dominam quase sempre está na mesma coisa: alguém com coragem de aparecer... (Café com Ferri, YouTube, coef 0,07)"
+  ],
+  "instrucao": "Não feche explicando 'a diferença'; mostre o contraste com 'Enquanto todo mundo...'.",
+  "confianca": "alta"
+ },
+ {
+  "id": "conclusao-voce-precisa",
+  "parte": "conclusao",
+  "achado": "Ordem ao espectador ('você precisa', 'presta atenção') derruba a viralização.",
+  "numeros": "189 roteiros, lift 0,81 [0,67-0,96], OR estrito 0,65 [0,50-0,85], replica; 7 de 9 clientes.",
+  "escopo": "global",
+  "exemplos": [
+   "Contraexemplo: ...até quem lidera precisa correr pra não ficar pra trás com os avanços da IA. (Manoel Victor, YouTube, coef 0,04)"
+  ],
+  "instrucao": "Nada de 'você precisa' ou 'presta atenção' no fecho.",
+  "confianca": "alta"
+ },
+ {
+  "id": "conclusao-a-licao",
+  "parte": "conclusao",
+  "achado": "'A lição é...' não move a viralização e derruba comentários.",
+  "numeros": "78 roteiros, coef 0,91 (sem significância); comentários lift 0,59, OR 0,53 [0,34-0,81], replica; mineração 'a lição' OR 0,40 (validação 0,18).",
+  "escopo": "global",
+  "exemplos": [
+   "Contraexemplo: A lição que fica é essa: quem faz o produto se distribuir sozinho controla o custo de aquisição... (Renato Torres, YouTube, coef 0,06)"
+  ],
+  "instrucao": "Troque a moral explícita por contraste, eco do hook ou pergunta de escolha.",
+  "confianca": "media"
+ },
+ {
+  "id": "conclusao-aforismo-quem",
+  "parte": "conclusao",
+  "achado": "Aforismo 'Quem X, Y.' derruba a retenção final.",
+  "numeros": "115 roteiros, coef 0,90 (sem significância); ret_final lift 0,48, OR 0,42 [0,20-0,85], replica.",
+  "escopo": "Instagram (retenção)",
+  "exemplos": [
+   "Contraexemplo: Quem controla as regras, controla o mundo... (Fernando Pereira, Instagram, fundo de retenção)"
+  ],
+  "instrucao": "Evite fechar com 'Quem X, Y'.",
+  "confianca": "media"
+ },
+ {
+  "id": "corpo-estrutura-davi-golias",
+  "parte": "corpo",
+  "achado": "Estrutura B1 Davi e Golias ajuda (replica com a régua nova).",
+  "numeros": "159 vídeos rotulados, 34% de topo, lift 1,38 [1,10-1,69], OR 1,69 [1,17-2,44], d/v 1,30/1,51, replica.",
+  "escopo": "Dinheiro 1,64, Tecnologia 1,52, Negócios 1,17",
+  "exemplos": [],
+  "instrucao": "Quando o material permitir, enquadre como pequeno contra gigante.",
+  "confianca": "media"
+ },
+ {
+  "id": "corpo-estrutura-jornada-heroi",
+  "parte": "corpo",
+  "achado": "Estrutura A1 Jornada do Herói atrapalha (replica); é o mesmo fenômeno da biografia em ordem.",
+  "numeros": "371 vídeos rotulados, 18% de topo, lift 0,75 [0,60-0,92], OR 0,61 [0,45-0,84], d/v 0,78/0,64, replica; Negócios 0,76 (n=269).",
+  "escopo": "global, sobretudo Negócios",
+  "exemplos": [],
+  "instrucao": "Rever o status 'Validada' da A1 no playbook de storytelling e trocar o passo final 'Lição replicável'.",
+  "confianca": "media"
+ }
+]

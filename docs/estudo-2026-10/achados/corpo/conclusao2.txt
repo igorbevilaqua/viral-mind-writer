@@ -1,0 +1,287 @@
+| característica | vídeos / roteiros | % topo vs sem | coef lift [IC] | OR ctl tam | OR estrito | IG / TT / YT | acerto | ret_final IG | compart IG+TT | salv TT | coment | leitura coef |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| conclusão abre com 'Enquanto' (contraste) | 294 / 124 | 31% vs 26% | 1,21 [1,02-1,43] | 1,44 [1,11-1,87] | 1,38 [1,04-1,82] | 1,07 / 1,19 / 1,44 | 1,17 OR 1,50 [1,16-1,94] 1,07/1,25 ✓+ | 0,99 OR 0,97 [0,48-1,99] 0,50/2,30 | 0,95 OR 0,95 [0,63-1,44] 1,00/0,99 | 1,04 OR 1,04 [0,62-1,74] 0,74/1,21 | 1,08 OR 1,20 [0,92-1,57] 0,95/1,14 | ajuda (replica) / ctl: ajuda (replica) |
+| conclusão retoma >=20% das palavras do hook | 708 / 314 | 30% vs 25% | 1,15 [1,02-1,28] | 1,28 [1,07-1,53] | 1,28 [1,05-1,55] | 1,14 / 1,28 / 1,02 | 1,10 OR 1,17 [0,99-1,39] 1,12/1,08 | 1,12 OR 1,20 [0,79-1,81] 1,21/1,10 | 0,97 OR 0,97 [0,72-1,30] 1,07/0,86 | 0,90 OR 0,85 [0,58-1,23] 1,04/0,78 | 0,96 OR 0,96 [0,80-1,16] 1,04/0,90 | ajuda (replica) / ctl: ajuda (replica) |
+| conclusão com 'era ... hoje/agora' (antes x agora) | 43 / 20 | 44% vs 26% | 1,71 [1,18-2,29] | 2,57 [1,31-5,04] | 2,90 [1,36-6,18] | 1,36 / 1,49 / 2,71 | 1,43 OR 2,37 [1,11-5,09] 1,52/1,34 ✓+ | 1,54 OR 3,48 [0,92-13,17] 2,09/0,99 | 1,25 OR 1,56 [0,62-3,94] 1,29/1,29 | 1,21 OR 2,15 [0,57-8,02] 0,68/1,62 | 1,20 OR 1,45 [0,73-2,90] 1,01/1,36 | ajuda (replica) / ctl: ajuda (replica) |
+| conclusão com 'hoje' (estado atual) | 246 / 105 | 30% vs 26% | 1,18 [0,97-1,42] | 1,32 [0,99-1,75] | 1,22 [0,89-1,68] | 1,12 / 0,99 / 1,47 | 1,00 OR 1,12 [0,85-1,49] 0,95/1,05 | 1,49 OR 1,83 [1,04-3,24] 1,48/1,45 ✓+ | 0,83 OR 0,78 [0,47-1,29] 0,73/1,06 | 0,70 OR 0,62 [0,33-1,17] 0,77/0,63 | 1,11 OR 1,18 [0,88-1,58] 0,93/1,36 | sem evidência / ctl: sem evidência |
+| conclusão com 'nem X, nem Y' / 'nem' | 199 / 89 | 36% vs 25% | 1,40 [1,16-1,67] | 1,54 [1,14-2,09] | 1,69 [1,23-2,33] | 1,47 / 1,41 / 1,31 | 1,14 OR 1,16 [0,86-1,56] 1,32/1,04 | 0,75 OR 0,78 [0,34-1,79] 1,36/0,21 | 0,83 OR 0,77 [0,46-1,28] 0,80/0,94 | 1,15 OR 1,40 [0,74-2,65] 1,29/1,06 | 0,98 OR 1,03 [0,73-1,44] 1,20/0,83 | ajuda (replica) / ctl: ajuda (replica) |
+| conclusão <=15 palavras | 768 / 311 | 22% vs 26% | 0,84 [0,73-0,96] | 0,78 [0,64-0,94] | 0,77 [0,63-0,95] | 0,83 / 0,91 / 0,78 | 0,87 OR 0,74 [0,62-0,88] 0,80/0,94 ✓- | 1,06 OR 1,00 [0,67-1,49] 0,99/1,23 | 0,96 OR 0,97 [0,73-1,29] 1,02/0,87 | 0,98 OR 0,92 [0,65-1,30] 1,19/0,81 | 1,09 OR 1,11 [0,93-1,32] 1,08/1,09 | atrapalha (replica) / ctl: atrapalha (replica) |
+| conclusão com 'pode ser / pode' (hedge) | 225 / 97 | 18% vs 26% | 0,71 [0,53-0,92] | 0,63 [0,45-0,90] | 0,65 [0,45-0,94] | 0,72 / 0,68 / 0,72 | 0,71 OR 0,58 [0,42-0,80] 0,70/0,71 ✓- | 0,90 OR 0,81 [0,39-1,68] 1,21/0,62 | 0,95 OR 0,97 [0,57-1,63] 0,92/1,03 | 0,94 OR 0,97 [0,51-1,84] 1,16/0,73 | 0,81 OR 0,74 [0,53-1,04] 0,88/0,75 | atrapalha (replica) / ctl: atrapalha (replica) |
+| conclusão com 'a lição / lição' | 187 / 78 | 24% vs 26% | 0,91 [0,70-1,17] | 0,94 [0,66-1,34] | 0,96 [0,65-1,43] | 1,02 / 0,91 / 0,76 | 0,81 OR 0,94 [0,67-1,32] 0,78/0,83 | 0,70 OR 0,45 [0,19-1,11] 0,81/0,00 | 1,09 OR 1,09 [0,62-1,93] 1,09/0,40 | 1,04 OR 1,23 [0,62-2,45] 1,18/0,81 | 0,59 OR 0,53 [0,34-0,81] 0,68/0,47 ✓- | sem evidência / ctl: sem evidência |
+| conclusão com 'a diferença (está/é)' | 155 / 70 | 15% vs 26% | 0,58 [0,39-0,83] | 0,51 [0,33-0,81] | 0,55 [0,35-0,88] | 0,51 / 0,63 / 0,63 | 0,79 OR 0,69 [0,48-0,99] 0,86/0,68 ✓- | 0,79 OR 0,65 [0,28-1,47] 0,67/1,14 | 1,23 OR 1,41 [0,82-2,41] 1,14/1,29 | 1,05 OR 1,09 [0,52-2,27] 0,98/1,18 | 0,97 OR 0,92 [0,63-1,35] 1,01/0,95 | atrapalha (replica) / ctl: atrapalha (replica) |
+| conclusão aforismo 'Quem X, Y' | 276 / 115 | 23% vs 26% | 0,90 [0,72-1,11] | 0,88 [0,65-1,18] | 0,82 [0,60-1,13] | 0,90 / 1,15 / 0,64 | 0,77 OR 0,78 [0,59-1,04] 0,77/0,73 | 0,48 OR 0,42 [0,20-0,85] 0,51/0,29 ✓- | 0,96 OR 0,95 [0,60-1,48] 0,85/1,15 | 0,94 OR 0,91 [0,51-1,61] 1,13/0,54 | 0,91 OR 0,90 [0,66-1,22] 1,02/0,77 | sem evidência / ctl: sem evidência |
+| conclusão pede opinião / 'você acha' | 128 / 54 | 20% vs 26% | 0,79 [0,55-1,09] | 0,71 [0,46-1,12] | 0,81 [0,49-1,35] | 0,82 / 0,81 / 0,71 | 0,94 OR 0,87 [0,59-1,27] 1,06/0,84 | 0,67 OR 0,69 [0,23-2,02] 0,78/0,00 | 1,03 OR 1,07 [0,58-1,97] 0,86/1,39 | 1,16 OR 1,36 [0,63-2,90] 0,58/1,48 | 1,40 OR 1,76 [1,21-2,58] 1,46/1,33 ✓+ | sem evidência / ctl: sem evidência |
+| conclusão com pergunta | 653 / 264 | 24% vs 26% | 0,94 [0,82-1,08] | 0,91 [0,75-1,11] | 0,92 [0,74-1,15] | 0,90 / 1,14 / 0,80 | 0,97 OR 0,94 [0,78-1,13] 0,96/0,99 | 1,11 OR 1,13 [0,72-1,76] 1,16/0,96 | 1,01 OR 0,98 [0,72-1,35] 1,05/1,02 | 0,94 OR 0,93 [0,64-1,35] 1,08/0,85 | 1,21 OR 1,35 [1,12-1,64] 1,12/1,25 ✓+ | sem evidência / ctl: sem evidência |
+| conclusão com 'Brasil/país/governo' | 796 / 343 | 28% vs 26% | 1,07 [0,95-1,19] | 1,12 [0,94-1,33] | 1,15 [0,95-1,39] | 1,13 / 1,09 / 0,96 | 1,07 OR 1,16 [0,98-1,37] 1,02/1,12 | 0,82 OR 0,75 [0,48-1,18] 0,76/1,01 | 1,10 OR 1,22 [0,94-1,58] 1,17/1,02 | 1,12 OR 1,25 [0,90-1,73] 0,98/1,22 | 1,36 OR 1,66 [1,40-1,96] 1,35/1,35 ✓+ | sem evidência / ctl: sem evidência |
+| conclusão com opinião do narrador ('eu') | 119 / 50 | 24% vs 26% | 0,95 [0,68-1,27] | 0,96 [0,62-1,47] | 1,03 [0,65-1,63] | 0,64 / 1,22 / 1,11 | 1,01 OR 0,89 [0,60-1,32] 1,20/0,84 | 0,97 OR 0,85 [0,27-2,66] 0,87/- | 1,15 OR 1,42 [0,75-2,68] 1,36/0,54 | 1,23 OR 1,58 [0,73-3,38] 1,63/0,94 | 1,70 OR 2,61 [1,76-3,88] 2,09/1,40 ✓+ | sem evidência / ctl: sem evidência |
+| conclusão com número novo | 233 / 96 | 22% vs 26% | 0,85 [0,66-1,07] | 0,81 [0,58-1,12] | 0,79 [0,55-1,13] | 0,84 / 1,05 / 0,65 | 0,92 OR 0,75 [0,56-1,01] 0,76/1,17 | 0,97 OR 0,91 [0,48-1,72] 0,89/1,16 | 0,73 OR 0,65 [0,39-1,09] 0,61/1,01 | 1,20 OR 1,13 [0,67-1,90] 0,93/1,62 | 1,33 OR 1,44 [1,08-1,92] 1,28/1,43 ✓+ | sem evidência / ctl: sem evidência |
+| conclusão fica no personagem ('ele/ela/dele/dela') | 1680 / 732 | 26% vs 26% | 1,01 [0,93-1,10] | 1,01 [0,88-1,15] | 1,04 [0,91-1,20] | 1,00 / 1,01 / 1,04 | 1,00 OR 1,03 [0,91-1,17] 1,02/0,98 | 1,21 OR 1,56 [1,17-2,08] 1,26/1,13 ✓+ | 1,03 OR 1,04 [0,85-1,27] 0,99/1,14 | 0,94 OR 0,90 [0,69-1,17] 0,87/0,99 | 0,93 OR 0,84 [0,74-0,97] 0,84/0,99 | sem evidência / ctl: sem evidência |
+| conclusão com escala global ('mundo inteiro/do mundo/planeta') | 355 / 147 | 31% vs 25% | 1,19 [1,01-1,38] | 1,33 [1,04-1,70] | 1,23 [0,94-1,61] | 1,22 / 1,15 / 1,19 | 1,12 OR 1,19 [0,94-1,51] 1,06/1,18 | 1,46 OR 2,56 [1,43-4,61] 1,66/0,94 | 1,25 OR 1,46 [1,02-2,09] 1,20/1,35 | 0,75 OR 0,68 [0,41-1,14] 0,60/0,91 | 1,03 OR 1,02 [0,80-1,32] 1,04/1,02 | ajuda (replica) / ctl: ajuda (replica) |
+| conclusão com 'mas sim' / 'e sim' | 185 / 78 | 31% vs 26% | 1,22 [0,97-1,49] | 1,39 [1,00-1,94] | 1,32 [0,93-1,88] | 1,13 / 1,18 / 1,36 | 1,16 OR 1,30 [0,95-1,77] 1,28/0,78 | 1,20 OR 1,30 [0,66-2,57] 1,32/0,00 | 1,14 OR 1,14 [0,70-1,86] 1,11/0,78 | 1,28 OR 1,26 [0,67-2,35] 0,96/2,40 | 0,60 OR 0,51 [0,34-0,76] 0,56/0,75 ✓- | sem evidência / ctl: sem evidência |
+| conclusão com 'você precisa / presta atenção' | 442 / 189 | 21% vs 26% | 0,81 [0,67-0,96] | 0,72 [0,56-0,92] | 0,65 [0,50-0,85] | 0,91 / 0,74 / 0,72 | 0,87 OR 0,84 [0,67-1,05] 0,86/0,86 | 1,03 OR 1,02 [0,62-1,69] 1,12/0,26 | 0,92 OR 0,93 [0,65-1,33] 0,89/0,92 | 0,84 OR 0,78 [0,48-1,25] 0,74/1,01 | 0,85 OR 0,78 [0,61-0,99] 0,90/0,82 | atrapalha (replica) / ctl: atrapalha (replica) |
+
+### conclusão abre com 'Enquanto' (contraste)
+coef: n=294 vídeos / 124 roteiros / 25 clientes | 31% vs 26% | lift 1,21 [1,02-1,43] | OR MH 1,33 [1,03-1,72] | OR estrito (cli x rede x tam x roteirista) 1,38 [1,04-1,82] | desc/val 1,02/1,35 | ajuda (replica)
+por rede (ctl tam): Instagram lift 1,07 n=120 OR 1,25 [0,82-1,89] d/v 0,72/1,31 | TikTok lift 1,19 n=88 OR 1,37 [0,85-2,19] d/v 1,09/1,26 | YouTube lift 1,44 n=86 OR 1,86 [1,16-2,99] d/v 1,36/1,51
+macro: Negócios, marc 1,53 (n=137) OR 1,95 | Dinheiro, econ 1,16 (n=83) OR 1,25 | Tecnologia, IA 0,70 (n=72) OR 0,63
+clientes com n>=15: 8, lift>1 em 5 | Dilson 2,22(19) Pedro 2,13(15) Cadu 1,72(33) Rodrigo 1,53(15) Fernando 1,30(15) Lincoln 0,91(34) Rafael 0,62(38) Izabela 0,26(15)
+compart (ctl tam): n=140 lift 0,95 [0,70-1,25] OR 0,95 [0,63-1,44] d/v 1,00/0,99 | sem evidência
+comentarios (ctl tam): n=294 lift 1,08 [0,89-1,29] OR 1,20 [0,92-1,57] d/v 0,95/1,14 | sem evidência
+ret_final (ctl tam): n=43 lift 0,99 [0,58-1,55] OR 0,97 [0,48-1,99] d/v 0,50/2,30 | sem evidência
+salvamentos (ctl tam): n=83 lift 1,04 [0,71-1,45] OR 1,04 [0,62-1,74] d/v 0,74/1,21 | sem evidência
+  + Pedro Elero | YouTube | coef 1237,73 | "Enquanto todo mundo gasta rios de dinheiro em propaganda, a Comet faz o próprio cliente virar propaganda: ela vende a sensação de fazer parte de algo raro, e quem participa de algo raro costuma fazer questão de contar para todo mundo."
+  + Pedro Elero | TikTok | coef 486,17 | "Enquanto o mundo apostava suas fichas em baterias elétricas, a Geely investiu pesado em tornar o motor a gasolina mais eficiente do que nunca, quebrando um recorde mundial com isso."
+  + Rodrigo Waughan | TikTok | coef 142,16 | "Enquanto todo mundo procura natureza intocada em lugares distantes, Manaus escondeu uma floresta de verdade dentro de um shopping."
+  - Marcos Pelozato | TikTok | coef 0,10 | "Enquanto tentou fugir da própria estranheza, quase desapareceu. Mas, quando parou de se desculpar pelo que era, transformou piada em posicionamento e em vendas."
+
+### conclusão retoma >=20% das palavras do hook
+coef: n=708 vídeos / 314 roteiros / 26 clientes | 30% vs 25% | lift 1,15 [1,02-1,28] | OR MH 1,24 [1,04-1,47] | OR estrito (cli x rede x tam x roteirista) 1,28 [1,05-1,55] | desc/val 1,00/1,26 | ajuda (replica)
+por rede (ctl tam): Instagram lift 1,14 n=300 OR 1,25 [0,95-1,65] d/v 0,86/1,33 | TikTok lift 1,28 n=202 OR 1,48 [1,07-2,05] d/v 1,29/1,28 | YouTube lift 1,02 n=206 OR 1,13 [0,79-1,60] d/v 0,92/1,11
+macro: Dinheiro, econ 1,24 (n=212) OR 1,45 | Negócios, marc 1,18 (n=263) OR 1,29 | Tecnologia, IA 1,04 (n=216) OR 1,06
+clientes com n>=15: 17, lift>1 em 10 | Renato 1,67(21) Cadu 1,64(37) Thiago 1,62(27) Fernando 1,56(50) Rodrigo 1,51(43) Túlio 1,28(15) Izabela 1,22(57) Leonardo 1,21(16) Lincoln 1,20(94) Marcio 1,05(63) Marcelo 0,93(16) Dilson 0,89(39) Franklin 0,83(33) Rafael 0,75(52) Patrick 0,69(17) Pedro 0,67(18) Marcos 0,56(28)
+compart (ctl tam): n=306 lift 0,97 [0,79-1,17] OR 0,97 [0,72-1,30] d/v 1,07/0,86 | sem evidência
+comentarios (ctl tam): n=708 lift 0,96 [0,84-1,10] OR 0,96 [0,80-1,16] d/v 1,04/0,90 | sem evidência
+ret_final (ctl tam): n=135 lift 1,12 [0,85-1,43] OR 1,20 [0,79-1,81] d/v 1,21/1,10 | sem evidência
+salvamentos (ctl tam): n=188 lift 0,90 [0,68-1,15] OR 0,85 [0,58-1,23] d/v 1,04/0,78 | sem evidência
+  + Fernando Pereira | TikTok | coef 3661,10 | "HOOK: O mundo tem exatamente 40 dias até o petróleo acabar. || CONCLUSÃO: Neste momento o mundo inteiro está acompanhando de perto o que vai acontecer nas próximas horas."
+  + Renato Torres | Instagram | coef 243,99 | "HOOK: Esse é o cara mais odiado do mundo pelos donos de academia! || CONCLUSÃO: Mostrando que nicho não é limitação. É valor. Porque quando você para de tentar servir todo mundo, pra atingir o cliente certo, o preço sobe."
+  + Marcelo Germano | TikTok | coef 188,90 | "HOOK: A Netflix tem três séries absurdas sobre mentalidade, desenvolvimento e caráter que, se você é líder ou quer crescer de verdade na carreira, precisa ver imediatamente. || CONCLUSÃO: Envie esse vídeo pra alguém que você quer ver liderar este ano e crescer na carreira."
+  - Rafael Rodrigues | YouTube | coef 0,03 | "HOOK: Essas seis garotas do Maranhão provaram que o futuro da tecnologia é feminino, tem sotaque nordestino e se constrói com peças de LEGO. || CONCLUSÃO: Porque, quando essas garotas do Nordeste tiveram incentivo, elas não apenas ocuparam o espaço da tecnologia, como provaram que conseguem liderar "
+
+### conclusão com 'era ... hoje/agora' (antes x agora)
+coef: n=43 vídeos / 20 roteiros / 13 clientes | 44% vs 26% | lift 1,71 [1,18-2,29] | OR MH 2,27 [1,24-4,15] | OR estrito (cli x rede x tam x roteirista) 2,90 [1,36-6,18] | desc/val 1,85/1,59 | ajuda (replica)
+por rede (ctl tam): Instagram lift 1,36 n=20 OR 1,71 [0,63-4,65] d/v 1,57/1,16 | TikTok lift 1,49 n=13 OR 2,54 [0,71-9,15] d/v 1,27/1,68 | YouTube lift 2,71 n=10 OR 5,58 [1,31-23,73] d/v 3,09/2,33
+macro: 
+clientes com n>=15: 0, lift>1 em 0 | 
+compart (ctl tam): n=25 lift 1,25 [0,67-2,01] OR 1,56 [0,62-3,94] d/v 1,29/1,29 | amostra pequena
+comentarios (ctl tam): n=43 lift 1,20 [0,74-1,79] OR 1,45 [0,73-2,90] d/v 1,01/1,36 | sem evidência
+ret_final (ctl tam): n=10 lift 1,54 [0,65-2,65] OR 3,48 [0,92-13,17] d/v 2,09/0,99 | amostra pequena
+salvamentos (ctl tam): n=13 lift 1,21 [0,50-2,26] OR 2,15 [0,57-8,02] d/v 0,68/1,62 | amostra pequena
+  + Rafael Rodrigues | YouTube | coef 396,74 | "O imiquimod já estava aprovado pelo governo há anos. O problema não era a ciência, era a acessibilidade. Ao mudar de creme caro para sabonete barato, ele agora pode salvar milhões de pessoas que antes não teriam acesso."
+  + Izabela Anholett | TikTok | coef 65,11 | "O computador era do tamanho de uma sala. Depois coube no bolso. Agora muito em breve vai caber no seu olho."
+  + Rodrigo Waughan | TikTok | coef 7,97 | "O crescimento rápido demais nem sempre é prêmio. Às vezes, é o teste que revela se o negócio tem base ou se era só barulho bonito. Que bom que o Sampa Burger recebeu o Choque de Gestão a tempo e agora está pronta pra continuar crescendo…"
+  - Marcelo Germano | TikTok | coef 0,46 | "​Hoje, a Havan tem cerca de 187 lojas pelo Brasil, mais de 20 mil funcionários e fatura 18,5 bilhões de reais por ano. E o menino que tinha dificuldade com as letras agora dita os números do varejo nacional."
+
+### conclusão com 'hoje' (estado atual)
+coef: n=246 vídeos / 105 roteiros / 26 clientes | 30% vs 26% | lift 1,18 [0,97-1,42] | OR MH 1,28 [0,97-1,69] | OR estrito (cli x rede x tam x roteirista) 1,22 [0,89-1,68] | desc/val 1,04/1,38 | sem evidência
+por rede (ctl tam): Instagram lift 1,12 n=101 OR 1,18 [0,75-1,86] d/v 1,05/1,20 | TikTok lift 0,99 n=74 OR 1,02 [0,59-1,76] d/v 0,71/1,39 | YouTube lift 1,47 n=71 OR 1,96 [1,17-3,28] d/v 1,35/1,67
+macro: Negócios, marc 1,25 (n=131) OR 1,38 | Dinheiro, econ 1,21 (n=51) OR 1,34 | Tecnologia, IA 1,03 (n=60) OR 1,05
+clientes com n>=15: 6, lift>1 em 3 | Lincoln 1,49(26) Rodrigo 1,13(27) Izabela 1,00(27) Thiago 0,90(22) Rafael 0,52(15) Fernando 0,52(15)
+compart (ctl tam): n=103 lift 0,83 [0,57-1,18] OR 0,78 [0,47-1,29] d/v 0,73/1,06 | sem evidência
+comentarios (ctl tam): n=246 lift 1,11 [0,91-1,35] OR 1,18 [0,88-1,58] d/v 0,93/1,36 | sem evidência
+ret_final (ctl tam): n=57 lift 1,49 [1,05-1,99] OR 1,83 [1,04-3,24] d/v 1,48/1,45 | ajuda (replica)
+salvamentos (ctl tam): n=67 lift 0,70 [0,41-1,13] OR 0,62 [0,33-1,17] d/v 0,77/0,63 | sem evidência
+  + Renato Mendes | TikTok | coef 482,90 | "E a dúvida que fica é, se você fosse comprar um carro hoje, iria de Chines ou de Japonês?"
+  + João Paulo Albuquerque | TikTok | coef 441,80 | "Essa história mostra o quão longe uma pessoa pode chegar com a capacidade de se adaptar e evoluir, Sodiê hoje é um exemplo de franquia que ganhou o coração dos brasileiros por meio de muito trabalho, bolos incríveis e claro, uma qualidade que se destaca."
+  + Marcio Grazino | YouTube | coef 44,70 | "Se dia o avô foi barrado, hoje seu neto está mudando a história e influenciando pessoas no mundo inteiro com uma mensagem de fé."
+  - Marcelo Germano | Facebook | coef 0,11 | "Quem usa o lucro de hoje para financiar a obra de amanhã nunca trabalha para o banco. A AM Construções aprendeu isso desde cedo e consolidou-se como uma gigante, que fatura centenas de milhões de reais todos os anos"
+
+### conclusão com 'nem X, nem Y' / 'nem'
+coef: n=199 vídeos / 89 roteiros / 25 clientes | 36% vs 25% | lift 1,40 [1,16-1,67] | OR MH 1,66 [1,24-2,23] | OR estrito (cli x rede x tam x roteirista) 1,69 [1,23-2,33] | desc/val 1,74/1,19 | ajuda (replica)
+por rede (ctl tam): Instagram lift 1,47 n=85 OR 1,75 [1,10-2,78] d/v 1,78/1,26 | TikTok lift 1,41 n=55 OR 1,42 [0,80-2,52] d/v 2,10/1,01 | YouTube lift 1,31 n=59 OR 1,39 [0,78-2,46] d/v 1,39/1,26
+macro: Negócios, marc 1,59 (n=83) OR 2,05 | Dinheiro, econ 1,26 (n=43) OR 1,40 | Tecnologia, IA 1,24 (n=69) OR 1,36
+clientes com n>=15: 5, lift>1 em 4 | Marcio 2,15(18) Franklin 1,82(15) Rafael 1,47(24) Lincoln 1,16(20) Izabela 0,26(15)
+compart (ctl tam): n=94 lift 0,83 [0,55-1,19] OR 0,77 [0,46-1,28] d/v 0,80/0,94 | sem evidência
+comentarios (ctl tam): n=199 lift 0,98 [0,76-1,23] OR 1,03 [0,73-1,44] d/v 1,20/0,83 | sem evidência
+ret_final (ctl tam): n=41 lift 0,75 [0,40-1,31] OR 0,78 [0,34-1,79] d/v 1,36/0,21 | sem evidência
+salvamentos (ctl tam): n=51 lift 1,15 [0,73-1,68] OR 1,40 [0,74-2,65] d/v 1,29/1,06 | sem evidência
+  + Rafael Rodrigues | Instagram | coef 438,39 | "Mas João nos prova que a escassez nem sempre é um limite. Às vezes, ela obriga você a pensar de um jeito que ninguém pensou antes para criar o seu produto."
+  + Patrick Diorio | Instagram | coef 426,93 | "Ainda não existe uma data oficial de lançamento, nem todos os detalhes técnicos foram revelados, mas uma coisa já ficou clara: a inteligência artificial não está só resolvendo os problemas do futuro, ela está realizando as fantasias do passado, e talvez, em breve, a pergunta deixe de ser "qual jutsu"
+  + Marcio Grazino | YouTube | coef 143,74 | "A inovação que muda o mundo nem sempre sai de Harvard ou de Cambridge.  Às vezes ela sai de um laboratório público brasileiro que quase ninguém conhecia até ontem."
+  - Cadu Neiva | TikTok | coef 0,03 | "Essa história revela que a verdadeira vantagem nem sempre está em apostar na marca mais famosa do Brasil, mas em enxergar aquilo que carrega história, memória e um potencial gigante pra transformar o que já era grande em algo muito maior."
+
+### conclusão <=15 palavras
+coef: n=768 vídeos / 311 roteiros / 26 clientes | 22% vs 26% | lift 0,84 [0,73-0,96] | OR MH 0,77 [0,64-0,92] | OR estrito (cli x rede x tam x roteirista) 0,77 [0,63-0,95] | desc/val 0,87/0,81 | atrapalha (replica)
+por rede (ctl tam): Instagram lift 0,83 n=300 OR 0,71 [0,53-0,97] d/v 0,90/0,76 | TikTok lift 0,91 n=235 OR 0,93 [0,66-1,29] d/v 0,94/0,88 | YouTube lift 0,78 n=233 OR 0,73 [0,51-1,03] d/v 0,77/0,79
+macro: Negócios, marc 0,97 (n=347) OR 0,97 | Dinheiro, econ 0,87 (n=156) OR 0,81 | Tecnologia, IA 0,63 (n=259) OR 0,51
+clientes com n>=15: 15, lift>1 em 3 | Fernando 1,33(47) João 1,33(21) Manoel 1,27(40) Marcos 1,00(82) Rodrigo 0,99(58) Thiago 0,94(34) Franklin 0,92(17) Dilson 0,87(22) Izabela 0,69(118) Pedro 0,69(35) Cadu 0,63(18) Lincoln 0,59(72) Rafael 0,57(48) Marcio 0,57(48) Leonardo 0,17(23)
+compart (ctl tam): n=318 lift 0,96 [0,78-1,15] OR 0,97 [0,73-1,29] d/v 1,02/0,87 | sem evidência
+comentarios (ctl tam): n=768 lift 1,09 [0,97-1,22] OR 1,11 [0,93-1,32] d/v 1,08/1,09 | sem evidência
+ret_final (ctl tam): n=157 lift 1,06 [0,81-1,35] OR 1,00 [0,67-1,49] d/v 0,99/1,23 | sem evidência
+salvamentos (ctl tam): n=220 lift 0,98 [0,77-1,22] OR 0,92 [0,65-1,30] d/v 1,19/0,81 | sem evidência
+  + Cadu Neiva | Instagram | coef 740,22 | "O Bompreço morreu para o público, mas o império da família só cresceu."
+  + Fernando Pereira | TikTok | coef 134,75 | "Infelizmente dificilmente você vai ver esse tipo de explicação na mídia tradicional .Por isso,"
+  + Rodrigo Waughan | TikTok | coef 131,29 | "Em vez de focar no problema, eles focaram na solução e o resto é história."
+  - Marcio Grazino | YouTube | coef 0,01 | "Se a resposta for não, talvez seja aí que você está perdendo dinheiro."
+
+### conclusão com 'pode ser / pode' (hedge)
+coef: n=225 vídeos / 97 roteiros / 24 clientes | 18% vs 26% | lift 0,71 [0,53-0,92] | OR MH 0,63 [0,44-0,89] | OR estrito (cli x rede x tam x roteirista) 0,65 [0,45-0,94] | desc/val 0,61/0,78 | atrapalha (replica)
+por rede (ctl tam): Instagram lift 0,72 n=97 OR 0,66 [0,38-1,14] d/v 0,75/0,70 | TikTok lift 0,68 n=63 OR 0,64 [0,33-1,23] d/v 0,49/0,86 | YouTube lift 0,72 n=65 OR 0,60 [0,32-1,13] d/v 0,55/0,84
+macro: Negócios, marc 0,84 (n=107) OR 0,78 | Tecnologia, IA 0,70 (n=83) OR 0,62 | Dinheiro, econ 0,27 (n=29) OR 0,21
+clientes com n>=15: 5, lift>1 em 2 | Rodrigo 1,03(26) Marcos 1,02(19) Marcio 0,86(27) Izabela 0,81(24) Pedro 0,53(15)
+compart (ctl tam): n=86 lift 0,95 [0,65-1,34] OR 0,97 [0,57-1,63] d/v 0,92/1,03 | sem evidência
+comentarios (ctl tam): n=225 lift 0,81 [0,62-1,04] OR 0,74 [0,53-1,04] d/v 0,88/0,75 | sem evidência
+ret_final (ctl tam): n=47 lift 0,90 [0,53-1,44] OR 0,81 [0,39-1,68] d/v 1,21/0,62 | sem evidência
+salvamentos (ctl tam): n=54 lift 0,94 [0,57-1,45] OR 0,97 [0,51-1,84] d/v 1,16/0,73 | sem evidência
+  + Patrick Diorio | Instagram | coef 426,93 | "Ainda não existe uma data oficial de lançamento, nem todos os detalhes técnicos foram revelados, mas uma coisa já ficou clara: a inteligência artificial não está só resolvendo os problemas do futuro, ela está realizando as fantasias do passado, e talvez, em breve, a pergunta deixe de ser "qual jutsu"
+  + Leonardo Nogueira | Instagram | coef 44,60 | "Talvez a jogada mais inteligente da BMW não seja apostar no hidrogênio. Seja se recusar a depender de uma única resposta para o futuro."
+  + Manoel Victor | YouTube | coef 3,59 | "Aí que vem a virada: Diga não pro cliente errado e pronto: menos cliente curioso, mais cliente certo, preço mais alto. A BMW fez isso e deu certo. Agora pode ser sua vez."
+  - Café com Ferri | Instagram | coef 0,00 | "Uma coisa eu posso te afirmar: a comunicação não é um talento nato, ela é uma habilidade. E assim como qualquer outra, ela pode ser aprendida, treinada e aperfeiçoada. Quem aprende isso desde cedo, sai na frente na corrida da vida."
+
+### conclusão com 'a lição / lição'
+coef: n=187 vídeos / 78 roteiros / 22 clientes | 24% vs 26% | lift 0,91 [0,70-1,17] | OR MH 0,88 [0,62-1,24] | OR estrito (cli x rede x tam x roteirista) 0,96 [0,65-1,43] | desc/val 0,79/1,20 | sem evidência
+por rede (ctl tam): Instagram lift 1,02 n=76 OR 1,20 [0,69-2,06] d/v 0,98/1,13 | TikTok lift 0,91 n=55 OR 0,92 [0,48-1,77] d/v 0,69/1,47 | YouTube lift 0,76 n=56 OR 0,68 [0,34-1,36] d/v 0,66/1,04
+macro: Tecnologia, IA 1,03 (n=34) OR 1,04 | Negócios, marc 0,95 (n=123) OR 0,92 | Dinheiro, econ 0,64 (n=30) OR 0,57
+clientes com n>=15: 3, lift>1 em 2 | Rodrigo 1,42(35) Manoel 1,15(17) Marcos 0,39(20)
+compart (ctl tam): n=68 lift 1,09 [0,73-1,54] OR 1,09 [0,62-1,93] d/v 1,09/0,40 | sem evidência
+comentarios (ctl tam): n=187 lift 0,59 [0,42-0,83] OR 0,53 [0,34-0,81] d/v 0,68/0,47 | atrapalha (replica)
+ret_final (ctl tam): n=50 lift 0,70 [0,38-1,19] OR 0,45 [0,19-1,11] d/v 0,81/0,00 | sem evidência
+salvamentos (ctl tam): n=45 lift 1,04 [0,63-1,61] OR 1,23 [0,62-2,45] d/v 1,18/0,81 | sem evidência
+  + Lincoln Fracari | TikTok | coef 291,10 | "A lição que a China ensina é que quem constrói o próprio campo de batalha, dita as regras do jogo."
+  + Rodrigo Waughan | TikTok | coef 22,11 | "A lição é clara e poderosa: quando você muda a lógica econômica das pessoas, você muda o mundo."
+  + Thiago Franco | TikTok | coef 0,31 | "De um jeito ou de outro, a lição é clara: O mundo mudou, o digital dominou e novas oportunidades apareceram. Quem se adapta, continua competindo. Quem fica apenas no ponto físico, está fadado ao fracasso"
+  - Rodrigo Waughan | YouTube | coef 0,01 | "A lição é clara: Quem blinda a sua base, constrói um império inquebrável."
+
+### conclusão com 'a diferença (está/é)'
+coef: n=155 vídeos / 70 roteiros / 21 clientes | 15% vs 26% | lift 0,58 [0,39-0,83] | OR MH 0,49 [0,31-0,76] | OR estrito (cli x rede x tam x roteirista) 0,55 [0,35-0,88] | desc/val 0,70/0,41 | atrapalha (replica)
+por rede (ctl tam): Instagram lift 0,51 n=69 OR 0,46 [0,23-0,95] d/v 0,64/0,36 | TikTok lift 0,63 n=43 OR 0,57 [0,24-1,32] d/v 0,61/0,65 | YouTube lift 0,63 n=43 OR 0,54 [0,23-1,23] d/v 0,89/0,23
+macro: Dinheiro, econ 0,79 (n=54) OR 0,71 | Tecnologia, IA 0,48 (n=56) OR 0,40 | Negócios, marc 0,39 (n=40) OR 0,32
+clientes com n>=15: 2, lift>1 em 0 | Dilson 0,81(33) Rafael 0,73(27)
+compart (ctl tam): n=70 lift 1,23 [0,85-1,68] OR 1,41 [0,82-2,41] d/v 1,14/1,29 | sem evidência
+comentarios (ctl tam): n=155 lift 0,97 [0,73-1,26] OR 0,92 [0,63-1,35] d/v 1,01/0,95 | sem evidência
+ret_final (ctl tam): n=39 lift 0,79 [0,42-1,37] OR 0,65 [0,28-1,47] d/v 0,67/1,14 | sem evidência
+salvamentos (ctl tam): n=41 lift 1,05 [0,61-1,64] OR 1,09 [0,52-2,27] d/v 0,98/1,18 | sem evidência
+  + Dilson Peres | TikTok | coef 28,85 | "Essa história é a prova de que se a sua empresa só olha para o faturamento e ignora a estratégia fiscal, você está perdendo dinheiro. Um bom planejamento tributário faz toda a diferença no seu negócio."
+  + Rafael Rodrigues | Instagram | coef 125,08 | "A diferença é o que você faz com o seu tempo: ou você treina para ser uma peça do tabuleiro, ou estuda para ser o dono do jogo."
+  + Fernando Pereira | Instagram | coef 7,04 | "A diferença entre um país rico e um país endividado não está em quanto dinheiro entra. Está em ter a disciplina de guardar antes de gastar."
+  - Café com Ferri | YouTube | coef 0,07 | "A verdade é que o mercado está cheio de empresas com bons produtos e poucos clientes fiéis. A diferença entre elas e as que dominam quase sempre está na mesma coisa: alguém com coragem de aparecer e tornar a marca humana."
+
+### conclusão aforismo 'Quem X, Y'
+coef: n=276 vídeos / 115 roteiros / 22 clientes | 23% vs 26% | lift 0,90 [0,72-1,11] | OR MH 0,86 [0,64-1,15] | OR estrito (cli x rede x tam x roteirista) 0,82 [0,60-1,13] | desc/val 0,88/0,93 | sem evidência
+por rede (ctl tam): Instagram lift 0,90 n=113 OR 0,84 [0,53-1,33] d/v 1,14/0,47 | TikTok lift 1,15 n=84 OR 1,33 [0,79-2,22] d/v 0,99/1,51 | YouTube lift 0,64 n=79 OR 0,55 [0,29-1,04] d/v 0,43/1,09
+macro: Tecnologia, IA 1,01 (n=54) OR 1,00 | Negócios, marc 0,96 (n=134) OR 0,95 | Dinheiro, econ 0,76 (n=87) OR 0,66
+clientes com n>=15: 7, lift>1 em 3 | Izabela 1,55(30) Thiago 1,13(74) Fernando 1,04(15) Rodrigo 0,95(24) Dilson 0,82(28) Lincoln 0,52(15) Marcio 0,23(17)
+compart (ctl tam): n=118 lift 0,96 [0,69-1,29] OR 0,95 [0,60-1,48] d/v 0,85/1,15 | sem evidência
+comentarios (ctl tam): n=276 lift 0,91 [0,73-1,12] OR 0,90 [0,66-1,22] d/v 1,02/0,77 | sem evidência
+ret_final (ctl tam): n=72 lift 0,48 [0,26-0,85] OR 0,42 [0,20-0,85] d/v 0,51/0,29 | atrapalha (replica)
+salvamentos (ctl tam): n=75 lift 0,94 [0,62-1,36] OR 0,91 [0,51-1,61] d/v 1,13/0,54 | sem evidência
+  + Dilson Peres | TikTok | coef 115,71 | "No fim, quem constrói riqueza de verdade não é só quem ganha bem. É quem entende que imposto e sucessão fazem parte do jogo, enquanto a maioria ainda trata os dois como um detalhe pro contador resolver."
+  + Café com Ferri | TikTok | coef 112,01 | "Quem aprende a controlar o espaço que ocupa, o contato que faz e a forma como fala, para de tentar convencer os outros com um discurso perfeito e começa a atrair a atenção dos demais só aparecendo para o público."
+  + Izabela Anholett | Instagram | coef 59,00 | "E nesta nova economia, quem controla o algoritmo, controla o estoque. Quem opera a máquina, vira custo e se torna dispensável."
+  - Café com Ferri | Instagram | coef 0,00 | "Uma coisa eu posso te afirmar: a comunicação não é um talento nato, ela é uma habilidade. E assim como qualquer outra, ela pode ser aprendida, treinada e aperfeiçoada. Quem aprende isso desde cedo, sai na frente na corrida da vida."
+
+### conclusão pede opinião / 'você acha'
+coef: n=128 vídeos / 54 roteiros / 19 clientes | 20% vs 26% | lift 0,79 [0,55-1,09] | OR MH 0,73 [0,47-1,12] | OR estrito (cli x rede x tam x roteirista) 0,81 [0,49-1,35] | desc/val 0,73/0,83 | sem evidência
+por rede (ctl tam): Instagram lift 0,82 n=52 OR 0,74 [0,37-1,46] d/v 0,60/1,04 | TikTok lift 0,81 n=38 OR 0,74 [0,33-1,65] d/v 1,02/0,68 | YouTube lift 0,71 n=38 OR 0,66 [0,27-1,57] d/v 0,68/0,74
+macro: Negócios, marc 0,93 (n=50) OR 0,91 | Tecnologia, IA 0,88 (n=44) OR 0,82 | Dinheiro, econ 0,48 (n=32) OR 0,41
+clientes com n>=15: 2, lift>1 em 1 | Marcos 1,30(21) Marcio 0,78(15)
+compart (ctl tam): n=57 lift 1,03 [0,65-1,52] OR 1,07 [0,58-1,97] d/v 0,86/1,39 | sem evidência
+comentarios (ctl tam): n=128 lift 1,40 [1,09-1,74] OR 1,76 [1,21-2,58] d/v 1,46/1,33 | ajuda (replica)
+ret_final (ctl tam): n=23 lift 0,67 [0,27-1,43] OR 0,69 [0,23-2,02] d/v 0,78/0,00 | amostra pequena
+salvamentos (ctl tam): n=37 lift 1,16 [0,69-1,79] OR 1,36 [0,63-2,90] d/v 0,58/1,48 | sem evidência
+  + Manoel Victor | Instagram | coef 302,50 | "Agora me conta, você pagaria mais caro por um energético focado em você, ou acha que isso é apenas marketing?"
+  + Izabela Anholett | YouTube | coef 249,07 | "Mas a dúvida que fica é: você teria coragem de botar um robô chinês dentro da sua casa?"
+  + Fernando Pereira | Instagram | coef 56,93 | "Você acha que existe alguma possibilidade de uma lei como essa ser aprovada no Brasil?"
+  - Rodrigo Waughan | Instagram | coef 0,18 | "Você teria coragem de investir em um mercado que todo mundo diz que é impossível?"
+
+### conclusão com pergunta
+coef: n=653 vídeos / 264 roteiros / 25 clientes | 24% vs 26% | lift 0,94 [0,82-1,08] | OR MH 0,92 [0,76-1,11] | OR estrito (cli x rede x tam x roteirista) 0,92 [0,74-1,15] | desc/val 1,02/0,89 | sem evidência
+por rede (ctl tam): Instagram lift 0,90 n=256 OR 0,80 [0,58-1,11] d/v 0,90/0,89 | TikTok lift 1,14 n=204 OR 1,21 [0,86-1,70] d/v 1,27/1,05 | YouTube lift 0,80 n=193 OR 0,77 [0,52-1,14] d/v 0,93/0,70
+macro: Negócios, marc 0,95 (n=287) OR 0,92 | Dinheiro, econ 0,94 (n=164) OR 0,92 | Tecnologia, IA 0,91 (n=187) OR 0,86
+clientes com n>=15: 15, lift>1 em 6 | Thiago 2,08(21) Manoel 1,70(46) Rafael 1,47(24) Patrick 1,30(15) Fernando 1,28(52) Túlio 1,10(21) Drielle 0,98(16) Thiago 0,93(15) Izabela 0,84(74) Lincoln 0,83(75) Marcio 0,81(48) Marcos 0,76(87) Renato 0,75(47) Rodrigo 0,66(29) Pedro 0,27(15)
+compart (ctl tam): n=254 lift 1,01 [0,82-1,24] OR 0,98 [0,72-1,35] d/v 1,05/1,02 | sem evidência
+comentarios (ctl tam): n=653 lift 1,21 [1,07-1,35] OR 1,35 [1,12-1,64] d/v 1,12/1,25 | ajuda (replica)
+ret_final (ctl tam): n=111 lift 1,11 [0,82-1,46] OR 1,13 [0,72-1,76] d/v 1,16/0,96 | sem evidência
+salvamentos (ctl tam): n=195 lift 0,94 [0,73-1,20] OR 0,93 [0,64-1,35] d/v 1,08/0,85 | sem evidência
+  + Renato Mendes | TikTok | coef 482,90 | "E a dúvida que fica é, se você fosse comprar um carro hoje, iria de Chines ou de Japonês?"
+  + Leonardo Nogueira | Instagram | coef 438,27 | "E se você pudesse escolher 1 carro para rodar 1 milhão de km, qual carro seria?"
+  + Patrick Diorio | Instagram | coef 426,93 | "Ainda não existe uma data oficial de lançamento, nem todos os detalhes técnicos foram revelados, mas uma coisa já ficou clara: a inteligência artificial não está só resolvendo os problemas do futuro, ela está realizando as fantasias do passado, e talvez, em breve, a pergunta deixe de ser "qual jutsu"
+  - Marcio Grazino | TikTok | coef 0,00 | "E aí fica uma pergunta simples que essa história levanta. Será que daqui a alguns anos, envelhecer vai ser uma escolha e não uma certeza?"
+
+### conclusão com 'Brasil/país/governo'
+coef: n=796 vídeos / 343 roteiros / 25 clientes | 28% vs 26% | lift 1,07 [0,95-1,19] | OR MH 1,11 [0,94-1,32] | OR estrito (cli x rede x tam x roteirista) 1,15 [0,95-1,39] | desc/val 0,98/1,14 | sem evidência
+por rede (ctl tam): Instagram lift 1,13 n=331 OR 1,24 [0,94-1,62] d/v 1,12/1,13 | TikTok lift 1,09 n=246 OR 1,13 [0,82-1,55] d/v 1,11/1,07 | YouTube lift 0,96 n=219 OR 0,94 [0,67-1,33] d/v 0,65/1,25
+macro: Negócios, marc 1,12 (n=287) OR 1,20 | Dinheiro, econ 1,05 (n=316) OR 1,10 | Tecnologia, IA 1,02 (n=191) OR 1,03
+clientes com n>=15: 17, lift>1 em 9 | Franklin 1,67(28) Renato 1,46(24) Rafael 1,36(78) Cadu 1,36(53) Ricardo 1,19(23) Lincoln 1,17(83) Fernando 1,14(116) Marcos 1,12(52) Pedro 1,07(15) Leonardo 0,98(16) Dilson 0,90(68) Thiago 0,86(46) Izabela 0,78(15) Marcelo 0,77(24) Túlio 0,70(22) Marcio 0,59(66) Rodrigo 0,45(17)
+compart (ctl tam): n=382 lift 1,10 [0,94-1,29] OR 1,22 [0,94-1,58] d/v 1,17/1,02 | sem evidência
+comentarios (ctl tam): n=796 lift 1,36 [1,23-1,49] OR 1,66 [1,40-1,96] d/v 1,35/1,35 | ajuda (replica)
+ret_final (ctl tam): n=146 lift 0,82 [0,59-1,10] OR 0,75 [0,48-1,18] d/v 0,76/1,01 | sem evidência
+salvamentos (ctl tam): n=238 lift 1,12 [0,91-1,36] OR 1,25 [0,90-1,73] d/v 0,98/1,22 | sem evidência
+  + Marcos Pelozato | TikTok | coef 1356,26 | "O cenário da economia no Brasil é desafiador e quem não prestar atenção agora pode acabar sofrendo as consequências."
+  + Rafael Rodrigues | TikTok | coef 630,14 | "Porque uma coisa é fato: a gente é Brasil. E não é uma marca de fora que vai mudar isso."
+  + João Paulo Albuquerque | TikTok | coef 441,80 | "Essa história mostra o quão longe uma pessoa pode chegar com a capacidade de se adaptar e evoluir, Sodiê hoje é um exemplo de franquia que ganhou o coração dos brasileiros por meio de muito trabalho, bolos incríveis e claro, uma qualidade que se destaca."
+  - Cadu Neiva | TikTok | coef 0,03 | "Essa história revela que a verdadeira vantagem nem sempre está em apostar na marca mais famosa do Brasil, mas em enxergar aquilo que carrega história, memória e um potencial gigante pra transformar o que já era grande em algo muito maior."
+
+### conclusão com opinião do narrador ('eu')
+coef: n=119 vídeos / 50 roteiros / 20 clientes | 24% vs 26% | lift 0,95 [0,68-1,27] | OR MH 0,92 [0,60-1,41] | OR estrito (cli x rede x tam x roteirista) 1,03 [0,65-1,63] | desc/val 1,06/0,85 | sem evidência
+por rede (ctl tam): Instagram lift 0,64 n=49 OR 0,57 [0,27-1,22] d/v 0,47/0,80 | TikTok lift 1,22 n=35 OR 1,30 [0,61-2,77] d/v 1,78/0,78 | YouTube lift 1,11 n=35 OR 1,33 [0,62-2,86] d/v 1,29/0,97
+macro: Negócios, marc 0,97 (n=44) OR 0,96 | Dinheiro, econ 0,92 (n=21) OR 0,88 | Tecnologia, IA 0,88 (n=53) OR 0,84
+clientes com n>=15: 3, lift>1 em 1 | Marcos 1,30(21) Izabela 0,86(27) Marcio 0,52(15)
+compart (ctl tam): n=51 lift 1,15 [0,73-1,68] OR 1,42 [0,75-2,68] d/v 1,36/0,54 | sem evidência
+comentarios (ctl tam): n=119 lift 1,70 [1,36-2,06] OR 2,61 [1,76-3,88] d/v 2,09/1,40 | ajuda (replica)
+ret_final (ctl tam): n=16 lift 0,97 [0,39-1,91] OR 0,85 [0,27-2,66] d/v 0,87/- | amostra pequena
+salvamentos (ctl tam): n=35 lift 1,23 [0,73-1,88] OR 1,58 [0,73-3,38] d/v 1,63/0,94 | sem evidência
+  + Izabela Anholett | Facebook | coef 17,25 | "Foi pensando nisso que eu abri novas vagas para meu Pré-MBA em Inteligência Artificia,  em parceria com a Exame, para que você aprenda de forma simples como dominar a IA.. São 4 aulas práticas por um preço simbólico de apenas 37 reais!"
+  + Lincoln Fracari | Instagram | coef 43,96 | "Se você ignorar isso, sua única concorrência no mercado de trabalho será um algoritmo e eu garanto que você não quer essa disputa."
+  + Marcos Pelozato | TikTok | coef 20,90 | "Agora eu quero ouvir você: essa decisão foi estratégia ou abandono de uma cidade toda?"
+  - Café com Ferri | Instagram | coef 0,00 | "Uma coisa eu posso te afirmar: a comunicação não é um talento nato, ela é uma habilidade. E assim como qualquer outra, ela pode ser aprendida, treinada e aperfeiçoada. Quem aprende isso desde cedo, sai na frente na corrida da vida."
+
+### conclusão com número novo
+coef: n=233 vídeos / 96 roteiros / 22 clientes | 22% vs 26% | lift 0,85 [0,66-1,07] | OR MH 0,80 [0,58-1,10] | OR estrito (cli x rede x tam x roteirista) 0,79 [0,55-1,13] | desc/val 0,61/1,20 | sem evidência
+por rede (ctl tam): Instagram lift 0,84 n=93 OR 0,74 [0,44-1,26] d/v 0,59/1,16 | TikTok lift 1,05 n=74 OR 1,13 [0,66-1,94] d/v 0,76/1,49 | YouTube lift 0,65 n=66 OR 0,57 [0,29-1,15] d/v 0,47/0,93
+macro: Dinheiro, econ 1,53 (n=48) OR 1,96 | Tecnologia, IA 0,68 (n=108) OR 0,60 | Negócios, marc 0,62 (n=75) OR 0,54
+clientes com n>=15: 3, lift>1 em 1 | Lincoln 1,64(26) Marcio 0,65(18) Izabela 0,58(60)
+compart (ctl tam): n=107 lift 0,73 [0,49-1,06] OR 0,65 [0,39-1,09] d/v 0,61/1,01 | sem evidência
+comentarios (ctl tam): n=233 lift 1,33 [1,10-1,58] OR 1,44 [1,08-1,92] d/v 1,28/1,43 | ajuda (replica)
+ret_final (ctl tam): n=56 lift 0,97 [0,60-1,46] OR 0,91 [0,48-1,72] d/v 0,89/1,16 | sem evidência
+salvamentos (ctl tam): n=72 lift 1,20 [0,83-1,64] OR 1,13 [0,67-1,90] d/v 0,93/1,62 | sem evidência
+  + Marcio Grazino | Instagram | coef 60,95 | "Enquanto o mundo busca inovação nas grandes capitais, Valéria e Eduarda estavam numa sala de aula no interior da Bahia resolvendo um problema que afeta mais de 100 milhões de brasileiros."
+  + Leonardo Nogueira | YouTube | coef 1,33 | "Os maiores negócios do mundo não competem. Eles constroem corredores onde o cliente caminha a vida inteira sem perceber. Aos 25 anos você compra um Polo. Aos 35, uma Audi. Aos 45, uma Porsche. E em cada um desses momentos, você acha que fez uma escolha, mas na verdade, você só subiu de andar."
+  + Pedro Elero | YouTube | coef 1,13 | "Hoje, seu patrimônio é de US$ 2 bilhões, o maior entre todas as mulheres da música no mundo. E não é só pelo talento. É porque ela entendeu que poder nos negócios não se pede e não se espera, se constrói!"
+  - Marcio Grazino | TikTok | coef 0,10 | "A diferença entre os dois era de 0,2 milímetro, tecnicamente quase nada, mas ninguém brigava pelo grafite. Brigava pela versão de si mesmo que aquele grafite representava."
+
+### conclusão fica no personagem ('ele/ela/dele/dela')
+coef: n=1680 vídeos / 732 roteiros / 28 clientes | 26% vs 26% | lift 1,01 [0,93-1,10] | OR MH 1,03 [0,90-1,16] | OR estrito (cli x rede x tam x roteirista) 1,04 [0,91-1,20] | desc/val 1,03/1,00 | sem evidência
+por rede (ctl tam): Instagram lift 1,00 n=723 OR 1,00 [0,82-1,23] d/v 1,02/0,99 | TikTok lift 1,01 n=490 OR 0,96 [0,75-1,23] d/v 0,95/1,07 | YouTube lift 1,04 n=467 OR 1,07 [0,83-1,37] d/v 1,13/0,96
+macro: Tecnologia, IA 1,10 (n=575) OR 1,20 | Dinheiro, econ 1,02 (n=272) OR 1,04 | Entretenimento 1,02 (n=23) OR 1,03 | Negócios, marc 0,95 (n=810) OR 0,91
+clientes com n>=15: 27, lift>1 em 15 | Thiago 1,63(15) Drielle 1,54(38) Túlio 1,36(31) Thainá 1,35(23) João 1,27(21) Izabela 1,23(126) Rafael 1,20(199) Ricardo 1,19(23) Cadu 1,12(61) Franklin 1,08(76) Marcos 1,02(95) Dilson 1,02(49) Patrick 1,02(23) Marcelo 1,01(59) Lincoln 1,01(81) Marcio 0,98(134) Thiago 0,94(110) João 0,91(48) Renato 0,90(65) Fernando 0,89(66) Pedro 0,85(52) Café 0,83(22) Leonardo 0,82(38) Manoel 0,70(56) Rodrigo 0,67(103) Renato 0,63(24) Leonardo 0,60(39)
+compart (ctl tam): n=718 lift 1,03 [0,91-1,16] OR 1,04 [0,85-1,27] d/v 0,99/1,14 | sem evidência
+comentarios (ctl tam): n=1680 lift 0,93 [0,85-1,01] OR 0,84 [0,74-0,97] d/v 0,84/0,99 | sem evidência
+ret_final (ctl tam): n=335 lift 1,21 [1,03-1,41] OR 1,56 [1,17-2,08] d/v 1,26/1,13 | ajuda (replica)
+salvamentos (ctl tam): n=451 lift 0,94 [0,79-1,10] OR 0,90 [0,69-1,17] d/v 0,87/0,99 | sem evidência
+  + Pedro Elero | YouTube | coef 1237,73 | "Enquanto todo mundo gasta rios de dinheiro em propaganda, a Comet faz o próprio cliente virar propaganda: ela vende a sensação de fazer parte de algo raro, e quem participa de algo raro costuma fazer questão de contar para todo mundo."
+  + Marcio Grazino | TikTok | coef 740,21 | "O segredo real não foi só abaixar o preço. A jogada foi entender que a vergonha só existe até você entregar um produto impossível de ignorar. Ao invés de ser uma cópia barata do líder, resolva o problema local que ele não consegue enxergar."
+  + Thiago Bisewski | YouTube | coef 713,36 | "No fim, a China não criou um motor menor, ela redesenhou a categoria, criando um "motor" que pensa."
+  - Dilson Peres | TikTok | coef 0,00 | "Todo mundo vê o Véio da Havan como o cara do marketing, só que poucos percebem como ele é um gênio no planejamento tributário."
+
+### conclusão com escala global ('mundo inteiro/do mundo/planeta')
+coef: n=355 vídeos / 147 roteiros / 26 clientes | 31% vs 25% | lift 1,19 [1,01-1,38] | OR MH 1,30 [1,03-1,64] | OR estrito (cli x rede x tam x roteirista) 1,23 [0,94-1,61] | desc/val 1,21/1,18 | ajuda (replica)
+por rede (ctl tam): Instagram lift 1,22 n=143 OR 1,34 [0,91-1,97] d/v 1,27/1,18 | TikTok lift 1,15 n=111 OR 1,27 [0,81-1,98] d/v 1,12/1,18 | YouTube lift 1,19 n=101 OR 1,37 [0,87-2,15] d/v 1,22/1,16
+macro: Negócios, marc 1,47 (n=95) OR 1,80 | Tecnologia, IA 1,23 (n=158) OR 1,37 | Dinheiro, econ 0,88 (n=101) OR 0,83
+clientes com n>=15: 7, lift>1 em 5 | Izabela 1,87(27) Leonardo 1,75(20) Fernando 1,23(35) Marcio 1,18(36) Leonardo 1,04(15) Rafael 0,90(52) Lincoln 0,46(51)
+compart (ctl tam): n=169 lift 1,25 [0,99-1,53] OR 1,46 [1,02-2,09] d/v 1,20/1,35 | sem evidência
+comentarios (ctl tam): n=355 lift 1,03 [0,86-1,22] OR 1,02 [0,80-1,32] d/v 1,04/1,02 | sem evidência
+ret_final (ctl tam): n=61 lift 1,46 [1,03-1,94] OR 2,56 [1,43-4,61] d/v 1,66/0,94 | sinal sem replicação
+salvamentos (ctl tam): n=104 lift 0,75 [0,50-1,09] OR 0,68 [0,41-1,14] d/v 0,60/0,91 | sem evidência
+  + Fernando Pereira | TikTok | coef 3661,10 | "Neste momento o mundo inteiro está acompanhando de perto o que vai acontecer nas próximas horas."
+  + Leonardo Nogueira | YouTube | coef 358,63 | "A barreira que manteve o carro elétrico fora do alcance da maioria nunca foi a tecnologia, foi a dependência de um único material que poucos países controlavam e o mundo inteiro precisava. Essa barreira está cada vez mais perto do fim!"
+  + Marcio Grazino | TikTok | coef 128,47 | "No fim, a falta de terreno obrigou o Real Madrid a criar um sistema que não existia em nenhum outro estádio do mundo, provando que eles são os maiores não apenas no futebol, mas também na gestão."
+  - Lincoln Fracari | Instagram | coef 0,30 | "E a partir de agora, não se esqueça que o próximo grande lançamento de entretenimento do mundo pode não falar inglês."
+
+### conclusão com 'mas sim' / 'e sim'
+coef: n=185 vídeos / 78 roteiros / 20 clientes | 31% vs 26% | lift 1,22 [0,97-1,49] | OR MH 1,34 [0,97-1,84] | OR estrito (cli x rede x tam x roteirista) 1,32 [0,93-1,88] | desc/val 1,37/0,85 | sem evidência
+por rede (ctl tam): Instagram lift 1,13 n=79 OR 1,24 [0,74-2,07] d/v 1,18/1,07 | TikTok lift 1,18 n=49 OR 1,44 [0,76-2,74] d/v 1,41/0,36 | YouTube lift 1,36 n=57 OR 1,58 [0,87-2,85] d/v 1,56/0,78
+macro: Dinheiro, econ 1,36 (n=34) OR 1,60 | Tecnologia, IA 1,19 (n=91) OR 1,31 | Negócios, marc 1,19 (n=59) OR 1,27
+clientes com n>=15: 5, lift>1 em 4 | Marcio 2,07(30) Rodrigo 2,04(15) Dilson 1,61(19) Franklin 1,14(17) Rafael 0,75(52)
+compart (ctl tam): n=89 lift 1,14 [0,81-1,54] OR 1,14 [0,70-1,86] d/v 1,11/0,78 | sem evidência
+comentarios (ctl tam): n=185 lift 0,60 [0,42-0,83] OR 0,51 [0,34-0,76] d/v 0,56/0,75 | atrapalha (replica)
+ret_final (ctl tam): n=45 lift 1,20 [0,75-1,76] OR 1,30 [0,66-2,57] d/v 1,32/0,00 | sem evidência
+salvamentos (ctl tam): n=49 lift 1,28 [0,83-1,83] OR 1,26 [0,67-2,35] d/v 0,96/2,40 | sem evidência
+  + Dilson Peres | YouTube | coef 237,78 | "Quem espera a morte para pensar em sucessão paga o preço duas vezes: uma em imposto, outra em briga familiar. Planejamento sucessório não é assunto de fim de vida, mas sim de quem quer que o que construiu continue de pé após sua partida."
+  + Rodrigo Waughan | Instagram | coef 176,87 | "Quem aprende a identificar esses sinais pequenos evita problemas gigantes depois. Às vezes, o que salva seu negócio não é um grande plano, mas sim perceber o “M&M marrom” antes que seja tarde demais."
+  + Lincoln Fracari | YouTube | coef 44,20 | "Então se você quer fazer negócios na China, não se pergunte quem é o fornecedor e sim ONDE os fornecedores estarão."
+  - Dilson Peres | YouTube | coef 0,06 | "O segredo para escalar não é fugir do imposto, mas sim dominar o Planejamento Tributário. Existe uma linha tênue entre uma operação eficiente e um risco bilionário, e aí que um bom advogado pode resolver seus problemas."
+
+### conclusão com 'você precisa / presta atenção'
+coef: n=442 vídeos / 189 roteiros / 27 clientes | 21% vs 26% | lift 0,81 [0,67-0,96] | OR MH 0,74 [0,59-0,94] | OR estrito (cli x rede x tam x roteirista) 0,65 [0,50-0,85] | desc/val 0,78/0,86 | atrapalha (replica)
+por rede (ctl tam): Instagram lift 0,91 n=188 OR 0,85 [0,59-1,22] d/v 0,93/0,89 | TikTok lift 0,74 n=131 OR 0,67 [0,42-1,06] d/v 0,67/0,84 | YouTube lift 0,72 n=123 OR 0,59 [0,36-0,97] d/v 0,68/0,80
+macro: Dinheiro, econ 0,98 (n=87) OR 0,96 | Negócios, marc 0,81 (n=197) OR 0,75 | Tecnologia, IA 0,69 (n=151) OR 0,61
+clientes com n>=15: 9, lift>1 em 2 | Manoel 1,14(24) Fernando 1,08(36) Izabela 0,97(36) Lincoln 0,82(19) Franklin 0,78(15) Thiago 0,64(56) Rafael 0,55(64) Rodrigo 0,53(36) Marcio 0,43(27)
+compart (ctl tam): n=186 lift 0,92 [0,71-1,18] OR 0,93 [0,65-1,33] d/v 0,89/0,92 | sem evidência
+comentarios (ctl tam): n=442 lift 0,85 [0,71-1,01] OR 0,78 [0,61-0,99] d/v 0,90/0,82 | sem evidência
+ret_final (ctl tam): n=94 lift 1,03 [0,72-1,40] OR 1,02 [0,62-1,69] d/v 1,12/0,26 | sem evidência
+salvamentos (ctl tam): n=117 lift 0,84 [0,58-1,16] OR 0,78 [0,48-1,25] d/v 0,74/1,01 | sem evidência
+  + Marcos Pelozato | TikTok | coef 1356,26 | "O cenário da economia no Brasil é desafiador e quem não prestar atenção agora pode acabar sofrendo as consequências."
+  + Manoel Victor | TikTok | coef 277,67 | "Mas para acessar esse público, você precisa mudar a entrega e a percepção de valor do seu produto, para que o seu público te veja como premium."
+  + Lincoln Fracari | TikTok | coef 143,05 | "O time chinês não pisou no gramado, mas a China está rodando a Copa. E quem controla a estrutura não precisa de gol nenhum para liderar."
+  - Manoel Victor | YouTube | coef 0,04 | "A L’Oréal já liderava o setor, mas entendeu que até quem lidera precisa correr pra não ficar pra trás com os avanços da IA."

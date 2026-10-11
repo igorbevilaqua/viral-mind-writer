@@ -103,6 +103,59 @@ export function filtrarCandidatos(
   if (aprovados.length >= minimo) return { candidatos: aprovados, descartados };
   return { candidatos: [...aprovados, ...reprovados], descartados };
 }
+// ── Placar do hook (estudo 2026-10, playbook de hooks v4, seção 1) ───────────────────────
+// +1 por elemento que replicou como bom nos roteiros da casa, -1 por elemento que replicou
+// como ruim. Placar +2 ou mais acerta 34% (régua oficial), placar -2 ou menos acerta 12%.
+// ponytail: listas fixas e resumidas de nomes e lugares; nome próprio fora delas só conta
+// depois de artigo ("A Geely"). Teto: abrir com um nome sem artigo e fora da lista não ganha
+// o ponto. Upgrade: dicionário de nomes próprios tirado do acervo (é o que o estudo usou).
+const semAcento = (s: string) =>
+  s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9$% ]/g, " ").replace(/\s+/g, " ").trim();
+const umaDe = (alternativas: string) => new RegExp(`\\b(${alternativas})\\b`);
+const LUGAR = umaDe(
+  "china|chines|chinesa|chineses|estados unidos|eua|americano|americana|americanos|japao|japones|japonesa|russia|india|indiano|coreia|alemanha|alemao|argentina|israel|dubai|arabia saudita|inglaterra|londres|europa|europeu|europeia|canada|mexico|suica|franca|frances|italia|espanha|portugal|pequim|xangai|nova york|vale do silicio|nordeste|nordestino|nordestina|nordestinos|interior|sertao|sao paulo|paulista|rio de janeiro|carioca|minas gerais|mineiro|bahia|baiano|baiana|ceara|cearense|parana|paranaense|santa catarina|catarinense|pernambuco|amazonas|amazonia|goias|rio grande do sul|gaucho|gaucha|gauchos|rio grande do norte|potiguar|paraiba|maranhao|paraense|brasilia|recife|fortaleza|curitiba|porto alegre|belo horizonte|manaus|belem|salvador|florianopolis|campinas"
+);
+const FAMOSO = umaDe(
+  "elon musk|musk|trump|lula|bolsonaro|neymar|messi|cristiano ronaldo|zuckerberg|bezos|bill gates|steve jobs|warren buffett|silvio santos|ratinho|virginia|xi jinping|putin|luciano huck|faustao|anitta|pele|ayrton senna|einstein|jensen huang|sam altman|tim cook|jack ma|mrbeast|luciano hang|eike batista|abilio diniz|lemann|beyonce|taylor swift"
+);
+const MARCA = umaDe(
+  "google|apple|iphone|amazon|microsoft|meta|nvidia|openai|chatgpt|samsung|tesla|spacex|netflix|youtube|tiktok|byd|shein|shopee|temu|geely|huawei|xiaomi|deepseek|nike|adidas|coca cola|mcdonalds|toyota|volkswagen|ferrari|petrobras|nubank|magalu|havan|globo|mercado livre|ifood|embraer|casas bahia|americanas"
+);
+// as mesmas listas de embate e de proibição medidas no estudo (src/hooks/formulas.mjs)
+const PROIBIU = umaDe("proibiu|proibiram|proibid\\w*|baniu|baniram|banid\\w*|bloqueou|bloquearam|cancelou|cancelaram|multou|multaram|processou|processaram|vetou|censurou|expulsou|prendeu|taxou|taxar");
+const EMBATE = umaDe("guerra|guerras|briga|contra|humilh\\w+|derrot\\w+|venceu|venceram|atac\\w+|ameac\\w+|rival|rivais|desafiou|enfrentou|declarou|declararam|peitou|bateu de frente");
+
+export function placarHook(hook: string): number {
+  const cru = (hook ?? "").trim().replace(/^["“'(]+/, "");
+  const t = semAcento(cru);
+  const [p1 = "", p2 = ""] = cru.split(/\s+/);
+  const nomeNoMeio = /\s[A-ZÁÉÍÓÚÂÊÔÃÕÇ][\p{L}]/u.test(cru); // maiúscula fora do início = nome próprio
+  const nomeNaAbertura =
+    (/^(a|o|os|as)$/i.test(p1) && /^[A-ZÁÉÍÓÚÂÊÔÃÕÇ]/.test(p2) && semAcento(p2) !== "brasil") ||
+    [FAMOSO, MARCA, LUGAR].some((re) => (t.match(re)?.index ?? -1) === 0);
+  const bons = [
+    nomeNaAbertura,
+    /\b(acabou|acaba|acabaram|acabam) de\b/.test(t),
+    (EMBATE.test(t) && (nomeNoMeio || FAMOSO.test(t) || MARCA.test(t) || LUGAR.test(t))) || PROIBIU.test(t),
+    LUGAR.test(t),
+    FAMOSO.test(t),
+    /\b(de apenas \d+ anos|de \d+ anos|\d+ anos de idade)\b/.test(t),
+    /\b(ta|tao)\b/.test(t),
+  ];
+  const ruins = [
+    /^(esse|essa|esses|essas|este|esta|estes|estas) /.test(t),
+    /\b(voce|voces|vc|te)\b/.test(t),
+    /\b(ia|ias|inteligencia artificial)\b/.test(t) && !nomeNaAbertura,
+    /\b(empresa|empresas|marca|marcas|startup|startups)\b/.test(t),
+    /\bnunca\b/.test(t),
+    /\b(pode|podem|poderia|poderiam)\b/.test(t),
+    t.split(" ").some((w) => w.length >= 13 && !w.endsWith("mente")),
+    /\b(18|19|20)\d\d\b/.test(t) || /^(em (18|19|20)\d\d|antigamente|nos anos|na decada)\b/.test(t),
+    /\b(bilionari\w*|milionari\w*|ficou rico|ficou rica|bilhao)\b/.test(t),
+  ];
+  return bons.filter(Boolean).length - ruins.filter(Boolean).length;
+}
+
 const PENALIDADE_USO = 0.6; // score × 0.6 por cada aparição nos últimos hooks do cliente
 const FOLGA_FORA_DO_RANKING = 0.05; // fora do top-6/n<10: abaixo de quem tem evidência, nunca zero
 const LIMIAR_REGRA_DURA = 3; // mecanismo em ≥3 dos últimos 5 não é principal se houver alternativa forte
@@ -126,10 +179,13 @@ export function selectHook(
   const base = (m: string) => rankScore.get(m) ?? piso;
   const usos = (m: string) => recentes.filter((r) => r === m).length;
   const score = (c: HookCandidate) => base(c.mecanismo) * PENALIDADE_USO ** usos(c.mecanismo);
+  // O placar manda (estudo 2026-10): o mecanismo só desempata entre candidatos de mesmo placar.
+  const placar = new Map(valid.map((c) => [c, placarHook(c.hook)]));
+  const pl = (c: HookCandidate) => placar.get(c) ?? 0;
 
-  // ordem estável: score desc, preservando a ordem original no empate
+  // ordem estável: placar desc, depois score desc, preservando a ordem original no empate
   const ordenar = (f: (c: HookCandidate) => number) =>
-    valid.map((c, i) => ({ c, i })).sort((a, b) => f(b.c) - f(a.c) || a.i - b.i).map((x) => x.c);
+    valid.map((c, i) => ({ c, i })).sort((a, b) => pl(b.c) - pl(a.c) || f(b.c) - f(a.c) || a.i - b.i).map((x) => x.c);
   const ordered = ordenar(score);
   const topo = ordenar((c) => base(c.mecanismo))[0]; // maior score BRUTO, sem penalidade
 
@@ -137,15 +193,17 @@ export function selectHook(
   // evidência comparável — sem ela, repetir o que funciona ainda é a melhor aposta. Com 0.6^usos
   // e 5 recentes a penalidade já garante isso sozinha; a regra é o invariante que sobrevive se
   // alguém afrouxar a constante.
+  // A alternativa precisa ter o mesmo placar: o anti-colapso de mecanismo nunca troca um hook
+  // de placar maior por um de placar menor.
   const saturado = usos(topo.mecanismo) >= LIMIAR_REGRA_DURA;
-  const alternativaForte = valid.some(
-    (c) => c.mecanismo !== topo.mecanismo && base(c.mecanismo) >= ALTERNATIVA_FORTE * base(topo.mecanismo)
-  );
-  const principal =
-    (saturado && alternativaForte ? ordered.find((c) => c.mecanismo !== topo.mecanismo) : undefined) ?? ordered[0];
+  const alternativa = (c: HookCandidate) => c.mecanismo !== topo.mecanismo && pl(c) === pl(topo);
+  const alternativaForte = valid.some((c) => alternativa(c) && base(c.mecanismo) >= ALTERNATIVA_FORTE * base(topo.mecanismo));
+  const principal = (saturado && alternativaForte ? ordered.find(alternativa) : undefined) ?? ordered[0];
 
-  // motivo: só o que veio do ranking ou dos recentes — nada inventado
+  // motivo: só o que veio do placar, do ranking ou dos recentes — nada inventado
   const lb = rankScore.get(principal.mecanismo);
+  const placarDecidiu = valid.some((c) => pl(c) < pl(principal));
+  const prefixo = placarDecidiu ? `placar ${pl(principal) > 0 ? "+" : ""}${pl(principal)} (o maior entre os candidatos); ` : "";
   let motivo: string;
   if (!rankScore.size) motivo = "sem ranking: ordem do modelo";
   else if (principal.mecanismo !== topo.mecanismo)
@@ -170,5 +228,5 @@ export function selectHook(
     if (variantes.length === nVariantes) break;
     if (!variantes.includes(c)) variantes.push(c);
   }
-  return { principal, variantes, motivo };
+  return { principal, variantes, motivo: prefixo + motivo };
 }

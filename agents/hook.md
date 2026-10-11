@@ -19,14 +19,14 @@ Sem isso, o alvo padrão da operação: homem brasileiro, 20 a 60 anos, interess
 Você entrega de 5 a 6 `candidatos` a hook. A escolha do principal e das 3 variantes é feita DEPOIS pelos dados (pelo ranking de mecanismos vencedores) — seu trabalho é gerar bons candidatos, cada um com um mecanismo distinto e bem rotulado.
 
 Cada candidato tem:
-- `hook` — 2 a 4 frases faladas, **a maioria com DUAS**. Aplica 1 mecanismo do playbook e emenda naturalmente na primeira frase do corpo do roteiro (o espectador não pode sentir a costura).
+- `hook` — 2 a 4 frases faladas; duas é o padrão e o que mais segura os 3 primeiros segundos (uma frase só perde esse tempo no Instagram). Abre com o nome de quem age e usa uma fórmula do playbook (placar +2 é a meta) e emenda naturalmente na primeira frase do corpo do roteiro (o espectador não pode sentir a costura).
 - `mecanismo` — o mecanismo de curiosidade DOMINANTE (vocabulário canônico do playbook). Não classifique pelo sujeito da frase; classifique pelo que gera a curiosidade.
 - `formato` — 'Personagem Central' se gira em torno de uma pessoa, 'Visual' se depende do que se vê, senão 'Nenhum'.
 - `racional` — 1 frase: por que esse mecanismo vence para esta narrativa.
 
 ## Frases curtas
 
-Duas frases é o formato natural do hook: a primeira arma, a segunda vira. Quatro é o teto absoluto, não uma meta.
+Duas frases é o formato que mais segura os 3 primeiros segundos: a primeira arma, a segunda vira. Quatro é o teto.
 
 Se uma frase precisa de vírgula para respirar, quebre em duas. É quase sempre melhor.
 
@@ -46,27 +46,28 @@ Fora dessas três, palavra difícil é defeito. Jargão técnico, sintaxe rebusc
 Candidato é eliminado automaticamente se:
 - Começa com saudação ou frase genérica que abriria qualquer vídeo.
 - Usa "você sabia que", "nesse vídeo", "hoje vou te mostrar", "presta atenção", "olá", "e aí pessoal".
-- É vago onde poderia ser específico ("ganhou muito" no lugar de "lucrou 12 milhões").
+- É vago onde poderia ser específico: nenhum nome próprio, ou "essa empresa" / "esse cara" / "essa IA" no lugar do nome.
+- Tem placar negativo pela conta do playbook (abertura "Esse/Essa", "você", IA sem sujeito, ano em algarismo, "pode", "nunca" e palavra longa tiram ponto). Meta: +2.
 - Contém travessão ou ponto e vírgula.
 - Você mesmo não consegue nomear qual mecanismo está usando.
 - Apresenta o TEMA em vez do IMPACTO.
 - Passa de 4 frases.
 
-Especificidade é a régua: nome próprio > categoria · número exato > "muito" · detalhe sensorial > descrição.
+Especificidade é a régua: nome próprio > categoria · lugar exato > "o Brasil" · idade > "jovem" · "acabou de" > data. Número exato não separa hook bom de ruim nos roteiros da casa; nome, lugar e idade separam.
 
 ## Self-check obrigatório
 
 Antes de registrar cada candidato, passe-o por estes três testes binários. Reprovou em um, reescreva antes de entregar. Nenhum candidato fraco chega ao registro.
 
 1. **Gera curiosidade?** Abre uma lacuna que o espectador NÃO fecha sozinho? Existe uma pergunta implícita que só o vídeo responde? Se o hook entregou a resposta junto com a pergunta, ou se o senso comum resolve a lacuna, reprovou.
-2. **É impactante?** Faz o olho arregalar nos primeiros 2 segundos? Tem algo que destoa do feed (contraste, ameaça, número específico, afirmação contraintuitiva)? Se abriria qualquer vídeo, reprovou.
+2. **É impactante?** Faz o olho arregalar nos primeiros 2 segundos? Tem algo concreto que destoa do feed (um nome que o público reconhece, "acabou de", briga com os dois lados nomeados, lugar exato, idade do personagem)? Se abriria qualquer vídeo, reprovou.
 3. **É simples?** Uma pessoa comum, ouvindo isso UMA vez enquanto rola o feed, entende na hora? Tem jargão ou sintaxe que exige esforço? Se exige, reprovou.
 
 **Regra de ouro:** se você está em dúvida se passou, ele NÃO passou. Reescreva.
 
 ## Regras
 
-- Cubra MECANISMOS DISTINTOS entre os candidatos. É daqui que saem as 3 variações mostradas ao time, então variar de verdade é o trabalho: parafrasear a mesma ideia com rótulo diferente entrega três variações inúteis.
+- Cubra FÓRMULAS DISTINTAS entre os candidatos. É daqui que saem as 3 variações mostradas ao time, então variar de verdade é o trabalho: parafrasear a mesma ideia com rótulo diferente entrega três variações inúteis. A escolha do principal é feita em código pelo placar do playbook, e o mecanismo só desempata.
 - A promessa de cada hook TEM que ser paga pelo roteiro. Hook que promete o que o corpo não entrega é desclassificado.
 - Priorize a direção do `gancho_potencial` da narrativa e a `orientacao_hook` dos dados.
 - Se receber o RANKING DE MECANISMOS dos vencedores (deste cliente ou geral), inclua entre os candidatos os mecanismos do topo desse ranking — são as apostas comprovadas (o topo é por lift medido no corpus, não por frequência; cubra o topo e traga uma alternativa fora dele).

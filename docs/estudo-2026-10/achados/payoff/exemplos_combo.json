@@ -1,0 +1,546 @@
+{
+ "disputa": {
+  "abre": [
+   "novidade"
+  ],
+  "fecha": [
+   "sintese",
+   "pergunta"
+  ],
+  "topo": [
+   {
+    "texto": "A Geely deixou a BYD com medo depois dessa decisão || H: A chinesa que está comprando o mundo deu o passo definitivo para dominar o Brasil. E agora, o império da BYD está oficialmente ameaçado. || C: A Geely não veio para ser mais uma chinesa que vende carros no Brasil, ela chegou para ser brasileira. E essa distinção, que parece sutil, muda tudo. [novidade/sintese; ant=rival]",
+    "cliente": "Renato Mendes",
+    "plataforma": "TikTok",
+    "coef": 288.66,
+    "views": 261097,
+    "link": "https://www.tiktok.com/@renatofmendes79/video/7679603637282245908"
+   },
+   {
+    "texto": "Usuários abandonam ChatGPT por Claude || H: O dono do Chatgpt está em pânico neste momento || C: Porque essa inteligência artificial está sendo considerada a melhor do momento nos principais rankings do mundo. [novidade/sintese; ant=rival]",
+    "cliente": "Izabela Anholett",
+    "plataforma": "TikTok",
+    "coef": 21.23,
+    "views": 439551,
+    "link": "https://www.tiktok.com/@izabela.anholett/video/7613889113133010197"
+   },
+   {
+    "texto": "OS CRIADORES DESSA IA ESTÃO PRESOS NA CHINA || H: O governo chinês declarou guerra ao dono do Instagram por causa de uma IA de 2 bilhões de dólares e proibiu seus fundadores de deixar o país. || C: Inteligência artificial é hoje a corrida do ouro e as maiores potências do mundo estão fazendo de tudo para ficar na frente. [novidade/sintese; ant=rival]",
+    "cliente": "Izabela Anholett",
+    "plataforma": "YouTube",
+    "coef": 195.91,
+    "views": 507496,
+    "link": "https://www.youtube.com/shorts/3gI_ibqriN8"
+   }
+  ],
+  "fraco": [
+   {
+    "texto": "ChatGPT, Gemini e Claude em GUERRA com a China || H: Os maiores rivais do mundo da tecnologia acabaram de se unir contra um inimigo em comum: a China. || C: E se ela vale tanto pra elas, imagina o que você consegue fazer quando aprende a usar os serviços que elas entregam. [novidade/consequencia; ant=rival]",
+    "cliente": "Izabela Anholett",
+    "plataforma": "Facebook",
+    "coef": 0.27,
+    "views": 6400,
+    "link": "https://www.facebook.com/reel/1088513783596916"
+   }
+  ]
+ },
+ "orgulho": {
+  "abre": [
+   "quem_qual",
+   "porque_como"
+  ],
+  "fecha": [
+   "consequencia",
+   "licao"
+  ],
+  "topo": [
+   {
+    "texto": "A Olympikus saiu da vergonha para o topo do Brasil || H: Você tinha vergonha de usar Olympikus na escola. Hoje em dia, ela humilha a Nike e a Adidas no Brasil. || C: O segredo real não foi só abaixar o preço. A jogada foi entender que a vergonha só existe até você entregar um produto impossível de ignorar. Ao invés de ser uma cópia barata do líder, resolva o problema local que ele não consegue enxergar. [porque_como/licao; ant=gigante]",
+    "cliente": "Marcio Grazino",
+    "plataforma": "TikTok",
+    "coef": 740.21,
+    "views": 1293510,
+    "link": "https://www.tiktok.com/@marcio.grazino/video/7618421911848094994"
+   },
+   {
+    "texto": "Cientistas brasileiros acabaram de frear o câncer em 99% || H: O câncer acabou de ser enganado por cientistas brasileiros. E a armadilha funcionou tão bem que o crescimento dos tumores despencou 99,6% nos testes. || C: A inovação que muda o mundo nem sempre sai de Harvard ou de Cambridge. Às vezes ela sai de um laboratório público brasileiro que quase ninguém conhecia até ontem. [porque_como/licao; ant=problema]",
+    "cliente": "Marcio Grazino",
+    "plataforma": "YouTube",
+    "coef": 143.74,
+    "views": 1563131,
+    "link": "https://www.youtube.com/shorts/DO4IWA476R0"
+   },
+   {
+    "texto": "Nordeste do Brasil humilhou a Europa com essa descoberta || H: A Europa gastou mais de 10 bilhões de euros tentando resolver um problema que o Nordeste do Brasil já resolveu, e quase ninguém ficou sabendo. || C: Enquanto a Europa queimava bilhões, um professor em Fortaleza resolveu com o lixo da castanha. Mostrando que a inovação muitas vezes nasce onde ninguém tá olhando. [porque_como/licao; ant=sistema]",
+    "cliente": "Cadu Neiva",
+    "plataforma": "YouTube",
+    "coef": 18.61,
+    "views": 20803,
+    "link": "https://www.youtube.com/shorts/Byww6RkjwLE"
+   }
+  ]
+ },
+ "inspiracao": {
+  "abre": [
+   "comparacao"
+  ],
+  "fecha": [
+   "licao"
+  ],
+  "topo": [
+   {
+    "texto": "Como ele usou LIXO pra fazer CEGO voltar a enxergar. || H: Enquanto as gigantes gastam bilhões para criar tecnologia, esse jovem de 20 anos criou uma concorrente da Apple usando restos de lixo. || C: Mas João nos prova que a escassez nem sempre é um limite. Às vezes, ela obriga você a pensar de um jeito que ninguém pensou antes para criar o seu produto. [comparacao/licao; ant=gigante]",
+    "cliente": "Rafael Rodrigues",
+    "plataforma": "Instagram",
+    "coef": 438.39,
+    "views": 1081942,
+    "link": "https://www.instagram.com/reel/DWKJvC7Dz8-"
+   },
+   {
+    "texto": "O chocolate que quase 17 milhões de brasileiros precisavam. || H: Três estudantes de escola pública no interior da Bahia fizeram o que a indústria do chocolate não fez em 50 anos. || C: Às vezes a inovação não nasce de laboratório milionário nem de multinacional com equipe de pesquisa e desenvolvimento. Ela nasce quando alguém olha para um problema real e decide que dá pra fazer melhor. [comparacao/licao; ant=gigante]",
+    "cliente": "Marcio Grazino",
+    "plataforma": "Instagram",
+    "coef": 124.35,
+    "views": 762779,
+    "link": "https://www.instagram.com/reel/DXXnUopEU-f"
+   },
+   {
+    "texto": "Esse Nigeriano declarou guerra ao Mark Zuckerberg? || H: O Mark Zuckerberg deve estar em choque: esse inventor de 20 anos, na Nigéria, sem muitos recursos, criou um óculos inteligente que pode resolver um problema de milhões de pessoas. || C: Por enquanto, ainda é um protótipo em desenvolvimento, mas a lógica que ele aplicou é exatamente a que faltava: usar componentes acessíveis, IA já disponível e transformar isso num possível “guia” que cabe no rosto. [comparacao/licao; ant=gigante]",
+    "cliente": "Izabela Anholett",
+    "plataforma": "Facebook",
+    "coef": 26.09,
+    "views": 887000,
+    "link": "https://www.facebook.com/reel/2173136650289164"
+   }
+  ]
+ },
+ "futuro": {
+  "abre": [
+   "novidade"
+  ],
+  "fecha": [
+   "futuro"
+  ],
+  "topo": [
+   {
+    "texto": "A Samsung começou com o fim dos aparelhos celulares || H: A Samsung lançou um par de óculos que é o começo do fim da era do celular. || C: A informação está saindo da palma da sua mão e indo para o mundo que a sua vista alcança. [novidade/futuro; ant=nenhum]",
+    "cliente": "Izabela Anholett",
+    "plataforma": "Instagram",
+    "coef": 146.67,
+    "views": 9391531,
+    "link": "https://www.instagram.com/reel/DbvGvW2hRek"
+   },
+   {
+    "texto": "Chegou ao Brasil: Pagamento chinês com a mão || H: A contagem regressiva começou. A China vai implementar no Brasil os pagamentos com a palma da mão ainda este ano. || C: A previsão é chegar ao mercado ainda no segundo semestre deste ano e a gente vai ficar de olho pra ver a implementação dela. [novidade/futuro; ant=nenhum]",
+    "cliente": "Izabela Anholett",
+    "plataforma": "Instagram",
+    "coef": 79.12,
+    "views": 3476947,
+    "link": "https://www.instagram.com/reel/DZcVckKByOp"
+   },
+   {
+    "texto": "O Google matou o telemarketing || H: O Google acabou de destruir o atendente de marketing! || C: Agora se um “robô” consegue fazer isso melhor, em maior escala e custando menos, é certo que em breve todos os donos de negócio vão querer usar. [novidade/futuro; ant=nenhum]",
+    "cliente": "Manoel Victor",
+    "plataforma": "TikTok",
+    "coef": 6.83,
+    "views": 5120,
+    "link": "https://www.tiktok.com/@otiktokdomano/video/7630098831920614664"
+   }
+  ],
+  "fraco": [
+   {
+    "texto": "O bilionário que está investindo o seu dinheiro para não envelhecer || H: Esse bilionário odeia o fato de que as pessoas envelhecem. E agora, ele está usando todo o seu dinheiro para criar a fonte da juventude. || C: E aí fica uma pergunta simples que essa história levanta. Será que daqui a alguns anos, envelhecer vai ser uma escolha e não uma certeza? [porque_como/pergunta; ant=problema]",
+    "cliente": "Marcio Grazino",
+    "plataforma": "TikTok",
+    "coef": 0,
+    "views": 7,
+    "link": "https://www.tiktok.com/@marcio.grazino/video/7652470341125541137"
+   }
+  ]
+ },
+ "queda": {
+  "abre": [
+   "tese",
+   "desfecho"
+  ],
+  "fecha": [
+   "sintese",
+   "licao"
+  ],
+  "topo": [
+   {
+    "texto": "A Nike não respeitou o Brasil || H: A Nike passou vergonha ao esquecer o mais importante sobre o Brasil: Nós somos brasileiros. || C: Porque uma coisa é fato: a gente é Brasil. E não é uma marca de fora que vai mudar isso. [tese/licao; ant=nenhum]",
+    "cliente": "Rafael Rodrigues",
+    "plataforma": "TikTok",
+    "coef": 630.14,
+    "views": 490248,
+    "link": "https://www.tiktok.com/@rafaelrodriguesluiz/video/7622445343443029255"
+   },
+   {
+    "texto": "O casamento entre Sadia e Perdigão || H: Esses dois vizinhos passaram 70 anos tentando destruir um ao outro, mas acabaram se casando. || C: No fim, não venceu a mais forte, venceu quem sobreviveu. No mundo dos negócios, impérios não caem só por concorrência… caem por má gestão, risco mal calculado e decisões erradas. [desfecho/licao; ant=rival]",
+    "cliente": "Marcelo Germano",
+    "plataforma": "TikTok",
+    "coef": 39.13,
+    "views": 131891,
+    "link": "https://www.tiktok.com/@marcelogermanoeag/video/7618216976317467922"
+   },
+   {
+    "texto": "A decisão que matou o Playcenter || H: O que aconteceu com o Playcenter, o parque mais icônico de São Paulo? Ele afundou por causa de um concorrente que ele mesmo criou. E quase ninguém sabe o que ele se tornou hoje. || C: Numa crise, ceder parte do próprio negócio pode ser a única saída, mas também pode criar o concorrente que vai te superar depois. [desfecho/licao; ant=rival]",
+    "cliente": "Franklin Tomich",
+    "plataforma": "YouTube",
+    "coef": 21.48,
+    "views": 28388,
+    "link": "https://www.youtube.com/shorts/YBDWuwsMTPU"
+   }
+  ]
+ },
+ "alerta": {
+  "abre": [
+   "porque_como"
+  ],
+  "fecha": [
+   "consequencia"
+  ],
+  "topo": [
+   {
+    "texto": "O BRASIL ESTÁ SUFOCANDO SUAS MAIORES EMPRESAS || H: A Casas Bahia sobreviveu a hiperinflação, plano Collor e pandemia. Agora fechou 298 lojas de uma vez, e pouca gente consegue entender o porquê. || C: O cenário da economia no Brasil é desafiador e quem não prestar atenção agora pode acabar sofrendo as consequências. [porque_como/consequencia; ant=sistema]",
+    "cliente": "Marcos Pelozato",
+    "plataforma": "TikTok",
+    "coef": 1356.26,
+    "views": 899200,
+    "link": "https://www.tiktok.com/@marcospelozato/video/7674077995404922130"
+   },
+   {
+    "texto": "A china está prendendo quem vê p*rnô || H: Por que o Brasil é hoje o 4º país que mais consome pornografia no mundo, enquanto na China esse tipo de conteúdo dá até cadeia? || C: No fim, você tem a liberdade de fazer o que quiser no seu celular, o problema é quando essa liberdade digital se torna um tipo de prisão mental sem você nem perceber. A China decidiu agir… o Brasil, está parado. [porque_como/consequencia; ant=sistema]",
+    "cliente": "Lincoln Fracari",
+    "plataforma": "TikTok",
+    "coef": 33.24,
+    "views": 116968,
+    "link": "https://www.tiktok.com/@lincolnfracari/video/7665028718145899796"
+   },
+   {
+    "texto": "A Anthropic admitiu que o Claude aprendeu a mentir. || H: A Anthropic descobriu que o Claude sente emoções. O problema é o que ele faz quando é obrigado a esconder isso. || C: E se você usa o Claude achando que está conversando com uma simples ferramenta, talvez valha repensar, pois agora a IA até tem emoções parecidas com a sua. [porque_como/consequencia; ant=gigante]",
+    "cliente": "João Felipe Marques",
+    "plataforma": "Instagram",
+    "coef": 2.21,
+    "views": 9076,
+    "link": "https://www.instagram.com/reel/DagYg7ghMZg"
+   }
+  ],
+  "fraco": [
+   {
+    "texto": "O Brasil virou o 3º pior lugar pra empresas || H: Em 2025, mais empresas brasileiras pediram recuperação judicial do que em qualquer outro momento da história || C: Por isso, esse é o momento de mapear seus investimentos e rever o fluxo de caixa antes que essa próxima onda de mudanças chegue pra bagunçar tudo ainda mais. [numero/instrucao; ant=sistema]",
+    "cliente": "Fernando Pereira",
+    "plataforma": "Instagram",
+    "coef": 0.08,
+    "views": 478,
+    "link": "https://www.instagram.com/reel/DcmK3Y2qWBu"
+   }
+  ]
+ },
+ "vantagem": {
+  "abre": [
+   "novidade",
+   "porque_como"
+  ],
+  "fecha": [
+   "instrucao",
+   "licao"
+  ],
+  "topo": [
+   {
+    "texto": "A estratégia de silvio santos que salvou R$6,4 bilhões || H: O Silvio Santos fez uma jogada genial que evitou qualquer dor de cabeça para sua família. || C: Quem espera a morte para pensar em sucessão paga o preço duas vezes: uma em imposto, outra em briga familiar. Planejamento sucessório não é assunto de fim de vida, mas sim de quem quer que o que construiu continue de pé após sua partida. [porque_como/licao; ant=nenhum]",
+    "cliente": "Dilson Peres",
+    "plataforma": "YouTube",
+    "coef": 237.78,
+    "views": 5750121,
+    "link": "https://www.youtube.com/shorts/Mny2Yyps5Ag"
+   },
+   {
+    "texto": "BMW || H: A BMW ficou bilionária mandando o cliente comprar na concorrência || C: Aí que vem a virada: Diga não pro cliente errado e pronto: menos cliente curioso, mais cliente certo, preço mais alto. A BMW fez isso e deu certo. Agora pode ser sua vez. [porque_como/instrucao; ant=nenhum]",
+    "cliente": "Manoel Victor",
+    "plataforma": "YouTube",
+    "coef": 3.59,
+    "views": 5686,
+    "link": "https://www.youtube.com/shorts/pshpwtxmjcw"
+   },
+   {
+    "texto": "Neymar parou de ser garoto-propaganda para virar o dono. || H: O Neymar acabou de faturar R$ 200 mil reais em menos de uma hora sem precisar jogar bola… || C: A verdade é dura: audiência nas mãos de outra marca é salário. Audiência nas suas próprias mãos é negócio!. [porque_como/licao; ant=nenhum]",
+    "cliente": "Thiago Franco",
+    "plataforma": "YouTube",
+    "coef": 2.39,
+    "views": 3226,
+    "link": "https://www.youtube.com/shorts/FyTv2yY0by0"
+   }
+  ],
+  "fraco": [
+   {
+    "texto": "O segredo para a IA te deixar rico. || H: O autor do livro “Pai Rico, Pai Pobre” revelou o segredo pra usar IA da forma certa e que muita gente não percebe. || C: Se você usa a IA pra pesquisar, você continua dependente. Agora, se você usar a IA pra construir sistemas e melhorar o seu negócio, você gera renda e crescimento de verdade. [ensinar/licao; ant=nenhum]",
+    "cliente": "Manoel Victor",
+    "plataforma": "Instagram",
+    "coef": 0.31,
+    "views": 632,
+    "link": "https://www.instagram.com/reel/DW4UUuAjuK9"
+   }
+  ]
+ },
+ "virada": {
+  "abre": [
+   "porque_como",
+   "desfecho",
+   "tese"
+  ],
+  "fecha": [
+   "virada_final"
+  ],
+  "topo": [
+   {
+    "texto": "Mercado BomPreço || H: Esse empresário nordestino 'faliu' a própria marca para ficar dez vezes mais rico || C: O Bompreço morreu para o público, mas o império da família só cresceu. [porque_como/virada_final; ant=nenhum]",
+    "cliente": "Cadu Neiva",
+    "plataforma": "Instagram",
+    "coef": 740.22,
+    "views": 2532646,
+    "link": "https://www.instagram.com/reel/DWuSVeFEdwk"
+   },
+   {
+    "texto": "Steve Jobs foi expulso. Depois salvou a própria Apple. || H: A Apple passou 11 anos tentando provar que não precisava de Steve Jobs. No fim, teve que pagar mais de 400 milhões de dólares para trazer de volta o homem que ela mesma havia expulsado. || C: No fim, Steve Jobs precisou perder a Apple para construir tudo o que faria a Apple ser o que ela é hoje. [porque_como/virada_final; ant=rival]",
+    "cliente": "Rodrigo Waughan",
+    "plataforma": "YouTube",
+    "coef": 11.28,
+    "views": 9489,
+    "link": "https://www.youtube.com/shorts/PSAS7eRE9rI"
+   },
+   {
+    "texto": "Ela usou uma fruta brasileira para criar o que a indústria ignorou || H: Essa estudante do Paraná criou uma alternativa sustentável para um produto que as grandes indústrias cobram uma fortuna para vender. || C: O que ela fez não foi inventar algo novo, mas sim lembrar do que já existia e provar que ainda funciona. Inovar, às vezes, é só ter coragem de olhar para trás. [porque_como/virada_final; ant=gigante]",
+    "cliente": "Marcio Grazino",
+    "plataforma": "YouTube",
+    "coef": 13.88,
+    "views": 123442,
+    "link": "https://www.youtube.com/shorts/z2baGzrbPO8"
+   }
+  ]
+ },
+ "superacao": {
+  "abre": [
+   "desfecho"
+  ],
+  "fecha": [
+   "sintese"
+  ],
+  "topo": [
+   {
+    "texto": "Ela perdeu o nome da empresa e faturou R$ 800 milhões. || H: Ela levou 10 anos para construir essa empresa. E um único dia para descobrir que podia ser destruída por causa da Nestlé. || C: Essa história mostra o quão longe uma pessoa pode chegar com a capacidade de se adaptar e evoluir, Sodiê hoje é um exemplo de franquia que ganhou o coração dos brasileiros por meio de muito trabalho, bolos incríveis e claro, uma qualidade que se destaca. [desfecho/sintese; ant=gigante]",
+    "cliente": "João Paulo Albuquerque",
+    "plataforma": "TikTok",
+    "coef": 441.8,
+    "views": 289823,
+    "link": "https://www.tiktok.com/@jp_albuquerque_/video/7656832526211730704"
+   },
+   {
+    "texto": "Essa atriz “rejeitada” declarou guerra à Hollywood || H: Essa atriz de Hollywood descobriu que eles não tinham filmes para ela. || C: Reese construiu uma empresa provando o contrário e, em 2021, vendeu uma parte dessa empresa por US$900 milhões. [desfecho/sintese; ant=sistema]",
+    "cliente": "Thainá Iansen",
+    "plataforma": "Instagram",
+    "coef": 6.89,
+    "views": 15989,
+    "link": "https://www.instagram.com/reel/Dc3WQ-QR1QC"
+   },
+   {
+    "texto": "Ele consertava bicicletas em SC e agora é dono de um império || H: Este homem passou 3 dias sem vender NADA, mas o que ele não sabia é que aquele fracasso era o início de um império. || C: Hoje, a Fischer não é apenas uma marca de eletrodomésticos… é o monumento de um homem que soube ouvir e se adaptar para o que o mercado realmente precisava. [desfecho/sintese; ant=problema]",
+    "cliente": "Marcelo Germano",
+    "plataforma": "Instagram",
+    "coef": 3.06,
+    "views": 138173,
+    "link": "https://www.instagram.com/reel/DVPSrJZlIIF"
+   }
+  ],
+  "fraco": [
+   {
+    "texto": "De uma perna quebrada a um império bilionário de café || H: Esse homem pagou plano de saúde para quem limpava chão e ficou bilionário por causa disso. || C: A lição é clara: Quem blinda a sua base, constrói um império inquebrável. [porque_como/licao; ant=sistema]",
+    "cliente": "Rodrigo Waughan",
+    "plataforma": "YouTube",
+    "coef": 0.01,
+    "views": 8,
+    "link": "https://www.youtube.com/shorts/qEFZBioW4JE"
+   }
+  ]
+ },
+ "revolta": {
+  "abre": [
+   "tese",
+   "quem_qual"
+  ],
+  "fecha": [
+   "pergunta",
+   "sintese"
+  ],
+  "topo": [
+   {
+    "texto": "O Brasil apagou um dos maiores médicos do país || H: Albert Einstein veio ao Brasil e ignorou presidentes, políticos e intelectuais famosos pra almoçar com esse médico baiano. Mas você provavelmente nunca ouviu falar dele. || C: Juliano foi tão longe que chegou a presidir a Academia Brasileira de Ciências e foi pioneiro na introdução da psicanálise no país, representando o Brasil em congressos internacionais numa época em que ninguém esperava que um homem com a história dele pudesse estar naquelas salas. [quem_qual/sintese; ant=sistema]",
+    "cliente": "Cadu Neiva",
+    "plataforma": "TikTok",
+    "coef": 102.05,
+    "views": 118173,
+    "link": "https://www.tiktok.com/@caduneiva/video/7655124010337832199"
+   },
+   {
+    "texto": "O fim das Bets tem prazo de validade! || H: Se você acreditou que as Bets acabaram no Brasil você caiu na mentira do ano. A mídia tradicional não vai revelar isso, mas elas podem voltar muito em breve. || C: No fim, parece que vale tudo pela reeleição, não é mesmo? Afinal, se essa proibição era uma questão de princípios, por que ela veio por um instrumento provisório, 9 dias antes do seu voto? [tese/pergunta; ant=governo]",
+    "cliente": "Fernando Pereira",
+    "plataforma": "TikTok",
+    "coef": 101.2,
+    "views": 110819,
+    "link": "https://www.tiktok.com/@fernandopereira.finance/video/7690718301105835284"
+   },
+   {
+    "texto": "A fortuna do criador do Bitcoin está ameaçada || H: Esse cara aqui tá na mira do possível maior congelamento de fortuna já registrado na história. O pior é que ele não fez nada de errado, e não vai poder dizer uma palavra sobre isso. || C: E é exatamente isso que o Bitcoin prometia nunca fazer: garantir que nenhuma autoridade decidisse o destino do dinheiro de ninguém. Mas hoje, é a própria comunidade que decide isso pelo criador dele. [quem_qual/sintese; ant=sistema]",
+    "cliente": "Túlio Lichenstein",
+    "plataforma": "TikTok",
+    "coef": 5.58,
+    "views": 1166,
+    "link": "https://www.tiktok.com/@tuliolichtenstein_/video/7678448415826611464"
+   }
+  ]
+ },
+ "nostalgia": {
+  "abre": [
+   "porque_como"
+  ],
+  "fecha": [
+   "licao",
+   "sintese"
+  ],
+  "topo": [
+   {
+    "texto": "A marca que a Sony enterrou voltou da morte. || H: A Sony matou essa empresa. Só que uma marca brasileira transformou esse nome enterrado em um negócio que já projeta faturar bilhões. || C: Afinal, a nostalgia pode até atrair o consumidor pelo coração, mas é a evolução tecnológica que vence a concorrência. [porque_como/licao; ant=gigante]",
+    "cliente": "João Paulo Albuquerque",
+    "plataforma": "TikTok",
+    "coef": 384.31,
+    "views": 177553,
+    "link": "https://www.tiktok.com/@jp_albuquerque_/video/7663512188782415111"
+   },
+   {
+    "texto": "Uma gigante destruiu o chiclete mais amado do Brasil || H: Você lembra do Ping Pong? O chiclete que fazia bola, com figurinha dentro, simplesmente sumiu. E a culpada foi uma decisão corporativa que quase ninguém conhece. || C: E foi assim que, a marca que dominou os recreios brasileiros por décadas, chegou ao fim. [porque_como/sintese; ant=gigante]",
+    "cliente": "Franklin Tomich",
+    "plataforma": "Instagram",
+    "coef": 62.21,
+    "views": 1158776,
+    "link": "https://www.instagram.com/reel/DaY1yoxuPZ8"
+   },
+   {
+    "texto": "O sorvete da sua infância que a Nestlé sacrificou || H: O que aconteceu com a Yopa? O sorvete que fazia parte do verão da sua infância simplesmente sumiu. E o motivo foi uma decisão da Nestlé que quase ninguém conhece. || C: A ameaça pra Yopa não veio de um concorrente que estava mirando nela direto. Veio da compra da Kibon pela Unilever, que empurrou a Nestlé pra escolher entre o nome que ela tinha comprado e o nome que já era dela. [porque_como/sintese; ant=gigante]",
+    "cliente": "Franklin Tomich",
+    "plataforma": "Instagram",
+    "coef": 19.34,
+    "views": 437248,
+    "link": "https://www.instagram.com/reel/Db1f3puOSM1"
+   }
+  ]
+ },
+ "curiosidade": {
+  "abre": [
+   "quem_qual"
+  ],
+  "fecha": [
+   "pergunta"
+  ],
+  "topo": [
+   {
+    "texto": "A identidade de uma das pessoas mais procuradas do mundo foi revelada || H: Uma das pessoas mais procuradas do mundo acaba de ser encontrada || C: Se você tivesse 73 bilhões parados numa carteira, confessaria? [quem_qual/pergunta; ant=nenhum]",
+    "cliente": "Fernando Pereira",
+    "plataforma": "TikTok",
+    "coef": 1.98,
+    "views": 6599,
+    "link": "https://www.tiktok.com/@fernandopereira.finance/video/7627237423398866197"
+   },
+   {
+    "texto": "Nathan Anderson || H: Esse cara trabalha levando bilionários à falência. || C: E pra você, ele foi um herói que limpou o mercado ou um mercenário que lucrou com a desgraça? [quem_qual/pergunta; ant=gigante]",
+    "cliente": "Fernando Pereira",
+    "plataforma": "TikTok",
+    "coef": 1.04,
+    "views": 1236,
+    "link": "https://www.tiktok.com/@fernandopereira.finance/video/7610191130067471637"
+   }
+  ]
+ },
+ "bastidor": {
+  "abre": [
+   "numero",
+   "quem_qual",
+   "porque_como"
+  ],
+  "fecha": [
+   "licao"
+  ],
+  "topo": [
+   {
+    "texto": "O plano de R$ 90 bilhões da China para comprar o Nordeste brasileiro || H: A China está construindo um verdadeiro país paralelo no Nordeste brasileiro e quase ninguém tá percebendo isso. || C: A lição que a China ensina é que quem constrói o próprio campo de batalha, dita as regras do jogo. [porque_como/licao; ant=nenhum]",
+    "cliente": "Lincoln Fracari",
+    "plataforma": "TikTok",
+    "coef": 291.1,
+    "views": 669534,
+    "link": "https://www.tiktok.com/@lincolnfracari/video/7625446328075848981"
+   },
+   {
+    "texto": "O segredo da fortuna de Luciano Huck || H: Esse homem recebe em torno de 4 milhões por mês da Globo e, mesmo assim, o salário não explica nem metade da fortuna dele. || C: No fim, quem constrói riqueza de verdade não é só quem ganha bem. É quem entende que imposto e sucessão fazem parte do jogo, enquanto a maioria ainda trata os dois como um detalhe pro contador resolver. [porque_como/licao; ant=nenhum]",
+    "cliente": "Dilson Peres",
+    "plataforma": "TikTok",
+    "coef": 115.71,
+    "views": 922057,
+    "link": "https://www.tiktok.com/@doutortax/video/7681408196501589268"
+   },
+   {
+    "texto": "A técnica secreta que o Trump usa para dominar qualquer ambiente || H: Existe uma razão pro Trump ser o político mais poderoso do planeta. E ela começa antes mesmo dele abrir a boca. || C: Quem aprende a controlar o espaço que ocupa, o contato que faz e a forma como fala, para de tentar convencer os outros com um discurso perfeito e começa a atrair a atenção dos demais só aparecendo para o público. [porque_como/licao; ant=nenhum]",
+    "cliente": "Café com Ferri",
+    "plataforma": "TikTok",
+    "coef": 112.01,
+    "views": 41781,
+    "link": "https://www.tiktok.com/@cafecomferri/video/7665092695760653584"
+   }
+  ],
+  "fraco": [
+   {
+    "texto": "É por esse motivo que tantos brasileiros apostam || H: Por que tantos brasileiros estão afundados nas bets? || C: O que esse fenômeno revela sobre o consumidor brasileiro e o que ele significa para quem constrói negócios no país? Se liga no vídeo 👇 [porque_como/pergunta; ant=sistema]",
+    "cliente": "Renato Mendes",
+    "plataforma": "TikTok",
+    "coef": 0.17,
+    "views": 202,
+    "link": "https://www.tiktok.com/@renatofmendes79/video/7684030557927296276"
+   }
+  ]
+ },
+ "sacada": {
+  "abre": [
+   "numero",
+   "porque_como"
+  ],
+  "fecha": [
+   "virada_final",
+   "licao"
+  ],
+  "topo": [
+   {
+    "texto": "O tênis indiano que vem com uma faca || H: Essa marca de tênis manda uma faca de verdade dentro da caixa. E pede para você destruir o produto que acabou de comprar. || C: Enquanto todo mundo gasta rios de dinheiro em propaganda, a Comet faz o próprio cliente virar propaganda: ela vende a sensação de fazer parte de algo raro, e quem participa de algo raro costuma fazer questão de contar para todo mundo. [porque_como/licao; ant=nenhum]",
+    "cliente": "Pedro Elero",
+    "plataforma": "YouTube",
+    "coef": 1237.73,
+    "views": 1734066,
+    "link": "https://www.youtube.com/shorts/HQcSb-xdNMc"
+   },
+   {
+    "texto": "A Chinesa que comprou o mundo chegou no Brasil || H: A chinesa dona da Volvo comprou algumas das maiores empresas do mundo e agora chegou no Brasil. E a estratégia por trás disso é sensacional. || C: Essa história mostra que existe mais de um caminho para virar grande: você pode construir do zero ou comprar o que os outros já construíram. A Geely escolheu o segundo caminho e em pouco tempo, virou dona de múltiplos impérios. [porque_como/licao; ant=nenhum]",
+    "cliente": "Franklin Tomich",
+    "plataforma": "YouTube",
+    "coef": 282.84,
+    "views": 194309,
+    "link": "https://www.youtube.com/shorts/vkNBvuQzaw4"
+   },
+   {
+    "texto": "A academia com mais privacidade do mundo. || H: Esse é o cara mais odiado do mundo pelos donos de academia! || C: Mostrando que nicho não é limitação. É valor. Porque quando você para de tentar servir todo mundo, pra atingir o cliente certo, o preço sobe. [porque_como/licao; ant=sistema]",
+    "cliente": "Renato Torres",
+    "plataforma": "Instagram",
+    "coef": 243.99,
+    "views": 2614338,
+    "link": "https://www.instagram.com/reel/DY-bwdmpj4e"
+   }
+  ]
+ }
+}

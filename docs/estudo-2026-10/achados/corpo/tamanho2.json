@@ -1,0 +1,1509 @@
+{
+ "robustez": {
+  "450-500": {
+   "base": {
+    "nome": "450-500",
+    "desfecho": "coef",
+    "leitura": "ajuda (replica)",
+    "n": 558,
+    "roteiros": 261,
+    "clientes": 26,
+    "p": 0.317,
+    "p_sem": 0.252,
+    "lift": 1.23,
+    "ic": [
+     1.09,
+     1.38
+    ],
+    "or_mh": 1.39,
+    "or_ic": [
+     1.15,
+     1.69
+    ],
+    "desc": 1.12,
+    "val": 1.3,
+    "n_desc": 215,
+    "n_val": 343,
+    "plat": {
+     "Instagram": {
+      "n": 255,
+      "lift": 1.27,
+      "lb": 1.05,
+      "ub": 1.5
+     },
+     "TikTok": {
+      "n": 145,
+      "lift": 1.09,
+      "lb": 0.83,
+      "ub": 1.4
+     },
+     "YouTube": {
+      "n": 158,
+      "lift": 1.3,
+      "lb": 1.03,
+      "ub": 1.6
+     }
+    }
+   },
+   "ctl_modelagem": {
+    "or": 1.4470707184422742,
+    "lo": 1.1905703020388705,
+    "hi": 1.758832435671382
+   },
+   "ctl_roteirista": {
+    "or": 1.3473055588005718,
+    "lo": 1.0981874000940806,
+    "hi": 1.6529348894545792
+   },
+   "clientes": 19,
+   "lift_maior_1": 14
+  },
+  "420-500": {
+   "base": {
+    "nome": "420-500",
+    "desfecho": "coef",
+    "leitura": "ajuda (replica)",
+    "n": 1595,
+    "roteiros": 730,
+    "clientes": 28,
+    "p": 0.282,
+    "p_sem": 0.249,
+    "lift": 1.09,
+    "ic": [
+     1.01,
+     1.18
+    ],
+    "or_mh": 1.2,
+    "or_ic": [
+     1.05,
+     1.37
+    ],
+    "desc": 1.12,
+    "val": 1.08,
+    "n_desc": 587,
+    "n_val": 1008,
+    "plat": {
+     "Instagram": {
+      "n": 715,
+      "lift": 1.05,
+      "lb": 0.92,
+      "ub": 1.18
+     },
+     "TikTok": {
+      "n": 448,
+      "lift": 1.02,
+      "lb": 0.87,
+      "ub": 1.18
+     },
+     "YouTube": {
+      "n": 432,
+      "lift": 1.26,
+      "lb": 1.09,
+      "ub": 1.43
+     }
+    }
+   },
+   "ctl_modelagem": {
+    "or": 1.2522962043967876,
+    "lo": 1.0928988667619404,
+    "hi": 1.4349413575594843
+   },
+   "ctl_roteirista": {
+    "or": 1.2571553248275995,
+    "lo": 1.0895059895418366,
+    "hi": 1.4506019479590013
+   },
+   "clientes": 22,
+   "lift_maior_1": 14
+  },
+  "<300": {
+   "base": {
+    "nome": "<300",
+    "desfecho": "coef",
+    "leitura": "atrapalha (replica)",
+    "n": 976,
+    "roteiros": 379,
+    "clientes": 25,
+    "p": 0.212,
+    "p_sem": 0.266,
+    "lift": 0.82,
+    "ic": [
+     0.73,
+     0.93
+    ],
+    "or_mh": 0.7,
+    "or_ic": [
+     0.58,
+     0.84
+    ],
+    "desc": 0.84,
+    "val": 0.73,
+    "n_desc": 801,
+    "n_val": 175,
+    "plat": {
+     "Instagram": {
+      "n": 375,
+      "lift": 0.86,
+      "lb": 0.71,
+      "ub": 1.04
+     },
+     "TikTok": {
+      "n": 302,
+      "lift": 0.79,
+      "lb": 0.63,
+      "ub": 0.98
+     },
+     "YouTube": {
+      "n": 299,
+      "lift": 0.8,
+      "lb": 0.64,
+      "ub": 1
+     }
+    }
+   },
+   "ctl_modelagem": {
+    "or": 0.6545399568450634,
+    "lo": 0.5432518564168002,
+    "hi": 0.7886260305349753
+   },
+   "ctl_roteirista": {
+    "or": 0.7004857158129887,
+    "lo": 0.5759298568325276,
+    "hi": 0.8519791641931113
+   },
+   "clientes": 11,
+   "lift_maior_1": 2
+  },
+  "500+": {
+   "base": {
+    "nome": "500+",
+    "desfecho": "coef",
+    "leitura": "sem evidência",
+    "n": 126,
+    "roteiros": 59,
+    "clientes": 17,
+    "p": 0.206,
+    "p_sem": 0.259,
+    "lift": 0.8,
+    "ic": [
+     0.56,
+     1.11
+    ],
+    "or_mh": 0.74,
+    "or_ic": [
+     0.47,
+     1.15
+    ],
+    "desc": 0.81,
+    "val": 0.79,
+    "n_desc": 77,
+    "n_val": 49,
+    "plat": {
+     "Instagram": {
+      "n": 59,
+      "lift": 0.79,
+      "lb": 0.47,
+      "ub": 1.26
+     },
+     "TikTok": {
+      "n": 38,
+      "lift": 0.71,
+      "lb": 0.36,
+      "ub": 1.29
+     },
+     "YouTube": {
+      "n": 29,
+      "lift": 0.94,
+      "lb": 0.47,
+      "ub": 1.63
+     }
+    }
+   },
+   "ctl_modelagem": {
+    "or": 0.7996359478911726,
+    "lo": 0.5080392814966016,
+    "hi": 1.2585988376256914
+   },
+   "ctl_roteirista": {
+    "or": 0.6763459626942318,
+    "lo": 0.42673926948960644,
+    "hi": 1.0719516434470733
+   },
+   "clientes": 3,
+   "lift_maior_1": 1
+  }
+ },
+ "pace": {
+  "geral": 3.0716137069866685,
+  "por_cliente": [
+   [
+    "Cadu Neiva",
+    2.3968357045870476,
+    208
+   ],
+   [
+    "Rafael Rodrigues",
+    2.4985412708149433,
+    635
+   ],
+   [
+    "Rodrigo Waughan",
+    2.6923076923076925,
+    378
+   ],
+   [
+    "Pedro Elero",
+    2.7260273972602738,
+    200
+   ],
+   [
+    "Leonardo Cirino",
+    2.9010760695974582,
+    121
+   ],
+   [
+    "Franklin Tomich",
+    2.932007349803628,
+    249
+   ],
+   [
+    "Drielle Castelani",
+    2.968163591477946,
+    121
+   ],
+   [
+    "Marcelo Germano",
+    2.9689190250217967,
+    144
+   ],
+   [
+    "Thainá Iansen",
+    2.9751189100073905,
+    62
+   ],
+   [
+    "Patrick Diorio",
+    3.017893202363823,
+    78
+   ],
+   [
+    "Manoel Victor",
+    3.0343627202133385,
+    231
+   ],
+   [
+    "Lincoln Fracari",
+    3.0837134776399555,
+    442
+   ],
+   [
+    "Renato Torres",
+    3.0977654785015076,
+    68
+   ],
+   [
+    "Dilson Peres",
+    3.11,
+    280
+   ],
+   [
+    "Ricardo Schumacher",
+    3.1289487886246707,
+    102
+   ],
+   [
+    "Túlio Lichenstein",
+    3.147180374845747,
+    119
+   ],
+   [
+    "João Felipe Marques",
+    3.15049754741324,
+    64
+   ],
+   [
+    "Izabela Anholett",
+    3.15748031496063,
+    650
+   ],
+   [
+    "João Paulo Albuquerque",
+    3.1717171717171717,
+    167
+   ],
+   [
+    "Renato Mendes",
+    3.2091917591125196,
+    164
+   ],
+   [
+    "Fernando Pereira",
+    3.276614833161763,
+    369
+   ],
+   [
+    "Marcos Pelozato",
+    3.306644622369184,
+    366
+   ],
+   [
+    "Marcio Grazino",
+    3.3304622451909274,
+    438
+   ],
+   [
+    "Leonardo Martins",
+    3.352885598049668,
+    20
+   ],
+   [
+    "Café com Ferri",
+    3.385321100917431,
+    51
+   ],
+   [
+    "Leonardo Nogueira",
+    3.511111111111111,
+    132
+   ],
+   [
+    "Thiago Franco",
+    3.5267857142857144,
+    377
+   ],
+   [
+    "Thiago Bisewski",
+    3.65872486649484,
+    63
+   ]
+  ]
+ },
+ "dur_ctl_Instagram": {
+  "d150_180": {
+   "nome": "dur 150-180",
+   "desfecho": "coef",
+   "leitura": "ajuda (replica)",
+   "n": 418,
+   "roteiros": 416,
+   "clientes": 26,
+   "p": 0.306,
+   "p_sem": 0.248,
+   "lift": 1.19,
+   "ic": [
+    1.03,
+    1.37
+   ],
+   "or_mh": 1.43,
+   "or_ic": [
+    1.05,
+    1.95
+   ],
+   "desc": 1.15,
+   "val": 1.22,
+   "n_desc": 161,
+   "n_val": 257,
+   "plat": {
+    "Instagram": {
+     "n": 418,
+     "lift": 1.19,
+     "lb": 1.03,
+     "ub": 1.37
+    }
+   }
+  },
+  "d_lt100": {
+   "nome": "dur <100",
+   "desfecho": "coef",
+   "leitura": "sem evidência",
+   "n": 497,
+   "roteiros": 495,
+   "clientes": 28,
+   "p": 0.231,
+   "p_sem": 0.263,
+   "lift": 0.9,
+   "ic": [
+    0.76,
+    1.05
+   ],
+   "or_mh": 0.77,
+   "or_ic": [
+    0.51,
+    1.16
+   ],
+   "desc": 0.92,
+   "val": 0.86,
+   "n_desc": 357,
+   "n_val": 140,
+   "plat": {
+    "Instagram": {
+     "n": 497,
+     "lift": 0.9,
+     "lb": 0.76,
+     "ub": 1.05
+    }
+   }
+  }
+ },
+ "dur_ctl_TikTok": {
+  "d150_180": {
+   "nome": "dur 150-180",
+   "desfecho": "coef",
+   "leitura": "ajuda (replica)",
+   "n": 301,
+   "roteiros": 301,
+   "clientes": 20,
+   "p": 0.326,
+   "p_sem": 0.246,
+   "lift": 1.26,
+   "ic": [
+    1.06,
+    1.47
+   ],
+   "or_mh": 1.85,
+   "or_ic": [
+    1.25,
+    2.74
+   ],
+   "desc": 1.28,
+   "val": 1.25,
+   "n_desc": 122,
+   "n_val": 179,
+   "plat": {
+    "TikTok": {
+     "n": 301,
+     "lift": 1.26,
+     "lb": 1.06,
+     "ub": 1.47
+    }
+   }
+  },
+  "d_lt100": {
+   "nome": "dur <100",
+   "desfecho": "coef",
+   "leitura": "atrapalha (replica)",
+   "n": 385,
+   "roteiros": 385,
+   "clientes": 20,
+   "p": 0.205,
+   "p_sem": 0.272,
+   "lift": 0.79,
+   "ic": [
+    0.65,
+    0.96
+   ],
+   "or_mh": 0.57,
+   "or_ic": [
+    0.36,
+    0.89
+   ],
+   "desc": 0.78,
+   "val": 0.82,
+   "n_desc": 285,
+   "n_val": 100,
+   "plat": {
+    "TikTok": {
+     "n": 385,
+     "lift": 0.79,
+     "lb": 0.65,
+     "ub": 0.96
+    }
+   }
+  }
+ },
+ "dur_ctl_YouTube": {
+  "d150_180": {
+   "nome": "dur 150-180",
+   "desfecho": "coef",
+   "leitura": "sem evidência",
+   "n": 332,
+   "roteiros": 332,
+   "clientes": 18,
+   "p": 0.274,
+   "p_sem": 0.254,
+   "lift": 1.06,
+   "ic": [
+    0.89,
+    1.26
+   ],
+   "or_mh": 0.79,
+   "or_ic": [
+    0.53,
+    1.17
+   ],
+   "desc": 0.94,
+   "val": 1.14,
+   "n_desc": 127,
+   "n_val": 205,
+   "plat": {
+    "YouTube": {
+     "n": 332,
+     "lift": 1.06,
+     "lb": 0.89,
+     "ub": 1.26
+    }
+   }
+  },
+  "d_lt100": {
+   "nome": "dur <100",
+   "desfecho": "coef",
+   "leitura": "sem evidência",
+   "n": 349,
+   "roteiros": 349,
+   "clientes": 17,
+   "p": 0.221,
+   "p_sem": 0.267,
+   "lift": 0.85,
+   "ic": [
+    0.7,
+    1.03
+   ],
+   "or_mh": 1.14,
+   "or_ic": [
+    0.7,
+    1.85
+   ],
+   "desc": 0.88,
+   "val": 0.76,
+   "n_desc": 272,
+   "n_val": 77,
+   "plat": {
+    "YouTube": {
+     "n": 349,
+     "lift": 0.85,
+     "lb": 0.7,
+     "ub": 1.03
+    }
+   }
+  }
+ },
+ "bio": [
+  {
+   "nome": "biografia: 1 marcador",
+   "coef": {
+    "nome": "biografia: 1 marcador",
+    "desfecho": "coef",
+    "leitura": "atrapalha (replica)",
+    "n": 1223,
+    "roteiros": 533,
+    "clientes": 28,
+    "p": 0.233,
+    "p_sem": 0.264,
+    "lift": 0.9,
+    "ic": [
+     0.82,
+     1
+    ],
+    "or_mh": 0.84,
+    "or_ic": [
+     0.72,
+     0.98
+    ],
+    "desc": 0.9,
+    "val": 0.91,
+    "n_desc": 584,
+    "n_val": 639,
+    "plat": {
+     "Instagram": {
+      "n": 528,
+      "lift": 0.89,
+      "lb": 0.76,
+      "ub": 1.04
+     },
+     "TikTok": {
+      "n": 352,
+      "lift": 1.01,
+      "lb": 0.84,
+      "ub": 1.2
+     },
+     "YouTube": {
+      "n": 343,
+      "lift": 0.81,
+      "lb": 0.66,
+      "ub": 0.99
+     }
+    }
+   },
+   "estrito": {
+    "or": 0.8001491061470766,
+    "lo": 0.6763182080636168,
+    "hi": 0.9466528986422654,
+    "leitura": "atrapalha (replica)"
+   },
+   "plats": {
+    "Instagram": {
+     "lift": 0.8918374816983894,
+     "n": 528,
+     "or": 0.8395502545692197,
+     "lo": 0.6628022198422442,
+     "hi": 1.0634313055182647,
+     "d": 0.8904489127893384,
+     "v": 0.8933510414031538
+    },
+    "TikTok": {
+     "lift": 1.011150568181818,
+     "n": 352,
+     "or": 1.0135185423271984,
+     "lo": 0.7667882965421281,
+     "hi": 1.3396394288662863,
+     "d": 0.9198302469135802,
+     "v": 1.0925438596491228
+    },
+    "YouTube": {
+     "lift": 0.8132974896823293,
+     "n": 343,
+     "or": 0.6663883265257143,
+     "lo": 0.4909752073792111,
+     "hi": 0.9044721506411143,
+     "d": 0.9060185185185186,
+     "v": 0.7302274650340949
+    }
+   },
+   "macro": [
+    {
+     "grupo": "Dinheiro, economia e geopolítica",
+     "n": 183,
+     "lift": 1.0776482608089906,
+     "or": 1.125767062420012,
+     "lo": 0.7936726646471162,
+     "hi": 1.5968188590610901
+    },
+    {
+     "grupo": "Tecnologia, IA e inovação",
+     "n": 350,
+     "lift": 1.0636079249217936,
+     "or": 1.1237738540437319,
+     "lo": 0.8566045945032678,
+     "hi": 1.4742714236369707
+    },
+    {
+     "grupo": "Negócios, marcas e cases",
+     "n": 672,
+     "lift": 0.7868134469696969,
+     "or": 0.6576033458101641,
+     "lo": 0.530551136439219,
+     "hi": 0.8150810180580279
+    }
+   ],
+   "clientes": {
+    "n": 21,
+    "lift_maior_1": 9,
+    "lista": [
+     {
+      "c": "Thainá Iansen",
+      "n": 17,
+      "lift": 1.3676470588235294
+     },
+     {
+      "c": "Leonardo Nogueira",
+      "n": 29,
+      "lift": 1.3387423935091278
+     },
+     {
+      "c": "Renato Mendes",
+      "n": 18,
+      "lift": 1.3015873015873014
+     },
+     {
+      "c": "Lincoln Fracari",
+      "n": 59,
+      "lift": 1.2485875706214686
+     },
+     {
+      "c": "Marcio Grazino",
+      "n": 143,
+      "lift": 1.1926480599046971
+     },
+     {
+      "c": "Fernando Pereira",
+      "n": 60,
+      "lift": 1.1715789473684208
+     },
+     {
+      "c": "Rafael Rodrigues",
+      "n": 123,
+      "lift": 1.0835089832379805
+     },
+     {
+      "c": "Cadu Neiva",
+      "n": 85,
+      "lift": 1.067807486631016
+     },
+     {
+      "c": "Marcos Pelozato",
+      "n": 88,
+      "lift": 1.0176499032882012
+     },
+     {
+      "c": "Renato Torres",
+      "n": 24,
+      "lift": 0.9444444444444444
+     },
+     {
+      "c": "Pedro Elero",
+      "n": 51,
+      "lift": 0.9411764705882353
+     },
+     {
+      "c": "João Paulo Albuquerque",
+      "n": 58,
+      "lift": 0.7541050903119869
+     },
+     {
+      "c": "Dilson Peres",
+      "n": 36,
+      "lift": 0.745814307458143
+     },
+     {
+      "c": "Marcelo Germano",
+      "n": 47,
+      "lift": 0.7119476268412439
+     },
+     {
+      "c": "Franklin Tomich",
+      "n": 51,
+      "lift": 0.6865808823529412
+     },
+     {
+      "c": "Rodrigo Waughan",
+      "n": 107,
+      "lift": 0.5352591333899744
+     },
+     {
+      "c": "Manoel Victor",
+      "n": 31,
+      "lift": 0.505194095133953
+     },
+     {
+      "c": "Thiago Franco",
+      "n": 71,
+      "lift": 0.5043736100815418
+     },
+     {
+      "c": "Patrick Diorio",
+      "n": 18,
+      "lift": 0.43333333333333335
+     },
+     {
+      "c": "Izabela Anholett",
+      "n": 31,
+      "lift": 0.375
+     },
+     {
+      "c": "Drielle Castelani",
+      "n": 24,
+      "lift": 0.32526881720430106
+     }
+    ]
+   },
+   "outros": [
+    {
+     "desfecho": "ret_final",
+     "nome": "biografia: 1 marcador",
+     "leitura": "sem evidência",
+     "n": 261,
+     "roteiros": 261,
+     "clientes": 16,
+     "p": 0.257,
+     "p_sem": 0.259,
+     "lift": 0.99,
+     "ic": [
+      0.8,
+      1.21
+     ],
+     "or_mh": 1.04,
+     "or_ic": [
+      0.75,
+      1.45
+     ],
+     "desc": 1.01,
+     "val": 0.98,
+     "n_desc": 170,
+     "n_val": 91,
+     "plat": {
+      "Instagram": {
+       "n": 261,
+       "lift": 0.99,
+       "lb": 0.8,
+       "ub": 1.21
+      }
+     }
+    },
+    {
+     "desfecho": "compart",
+     "nome": "biografia: 1 marcador",
+     "leitura": "sem evidência",
+     "n": 515,
+     "roteiros": 381,
+     "clientes": 26,
+     "p": 0.266,
+     "p_sem": 0.254,
+     "lift": 1.04,
+     "ic": [
+      0.9,
+      1.19
+     ],
+     "or_mh": 1.07,
+     "or_ic": [
+      0.85,
+      1.36
+     ],
+     "desc": 0.97,
+     "val": 1.22,
+     "n_desc": 291,
+     "n_val": 224,
+     "plat": {
+      "Instagram": {
+       "n": 242,
+       "lift": 1.04,
+       "lb": 0.84,
+       "ub": 1.27
+      },
+      "TikTok": {
+       "n": 273,
+       "lift": 1.04,
+       "lb": 0.84,
+       "ub": 1.25
+      }
+     }
+    },
+    {
+     "desfecho": "comentarios",
+     "nome": "biografia: 1 marcador",
+     "leitura": "sem evidência",
+     "n": 1223,
+     "roteiros": 533,
+     "clientes": 28,
+     "p": 0.229,
+     "p_sem": 0.257,
+     "lift": 0.91,
+     "ic": [
+      0.82,
+      1.01
+     ],
+     "or_mh": 0.84,
+     "or_ic": [
+      0.72,
+      0.98
+     ],
+     "desc": 0.86,
+     "val": 0.95,
+     "n_desc": 584,
+     "n_val": 639,
+     "plat": {
+      "Instagram": {
+       "n": 528,
+       "lift": 0.93,
+       "lb": 0.8,
+       "ub": 1.08
+      },
+      "TikTok": {
+       "n": 352,
+       "lift": 0.91,
+       "lb": 0.75,
+       "ub": 1.1
+      }
+     }
+    }
+   ],
+   "exemplos": [
+    {
+     "texto": "Foi aí que ele lembrou do filme: “O Menino Que Descobriu o Vento.”",
+     "cliente": "Rafael Rodrigues",
+     "plataforma": "YouTube",
+     "coef": 866.71,
+     "views": 1080789,
+     "link": "https://www.youtube.com/shorts/pdWWbMISqqI"
+    },
+    {
+     "texto": "A família Paes Mendonça percebeu algo que ninguém viu: vender comida é um negócio exaustivo e de margem pequena.",
+     "cliente": "Cadu Neiva",
+     "plataforma": "Instagram",
+     "coef": 740.22,
+     "views": 2532646,
+     "link": "https://www.instagram.com/reel/DWuSVeFEdwk"
+    },
+    {
+     "texto": "O negócio cresceu.",
+     "cliente": "João Paulo Albuquerque",
+     "plataforma": "TikTok",
+     "coef": 441.8,
+     "views": 289823,
+     "link": "https://www.tiktok.com/@jp_albuquerque_/video/7656832526211730704"
+    }
+   ],
+   "contraexemplo": [
+    {
+     "texto": "E foi exatamente dessa crise que nasceu a obsessão.",
+     "cliente": "Marcio Grazino",
+     "plataforma": "TikTok",
+     "coef": 0,
+     "views": 7,
+     "link": "https://www.tiktok.com/@marcio.grazino/video/7652470341125541137"
+    }
+   ]
+  },
+  {
+   "nome": "biografia: 2+ marcadores",
+   "coef": {
+    "nome": "biografia: 2+ marcadores",
+    "desfecho": "coef",
+    "leitura": "atrapalha (replica)",
+    "n": 377,
+    "roteiros": 168,
+    "clientes": 21,
+    "p": 0.194,
+    "p_sem": 0.262,
+    "lift": 0.75,
+    "ic": [
+     0.61,
+     0.92
+    ],
+    "or_mh": 0.66,
+    "or_ic": [
+     0.51,
+     0.87
+    ],
+    "desc": 0.69,
+    "val": 0.8,
+    "n_desc": 173,
+    "n_val": 204,
+    "plat": {
+     "Instagram": {
+      "n": 168,
+      "lift": 0.79,
+      "lb": 0.58,
+      "ub": 1.05
+     },
+     "TikTok": {
+      "n": 113,
+      "lift": 0.68,
+      "lb": 0.45,
+      "ub": 1
+     },
+     "YouTube": {
+      "n": 96,
+      "lift": 0.77,
+      "lb": 0.51,
+      "ub": 1.12
+     }
+    }
+   },
+   "estrito": {
+    "or": 0.6314691401276519,
+    "lo": 0.4737070940733356,
+    "hi": 0.8417718035521422,
+    "leitura": "atrapalha (replica)"
+   },
+   "plats": {
+    "Instagram": {
+     "lift": 0.787596737084292,
+     "n": 168,
+     "or": 0.6359200890677875,
+     "lo": 0.4219598587291815,
+     "hi": 0.9583716349178313,
+     "d": 0.8509905884937929,
+     "v": 0.7268860086407445
+    },
+    "TikTok": {
+     "lift": 0.6847345132743363,
+     "n": 113,
+     "or": 0.5544297783954231,
+     "lo": 0.33222695372819117,
+     "hi": 0.9252481646118592,
+     "d": 0.5349166666666667,
+     "v": 0.8082010582010583
+    },
+    "YouTube": {
+     "lift": 0.7668199855699855,
+     "n": 96,
+     "or": 0.554757644266458,
+     "lo": 0.3151780894622583,
+     "hi": 0.9764512641000792,
+     "d": 0.579375,
+     "v": 0.902429214929215
+    }
+   },
+   "macro": [
+    {
+     "grupo": "Negócios, marcas e cases",
+     "n": 247,
+     "lift": 0.9286609771807139,
+     "or": 0.8837315103050628,
+     "lo": 0.647026722560085,
+     "hi": 1.2070311087244823
+    },
+    {
+     "grupo": "Tecnologia, IA e inovação",
+     "n": 94,
+     "lift": 0.41252523683801834,
+     "or": 0.33091121292180026,
+     "lo": 0.1705499608427578,
+     "hi": 0.6420536850098426
+    },
+    {
+     "grupo": "Dinheiro, economia e geopolítica",
+     "n": 32,
+     "lift": 0.3625177053824362,
+     "or": 0.2922660463886723,
+     "lo": 0.08851805885651307,
+     "hi": 0.9649945217408085
+    }
+   ],
+   "clientes": {
+    "n": 12,
+    "lift_maior_1": 3,
+    "lista": [
+     {
+      "c": "Rodrigo Waughan",
+      "n": 42,
+      "lift": 1.5454545454545454
+     },
+     {
+      "c": "Marcos Pelozato",
+      "n": 21,
+      "lift": 1.297872340425532
+     },
+     {
+      "c": "João Paulo Albuquerque",
+      "n": 26,
+      "lift": 1.0705128205128205
+     },
+     {
+      "c": "Marcelo Germano",
+      "n": 38,
+      "lift": 0.8805668016194332
+     },
+     {
+      "c": "Lincoln Fracari",
+      "n": 15,
+      "lift": 0.775438596491228
+     },
+     {
+      "c": "Franklin Tomich",
+      "n": 16,
+      "lift": 0.7294921875000001
+     },
+     {
+      "c": "Marcio Grazino",
+      "n": 24,
+      "lift": 0.6460176991150441
+     },
+     {
+      "c": "Thiago Franco",
+      "n": 22,
+      "lift": 0.5425837320574162
+     },
+     {
+      "c": "Cadu Neiva",
+      "n": 22,
+      "lift": 0.515702479338843
+     },
+     {
+      "c": "Pedro Elero",
+      "n": 16,
+      "lift": 0.5
+     },
+     {
+      "c": "Thainá Iansen",
+      "n": 17,
+      "lift": 0.45588235294117646
+     },
+     {
+      "c": "Rafael Rodrigues",
+      "n": 50,
+      "lift": 0.23518518518518516
+     }
+    ]
+   },
+   "outros": [
+    {
+     "desfecho": "ret_final",
+     "nome": "biografia: 2+ marcadores",
+     "leitura": "sem evidência",
+     "n": 74,
+     "roteiros": 74,
+     "clientes": 14,
+     "p": 0.27,
+     "p_sem": 0.258,
+     "lift": 1.04,
+     "ic": [
+      0.7,
+      1.47
+     ],
+     "or_mh": 0.99,
+     "or_ic": [
+      0.57,
+      1.73
+     ],
+     "desc": 1.14,
+     "val": 0.95,
+     "n_desc": 43,
+     "n_val": 31,
+     "plat": {
+      "Instagram": {
+       "n": 74,
+       "lift": 1.04,
+       "lb": 0.7,
+       "ub": 1.47
+      }
+     }
+    },
+    {
+     "desfecho": "compart",
+     "nome": "biografia: 2+ marcadores",
+     "leitura": "sem evidência",
+     "n": 162,
+     "roteiros": 124,
+     "clientes": 20,
+     "p": 0.204,
+     "p_sem": 0.26,
+     "lift": 0.79,
+     "ic": [
+      0.58,
+      1.06
+     ],
+     "or_mh": 0.76,
+     "or_ic": [
+      0.5,
+      1.17
+     ],
+     "desc": 0.75,
+     "val": 0.89,
+     "n_desc": 98,
+     "n_val": 64,
+     "plat": {
+      "Instagram": {
+       "n": 74,
+       "lift": 0.94,
+       "lb": 0.62,
+       "ub": 1.36
+      },
+      "TikTok": {
+       "n": 88,
+       "lift": 0.67,
+       "lb": 0.42,
+       "ub": 1.03
+      }
+     }
+    },
+    {
+     "desfecho": "comentarios",
+     "nome": "biografia: 2+ marcadores",
+     "leitura": "atrapalha (replica)",
+     "n": 377,
+     "roteiros": 168,
+     "clientes": 21,
+     "p": 0.202,
+     "p_sem": 0.255,
+     "lift": 0.8,
+     "ic": [
+      0.65,
+      0.97
+     ],
+     "or_mh": 0.7,
+     "or_ic": [
+      0.53,
+      0.93
+     ],
+     "desc": 0.86,
+     "val": 0.75,
+     "n_desc": 173,
+     "n_val": 204,
+     "plat": {
+      "Instagram": {
+       "n": 168,
+       "lift": 0.82,
+       "lb": 0.61,
+       "ub": 1.09
+      },
+      "TikTok": {
+       "n": 113,
+       "lift": 0.87,
+       "lb": 0.61,
+       "ub": 1.2
+      }
+     }
+    }
+   ],
+   "exemplos": [
+    {
+     "texto": "Só que, em 2008, durante uma viagem, ela percebeu que todas as bolsas de palha ou tecido estragavam rápido demais por causa da areia e da água.",
+     "cliente": "João Paulo Albuquerque",
+     "plataforma": "YouTube",
+     "coef": 293.63,
+     "views": 2349,
+     "link": "https://www.youtube.com/shorts/bdzpyL--MdI"
+    },
+    {
+     "texto": "Tudo começou com uma experiência pessoal: Valéria usava tomate cereja como esfoliante caseiro na própria pele para controlar cravos, espinhas e oleosidade, e o mais curioso era que funcionava.",
+     "cliente": "Marcio Grazino",
+     "plataforma": "Instagram",
+     "coef": 60.95,
+     "views": 728139,
+     "link": "https://www.instagram.com/reel/DagYyGqR39s"
+    },
+    {
+     "texto": "Foi aí que ela tomou uma decisão ousada: parou de pagar as promissórias.",
+     "cliente": "Marcos Pelozato",
+     "plataforma": "TikTok",
+     "coef": 51.33,
+     "views": 55697,
+     "link": "https://www.tiktok.com/@marcospelozato/video/7650618916410100999"
+    }
+   ],
+   "contraexemplo": [
+    {
+     "texto": "Só que Naomi percebeu que precisava ir além dos muros da faculdade.",
+     "cliente": "Rafael Rodrigues",
+     "plataforma": "Instagram",
+     "coef": 0.08,
+     "views": 542,
+     "link": "https://www.instagram.com/reel/DbwIuo7Pvvo"
+    }
+   ]
+  },
+  {
+   "nome": "biografia: 3+ marcadores",
+   "coef": {
+    "nome": "biografia: 3+ marcadores",
+    "desfecho": "coef",
+    "leitura": "atrapalha (replica)",
+    "n": 64,
+    "roteiros": 28,
+    "clientes": 15,
+    "p": 0.141,
+    "p_sem": 0.259,
+    "lift": 0.55,
+    "ic": [
+     0.29,
+     0.96
+    ],
+    "or_mh": 0.46,
+    "or_ic": [
+     0.23,
+     0.94
+    ],
+    "desc": 0.48,
+    "val": 0.61,
+    "n_desc": 32,
+    "n_val": 32,
+    "plat": {
+     "Instagram": {
+      "n": 28,
+      "lift": 0.69,
+      "lb": 0.31,
+      "ub": 1.39
+     },
+     "TikTok": {
+      "n": 20,
+      "lift": 0.19,
+      "lb": 0.03,
+      "ub": 0.91
+     },
+     "YouTube": {
+      "n": 16,
+      "lift": 0.73,
+      "lb": 0.26,
+      "ub": 1.67
+     }
+    }
+   },
+   "estrito": {
+    "or": 0.40184990363480333,
+    "lo": 0.18588396185282202,
+    "hi": 0.868731995174274,
+    "leitura": "atrapalha (replica)"
+   },
+   "plats": {
+    "Instagram": {
+     "lift": 0.6949382974273165,
+     "n": 28,
+     "or": 0.5244111475993118,
+     "lo": 0.18954465998679573,
+     "hi": 1.4508826138683362,
+     "d": 0.7357522796352585,
+     "v": 0.6435969868173258
+    },
+    "TikTok": {
+     "lift": 0.1934375,
+     "n": 20,
+     "or": 0.11522487366085862,
+     "lo": 0.014870329509186892,
+     "hi": 0.8928364029834338,
+     "d": 0,
+     "v": 0.3560606060606061
+    },
+    "YouTube": {
+     "lift": 0.726461038961039,
+     "n": 16,
+     "or": 0.4566029047706262,
+     "lo": 0.09722760112648794,
+     "hi": 2.1443109799011095,
+     "d": 0.5517857142857143,
+     "v": 0.8638638638638638
+    }
+   },
+   "macro": [
+    {
+     "grupo": "Negócios, marcas e cases",
+     "n": 43,
+     "lift": 0.6328950845665962,
+     "or": 0.5452361741129513,
+     "lo": 0.240625060136113,
+     "hi": 1.2354593714934199
+    }
+   ],
+   "clientes": {
+    "n": 0,
+    "lift_maior_1": 0,
+    "lista": []
+   },
+   "outros": [
+    {
+     "desfecho": "ret_final",
+     "nome": "biografia: 3+ marcadores",
+     "leitura": "amostra pequena",
+     "n": 10,
+     "roteiros": 10,
+     "clientes": 8,
+     "p": 0.2,
+     "p_sem": 0.259,
+     "lift": 0.77,
+     "ic": [
+      0.22,
+      1.97
+     ],
+     "or_mh": 0.84,
+     "or_ic": [
+      0.17,
+      4.02
+     ],
+     "desc": 0.5,
+     "val": 1.64,
+     "n_desc": 7,
+     "n_val": 3,
+     "plat": {
+      "Instagram": {
+       "n": 10,
+       "lift": 0.77,
+       "lb": 0.22,
+       "ub": 1.97
+      }
+     }
+    },
+    {
+     "desfecho": "compart",
+     "nome": "biografia: 3+ marcadores",
+     "leitura": "amostra pequena",
+     "n": 29,
+     "roteiros": 21,
+     "clientes": 10,
+     "p": 0.241,
+     "p_sem": 0.257,
+     "lift": 0.94,
+     "ic": [
+      0.48,
+      1.64
+     ],
+     "or_mh": 1.18,
+     "or_ic": [
+      0.46,
+      3.01
+     ],
+     "desc": 0.67,
+     "val": 1.72,
+     "n_desc": 20,
+     "n_val": 9,
+     "plat": {
+      "Instagram": {
+       "n": 14,
+       "lift": 0.83,
+       "lb": 0.29,
+       "ub": 1.84
+      },
+      "TikTok": {
+       "n": 15,
+       "lift": 1.05,
+       "lb": 0.43,
+       "ub": 2.04
+      }
+     }
+    },
+    {
+     "desfecho": "comentarios",
+     "nome": "biografia: 3+ marcadores",
+     "leitura": "sem evidência",
+     "n": 64,
+     "roteiros": 28,
+     "clientes": 15,
+     "p": 0.188,
+     "p_sem": 0.253,
+     "lift": 0.74,
+     "ic": [
+      0.44,
+      1.19
+     ],
+     "or_mh": 0.71,
+     "or_ic": [
+      0.37,
+      1.36
+     ],
+     "desc": 0.8,
+     "val": 0.7,
+     "n_desc": 32,
+     "n_val": 32,
+     "plat": {
+      "Instagram": {
+       "n": 28,
+       "lift": 0.56,
+       "lb": 0.22,
+       "ub": 1.24
+      },
+      "TikTok": {
+       "n": 20,
+       "lift": 1.18,
+       "lb": 0.57,
+       "ub": 2.04
+      }
+     }
+    }
+   ],
+   "exemplos": [
+    {
+     "texto": "Só que, em 2008, durante uma viagem, ela percebeu que todas as bolsas de palha ou tecido estragavam rápido demais por causa da areia e da água.",
+     "cliente": "João Paulo Albuquerque",
+     "plataforma": "YouTube",
+     "coef": 293.63,
+     "views": 2349,
+     "link": "https://www.youtube.com/shorts/bdzpyL--MdI"
+    },
+    {
+     "texto": "Conforme a Apple crescia, Jobs percebeu que precisava de alguém com experiência para administrar uma grande corporação.",
+     "cliente": "Rodrigo Waughan",
+     "plataforma": "YouTube",
+     "coef": 11.28,
+     "views": 9489,
+     "link": "https://www.youtube.com/shorts/PSAS7eRE9rI"
+    },
+    {
+     "texto": "​Filho de um motorista e uma costureira, Felippe Prates decidiu desde cedo ajudar família trabalhando duro.",
+     "cliente": "Marcelo Germano",
+     "plataforma": "Instagram",
+     "coef": 7.16,
+     "views": 398576,
+     "link": "https://www.instagram.com/reel/DW43GssDTC7"
+    }
+   ],
+   "contraexemplo": [
+    {
+     "texto": "Lá, ele aprendeu mais sobre o processo de como era feito o fumo, desde o colhimento da planta até o seu processamento.",
+     "cliente": "Marcio Grazino",
+     "plataforma": "Instagram",
+     "coef": 0.16,
+     "views": 2318,
+     "link": "https://www.instagram.com/reel/DcCXSkDxLAS"
+    }
+   ]
+  }
+ ]
+}

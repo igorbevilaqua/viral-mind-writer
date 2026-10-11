@@ -1,0 +1,19 @@
+rodada final: 2809 roteiros, 0 já feitos, 2809 pendentes, modo low
+  10 lotes, US$ 0.612, 53s
+  20 lotes, US$ 1.008, 85s
+  30 lotes, US$ 1.398, 119s
+  40 lotes, US$ 1.795, 156s
+  50 lotes, US$ 2.192, 188s
+  60 lotes, US$ 2.589, 221s
+  70 lotes, US$ 2.986, 251s
+  80 lotes, US$ 3.381, 283s
+  90 lotes, US$ 3.777, 316s
+  100 lotes, US$ 4.173, 343s
+  110 lotes, US$ 4.568, 374s
+  120 lotes, US$ 4.963, 406s
+  130 lotes, US$ 5.358, 444s
+  140 lotes, US$ 5.750, 470s
+  150 lotes, US$ 6.142, 501s
+fim: 157 chamadas, rodada US$ 6.1833, total do estudo US$ 6.3835, falhas 0
+tokens: in 963311, cache_w 5683, cache_r 886548, out 406517
+data/rotulos_llm.json escrito: 2809 roteiros (0 recusados)

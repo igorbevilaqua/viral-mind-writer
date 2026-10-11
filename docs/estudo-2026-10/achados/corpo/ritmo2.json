@@ -1,0 +1,6803 @@
+{
+ "ret_final": [
+  {
+   "nome": "ponte: 'olha isso/olha só'",
+   "desfecho": "ret_final",
+   "leitura": "sem evidência",
+   "n": 42,
+   "roteiros": 42,
+   "clientes": 11,
+   "p": 0.214,
+   "p_sem": 0.26,
+   "lift": 0.83,
+   "ic": [
+    0.45,
+    1.39
+   ],
+   "or_mh": 0.68,
+   "or_ic": [
+    0.31,
+    1.5
+   ],
+   "desc": 0.84,
+   "val": 0.76,
+   "n_desc": 29,
+   "n_val": 13,
+   "plat": {
+    "Instagram": {
+     "n": 42,
+     "lift": 0.83,
+     "lb": 0.45,
+     "ub": 1.39
+    }
+   }
+  },
+  {
+   "nome": "ponte: 'entenda'",
+   "desfecho": "ret_final",
+   "leitura": "amostra pequena",
+   "n": 21,
+   "roteiros": 21,
+   "clientes": 9,
+   "p": 0.286,
+   "p_sem": 0.258,
+   "lift": 1.1,
+   "ic": [
+    0.53,
+    1.93
+   ],
+   "or_mh": 1.4,
+   "or_ic": [
+    0.51,
+    3.85
+   ],
+   "desc": 1.16,
+   "val": 0,
+   "n_desc": 18,
+   "n_val": 3,
+   "plat": {
+    "Instagram": {
+     "n": 21,
+     "lift": 1.1,
+     "lb": 0.53,
+     "ub": 1.93
+    }
+   }
+  },
+  {
+   "nome": "ponte: 'funciona assim'",
+   "desfecho": "ret_final",
+   "leitura": "sem evidência",
+   "n": 40,
+   "roteiros": 40,
+   "clientes": 12,
+   "p": 0.325,
+   "p_sem": 0.257,
+   "lift": 1.26,
+   "ic": [
+    0.78,
+    1.85
+   ],
+   "or_mh": 1.43,
+   "or_ic": [
+    0.7,
+    2.93
+   ],
+   "desc": 1.29,
+   "val": 1.14,
+   "n_desc": 27,
+   "n_val": 13,
+   "plat": {
+    "Instagram": {
+     "n": 40,
+     "lift": 1.26,
+     "lb": 0.78,
+     "ub": 1.85
+    }
+   }
+  },
+  {
+   "nome": "ponte: 'ou seja'",
+   "desfecho": "ret_final",
+   "leitura": "sem evidência",
+   "n": 246,
+   "roteiros": 246,
+   "clientes": 17,
+   "p": 0.224,
+   "p_sem": 0.267,
+   "lift": 0.86,
+   "ic": [
+    0.68,
+    1.08
+   ],
+   "or_mh": 0.79,
+   "or_ic": [
+    0.55,
+    1.14
+   ],
+   "desc": 0.95,
+   "val": 0.79,
+   "n_desc": 140,
+   "n_val": 106,
+   "plat": {
+    "Instagram": {
+     "n": 246,
+     "lift": 0.86,
+     "lb": 0.68,
+     "ub": 1.08
+    }
+   }
+  },
+  {
+   "nome": "ponte: 'pensa comigo/pensa bem'",
+   "desfecho": "ret_final",
+   "leitura": "sem evidência",
+   "n": 27,
+   "roteiros": 27,
+   "clientes": 9,
+   "p": 0.185,
+   "p_sem": 0.26,
+   "lift": 0.72,
+   "ic": [
+    0.32,
+    1.42
+   ],
+   "or_mh": 0.57,
+   "or_ic": [
+    0.2,
+    1.61
+   ],
+   "desc": 0.76,
+   "val": 0,
+   "n_desc": 23,
+   "n_val": 4,
+   "plat": {
+    "Instagram": {
+     "n": 27,
+     "lift": 0.72,
+     "lb": 0.32,
+     "ub": 1.42
+    }
+   }
+  },
+  {
+   "nome": "ponte: 'imagina'",
+   "desfecho": "ret_final",
+   "leitura": "sem evidência",
+   "n": 55,
+   "roteiros": 55,
+   "clientes": 15,
+   "p": 0.218,
+   "p_sem": 0.261,
+   "lift": 0.84,
+   "ic": [
+    0.5,
+    1.33
+   ],
+   "or_mh": 0.9,
+   "or_ic": [
+    0.45,
+    1.79
+   ],
+   "desc": 0.82,
+   "val": 0.94,
+   "n_desc": 34,
+   "n_val": 21,
+   "plat": {
+    "Instagram": {
+     "n": 55,
+     "lift": 0.84,
+     "lb": 0.5,
+     "ub": 1.33
+    }
+   }
+  },
+  {
+   "nome": "ponte: 'e o pior / o pior é que'",
+   "desfecho": "ret_final",
+   "leitura": "amostra pequena",
+   "n": 22,
+   "roteiros": 22,
+   "clientes": 10,
+   "p": 0.182,
+   "p_sem": 0.26,
+   "lift": 0.7,
+   "ic": [
+    0.28,
+    1.49
+   ],
+   "or_mh": 0.74,
+   "or_ic": [
+    0.23,
+    2.42
+   ],
+   "desc": 1.07,
+   "val": 0,
+   "n_desc": 13,
+   "n_val": 9,
+   "plat": {
+    "Instagram": {
+     "n": 22,
+     "lift": 0.7,
+     "lb": 0.28,
+     "ub": 1.49
+    }
+   }
+  },
+  {
+   "nome": "ponte: 'só que'",
+   "desfecho": "ret_final",
+   "leitura": "sem evidência",
+   "n": 658,
+   "roteiros": 658,
+   "clientes": 17,
+   "p": 0.277,
+   "p_sem": 0.241,
+   "lift": 1.07,
+   "ic": [
+    0.94,
+    1.2
+   ],
+   "or_mh": 1.45,
+   "or_ic": [
+    1.09,
+    1.91
+   ],
+   "desc": 1.07,
+   "val": 1.13,
+   "n_desc": 405,
+   "n_val": 253,
+   "plat": {
+    "Instagram": {
+     "n": 658,
+     "lift": 1.07,
+     "lb": 0.94,
+     "ub": 1.2
+    }
+   }
+  },
+  {
+   "nome": "ponte: 'até que'",
+   "desfecho": "ret_final",
+   "leitura": "ajuda (replica)",
+   "n": 117,
+   "roteiros": 117,
+   "clientes": 17,
+   "p": 0.35,
+   "p_sem": 0.25,
+   "lift": 1.35,
+   "ic": [
+    1.04,
+    1.7
+   ],
+   "or_mh": 1.76,
+   "or_ic": [
+    1.15,
+    2.69
+   ],
+   "desc": 1.25,
+   "val": 1.64,
+   "n_desc": 84,
+   "n_val": 33,
+   "plat": {
+    "Instagram": {
+     "n": 117,
+     "lift": 1.35,
+     "lb": 1.04,
+     "ub": 1.7
+    }
+   }
+  },
+  {
+   "nome": "ponte: 'foi aí que / foi quando'",
+   "desfecho": "ret_final",
+   "leitura": "sem evidência",
+   "n": 205,
+   "roteiros": 205,
+   "clientes": 16,
+   "p": 0.254,
+   "p_sem": 0.26,
+   "lift": 0.98,
+   "ic": [
+    0.77,
+    1.23
+   ],
+   "or_mh": 0.95,
+   "or_ic": [
+    0.65,
+    1.37
+   ],
+   "desc": 0.99,
+   "val": 1.05,
+   "n_desc": 116,
+   "n_val": 89,
+   "plat": {
+    "Instagram": {
+     "n": 205,
+     "lift": 0.98,
+     "lb": 0.77,
+     "ub": 1.23
+    }
+   }
+  },
+  {
+   "nome": "ponte: 'e é aqui que / é aí que'",
+   "desfecho": "ret_final",
+   "leitura": "sem evidência",
+   "n": 66,
+   "roteiros": 66,
+   "clientes": 16,
+   "p": 0.212,
+   "p_sem": 0.261,
+   "lift": 0.82,
+   "ic": [
+    0.51,
+    1.26
+   ],
+   "or_mh": 0.8,
+   "or_ic": [
+    0.42,
+    1.53
+   ],
+   "desc": 1.01,
+   "val": 0.53,
+   "n_desc": 38,
+   "n_val": 28,
+   "plat": {
+    "Instagram": {
+     "n": 66,
+     "lift": 0.82,
+     "lb": 0.51,
+     "ub": 1.26
+    }
+   }
+  },
+  {
+   "nome": "ponte: 'o detalhe é que'",
+   "desfecho": "ret_final",
+   "leitura": "sem evidência",
+   "n": 38,
+   "roteiros": 38,
+   "clientes": 13,
+   "p": 0.342,
+   "p_sem": 0.256,
+   "lift": 1.32,
+   "ic": [
+    0.82,
+    1.94
+   ],
+   "or_mh": 1.65,
+   "or_ic": [
+    0.79,
+    3.41
+   ],
+   "desc": 1.16,
+   "val": 1.85,
+   "n_desc": 30,
+   "n_val": 8,
+   "plat": {
+    "Instagram": {
+     "n": 38,
+     "lift": 1.32,
+     "lb": 0.82,
+     "ub": 1.94
+    }
+   }
+  },
+  {
+   "nome": "ponte: 'repara / percebe'",
+   "desfecho": "ret_final",
+   "leitura": "sem evidência",
+   "n": 41,
+   "roteiros": 41,
+   "clientes": 16,
+   "p": 0.171,
+   "p_sem": 0.262,
+   "lift": 0.66,
+   "ic": [
+    0.33,
+    1.21
+   ],
+   "or_mh": 0.5,
+   "or_ic": [
+    0.21,
+    1.19
+   ],
+   "desc": 0.48,
+   "val": 1.04,
+   "n_desc": 22,
+   "n_val": 19,
+   "plat": {
+    "Instagram": {
+     "n": 41,
+     "lift": 0.66,
+     "lb": 0.33,
+     "ub": 1.21
+    }
+   }
+  },
+  {
+   "nome": "ponte: 'pra você ter ideia'",
+   "desfecho": "ret_final",
+   "leitura": "sem evidência",
+   "n": 177,
+   "roteiros": 177,
+   "clientes": 16,
+   "p": 0.266,
+   "p_sem": 0.258,
+   "lift": 1.03,
+   "ic": [
+    0.8,
+    1.29
+   ],
+   "or_mh": 1.14,
+   "or_ic": [
+    0.77,
+    1.7
+   ],
+   "desc": 0.99,
+   "val": 1.1,
+   "n_desc": 123,
+   "n_val": 54,
+   "plat": {
+    "Instagram": {
+     "n": 177,
+     "lift": 1.03,
+     "lb": 0.8,
+     "ub": 1.29
+    }
+   }
+  },
+  {
+   "nome": "ponte: 'na prática'",
+   "desfecho": "ret_final",
+   "leitura": "sinal sem replicação",
+   "n": 137,
+   "roteiros": 137,
+   "clientes": 16,
+   "p": 0.182,
+   "p_sem": 0.268,
+   "lift": 0.7,
+   "ic": [
+    0.49,
+    0.99
+   ],
+   "or_mh": 0.66,
+   "or_ic": [
+    0.41,
+    1.06
+   ],
+   "desc": 0.54,
+   "val": 1.07,
+   "n_desc": 77,
+   "n_val": 60,
+   "plat": {
+    "Instagram": {
+     "n": 137,
+     "lift": 0.7,
+     "lb": 0.49,
+     "ub": 0.99
+    }
+   }
+  },
+  {
+   "nome": "ponte: 'isso significa / quer dizer'",
+   "desfecho": "ret_final",
+   "leitura": "sem evidência",
+   "n": 43,
+   "roteiros": 43,
+   "clientes": 13,
+   "p": 0.256,
+   "p_sem": 0.259,
+   "lift": 0.99,
+   "ic": [
+    0.58,
+    1.55
+   ],
+   "or_mh": 1.22,
+   "or_ic": [
+    0.6,
+    2.5
+   ],
+   "desc": 0.76,
+   "val": 1.48,
+   "n_desc": 23,
+   "n_val": 20,
+   "plat": {
+    "Instagram": {
+     "n": 43,
+     "lift": 0.99,
+     "lb": 0.58,
+     "ub": 1.55
+    }
+   }
+  },
+  {
+   "nome": "ponte: 'sabe o que / sabe por quê'",
+   "desfecho": "ret_final",
+   "leitura": "sem evidência",
+   "n": 35,
+   "roteiros": 35,
+   "clientes": 11,
+   "p": 0.2,
+   "p_sem": 0.261,
+   "lift": 0.77,
+   "ic": [
+    0.39,
+    1.39
+   ],
+   "or_mh": 0.62,
+   "or_ic": [
+    0.26,
+    1.49
+   ],
+   "desc": 0.7,
+   "val": 0.99,
+   "n_desc": 30,
+   "n_val": 5,
+   "plat": {
+    "Instagram": {
+     "n": 35,
+     "lift": 0.77,
+     "lb": 0.39,
+     "ub": 1.39
+    }
+   }
+  },
+  {
+   "nome": "loop: 'e tem mais / não para por aí / não é só isso'",
+   "desfecho": "ret_final",
+   "leitura": "sem evidência",
+   "n": 37,
+   "roteiros": 37,
+   "clientes": 15,
+   "p": 0.243,
+   "p_sem": 0.259,
+   "lift": 0.94,
+   "ic": [
+    0.52,
+    1.55
+   ],
+   "or_mh": 1.03,
+   "or_ic": [
+    0.47,
+    2.27
+   ],
+   "desc": 0.79,
+   "val": 1.32,
+   "n_desc": 22,
+   "n_val": 15,
+   "plat": {
+    "Instagram": {
+     "n": 37,
+     "lift": 0.94,
+     "lb": 0.52,
+     "ub": 1.55
+    }
+   }
+  },
+  {
+   "nome": "loop: 'o mais impressionante/curioso/louco'",
+   "desfecho": "ret_final",
+   "leitura": "sem evidência",
+   "n": 48,
+   "roteiros": 48,
+   "clientes": 13,
+   "p": 0.271,
+   "p_sem": 0.258,
+   "lift": 1.05,
+   "ic": [
+    0.64,
+    1.58
+   ],
+   "or_mh": 0.94,
+   "or_ic": [
+    0.48,
+    1.85
+   ],
+   "desc": 1,
+   "val": 1.14,
+   "n_desc": 35,
+   "n_val": 13,
+   "plat": {
+    "Instagram": {
+     "n": 48,
+     "lift": 1.05,
+     "lb": 0.64,
+     "ub": 1.58
+    }
+   }
+  },
+  {
+   "nome": "loop: 'o que ninguém/pouca gente sabe'",
+   "desfecho": "ret_final",
+   "leitura": "sem evidência",
+   "n": 28,
+   "roteiros": 28,
+   "clientes": 13,
+   "p": 0.25,
+   "p_sem": 0.259,
+   "lift": 0.97,
+   "ic": [
+    0.49,
+    1.67
+   ],
+   "or_mh": 0.8,
+   "or_ic": [
+    0.32,
+    1.96
+   ],
+   "desc": 1.02,
+   "val": 0,
+   "n_desc": 24,
+   "n_val": 4,
+   "plat": {
+    "Instagram": {
+     "n": 28,
+     "lift": 0.97,
+     "lb": 0.49,
+     "ub": 1.67
+    }
+   }
+  },
+  {
+   "nome": "loop: 'no final / até o fim'",
+   "desfecho": "ret_final",
+   "leitura": "sem evidência",
+   "n": 55,
+   "roteiros": 55,
+   "clientes": 16,
+   "p": 0.218,
+   "p_sem": 0.261,
+   "lift": 0.84,
+   "ic": [
+    0.5,
+    1.33
+   ],
+   "or_mh": 0.75,
+   "or_ic": [
+    0.36,
+    1.57
+   ],
+   "desc": 0.89,
+   "val": 0.62,
+   "n_desc": 39,
+   "n_val": 16,
+   "plat": {
+    "Instagram": {
+     "n": 55,
+     "lift": 0.84,
+     "lb": 0.5,
+     "ub": 1.33
+    }
+   }
+  },
+  {
+   "nome": "crono: nenhum ano citado",
+   "desfecho": "ret_final",
+   "leitura": "sem evidência",
+   "n": 510,
+   "roteiros": 510,
+   "clientes": 17,
+   "p": 0.278,
+   "p_sem": 0.247,
+   "lift": 1.08,
+   "ic": [
+    0.93,
+    1.23
+   ],
+   "or_mh": 1.02,
+   "or_ic": [
+    0.75,
+    1.4
+   ],
+   "desc": 1.12,
+   "val": 0.74,
+   "n_desc": 384,
+   "n_val": 126,
+   "plat": {
+    "Instagram": {
+     "n": 510,
+     "lift": 1.08,
+     "lb": 0.93,
+     "ub": 1.23
+    }
+   }
+  },
+  {
+   "nome": "crono: 1 ano citado",
+   "desfecho": "ret_final",
+   "leitura": "sem evidência",
+   "n": 276,
+   "roteiros": 276,
+   "clientes": 17,
+   "p": 0.236,
+   "p_sem": 0.265,
+   "lift": 0.91,
+   "ic": [
+    0.73,
+    1.12
+   ],
+   "or_mh": 0.88,
+   "or_ic": [
+    0.63,
+    1.21
+   ],
+   "desc": 0.91,
+   "val": 0.95,
+   "n_desc": 177,
+   "n_val": 99,
+   "plat": {
+    "Instagram": {
+     "n": 276,
+     "lift": 0.91,
+     "lb": 0.73,
+     "ub": 1.12
+    }
+   }
+  },
+  {
+   "nome": "crono: 2-3 anos citados",
+   "desfecho": "ret_final",
+   "leitura": "sem evidência",
+   "n": 369,
+   "roteiros": 369,
+   "clientes": 17,
+   "p": 0.236,
+   "p_sem": 0.268,
+   "lift": 0.91,
+   "ic": [
+    0.75,
+    1.09
+   ],
+   "or_mh": 0.98,
+   "or_ic": [
+    0.72,
+    1.33
+   ],
+   "desc": 0.89,
+   "val": 1.02,
+   "n_desc": 224,
+   "n_val": 145,
+   "plat": {
+    "Instagram": {
+     "n": 369,
+     "lift": 0.91,
+     "lb": 0.75,
+     "ub": 1.09
+    }
+   }
+  },
+  {
+   "nome": "crono: 4+ anos citados",
+   "desfecho": "ret_final",
+   "leitura": "sem evidência",
+   "n": 162,
+   "roteiros": 162,
+   "clientes": 17,
+   "p": 0.29,
+   "p_sem": 0.255,
+   "lift": 1.12,
+   "ic": [
+    0.87,
+    1.41
+   ],
+   "or_mh": 1.26,
+   "or_ic": [
+    0.82,
+    1.93
+   ],
+   "desc": 0.96,
+   "val": 1.54,
+   "n_desc": 98,
+   "n_val": 64,
+   "plat": {
+    "Instagram": {
+     "n": 162,
+     "lift": 1.12,
+     "lb": 0.87,
+     "ub": 1.41
+    }
+   }
+  },
+  {
+   "nome": "crono: 'anos/meses depois'",
+   "desfecho": "ret_final",
+   "leitura": "ajuda (replica)",
+   "n": 164,
+   "roteiros": 164,
+   "clientes": 17,
+   "p": 0.36,
+   "p_sem": 0.245,
+   "lift": 1.39,
+   "ic": [
+    1.12,
+    1.68
+   ],
+   "or_mh": 1.91,
+   "or_ic": [
+    1.3,
+    2.83
+   ],
+   "desc": 1.27,
+   "val": 1.76,
+   "n_desc": 91,
+   "n_val": 73,
+   "plat": {
+    "Instagram": {
+     "n": 164,
+     "lift": 1.39,
+     "lb": 1.12,
+     "ub": 1.68
+    }
+   }
+  },
+  {
+   "nome": "crono: 'tudo começou'",
+   "desfecho": "ret_final",
+   "leitura": "sem evidência",
+   "n": 41,
+   "roteiros": 41,
+   "clientes": 12,
+   "p": 0.171,
+   "p_sem": 0.262,
+   "lift": 0.66,
+   "ic": [
+    0.33,
+    1.21
+   ],
+   "or_mh": 0.56,
+   "or_ic": [
+    0.23,
+    1.33
+   ],
+   "desc": 0.76,
+   "val": 0,
+   "n_desc": 32,
+   "n_val": 9,
+   "plat": {
+    "Instagram": {
+     "n": 41,
+     "lift": 0.66,
+     "lb": 0.33,
+     "ub": 1.21
+    }
+   }
+  },
+  {
+   "nome": "crono: 'hoje' no corpo",
+   "desfecho": "ret_final",
+   "leitura": "sem evidência",
+   "n": 416,
+   "roteiros": 416,
+   "clientes": 17,
+   "p": 0.226,
+   "p_sem": 0.274,
+   "lift": 0.87,
+   "ic": [
+    0.73,
+    1.04
+   ],
+   "or_mh": 0.81,
+   "or_ic": [
+    0.6,
+    1.1
+   ],
+   "desc": 0.91,
+   "val": 0.77,
+   "n_desc": 275,
+   "n_val": 141,
+   "plat": {
+    "Instagram": {
+     "n": 416,
+     "lift": 0.87,
+     "lb": 0.73,
+     "ub": 1.04
+    }
+   }
+  },
+  {
+   "nome": "viradas (mas/só que/porém) >=1,1 por 100",
+   "desfecho": "ret_final",
+   "leitura": "sem evidência",
+   "n": 382,
+   "roteiros": 382,
+   "clientes": 17,
+   "p": 0.293,
+   "p_sem": 0.245,
+   "lift": 1.13,
+   "ic": [
+    0.96,
+    1.32
+   ],
+   "or_mh": 1.26,
+   "or_ic": [
+    0.95,
+    1.68
+   ],
+   "desc": 1.11,
+   "val": 1.21,
+   "n_desc": 252,
+   "n_val": 130,
+   "plat": {
+    "Instagram": {
+     "n": 382,
+     "lift": 1.13,
+     "lb": 0.96,
+     "ub": 1.32
+    }
+   }
+  },
+  {
+   "nome": "viradas <=0,4 por 100",
+   "desfecho": "ret_final",
+   "leitura": "atrapalha (replica)",
+   "n": 289,
+   "roteiros": 289,
+   "clientes": 17,
+   "p": 0.19,
+   "p_sem": 0.278,
+   "lift": 0.74,
+   "ic": [
+    0.58,
+    0.93
+   ],
+   "or_mh": 0.61,
+   "or_ic": [
+    0.43,
+    0.86
+   ],
+   "desc": 0.8,
+   "val": 0.57,
+   "n_desc": 193,
+   "n_val": 96,
+   "plat": {
+    "Instagram": {
+     "n": 289,
+     "lift": 0.74,
+     "lb": 0.58,
+     "ub": 0.93
+    }
+   }
+  },
+  {
+   "nome": "'então/por isso/com isso' >=0,5 por 100",
+   "desfecho": "ret_final",
+   "leitura": "sem evidência",
+   "n": 370,
+   "roteiros": 370,
+   "clientes": 17,
+   "p": 0.278,
+   "p_sem": 0.251,
+   "lift": 1.08,
+   "ic": [
+    0.91,
+    1.26
+   ],
+   "or_mh": 1.17,
+   "or_ic": [
+    0.87,
+    1.56
+   ],
+   "desc": 1.06,
+   "val": 1.1,
+   "n_desc": 253,
+   "n_val": 117,
+   "plat": {
+    "Instagram": {
+     "n": 370,
+     "lift": 1.08,
+     "lb": 0.91,
+     "ub": 1.26
+    }
+   }
+  },
+  {
+   "nome": "'então/por isso' ausente",
+   "desfecho": "ret_final",
+   "leitura": "sem evidência",
+   "n": 571,
+   "roteiros": 571,
+   "clientes": 17,
+   "p": 0.247,
+   "p_sem": 0.268,
+   "lift": 0.95,
+   "ic": [
+    0.82,
+    1.1
+   ],
+   "or_mh": 0.83,
+   "or_ic": [
+    0.64,
+    1.08
+   ],
+   "desc": 0.96,
+   "val": 0.91,
+   "n_desc": 398,
+   "n_val": 173,
+   "plat": {
+    "Instagram": {
+     "n": 571,
+     "lift": 0.95,
+     "lb": 0.82,
+     "ub": 1.1
+    }
+   }
+  },
+  {
+   "nome": "números >=3,6 por 100",
+   "desfecho": "ret_final",
+   "leitura": "sem evidência",
+   "n": 305,
+   "roteiros": 305,
+   "clientes": 17,
+   "p": 0.223,
+   "p_sem": 0.27,
+   "lift": 0.86,
+   "ic": [
+    0.69,
+    1.05
+   ],
+   "or_mh": 0.81,
+   "or_ic": [
+    0.58,
+    1.13
+   ],
+   "desc": 0.89,
+   "val": 0.84,
+   "n_desc": 193,
+   "n_val": 112,
+   "plat": {
+    "Instagram": {
+     "n": 305,
+     "lift": 0.86,
+     "lb": 0.69,
+     "ub": 1.05
+    }
+   }
+  },
+  {
+   "nome": "números <=1,2 por 100",
+   "desfecho": "ret_final",
+   "leitura": "sem evidência",
+   "n": 327,
+   "roteiros": 327,
+   "clientes": 17,
+   "p": 0.272,
+   "p_sem": 0.255,
+   "lift": 1.05,
+   "ic": [
+    0.88,
+    1.25
+   ],
+   "or_mh": 1.05,
+   "or_ic": [
+    0.77,
+    1.44
+   ],
+   "desc": 1.09,
+   "val": 0.87,
+   "n_desc": 231,
+   "n_val": 96,
+   "plat": {
+    "Instagram": {
+     "n": 327,
+     "lift": 1.05,
+     "lb": 0.88,
+     "ub": 1.25
+    }
+   }
+  },
+  {
+   "nome": "nomes próprios >=6,8 por 100",
+   "desfecho": "ret_final",
+   "leitura": "sem evidência",
+   "n": 346,
+   "roteiros": 346,
+   "clientes": 17,
+   "p": 0.269,
+   "p_sem": 0.255,
+   "lift": 1.04,
+   "ic": [
+    0.87,
+    1.23
+   ],
+   "or_mh": 1.12,
+   "or_ic": [
+    0.82,
+    1.51
+   ],
+   "desc": 0.89,
+   "val": 1.5,
+   "n_desc": 244,
+   "n_val": 102,
+   "plat": {
+    "Instagram": {
+     "n": 346,
+     "lift": 1.04,
+     "lb": 0.87,
+     "ub": 1.23
+    }
+   }
+  },
+  {
+   "nome": "nomes próprios <=3,1 por 100",
+   "desfecho": "ret_final",
+   "leitura": "atrapalha (replica)",
+   "n": 320,
+   "roteiros": 320,
+   "clientes": 17,
+   "p": 0.206,
+   "p_sem": 0.276,
+   "lift": 0.8,
+   "ic": [
+    0.64,
+    0.98
+   ],
+   "or_mh": 0.69,
+   "or_ic": [
+    0.49,
+    0.95
+   ],
+   "desc": 0.92,
+   "val": 0.62,
+   "n_desc": 185,
+   "n_val": 135,
+   "plat": {
+    "Instagram": {
+     "n": 320,
+     "lift": 0.8,
+     "lb": 0.64,
+     "ub": 0.98
+    }
+   }
+  },
+  {
+   "nome": "'você' >=0,6 por 100 no corpo",
+   "desfecho": "ret_final",
+   "leitura": "atrapalha (replica)",
+   "n": 352,
+   "roteiros": 352,
+   "clientes": 17,
+   "p": 0.199,
+   "p_sem": 0.281,
+   "lift": 0.77,
+   "ic": [
+    0.62,
+    0.94
+   ],
+   "or_mh": 0.55,
+   "or_ic": [
+    0.39,
+    0.77
+   ],
+   "desc": 0.87,
+   "val": 0.22,
+   "n_desc": 264,
+   "n_val": 88,
+   "plat": {
+    "Instagram": {
+     "n": 352,
+     "lift": 0.77,
+     "lb": 0.62,
+     "ub": 0.94
+    }
+   }
+  },
+  {
+   "nome": "'você' ausente no corpo",
+   "desfecho": "ret_final",
+   "leitura": "sem evidência",
+   "n": 620,
+   "roteiros": 620,
+   "clientes": 17,
+   "p": 0.29,
+   "p_sem": 0.231,
+   "lift": 1.12,
+   "ic": [
+    0.99,
+    1.26
+   ],
+   "or_mh": 1.36,
+   "or_ic": [
+    1.04,
+    1.78
+   ],
+   "desc": 1.1,
+   "val": 1.22,
+   "n_desc": 389,
+   "n_val": 231,
+   "plat": {
+    "Instagram": {
+     "n": 620,
+     "lift": 1.12,
+     "lb": 0.99,
+     "ub": 1.26
+    }
+   }
+  },
+  {
+   "nome": "1ª pessoa (eu/me/meu) no corpo",
+   "desfecho": "ret_final",
+   "leitura": "sem evidência",
+   "n": 174,
+   "roteiros": 174,
+   "clientes": 16,
+   "p": 0.259,
+   "p_sem": 0.259,
+   "lift": 1,
+   "ic": [
+    0.77,
+    1.27
+   ],
+   "or_mh": 0.9,
+   "or_ic": [
+    0.6,
+    1.34
+   ],
+   "desc": 1.13,
+   "val": 0.13,
+   "n_desc": 136,
+   "n_val": 38,
+   "plat": {
+    "Instagram": {
+     "n": 174,
+     "lift": 1,
+     "lb": 0.77,
+     "ub": 1.27
+    }
+   }
+  },
+  {
+   "nome": "pergunta no corpo (1+)",
+   "desfecho": "ret_final",
+   "leitura": "sem evidência",
+   "n": 360,
+   "roteiros": 360,
+   "clientes": 17,
+   "p": 0.283,
+   "p_sem": 0.25,
+   "lift": 1.09,
+   "ic": [
+    0.92,
+    1.28
+   ],
+   "or_mh": 1.11,
+   "or_ic": [
+    0.83,
+    1.49
+   ],
+   "desc": 1.13,
+   "val": 0.89,
+   "n_desc": 260,
+   "n_val": 100,
+   "plat": {
+    "Instagram": {
+     "n": 360,
+     "lift": 1.09,
+     "lb": 0.92,
+     "ub": 1.28
+    }
+   }
+  },
+  {
+   "nome": "citação entre aspas no corpo",
+   "desfecho": "ret_final",
+   "leitura": "sinal sem replicação",
+   "n": 344,
+   "roteiros": 344,
+   "clientes": 16,
+   "p": 0.308,
+   "p_sem": 0.242,
+   "lift": 1.19,
+   "ic": [
+    1.01,
+    1.39
+   ],
+   "or_mh": 1.4,
+   "or_ic": [
+    1.04,
+    1.89
+   ],
+   "desc": 1.19,
+   "val": 1,
+   "n_desc": 260,
+   "n_val": 84,
+   "plat": {
+    "Instagram": {
+     "n": 344,
+     "lift": 1.19,
+     "lb": 1.01,
+     "ub": 1.39
+    }
+   }
+  },
+  {
+   "nome": "lista 'primeiro... terceiro'",
+   "desfecho": "ret_final",
+   "leitura": "sem evidência",
+   "n": 40,
+   "roteiros": 40,
+   "clientes": 16,
+   "p": 0.3,
+   "p_sem": 0.258,
+   "lift": 1.16,
+   "ic": [
+    0.7,
+    1.75
+   ],
+   "or_mh": 1.32,
+   "or_ic": [
+    0.62,
+    2.8
+   ],
+   "desc": 1.07,
+   "val": 1.41,
+   "n_desc": 26,
+   "n_val": 14,
+   "plat": {
+    "Instagram": {
+     "n": 40,
+     "lift": 1.16,
+     "lb": 0.7,
+     "ub": 1.75
+    }
+   }
+  },
+  {
+   "nome": "frase média <=15,5 palavras",
+   "desfecho": "ret_final",
+   "leitura": "sem evidência",
+   "n": 455,
+   "roteiros": 455,
+   "clientes": 17,
+   "p": 0.29,
+   "p_sem": 0.242,
+   "lift": 1.12,
+   "ic": [
+    0.97,
+    1.29
+   ],
+   "or_mh": 1.22,
+   "or_ic": [
+    0.92,
+    1.61
+   ],
+   "desc": 1.12,
+   "val": 0.92,
+   "n_desc": 348,
+   "n_val": 107,
+   "plat": {
+    "Instagram": {
+     "n": 455,
+     "lift": 1.12,
+     "lb": 0.97,
+     "ub": 1.29
+    }
+   }
+  },
+  {
+   "nome": "frase média >=20 palavras",
+   "desfecho": "ret_final",
+   "leitura": "sem evidência",
+   "n": 262,
+   "roteiros": 262,
+   "clientes": 16,
+   "p": 0.229,
+   "p_sem": 0.266,
+   "lift": 0.88,
+   "ic": [
+    0.7,
+    1.1
+   ],
+   "or_mh": 0.89,
+   "or_ic": [
+    0.63,
+    1.25
+   ],
+   "desc": 1.1,
+   "val": 0.62,
+   "n_desc": 143,
+   "n_val": 119,
+   "plat": {
+    "Instagram": {
+     "n": 262,
+     "lift": 0.88,
+     "lb": 0.7,
+     "ub": 1.1
+    }
+   }
+  },
+  {
+   "nome": "frases curtas (<=6) >=13%",
+   "desfecho": "ret_final",
+   "leitura": "sem evidência",
+   "n": 391,
+   "roteiros": 391,
+   "clientes": 17,
+   "p": 0.302,
+   "p_sem": 0.241,
+   "lift": 1.17,
+   "ic": [
+    1,
+    1.35
+   ],
+   "or_mh": 1.35,
+   "or_ic": [
+    1.02,
+    1.8
+   ],
+   "desc": 1.17,
+   "val": 1,
+   "n_desc": 292,
+   "n_val": 99,
+   "plat": {
+    "Instagram": {
+     "n": 391,
+     "lift": 1.17,
+     "lb": 1,
+     "ub": 1.35
+    }
+   }
+  },
+  {
+   "nome": "nenhuma frase curta (<=6)",
+   "desfecho": "ret_final",
+   "leitura": "sem evidência",
+   "n": 433,
+   "roteiros": 433,
+   "clientes": 16,
+   "p": 0.256,
+   "p_sem": 0.26,
+   "lift": 0.99,
+   "ic": [
+    0.84,
+    1.16
+   ],
+   "or_mh": 0.98,
+   "or_ic": [
+    0.74,
+    1.3
+   ],
+   "desc": 0.98,
+   "val": 1.06,
+   "n_desc": 279,
+   "n_val": 154,
+   "plat": {
+    "Instagram": {
+     "n": 433,
+     "lift": 0.99,
+     "lb": 0.84,
+     "ub": 1.16
+    }
+   }
+  },
+  {
+   "nome": "parágrafos abrindo com conectivo >=44%",
+   "desfecho": "ret_final",
+   "leitura": "sem evidência",
+   "n": 309,
+   "roteiros": 309,
+   "clientes": 17,
+   "p": 0.256,
+   "p_sem": 0.26,
+   "lift": 0.99,
+   "ic": [
+    0.81,
+    1.19
+   ],
+   "or_mh": 1,
+   "or_ic": [
+    0.73,
+    1.36
+   ],
+   "desc": 1.05,
+   "val": 0.88,
+   "n_desc": 197,
+   "n_val": 112,
+   "plat": {
+    "Instagram": {
+     "n": 309,
+     "lift": 0.99,
+     "lb": 0.81,
+     "ub": 1.19
+    }
+   }
+  },
+  {
+   "nome": "parágrafos abrindo com conectivo <=23%",
+   "desfecho": "ret_final",
+   "leitura": "sem evidência",
+   "n": 336,
+   "roteiros": 336,
+   "clientes": 17,
+   "p": 0.244,
+   "p_sem": 0.264,
+   "lift": 0.94,
+   "ic": [
+    0.78,
+    1.13
+   ],
+   "or_mh": 0.8,
+   "or_ic": [
+    0.59,
+    1.09
+   ],
+   "desc": 0.92,
+   "val": 0.89,
+   "n_desc": 253,
+   "n_val": 83,
+   "plat": {
+    "Instagram": {
+     "n": 336,
+     "lift": 0.94,
+     "lb": 0.78,
+     "ub": 1.13
+    }
+   }
+  },
+  {
+   "nome": "parágrafos abrindo com 'Mas/Só que' >=14%",
+   "desfecho": "ret_final",
+   "leitura": "sem evidência",
+   "n": 402,
+   "roteiros": 402,
+   "clientes": 17,
+   "p": 0.286,
+   "p_sem": 0.247,
+   "lift": 1.1,
+   "ic": [
+    0.94,
+    1.28
+   ],
+   "or_mh": 1.22,
+   "or_ic": [
+    0.92,
+    1.61
+   ],
+   "desc": 1.16,
+   "val": 0.98,
+   "n_desc": 261,
+   "n_val": 141,
+   "plat": {
+    "Instagram": {
+     "n": 402,
+     "lift": 1.1,
+     "lb": 0.94,
+     "ub": 1.28
+    }
+   }
+  }
+ ],
+ "fundo": [
+  {
+   "nome": "ou seja",
+   "coef": {
+    "nome": "ou seja",
+    "desfecho": "coef",
+    "leitura": "ajuda (replica)",
+    "n": 1205,
+    "roteiros": 520,
+    "clientes": 27,
+    "p": 0.301,
+    "p_sem": 0.247,
+    "lift": 1.17,
+    "ic": [
+     1.07,
+     1.27
+    ],
+    "or_mh": 1.35,
+    "or_ic": [
+     1.17,
+     1.57
+    ],
+    "desc": 1.11,
+    "val": 1.2,
+    "n_desc": 453,
+    "n_val": 752,
+    "plat": {
+     "Instagram": {
+      "n": 513,
+      "lift": 1.23,
+      "lb": 1.08,
+      "ub": 1.39
+     },
+     "TikTok": {
+      "n": 361,
+      "lift": 1.1,
+      "lb": 0.93,
+      "ub": 1.29
+     },
+     "YouTube": {
+      "n": 331,
+      "lift": 1.15,
+      "lb": 0.97,
+      "ub": 1.35
+     }
+    }
+   },
+   "estrito": {
+    "or": 1.3881981333998703,
+    "lo": 1.1726633723447013,
+    "hi": 1.6433480426029883,
+    "leitura": "ajuda (replica)"
+   },
+   "plats": {
+    "Instagram": {
+     "lift": 1.2289435154504122,
+     "n": 513,
+     "or": 1.5136785624203675,
+     "lo": 1.1988132928228388,
+     "hi": 1.9112423961665135,
+     "d": 1.3006557153102696,
+     "v": 1.1872923518003207
+    },
+    "TikTok": {
+     "lift": 1.1038261772853186,
+     "n": 361,
+     "or": 1.2150326619686438,
+     "lo": 0.9143218033691995,
+     "hi": 1.61464417036819,
+     "d": 0.9620803357314147,
+     "v": 1.1996996996996998
+    },
+    "YouTube": {
+     "lift": 1.1471207543715096,
+     "n": 331,
+     "or": 1.306443349475152,
+     "lo": 0.9752523043145007,
+     "hi": 1.7501052987386174,
+     "d": 1.0224264705882353,
+     "v": 1.235989835989836
+    }
+   },
+   "macro": [
+    {
+     "grupo": "Negócios, marcas e cases",
+     "n": 484,
+     "lift": 1.2771852695341848,
+     "or": 1.652626039585364,
+     "lo": 1.3139822323496078,
+     "hi": 2.078546238659435
+    },
+    {
+     "grupo": "Tecnologia, IA e inovação",
+     "n": 330,
+     "lift": 1.1633211678832118,
+     "or": 1.2823459913219548,
+     "lo": 0.9862823036262893,
+     "hi": 1.6672825167940641
+    },
+    {
+     "grupo": "Dinheiro, economia e geopolítica",
+     "n": 384,
+     "lift": 1.0472733711048157,
+     "or": 1.103759907096526,
+     "lo": 0.8325967741185066,
+     "hi": 1.4632364313488544
+    }
+   ],
+   "clientes": {
+    "n": 20,
+    "lift_maior_1": 17,
+    "lista": [
+     {
+      "c": "Renato Mendes",
+      "n": 47,
+      "lift": 1.9939209726443767
+     },
+     {
+      "c": "Leonardo Nogueira",
+      "n": 16,
+      "lift": 1.9411764705882353
+     },
+     {
+      "c": "Renato Torres",
+      "n": 16,
+      "lift": 1.6527777777777777
+     },
+     {
+      "c": "Thiago Bisewski",
+      "n": 21,
+      "lift": 1.5
+     },
+     {
+      "c": "Franklin Tomich",
+      "n": 21,
+      "lift": 1.4821428571428572
+     },
+     {
+      "c": "Marcio Grazino",
+      "n": 72,
+      "lift": 1.3997050147492625
+     },
+     {
+      "c": "João Paulo Albuquerque",
+      "n": 28,
+      "lift": 1.2780612244897962
+     },
+     {
+      "c": "Pedro Elero",
+      "n": 45,
+      "lift": 1.2444444444444445
+     },
+     {
+      "c": "Thiago Franco",
+      "n": 70,
+      "lift": 1.1936842105263157
+     },
+     {
+      "c": "Ricardo Schumacher",
+      "n": 43,
+      "lift": 1.186046511627907
+     },
+     {
+      "c": "Marcos Pelozato",
+      "n": 174,
+      "lift": 1.185986793837124
+     },
+     {
+      "c": "Rafael Rodrigues",
+      "n": 43,
+      "lift": 1.1850416307780647
+     },
+     {
+      "c": "Leonardo Cirino",
+      "n": 28,
+      "lift": 1.1152073732718895
+     },
+     {
+      "c": "Fernando Pereira",
+      "n": 111,
+      "lift": 1.0554765291607398
+     },
+     {
+      "c": "Lincoln Fracari",
+      "n": 56,
+      "lift": 1.038533834586466
+     },
+     {
+      "c": "Túlio Lichenstein",
+      "n": 37,
+      "lift": 1.037489102005231
+     },
+     {
+      "c": "Dilson Peres",
+      "n": 134,
+      "lift": 1.0304641177673277
+     },
+     {
+      "c": "Izabela Anholett",
+      "n": 139,
+      "lift": 0.8642086330935252
+     },
+     {
+      "c": "Manoel Victor",
+      "n": 23,
+      "lift": 0.8511422254974207
+     },
+     {
+      "c": "Rodrigo Waughan",
+      "n": 32,
+      "lift": 0.8352272727272727
+     }
+    ]
+   },
+   "outros": [
+    {
+     "desfecho": "ret_final",
+     "nome": "ou seja",
+     "leitura": "sem evidência",
+     "n": 246,
+     "roteiros": 246,
+     "clientes": 17,
+     "p": 0.224,
+     "p_sem": 0.267,
+     "lift": 0.86,
+     "ic": [
+      0.68,
+      1.08
+     ],
+     "or_mh": 0.79,
+     "or_ic": [
+      0.55,
+      1.14
+     ],
+     "desc": 0.95,
+     "val": 0.79,
+     "n_desc": 140,
+     "n_val": 106,
+     "plat": {
+      "Instagram": {
+       "n": 246,
+       "lift": 0.86,
+       "lb": 0.68,
+       "ub": 1.08
+      }
+     }
+    },
+    {
+     "desfecho": "acerto",
+     "nome": "ou seja",
+     "leitura": "ajuda (replica)",
+     "n": 1205,
+     "roteiros": 520,
+     "clientes": 27,
+     "p": 0.431,
+     "p_sem": 0.381,
+     "lift": 1.1,
+     "ic": [
+      1.03,
+      1.17
+     ],
+     "or_mh": 1.2,
+     "or_ic": [
+      1.04,
+      1.39
+     ],
+     "desc": 1.04,
+     "val": 1.16,
+     "n_desc": 453,
+     "n_val": 752,
+     "plat": {
+      "Instagram": {
+       "n": 513,
+       "lift": 1.06,
+       "lb": 0.95,
+       "ub": 1.17
+      },
+      "TikTok": {
+       "n": 361,
+       "lift": 1.11,
+       "lb": 0.98,
+       "ub": 1.23
+      }
+     }
+    },
+    {
+     "desfecho": "comentarios",
+     "nome": "ou seja",
+     "leitura": "sem evidência",
+     "n": 1205,
+     "roteiros": 520,
+     "clientes": 27,
+     "p": 0.269,
+     "p_sem": 0.248,
+     "lift": 1.07,
+     "ic": [
+      0.97,
+      1.17
+     ],
+     "or_mh": 1.1,
+     "or_ic": [
+      0.94,
+      1.28
+     ],
+     "desc": 1.03,
+     "val": 1.06,
+     "n_desc": 453,
+     "n_val": 752,
+     "plat": {
+      "Instagram": {
+       "n": 513,
+       "lift": 1.12,
+       "lb": 0.98,
+       "ub": 1.28
+      },
+      "TikTok": {
+       "n": 361,
+       "lift": 1.01,
+       "lb": 0.84,
+       "ub": 1.2
+      }
+     }
+    }
+   ],
+   "exemplos": [
+    {
+     "texto": "Ou seja, o preço do mercado e da sua gasolina pode estar nos próximos dias.",
+     "cliente": "Fernando Pereira",
+     "plataforma": "TikTok",
+     "coef": 3661.1,
+     "views": 6256813,
+     "link": "https://www.tiktok.com/@fernandopereira.finance/video/7613106734680329493"
+    },
+    {
+     "texto": "Ou seja, quase 30% de toda a rede fechou as portas num único anúncio.",
+     "cliente": "Marcos Pelozato",
+     "plataforma": "TikTok",
+     "coef": 1356.26,
+     "views": 899200,
+     "link": "https://www.tiktok.com/@marcospelozato/video/7674077995404922130"
+    },
+    {
+     "texto": "Ou seja, é uma marca grande, com potencial enorme e que tem tudo para, em breve, trazer esse tipo de \"carro mágico\" para a gente aqui.",
+     "cliente": "Pedro Elero",
+     "plataforma": "TikTok",
+     "coef": 486.17,
+     "views": 275170,
+     "link": "https://www.tiktok.com/@pedro_elero/video/7687261571130608903"
+    }
+   ],
+   "contraexemplo": [
+    {
+     "texto": "E despesa operacional é dedutível, ou seja, pode ser deduzida da base de cálculo do imposto de renda e da contribuição social, os dois principais tributos sobre o lucro da empresa.",
+     "cliente": "Dilson Peres",
+     "plataforma": "TikTok",
+     "coef": 0,
+     "views": 78,
+     "link": "https://www.tiktok.com/@doutortax/video/7628379674376293640"
+    }
+   ]
+  },
+  {
+   "nome": "o detalhe é que",
+   "coef": {
+    "nome": "o detalhe é que",
+    "desfecho": "coef",
+    "leitura": "ajuda (replica)",
+    "n": 159,
+    "roteiros": 65,
+    "clientes": 21,
+    "p": 0.346,
+    "p_sem": 0.255,
+    "lift": 1.34,
+    "ic": [
+     1.07,
+     1.64
+    ],
+    "or_mh": 1.55,
+    "or_ic": [
+     1.11,
+     2.17
+    ],
+    "desc": 1.32,
+    "val": 1.39,
+    "n_desc": 106,
+    "n_val": 53,
+    "plat": {
+     "Instagram": {
+      "n": 63,
+      "lift": 1.17,
+      "lb": 0.79,
+      "ub": 1.65
+     },
+     "TikTok": {
+      "n": 48,
+      "lift": 1.21,
+      "lb": 0.77,
+      "ub": 1.75
+     },
+     "YouTube": {
+      "n": 48,
+      "lift": 1.7,
+      "lb": 1.19,
+      "ub": 2.24
+     }
+    }
+   },
+   "estrito": {
+    "or": 1.1642557010501269,
+    "lo": 0.795655373936826,
+    "hi": 1.7036161406425023,
+    "leitura": "sinal sem replicação"
+   },
+   "plats": {
+    "Instagram": {
+     "lift": 1.1736735689883566,
+     "n": 63,
+     "or": 1.2047885025519598,
+     "lo": 0.6768340777695334,
+     "hi": 2.144565977919989,
+     "d": 1.2073883563245267,
+     "v": 1.1262947269303203
+    },
+    "TikTok": {
+     "lift": 1.208984375,
+     "n": 48,
+     "or": 1.2845875631087171,
+     "lo": 0.6704769236017152,
+     "hi": 2.4611812117695537,
+     "d": 1.1578282828282829,
+     "v": 1.3055555555555556
+    },
+    "YouTube": {
+     "lift": 1.6950757575757576,
+     "n": 48,
+     "or": 2.056970091580321,
+     "lo": 1.116639462609505,
+     "hi": 3.7891603327076773,
+     "d": 1.5904411764705884,
+     "v": 1.9436936936936937
+    }
+   },
+   "macro": [
+    {
+     "grupo": "Negócios, marcas e cases",
+     "n": 68,
+     "lift": 1.6008522727272725,
+     "or": 2.0964588984781223,
+     "lo": 1.2800464866046175,
+     "hi": 3.4335783575066983
+    },
+    {
+     "grupo": "Dinheiro, economia e geopolítica",
+     "n": 44,
+     "lift": 1.1424800412052536,
+     "or": 1.2127871893490934,
+     "lo": 0.6296817897766742,
+     "hi": 2.3358667671982905
+    },
+    {
+     "grupo": "Tecnologia, IA e inovação",
+     "n": 45,
+     "lift": 1.120235198702352,
+     "or": 1.1803377641208996,
+     "lo": 0.6132572434574712,
+     "hi": 2.2717990733468465
+    }
+   ],
+   "clientes": {
+    "n": 3,
+    "lift_maior_1": 2,
+    "lista": [
+     {
+      "c": "Thiago Franco",
+      "n": 20,
+      "lift": 1.3926315789473682
+     },
+     {
+      "c": "Marcio Grazino",
+      "n": 23,
+      "lift": 1.0111581377452865
+     },
+     {
+      "c": "Lincoln Fracari",
+      "n": 17,
+      "lift": 0.6842105263157895
+     }
+    ]
+   },
+   "outros": [
+    {
+     "desfecho": "ret_final",
+     "nome": "o detalhe é que",
+     "leitura": "sem evidência",
+     "n": 38,
+     "roteiros": 38,
+     "clientes": 13,
+     "p": 0.342,
+     "p_sem": 0.256,
+     "lift": 1.32,
+     "ic": [
+      0.82,
+      1.94
+     ],
+     "or_mh": 1.65,
+     "or_ic": [
+      0.79,
+      3.41
+     ],
+     "desc": 1.16,
+     "val": 1.85,
+     "n_desc": 30,
+     "n_val": 8,
+     "plat": {
+      "Instagram": {
+       "n": 38,
+       "lift": 1.32,
+       "lb": 0.82,
+       "ub": 1.94
+      }
+     }
+    },
+    {
+     "desfecho": "acerto",
+     "nome": "o detalhe é que",
+     "leitura": "sem evidência",
+     "n": 159,
+     "roteiros": 65,
+     "clientes": 21,
+     "p": 0.434,
+     "p_sem": 0.39,
+     "lift": 1.11,
+     "ic": [
+      0.92,
+      1.31
+     ],
+     "or_mh": 1.22,
+     "or_ic": [
+      0.87,
+      1.71
+     ],
+     "desc": 1.09,
+     "val": 1.11,
+     "n_desc": 106,
+     "n_val": 53,
+     "plat": {
+      "Instagram": {
+       "n": 63,
+       "lift": 0.96,
+       "lb": 0.68,
+       "ub": 1.29
+      },
+      "TikTok": {
+       "n": 48,
+       "lift": 1.12,
+       "lb": 0.79,
+       "ub": 1.45
+      }
+     }
+    },
+    {
+     "desfecho": "comentarios",
+     "nome": "o detalhe é que",
+     "leitura": "atrapalha (replica)",
+     "n": 159,
+     "roteiros": 65,
+     "clientes": 21,
+     "p": 0.164,
+     "p_sem": 0.254,
+     "lift": 0.65,
+     "ic": [
+      0.45,
+      0.91
+     ],
+     "or_mh": 0.58,
+     "or_ic": [
+      0.37,
+      0.9
+     ],
+     "desc": 0.72,
+     "val": 0.56,
+     "n_desc": 106,
+     "n_val": 53,
+     "plat": {
+      "Instagram": {
+       "n": 63,
+       "lift": 0.56,
+       "lb": 0.3,
+       "ub": 0.98
+      },
+      "TikTok": {
+       "n": 48,
+       "lift": 0.82,
+       "lb": 0.46,
+       "ub": 1.35
+      }
+     }
+    }
+   ],
+   "exemplos": [
+    {
+     "texto": "Só que com um detalhe: eles colocaram tecnologia de elite mundial lá dentro, mas com um preço justo.",
+     "cliente": "Marcio Grazino",
+     "plataforma": "TikTok",
+     "coef": 740.21,
+     "views": 1293510,
+     "link": "https://www.tiktok.com/@marcio.grazino/video/7618421911848094994"
+    },
+    {
+     "texto": "Só que tinha um detalhe: a autonomia era de 400 quilômetros, enquanto as versões a lítio do mesmo carro chegavam a 630.",
+     "cliente": "Leonardo Nogueira",
+     "plataforma": "YouTube",
+     "coef": 358.63,
+     "views": 379427,
+     "link": "https://www.youtube.com/shorts/Rf-MsjU70_0"
+    },
+    {
+     "texto": "Só que aí vem o detalhe: Se tivesse um único M&Ms que fosse marrom, o contrato previa que o show poderia ser cancelado e a banda receberia o pagamento integral.",
+     "cliente": "Rodrigo Waughan",
+     "plataforma": "Instagram",
+     "coef": 176.87,
+     "views": 543883,
+     "link": "https://www.instagram.com/reel/DWEHDe8DlJz"
+    }
+   ],
+   "contraexemplo": [
+    {
+     "texto": "Só que tem um detalhe: Você não precisa ficar preso numa ferramenta só.",
+     "cliente": "Izabela Anholett",
+     "plataforma": "Facebook",
+     "coef": 0.19,
+     "views": 3600,
+     "link": "https://www.facebook.com/reel/1464735305203676"
+    }
+   ]
+  },
+  {
+   "nome": "pra você ter ideia",
+   "coef": {
+    "nome": "pra você ter ideia",
+    "desfecho": "coef",
+    "leitura": "ajuda (replica)",
+    "n": 1011,
+    "roteiros": 415,
+    "clientes": 28,
+    "p": 0.292,
+    "p_sem": 0.251,
+    "lift": 1.13,
+    "ic": [
+     1.03,
+     1.24
+    ],
+    "or_mh": 1.24,
+    "or_ic": [
+     1.07,
+     1.45
+    ],
+    "desc": 1.08,
+    "val": 1.18,
+    "n_desc": 480,
+    "n_val": 531,
+    "plat": {
+     "Instagram": {
+      "n": 401,
+      "lift": 1.1,
+      "lb": 0.93,
+      "ub": 1.28
+     },
+     "TikTok": {
+      "n": 306,
+      "lift": 1.14,
+      "lb": 0.95,
+      "ub": 1.34
+     },
+     "YouTube": {
+      "n": 304,
+      "lift": 1.17,
+      "lb": 0.98,
+      "ub": 1.38
+     }
+    }
+   },
+   "estrito": {
+    "or": 1.12978121272671,
+    "lo": 0.9495250893309461,
+    "hi": 1.3442568321492332,
+    "leitura": "sinal sem replicação"
+   },
+   "plats": {
+    "Instagram": {
+     "lift": 1.0966507596309372,
+     "n": 401,
+     "or": 1.1275980314035443,
+     "lo": 0.8749115101822964,
+     "hi": 1.4532639079810752,
+     "d": 1.0775784682740916,
+     "v": 1.1139178617992178
+    },
+    "TikTok": {
+     "lift": 1.1378676470588236,
+     "n": 306,
+     "or": 1.2406345372675105,
+     "lo": 0.9285372588433655,
+     "hi": 1.6576330571572815,
+     "d": 1.079800724637681,
+     "v": 1.1889880952380953
+    },
+    "YouTube": {
+     "lift": 1.172533606744133,
+     "n": 304,
+     "or": 1.206874736406339,
+     "lo": 0.9040508484907546,
+     "hi": 1.6111335239687747,
+     "d": 1.088758389261745,
+     "v": 1.2539959314152862
+    }
+   },
+   "macro": [
+    {
+     "grupo": "Negócios, marcas e cases",
+     "n": 374,
+     "lift": 1.2058367768595042,
+     "or": 1.3919238675661125,
+     "lo": 1.0918616456808534,
+     "hi": 1.7744483110697284
+    },
+    {
+     "grupo": "Tecnologia, IA e inovação",
+     "n": 434,
+     "lift": 1.143664435399778,
+     "or": 1.2786411610405803,
+     "lo": 1.0071581591664513,
+     "hi": 1.623303354917271
+    },
+    {
+     "grupo": "Dinheiro, economia e geopolítica",
+     "n": 199,
+     "lift": 0.9521403049240537,
+     "or": 0.9183317242782427,
+     "lo": 0.645554230916449,
+     "hi": 1.30637073607066
+    }
+   ],
+   "clientes": {
+    "n": 19,
+    "lift_maior_1": 12,
+    "lista": [
+     {
+      "c": "Manoel Victor",
+      "n": 15,
+      "lift": 2.6101694915254234
+     },
+     {
+      "c": "Rodrigo Waughan",
+      "n": 15,
+      "lift": 2.036363636363636
+     },
+     {
+      "c": "Marcos Pelozato",
+      "n": 41,
+      "lift": 1.99429164504411
+     },
+     {
+      "c": "Leonardo Nogueira",
+      "n": 16,
+      "lift": 1.9411764705882353
+     },
+     {
+      "c": "Túlio Lichenstein",
+      "n": 22,
+      "lift": 1.5703812316715542
+     },
+     {
+      "c": "Rafael Rodrigues",
+      "n": 128,
+      "lift": 1.34741512345679
+     },
+     {
+      "c": "João Paulo Albuquerque",
+      "n": 38,
+      "lift": 1.1510025062656644
+     },
+     {
+      "c": "Renato Mendes",
+      "n": 41,
+      "lift": 1.1428571428571428
+     },
+     {
+      "c": "Leonardo Cirino",
+      "n": 48,
+      "lift": 1.138440860215054
+     },
+     {
+      "c": "Marcio Grazino",
+      "n": 135,
+      "lift": 1.1197640117994099
+     },
+     {
+      "c": "Thiago Franco",
+      "n": 92,
+      "lift": 1.0379862700228832
+     },
+     {
+      "c": "Fernando Pereira",
+      "n": 42,
+      "lift": 1.0228070175438597
+     },
+     {
+      "c": "Franklin Tomich",
+      "n": 39,
+      "lift": 0.9975961538461539
+     },
+     {
+      "c": "Café com Ferri",
+      "n": 19,
+      "lift": 0.9586466165413532
+     },
+     {
+      "c": "Lincoln Fracari",
+      "n": 84,
+      "lift": 0.9231411862990809
+     },
+     {
+      "c": "Pedro Elero",
+      "n": 39,
+      "lift": 0.8205128205128205
+     },
+     {
+      "c": "Cadu Neiva",
+      "n": 29,
+      "lift": 0.652037617554859
+     },
+     {
+      "c": "Izabela Anholett",
+      "n": 87,
+      "lift": 0.5790229885057472
+     },
+     {
+      "c": "Dilson Peres",
+      "n": 23,
+      "lift": 0.33353186420488384
+     }
+    ]
+   },
+   "outros": [
+    {
+     "desfecho": "ret_final",
+     "nome": "pra você ter ideia",
+     "leitura": "sem evidência",
+     "n": 177,
+     "roteiros": 177,
+     "clientes": 16,
+     "p": 0.266,
+     "p_sem": 0.258,
+     "lift": 1.03,
+     "ic": [
+      0.8,
+      1.29
+     ],
+     "or_mh": 1.14,
+     "or_ic": [
+      0.77,
+      1.7
+     ],
+     "desc": 0.99,
+     "val": 1.1,
+     "n_desc": 123,
+     "n_val": 54,
+     "plat": {
+      "Instagram": {
+       "n": 177,
+       "lift": 1.03,
+       "lb": 0.8,
+       "ub": 1.29
+      }
+     }
+    },
+    {
+     "desfecho": "acerto",
+     "nome": "pra você ter ideia",
+     "leitura": "sinal sem replicação",
+     "n": 1011,
+     "roteiros": 415,
+     "clientes": 28,
+     "p": 0.431,
+     "p_sem": 0.383,
+     "lift": 1.1,
+     "ic": [
+      1.03,
+      1.18
+     ],
+     "or_mh": 1.08,
+     "or_ic": [
+      0.93,
+      1.26
+     ],
+     "desc": 1.1,
+     "val": 1.11,
+     "n_desc": 480,
+     "n_val": 531,
+     "plat": {
+      "Instagram": {
+       "n": 401,
+       "lift": 1.08,
+       "lb": 0.95,
+       "ub": 1.21
+      },
+      "TikTok": {
+       "n": 306,
+       "lift": 1.15,
+       "lb": 1.01,
+       "ub": 1.28
+      }
+     }
+    },
+    {
+     "desfecho": "comentarios",
+     "nome": "pra você ter ideia",
+     "leitura": "sem evidência",
+     "n": 1011,
+     "roteiros": 415,
+     "clientes": 28,
+     "p": 0.261,
+     "p_sem": 0.25,
+     "lift": 1.04,
+     "ic": [
+      0.93,
+      1.15
+     ],
+     "or_mh": 1.01,
+     "or_ic": [
+      0.85,
+      1.19
+     ],
+     "desc": 1.03,
+     "val": 1.04,
+     "n_desc": 480,
+     "n_val": 531,
+     "plat": {
+      "Instagram": {
+       "n": 401,
+       "lift": 1.09,
+       "lb": 0.93,
+       "ub": 1.27
+      },
+      "TikTok": {
+       "n": 306,
+       "lift": 0.92,
+       "lb": 0.75,
+       "ub": 1.12
+      }
+     }
+    }
+   ],
+   "exemplos": [
+    {
+     "texto": "Para você ter noção do tamanho disso: a empresa tinha cerca de mil lojas no Brasil.",
+     "cliente": "Marcos Pelozato",
+     "plataforma": "TikTok",
+     "coef": 1356.26,
+     "views": 899200,
+     "link": "https://www.tiktok.com/@marcospelozato/video/7674077995404922130"
+    },
+    {
+     "texto": "Para você ter uma ideia do quão grande é o projeto, 2.1 bilhões de pessoas no mundo não têm acesso à água potável.",
+     "cliente": "Rafael Rodrigues",
+     "plataforma": "YouTube",
+     "coef": 866.71,
+     "views": 1080789,
+     "link": "https://www.youtube.com/shorts/pdWWbMISqqI"
+    },
+    {
+     "texto": "Para você ter uma ideia, a primeira camisa da Seleção Brasileira com a Nike foi lançada em 1997.",
+     "cliente": "Rafael Rodrigues",
+     "plataforma": "TikTok",
+     "coef": 630.14,
+     "views": 490248,
+     "link": "https://www.tiktok.com/@rafaelrodriguesluiz/video/7622445343443029255"
+    }
+   ],
+   "contraexemplo": [
+    {
+     "texto": "Para você ter ideia, ele acorda entre 5h da manhã todos os dias sem despertador e ingere mais de 90 pílulas e suplementos diariamente.",
+     "cliente": "Marcio Grazino",
+     "plataforma": "TikTok",
+     "coef": 0,
+     "views": 7,
+     "link": "https://www.tiktok.com/@marcio.grazino/video/7652470341125541137"
+    }
+   ]
+  },
+  {
+   "nome": "entenda",
+   "coef": {
+    "nome": "entenda",
+    "desfecho": "coef",
+    "leitura": "ajuda (replica)",
+    "n": 141,
+    "roteiros": 59,
+    "clientes": 20,
+    "p": 0.333,
+    "p_sem": 0.256,
+    "lift": 1.29,
+    "ic": [
+     1.01,
+     1.61
+    ],
+    "or_mh": 1.47,
+    "or_ic": [
+     1.02,
+     2.1
+    ],
+    "desc": 1.34,
+    "val": 1.23,
+    "n_desc": 78,
+    "n_val": 63,
+    "plat": {
+     "Instagram": {
+      "n": 57,
+      "lift": 1.64,
+      "lb": 1.17,
+      "ub": 2.14
+     },
+     "TikTok": {
+      "n": 42,
+      "lift": 1.2,
+      "lb": 0.74,
+      "ub": 1.78
+     },
+     "YouTube": {
+      "n": 42,
+      "lift": 0.92,
+      "lb": 0.52,
+      "ub": 1.49
+     }
+    }
+   },
+   "estrito": {
+    "or": 1.30733512276233,
+    "lo": 0.8628065795896178,
+    "hi": 1.9808902292109531,
+    "leitura": "sinal sem replicação"
+   },
+   "plats": {
+    "Instagram": {
+     "lift": 1.6385913539338828,
+     "n": 57,
+     "or": 2.215499262269396,
+     "lo": 1.2294899596770783,
+     "hi": 3.992254627606249,
+     "d": 1.438804457953394,
+     "v": 1.8592801841389412
+    },
+    "TikTok": {
+     "lift": 1.1974702380952382,
+     "n": 42,
+     "or": 1.2520507833770766,
+     "lo": 0.6103785004970513,
+     "hi": 2.568293547165533,
+     "d": 1.273611111111111,
+     "v": 1.087962962962963
+    },
+    "YouTube": {
+     "lift": 0.9224902082044939,
+     "n": 42,
+     "or": 0.9175652453032508,
+     "lo": 0.43579547193418744,
+     "hi": 1.9319291585378382,
+     "d": 1.2875,
+     "v": 0.4319319319319319
+    }
+   },
+   "macro": [
+    {
+     "grupo": "Dinheiro, economia e geopolítica",
+     "n": 24,
+     "lift": 1.4500708215297449,
+     "or": 1.7082701046921704,
+     "lo": 0.7380377818928097,
+     "hi": 3.9539801649461186
+    },
+    {
+     "grupo": "Negócios, marcas e cases",
+     "n": 38,
+     "lift": 1.330031399521531,
+     "or": 1.5340539567391493,
+     "lo": 0.7678424834404305,
+     "hi": 3.064849357699823
+    },
+    {
+     "grupo": "Tecnologia, IA e inovação",
+     "n": 79,
+     "lift": 1.22713203363208,
+     "or": 1.3631250659517617,
+     "lo": 0.8382202029083402,
+     "hi": 2.216732475522521
+    }
+   ],
+   "clientes": {
+    "n": 3,
+    "lift_maior_1": 1,
+    "lista": [
+     {
+      "c": "Marcio Grazino",
+      "n": 21,
+      "lift": 1.6611883691529707
+     },
+     {
+      "c": "Renato Mendes",
+      "n": 21,
+      "lift": 0.7437641723356009
+     },
+     {
+      "c": "Rafael Rodrigues",
+      "n": 33,
+      "lift": 0.712682379349046
+     }
+    ]
+   },
+   "outros": [
+    {
+     "desfecho": "ret_final",
+     "nome": "entenda",
+     "leitura": "amostra pequena",
+     "n": 21,
+     "roteiros": 21,
+     "clientes": 9,
+     "p": 0.286,
+     "p_sem": 0.258,
+     "lift": 1.1,
+     "ic": [
+      0.53,
+      1.93
+     ],
+     "or_mh": 1.4,
+     "or_ic": [
+      0.51,
+      3.85
+     ],
+     "desc": 1.16,
+     "val": 0,
+     "n_desc": 18,
+     "n_val": 3,
+     "plat": {
+      "Instagram": {
+       "n": 21,
+       "lift": 1.1,
+       "lb": 0.53,
+       "ub": 1.93
+      }
+     }
+    },
+    {
+     "desfecho": "acerto",
+     "nome": "entenda",
+     "leitura": "sinal sem replicação",
+     "n": 141,
+     "roteiros": 59,
+     "clientes": 20,
+     "p": 0.489,
+     "p_sem": 0.389,
+     "lift": 1.25,
+     "ic": [
+      1.04,
+      1.46
+     ],
+     "or_mh": 1.39,
+     "or_ic": [
+      0.96,
+      2.01
+     ],
+     "desc": 1.41,
+     "val": 1.02,
+     "n_desc": 78,
+     "n_val": 63,
+     "plat": {
+      "Instagram": {
+       "n": 57,
+       "lift": 1.43,
+       "lb": 1.1,
+       "ub": 1.76
+      },
+      "TikTok": {
+       "n": 42,
+       "lift": 1.27,
+       "lb": 0.92,
+       "ub": 1.62
+      }
+     }
+    },
+    {
+     "desfecho": "comentarios",
+     "nome": "entenda",
+     "leitura": "sem evidência",
+     "n": 141,
+     "roteiros": 59,
+     "clientes": 20,
+     "p": 0.291,
+     "p_sem": 0.251,
+     "lift": 1.15,
+     "ic": [
+      0.88,
+      1.47
+     ],
+     "or_mh": 1.13,
+     "or_ic": [
+      0.77,
+      1.66
+     ],
+     "desc": 0.98,
+     "val": 1.36,
+     "n_desc": 78,
+     "n_val": 63,
+     "plat": {
+      "Instagram": {
+       "n": 57,
+       "lift": 1.18,
+       "lb": 0.77,
+       "ub": 1.68
+      },
+      "TikTok": {
+       "n": 42,
+       "lift": 1.31,
+       "lb": 0.82,
+       "ub": 1.9
+      }
+     }
+    }
+   ],
+   "exemplos": [
+    {
+     "texto": "Entenda o que tá acontecendo. (Testa falar pra ver se fica bom, se não gostar tira na edição, mas se ficar natural, deixa)",
+     "cliente": "Fernando Pereira",
+     "plataforma": "YouTube",
+     "coef": 125.48,
+     "views": 326866,
+     "link": "https://www.youtube.com/shorts/FcGY_lupK74"
+    },
+    {
+     "texto": "Entenda uma coisa: no Brasil de hoje, não é quem grita mais alto que é ouvido, mas sim quem nunca deixou de falar, mesmo quando ninguém estava prestando atenção.",
+     "cliente": "Café com Ferri",
+     "plataforma": "Instagram",
+     "coef": 54.3,
+     "views": 1106704,
+     "link": "https://www.instagram.com/reel/DbB2sYbp5VF"
+    },
+    {
+     "texto": "6: Entenda: isso não é um simples data center, é uma fábrica de inteligência.",
+     "cliente": "Izabela Anholett",
+     "plataforma": "YouTube",
+     "coef": 3.94,
+     "views": 5010,
+     "link": "https://www.youtube.com/shorts/v1xO6WYoGns"
+    }
+   ],
+   "contraexemplo": [
+    {
+     "texto": "Entenda de política, aprenda sobre novos lugares, leia sobre economia.",
+     "cliente": "Rafael Rodrigues",
+     "plataforma": "TikTok",
+     "coef": 0.59,
+     "views": 627,
+     "link": "https://www.tiktok.com/@rafaelrodriguesluiz/video/7610575823745158407"
+    }
+   ]
+  },
+  {
+   "nome": "lista primeiro... terceiro",
+   "coef": {
+    "nome": "lista primeiro... terceiro",
+    "desfecho": "coef",
+    "leitura": "ajuda (replica)",
+    "n": 181,
+    "roteiros": 75,
+    "clientes": 25,
+    "p": 0.354,
+    "p_sem": 0.255,
+    "lift": 1.37,
+    "ic": [
+     1.12,
+     1.65
+    ],
+    "or_mh": 1.59,
+    "or_ic": [
+     1.17,
+     2.18
+    ],
+    "desc": 1.37,
+    "val": 1.37,
+    "n_desc": 96,
+    "n_val": 85,
+    "plat": {
+     "Instagram": {
+      "n": 74,
+      "lift": 1.37,
+      "lb": 0.98,
+      "ub": 1.81
+     },
+     "TikTok": {
+      "n": 58,
+      "lift": 1.33,
+      "lb": 0.91,
+      "ub": 1.83
+     },
+     "YouTube": {
+      "n": 49,
+      "lift": 1.42,
+      "lb": 0.96,
+      "ub": 1.97
+     }
+    }
+   },
+   "estrito": {
+    "or": 1.1700090093726776,
+    "lo": 0.8266133944229295,
+    "hi": 1.656059641967086,
+    "leitura": "sinal sem replicação"
+   },
+   "plats": {
+    "Instagram": {
+     "lift": 1.3673380554786119,
+     "n": 74,
+     "or": 1.4079200820129578,
+     "lo": 0.8473533343250222,
+     "hi": 2.339329860446433,
+     "d": 1.5260047281323879,
+     "v": 1.2194469223907227
+    },
+    "TikTok": {
+     "lift": 1.334051724137931,
+     "n": 58,
+     "or": 1.2985752349181576,
+     "lo": 0.7138863914345221,
+     "hi": 2.362137254576614,
+     "d": 1.1940104166666665,
+     "v": 1.5064102564102566
+    },
+    "YouTube": {
+     "lift": 1.4232706069440764,
+     "n": 49,
+     "or": 1.3406283434926503,
+     "lo": 0.7301487872884334,
+     "hi": 2.4615316585684606,
+     "d": 1.3794642857142858,
+     "v": 1.480909480909481
+    }
+   },
+   "macro": [
+    {
+     "grupo": "Dinheiro, economia e geopolítica",
+     "n": 42,
+     "lift": 1.9334277620396598,
+     "or": 3.016183508842203,
+     "lo": 1.6173725418781346,
+     "hi": 5.624778907429436
+    },
+    {
+     "grupo": "Negócios, marcas e cases",
+     "n": 58,
+     "lift": 1.2735844435736676,
+     "or": 1.4087300531587161,
+     "lo": 0.8062704281412654,
+     "hi": 2.461358240866617
+    },
+    {
+     "grupo": "Tecnologia, IA e inovação",
+     "n": 80,
+     "lift": 1.1633211678832118,
+     "or": 1.2373967786489517,
+     "lo": 0.7590381325049146,
+     "hi": 2.017225119847176
+    }
+   ],
+   "clientes": {
+    "n": 3,
+    "lift_maior_1": 3,
+    "lista": [
+     {
+      "c": "Fernando Pereira",
+      "n": 20,
+      "lift": 2.147894736842105
+     },
+     {
+      "c": "Izabela Anholett",
+      "n": 27,
+      "lift": 1.722222222222222
+     },
+     {
+      "c": "Rafael Rodrigues",
+      "n": 30,
+      "lift": 1.045267489711934
+     }
+    ]
+   },
+   "outros": [
+    {
+     "desfecho": "ret_final",
+     "nome": "lista primeiro... terceiro",
+     "leitura": "sem evidência",
+     "n": 40,
+     "roteiros": 40,
+     "clientes": 16,
+     "p": 0.3,
+     "p_sem": 0.258,
+     "lift": 1.16,
+     "ic": [
+      0.7,
+      1.75
+     ],
+     "or_mh": 1.32,
+     "or_ic": [
+      0.62,
+      2.8
+     ],
+     "desc": 1.07,
+     "val": 1.41,
+     "n_desc": 26,
+     "n_val": 14,
+     "plat": {
+      "Instagram": {
+       "n": 40,
+       "lift": 1.16,
+       "lb": 0.7,
+       "ub": 1.75
+      }
+     }
+    },
+    {
+     "desfecho": "acerto",
+     "nome": "lista primeiro... terceiro",
+     "leitura": "ajuda (replica)",
+     "n": 181,
+     "roteiros": 75,
+     "clientes": 25,
+     "p": 0.519,
+     "p_sem": 0.387,
+     "lift": 1.33,
+     "ic": [
+      1.14,
+      1.51
+     ],
+     "or_mh": 1.43,
+     "or_ic": [
+      1.04,
+      1.97
+     ],
+     "desc": 1.33,
+     "val": 1.32,
+     "n_desc": 96,
+     "n_val": 85,
+     "plat": {
+      "Instagram": {
+       "n": 74,
+       "lift": 1.43,
+       "lb": 1.13,
+       "ub": 1.71
+      },
+      "TikTok": {
+       "n": 58,
+       "lift": 1.17,
+       "lb": 0.87,
+       "ub": 1.48
+      }
+     }
+    },
+    {
+     "desfecho": "comentarios",
+     "nome": "lista primeiro... terceiro",
+     "leitura": "sem evidência",
+     "n": 181,
+     "roteiros": 75,
+     "clientes": 25,
+     "p": 0.298,
+     "p_sem": 0.25,
+     "lift": 1.18,
+     "ic": [
+      0.94,
+      1.46
+     ],
+     "or_mh": 1.34,
+     "or_ic": [
+      0.96,
+      1.87
+     ],
+     "desc": 1.33,
+     "val": 1.05,
+     "n_desc": 96,
+     "n_val": 85,
+     "plat": {
+      "Instagram": {
+       "n": 74,
+       "lift": 1.23,
+       "lb": 0.86,
+       "ub": 1.67
+      },
+      "TikTok": {
+       "n": 58,
+       "lift": 1.08,
+       "lb": 0.7,
+       "ub": 1.58
+      }
+     }
+    }
+   ],
+   "exemplos": [
+    {
+     "texto": "Pela primeira vez na história, o chinês passou o japonês amado pelo brasileiro.",
+     "cliente": "Renato Mendes",
+     "plataforma": "TikTok",
+     "coef": 482.9,
+     "views": 558951,
+     "link": "https://www.tiktok.com/@renatofmendes79/video/7684211577305746708"
+    },
+    {
+     "texto": "Primeiro… sol e vento sobram no Nordeste.",
+     "cliente": "Lincoln Fracari",
+     "plataforma": "TikTok",
+     "coef": 291.1,
+     "views": 669534,
+     "link": "https://www.tiktok.com/@lincolnfracari/video/7625446328075848981"
+    },
+    {
+     "texto": "A primeira é \"The Playbook: Estratégias para Vencer”,.",
+     "cliente": "Marcelo Germano",
+     "plataforma": "TikTok",
+     "coef": 188.9,
+     "views": 525906,
+     "link": "https://www.tiktok.com/@marcelogermanoeag/video/7636775962654313735"
+    }
+   ],
+   "contraexemplo": [
+    {
+     "texto": "O primeiro é inspirado no Buzz Lightyear.",
+     "cliente": "Rodrigo Waughan",
+     "plataforma": "TikTok",
+     "coef": 0.06,
+     "views": 30,
+     "link": "https://www.tiktok.com/@.rodrigowaughan/video/7683859857656532231"
+    }
+   ]
+  },
+  {
+   "nome": "foi aí que / foi quando",
+   "coef": {
+    "nome": "foi aí que / foi quando",
+    "desfecho": "coef",
+    "leitura": "atrapalha (replica)",
+    "n": 915,
+    "roteiros": 408,
+    "clientes": 27,
+    "p": 0.225,
+    "p_sem": 0.263,
+    "lift": 0.87,
+    "ic": [
+     0.77,
+     0.98
+    ],
+    "or_mh": 0.8,
+    "or_ic": [
+     0.68,
+     0.95
+    ],
+    "desc": 0.83,
+    "val": 0.91,
+    "n_desc": 418,
+    "n_val": 497,
+    "plat": {
+     "Instagram": {
+      "n": 408,
+      "lift": 0.83,
+      "lb": 0.69,
+      "ub": 0.99
+     },
+     "TikTok": {
+      "n": 257,
+      "lift": 0.92,
+      "lb": 0.73,
+      "ub": 1.13
+     },
+     "YouTube": {
+      "n": 250,
+      "lift": 0.9,
+      "lb": 0.71,
+      "ub": 1.12
+     }
+    }
+   },
+   "estrito": {
+    "or": 0.7760714530659638,
+    "lo": 0.6399998471133421,
+    "hi": 0.9410735064710933,
+    "leitura": "atrapalha (replica)"
+   },
+   "plats": {
+    "Instagram": {
+     "lift": 0.829838084574972,
+     "n": 408,
+     "or": 0.7039870592563404,
+     "lo": 0.5355850227730026,
+     "hi": 0.9253391310952318,
+     "d": 0.7690275083624811,
+     "v": 0.8868704890114347
+    },
+    "TikTok": {
+     "lift": 0.9182636186770428,
+     "n": 257,
+     "or": 0.8341591309176876,
+     "lo": 0.6009211945281344,
+     "hi": 1.1579246364238103,
+     "d": 0.8062308868501529,
+     "v": 1.0056306306306306
+    },
+    "YouTube": {
+     "lift": 0.8988744588744589,
+     "n": 250,
+     "or": 0.7937487266553551,
+     "lo": 0.5644157047280957,
+     "hi": 1.1162641928443766,
+     "d": 0.9480681818181819,
+     "v": 0.8607786357786358
+    }
+   },
+   "macro": [
+    {
+     "grupo": "Tecnologia, IA e inovação",
+     "n": 236,
+     "lift": 0.90370994680193,
+     "or": 0.8546631831615825,
+     "lo": 0.6154691458570096,
+     "hi": 1.1868168560014087
+    },
+    {
+     "grupo": "Dinheiro, economia e geopolítica",
+     "n": 105,
+     "lift": 0.8838526912181301,
+     "or": 0.8397889715547348,
+     "lo": 0.5235856870822854,
+     "hi": 1.3469533910962783
+    },
+    {
+     "grupo": "Negócios, marcas e cases",
+     "n": 561,
+     "lift": 0.8662620523415977,
+     "or": 0.7803979334039438,
+     "lo": 0.6232887759580338,
+     "hi": 0.9771087783909523
+    }
+   ],
+   "clientes": {
+    "n": 19,
+    "lift_maior_1": 7,
+    "lista": [
+     {
+      "c": "Leonardo Nogueira",
+      "n": 17,
+      "lift": 1.370242214532872
+     },
+     {
+      "c": "Fernando Pereira",
+      "n": 27,
+      "lift": 1.1571150097465885
+     },
+     {
+      "c": "Marcos Pelozato",
+      "n": 91,
+      "lift": 1.1124620060790273
+     },
+     {
+      "c": "Lincoln Fracari",
+      "n": 44,
+      "lift": 1.0574162679425836
+     },
+     {
+      "c": "Marcio Grazino",
+      "n": 99,
+      "lift": 1.0571198712791632
+     },
+     {
+      "c": "Thainá Iansen",
+      "n": 15,
+      "lift": 1.0333333333333334
+     },
+     {
+      "c": "Cadu Neiva",
+      "n": 49,
+      "lift": 1.003339517625232
+     },
+     {
+      "c": "Drielle Castelani",
+      "n": 17,
+      "lift": 0.9184060721062619
+     },
+     {
+      "c": "Renato Torres",
+      "n": 29,
+      "lift": 0.9118773946360154
+     },
+     {
+      "c": "Franklin Tomich",
+      "n": 36,
+      "lift": 0.8645833333333334
+     },
+     {
+      "c": "Rodrigo Waughan",
+      "n": 103,
+      "lift": 0.852603706972639
+     },
+     {
+      "c": "Rafael Rodrigues",
+      "n": 84,
+      "lift": 0.7932833627278071
+     },
+     {
+      "c": "Pedro Elero",
+      "n": 46,
+      "lift": 0.782608695652174
+     },
+     {
+      "c": "Marcelo Germano",
+      "n": 44,
+      "lift": 0.7604895104895106
+     },
+     {
+      "c": "João Paulo Albuquerque",
+      "n": 52,
+      "lift": 0.6881868131868132
+     },
+     {
+      "c": "Thiago Franco",
+      "n": 44,
+      "lift": 0.6330143540669856
+     },
+     {
+      "c": "Manoel Victor",
+      "n": 29,
+      "lift": 0.5400350672121565
+     },
+     {
+      "c": "Izabela Anholett",
+      "n": 23,
+      "lift": 0.5054347826086957
+     },
+     {
+      "c": "Dilson Peres",
+      "n": 22,
+      "lift": 0.34869240348692404
+     }
+    ]
+   },
+   "outros": [
+    {
+     "desfecho": "ret_final",
+     "nome": "foi aí que / foi quando",
+     "leitura": "sem evidência",
+     "n": 205,
+     "roteiros": 205,
+     "clientes": 16,
+     "p": 0.254,
+     "p_sem": 0.26,
+     "lift": 0.98,
+     "ic": [
+      0.77,
+      1.23
+     ],
+     "or_mh": 0.95,
+     "or_ic": [
+      0.65,
+      1.37
+     ],
+     "desc": 0.99,
+     "val": 1.05,
+     "n_desc": 116,
+     "n_val": 89,
+     "plat": {
+      "Instagram": {
+       "n": 205,
+       "lift": 0.98,
+       "lb": 0.77,
+       "ub": 1.23
+      }
+     }
+    },
+    {
+     "desfecho": "acerto",
+     "nome": "foi aí que / foi quando",
+     "leitura": "atrapalha (replica)",
+     "n": 915,
+     "roteiros": 408,
+     "clientes": 27,
+     "p": 0.341,
+     "p_sem": 0.399,
+     "lift": 0.87,
+     "ic": [
+      0.8,
+      0.95
+     ],
+     "or_mh": 0.84,
+     "or_ic": [
+      0.72,
+      0.99
+     ],
+     "desc": 0.9,
+     "val": 0.85,
+     "n_desc": 418,
+     "n_val": 497,
+     "plat": {
+      "Instagram": {
+       "n": 408,
+       "lift": 0.87,
+       "lb": 0.75,
+       "ub": 0.99
+      },
+      "TikTok": {
+       "n": 257,
+       "lift": 0.88,
+       "lb": 0.74,
+       "ub": 1.03
+      }
+     }
+    },
+    {
+     "desfecho": "comentarios",
+     "nome": "foi aí que / foi quando",
+     "leitura": "atrapalha (replica)",
+     "n": 915,
+     "roteiros": 408,
+     "clientes": 27,
+     "p": 0.204,
+     "p_sem": 0.26,
+     "lift": 0.81,
+     "ic": [
+      0.71,
+      0.92
+     ],
+     "or_mh": 0.72,
+     "or_ic": [
+      0.6,
+      0.87
+     ],
+     "desc": 0.78,
+     "val": 0.83,
+     "n_desc": 418,
+     "n_val": 497,
+     "plat": {
+      "Instagram": {
+       "n": 408,
+       "lift": 0.8,
+       "lb": 0.66,
+       "ub": 0.97
+      },
+      "TikTok": {
+       "n": 257,
+       "lift": 0.82,
+       "lb": 0.65,
+       "ub": 1.04
+      }
+     }
+    }
+   ],
+   "exemplos": [
+    {
+     "texto": "Foi aí que ele lembrou do filme: “O Menino Que Descobriu o Vento.”",
+     "cliente": "Rafael Rodrigues",
+     "plataforma": "YouTube",
+     "coef": 866.71,
+     "views": 1080789,
+     "link": "https://www.youtube.com/shorts/pdWWbMISqqI"
+    },
+    {
+     "texto": "E foi então que eles bolaram uma estratégia arriscada para lucrar de verdade.",
+     "cliente": "Cadu Neiva",
+     "plataforma": "Instagram",
+     "coef": 740.22,
+     "views": 2532646,
+     "link": "https://www.instagram.com/reel/DWuSVeFEdwk"
+    },
+    {
+     "texto": "Mas quando tudo parecia ir bem, foi aí que veio o golpe.",
+     "cliente": "João Paulo Albuquerque",
+     "plataforma": "TikTok",
+     "coef": 441.8,
+     "views": 289823,
+     "link": "https://www.tiktok.com/@jp_albuquerque_/video/7656832526211730704"
+    }
+   ],
+   "contraexemplo": [
+    {
+     "texto": "Foi aí que ele teve uma ideia: criar uma padaria drive-thru.",
+     "cliente": "Rodrigo Waughan",
+     "plataforma": "TikTok",
+     "coef": 0.01,
+     "views": 8,
+     "link": "https://www.tiktok.com/@.rodrigowaughan/video/7651169548019797255"
+    }
+   ]
+  },
+  {
+   "nome": "nomes próprios >=6,8 por 100",
+   "coef": {
+    "nome": "nomes próprios >=6,8 por 100",
+    "desfecho": "coef",
+    "leitura": "ajuda (replica)",
+    "n": 1620,
+    "roteiros": 673,
+    "clientes": 27,
+    "p": 0.289,
+    "p_sem": 0.247,
+    "lift": 1.12,
+    "ic": [
+     1.04,
+     1.21
+    ],
+    "or_mh": 1.26,
+    "or_ic": [
+     1.11,
+     1.44
+    ],
+    "desc": 1.11,
+    "val": 1.13,
+    "n_desc": 824,
+    "n_val": 796,
+    "plat": {
+     "Instagram": {
+      "n": 670,
+      "lift": 1.13,
+      "lb": 1,
+      "ub": 1.27
+     },
+     "TikTok": {
+      "n": 469,
+      "lift": 1.15,
+      "lb": 0.99,
+      "ub": 1.31
+     },
+     "YouTube": {
+      "n": 481,
+      "lift": 1.08,
+      "lb": 0.93,
+      "ub": 1.24
+     }
+    }
+   },
+   "estrito": {
+    "or": 1.2040808102252467,
+    "lo": 1.0381664808869873,
+    "hi": 1.3965106986636666,
+    "leitura": "ajuda (replica)"
+   },
+   "plats": {
+    "Instagram": {
+     "lift": 1.1326457026725814,
+     "n": 670,
+     "or": 1.3267105570039381,
+     "lo": 1.0727077987327127,
+     "hi": 1.6408577472310149,
+     "d": 1.1126010082289273,
+     "v": 1.1516998711467936
+    },
+    "TikTok": {
+     "lift": 1.1466018123667376,
+     "n": 469,
+     "or": 1.3103726455306577,
+     "lo": 1.0219138427709584,
+     "hi": 1.6802556128402137,
+     "d": 1.205754781420765,
+     "v": 1.0792592592592594
+    },
+    "YouTube": {
+     "lift": 1.0793710793710793,
+     "n": 481,
+     "or": 1.1342951551980767,
+     "lo": 0.8772164294757294,
+     "hi": 1.4667138643023179,
+     "d": 1.026934523809524,
+     "v": 1.1373578818993668
+    }
+   },
+   "macro": [
+    {
+     "grupo": "Dinheiro, economia e geopolítica",
+     "n": 293,
+     "lift": 1.3065484535285072,
+     "or": 1.6791219445226737,
+     "lo": 1.26295863082294,
+     "hi": 2.232417147931805
+    },
+    {
+     "grupo": "Negócios, marcas e cases",
+     "n": 756,
+     "lift": 1.1673637415824916,
+     "or": 1.406859786572479,
+     "lo": 1.1533668873779415,
+     "hi": 1.7160666573100503
+    },
+    {
+     "grupo": "Tecnologia, IA e inovação",
+     "n": 562,
+     "lift": 0.9590844741148662,
+     "or": 0.9303086421693704,
+     "lo": 0.7417605641706194,
+     "hi": 1.1667837459958867
+    }
+   ],
+   "clientes": {
+    "n": 21,
+    "lift_maior_1": 14,
+    "lista": [
+     {
+      "c": "Renato Mendes",
+      "n": 51,
+      "lift": 1.760971055088702
+     },
+     {
+      "c": "Túlio Lichenstein",
+      "n": 21,
+      "lift": 1.6451612903225805
+     },
+     {
+      "c": "Ricardo Schumacher",
+      "n": 22,
+      "lift": 1.604895104895105
+     },
+     {
+      "c": "Pedro Elero",
+      "n": 64,
+      "lift": 1.5
+     },
+     {
+      "c": "Fernando Pereira",
+      "n": 98,
+      "lift": 1.394736842105263
+     },
+     {
+      "c": "Marcos Pelozato",
+      "n": 28,
+      "lift": 1.3905775075987843
+     },
+     {
+      "c": "Rodrigo Waughan",
+      "n": 66,
+      "lift": 1.3305785123966942
+     },
+     {
+      "c": "Dilson Peres",
+      "n": 81,
+      "lift": 1.3258921021478098
+     },
+     {
+      "c": "Marcio Grazino",
+      "n": 60,
+      "lift": 1.2920353982300883
+     },
+     {
+      "c": "Drielle Castelani",
+      "n": 17,
+      "lift": 1.1480075901328275
+     },
+     {
+      "c": "Leonardo Cirino",
+      "n": 24,
+      "lift": 1.138440860215054
+     },
+     {
+      "c": "Thiago Franco",
+      "n": 131,
+      "lift": 1.1238248292486943
+     },
+     {
+      "c": "Franklin Tomich",
+      "n": 146,
+      "lift": 1.1192208904109588
+     },
+     {
+      "c": "Manoel Victor",
+      "n": 56,
+      "lift": 1.11864406779661
+     },
+     {
+      "c": "Lincoln Fracari",
+      "n": 71,
+      "lift": 0.9829503335804298
+     },
+     {
+      "c": "Izabela Anholett",
+      "n": 177,
+      "lift": 0.9632768361581922
+     },
+     {
+      "c": "Rafael Rodrigues",
+      "n": 245,
+      "lift": 0.8639455782312925
+     },
+     {
+      "c": "Cadu Neiva",
+      "n": 119,
+      "lift": 0.8580595874713521
+     },
+     {
+      "c": "Leonardo Nogueira",
+      "n": 41,
+      "lift": 0.8522238163558107
+     },
+     {
+      "c": "João Paulo Albuquerque",
+      "n": 31,
+      "lift": 0.7695852534562212
+     },
+     {
+      "c": "Marcelo Germano",
+      "n": 28,
+      "lift": 0.663919413919414
+     }
+    ]
+   },
+   "outros": [
+    {
+     "desfecho": "ret_final",
+     "nome": "nomes próprios >=6,8 por 100",
+     "leitura": "sem evidência",
+     "n": 346,
+     "roteiros": 346,
+     "clientes": 17,
+     "p": 0.269,
+     "p_sem": 0.255,
+     "lift": 1.04,
+     "ic": [
+      0.87,
+      1.23
+     ],
+     "or_mh": 1.12,
+     "or_ic": [
+      0.82,
+      1.51
+     ],
+     "desc": 0.89,
+     "val": 1.5,
+     "n_desc": 244,
+     "n_val": 102,
+     "plat": {
+      "Instagram": {
+       "n": 346,
+       "lift": 1.04,
+       "lb": 0.87,
+       "ub": 1.23
+      }
+     }
+    },
+    {
+     "desfecho": "acerto",
+     "nome": "nomes próprios >=6,8 por 100",
+     "leitura": "ajuda (replica)",
+     "n": 1620,
+     "roteiros": 673,
+     "clientes": 27,
+     "p": 0.419,
+     "p_sem": 0.381,
+     "lift": 1.07,
+     "ic": [
+      1.01,
+      1.13
+     ],
+     "or_mh": 1.18,
+     "or_ic": [
+      1.03,
+      1.34
+     ],
+     "desc": 1.06,
+     "val": 1.08,
+     "n_desc": 824,
+     "n_val": 796,
+     "plat": {
+      "Instagram": {
+       "n": 670,
+       "lift": 1.13,
+       "lb": 1.03,
+       "ub": 1.23
+      },
+      "TikTok": {
+       "n": 469,
+       "lift": 1.09,
+       "lb": 0.99,
+       "ub": 1.21
+      }
+     }
+    },
+    {
+     "desfecho": "comentarios",
+     "nome": "nomes próprios >=6,8 por 100",
+     "leitura": "sem evidência",
+     "n": 1620,
+     "roteiros": 673,
+     "clientes": 27,
+     "p": 0.272,
+     "p_sem": 0.245,
+     "lift": 1.08,
+     "ic": [
+      1,
+      1.17
+     ],
+     "or_mh": 1.16,
+     "or_ic": [
+      1.02,
+      1.34
+     ],
+     "desc": 1.14,
+     "val": 1.03,
+     "n_desc": 824,
+     "n_val": 796,
+     "plat": {
+      "Instagram": {
+       "n": 670,
+       "lift": 1.12,
+       "lb": 0.99,
+       "ub": 1.26
+      },
+      "TikTok": {
+       "n": 469,
+       "lift": 1.05,
+       "lb": 0.9,
+       "ub": 1.21
+      }
+     }
+    }
+   ],
+   "exemplos": [
+    {
+     "texto": "Mas pra quem acha que o sumiço do Bompreço foi um erro, na verdade foi uma grande estratégia.\nA família Paes Mendonça percebeu algo que ninguém viu: vender comida é um negócio exaustivo e de margem pequena.\nE foi então que eles bolaram uma estratégia arriscada para lucrar de verdade.\nEles decidiram ",
+     "cliente": "Cadu Neiva",
+     "plataforma": "Instagram",
+     "coef": 740.22,
+     "views": 2532646,
+     "link": "https://www.instagram.com/reel/DWuSVeFEdwk"
+    },
+    {
+     "texto": "Por outro lado, outra certeza existe.\nEm carro japonês você sempre pode confiar!\nE assim o Corolla dominou o Brasil durante anos.\nSó que em agosto de 2026 esse reinado caiu.\nO BYD King emplacou 1.433 unidades e ficou com 42,6% do segmento, enquanto o Corolla vendeu apenas 855 carros e ficou com 25,4",
+     "cliente": "Renato Mendes",
+     "plataforma": "TikTok",
+     "coef": 482.9,
+     "views": 558951,
+     "link": "https://www.tiktok.com/@renatofmendes79/video/7684211577305746708"
+    },
+    {
+     "texto": "Desde cedo, ela se destacou ao fazer o que nenhuma concorrente queria fazer: vender a qualidade das marcas premium por um preço que qualquer família podia pagar.\nE, quando chegou às prateleiras das grandes lojas no Brasil nos anos 90, os preços irresistíveis e o design chamativo transformaram a marc",
+     "cliente": "João Paulo Albuquerque",
+     "plataforma": "TikTok",
+     "coef": 384.31,
+     "views": 177553,
+     "link": "https://www.tiktok.com/@jp_albuquerque_/video/7663512188782415111"
+    }
+   ],
+   "contraexemplo": [
+    {
+     "texto": "Todo ano, o Luciano Hang anuncia o pagamento do PPR, o Programa de Participação nos Resultados, para toda a rede da Havan. Em 2025, foram R$90 milhões distribuídos entre 23 mil funcionários, uma média de R$4 mil por pessoa.\nSó que aí que vem o truque: Pela legislação brasileira, esse pagamento não é",
+     "cliente": "Dilson Peres",
+     "plataforma": "TikTok",
+     "coef": 0,
+     "views": 78,
+     "link": "https://www.tiktok.com/@doutortax/video/7628379674376293640"
+    }
+   ]
+  },
+  {
+   "nome": "exatamente 1 ano citado",
+   "coef": {
+    "nome": "exatamente 1 ano citado",
+    "desfecho": "coef",
+    "leitura": "ajuda (replica)",
+    "n": 1351,
+    "roteiros": 580,
+    "clientes": 28,
+    "p": 0.286,
+    "p_sem": 0.25,
+    "lift": 1.11,
+    "ic": [
+     1.02,
+     1.21
+    ],
+    "or_mh": 1.21,
+    "or_ic": [
+     1.05,
+     1.38
+    ],
+    "desc": 1.14,
+    "val": 1.08,
+    "n_desc": 680,
+    "n_val": 671,
+    "plat": {
+     "Instagram": {
+      "n": 572,
+      "lift": 1.12,
+      "lb": 0.98,
+      "ub": 1.27
+     },
+     "TikTok": {
+      "n": 410,
+      "lift": 1.1,
+      "lb": 0.94,
+      "ub": 1.28
+     },
+     "YouTube": {
+      "n": 369,
+      "lift": 1.1,
+      "lb": 0.93,
+      "ub": 1.29
+     }
+    }
+   },
+   "estrito": {
+    "or": 1.1761577498572224,
+    "lo": 1.009481711540889,
+    "hi": 1.370353753549078,
+    "leitura": "ajuda (replica)"
+   },
+   "plats": {
+    "Instagram": {
+     "lift": 1.122592634305665,
+     "n": 572,
+     "or": 1.2206858819151263,
+     "lo": 0.9828033187892151,
+     "hi": 1.5161467140166327,
+     "d": 1.0853650649938564,
+     "v": 1.1584745762711866
+    },
+    "TikTok": {
+     "lift": 1.1040091463414634,
+     "n": 410,
+     "or": 1.2368312023339212,
+     "lo": 0.9548671981379016,
+     "hi": 1.6020567321298296,
+     "d": 1.1389022435897436,
+     "v": 1.0664191419141915
+    },
+    "YouTube": {
+     "lift": 1.1024882976102488,
+     "n": 369,
+     "or": 1.250282423814776,
+     "lo": 0.9541139779581316,
+     "hi": 1.638385114790497,
+     "d": 1.2197368421052632,
+     "v": 0.9772761588404048
+    }
+   },
+   "macro": [
+    {
+     "grupo": "Tecnologia, IA e inovação",
+     "n": 499,
+     "lift": 1.2278206047130757,
+     "or": 1.4712623627933694,
+     "lo": 1.1794375066434368,
+     "hi": 1.835292610231299
+    },
+    {
+     "grupo": "Dinheiro, economia e geopolítica",
+     "n": 319,
+     "lift": 1.0667187652632606,
+     "or": 1.1243737536072889,
+     "lo": 0.847592806745801,
+     "hi": 1.4915373605572513
+    },
+    {
+     "grupo": "Negócios, marcas e cases",
+     "n": 516,
+     "lift": 1.0397562103594078,
+     "or": 1.0635799555666858,
+     "lo": 0.854577735817815,
+     "hi": 1.3236973940126042
+    }
+   ],
+   "clientes": {
+    "n": 25,
+    "lift_maior_1": 13,
+    "lista": [
+     {
+      "c": "Leonardo Nogueira",
+      "n": 38,
+      "lift": 1.4303405572755417
+     },
+     {
+      "c": "Izabela Anholett",
+      "n": 106,
+      "lift": 1.4257075471698113
+     },
+     {
+      "c": "Renato Torres",
+      "n": 15,
+      "lift": 1.259259259259259
+     },
+     {
+      "c": "Rodrigo Waughan",
+      "n": 91,
+      "lift": 1.2587412587412588
+     },
+     {
+      "c": "Ricardo Schumacher",
+      "n": 25,
+      "lift": 1.2553846153846155
+     },
+     {
+      "c": "Rafael Rodrigues",
+      "n": 168,
+      "lift": 1.1899250440917106
+     },
+     {
+      "c": "Fernando Pereira",
+      "n": 89,
+      "lift": 1.184742755765819
+     },
+     {
+      "c": "Renato Mendes",
+      "n": 33,
+      "lift": 1.1832611832611832
+     },
+     {
+      "c": "Leonardo Cirino",
+      "n": 33,
+      "lift": 1.1827956989247312
+     },
+     {
+      "c": "Marcio Grazino",
+      "n": 118,
+      "lift": 1.1825408729563522
+     },
+     {
+      "c": "Dilson Peres",
+      "n": 50,
+      "lift": 1.1506849315068493
+     },
+     {
+      "c": "Marcelo Germano",
+      "n": 36,
+      "lift": 1.1360398860398861
+     },
+     {
+      "c": "Drielle Castelani",
+      "n": 25,
+      "lift": 1.0929032258064517
+     },
+     {
+      "c": "Lincoln Fracari",
+      "n": 101,
+      "lift": 0.9980892826124717
+     },
+     {
+      "c": "João Felipe Marques",
+      "n": 16,
+      "lift": 0.9558823529411764
+     },
+     {
+      "c": "Manoel Victor",
+      "n": 34,
+      "lift": 0.9212362911266201
+     },
+     {
+      "c": "Túlio Lichenstein",
+      "n": 38,
+      "lift": 0.9091680814940576
+     },
+     {
+      "c": "Marcos Pelozato",
+      "n": 69,
+      "lift": 0.9028677150786308
+     },
+     {
+      "c": "Pedro Elero",
+      "n": 32,
+      "lift": 0.875
+     },
+     {
+      "c": "Cadu Neiva",
+      "n": 48,
+      "lift": 0.8666666666666666
+     },
+     {
+      "c": "Thiago Franco",
+      "n": 94,
+      "lift": 0.8465845464725643
+     },
+     {
+      "c": "João Paulo Albuquerque",
+      "n": 19,
+      "lift": 0.8370927318295739
+     },
+     {
+      "c": "Patrick Diorio",
+      "n": 17,
+      "lift": 0.6882352941176472
+     },
+     {
+      "c": "Café com Ferri",
+      "n": 16,
+      "lift": 0.6830357142857142
+     },
+     {
+      "c": "Thiago Bisewski",
+      "n": 18,
+      "lift": 0.5833333333333334
+     }
+    ]
+   },
+   "outros": [
+    {
+     "desfecho": "ret_final",
+     "nome": "exatamente 1 ano citado",
+     "leitura": "sem evidência",
+     "n": 276,
+     "roteiros": 276,
+     "clientes": 17,
+     "p": 0.236,
+     "p_sem": 0.265,
+     "lift": 0.91,
+     "ic": [
+      0.73,
+      1.12
+     ],
+     "or_mh": 0.88,
+     "or_ic": [
+      0.63,
+      1.21
+     ],
+     "desc": 0.91,
+     "val": 0.95,
+     "n_desc": 177,
+     "n_val": 99,
+     "plat": {
+      "Instagram": {
+       "n": 276,
+       "lift": 0.91,
+       "lb": 0.73,
+       "ub": 1.12
+      }
+     }
+    },
+    {
+     "desfecho": "acerto",
+     "nome": "exatamente 1 ano citado",
+     "leitura": "sem evidência",
+     "n": 1351,
+     "roteiros": 580,
+     "clientes": 28,
+     "p": 0.41,
+     "p_sem": 0.386,
+     "lift": 1.05,
+     "ic": [
+      0.98,
+      1.12
+     ],
+     "or_mh": 1.16,
+     "or_ic": [
+      1.02,
+      1.33
+     ],
+     "desc": 1.01,
+     "val": 1.09,
+     "n_desc": 680,
+     "n_val": 671,
+     "plat": {
+      "Instagram": {
+       "n": 572,
+       "lift": 1.08,
+       "lb": 0.98,
+       "ub": 1.19
+      },
+      "TikTok": {
+       "n": 410,
+       "lift": 1.04,
+       "lb": 0.93,
+       "ub": 1.16
+      }
+     }
+    },
+    {
+     "desfecho": "comentarios",
+     "nome": "exatamente 1 ano citado",
+     "leitura": "sem evidência",
+     "n": 1351,
+     "roteiros": 580,
+     "clientes": 28,
+     "p": 0.255,
+     "p_sem": 0.251,
+     "lift": 1.01,
+     "ic": [
+      0.92,
+      1.11
+     ],
+     "or_mh": 1.02,
+     "or_ic": [
+      0.89,
+      1.18
+     ],
+     "desc": 0.99,
+     "val": 1.04,
+     "n_desc": 680,
+     "n_val": 671,
+     "plat": {
+      "Instagram": {
+       "n": 572,
+       "lift": 1.04,
+       "lb": 0.91,
+       "ub": 1.19
+      },
+      "TikTok": {
+       "n": 410,
+       "lift": 1.02,
+       "lb": 0.87,
+       "ub": 1.2
+      }
+     }
+    }
+   ],
+   "exemplos": [
+    {
+     "texto": "Em 2022, o Colégio Santa Maria, uma instituição referência na capital pernambucana, desafiou os seus alunos a criarem um projeto com impacto social.",
+     "cliente": "Rafael Rodrigues",
+     "plataforma": "YouTube",
+     "coef": 866.71,
+     "views": 1080789,
+     "link": "https://www.youtube.com/shorts/pdWWbMISqqI"
+    },
+    {
+     "texto": "Em 2013, ele comprou um Toyota Etios 1.5 manual em Brasília.",
+     "cliente": "Leonardo Nogueira",
+     "plataforma": "Instagram",
+     "coef": 438.27,
+     "views": 6189736,
+     "link": "https://www.instagram.com/reel/DYo3ldvOFHW"
+    },
+    {
+     "texto": "Só que agora, em fevereiro de 2026, a Changan, uma das maiores montadoras da China, anunciou o Nevo A06, o primeiro carro fabricado em escala comercial com bateria de sódio.",
+     "cliente": "Leonardo Nogueira",
+     "plataforma": "YouTube",
+     "coef": 358.63,
+     "views": 379427,
+     "link": "https://www.youtube.com/shorts/Rf-MsjU70_0"
+    }
+   ],
+   "contraexemplo": [
+    {
+     "texto": "Em 2025, foram R$90 milhões distribuídos entre 23 mil funcionários, uma média de R$4 mil por pessoa.",
+     "cliente": "Dilson Peres",
+     "plataforma": "TikTok",
+     "coef": 0,
+     "views": 78,
+     "link": "https://www.tiktok.com/@doutortax/video/7628379674376293640"
+    }
+   ]
+  },
+  {
+   "nome": "pergunta no corpo",
+   "coef": {
+    "nome": "pergunta no corpo",
+    "desfecho": "coef",
+    "leitura": "ajuda (replica)",
+    "n": 1547,
+    "roteiros": 658,
+    "clientes": 28,
+    "p": 0.281,
+    "p_sem": 0.25,
+    "lift": 1.09,
+    "ic": [
+     1,
+     1.18
+    ],
+    "or_mh": 1.17,
+    "or_ic": [
+     1.03,
+     1.33
+    ],
+    "desc": 1.1,
+    "val": 1.08,
+    "n_desc": 905,
+    "n_val": 642,
+    "plat": {
+     "Instagram": {
+      "n": 646,
+      "lift": 1.12,
+      "lb": 0.99,
+      "ub": 1.26
+     },
+     "TikTok": {
+      "n": 470,
+      "lift": 1.05,
+      "lb": 0.9,
+      "ub": 1.21
+     },
+     "YouTube": {
+      "n": 431,
+      "lift": 1.09,
+      "lb": 0.93,
+      "ub": 1.26
+     }
+    }
+   },
+   "estrito": {
+    "or": 1.2125190547852311,
+    "lo": 1.0448567330138876,
+    "hi": 1.4070852125118374,
+    "leitura": "ajuda (replica)"
+   },
+   "plats": {
+    "Instagram": {
+     "lift": 1.12050732291067,
+     "n": 646,
+     "or": 1.199787183871808,
+     "lo": 0.9751315823967469,
+     "hi": 1.4762000457876314,
+     "d": 1.1598599472703155,
+     "v": 1.0741724357444102
+    },
+    "TikTok": {
+     "lift": 1.0453856382978723,
+     "n": 470,
+     "or": 1.1125094296601452,
+     "lo": 0.8688366202317709,
+     "hi": 1.4245224041691276,
+     "d": 1.0621089049338146,
+     "v": 1.0146804835924006
+    },
+    "YouTube": {
+     "lift": 1.087725113247155,
+     "n": 431,
+     "or": 1.105610334937227,
+     "lo": 0.8561492480981081,
+     "hi": 1.4277583206846813,
+     "d": 1.0454887218045112,
+     "v": 1.1544362544362545
+    }
+   },
+   "macro": [
+    {
+     "grupo": "Negócios, marcas e cases",
+     "n": 639,
+     "lift": 1.1559921397069284,
+     "or": 1.314214594527353,
+     "lo": 1.0772264021381888,
+     "hi": 1.603339833706685
+    },
+    {
+     "grupo": "Dinheiro, economia e geopolítica",
+     "n": 368,
+     "lift": 1.0928069959354598,
+     "or": 1.1803885972711532,
+     "lo": 0.9033086137363419,
+     "hi": 1.5424598186931966
+    },
+    {
+     "grupo": "Tecnologia, IA e inovação",
+     "n": 516,
+     "lift": 1.0145242743167546,
+     "or": 1.0237286608731453,
+     "lo": 0.8162800482900425,
+     "hi": 1.2838980608291657
+    },
+    {
+     "grupo": "Entretenimento",
+     "n": 24,
+     "lift": 0.8125000000000001,
+     "or": 0.6842105263157895,
+     "lo": 0.21639980658563782,
+     "hi": 2.1633293102601128
+    }
+   ],
+   "clientes": {
+    "n": 26,
+    "lift_maior_1": 18,
+    "lista": [
+     {
+      "c": "Túlio Lichenstein",
+      "n": 23,
+      "lift": 1.6690042075736324
+     },
+     {
+      "c": "Cadu Neiva",
+      "n": 22,
+      "lift": 1.547107438016529
+     },
+     {
+      "c": "Marcos Pelozato",
+      "n": 66,
+      "lift": 1.4158607350096712
+     },
+     {
+      "c": "Drielle Castelani",
+      "n": 32,
+      "lift": 1.341733870967742
+     },
+     {
+      "c": "Renato Torres",
+      "n": 20,
+      "lift": 1.3222222222222222
+     },
+     {
+      "c": "Marcio Grazino",
+      "n": 78,
+      "lift": 1.2423417290673928
+     },
+     {
+      "c": "João Paulo Albuquerque",
+      "n": 26,
+      "lift": 1.2234432234432235
+     },
+     {
+      "c": "Lincoln Fracari",
+      "n": 105,
+      "lift": 1.2185463659147868
+     },
+     {
+      "c": "Renato Mendes",
+      "n": 29,
+      "lift": 1.2118226600985222
+     },
+     {
+      "c": "Thiago Franco",
+      "n": 112,
+      "lift": 1.2078947368421051
+     },
+     {
+      "c": "João Felipe Marques",
+      "n": 16,
+      "lift": 1.1948529411764706
+     },
+     {
+      "c": "Franklin Tomich",
+      "n": 40,
+      "lift": 1.1671875
+     },
+     {
+      "c": "Rafael Rodrigues",
+      "n": 133,
+      "lift": 1.0904576255453446
+     },
+     {
+      "c": "Rodrigo Waughan",
+      "n": 117,
+      "lift": 1.0769230769230769
+     },
+     {
+      "c": "Marcelo Germano",
+      "n": 38,
+      "lift": 1.0762483130904186
+     },
+     {
+      "c": "Fernando Pereira",
+      "n": 117,
+      "lift": 1.0681061628430049
+     },
+     {
+      "c": "Izabela Anholett",
+      "n": 194,
+      "lift": 1.0586340206185567
+     },
+     {
+      "c": "Ricardo Schumacher",
+      "n": 19,
+      "lift": 1.0323886639676114
+     },
+     {
+      "c": "Dilson Peres",
+      "n": 85,
+      "lift": 0.9927477840451249
+     },
+     {
+      "c": "Pedro Elero",
+      "n": 45,
+      "lift": 0.9777777777777777
+     },
+     {
+      "c": "Leonardo Cirino",
+      "n": 16,
+      "lift": 0.9758064516129034
+     },
+     {
+      "c": "Manoel Victor",
+      "n": 79,
+      "lift": 0.8425230637202317
+     },
+     {
+      "c": "Patrick Diorio",
+      "n": 24,
+      "lift": 0.8125000000000001
+     },
+     {
+      "c": "Leonardo Nogueira",
+      "n": 50,
+      "lift": 0.6211764705882353
+     },
+     {
+      "c": "Café com Ferri",
+      "n": 19,
+      "lift": 0.3834586466165413
+     },
+     {
+      "c": "Thiago Bisewski",
+      "n": 21,
+      "lift": 0.16666666666666666
+     }
+    ]
+   },
+   "outros": [
+    {
+     "desfecho": "ret_final",
+     "nome": "pergunta no corpo",
+     "leitura": "sem evidência",
+     "n": 360,
+     "roteiros": 360,
+     "clientes": 17,
+     "p": 0.283,
+     "p_sem": 0.25,
+     "lift": 1.09,
+     "ic": [
+      0.92,
+      1.28
+     ],
+     "or_mh": 1.11,
+     "or_ic": [
+      0.83,
+      1.49
+     ],
+     "desc": 1.13,
+     "val": 0.89,
+     "n_desc": 260,
+     "n_val": 100,
+     "plat": {
+      "Instagram": {
+       "n": 360,
+       "lift": 1.09,
+       "lb": 0.92,
+       "ub": 1.28
+      }
+     }
+    },
+    {
+     "desfecho": "acerto",
+     "nome": "pergunta no corpo",
+     "leitura": "sem evidência",
+     "n": 1547,
+     "roteiros": 658,
+     "clientes": 28,
+     "p": 0.399,
+     "p_sem": 0.388,
+     "lift": 1.02,
+     "ic": [
+      0.96,
+      1.09
+     ],
+     "or_mh": 1.09,
+     "or_ic": [
+      0.96,
+      1.24
+     ],
+     "desc": 1,
+     "val": 1.03,
+     "n_desc": 905,
+     "n_val": 642,
+     "plat": {
+      "Instagram": {
+       "n": 646,
+       "lift": 1.03,
+       "lb": 0.93,
+       "ub": 1.13
+      },
+      "TikTok": {
+       "n": 470,
+       "lift": 0.95,
+       "lb": 0.85,
+       "ub": 1.06
+      }
+     }
+    },
+    {
+     "desfecho": "comentarios",
+     "nome": "pergunta no corpo",
+     "leitura": "ajuda (replica)",
+     "n": 1547,
+     "roteiros": 658,
+     "clientes": 28,
+     "p": 0.276,
+     "p_sem": 0.244,
+     "lift": 1.1,
+     "ic": [
+      1.01,
+      1.19
+     ],
+     "or_mh": 1.23,
+     "or_ic": [
+      1.07,
+      1.41
+     ],
+     "desc": 1.11,
+     "val": 1.11,
+     "n_desc": 905,
+     "n_val": 642,
+     "plat": {
+      "Instagram": {
+       "n": 646,
+       "lift": 1.09,
+       "lb": 0.96,
+       "ub": 1.23
+      },
+      "TikTok": {
+       "n": 470,
+       "lift": 1.09,
+       "lb": 0.93,
+       "ub": 1.25
+      }
+     }
+    }
+   ],
+   "exemplos": [
+    {
+     "texto": "Como é que uma das maiores varejistas do país chega nesse ponto?",
+     "cliente": "Marcos Pelozato",
+     "plataforma": "TikTok",
+     "coef": 1356.26,
+     "views": 899200,
+     "link": "https://www.tiktok.com/@marcospelozato/video/7674077995404922130"
+    },
+    {
+     "texto": "Sabe aquele uniforme lendário do penta em 2002?",
+     "cliente": "Rafael Rodrigues",
+     "plataforma": "TikTok",
+     "coef": 630.14,
+     "views": 490248,
+     "link": "https://www.tiktok.com/@rafaelrodriguesluiz/video/7622445343443029255"
+    },
+    {
+     "texto": "“Por que não criar algo que ajude pessoas cegas a detectar obstáculos?”",
+     "cliente": "Rafael Rodrigues",
+     "plataforma": "Instagram",
+     "coef": 438.39,
+     "views": 1081942,
+     "link": "https://www.instagram.com/reel/DWKJvC7Dz8-"
+    }
+   ],
+   "contraexemplo": [
+    {
+     "texto": "Por que?",
+     "cliente": "Marcio Grazino",
+     "plataforma": "YouTube",
+     "coef": 0.01,
+     "views": 2973,
+     "link": "https://www.youtube.com/shorts/nHjQ7aoIZuw"
+    }
+   ]
+  },
+  {
+   "nome": "'anos/meses depois'",
+   "coef": {
+    "nome": "'anos/meses depois'",
+    "desfecho": "coef",
+    "leitura": "sem evidência",
+    "n": 829,
+    "roteiros": 370,
+    "clientes": 27,
+    "p": 0.246,
+    "p_sem": 0.259,
+    "lift": 0.95,
+    "ic": [
+     0.85,
+     1.07
+    ],
+    "or_mh": 0.93,
+    "or_ic": [
+     0.78,
+     1.1
+    ],
+    "desc": 0.9,
+    "val": 0.99,
+    "n_desc": 327,
+    "n_val": 502,
+    "plat": {
+     "Instagram": {
+      "n": 367,
+      "lift": 0.88,
+      "lb": 0.73,
+      "ub": 1.06
+     },
+     "TikTok": {
+      "n": 231,
+      "lift": 1.06,
+      "lb": 0.85,
+      "ub": 1.29
+     },
+     "YouTube": {
+      "n": 231,
+      "lift": 0.97,
+      "lb": 0.77,
+      "ub": 1.2
+     }
+    }
+   },
+   "estrito": {
+    "or": 0.951549087508971,
+    "lo": 0.781855363863059,
+    "hi": 1.1580731012261025,
+    "leitura": "sem evidência"
+   },
+   "plats": {
+    "Instagram": {
+     "lift": 0.8801289390850591,
+     "n": 367,
+     "or": 0.7886002846355029,
+     "lo": 0.5935190482311324,
+     "hi": 1.0478019379169363,
+     "d": 0.7423806785508914,
+     "v": 0.9698036787658334
+    },
+    "TikTok": {
+     "lift": 1.0551136363636362,
+     "n": 231,
+     "or": 1.097354258773843,
+     "lo": 0.7812783016371785,
+     "hi": 1.5413027172592693,
+     "d": 1.0076923076923077,
+     "v": 1.0910714285714287
+    },
+    "YouTube": {
+     "lift": 0.972807855924739,
+     "n": 231,
+     "or": 0.8231465308763011,
+     "lo": 0.5848992562426552,
+     "hi": 1.1584391740320286,
+     "d": 1.053409090909091,
+     "v": 0.9242739242739243
+    }
+   },
+   "macro": [
+    {
+     "grupo": "Dinheiro, economia e geopolítica",
+     "n": 119,
+     "lift": 1.1048158640226626,
+     "or": 1.170699615638105,
+     "lo": 0.767409491223512,
+     "hi": 1.7859273383107412
+    },
+    {
+     "grupo": "Negócios, marcas e cases",
+     "n": 521,
+     "lift": 0.9402318530797417,
+     "or": 0.8908059219153454,
+     "lo": 0.7094875599506005,
+     "hi": 1.1184624443234772
+    },
+    {
+     "grupo": "Tecnologia, IA e inovação",
+     "n": 178,
+     "lift": 0.8931866644796196,
+     "or": 0.8542542856827406,
+     "lo": 0.5929786562499547,
+     "hi": 1.230652025862668
+    }
+   ],
+   "clientes": {
+    "n": 19,
+    "lift_maior_1": 9,
+    "lista": [
+     {
+      "c": "Fernando Pereira",
+      "n": 38,
+      "lift": 1.4387811634349028
+     },
+     {
+      "c": "Rodrigo Waughan",
+      "n": 67,
+      "lift": 1.3107191316146538
+     },
+     {
+      "c": "Izabela Anholett",
+      "n": 24,
+      "lift": 1.2916666666666667
+     },
+     {
+      "c": "Túlio Lichenstein",
+      "n": 24,
+      "lift": 1.279569892473118
+     },
+     {
+      "c": "Drielle Castelani",
+      "n": 38,
+      "lift": 1.232597623089983
+     },
+     {
+      "c": "Cadu Neiva",
+      "n": 61,
+      "lift": 1.115946348733234
+     },
+     {
+      "c": "João Paulo Albuquerque",
+      "n": 40,
+      "lift": 1.093452380952381
+     },
+     {
+      "c": "Pedro Elero",
+      "n": 35,
+      "lift": 1.0285714285714285
+     },
+     {
+      "c": "Rafael Rodrigues",
+      "n": 69,
+      "lift": 1.0225442834138485
+     },
+     {
+      "c": "Franklin Tomich",
+      "n": 84,
+      "lift": 0.9263392857142857
+     },
+     {
+      "c": "Lincoln Fracari",
+      "n": 31,
+      "lift": 0.8754951895868703
+     },
+     {
+      "c": "Marcelo Germano",
+      "n": 45,
+      "lift": 0.8262108262108262
+     },
+     {
+      "c": "Marcos Pelozato",
+      "n": 60,
+      "lift": 0.7787234042553192
+     },
+     {
+      "c": "Leonardo Nogueira",
+      "n": 18,
+      "lift": 0.6470588235294118
+     },
+     {
+      "c": "Marcio Grazino",
+      "n": 58,
+      "lift": 0.6014647543484894
+     },
+     {
+      "c": "Thiago Franco",
+      "n": 34,
+      "lift": 0.5851393188854489
+     },
+     {
+      "c": "Dilson Peres",
+      "n": 16,
+      "lift": 0.4794520547945205
+     },
+     {
+      "c": "Thainá Iansen",
+      "n": 18,
+      "lift": 0.4305555555555555
+     },
+     {
+      "c": "Manoel Victor",
+      "n": 16,
+      "lift": 0.24470338983050846
+     }
+    ]
+   },
+   "outros": [
+    {
+     "desfecho": "ret_final",
+     "nome": "'anos/meses depois'",
+     "leitura": "ajuda (replica)",
+     "n": 164,
+     "roteiros": 164,
+     "clientes": 17,
+     "p": 0.36,
+     "p_sem": 0.245,
+     "lift": 1.39,
+     "ic": [
+      1.12,
+      1.68
+     ],
+     "or_mh": 1.91,
+     "or_ic": [
+      1.3,
+      2.83
+     ],
+     "desc": 1.27,
+     "val": 1.76,
+     "n_desc": 91,
+     "n_val": 73,
+     "plat": {
+      "Instagram": {
+       "n": 164,
+       "lift": 1.39,
+       "lb": 1.12,
+       "ub": 1.68
+      }
+     }
+    },
+    {
+     "desfecho": "acerto",
+     "nome": "'anos/meses depois'",
+     "leitura": "sem evidência",
+     "n": 829,
+     "roteiros": 370,
+     "clientes": 27,
+     "p": 0.372,
+     "p_sem": 0.394,
+     "lift": 0.95,
+     "ic": [
+      0.87,
+      1.04
+     ],
+     "or_mh": 1.03,
+     "or_ic": [
+      0.87,
+      1.22
+     ],
+     "desc": 1,
+     "val": 0.93,
+     "n_desc": 327,
+     "n_val": 502,
+     "plat": {
+      "Instagram": {
+       "n": 367,
+       "lift": 0.94,
+       "lb": 0.82,
+       "ub": 1.07
+      },
+      "TikTok": {
+       "n": 231,
+       "lift": 0.98,
+       "lb": 0.83,
+       "ub": 1.14
+      }
+     }
+    },
+    {
+     "desfecho": "comentarios",
+     "nome": "'anos/meses depois'",
+     "leitura": "sem evidência",
+     "n": 829,
+     "roteiros": 370,
+     "clientes": 27,
+     "p": 0.24,
+     "p_sem": 0.254,
+     "lift": 0.95,
+     "ic": [
+      0.84,
+      1.07
+     ],
+     "or_mh": 0.95,
+     "or_ic": [
+      0.79,
+      1.14
+     ],
+     "desc": 0.83,
+     "val": 1,
+     "n_desc": 327,
+     "n_val": 502,
+     "plat": {
+      "Instagram": {
+       "n": 367,
+       "lift": 1.05,
+       "lb": 0.88,
+       "ub": 1.24
+      },
+      "TikTok": {
+       "n": 231,
+       "lift": 0.99,
+       "lb": 0.78,
+       "ub": 1.22
+      }
+     }
+    }
+   ],
+   "exemplos": [
+    {
+     "texto": "O lançamento aconteceu em 2025, dois anos depois da fundação da empresa.",
+     "cliente": "Pedro Elero",
+     "plataforma": "YouTube",
+     "coef": 1237.73,
+     "views": 1734066,
+     "link": "https://www.youtube.com/shorts/HQcSb-xdNMc"
+    },
+    {
+     "texto": "Anos depois, conseguiu emprego numa fábrica de alto-falantes em Salto, interior paulista.",
+     "cliente": "João Paulo Albuquerque",
+     "plataforma": "TikTok",
+     "coef": 441.8,
+     "views": 289823,
+     "link": "https://www.tiktok.com/@jp_albuquerque_/video/7656832526211730704"
+    },
+    {
+     "texto": "Doze anos depois, em 2020, a Sony anunciou que fecharia sua fábrica e deixaria o Brasil.",
+     "cliente": "João Paulo Albuquerque",
+     "plataforma": "TikTok",
+     "coef": 384.31,
+     "views": 177553,
+     "link": "https://www.tiktok.com/@jp_albuquerque_/video/7663512188782415111"
+    }
+   ],
+   "contraexemplo": [
+    {
+     "texto": "Anos depois, o esporte virou sua saída.",
+     "cliente": "Rodrigo Waughan",
+     "plataforma": "YouTube",
+     "coef": 0.01,
+     "views": 8,
+     "link": "https://www.youtube.com/shorts/qEFZBioW4JE"
+    }
+   ]
+  },
+  {
+   "nome": "'até que'",
+   "coef": {
+    "nome": "'até que'",
+    "desfecho": "coef",
+    "leitura": "sem evidência",
+    "n": 587,
+    "roteiros": 257,
+    "clientes": 27,
+    "p": 0.274,
+    "p_sem": 0.256,
+    "lift": 1.06,
+    "ic": [
+     0.93,
+     1.21
+    ],
+    "or_mh": 1.1,
+    "or_ic": [
+     0.9,
+     1.34
+    ],
+    "desc": 1.19,
+    "val": 0.93,
+    "n_desc": 299,
+    "n_val": 288,
+    "plat": {
+     "Instagram": {
+      "n": 256,
+      "lift": 1.11,
+      "lb": 0.91,
+      "ub": 1.34
+     },
+     "TikTok": {
+      "n": 162,
+      "lift": 0.88,
+      "lb": 0.66,
+      "ub": 1.16
+     },
+     "YouTube": {
+      "n": 169,
+      "lift": 1.17,
+      "lb": 0.92,
+      "ub": 1.45
+     }
+    }
+   },
+   "estrito": {
+    "or": 0.8420546411685713,
+    "lo": 0.6717449324865657,
+    "hi": 1.0555435321095064,
+    "leitura": "sem evidência"
+   },
+   "plats": {
+    "Instagram": {
+     "lift": 1.109729593704246,
+     "n": 256,
+     "or": 1.100179107492638,
+     "lo": 0.8059309361929584,
+     "hi": 1.5018583034930193,
+     "d": 1.1801540324976576,
+     "v": 1.0360341739010612
+    },
+    "TikTok": {
+     "lift": 0.8836033950617284,
+     "n": 162,
+     "or": 0.7440779296271891,
+     "lo": 0.4863245648355311,
+     "hi": 1.1384412908394261,
+     "d": 0.8327457264957264,
+     "v": 0.9325396825396826
+    },
+    "YouTube": {
+     "lift": 1.1692153999846306,
+     "n": 169,
+     "or": 1.1667770641727135,
+     "lo": 0.8027427628497397,
+     "hi": 1.6958965941301454,
+     "d": 1.536221590909091,
+     "v": 0.7678789901012123
+    }
+   },
+   "macro": [
+    {
+     "grupo": "Dinheiro, economia e geopolítica",
+     "n": 62,
+     "lift": 1.185004112217856,
+     "or": 1.2833178467788924,
+     "lo": 0.7371660281641452,
+     "hi": 2.234102811225174
+    },
+    {
+     "grupo": "Tecnologia, IA e inovação",
+     "n": 179,
+     "lift": 1.1264934959018067,
+     "or": 1.208129905303437,
+     "lo": 0.8558356750012995,
+     "hi": 1.7054417228941467
+    },
+    {
+     "grupo": "Negócios, marcas e cases",
+     "n": 341,
+     "lift": 1.0147002466009063,
+     "or": 1.0117229676514896,
+     "lo": 0.7745267584269679,
+     "hi": 1.3215597164808004
+    }
+   ],
+   "clientes": {
+    "n": 13,
+    "lift_maior_1": 5,
+    "lista": [
+     {
+      "c": "Franklin Tomich",
+      "n": 46,
+      "lift": 1.5224184782608698
+     },
+     {
+      "c": "Rodrigo Waughan",
+      "n": 51,
+      "lift": 1.4224598930481283
+     },
+     {
+      "c": "Lincoln Fracari",
+      "n": 24,
+      "lift": 1.2923976608187133
+     },
+     {
+      "c": "Marcio Grazino",
+      "n": 77,
+      "lift": 1.258476037237099
+     },
+     {
+      "c": "Thainá Iansen",
+      "n": 34,
+      "lift": 1.1397058823529413
+     },
+     {
+      "c": "Pedro Elero",
+      "n": 18,
+      "lift": 0.8888888888888888
+     },
+     {
+      "c": "Marcos Pelozato",
+      "n": 44,
+      "lift": 0.8849129593810444
+     },
+     {
+      "c": "Marcelo Germano",
+      "n": 43,
+      "lift": 0.8646392367322601
+     },
+     {
+      "c": "Rafael Rodrigues",
+      "n": 56,
+      "lift": 0.8399470899470898
+     },
+     {
+      "c": "Dilson Peres",
+      "n": 20,
+      "lift": 0.7671232876712328
+     },
+     {
+      "c": "Izabela Anholett",
+      "n": 18,
+      "lift": 0.6458333333333334
+     },
+     {
+      "c": "João Paulo Albuquerque",
+      "n": 25,
+      "lift": 0.47714285714285715
+     },
+     {
+      "c": "Cadu Neiva",
+      "n": 22,
+      "lift": 0.343801652892562
+     }
+    ]
+   },
+   "outros": [
+    {
+     "desfecho": "ret_final",
+     "nome": "'até que'",
+     "leitura": "ajuda (replica)",
+     "n": 117,
+     "roteiros": 117,
+     "clientes": 17,
+     "p": 0.35,
+     "p_sem": 0.25,
+     "lift": 1.35,
+     "ic": [
+      1.04,
+      1.7
+     ],
+     "or_mh": 1.76,
+     "or_ic": [
+      1.15,
+      2.69
+     ],
+     "desc": 1.25,
+     "val": 1.64,
+     "n_desc": 84,
+     "n_val": 33,
+     "plat": {
+      "Instagram": {
+       "n": 117,
+       "lift": 1.35,
+       "lb": 1.04,
+       "ub": 1.7
+      }
+     }
+    },
+    {
+     "desfecho": "acerto",
+     "nome": "'até que'",
+     "leitura": "sem evidência",
+     "n": 587,
+     "roteiros": 257,
+     "clientes": 27,
+     "p": 0.376,
+     "p_sem": 0.392,
+     "lift": 0.96,
+     "ic": [
+      0.87,
+      1.07
+     ],
+     "or_mh": 0.96,
+     "or_ic": [
+      0.79,
+      1.17
+     ],
+     "desc": 1.05,
+     "val": 0.86,
+     "n_desc": 299,
+     "n_val": 288,
+     "plat": {
+      "Instagram": {
+       "n": 256,
+       "lift": 0.93,
+       "lb": 0.78,
+       "ub": 1.09
+      },
+      "TikTok": {
+       "n": 162,
+       "lift": 0.89,
+       "lb": 0.72,
+       "ub": 1.07
+      }
+     }
+    },
+    {
+     "desfecho": "comentarios",
+     "nome": "'até que'",
+     "leitura": "sem evidência",
+     "n": 587,
+     "roteiros": 257,
+     "clientes": 27,
+     "p": 0.227,
+     "p_sem": 0.254,
+     "lift": 0.9,
+     "ic": [
+      0.77,
+      1.04
+     ],
+     "or_mh": 0.86,
+     "or_ic": [
+      0.69,
+      1.06
+     ],
+     "desc": 0.92,
+     "val": 0.88,
+     "n_desc": 299,
+     "n_val": 288,
+     "plat": {
+      "Instagram": {
+       "n": 256,
+       "lift": 0.97,
+       "lb": 0.78,
+       "ub": 1.19
+      },
+      "TikTok": {
+       "n": 162,
+       "lift": 0.95,
+       "lb": 0.71,
+       "ub": 1.23
+      }
+     }
+    }
+   ],
+   "exemplos": [
+    {
+     "texto": "Até que escolheu os bolos.",
+     "cliente": "João Paulo Albuquerque",
+     "plataforma": "TikTok",
+     "coef": 441.8,
+     "views": 289823,
+     "link": "https://www.tiktok.com/@jp_albuquerque_/video/7656832526211730704"
+    },
+    {
+     "texto": "Mesmo assim, continuava perseguindo o sonho… até que um dia ele viu algo que mudaria tudo.",
+     "cliente": "Rafael Rodrigues",
+     "plataforma": "Instagram",
+     "coef": 438.39,
+     "views": 1081942,
+     "link": "https://www.instagram.com/reel/DWKJvC7Dz8-"
+    },
+    {
+     "texto": "Até que o momento épico chegou.",
+     "cliente": "Leonardo Nogueira",
+     "plataforma": "Instagram",
+     "coef": 438.27,
+     "views": 6189736,
+     "link": "https://www.instagram.com/reel/DYo3ldvOFHW"
+    }
+   ],
+   "contraexemplo": [
+    {
+     "texto": "Até que em 2010,  o Grupo Jorge Batista fez a segunda aposta e comprou a rede inteira, assumindo também as lojas.",
+     "cliente": "Cadu Neiva",
+     "plataforma": "TikTok",
+     "coef": 0.03,
+     "views": 1483,
+     "link": "https://www.tiktok.com/@caduneiva/video/7658695719104056584"
+    }
+   ]
+  },
+  {
+   "nome": "'você' >=0,6 por 100 no corpo",
+   "coef": {
+    "nome": "'você' >=0,6 por 100 no corpo",
+    "desfecho": "coef",
+    "leitura": "sem evidência",
+    "n": 1594,
+    "roteiros": 675,
+    "clientes": 28,
+    "p": 0.26,
+    "p_sem": 0.257,
+    "lift": 1.01,
+    "ic": [
+     0.93,
+     1.09
+    ],
+    "or_mh": 1.01,
+    "or_ic": [
+     0.88,
+     1.17
+    ],
+    "desc": 1.01,
+    "val": 1.01,
+    "n_desc": 905,
+    "n_val": 689,
+    "plat": {
+     "Instagram": {
+      "n": 659,
+      "lift": 1,
+      "lb": 0.87,
+      "ub": 1.13
+     },
+     "TikTok": {
+      "n": 473,
+      "lift": 1.07,
+      "lb": 0.92,
+      "ub": 1.23
+     },
+     "YouTube": {
+      "n": 462,
+      "lift": 0.96,
+      "lb": 0.81,
+      "ub": 1.12
+     }
+    }
+   },
+   "estrito": {
+    "or": 1.1141602080222521,
+    "lo": 0.9488177506634488,
+    "hi": 1.3083154992327957,
+    "leitura": "sem evidência"
+   },
+   "plats": {
+    "Instagram": {
+     "lift": 0.9980115397347682,
+     "n": 659,
+     "or": 1.0159205299141632,
+     "lo": 0.8089326853057242,
+     "hi": 1.2758719505950105,
+     "d": 1.0157524659814647,
+     "v": 0.9786200758455229
+    },
+    "TikTok": {
+     "lift": 1.0714719873150107,
+     "n": 473,
+     "or": 1.2710647216209474,
+     "lo": 0.9728178932883513,
+     "hi": 1.6607481602627736,
+     "d": 1.0381132075471697,
+     "v": 1.110977564102564
+    },
+    "YouTube": {
+     "lift": 0.9560353066846573,
+     "n": 462,
+     "or": 0.9734874217792947,
+     "lo": 0.7386508889239105,
+     "hi": 1.282984661052943,
+     "d": 0.9620879120879122,
+     "v": 0.9461366128032794
+    }
+   },
+   "macro": [
+    {
+     "grupo": "Tecnologia, IA e inovação",
+     "n": 697,
+     "lift": 1.0681858643403952,
+     "or": 1.1776841358284542,
+     "lo": 0.9330022734699078,
+     "hi": 1.4865343453278799
+    },
+    {
+     "grupo": "Entretenimento",
+     "n": 20,
+     "lift": 0.9750000000000001,
+     "or": 0.9555555555555556,
+     "lo": 0.2964496006661559,
+     "hi": 3.0800730299561137
+    },
+    {
+     "grupo": "Negócios, marcas e cases",
+     "n": 558,
+     "lift": 0.968462345226458,
+     "or": 0.9535857762964445,
+     "lo": 0.7622473740105994,
+     "hi": 1.1929537099884429
+    },
+    {
+     "grupo": "Dinheiro, economia e geopolítica",
+     "n": 319,
+     "lift": 0.9455007237560719,
+     "or": 0.8911888933760381,
+     "lo": 0.6590229349716206,
+     "hi": 1.2051441634743845
+    }
+   ],
+   "clientes": {
+    "n": 24,
+    "lift_maior_1": 11,
+    "lista": [
+     {
+      "c": "Renato Torres",
+      "n": 21,
+      "lift": 1.439153439153439
+     },
+     {
+      "c": "Leonardo Cirino",
+      "n": 45,
+      "lift": 1.214336917562724
+     },
+     {
+      "c": "Izabela Anholett",
+      "n": 395,
+      "lift": 1.1477848101265824
+     },
+     {
+      "c": "Leonardo Nogueira",
+      "n": 52,
+      "lift": 1.1199095022624435
+     },
+     {
+      "c": "Lincoln Fracari",
+      "n": 122,
+      "lift": 1.11230946218004
+     },
+     {
+      "c": "Marcio Grazino",
+      "n": 53,
+      "lift": 1.09701118717649
+     },
+     {
+      "c": "Renato Mendes",
+      "n": 44,
+      "lift": 1.0649350649350648
+     },
+     {
+      "c": "Manoel Victor",
+      "n": 114,
+      "lift": 1.0646743978590545
+     },
+     {
+      "c": "Thiago Bisewski",
+      "n": 33,
+      "lift": 1.0606060606060608
+     },
+     {
+      "c": "Rodrigo Waughan",
+      "n": 69,
+      "lift": 1.051383399209486
+     },
+     {
+      "c": "Ricardo Schumacher",
+      "n": 23,
+      "lift": 1.0234113712374582
+     },
+     {
+      "c": "Drielle Castelani",
+      "n": 20,
+      "lift": 0.9758064516129034
+     },
+     {
+      "c": "Patrick Diorio",
+      "n": 20,
+      "lift": 0.9750000000000001
+     },
+     {
+      "c": "Thiago Franco",
+      "n": 103,
+      "lift": 0.9657639243740419
+     },
+     {
+      "c": "Café com Ferri",
+      "n": 38,
+      "lift": 0.9586466165413532
+     },
+     {
+      "c": "Marcos Pelozato",
+      "n": 55,
+      "lift": 0.9203094777562862
+     },
+     {
+      "c": "João Paulo Albuquerque",
+      "n": 18,
+      "lift": 0.8835978835978836
+     },
+     {
+      "c": "Fernando Pereira",
+      "n": 59,
+      "lift": 0.8604817127564673
+     },
+     {
+      "c": "João Felipe Marques",
+      "n": 25,
+      "lift": 0.7647058823529411
+     },
+     {
+      "c": "Marcelo Germano",
+      "n": 15,
+      "lift": 0.7435897435897437
+     },
+     {
+      "c": "Dilson Peres",
+      "n": 67,
+      "lift": 0.6869760785115517
+     },
+     {
+      "c": "Pedro Elero",
+      "n": 59,
+      "lift": 0.6779661016949152
+     },
+     {
+      "c": "Rafael Rodrigues",
+      "n": 93,
+      "lift": 0.6743661223947962
+     },
+     {
+      "c": "Cadu Neiva",
+      "n": 18,
+      "lift": 0.6303030303030303
+     }
+    ]
+   },
+   "outros": [
+    {
+     "desfecho": "ret_final",
+     "nome": "'você' >=0,6 por 100 no corpo",
+     "leitura": "atrapalha (replica)",
+     "n": 352,
+     "roteiros": 352,
+     "clientes": 17,
+     "p": 0.199,
+     "p_sem": 0.281,
+     "lift": 0.77,
+     "ic": [
+      0.62,
+      0.94
+     ],
+     "or_mh": 0.55,
+     "or_ic": [
+      0.39,
+      0.77
+     ],
+     "desc": 0.87,
+     "val": 0.22,
+     "n_desc": 264,
+     "n_val": 88,
+     "plat": {
+      "Instagram": {
+       "n": 352,
+       "lift": 0.77,
+       "lb": 0.62,
+       "ub": 0.94
+      }
+     }
+    },
+    {
+     "desfecho": "acerto",
+     "nome": "'você' >=0,6 por 100 no corpo",
+     "leitura": "sem evidência",
+     "n": 1594,
+     "roteiros": 675,
+     "clientes": 28,
+     "p": 0.395,
+     "p_sem": 0.389,
+     "lift": 1.01,
+     "ic": [
+      0.95,
+      1.07
+     ],
+     "or_mh": 0.94,
+     "or_ic": [
+      0.82,
+      1.08
+     ],
+     "desc": 1,
+     "val": 1.02,
+     "n_desc": 905,
+     "n_val": 689,
+     "plat": {
+      "Instagram": {
+       "n": 659,
+       "lift": 1.02,
+       "lb": 0.92,
+       "ub": 1.12
+      },
+      "TikTok": {
+       "n": 473,
+       "lift": 0.97,
+       "lb": 0.87,
+       "ub": 1.08
+      }
+     }
+    },
+    {
+     "desfecho": "comentarios",
+     "nome": "'você' >=0,6 por 100 no corpo",
+     "leitura": "sem evidência",
+     "n": 1594,
+     "roteiros": 675,
+     "clientes": 28,
+     "p": 0.27,
+     "p_sem": 0.246,
+     "lift": 1.07,
+     "ic": [
+      0.99,
+      1.16
+     ],
+     "or_mh": 1.17,
+     "or_ic": [
+      1.01,
+      1.35
+     ],
+     "desc": 1.11,
+     "val": 1.06,
+     "n_desc": 905,
+     "n_val": 689,
+     "plat": {
+      "Instagram": {
+       "n": 659,
+       "lift": 1.07,
+       "lb": 0.94,
+       "ub": 1.21
+      },
+      "TikTok": {
+       "n": 473,
+       "lift": 1.06,
+       "lb": 0.91,
+       "ub": 1.23
+      }
+     }
+    }
+   ],
+   "exemplos": [
+    {
+     "texto": "Para você ter noção do tamanho disso: a empresa tinha cerca de mil lojas no Brasil.",
+     "cliente": "Marcos Pelozato",
+     "plataforma": "TikTok",
+     "coef": 1356.26,
+     "views": 899200,
+     "link": "https://www.tiktok.com/@marcospelozato/video/7674077995404922130"
+    },
+    {
+     "texto": "A ideia é simples: você fica na frente da câmera e faz a sequência de movimentos, a IA analisa a posição das suas mãos, a velocidade e a ordem dos gestos para identificar qual jutsu você está tentando executar e se o movimento foi feito corretamente.",
+     "cliente": "Patrick Diorio",
+     "plataforma": "Instagram",
+     "coef": 426.93,
+     "views": 385094,
+     "link": "https://www.instagram.com/reel/DcKNGwYuTIK"
+    },
+    {
+     "texto": "Você fala em voz alta, a IA trabalha, e tudo aparece projetado direto na sua visão.",
+     "cliente": "Izabela Anholett",
+     "plataforma": "YouTube",
+     "coef": 340.3,
+     "views": 1791705,
+     "link": "https://www.youtube.com/shorts/SyprPGFoWus"
+    }
+   ],
+   "contraexemplo": [
+    {
+     "texto": "Você já sabe exatamente o que vai encontrar antes de comprar a passagem e os ingressos.",
+     "cliente": "Marcio Grazino",
+     "plataforma": "YouTube",
+     "coef": 0.01,
+     "views": 2973,
+     "link": "https://www.youtube.com/shorts/nHjQ7aoIZuw"
+    }
+   ]
+  },
+  {
+   "nome": "citação entre aspas",
+   "coef": {
+    "nome": "citação entre aspas",
+    "desfecho": "coef",
+    "leitura": "sem evidência",
+    "n": 1409,
+    "roteiros": 594,
+    "clientes": 28,
+    "p": 0.266,
+    "p_sem": 0.255,
+    "lift": 1.03,
+    "ic": [
+     0.95,
+     1.12
+    ],
+    "or_mh": 1.06,
+    "or_ic": [
+     0.92,
+     1.22
+    ],
+    "desc": 1.08,
+    "val": 0.96,
+    "n_desc": 866,
+    "n_val": 543,
+    "plat": {
+     "Instagram": {
+      "n": 582,
+      "lift": 1.04,
+      "lb": 0.9,
+      "ub": 1.18
+     },
+     "TikTok": {
+      "n": 431,
+      "lift": 1.05,
+      "lb": 0.9,
+      "ub": 1.22
+     },
+     "YouTube": {
+      "n": 396,
+      "lift": 1.01,
+      "lb": 0.85,
+      "ub": 1.18
+     }
+    }
+   },
+   "estrito": {
+    "or": 0.9933010300823917,
+    "lo": 0.8473673729632275,
+    "hi": 1.1643673899225726,
+    "leitura": "sem evidência"
+   },
+   "plats": {
+    "Instagram": {
+     "lift": 1.0364371858537984,
+     "n": 582,
+     "or": 1.016469916680334,
+     "lo": 0.8082721858398878,
+     "hi": 1.2782959869421955,
+     "d": 1.078269629833731,
+     "v": 0.9780425825870279
+    },
+    "TikTok": {
+     "lift": 1.0502175174013921,
+     "n": 431,
+     "or": 1.0720276758876857,
+     "lo": 0.823589147488492,
+     "hi": 1.395408549728627,
+     "d": 1.167877358490566,
+     "v": 0.8493975903614459
+    },
+    "YouTube": {
+     "lift": 1.0077506668415759,
+     "n": 396,
+     "or": 0.9442824460729391,
+     "lo": 0.7134216931180564,
+     "hi": 1.2498489274476554,
+     "d": 0.9811995967741937,
+     "v": 1.050645239834429
+    }
+   },
+   "macro": [
+    {
+     "grupo": "Tecnologia, IA e inovação",
+     "n": 479,
+     "lift": 1.100985934809442,
+     "or": 1.201820044773294,
+     "lo": 0.9473812566900773,
+     "hi": 1.5245936203816925
+    },
+    {
+     "grupo": "Negócios, marcas e cases",
+     "n": 651,
+     "lift": 1.0570472873900292,
+     "or": 1.1057999245714445,
+     "lo": 0.8953303346767709,
+     "hi": 1.3657456089920834
+    },
+    {
+     "grupo": "Entretenimento",
+     "n": 21,
+     "lift": 0.9285714285714286,
+     "or": 0.875,
+     "lo": 0.27307667556963744,
+     "hi": 2.803699724273073
+    },
+    {
+     "grupo": "Dinheiro, economia e geopolítica",
+     "n": 258,
+     "lift": 0.8543052902035707,
+     "or": 0.7642973146915303,
+     "lo": 0.5498817691864043,
+     "hi": 1.062319971271248
+    }
+   ],
+   "clientes": {
+    "n": 21,
+    "lift_maior_1": 10,
+    "lista": [
+     {
+      "c": "Thiago Franco",
+      "n": 77,
+      "lift": 1.3952153110047847
+     },
+     {
+      "c": "Marcio Grazino",
+      "n": 58,
+      "lift": 1.269758925846811
+     },
+     {
+      "c": "Izabela Anholett",
+      "n": 243,
+      "lift": 1.1959876543209875
+     },
+     {
+      "c": "Franklin Tomich",
+      "n": 23,
+      "lift": 1.1841032608695654
+     },
+     {
+      "c": "João Felipe Marques",
+      "n": 20,
+      "lift": 1.1470588235294117
+     },
+     {
+      "c": "Rodrigo Waughan",
+      "n": 175,
+      "lift": 1.1345454545454545
+     },
+     {
+      "c": "Drielle Castelani",
+      "n": 42,
+      "lift": 1.1152073732718895
+     },
+     {
+      "c": "Rafael Rodrigues",
+      "n": 88,
+      "lift": 1.1135662177328844
+     },
+     {
+      "c": "Marcelo Germano",
+      "n": 61,
+      "lift": 1.0361496427070198
+     },
+     {
+      "c": "Thainá Iansen",
+      "n": 38,
+      "lift": 1.019736842105263
+     },
+     {
+      "c": "Manoel Victor",
+      "n": 57,
+      "lift": 0.9616413916146297
+     },
+     {
+      "c": "Fernando Pereira",
+      "n": 88,
+      "lift": 0.9319377990430622
+     },
+     {
+      "c": "Patrick Diorio",
+      "n": 21,
+      "lift": 0.9285714285714286
+     },
+     {
+      "c": "Lincoln Fracari",
+      "n": 103,
+      "lift": 0.9034236075625958
+     },
+     {
+      "c": "Leonardo Nogueira",
+      "n": 49,
+      "lift": 0.8715486194477792
+     },
+     {
+      "c": "Marcos Pelozato",
+      "n": 50,
+      "lift": 0.8565957446808511
+     },
+     {
+      "c": "Pedro Elero",
+      "n": 56,
+      "lift": 0.7857142857142857
+     },
+     {
+      "c": "Cadu Neiva",
+      "n": 40,
+      "lift": 0.7563636363636363
+     },
+     {
+      "c": "Renato Torres",
+      "n": 17,
+      "lift": 0.6666666666666667
+     },
+     {
+      "c": "Dilson Peres",
+      "n": 35,
+      "lift": 0.547945205479452
+     },
+     {
+      "c": "Café com Ferri",
+      "n": 24,
+      "lift": 0.4553571428571428
+     }
+    ]
+   },
+   "outros": [
+    {
+     "desfecho": "ret_final",
+     "nome": "citação entre aspas",
+     "leitura": "sinal sem replicação",
+     "n": 344,
+     "roteiros": 344,
+     "clientes": 16,
+     "p": 0.308,
+     "p_sem": 0.242,
+     "lift": 1.19,
+     "ic": [
+      1.01,
+      1.39
+     ],
+     "or_mh": 1.4,
+     "or_ic": [
+      1.04,
+      1.89
+     ],
+     "desc": 1.19,
+     "val": 1,
+     "n_desc": 260,
+     "n_val": 84,
+     "plat": {
+      "Instagram": {
+       "n": 344,
+       "lift": 1.19,
+       "lb": 1.01,
+       "ub": 1.39
+      }
+     }
+    },
+    {
+     "desfecho": "acerto",
+     "nome": "citação entre aspas",
+     "leitura": "sem evidência",
+     "n": 1409,
+     "roteiros": 594,
+     "clientes": 28,
+     "p": 0.391,
+     "p_sem": 0.391,
+     "lift": 1,
+     "ic": [
+      0.94,
+      1.07
+     ],
+     "or_mh": 1.03,
+     "or_ic": [
+      0.89,
+      1.18
+     ],
+     "desc": 1,
+     "val": 0.97,
+     "n_desc": 866,
+     "n_val": 543,
+     "plat": {
+      "Instagram": {
+       "n": 582,
+       "lift": 0.96,
+       "lb": 0.86,
+       "ub": 1.07
+      },
+      "TikTok": {
+       "n": 431,
+       "lift": 0.97,
+       "lb": 0.86,
+       "ub": 1.08
+      }
+     }
+    },
+    {
+     "desfecho": "comentarios",
+     "nome": "citação entre aspas",
+     "leitura": "sem evidência",
+     "n": 1409,
+     "roteiros": 594,
+     "clientes": 28,
+     "p": 0.237,
+     "p_sem": 0.256,
+     "lift": 0.94,
+     "ic": [
+      0.86,
+      1.03
+     ],
+     "or_mh": 0.9,
+     "or_ic": [
+      0.78,
+      1.05
+     ],
+     "desc": 1.02,
+     "val": 0.87,
+     "n_desc": 866,
+     "n_val": 543,
+     "plat": {
+      "Instagram": {
+       "n": 582,
+       "lift": 0.87,
+       "lb": 0.74,
+       "ub": 1.01
+      },
+      "TikTok": {
+       "n": 431,
+       "lift": 1,
+       "lb": 0.85,
+       "ub": 1.17
+      }
+     }
+    }
+   ],
+   "exemplos": [
+    {
+     "texto": "O assessor do Presidente Lula, Celso Amorim falou publicamente \"devemos nos preparar para o pior\".",
+     "cliente": "Fernando Pereira",
+     "plataforma": "TikTok",
+     "coef": 3661.1,
+     "views": 6256813,
+     "link": "https://www.tiktok.com/@fernandopereira.finance/video/7613106734680329493"
+    },
+    {
+     "texto": "Foi aí que ele lembrou do filme: “O Menino Que Descobriu o Vento.”",
+     "cliente": "Rafael Rodrigues",
+     "plataforma": "YouTube",
+     "coef": 866.71,
+     "views": 1080789,
+     "link": "https://www.youtube.com/shorts/pdWWbMISqqI"
+    },
+    {
+     "texto": "Trouxeram na camisa principal um grito de guerra que ninguém cantava: “Vai Brasa”, outro fracasso.",
+     "cliente": "Rafael Rodrigues",
+     "plataforma": "TikTok",
+     "coef": 630.14,
+     "views": 490248,
+     "link": "https://www.tiktok.com/@rafaelrodriguesluiz/video/7622445343443029255"
+    }
+   ],
+   "contraexemplo": [
+    {
+     "texto": "“Se um dia eu tiver uma empresa, ninguém será tratado como o meu pai foi.”",
+     "cliente": "Rodrigo Waughan",
+     "plataforma": "YouTube",
+     "coef": 0.01,
+     "views": 8,
+     "link": "https://www.youtube.com/shorts/qEFZBioW4JE"
+    }
+   ]
+  },
+  {
+   "nome": "frases curtas (<=6 palavras) >=13%",
+   "coef": {
+    "nome": "frases curtas (<=6 palavras) >=13%",
+    "desfecho": "coef",
+    "leitura": "sem evidência",
+    "n": 1522,
+    "roteiros": 641,
+    "clientes": 28,
+    "p": 0.267,
+    "p_sem": 0.255,
+    "lift": 1.04,
+    "ic": [
+     0.95,
+     1.12
+    ],
+    "or_mh": 1.07,
+    "or_ic": [
+     0.93,
+     1.22
+    ],
+    "desc": 1.02,
+    "val": 1.06,
+    "n_desc": 973,
+    "n_val": 549,
+    "plat": {
+     "Instagram": {
+      "n": 631,
+      "lift": 1.04,
+      "lb": 0.91,
+      "ub": 1.18
+     },
+     "TikTok": {
+      "n": 457,
+      "lift": 1.03,
+      "lb": 0.88,
+      "ub": 1.2
+     },
+     "YouTube": {
+      "n": 434,
+      "lift": 1.04,
+      "lb": 0.88,
+      "ub": 1.2
+     }
+    }
+   },
+   "estrito": {
+    "or": 1.1385514564120038,
+    "lo": 0.97621438599183,
+    "hi": 1.3278839540772185,
+    "leitura": "sem evidência"
+   },
+   "plats": {
+    "Instagram": {
+     "lift": 1.0361298735651652,
+     "n": 631,
+     "or": 1.1169841741366102,
+     "lo": 0.8993243826572117,
+     "hi": 1.3873232721492923,
+     "d": 1.0006231003039514,
+     "v": 1.1033091202582728
+    },
+    "TikTok": {
+     "lift": 1.0327954048140044,
+     "n": 457,
+     "or": 1.1198924189577928,
+     "lo": 0.8641133448892606,
+     "hi": 1.4513825500517663,
+     "d": 1.0241408934707903,
+     "v": 1.0381526104417673
+    },
+    "YouTube": {
+     "lift": 1.0355696530811738,
+     "n": 434,
+     "or": 1.0367884817220496,
+     "lo": 0.7952164340855946,
+     "hi": 1.3517456503116114,
+     "d": 1.0409574468085108,
+     "v": 1.0229966808914177
+    }
+   },
+   "macro": [
+    {
+     "grupo": "Tecnologia, IA e inovação",
+     "n": 504,
+     "lift": 1.0694553064534817,
+     "or": 1.1357543467831994,
+     "lo": 0.9003051434813979,
+     "hi": 1.4327785924324055
+    },
+    {
+     "grupo": "Dinheiro, economia e geopolítica",
+     "n": 329,
+     "lift": 1.0225423422337412,
+     "or": 1.0446240485249134,
+     "lo": 0.7859330199219267,
+     "hi": 1.388463615977075
+    },
+    {
+     "grupo": "Negócios, marcas e cases",
+     "n": 676,
+     "lift": 1.0122041420118342,
+     "or": 1.0194610806015296,
+     "lo": 0.8318444054277231,
+     "hi": 1.2493933818390521
+    }
+   ],
+   "clientes": {
+    "n": 20,
+    "lift_maior_1": 12,
+    "lista": [
+     {
+      "c": "Franklin Tomich",
+      "n": 26,
+      "lift": 1.3467548076923077
+     },
+     {
+      "c": "João Felipe Marques",
+      "n": 21,
+      "lift": 1.2745098039215685
+     },
+     {
+      "c": "Ricardo Schumacher",
+      "n": 22,
+      "lift": 1.2482517482517483
+     },
+     {
+      "c": "Cadu Neiva",
+      "n": 41,
+      "lift": 1.1991130820399114
+     },
+     {
+      "c": "Rafael Rodrigues",
+      "n": 96,
+      "lift": 1.1840920781893003
+     },
+     {
+      "c": "Marcos Pelozato",
+      "n": 99,
+      "lift": 1.1798839458413926
+     },
+     {
+      "c": "Renato Torres",
+      "n": 29,
+      "lift": 1.1724137931034484
+     },
+     {
+      "c": "Izabela Anholett",
+      "n": 224,
+      "lift": 1.1590401785714286
+     },
+     {
+      "c": "Lincoln Fracari",
+      "n": 114,
+      "lift": 1.1223453370267773
+     },
+     {
+      "c": "Rodrigo Waughan",
+      "n": 130,
+      "lift": 1.116083916083916
+     },
+     {
+      "c": "Dilson Peres",
+      "n": 67,
+      "lift": 1.0304641177673277
+     },
+     {
+      "c": "Drielle Castelani",
+      "n": 38,
+      "lift": 1.0271646859083192
+     },
+     {
+      "c": "Manoel Victor",
+      "n": 99,
+      "lift": 0.9887005649717514
+     },
+     {
+      "c": "Marcio Grazino",
+      "n": 73,
+      "lift": 0.9557522123893805
+     },
+     {
+      "c": "Fernando Pereira",
+      "n": 108,
+      "lift": 0.9401559454191032
+     },
+     {
+      "c": "Pedro Elero",
+      "n": 48,
+      "lift": 0.9166666666666666
+     },
+     {
+      "c": "Leonardo Nogueira",
+      "n": 64,
+      "lift": 0.7886029411764706
+     },
+     {
+      "c": "Thiago Franco",
+      "n": 76,
+      "lift": 0.7853185595567866
+     },
+     {
+      "c": "Marcelo Germano",
+      "n": 37,
+      "lift": 0.7033957033957035
+     },
+     {
+      "c": "João Paulo Albuquerque",
+      "n": 37,
+      "lift": 0.5373230373230374
+     }
+    ]
+   },
+   "outros": [
+    {
+     "desfecho": "ret_final",
+     "nome": "frases curtas (<=6 palavras) >=13%",
+     "leitura": "sem evidência",
+     "n": 391,
+     "roteiros": 391,
+     "clientes": 17,
+     "p": 0.302,
+     "p_sem": 0.241,
+     "lift": 1.17,
+     "ic": [
+      1,
+      1.35
+     ],
+     "or_mh": 1.35,
+     "or_ic": [
+      1.02,
+      1.8
+     ],
+     "desc": 1.17,
+     "val": 1,
+     "n_desc": 292,
+     "n_val": 99,
+     "plat": {
+      "Instagram": {
+       "n": 391,
+       "lift": 1.17,
+       "lb": 1,
+       "ub": 1.35
+      }
+     }
+    },
+    {
+     "desfecho": "acerto",
+     "nome": "frases curtas (<=6 palavras) >=13%",
+     "leitura": "sem evidência",
+     "n": 1522,
+     "roteiros": 641,
+     "clientes": 28,
+     "p": 0.386,
+     "p_sem": 0.392,
+     "lift": 0.99,
+     "ic": [
+      0.93,
+      1.05
+     ],
+     "or_mh": 1.03,
+     "or_ic": [
+      0.9,
+      1.18
+     ],
+     "desc": 0.94,
+     "val": 1.04,
+     "n_desc": 973,
+     "n_val": 549,
+     "plat": {
+      "Instagram": {
+       "n": 631,
+       "lift": 0.99,
+       "lb": 0.89,
+       "ub": 1.09
+      },
+      "TikTok": {
+       "n": 457,
+       "lift": 0.9,
+       "lb": 0.8,
+       "ub": 1.01
+      }
+     }
+    },
+    {
+     "desfecho": "comentarios",
+     "nome": "frases curtas (<=6 palavras) >=13%",
+     "leitura": "sem evidência",
+     "n": 1522,
+     "roteiros": 641,
+     "clientes": 28,
+     "p": 0.246,
+     "p_sem": 0.254,
+     "lift": 0.98,
+     "ic": [
+      0.89,
+      1.07
+     ],
+     "or_mh": 1,
+     "or_ic": [
+      0.87,
+      1.16
+     ],
+     "desc": 0.98,
+     "val": 1.02,
+     "n_desc": 973,
+     "n_val": 549,
+     "plat": {
+      "Instagram": {
+       "n": 631,
+       "lift": 0.99,
+       "lb": 0.87,
+       "ub": 1.13
+      },
+      "TikTok": {
+       "n": 457,
+       "lift": 1.04,
+       "lb": 0.89,
+       "ub": 1.21
+      }
+     }
+    }
+   ],
+   "exemplos": [
+    {
+     "texto": "O corredor de rua, que gasta uma fortuna no esporte, tinha pavor da marca. A empresa nacional tava perdendo feio pras gigantes gringas.  O brasileiro preferia parcelar um Nike em doze vezes a usar o tênis local. A Olympikus não aguentava mais perder dentro do próprio país. Então fez uma jogada bruta",
+     "cliente": "Marcio Grazino",
+     "plataforma": "TikTok",
+     "coef": 740.21,
+     "views": 1293510,
+     "link": "https://www.tiktok.com/@marcio.grazino/video/7618421911848094994"
+    },
+    {
+     "texto": "Para você ter uma ideia, a primeira camisa da Seleção Brasileira com a Nike foi lançada em 1997. Sabe aquele uniforme lendário do penta em 2002? Eles estavam lá.\nA Nike sempre soube do valor que o amarelo canarinho tem. Até porque temos cinco estrelas bordadas nessa camisa, conquistadas com suor, lá",
+     "cliente": "Rafael Rodrigues",
+     "plataforma": "TikTok",
+     "coef": 630.14,
+     "views": 490248,
+     "link": "https://www.tiktok.com/@rafaelrodriguesluiz/video/7622445343443029255"
+    },
+    {
+     "texto": "Em 1981, o pai morreu num acidente. A família perdeu tudo e foi expulsa da fazenda onde morava. Cleusa entendeu que precisava mudar de vida.\nEm 1986, aos 16 anos, foi para São Paulo trabalhar como doméstica. Anos depois, conseguiu emprego numa fábrica de alto-falantes em Salto, interior paulista.\nCo",
+     "cliente": "João Paulo Albuquerque",
+     "plataforma": "TikTok",
+     "coef": 441.8,
+     "views": 289823,
+     "link": "https://www.tiktok.com/@jp_albuquerque_/video/7656832526211730704"
+    }
+   ],
+   "contraexemplo": [
+    {
+     "texto": "Bateu o próprio recorde e manteve o título de país mais visitado do mundo pelo quinto ano consecutivo.\nJá a capital Paris, segue sendo a melhor cidade do mundo para se visitar, também ganhando prêmios por vários anos seguidos.\nE tantos anos no topo não é tendência passageira, mas sim a consolidação ",
+     "cliente": "Marcio Grazino",
+     "plataforma": "YouTube",
+     "coef": 0.01,
+     "views": 2973,
+     "link": "https://www.youtube.com/shorts/nHjQ7aoIZuw"
+    }
+   ]
+  },
+  {
+   "nome": "viradas <=0,4 por 100",
+   "coef": {
+    "nome": "viradas <=0,4 por 100",
+    "desfecho": "coef",
+    "leitura": "sem evidência",
+    "n": 1586,
+    "roteiros": 677,
+    "clientes": 28,
+    "p": 0.242,
+    "p_sem": 0.263,
+    "lift": 0.94,
+    "ic": [
+     0.86,
+     1.02
+    ],
+    "or_mh": 0.89,
+    "or_ic": [
+     0.78,
+     1.02
+    ],
+    "desc": 0.91,
+    "val": 0.97,
+    "n_desc": 773,
+    "n_val": 813,
+    "plat": {
+     "Instagram": {
+      "n": 651,
+      "lift": 0.98,
+      "lb": 0.86,
+      "ub": 1.12
+     },
+     "TikTok": {
+      "n": 483,
+      "lift": 1,
+      "lb": 0.86,
+      "ub": 1.16
+     },
+     "YouTube": {
+      "n": 452,
+      "lift": 0.81,
+      "lb": 0.68,
+      "ub": 0.97
+     }
+    }
+   },
+   "estrito": {
+    "or": 0.8481139552321049,
+    "lo": 0.7308561425005417,
+    "hi": 0.984184491627108,
+    "leitura": "sem evidência"
+   },
+   "plats": {
+    "Instagram": {
+     "lift": 0.9803860712092893,
+     "n": 651,
+     "or": 0.9449796025576375,
+     "lo": 0.7622616697188388,
+     "hi": 1.17149593731949,
+     "d": 0.9651292039228416,
+     "v": 0.9936234182442925
+    },
+    "TikTok": {
+     "lift": 1.0012292960662525,
+     "n": 483,
+     "or": 0.9679194014257858,
+     "lo": 0.7546143470801464,
+     "hi": 1.241518891446346,
+     "d": 1.019968220338983,
+     "v": 0.9831309041835358
+    },
+    "YouTube": {
+     "lift": 0.8143221085698962,
+     "n": 452,
+     "or": 0.6603655842527267,
+     "lo": 0.5033514791412703,
+     "hi": 0.8663582465465537,
+     "d": 0.7115131578947369,
+     "v": 0.9197836229086229
+    }
+   },
+   "macro": [
+    {
+     "grupo": "Tecnologia, IA e inovação",
+     "n": 652,
+     "lift": 0.9813292060364516,
+     "or": 0.962458394464107,
+     "lo": 0.7776690662361303,
+     "hi": 1.1911572689367564
+    },
+    {
+     "grupo": "Dinheiro, economia e geopolítica",
+     "n": 327,
+     "lift": 0.9460197000805675,
+     "or": 0.9027688000124293,
+     "lo": 0.674029311608042,
+     "hi": 1.2091336270399633
+    },
+    {
+     "grupo": "Negócios, marcas e cases",
+     "n": 590,
+     "lift": 0.8961671802773497,
+     "or": 0.8294216870254891,
+     "lo": 0.666833099126501,
+     "hi": 1.0316529515546786
+    }
+   ],
+   "clientes": {
+    "n": 25,
+    "lift_maior_1": 9,
+    "lista": [
+     {
+      "c": "Túlio Lichenstein",
+      "n": 36,
+      "lift": 1.279569892473118
+     },
+     {
+      "c": "Izabela Anholett",
+      "n": 208,
+      "lift": 1.1923076923076925
+     },
+     {
+      "c": "Renato Mendes",
+      "n": 65,
+      "lift": 1.1413919413919413
+     },
+     {
+      "c": "Fernando Pereira",
+      "n": 73,
+      "lift": 1.1234318673395818
+     },
+     {
+      "c": "Leonardo Cirino",
+      "n": 61,
+      "lift": 1.0877842411422527
+     },
+     {
+      "c": "Franklin Tomich",
+      "n": 36,
+      "lift": 1.0807291666666667
+     },
+     {
+      "c": "Café com Ferri",
+      "n": 17,
+      "lift": 1.0714285714285714
+     },
+     {
+      "c": "Drielle Castelani",
+      "n": 30,
+      "lift": 1.0408602150537636
+     },
+     {
+      "c": "Marcelo Germano",
+      "n": 29,
+      "lift": 1.0256410256410258
+     },
+     {
+      "c": "Manoel Victor",
+      "n": 65,
+      "lift": 0.963754889178618
+     },
+     {
+      "c": "Marcio Grazino",
+      "n": 144,
+      "lift": 0.9421091445427728
+     },
+     {
+      "c": "Thiago Franco",
+      "n": 100,
+      "lift": 0.9151578947368421
+     },
+     {
+      "c": "Cadu Neiva",
+      "n": 58,
+      "lift": 0.9128526645768026
+     },
+     {
+      "c": "Rafael Rodrigues",
+      "n": 174,
+      "lift": 0.8785653469561515
+     },
+     {
+      "c": "Thiago Bisewski",
+      "n": 24,
+      "lift": 0.875
+     },
+     {
+      "c": "Thainá Iansen",
+      "n": 18,
+      "lift": 0.861111111111111
+     },
+     {
+      "c": "Ricardo Schumacher",
+      "n": 19,
+      "lift": 0.8259109311740891
+     },
+     {
+      "c": "Dilson Peres",
+      "n": 28,
+      "lift": 0.821917808219178
+     },
+     {
+      "c": "Lincoln Fracari",
+      "n": 154,
+      "lift": 0.8056504898610162
+     },
+     {
+      "c": "Pedro Elero",
+      "n": 51,
+      "lift": 0.7843137254901961
+     },
+     {
+      "c": "Patrick Diorio",
+      "n": 17,
+      "lift": 0.6882352941176472
+     },
+     {
+      "c": "João Paulo Albuquerque",
+      "n": 38,
+      "lift": 0.6278195488721805
+     },
+     {
+      "c": "Marcos Pelozato",
+      "n": 40,
+      "lift": 0.5840425531914893
+     },
+     {
+      "c": "Rodrigo Waughan",
+      "n": 53,
+      "lift": 0.5763293310463121
+     },
+     {
+      "c": "Leonardo Nogueira",
+      "n": 22,
+      "lift": 0.17647058823529413
+     }
+    ]
+   },
+   "outros": [
+    {
+     "desfecho": "ret_final",
+     "nome": "viradas <=0,4 por 100",
+     "leitura": "atrapalha (replica)",
+     "n": 289,
+     "roteiros": 289,
+     "clientes": 17,
+     "p": 0.19,
+     "p_sem": 0.278,
+     "lift": 0.74,
+     "ic": [
+      0.58,
+      0.93
+     ],
+     "or_mh": 0.61,
+     "or_ic": [
+      0.43,
+      0.86
+     ],
+     "desc": 0.8,
+     "val": 0.57,
+     "n_desc": 193,
+     "n_val": 96,
+     "plat": {
+      "Instagram": {
+       "n": 289,
+       "lift": 0.74,
+       "lb": 0.58,
+       "ub": 0.93
+      }
+     }
+    },
+    {
+     "desfecho": "acerto",
+     "nome": "viradas <=0,4 por 100",
+     "leitura": "sem evidência",
+     "n": 1586,
+     "roteiros": 677,
+     "clientes": 28,
+     "p": 0.388,
+     "p_sem": 0.392,
+     "lift": 0.99,
+     "ic": [
+      0.93,
+      1.06
+     ],
+     "or_mh": 0.87,
+     "or_ic": [
+      0.77,
+      0.99
+     ],
+     "desc": 0.98,
+     "val": 1.01,
+     "n_desc": 773,
+     "n_val": 813,
+     "plat": {
+      "Instagram": {
+       "n": 651,
+       "lift": 1.01,
+       "lb": 0.91,
+       "ub": 1.11
+      },
+      "TikTok": {
+       "n": 483,
+       "lift": 1.05,
+       "lb": 0.95,
+       "ub": 1.16
+      }
+     }
+    },
+    {
+     "desfecho": "comentarios",
+     "nome": "viradas <=0,4 por 100",
+     "leitura": "sinal sem replicação",
+     "n": 1586,
+     "roteiros": 677,
+     "clientes": 28,
+     "p": 0.276,
+     "p_sem": 0.244,
+     "lift": 1.09,
+     "ic": [
+      1.01,
+      1.18
+     ],
+     "or_mh": 1.12,
+     "or_ic": [
+      0.98,
+      1.28
+     ],
+     "desc": 1.18,
+     "val": 1.02,
+     "n_desc": 773,
+     "n_val": 813,
+     "plat": {
+      "Instagram": {
+       "n": 651,
+       "lift": 1.08,
+       "lb": 0.95,
+       "ub": 1.22
+      },
+      "TikTok": {
+       "n": 483,
+       "lift": 1.04,
+       "lb": 0.89,
+       "ub": 1.2
+      }
+     }
+    }
+   ],
+   "exemplos": [
+    {
+     "texto": "Um vinha de anos numa consultoria internacional e depois foi para uma gigante de streaming indiana, parecida com a Netflix.\nO outro tinha feito MBA em Harvard.\nEm 2023, os dois largaram carreiras de elite e foram fundar a Comet, uma marca de tênis em Bengaluru, no sul do país.\nA aposta deles era sim",
+     "cliente": "Pedro Elero",
+     "plataforma": "YouTube",
+     "coef": 1237.73,
+     "views": 1734066,
+     "link": "https://www.youtube.com/shorts/HQcSb-xdNMc"
+    },
+    {
+     "texto": "Em 2022, o Colégio Santa Maria, uma instituição referência na capital pernambucana, desafiou os seus alunos a criarem um projeto com impacto social.\nQuando Lucas recebeu a missão, começou a procurar uma ideia que fizesse sentido de verdade. Foi aí que ele lembrou do filme: “O Menino Que Descobriu o ",
+     "cliente": "Rafael Rodrigues",
+     "plataforma": "YouTube",
+     "coef": 866.71,
+     "views": 1080789,
+     "link": "https://www.youtube.com/shorts/pdWWbMISqqI"
+    },
+    {
+     "texto": "Essa marca é, na verdade, a montadora chinesa Geely, que apresentou esse novo sistema chamado i-HEV.\nQue, em testes numa rodovia circular na Ilha de Hainan, na China, fez um sedã Geely Emgrand equipado com ele rodar 45,05 km com apenas 1 litro de combustível, e o Guinness World Records registrou o f",
+     "cliente": "Pedro Elero",
+     "plataforma": "TikTok",
+     "coef": 486.17,
+     "views": 275170,
+     "link": "https://www.tiktok.com/@pedro_elero/video/7687261571130608903"
+    }
+   ],
+   "contraexemplo": [
+    {
+     "texto": "É justamente esse ensinamento que os filhos de bilionários aprendem desde cedo. Nada de como multiplicar dinheiro facilmente. A aula mais importante da vida deles é de como eles podem abrir portas com as palavras certas.\nNas escolas onde os filhos de bilionários estudam, como o Eton College na Ingla",
+     "cliente": "Café com Ferri",
+     "plataforma": "Instagram",
+     "coef": 0,
+     "views": 27,
+     "link": "https://www.instagram.com/reel/DbWq_RtpDqF"
+    }
+   ]
+  }
+ ]
+}

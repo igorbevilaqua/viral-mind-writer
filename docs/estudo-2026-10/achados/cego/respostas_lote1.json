@@ -1,0 +1,1011 @@
+[
+ {
+  "par_id": "P154",
+  "escolha": "B",
+  "confianca": 2,
+  "parte_decisiva": "titulo",
+  "pistas": [
+   "T_TITULO_FORTE",
+   "H_CONTRASTE",
+   "S_ENTRA_NA_HISTORIA",
+   "C_SINTESE_MEMORAVEL"
+  ],
+  "nota": "Título e hook de B contrastam crença e realidade; cena do anúncio após a conversa prende. A explica cookies de forma didática, tema mais seco."
+ },
+ {
+  "par_id": "P053",
+  "escolha": "B",
+  "confianca": 2,
+  "parte_decisiva": "hook",
+  "pistas": [
+   "H_NOVIDADE",
+   "H_CONFLITO",
+   "H_NOME_CONHECIDO",
+   "C_SINTESE_MEMORAVEL"
+  ],
+  "nota": "B abre com Apple que acabou de declarar guerra ao ChatGPT e fecha na disputa judicial. A tem subhook vazio, quase ninguém percebe."
+ },
+ {
+  "par_id": "P034",
+  "escolha": "B",
+  "confianca": 2,
+  "parte_decisiva": "tema_angulo",
+  "pistas": [
+   "T_BRASIL",
+   "H_CONTRASTE",
+   "T_ANGULO_POLEMICO",
+   "T_TITULO_FORTE"
+  ],
+  "nota": "B contrasta americanos comprando o país com brasileiro pobre por apostas, ângulo local e indignante. A é o fim dos EUA genérico, conselho banal."
+ },
+ {
+  "par_id": "P062",
+  "escolha": "B",
+  "confianca": 1,
+  "parte_decisiva": "hook",
+  "pistas": [
+   "H_NOVIDADE",
+   "H_NOME_CONHECIDO",
+   "H_SIMPLES",
+   "S_ELEVA_APOSTA"
+  ],
+  "nota": "B tem hook simples e concreto (China, colar que traduz) com 95% e preço. A tem tema emotivo, mas hook longo e vago. Quase empate."
+ },
+ {
+  "par_id": "P020",
+  "escolha": "A",
+  "confianca": 2,
+  "parte_decisiva": "conclusao",
+  "pistas": [
+   "H_CONSEQUENCIA",
+   "H_NUMERO_CONCRETO",
+   "C_SINTESE_MEMORAVEL",
+   "C_OUTRO_MORAL_GENERICA"
+  ],
+  "nota": "A declara a bolha estourada com plantão de 4 a 5 mil e fecha em frase citável. B termina em moral genérica de atender bem."
+ },
+ {
+  "par_id": "P004",
+  "escolha": "A",
+  "confianca": 1,
+  "parte_decisiva": "hook",
+  "pistas": [
+   "H_PERSONAGEM_COMUM",
+   "H_NUMERO_CONCRETO",
+   "S_ENTRA_NA_HISTORIA"
+  ],
+  "nota": "A abre com imagem simples: engraxate, garimpeiro, vendedor de garrafas, 38 bilhões. B abre com empresa sem nome. Diferença pequena, B tem boa moral final."
+ },
+ {
+  "par_id": "P072",
+  "escolha": "B",
+  "confianca": 2,
+  "parte_decisiva": "tema_angulo",
+  "pistas": [
+   "H_VOCE",
+   "H_CONSEQUENCIA",
+   "S_RELEVANCIA",
+   "C_CONSEQUENCIA_VOCE"
+  ],
+  "nota": "B fala com o motorista (multa por IA, celular e cinto) e fecha com consequência pessoal. A é gestão pública distante, subhook didático."
+ },
+ {
+  "par_id": "P233",
+  "escolha": "B",
+  "confianca": 1,
+  "parte_decisiva": "tema_angulo",
+  "pistas": [
+   "H_CONFLITO",
+   "H_NOME_CONHECIDO",
+   "T_FAMOSO",
+   "C_PERGUNTA"
+  ],
+  "nota": "B tem embate entre STF, PF e Lula, nomes conhecidos e drama que rende no TikTok. A é boa, mas macro seco com Morgan Stanley."
+ },
+ {
+  "par_id": "P128",
+  "escolha": "A",
+  "confianca": 2,
+  "parte_decisiva": "hook",
+  "pistas": [
+   "H_NUMERO_CONCRETO",
+   "H_ESTRANHEZA",
+   "T_TITULO_FORTE",
+   "F_MAIS_CURTO"
+  ],
+  "nota": "A vende ar, imagem estranha com 5 bilhões, e é bem mais enxuta. B tem 618 palavras, título longo e termina na falência da Busscar."
+ },
+ {
+  "par_id": "P186",
+  "escolha": "B",
+  "confianca": 1,
+  "parte_decisiva": "hook",
+  "pistas": [
+   "H_PROMESSA",
+   "H_NOME_CONHECIDO",
+   "H_CONFLITO",
+   "C_SINTESE_MEMORAVEL"
+  ],
+  "nota": "B cita Geely e BYD e promete revelar a rival em testes no Brasil; fecha com lição da Stellantis. A tem subhook vago, quase empate."
+ },
+ {
+  "par_id": "P227",
+  "escolha": "B",
+  "confianca": 2,
+  "parte_decisiva": "hook",
+  "pistas": [
+   "H_SIMPLES",
+   "K_PROMESSA_ESPECIFICA",
+   "outro:queda de 48% como prova no sub2"
+  ],
+  "nota": "B abre com quatro palavras, A Black Friday morreu, e prova com queda de 48%; CTA cita Shopee e Mercado Livre. A não traz número."
+ },
+ {
+  "par_id": "P169",
+  "escolha": "B",
+  "confianca": 3,
+  "parte_decisiva": "hook",
+  "pistas": [
+   "H_PERSONAGEM_COMUM",
+   "H_CONFLITO",
+   "S_ENTRA_NA_HISTORIA",
+   "C_VIRADA_FINAL"
+  ],
+  "nota": "B tem adolescente nordestino contra a elite dos cientistas, cena do profeta da chuva e fecho que inverte quem passa vergonha. A despeja estatísticas."
+ },
+ {
+  "par_id": "P201",
+  "escolha": "A",
+  "confianca": 2,
+  "parte_decisiva": "hook",
+  "pistas": [
+   "H_NOME_CONHECIDO",
+   "H_CONSEQUENCIA",
+   "S_ELEVA_APOSTA",
+   "C_SINTESE_MEMORAVEL"
+  ],
+  "nota": "A põe a Nike como vilã, com queda de 20% em 24 horas, e fecha em contraste citável. B tem título e hook vagos."
+ },
+ {
+  "par_id": "P184",
+  "escolha": "B",
+  "confianca": 3,
+  "parte_decisiva": "hook",
+  "pistas": [
+   "H_NOME_CONHECIDO",
+   "H_PERSONAGEM_COMUM",
+   "S_ENTRA_NA_HISTORIA",
+   "C_OUTRO_MORAL_GENERICA"
+  ],
+  "nota": "B abre com NASA, Elon Musk e crianças de 9 e 11 anos, já com nomes. A explica a OBMEP e fecha em moral genérica."
+ },
+ {
+  "par_id": "P220",
+  "escolha": "B",
+  "confianca": 2,
+  "parte_decisiva": "tema_angulo",
+  "pistas": [
+   "H_VOCE",
+   "T_DINHEIRO",
+   "T_ANGULO_POLEMICO",
+   "K_PROMESSA_ESPECIFICA"
+  ],
+  "nota": "B toca o Nordeste e o seu celular, com 200 bilhões em data centers, e oferece aula gratuita. A conta a história da BYD."
+ },
+ {
+  "par_id": "P163",
+  "escolha": "A",
+  "confianca": 2,
+  "parte_decisiva": "hook",
+  "pistas": [
+   "H_ESTRANHEZA",
+   "H_PERSONAGEM_COMUM",
+   "H_NOME_CONHECIDO",
+   "S_ENTRA_NA_HISTORIA"
+  ],
+  "nota": "A tem imagem estranha (lixo, rival da Apple) e personagem nomeado em Moçambique. B gasta o subhook em estatísticas globais, mais lento."
+ },
+ {
+  "par_id": "P011",
+  "escolha": "A",
+  "confianca": 2,
+  "parte_decisiva": "hook",
+  "pistas": [
+   "H_NOME_CONHECIDO",
+   "H_PERGUNTA",
+   "T_ANGULO_POLEMICO",
+   "C_CONSEQUENCIA_VOCE"
+  ],
+  "nota": "A mira o Pix com a metáfora do pedágio, pergunta quem paga e fecha nos 39 centavos. B fala só ao comerciante, subhook didático."
+ },
+ {
+  "par_id": "P209",
+  "escolha": "B",
+  "confianca": 2,
+  "parte_decisiva": "hook",
+  "pistas": [
+   "H_VOCE",
+   "H_ESTRANHEZA",
+   "H_NUMERO_CONCRETO",
+   "C_PERGUNTA"
+  ],
+  "nota": "B usa a metáfora das quatro bocas de fogão falando com o espectador e fecha com pergunta pessoal. A é agenda de CEO, distante."
+ },
+ {
+  "par_id": "P063",
+  "escolha": "A",
+  "confianca": 1,
+  "parte_decisiva": "titulo",
+  "pistas": [
+   "T_TITULO_FORTE",
+   "H_ESTRANHEZA",
+   "S_ENTRA_NA_HISTORIA",
+   "C_SINTESE_MEMORAVEL"
+  ],
+  "nota": "A tem título de guerra tecnológica, hook com melhor pior momento e fecho citável. B parece divulgação de curso e gasta o subhook em contexto."
+ },
+ {
+  "par_id": "P202",
+  "escolha": "A",
+  "confianca": 1,
+  "parte_decisiva": "tema_angulo",
+  "pistas": [
+   "T_BRASIL",
+   "T_DINHEIRO",
+   "S_ELEVA_APOSTA",
+   "F_MAIS_CURTO"
+  ],
+  "nota": "A traz escala brasileira (204 bilhões, maior que o PIB de 20 estados) em formato curto. B é caso conhecido da Amazon, quase empate."
+ },
+ {
+  "par_id": "P224",
+  "escolha": "A",
+  "confianca": 2,
+  "parte_decisiva": "hook",
+  "pistas": [
+   "H_SIMPLES",
+   "H_NUMERO_CONCRETO",
+   "S_VIRADA",
+   "K_PROMESSA_ESPECIFICA"
+  ],
+  "nota": "A abre curto e concreto (Shopee ignorou São Paulo, três centros) e vira para jogada inteligente; CTA dá aula grátis. B tem hook longo."
+ },
+ {
+  "par_id": "P212",
+  "escolha": "A",
+  "confianca": 1,
+  "parte_decisiva": "hook",
+  "pistas": [
+   "H_CONFLITO",
+   "H_NUMERO_CONCRETO",
+   "T_EMOCAO_FORTE",
+   "T_TITULO_FORTE"
+  ],
+  "nota": "A tem injustiça e vingança (trocada pelo assistente que treinou) com números e nome. B tem hook mais curto e fecho melhor. Aposta fraca."
+ },
+ {
+  "par_id": "P082",
+  "escolha": "B",
+  "confianca": 2,
+  "parte_decisiva": "hook",
+  "pistas": [
+   "H_ESTRANHEZA",
+   "S_VIRADA",
+   "S_OUTRO_LENTO",
+   "C_SINTESE_MEMORAVEL"
+  ],
+  "nota": "B abre com estúdio que dinheiro não compra e vira para marca de 1 bilhão; A gasta o subhook explicando a Lululemon e uma pesquisa."
+ },
+ {
+  "par_id": "P146",
+  "escolha": "B",
+  "confianca": 2,
+  "parte_decisiva": "titulo",
+  "pistas": [
+   "T_TITULO_FORTE",
+   "H_CONFLITO",
+   "H_NUMERO_CONCRETO",
+   "K_PROMESSA_ESPECIFICA"
+  ],
+  "nota": "B tem reviravolta no título e no hook (cobrador virou dono, nove fábricas) e CTA que promete enxergar valor. A é colapso do agro."
+ },
+ {
+  "par_id": "P108",
+  "escolha": "A",
+  "confianca": 2,
+  "parte_decisiva": "tema_angulo",
+  "pistas": [
+   "T_ANGULO_POLEMICO",
+   "T_TITULO_FORTE",
+   "H_PROMESSA",
+   "C_SINTESE_MEMORAVEL"
+  ],
+  "nota": "A explora a guerra dos sexos, tema que gera comentários, e fecha com família como estratégia de Estado. B (doramas) é nicho."
+ },
+ {
+  "par_id": "P124",
+  "escolha": "A",
+  "confianca": 1,
+  "parte_decisiva": "nenhuma",
+  "pistas": [
+   "H_PERSONAGEM_COMUM",
+   "S_ENTRA_NA_HISTORIA",
+   "F_MAIS_CURTO"
+  ],
+  "nota": "Quase empate: os dois vão de menino pobre a bilionário. A tem criança de 8 anos no título e é mais curto; B, hook enxuto."
+ },
+ {
+  "par_id": "P125",
+  "escolha": "B",
+  "confianca": 1,
+  "parte_decisiva": "hook",
+  "pistas": [
+   "H_PERSONAGEM_COMUM",
+   "H_NOME_CONHECIDO",
+   "S_ELEVA_APOSTA",
+   "T_TITULO_FORTE"
+  ],
+  "nota": "B tem ex-servente de pedreiro e Google como cliente, subhook com meta de 300 milhões. A divaga no hook. Risco: B tem 733 palavras."
+ },
+ {
+  "par_id": "P048",
+  "escolha": "A",
+  "confianca": 3,
+  "parte_decisiva": "hook",
+  "pistas": [
+   "H_PROMESSA",
+   "S_VIRADA",
+   "S_OUTRO_LENTO",
+   "C_VIRADA_FINAL"
+  ],
+  "nota": "A promete uma decisão absurda da Coca-Cola, vira com o refrigerante rosa no Maranhão e fecha na compra. B abre em 1924, lento."
+ },
+ {
+  "par_id": "P085",
+  "escolha": "A",
+  "confianca": 1,
+  "parte_decisiva": "tema_angulo",
+  "pistas": [
+   "H_NOME_CONHECIDO",
+   "H_PROMESSA",
+   "S_RELEVANCIA",
+   "T_EMOCAO_FORTE"
+  ],
+  "nota": "A joga com medo e privacidade (luz dos óculos, hackers) e hook de vilão. B tem hook mais simples, mas subhook didático. Quase empate."
+ },
+ {
+  "par_id": "P142",
+  "escolha": "B",
+  "confianca": 2,
+  "parte_decisiva": "hook",
+  "pistas": [
+   "H_NUMERO_CONCRETO",
+   "H_CONSEQUENCIA",
+   "C_SINTESE_MEMORAVEL",
+   "K_PROMESSA_ESPECIFICA"
+  ],
+  "nota": "B abre direto com 60 dias e 312 milhões engolindo o grupo e fecha em frase citável sobre caixa. A começa em generalização."
+ },
+ {
+  "par_id": "P219",
+  "escolha": "B",
+  "confianca": 1,
+  "parte_decisiva": "hook",
+  "pistas": [
+   "H_NUMERO_CONCRETO",
+   "H_CONFLITO",
+   "S_ELEVA_APOSTA",
+   "C_CONSEQUENCIA_VOCE"
+  ],
+  "nota": "B tem 57 bilhões contra Shopee e TikTok, subhook com 29 vezes mais e fecho para quem compra e vende. A é novidade sem número."
+ },
+ {
+  "par_id": "P045",
+  "escolha": "B",
+  "confianca": 2,
+  "parte_decisiva": "tema_angulo",
+  "pistas": [
+   "H_CONTRASTE",
+   "T_BRASIL",
+   "S_ELEVA_APOSTA",
+   "C_VIRADA_FINAL"
+  ],
+  "nota": "B enquadra gigante americana saindo e empresa brasileira de café herdando tudo, com 19 bilhões e menos de 2%. A fecha em conselho vago."
+ },
+ {
+  "par_id": "P170",
+  "escolha": "A",
+  "confianca": 1,
+  "parte_decisiva": "hook",
+  "pistas": [
+   "H_CONFLITO",
+   "H_ESTRANHEZA",
+   "H_PERSONAGEM_COMUM",
+   "T_TITULO_FORTE"
+  ],
+  "nota": "A tem estudantes que humilharam laboratórios caros com material do chão, conflito claro. B é bom, mas o hook é mais brando. Aposta fraca."
+ },
+ {
+  "par_id": "P222",
+  "escolha": "B",
+  "confianca": 1,
+  "parte_decisiva": "subhook",
+  "pistas": [
+   "H_VOCE",
+   "S_RELEVANCIA",
+   "S_ENTRA_NA_HISTORIA",
+   "T_EMOCAO_FORTE"
+  ],
+  "nota": "B fala com o espectador e pinta a cena da loja virando clínica e placa de aluga-se. A tem hook curto e números. Quase empate."
+ },
+ {
+  "par_id": "P177",
+  "escolha": "A",
+  "confianca": 2,
+  "parte_decisiva": "tema_angulo",
+  "pistas": [
+   "H_PERSONAGEM_COMUM",
+   "T_ANGULO_POLEMICO",
+   "T_EMOCAO_FORTE",
+   "S_OUTRO_LENTO"
+  ],
+  "nota": "A traz adolescentes gaúchos contra a falha do governo, com 180 mortes na enchente. B abre vago, sobre desperdício, e explica ar-condicionado como aula."
+ },
+ {
+  "par_id": "P014",
+  "escolha": "B",
+  "confianca": 2,
+  "parte_decisiva": "hook",
+  "pistas": [
+   "H_NOME_CONHECIDO",
+   "H_VOCE",
+   "H_CONTRASTE",
+   "C_CONSEQUENCIA_VOCE"
+  ],
+  "nota": "B usa Nívea, 100 milhões e o creme que você passa virando desodorante. A tem boa curiosidade do cheiro, mas empresa desconhecida (Sertrading)."
+ },
+ {
+  "par_id": "P111",
+  "escolha": "A",
+  "confianca": 2,
+  "parte_decisiva": "hook",
+  "pistas": [
+   "H_VOCE",
+   "H_NOME_CONHECIDO",
+   "T_TITULO_FORTE",
+   "C_CONSEQUENCIA_VOCE"
+  ],
+  "nota": "A diz que você veste China e não Prada, título com trocadilho, fecho com US$ 15 contra US$ 300. B tem título genérico."
+ },
+ {
+  "par_id": "P171",
+  "escolha": "A",
+  "confianca": 1,
+  "parte_decisiva": "hook",
+  "pistas": [
+   "H_PERSONAGEM_COMUM",
+   "T_EMOCAO_FORTE",
+   "S_ELEVA_APOSTA",
+   "S_OUTRO_LENTO"
+  ],
+  "nota": "A celebra vitória de meninas nordestinas na Coreia do Sul, orgulho claro. B tem subhook com nome longo de escola e contexto pesado."
+ },
+ {
+  "par_id": "P151",
+  "escolha": "B",
+  "confianca": 2,
+  "parte_decisiva": "titulo",
+  "pistas": [
+   "T_TITULO_FORTE",
+   "H_CONTRASTE",
+   "S_ENTRA_NA_HISTORIA",
+   "C_SINTESE_MEMORAVEL"
+  ],
+  "nota": "B tem paradoxo no título (parou de pagar e salvou) e fecho citável sobre credor. A tem número forte, mas subhook de história da marca."
+ },
+ {
+  "par_id": "P193",
+  "escolha": "B",
+  "confianca": 2,
+  "parte_decisiva": "hook",
+  "pistas": [
+   "H_NOME_CONHECIDO",
+   "H_VOCE",
+   "H_CONSEQUENCIA",
+   "C_CONSEQUENCIA_VOCE"
+  ],
+  "nota": "B fala do iFood no bolso de todos, com R$ 20 a 30 a mais por mês. A mira só autônomos, hook genérico."
+ },
+ {
+  "par_id": "P199",
+  "escolha": "A",
+  "confianca": 2,
+  "parte_decisiva": "hook",
+  "pistas": [
+   "H_SIMPLES",
+   "H_ESTRANHEZA",
+   "H_PROMESSA",
+   "F_MAIS_CURTO"
+  ],
+  "nota": "A abre curto com o lixo da Heinz e promete mudar seu olhar sobre tomate, história quirky. B tem hook de 46 palavras."
+ },
+ {
+  "par_id": "P097",
+  "escolha": "A",
+  "confianca": 1,
+  "parte_decisiva": "nenhuma",
+  "pistas": [
+   "H_NUMERO_CONCRETO",
+   "S_ELEVA_APOSTA",
+   "T_TITULO_FORTE",
+   "F_MAIS_CURTO"
+  ],
+  "nota": "A tem 9 anos, 20 bilhões e 55 km, título numérico e só 208 palavras. B tem hook visual (cascata) e farpa ao Brasil."
+ },
+ {
+  "par_id": "P195",
+  "escolha": "A",
+  "confianca": 1,
+  "parte_decisiva": "hook",
+  "pistas": [
+   "T_FAMOSO",
+   "H_NOME_CONHECIDO",
+   "H_VOCE",
+   "S_ELEVA_APOSTA"
+  ],
+  "nota": "A usa Xuxa, Globo e US$ 1,5 milhão por mês em 1989. B usa Boca Rosa, subhook estrutural sem número. Mesmo molde, A mais forte."
+ },
+ {
+  "par_id": "P157",
+  "escolha": "A",
+  "confianca": 2,
+  "parte_decisiva": "hook",
+  "pistas": [
+   "H_ESTRANHEZA",
+   "H_NOME_CONHECIDO",
+   "S_ENTRA_NA_HISTORIA",
+   "T_BRASIL"
+  ],
+  "nota": "A tem o chinelo esquisito da Seleção, Nike com 10 anos de estudo e preço de R$ 799. B é guerra Nike e Adidas, didática."
+ },
+ {
+  "par_id": "P001",
+  "escolha": "B",
+  "confianca": 2,
+  "parte_decisiva": "titulo",
+  "pistas": [
+   "H_NUMERO_CONCRETO",
+   "H_CONTRASTE",
+   "S_ENTRA_NA_HISTORIA",
+   "C_OUTRO_MORAL_GENERICA"
+  ],
+  "nota": "B abre com vendedor de frango que recusou 1 bilhão, com nome e ano. A é bilionário de padaria e fecha em moral longa."
+ },
+ {
+  "par_id": "P223",
+  "escolha": "A",
+  "confianca": 1,
+  "parte_decisiva": "titulo",
+  "pistas": [
+   "H_SIMPLES",
+   "T_TITULO_FORTE",
+   "T_ANGULO_POLEMICO"
+  ],
+  "nota": "A tem título com Drogasil matando farmácias do bairro e hook curto. B tem contraste e fecho melhor, mas aposta quase sem diferença visível."
+ },
+ {
+  "par_id": "P230",
+  "escolha": "B",
+  "confianca": 2,
+  "parte_decisiva": "hook",
+  "pistas": [
+   "H_CONTRASTE",
+   "S_ELEVA_APOSTA",
+   "C_VIRADA_FINAL",
+   "T_TITULO_FORTE"
+  ],
+  "nota": "B opõe plano ousado e detalhe amargo, com R$ 1,1 trilhão no subhook e PEC de 308 deputados no fim. A promete surpresa vaga."
+ },
+ {
+  "par_id": "P228",
+  "escolha": "A",
+  "confianca": 1,
+  "parte_decisiva": "titulo",
+  "pistas": [
+   "H_NUMERO_CONCRETO",
+   "S_RELEVANCIA",
+   "K_PROMESSA_ESPECIFICA",
+   "T_UTILIDADE"
+  ],
+  "nota": "A tem utilidade direta (afiliados, 300%, sem pagar anúncio) e CTA que entrega material grátis. B é um morreu desmentido logo, com CTA genérico."
+ },
+ {
+  "par_id": "P153",
+  "escolha": "A",
+  "confianca": 2,
+  "parte_decisiva": "hook",
+  "pistas": [
+   "H_NOVIDADE",
+   "H_NUMERO_CONCRETO",
+   "H_ESTRANHEZA",
+   "C_SINTESE_MEMORAVEL"
+  ],
+  "nota": "A tem robô à venda com 13 mil pedidos e o estranho de substituir companhia; fecha sobre solidão. B abre com cena longa."
+ },
+ {
+  "par_id": "P144",
+  "escolha": "A",
+  "confianca": 1,
+  "parte_decisiva": "hook",
+  "pistas": [
+   "H_SIMPLES",
+   "H_CONTRASTE",
+   "T_TITULO_FORTE",
+   "S_ELEVA_APOSTA"
+  ],
+  "nota": "A tem hook simples da cerveja que quase morreu e dívida de R$ 5,5 bilhões, marca de massa. B é Marabraz, mais regional."
+ },
+ {
+  "par_id": "P028",
+  "escolha": "B",
+  "confianca": 2,
+  "parte_decisiva": "tema_angulo",
+  "pistas": [
+   "H_NOME_CONHECIDO",
+   "H_CONFLITO",
+   "T_ANGULO_POLEMICO",
+   "F_MAIS_CURTO"
+  ],
+  "nota": "B coloca Lula e a frase quero crescimento contra a dívida que sobe, direto e curto. A é paradoxo macro, hook longo."
+ },
+ {
+  "par_id": "P067",
+  "escolha": "A",
+  "confianca": 2,
+  "parte_decisiva": "hook",
+  "pistas": [
+   "H_NOME_CONHECIDO",
+   "H_CONFLITO",
+   "C_SINTESE_MEMORAVEL",
+   "K_OUTRO_GENERICO"
+  ],
+  "nota": "A cita Musk, China e Apple, compara com carro popular e fecha em pergunta marcante. B termina em citação do CEO e CTA seco."
+ },
+ {
+  "par_id": "P069",
+  "escolha": "A",
+  "confianca": 2,
+  "parte_decisiva": "hook",
+  "pistas": [
+   "T_UTILIDADE",
+   "H_CONFLITO",
+   "S_RELEVANCIA",
+   "H_SIMPLES"
+  ],
+  "nota": "A é útil e visual: guerra ao seu cabeleireiro, com passo a passo. B é o clichê dos 99% usam errado, vendendo prompts."
+ },
+ {
+  "par_id": "P179",
+  "escolha": "A",
+  "confianca": 2,
+  "parte_decisiva": "hook",
+  "pistas": [
+   "H_ESTRANHEZA",
+   "H_SIMPLES",
+   "S_ENTRA_NA_HISTORIA",
+   "C_OUTRO_MORAL_GENERICA"
+  ],
+  "nota": "A tem seleção de robôs e estudante baiano com nome e Pequim, mais curta. B exagera nos maiores gênios e fecha em moral genérica."
+ },
+ {
+  "par_id": "P161",
+  "escolha": "A",
+  "confianca": 1,
+  "parte_decisiva": "hook",
+  "pistas": [
+   "H_VOCE",
+   "H_CONTRASTE",
+   "T_TITULO_FORTE",
+   "C_SINTESE_MEMORAVEL"
+  ],
+  "nota": "A desafia a crença de que precisa de meses, título com 20 dias, fecho citável. B tem subhook vazio (presta atenção). Quase empate."
+ },
+ {
+  "par_id": "P189",
+  "escolha": "A",
+  "confianca": 2,
+  "parte_decisiva": "hook",
+  "pistas": [
+   "H_CONFLITO",
+   "H_NOME_CONHECIDO",
+   "T_ANGULO_POLEMICO",
+   "C_PERGUNTA"
+  ],
+  "nota": "A coloca China contra o Corolla que perdeu o trono, e a pergunta chinês ou japonês gera comentário. B é nostalgia do Civic."
+ },
+ {
+  "par_id": "P101",
+  "escolha": "A",
+  "confianca": 1,
+  "parte_decisiva": "hook",
+  "pistas": [
+   "H_CONSEQUENCIA",
+   "S_ENTRA_NA_HISTORIA",
+   "C_CONSEQUENCIA_VOCE",
+   "T_BRASIL"
+  ],
+  "nota": "A é concreta (Hangzhou, Zhou de 35 anos) e liga ao Brasil e ao emprego. B é hype de morte das faculdades, mais vago."
+ },
+ {
+  "par_id": "P060",
+  "escolha": "B",
+  "confianca": 1,
+  "parte_decisiva": "subhook",
+  "pistas": [
+   "H_CONFLITO",
+   "H_NOME_CONHECIDO",
+   "S_RELEVANCIA",
+   "H_SIMPLES"
+  ],
+  "nota": "B opõe Google e Claude ao ChatGPT e puxa o espectador (vou cancelar, você também). A tem subhook didático sobre telemarketing."
+ },
+ {
+  "par_id": "P094",
+  "escolha": "A",
+  "confianca": 2,
+  "parte_decisiva": "titulo",
+  "pistas": [
+   "T_TITULO_FORTE",
+   "H_CONTRASTE",
+   "S_VIRADA",
+   "F_MAIS_CURTO"
+  ],
+  "nota": "A tem título de Volkswagen que pagou para virar chinesa e trono perdido após 37 anos. B abre com pergunta didática sobre exportação."
+ },
+ {
+  "par_id": "P027",
+  "escolha": "B",
+  "confianca": 2,
+  "parte_decisiva": "hook",
+  "pistas": [
+   "H_NUMERO_CONCRETO",
+   "H_CONSEQUENCIA",
+   "S_RELEVANCIA",
+   "T_BRASIL"
+  ],
+  "nota": "B declara o maior imposto do mundo, quatro vezes o dos EUA, e lista o que você compra. A promete número secreto sem revelar."
+ },
+ {
+  "par_id": "P191",
+  "escolha": "A",
+  "confianca": 2,
+  "parte_decisiva": "titulo",
+  "pistas": [
+   "T_TITULO_FORTE",
+   "H_VOCE",
+   "S_RELEVANCIA",
+   "C_SINTESE_MEMORAVEL"
+  ],
+  "nota": "A tem título contraintuitivo e subhook que descreve você sumindo da academia enquanto o cartão debita. B tem boa virada, mas hook menos pessoal."
+ },
+ {
+  "par_id": "P065",
+  "escolha": "A",
+  "confianca": 2,
+  "parte_decisiva": "titulo",
+  "pistas": [
+   "H_CONTRASTE",
+   "H_CONFLITO",
+   "T_TITULO_FORTE",
+   "S_VIRADA"
+  ],
+  "nota": "A une rivais (Google, OpenAI, Anthropic) contra a China, com virada competem em tudo, mas agora aliança. B tem título torto e foco em OpenClaw."
+ },
+ {
+  "par_id": "P211",
+  "escolha": "B",
+  "confianca": 2,
+  "parte_decisiva": "titulo",
+  "pistas": [
+   "T_BRASIL",
+   "H_NOME_CONHECIDO",
+   "H_CONTRASTE",
+   "C_SINTESE_MEMORAVEL"
+  ],
+  "nota": "B recusa Nike, Adidas e Reebok e domina com o tênis de pobre brasileiro, fecho citável. A tem título fraco e moral comum."
+ },
+ {
+  "par_id": "P102",
+  "escolha": "B",
+  "confianca": 2,
+  "parte_decisiva": "hook",
+  "pistas": [
+   "H_CONTRASTE",
+   "T_BRASIL",
+   "S_ELEVA_APOSTA",
+   "C_SINTESE_MEMORAVEL"
+  ],
+  "nota": "B contrasta aluno de São Paulo sem celular e aluno de Pequim com IA, ligando ao Brasil. A trata de arte e IA, mais nicho."
+ },
+ {
+  "par_id": "P115",
+  "escolha": "A",
+  "confianca": 2,
+  "parte_decisiva": "hook",
+  "pistas": [
+   "H_NOME_CONHECIDO",
+   "H_CONFLITO",
+   "H_NOVIDADE",
+   "H_SIMPLES"
+  ],
+  "nota": "A abre com Elon Musk espumando de raiva e a Anthropic lançando ferramentas, curto e simples. B é lista genérica de ferramentas para negócios milionários."
+ },
+ {
+  "par_id": "P165",
+  "escolha": "A",
+  "confianca": 1,
+  "parte_decisiva": "hook",
+  "pistas": [
+   "H_CONFLITO",
+   "H_NOME_CONHECIDO",
+   "T_ANGULO_POLEMICO",
+   "C_SINTESE_MEMORAVEL"
+  ],
+  "nota": "A tem Sobral expulsando políticos e humilhando São Paulo e Rio, mais polêmica. B é Trabiju, mesmo molde, boa virada final."
+ },
+ {
+  "par_id": "P071",
+  "escolha": "A",
+  "confianca": 1,
+  "parte_decisiva": "hook",
+  "pistas": [
+   "H_PROMESSA",
+   "H_VOCE",
+   "S_RELEVANCIA",
+   "T_UTILIDADE"
+  ],
+  "nota": "Ambos são anúncio do Pré-MBA. A abre com fórmula militar para decidir e fala com você; B abre com pergunta seca de entrevistador. Aposta fraca."
+ },
+ {
+  "par_id": "P207",
+  "escolha": "A",
+  "confianca": 2,
+  "parte_decisiva": "hook",
+  "pistas": [
+   "T_BRASIL",
+   "H_ESTRANHEZA",
+   "S_RELEVANCIA",
+   "C_SINTESE_MEMORAVEL"
+  ],
+  "nota": "A é um carvão brasileiro que viralizou pela embalagem, familiar a todo churrasqueiro, fecho citável. B é azeite americano com subhook lento."
+ },
+ {
+  "par_id": "P120",
+  "escolha": "A",
+  "confianca": 1,
+  "parte_decisiva": "hook",
+  "pistas": [
+   "H_NOME_CONHECIDO",
+   "H_NUMERO_CONCRETO",
+   "H_VOCE",
+   "S_ENTRA_NA_HISTORIA"
+  ],
+  "nota": "A usa McDonald's, um bilhão e te manipular sem você ver, com cena do drive-thru. B é L'Oréal, mais curta, hook abstrato."
+ },
+ {
+  "par_id": "P043",
+  "escolha": "B",
+  "confianca": 2,
+  "parte_decisiva": "hook",
+  "pistas": [
+   "H_NOVIDADE",
+   "H_CONSEQUENCIA",
+   "S_ELEVA_APOSTA",
+   "C_CONSEQUENCIA_VOCE"
+  ],
+  "nota": "B traz recorde de fuga de milionários, de 25 mil para 46 mil, e fecha em quem fica pagando. A é palestra de Benchimol, abstrata."
+ },
+ {
+  "par_id": "P038",
+  "escolha": "B",
+  "confianca": 2,
+  "parte_decisiva": "hook",
+  "pistas": [
+   "H_VOCE",
+   "T_BRASIL",
+   "S_VIRADA",
+   "C_PERGUNTA"
+  ],
+  "nota": "B liga a guerra ao frete e ao juro que você paga, com virada e pergunta final. A tem hook vago e fecho vazio."
+ },
+ {
+  "par_id": "P080",
+  "escolha": "A",
+  "confianca": 1,
+  "parte_decisiva": "hook",
+  "pistas": [
+   "H_VOCE",
+   "T_EMOCAO_FORTE",
+   "H_SIMPLES",
+   "C_SINTESE_MEMORAVEL"
+  ],
+  "nota": "A fala do pai falecido com você, hook simples e emotivo, e fecha com a IA que acerta demais. B fecha em alerta genérico."
+ },
+ {
+  "par_id": "P057",
+  "escolha": "A",
+  "confianca": 1,
+  "parte_decisiva": "hook",
+  "pistas": [
+   "H_NOME_CONHECIDO",
+   "H_NOVIDADE",
+   "H_CONSEQUENCIA"
+  ],
+  "nota": "Ambos vendem o Pré-MBA. A abre com Musk e demissão de todos os engenheiros, mais amplo; B abre com citação de Karpathy, nicho."
+ },
+ {
+  "par_id": "P143",
+  "escolha": "B",
+  "confianca": 2,
+  "parte_decisiva": "hook",
+  "pistas": [
+   "H_CONTRASTE",
+   "S_ENTRA_NA_HISTORIA",
+   "S_ELEVA_APOSTA",
+   "C_SINTESE_MEMORAVEL"
+  ],
+  "nota": "B contrasta dívida e mentira, com buraco de R$ 20 bilhões escondido e fecho sobre confiança. A tem boa ironia, subhook genérico."
+ },
+ {
+  "par_id": "P007",
+  "escolha": "B",
+  "confianca": 3,
+  "parte_decisiva": "hook",
+  "pistas": [
+   "H_CONTRASTE",
+   "H_NOME_CONHECIDO",
+   "H_PERSONAGEM_COMUM",
+   "H_ESTRANHEZA"
+  ],
+  "nota": "B opõe Claro, Vivo e Oi a um ex-analfabeto com antenas de sucata e 4 bilhões. A tem subhook de currículo (ITA)."
+ },
+ {
+  "par_id": "P023",
+  "escolha": "A",
+  "confianca": 2,
+  "parte_decisiva": "titulo",
+  "pistas": [
+   "T_TITULO_FORTE",
+   "H_CONTRASTE",
+   "T_EMOCAO_FORTE",
+   "S_ENTRA_NA_HISTORIA"
+  ],
+  "nota": "A tem título e hook de injustiça (gênio destruído por inveja) e conta Chagas em 1907. B desvia para Cuba e americanos."
+ },
+ {
+  "par_id": "P159",
+  "escolha": "B",
+  "confianca": 1,
+  "parte_decisiva": "titulo",
+  "pistas": [
+   "T_FAMOSO",
+   "H_NOME_CONHECIDO",
+   "H_SIMPLES",
+   "S_VIRADA"
+  ],
+  "nota": "B usa Neymar, hook curto e virada (não é só jogador, é marca). A é transferência de jovem sem nome. B é mais longo."
+ },
+ {
+  "par_id": "P138",
+  "escolha": "B",
+  "confianca": 1,
+  "parte_decisiva": "hook",
+  "pistas": [
+   "H_ESTRANHEZA",
+   "H_SIMPLES",
+   "S_ELEVA_APOSTA",
+   "T_TITULO_FORTE"
+  ],
+  "nota": "B tem hook curto e estranho (cafeteira detecta peixe contaminado), ligado ao desastre do petróleo. A tem emoção contra o governo. Quase empate."
+ }
+]

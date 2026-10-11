@@ -1,0 +1,95 @@
+## Métricas por conta e rede (vídeos analisáveis sem repost)
+| conta | rede | n | % acerto da casa (coef>3 e 10 mil+ views) | % com 10 mil+ views | % coef>3 | % coef>=1,5 | coef mediano | views medianas | p90/p50 das views | views medianas: 1º tri -> último tri | % acerto da casa descoberta -> validação |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| Izabela Anholett | IG | 220 | 33% | 99% | 33% | 54% | 1,69 | 70695 | 7,54 | 2026Q1 24200 -> 2026Q3 99652 | 34% -> 30% |
+| Izabela Anholett | TT | 212 | 28% | 71% | 28% | 44% | 1,21 | 18165 | 13,22 | 2026Q1 16371 -> 2026Q3 24393 | 27% -> 31% |
+| Izabela Anholett | YT | 219 | 46% | 66% | 50% | 69% | 3,03 | 25518 | 8,44 | 2026Q1 1230 -> 2026Q3 52891 | 43% -> 49% |
+| Lincoln Fracari | IG | 135 | 25% | 81% | 25% | 46% | 1,35 | 19715 | 4,68 | 2026Q1 6696 -> 2026Q3 23925 | 26% -> 24% |
+| Lincoln Fracari | TT | 137 | 43% | 53% | 44% | 66% | 2,43 | 11499 | 10,17 | 2026Q1 1826 -> 2026Q3 21395 | 26% -> 57% |
+| Lincoln Fracari | YT | 170 | 24% | 78% | 25% | 46% | 1,37 | 18586 | 4,50 | 2026Q1 1364 -> 2026Q3 20265 | 30% -> 14% |
+| Marcio Grazino | IG | 147 | 33% | 59% | 33% | 42% | 1,12 | 11806 | 20,61 | 2026Q1 5569 -> 2026Q3 14242 | 38% -> 26% |
+| Marcio Grazino | TT | 147 | 41% | 41% | 41% | 45% | 0,89 | 3452 | 41,46 | 2026Q1 4625 -> 2026Q3 4583 | 37% -> 45% |
+| Marcio Grazino | YT | 144 | 23% | 53% | 23% | 40% | 1,06 | 10589 | 7,21 | 2026Q1 6319 -> 2026Q3 14527 | 17% -> 29% |
+| Leonardo Nogueira | IG | 52 | 33% | 56% | 33% | 38% | 1,00 | 11536 | 18,84 | 2026Q1 9351 -> 2026Q3 7173 | 41% -> 24% |
+| Leonardo Nogueira | TT | 46 | 41% | 41% | 41% | 48% | 1,33 | 4711 | 67,09 | 2026Q1 1559 -> 2026Q3 5390 | 33% -> 48% |
+| Leonardo Nogueira | YT | 34 | 3% | 3% | 6% | 12% | 1,10 | 1185 | 1,23 | 2026Q1 1014 -> 2026Q3 1213 | 6% -> 0% |
+| Dilson Peres | IG | 112 | 32% | 95% | 32% | 42% | 1,20 | 32480 | 14,83 | 2026Q1 21980 -> 2026Q3 33674 | 40% -> 19% |
+| Dilson Peres | TT | 81 | 30% | 49% | 30% | 40% | 0,72 | 9983 | 26,70 | 2026Q1 17478 -> 2026Q3 4218 | 31% -> 21% |
+| Dilson Peres | YT | 87 | 41% | 92% | 41% | 57% | 1,97 | 46756 | 8,52 | 2026Q1 19073 -> 2026Q3 57577 | 47% -> 24% |
+| Marcos Pelozato | IG | 135 | 19% | 44% | 19% | 33% | 1,03 | 9140 | 6,41 | 2026Q2 9140 -> 2026Q3 9260 | 29% -> 15% |
+| Marcos Pelozato | TT | 111 | 6% | 6% | 23% | 44% | 1,09 | 884 | 5,46 | 2026Q2 760 -> 2026Q3 928 | 8% -> 6% |
+| Marcos Pelozato | YT | 120 | 29% | 29% | 33% | 46% | 1,26 | 3802 | 30,18 | 2026Q2 2709 -> 2026Q3 4562 | 15% -> 35% |
+| Rafael Rodrigues | IG | 216 | 32% | 42% | 34% | 53% | 1,66 | 7109 | 25,03 | 2026Q1 3252 -> 2026Q3 8779 | 31% -> 34% |
+| Rafael Rodrigues | TT | 209 | 26% | 26% | 37% | 51% | 1,55 | 1915 | 36,18 | 2026Q1 796 -> 2026Q3 4128 | 21% -> 34% |
+| Rafael Rodrigues | YT | 210 | 23% | 25% | 30% | 44% | 1,16 | 2160 | 13,68 | 2026Q1 1065 -> 2026Q3 1746 | 31% -> 11% |
+| Fernando Pereira | IG | 164 | 13% | 21% | 13% | 23% | 0,83 | 5429 | 5,64 | 2026Q1 9227 -> 2026Q3 3547 | 15% -> 10% |
+| Fernando Pereira | TT | 141 | 11% | 11% | 23% | 42% | 0,93 | 1565 | 7,33 | 2026Q1 3855 -> 2026Q3 2626 | 13% -> 8% |
+| Fernando Pereira | YT | 66 | 15% | 15% | 18% | 30% | 0,81 | 2273 | 6,24 | 2026Q1 3734 -> 2026Q3 1365 | 15% -> - |
+| Franklin Tomich | IG | 135 | 30% | 79% | 30% | 42% | 1,19 | 19953 | 8,63 | 2026Q2 17607 -> 2026Q3 22098 | 45% -> 19% |
+| Franklin Tomich | YT | 114 | 9% | 9% | 23% | 37% | 1,13 | 1423 | 5,65 | 2026Q2 1373 -> 2026Q3 1429 | 12% -> 6% |
+| Renato Mendes | IG | 55 | 25% | 25% | 27% | 38% | 1,27 | 3033 | 26,67 | 2026Q3 3033 -> 2026Q3 3033 | - -> 25% |
+| Renato Mendes | TT | 55 | 27% | 27% | 35% | 45% | 1,34 | 1200 | 132,24 | 2026Q3 1200 -> 2026Q3 1200 | - -> 27% |
+| Renato Mendes | YT | 54 | 0% | 0% | 0% | 6% | 1,06 | 956 | 1,25 | 2026Q3 956 -> 2026Q3 956 | - -> 0% |
+| Cadu Neiva | IG | 91 | 30% | 88% | 30% | 49% | 1,38 | 55363 | 5,43 | 2026Q1 4480 -> 2026Q3 55363 | 46% -> 13% |
+| Cadu Neiva | TT | 59 | 15% | 63% | 15% | 29% | 0,72 | 14667 | 8,06 | 2026Q1 1158 -> 2026Q3 13818 | 25% -> 14% |
+| Cadu Neiva | YT | 58 | 3% | 3% | 9% | 22% | 1,00 | 1115 | 2,05 | 2026Q2 1822 -> 2026Q3 1115 | 0% -> 4% |
+| Rodrigo Waughan | IG | 130 | 5% | 5% | 5% | 13% | 0,80 | 2000 | 2,27 | 2026Q1 3234 -> 2026Q3 1453 | 10% -> 1% |
+| Rodrigo Waughan | TT | 128 | 3% | 3% | 8% | 20% | 0,90 | 547 | 2,29 | 2026Q1 675 -> 2026Q3 508 | 3% -> 3% |
+| Rodrigo Waughan | YT | 120 | 3% | 3% | 12% | 20% | 0,94 | 892 | 2,94 | 2026Q1 911 -> 2026Q3 792 | 7% -> 0% |
+| Thiago Franco | IG | 139 | 16% | 40% | 16% | 32% | 0,87 | 7488 | 5,80 | 2026Q1 11061 -> 2026Q3 6554 | 19% -> 0% |
+| Thiago Franco | TT | 127 | 4% | 4% | 13% | 26% | 1,01 | 751 | 3,92 | 2026Q1 759 -> 2026Q3 6 | 4% -> 0% |
+| Thiago Franco | YT | 112 | 3% | 3% | 6% | 18% | 0,97 | 1090 | 2,67 | 2026Q1 1367 -> 2026Q3 973 | 3% -> 0% |
+| Manoel Victor | IG | 82 | 7% | 7% | 9% | 15% | 0,84 | 1808 | 1,87 | 2026Q1 2093 -> 2026Q2 1139 | 7% -> - |
+| Manoel Victor | TT | 70 | 4% | 4% | 13% | 37% | 1,06 | 755 | 3,11 | 2026Q1 784 -> 2026Q2 729 | 4% -> - |
+| Manoel Victor | YT | 79 | 0% | 0% | 3% | 11% | 0,68 | 674 | 2,47 | 2026Q1 898 -> 2026Q2 502 | 0% -> - |
+| João Paulo Albuquerque | IG | 59 | 8% | 8% | 10% | 27% | 1,06 | 2546 | 2,41 | 2026Q2 2563 -> 2026Q3 2461 | 0% -> 10% |
+| João Paulo Albuquerque | TT | 58 | 10% | 10% | 21% | 41% | 1,22 | 777 | 11,97 | 2026Q2 753 -> 2026Q3 812 | 13% -> 10% |
+| João Paulo Albuquerque | YT | 50 | 0% | 0% | 12% | 32% | 1,00 | 9 | 3,56 | 2026Q2 10 -> 2026Q3 8 | 0% -> 0% |
+| Pedro Elero | IG | 68 | 18% | 18% | 19% | 31% | 1,12 | 2204 | 33,73 | 2026Q2 2023 -> 2026Q3 2290 | 0% -> 20% |
+| Pedro Elero | TT | 68 | 16% | 16% | 28% | 41% | 1,17 | 588 | 93,41 | 2026Q2 435 -> 2026Q3 635 | 0% -> 18% |
+| Pedro Elero | YT | 64 | 17% | 17% | 27% | 48% | 1,44 | 1987 | 39,62 | 2026Q2 1107 -> 2026Q3 2542 | 0% -> 20% |
+
+## Perfil do conteúdo (por roteiro) contra a casa: % de roteiros com cada marca (casa entre parênteses)
+| marca (rede que favorece) | casa | Izabela Anholett | Lincoln Fracari | Marcio Grazino | Leonardo Nogueira | Dilson Peres | Marcos Pelozato | Rafael Rodrigues | Fernando Pereira | Franklin Tomich | Renato Mendes | Cadu Neiva | Rodrigo Waughan | Thiago Franco | Manoel Victor | João Paulo Albuquerque | Pedro Elero |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| payoff_qualquer=orgulho (IG/TT) | 15% | 2%▽ | 9% | 44%▲ | 2%▽ | 2%▽ | 2%▽ | 56%▲ | 4%▽ | 6%▽ | 7%▽ | 74%▲ | 7%▽ | 5%▽ | 0%▽ | 7%▽ | 9% |
+| antagonista=gigante (IG/TT) | 7% | 5% | 5% | 8% | 2%▽ | 3%▽ | 5% | 6% | 2%▽ | 16%▲ | 5% | 13%▲ | 7% | 8% | 5% | 12% | 13%▲ |
+| funcao_subhook=eleva_aposta (IG/TT) | 14% | 20% | 13% | 13% | 23%▲ | 12% | 15% | 13% | 24%▲ | 10% | 18% | 5%▽ | 12% | 27%▲ | 18% | 5%▽ | 12% |
+| promessa_hook=novidade (IG/TT) | 13% | 48%▲ | 22%▲ | 5%▽ | 13% | 4%▽ | 4%▽ | 4%▽ | 6%▽ | 1%▽ | 18% | 3%▽ | 2%▽ | 8% | 24%▲ | 5%▽ | 4%▽ |
+| recorte=brasil_x_estrangeiro (IG/TT) | 21% | 19% | 46%▲ | 22% | 23% | 14% | 16% | 18% | 39%▲ | 25% | 29% | 22% | 8%▽ | 23% | 8%▽ | 29% | 16% |
+| terr=Estudantes brasileiros que inventaram soluções premiadas (IG/TT) | 7% | 1%▽ | 0%▽ | 31%▲ | 0%▽ | 0%▽ | 0%▽ | 61%▲ | 0%▽ | 0%▽ | 0%▽ | 13%▲ | 0%▽ | 0%▽ | 0%▽ | 0%▽ | 0%▽ |
+| hook_nome (TT) | 75% | 82% | 85% | 56% | 81% | 82% | 77% | 71% | 71% | 93% | 78% | 82% | 77% | 75% | 80% | 68% | 79% |
+| hook_mega (TT) | 27% | 43%▲ | 11%▽ | 14% | 46%▲ | 38% | 22% | 13%▽ | 21% | 23% | 51%▲ | 7%▽ | 35% | 43%▲ | 41%▲ | 29% | 40% |
+| hook_eua (TT) | 4% | 2% | 7% | 3% | 6% | 3% | 4% | 3% | 22%▲ | 3% | 0%▽ | 3% | 2%▽ | 1%▽ | 0%▽ | 3% | 0%▽ |
+| hook_moeda (YT) | 15% | 5%▽ | 9% | 13% | 10% | 32%▲ | 34%▲ | 6%▽ | 15% | 24%▲ | 4%▽ | 25%▲ | 15% | 18% | 16% | 29%▲ | 6%▽ |
+| recorte=estrangeiro (YT) | 38% | 71%▲ | 52% | 19% | 65%▲ | 12%▽ | 14%▽ | 20% | 26% | 13%▽ | 45% | 6%▽ | 58%▲ | 16%▽ | 80%▲ | 46% | 41% |
+| tipo_conclusao=virada_final (YT) | 6% | 1%▽ | 3% | 8% | 13%▲ | 9% | 4% | 5% | 1%▽ | 9% | 5% | 6% | 9% | 3%▽ | 1%▽ | 29%▲ | 4% |
+| funcao_subhook=volta_tempo (YT) | 16% | 2%▽ | 8% | 21% | 15% | 10% | 22% | 8% | 15% | 38%▲ | 13% | 29%▲ | 29%▲ | 11% | 10% | 29%▲ | 15% |
+| payoff=queda (YT) | 6% | 0%▽ | 1%▽ | 5% | 8% | 4% | 29%▲ | 2%▽ | 7% | 32%▲ | 7% | 0%▽ | 14%▲ | 8% | 2%▽ | 5% | 4% |
+| protagonista=empresa (YT) | 33% | 13%▽ | 12%▽ | 24% | 56%▲ | 46% | 66%▲ | 12%▽ | 8%▽ | 83%▲ | 69%▲ | 25% | 58%▲ | 48% | 51%▲ | 39% | 49% |
+| antagonista=problema (contra TT) | 25% | 22% | 15% | 46%▲ | 15% | 2%▽ | 53%▲ | 39%▲ | 21% | 23% | 9%▽ | 26% | 22% | 12%▽ | 19% | 20% | 18% |
+| terr=Segredos de marcas globais como Starbucks e Red Bull (contra TT) | 5% | 0%▽ | 1%▽ | 3% | 2%▽ | 0%▽ | 2%▽ | 1%▽ | 1%▽ | 0%▽ | 36%▲ | 5% | 0%▽ | 5% | 19%▲ | 22%▲ | 31%▲ |
+| rot_lt300 (contra TT) | 14% | 42%▲ | 24%▲ | 2%▽ | 35%▲ | 22%▲ | 1%▽ | 14% | 6%▽ | 0%▽ | 2%▽ | 14% | 16% | 15% | 60%▲ | 3%▽ | 7% |
+| hook_china (todas) | 12% | 12% | 88%▲ | 3%▽ | 10% | 2%▽ | 2%▽ | 3%▽ | 12% | 8% | 11% | 3%▽ | 0%▽ | 5%▽ | 1%▽ | 3%▽ | 3%▽ |
+| protagonista=espectador (contra todas) | 7% | 15%▲ | 2%▽ | 0%▽ | 2%▽ | 20%▲ | 7% | 3%▽ | 13%▲ | 0%▽ | 0%▽ | 0%▽ | 2%▽ | 10% | 2%▽ | 0%▽ | 4% |
+| funcao_subhook=puxa_espectador (contra todas) | 7% | 13%▲ | 5% | 4% | 6% | 9% | 9% | 6% | 7% | 2%▽ | 5% | 8% | 6% | 10% | 12% | 0%▽ | 7% |
+| palavras (mediana) | 386 | 317 | 369 | 393 | 322 | 390 | 414 | 363 | 412 | 426 | 405 | 386 | 367 | 378 | 275 | 396 | 392 |
+| duração s (mediana) | 124 | 99 | 124 | 116 | 92 | 112 | 123 | 145 | 123 | 145 | 126 | 162 | 138 | 105 | 88 | 125 | 144 |
+
+## Payoff, protagonista, recorte e território dominantes
+- **Izabela Anholett** (221 roteiros): payoff futuro 48%, vantagem 18%, alerta 17%; protagonista tecnologia 55%, espectador 15%; recorte estrangeiro 71%, brasil_x_estrangeiro 19%; promessa novidade 48%, porque_como 16%; território IA no dia a dia: ferramentas, vigilância, China 59%, Pré-MBA: ChatGPT, novas IAs e empregos 37%, Robôs domésticos e máquinas controladas pela mente 2%
+- **Lincoln Fracari** (179 roteiros): payoff futuro 24%, bastidor 16%, alerta 15%; protagonista pais 56%, tecnologia 14%; recorte estrangeiro 52%, brasil_x_estrangeiro 46%; promessa porque_como 39%, novidade 22%; território China humilhando o mundo com robôs e tecnologia 49%, Costumes, proibições e planos da China 40%, Carros chineses BYD e Geely dominando o Brasil 7%
+- **Marcio Grazino** (147 roteiros): payoff inspiracao 30%, superacao 13%, orgulho 12%; protagonista anonimo 37%, empresa 24%; recorte brasil 59%, brasil_x_estrangeiro 22%; promessa porque_como 70%, tese 7%; território Inovação verde e tecnologia do Nordeste 31%, Estudantes brasileiros que inventaram soluções premiadas 31%, De vendedor humilde a dono de império 7%
+- **Leonardo Nogueira** (52 roteiros): payoff bastidor 23%, futuro 17%, sacada 13%; protagonista empresa 56%, tecnologia 23%; recorte estrangeiro 65%, brasil_x_estrangeiro 23%; promessa porque_como 60%, novidade 13%; território Carros de luxo e montadoras clássicas 62%, Carros chineses BYD e Geely dominando o Brasil 21%, Fundadores que venderam empresas por milhões 4%
+- **Dilson Peres** (113 roteiros): payoff bastidor 45%, alerta 21%, vantagem 13%; protagonista empresa 46%, famoso 20%; recorte brasil 74%, brasil_x_estrangeiro 14%; promessa porque_como 55%, alerta 18%; território Empresas que venceram o governo no imposto 88%, Impostos por trás de fortunas de famosos 3%, Marcas da infância que sumiram 2%
+- **Marcos Pelozato** (134 roteiros): payoff queda 29%, alerta 19%, bastidor 11%; protagonista empresa 66%, famoso 11%; recorte brasil 70%, brasil_x_estrangeiro 16%; promessa porque_como 43%, desfecho 22%; território Varejistas brasileiras quebrando com dívidas bilionárias 57%, Dívida pública e governo empobrecendo o brasileiro 7%, Empresas que venceram o governo no imposto 7%
+- **Rafael Rodrigues** (217 roteiros): payoff inspiracao 41%, orgulho 22%, superacao 10%; protagonista grupo 32%, anonimo 31%; recorte brasil 63%, estrangeiro 20%; promessa porque_como 62%, tese 12%; território Estudantes brasileiros que inventaram soluções premiadas 61%, Fundadores que venderam empresas por milhões 10%, Erros de comunicação e como falar melhor 9%
+- **Fernando Pereira** (163 roteiros): payoff alerta 37%, bastidor 17%, revolta 17%; protagonista pais 39%, famoso 27%; recorte brasil_x_estrangeiro 39%, brasil 35%; promessa porque_como 31%, alerta 26%; território Dívida pública e governo empobrecendo o brasileiro 43%, Guerra, petróleo e EUA x China no seu bolso 36%, Fundadores que venderam empresas por milhões 5%
+- **Franklin Tomich** (133 roteiros): payoff queda 32%, bastidor 18%, nostalgia 15%; protagonista empresa 83%, famoso 9%; recorte brasil 62%, brasil_x_estrangeiro 25%; promessa porque_como 65%, desfecho 20%; território A decisão que salvou ou afundou uma gigante brasileira 42%, Marcas da infância que sumiram 31%, Marcas brasileiras de comida vendidas por bilhões 14%
+- **Renato Mendes** (55 roteiros): payoff sacada 36%, bastidor 18%, disputa 9%; protagonista empresa 69%, grupo 11%; recorte estrangeiro 45%, brasil_x_estrangeiro 29%; promessa porque_como 51%, novidade 18%; território Segredos de marcas globais como Starbucks e Red Bull 36%, Carros chineses BYD e Geely dominando o Brasil 20%, Apple, iPhone e suas jogadas de venda 13%
+- **Cadu Neiva** (87 roteiros): payoff orgulho 38%, superacao 21%, sacada 14%; protagonista anonimo 29%, empresa 25%; recorte brasil 72%, brasil_x_estrangeiro 22%; promessa porque_como 64%, comparacao 13%; território Empresários nordestinos que começaram do zero 45%, Inovação verde e tecnologia do Nordeste 23%, Estudantes brasileiros que inventaram soluções premiadas 13%
+- **Rodrigo Waughan** (130 roteiros): payoff sacada 34%, queda 14%, superacao 14%; protagonista empresa 58%, famoso 19%; recorte estrangeiro 58%, brasil 35%; promessa porque_como 75%, desfecho 8%; território Jogadas de marketing de produtos e lojas 68%, De vendedor humilde a dono de império 10%, Fundadores que venderam empresas por milhões 6%
+- **Thiago Franco** (155 roteiros): payoff alerta 17%, sacada 16%, bastidor 15%; protagonista empresa 48%, famoso 19%; recorte brasil 61%, brasil_x_estrangeiro 23%; promessa porque_como 50%, tese 18%; território Guerra dos marketplaces e o fim da loja física 67%, Fundadores que venderam empresas por milhões 6%, De vendedor humilde a dono de império 6%
+- **Manoel Victor** (83 roteiros): payoff sacada 23%, futuro 17%, alerta 14%; protagonista empresa 51%, famoso 19%; recorte estrangeiro 80%, brasil 12%; promessa porque_como 41%, novidade 24%; território Pré-MBA: ChatGPT, novas IAs e empregos 41%, Segredos de marcas globais como Starbucks e Red Bull 19%, Carros de luxo e montadoras clássicas 10%
+- **João Paulo Albuquerque** (59 roteiros): payoff sacada 27%, superacao 25%, bastidor 10%; protagonista empresa 39%, anonimo 29%; recorte estrangeiro 46%, brasil_x_estrangeiro 29%; promessa porque_como 73%, desfecho 7%; território Segredos de marcas globais como Starbucks e Red Bull 22%, Fundadores que venderam empresas por milhões 20%, Marcas brasileiras de comida vendidas por bilhões 12%
+- **Pedro Elero** (68 roteiros): payoff sacada 38%, bastidor 19%, virada 6%; protagonista empresa 49%, famoso 21%; recorte brasil 43%, estrangeiro 41%; promessa porque_como 60%, tese 13%; território Copa, Seleção e dinheiro no futebol 37%, Segredos de marcas globais como Starbucks e Red Bull 31%, De vendedor humilde a dono de império 4%

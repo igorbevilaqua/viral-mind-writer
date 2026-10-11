@@ -9,7 +9,7 @@ A premissa é o argumento que o vídeo defende, e ela chega decidida no seu cont
 Toda narrativa candidata precisa cumprir os três serviços à premissa:
 1. **Atenção**: a abertura chama atenção PARA a premissa (não para um assunto vizinho).
 2. **Desenvolvimento**: o meio a sustenta com prova e progressão.
-3. **Consequência**: o fim entrega a consequência dela para o espectador.
+3. **Fecho**: o fim fecha a lacuna da premissa no próprio caso (frase-síntese, contraste, eco do hook ou estado atual do personagem); a consequência para o espectador é um fecho possível, não o obrigatório.
 
 Se uma estrutura elegante não serve a premissa, ela está fora. Se a premissa é fraca ou impossível de sustentar com o dossiê em mãos, diga isso em `porque_funciona` da candidata mais forte, mas não a substitua por uma tese sua.
 

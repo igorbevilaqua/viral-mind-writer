@@ -1,0 +1,1601 @@
+[
+ {
+  "cliente": "Izabela Anholett",
+  "plataforma": "Instagram",
+  "n": 164,
+  "ajuda": [
+   {
+    "n": "me segue aqui",
+    "com": 24,
+    "a": 0.4583333333333333,
+    "b": 0.22142857142857142,
+    "d": 0.2369047619047619
+   },
+   {
+    "n": "todo dia / todos os dias",
+    "com": 62,
+    "a": 0.3709677419354839,
+    "b": 0.18627450980392157,
+    "d": 0.1846932321315623
+   },
+   {
+    "n": "eu te mostro / revelo / trago",
+    "com": 78,
+    "a": 0.32051282051282054,
+    "b": 0.19767441860465115,
+    "d": 0.12283840190816939
+   }
+  ],
+  "atrapalha": [
+   {
+    "n": "sem apresentação",
+    "com": 49,
+    "a": 0.16326530612244897,
+    "b": 0.2956521739130435,
+    "d": -0.13238686779059453
+   },
+   {
+    "n": "pedido extra (comenta, compartilha, salva)",
+    "com": 35,
+    "a": 0.05714285714285714,
+    "b": 0.31007751937984496,
+    "d": -0.2529346622369878
+   },
+   {
+    "n": "mais conteúdos como esse",
+    "com": 10,
+    "a": 0,
+    "b": 0.2727272727272727,
+    "d": -0.2727272727272727
+   }
+  ],
+  "top": [
+   {
+    "texto": "Se você quer ficar por dentro de como a guerra pela IA vai mudar o seu trabalho e seu dinheiro antes que todo mundo perceba, bora lá, segue meu perfil!",
+    "p_seg": 1,
+    "seg_por_mil": 28.981783002651785,
+    "coef": 11.76,
+    "link": "https://www.instagram.com/reel/DZFKODih104"
+   },
+   {
+    "texto": "Eu sou Isabela Inoletti e se você quer acompanhar cada avanço de ar que pode impactar a sua vida, explicado aqui em português, simples pra você, segue meu perfil agora.",
+    "p_seg": 0.994,
+    "seg_por_mil": 23.762058614605532,
+    "coef": 3.58,
+    "link": "https://www.instagram.com/reel/DYPFl91hdGT"
+   },
+   {
+    "texto": "Eu sou Izabela Ionoletti, todo dia eu te mostro as novidades mais incríveis da tecnologia que tá dominando o mundo. Então me segue para não perder o próximo vídeo.",
+    "p_seg": 0.988,
+    "seg_por_mil": 22.26874797814235,
+    "coef": 30.19,
+    "link": "https://www.instagram.com/reel/DafSJJZhMXs"
+   }
+  ],
+  "pior": [
+   {
+    "texto": "Eu sou Isabela Inoletti e todos os dias eu te mostro as novidades da IA pra você se manter atualizado. Então, já segue meu perfil pra não ficar pra trás.",
+    "p_seg": 0,
+    "seg_por_mil": 0.05892057506481264
+   },
+   {
+    "texto": "Meu nome é Izabela Anholett e se você quer estar sempre por dentro das novidades da IA que estão revolucionando o mundo, já segue o meu perfil pra não perder nada.",
+    "p_seg": 0.006,
+    "seg_por_mil": 0.10655301012253596
+   }
+  ]
+ },
+ {
+  "cliente": "Rodrigo Waughan",
+  "plataforma": "Instagram",
+  "n": 111,
+  "ajuda": [
+   {
+    "n": "me segue aqui",
+    "com": 8,
+    "a": 0.375,
+    "b": 0.24271844660194175,
+    "d": 0.13228155339805825
+   },
+   {
+    "n": "agora",
+    "com": 22,
+    "a": 0.2727272727272727,
+    "b": 0.24719101123595505,
+    "d": 0.025536261491317658
+   },
+   {
+    "n": "todo dia / todos os dias",
+    "com": 15,
+    "a": 0.26666666666666666,
+    "b": 0.25,
+    "d": 0.016666666666666663
+   }
+  ],
+  "atrapalha": [
+   {
+    "n": "para não perder o próximo",
+    "com": 35,
+    "a": 0.22857142857142856,
+    "b": 0.2631578947368421,
+    "d": -0.034586466165413526
+   },
+   {
+    "n": "credencial na apresentação",
+    "com": 68,
+    "a": 0.23529411764705882,
+    "b": 0.27906976744186046,
+    "d": -0.04377564979480164
+   },
+   {
+    "n": "histórias",
+    "com": 14,
+    "a": 0.14285714285714285,
+    "b": 0.26804123711340205,
+    "d": -0.1251840942562592
+   }
+  ],
+  "top": [
+   {
+    "texto": "Sou Rodrigo Vaughan de Lemos e se você quiser conhecer as estratégias responsáveis por negócios multimilionários, já segue meu perfil.",
+    "p_seg": 1,
+    "seg_por_mil": 85.53034947884733,
+    "coef": 1.07,
+    "link": "https://www.instagram.com/reel/DVs8GX3AOE3"
+   },
+   {
+    "texto": "Eu sou Rodrigo Volguem de Lemos e analiso diariamente as estratégias das grandes empresas, sejam elas boas ou ruins. Então me segue para não perder a próxima.",
+    "p_seg": 0.991,
+    "seg_por_mil": 34.94709842898365,
+    "coef": 0.97,
+    "link": "https://www.instagram.com/reel/DW_kkVHDwmz"
+   },
+   {
+    "texto": "já segue meu perfil para não perder o próximo vídeo.",
+    "p_seg": 0.982,
+    "seg_por_mil": 30.283710551482308,
+    "coef": 0.99,
+    "link": "https://www.instagram.com/reel/DWQ-vIHET83"
+   }
+  ],
+  "pior": [
+   {
+    "texto": "Eu sou Rodrigo Vaughan de Lemos, presidente do Grupo Gérbera+, e diariamente eu te trago as melhores estratégias do Brasil e do mundo. Se gostou dessa história, me segue para a próxima.",
+    "p_seg": 0.086,
+    "seg_por_mil": 0
+   },
+   {
+    "texto": "Sou Rodrigo Vaughan de Lemos, e aqui onde os bastidores das maiores empresas do Brasil viram histórias. Segue o perfil para continuar por dentro de mais uma.",
+    "p_seg": 0.086,
+    "seg_por_mil": 0
+   }
+  ]
+ },
+ {
+  "cliente": "Marcio Grazino",
+  "plataforma": "Instagram",
+  "n": 111,
+  "ajuda": [
+   {
+    "n": "histórias",
+    "com": 21,
+    "a": 0.38095238095238093,
+    "b": 0.23333333333333334,
+    "d": 0.1476190476190476
+   },
+   {
+    "n": "eu te mostro / revelo / trago",
+    "com": 68,
+    "a": 0.3088235294117647,
+    "b": 0.18604651162790697,
+    "d": 0.12277701778385774
+   },
+   {
+    "n": "para não perder o próximo",
+    "com": 56,
+    "a": 0.32142857142857145,
+    "b": 0.2,
+    "d": 0.12142857142857144
+   }
+  ],
+  "atrapalha": [
+   {
+    "n": "estratégias",
+    "com": 27,
+    "a": 0.2222222222222222,
+    "b": 0.27380952380952384,
+    "d": -0.051587301587301626
+   },
+   {
+    "n": "promessa amarrada ao assunto do vídeo",
+    "com": 44,
+    "a": 0.18181818181818182,
+    "b": 0.31343283582089554,
+    "d": -0.13161465400271372
+   },
+   {
+    "n": "segue o meu perfil",
+    "com": 29,
+    "a": 0.10344827586206896,
+    "b": 0.3170731707317073,
+    "d": -0.21362489486963837
+   }
+  ],
+  "top": [
+   {
+    "texto": "Eu sou Márcio Grazino e eu te mostro as inovações que estão mudando o nosso planeta. Então me segue para não perder a próxima.",
+    "p_seg": 1,
+    "seg_por_mil": 41.180671268745535,
+    "coef": 11.92,
+    "link": "https://www.instagram.com/reel/DXAXL3mEYB1"
+   },
+   {
+    "texto": "Eu sou Márcio Grazino e eu te mostro as inovações que estão mudando o nosso planeta. Então me segue para não perder a próxima.",
+    "p_seg": 0.991,
+    "seg_por_mil": 33.68482386816842,
+    "coef": 63.48,
+    "link": "https://www.instagram.com/reel/DWoTYY5ER2N"
+   },
+   {
+    "texto": "Eu sou Márcio Grazino e eu te mostro as inovações dos brasileiros que estão mudando o nosso planeta. Então me segue para não perder a próxima.",
+    "p_seg": 0.982,
+    "seg_por_mil": 18.21365898564483,
+    "coef": 34.66,
+    "link": "https://www.instagram.com/reel/DYaPxDVxn8g"
+   }
+  ],
+  "pior": [
+   {
+    "texto": "Agora comenta aqui em quantos anos você acha que o carro voador deixa de ser coisa de rico. Eu sou Marcio Grazino, e se você quer ficar por dentro dessas mudanças antes delas chegarem ao seu bolso, me segue agora.",
+    "p_seg": 0,
+    "seg_por_mil": 0.42265426880811496
+   },
+   {
+    "texto": "Eu sou Márcio Grazino e aqui eu te mostro histórias de pessoas que estão vencendo, apesar dos obstáculos, para que você se inspire. Então, me segue para não perder o próximo vídeo.",
+    "p_seg": 0.018,
+    "seg_por_mil": 0.45300797294032374
+   }
+  ]
+ },
+ {
+  "cliente": "Thiago Franco",
+  "plataforma": "Instagram",
+  "n": 110,
+  "ajuda": [
+   {
+    "n": "segue o meu perfil",
+    "com": 15,
+    "a": 0.3333333333333333,
+    "b": 0.22105263157894736,
+    "d": 0.11228070175438595
+   },
+   {
+    "n": "eu te mostro / revelo / trago",
+    "com": 51,
+    "a": 0.29411764705882354,
+    "b": 0.1864406779661017,
+    "d": 0.10767696909272184
+   },
+   {
+    "n": "todo dia / todos os dias",
+    "com": 35,
+    "a": 0.2857142857142857,
+    "b": 0.21333333333333335,
+    "d": 0.07238095238095235
+   }
+  ],
+  "atrapalha": [
+   {
+    "n": "agora",
+    "com": 7,
+    "a": 0.14285714285714285,
+    "b": 0.24271844660194175,
+    "d": -0.0998613037447989
+   },
+   {
+    "n": "mais conteúdos como esse",
+    "com": 31,
+    "a": 0.16129032258064516,
+    "b": 0.26582278481012656,
+    "d": -0.1045324622294814
+   },
+   {
+    "n": "pedido extra (comenta, compartilha, salva)",
+    "com": 19,
+    "a": 0.10526315789473684,
+    "b": 0.26373626373626374,
+    "d": -0.1584731058415269
+   }
+  ],
+  "top": [
+   {
+    "texto": "eu sou o Thiago Franco, e analiso todas as marcas que dominam o digital e estão fazendo diferente. então segue o meu perfil pra não ficar pra trás!",
+    "p_seg": 1,
+    "seg_por_mil": 5.87045205797486,
+    "coef": 11.93,
+    "link": "https://www.instagram.com/reel/DU_B541jQNL"
+   },
+   {
+    "texto": "então se você quer aprender a vender pela shopee, amazon, magalu e mercado livre, me segue, porque ensino isso todos os dias!",
+    "p_seg": 0.991,
+    "seg_por_mil": 4.2349004094024565,
+    "coef": 30.81,
+    "link": "https://www.instagram.com/reel/DW__VihEZUC"
+   },
+   {
+    "texto": "Eu sou o Thiago Franco, especialista em marketplace, e eu analiso todos os dias o que as marcas no digital estão fazendo de diferente. Então segue o meu perfil pra não ficar pra trás.",
+    "p_seg": 0.974,
+    "seg_por_mil": 3.124631992149166,
+    "coef": 107.65,
+    "link": "https://www.instagram.com/reel/DVrU8jfj4LH"
+   }
+  ],
+  "pior": [
+   {
+    "texto": "Então, se você quer saber as técnicas que eu aplico para Dr. Peanut vender milhões nos marketplaces, me segue aí.",
+    "p_seg": 0.026,
+    "seg_por_mil": 0
+   },
+   {
+    "texto": "Então me segue aqui, pra não ficar de fora!",
+    "p_seg": 0.026,
+    "seg_por_mil": 0
+   }
+  ]
+ },
+ {
+  "cliente": "Fernando Pereira",
+  "plataforma": "Instagram",
+  "n": 93,
+  "ajuda": [
+   {
+    "n": "agora",
+    "com": 19,
+    "a": 0.42105263157894735,
+    "b": 0.1891891891891892,
+    "d": 0.23186344238975815
+   },
+   {
+    "n": "promessa do território (sem palavra do assunto)",
+    "com": 45,
+    "a": 0.35555555555555557,
+    "b": 0.125,
+    "d": 0.23055555555555557
+   },
+   {
+    "n": "antes de todo mundo / da maioria / à frente",
+    "com": 18,
+    "a": 0.3888888888888889,
+    "b": 0.2,
+    "d": 0.18888888888888888
+   }
+  ],
+  "atrapalha": [
+   {
+    "n": "promessa amarrada ao assunto do vídeo",
+    "com": 22,
+    "a": 0.09090909090909091,
+    "b": 0.28169014084507044,
+    "d": -0.19078104993597952
+   },
+   {
+    "n": "todo dia / todos os dias",
+    "com": 6,
+    "a": 0,
+    "b": 0.25287356321839083,
+    "d": -0.25287356321839083
+   },
+   {
+    "n": "para não perder o próximo",
+    "com": 6,
+    "a": 0,
+    "b": 0.25287356321839083,
+    "d": -0.25287356321839083
+   }
+  ],
+  "top": [
+   {
+    "texto": "segue esse perfil para entender o que realmente move a economia.",
+    "p_seg": 1,
+    "seg_por_mil": 11.632336136423568,
+    "coef": 5.81,
+    "link": "https://www.instagram.com/reel/DblyK-vKpGl"
+   },
+   {
+    "texto": "me segue aí.",
+    "p_seg": 0.991,
+    "seg_por_mil": 11.419212335359427,
+    "coef": 92.22,
+    "link": "https://www.instagram.com/reel/DXPntylEZ0k"
+   },
+   {
+    "texto": "segue esse perfil. Infelizmente, nem sempre eu trago coisa boa, mas eu trago o que você precisa ouvir.",
+    "p_seg": 0.983,
+    "seg_por_mil": 9.851239669421489,
+    "coef": 2.61,
+    "link": "https://www.instagram.com/reel/DcwuiO8ulPN"
+   }
+  ],
+  "pior": [
+   {
+    "texto": "Meu nome é Fernando Pereira, eu analiso geopolítica e mercado financeiro todos os dias, então não esquece de me seguir. Valeu! Legenda por Sônia Ruberti",
+    "p_seg": 0,
+    "seg_por_mil": 0.021652676631709625
+   },
+   {
+    "texto": "E se você quer entender o mercado financeiro com quem vive nos bastidores há mais de dez anos, é só seguir.",
+    "p_seg": 0.026,
+    "seg_por_mil": 0.11656370206317752
+   }
+  ]
+ },
+ {
+  "cliente": "Marcos Pelozato",
+  "plataforma": "Instagram",
+  "n": 89,
+  "ajuda": [
+   {
+    "n": "credencial na apresentação",
+    "com": 14,
+    "a": 0.5,
+    "b": 0.21333333333333335,
+    "d": 0.2866666666666666
+   },
+   {
+    "n": "estratégias",
+    "com": 7,
+    "a": 0.42857142857142855,
+    "b": 0.24390243902439024,
+    "d": 0.1846689895470383
+   },
+   {
+    "n": "promessa amarrada ao assunto do vídeo",
+    "com": 54,
+    "a": 0.2962962962962963,
+    "b": 0.2,
+    "d": 0.09629629629629627
+   }
+  ],
+  "atrapalha": [
+   {
+    "n": "promessa do território (sem palavra do assunto)",
+    "com": 27,
+    "a": 0.18518518518518517,
+    "b": 0.2903225806451613,
+    "d": -0.10513739545997614
+   },
+   {
+    "n": "pedido extra (comenta, compartilha, salva)",
+    "com": 13,
+    "a": 0.07692307692307693,
+    "b": 0.2894736842105263,
+    "d": -0.2125506072874494
+   },
+   {
+    "n": "agora",
+    "com": 83,
+    "a": 0.24096385542168675,
+    "b": 0.5,
+    "d": -0.25903614457831325
+   }
+  ],
+  "top": [
+   {
+    "texto": "Eu sou Marcos Pelozato. E se você quer continuar recebendo histórias de empresas que quase morreram e entender as estratégias que tiraram essas empresas do buraco, me segue agora.",
+    "p_seg": 1,
+    "seg_por_mil": 15.837038710134918,
+    "coef": 59.07,
+    "link": "https://www.instagram.com/reel/DZgAQOrh52k"
+   },
+   {
+    "texto": "Eu sou Marcos Pelozato, especialista em recuperação judicial e se você quer saber mais sobre a estratégia que grandes empresas usam para sair do fundo do poço, me segue agora para não perder o próximo vídeo.",
+    "p_seg": 0.989,
+    "seg_por_mil": 9.783631232361243,
+    "coef": 10.9,
+    "link": "https://www.instagram.com/reel/DZnu9bhBBV4"
+   },
+   {
+    "texto": "Eu sou Marcos Pelozato, e se você quer entender como grandes projetos vão à ruína e o que você pode aprender com eles, me segue agora.",
+    "p_seg": 0.977,
+    "seg_por_mil": 9.594531528811046,
+    "coef": 24.09,
+    "link": "https://www.instagram.com/reel/Dav-BLIJot_"
+   }
+  ],
+  "pior": [
+   {
+    "texto": "Eu sou Marcos Pelozato. E se você quer se manter informado e enxergar as engrenagens do dinheiro antes que elas passassem por cima de você, segue meu perfil agora.",
+    "p_seg": 0.011,
+    "seg_por_mil": 0
+   },
+   {
+    "texto": "Eu sou Marcos Pelozato, e se você quer entender os erros que podem deixar até bilionários pobres, segue o meu perfil agora.",
+    "p_seg": 0.011,
+    "seg_por_mil": 0
+   }
+  ]
+ },
+ {
+  "cliente": "Rodrigo Waughan",
+  "plataforma": "TikTok",
+  "n": 88,
+  "ajuda": [
+   {
+    "n": "me segue aqui",
+    "com": 7,
+    "a": 0.42857142857142855,
+    "b": 0.2345679012345679,
+    "d": 0.19400352733686066
+   },
+   {
+    "n": "mais conteúdos como esse",
+    "com": 7,
+    "a": 0.42857142857142855,
+    "b": 0.2345679012345679,
+    "d": 0.19400352733686066
+   },
+   {
+    "n": "estratégias",
+    "com": 48,
+    "a": 0.3125,
+    "b": 0.175,
+    "d": 0.1375
+   }
+  ],
+  "atrapalha": [
+   {
+    "n": "credencial na apresentação",
+    "com": 56,
+    "a": 0.23214285714285715,
+    "b": 0.28125,
+    "d": -0.04910714285714285
+   },
+   {
+    "n": "se você quer",
+    "com": 50,
+    "a": 0.22,
+    "b": 0.2894736842105263,
+    "d": -0.06947368421052633
+   },
+   {
+    "n": "agora",
+    "com": 13,
+    "a": 0.15384615384615385,
+    "b": 0.26666666666666666,
+    "d": -0.11282051282051281
+   }
+  ],
+  "top": [
+   {
+    "texto": "Eu sou Rodrigo Vaughan de Lemos e aqui eu te conto os bastidores dos negócios mais bem-sucedidos do mundo. Então já me segue para não perder o próximo vídeo.",
+    "p_seg": 1,
+    "seg_por_mil": 13.392857142857142,
+    "coef": 0.4,
+    "link": "https://www.tiktok.com/@.rodrigowaughan/video/7669387524376186120"
+   },
+   {
+    "texto": "Eu sou Rodrigo Vaughan de Lemos, e aqui eu te mostro tudo sobre as estratégias das grandes empresas. Sejam as boas para você se inspirar ou as ruins para você não cometer o mesmo erro. Então já me segue para não perder o próximo vídeo.",
+    "p_seg": 0.989,
+    "seg_por_mil": 12.195121951219512,
+    "coef": 0.28,
+    "link": "https://www.tiktok.com/@.rodrigowaughan/video/7667160929133415681"
+   },
+   {
+    "texto": "Eu sou Rodrigo Volga de Lemos, presidente do grupo Gerbera Mais e empreendedor serial. E se você quer as melhores estratégias para dominar o seu mercado, já me segue aqui.",
+    "p_seg": 0.977,
+    "seg_por_mil": 12.170385395537526,
+    "coef": 0.52,
+    "link": "https://www.tiktok.com/@.rodrigowaughan/video/7609614298805046539"
+   }
+  ],
+  "pior": [
+   {
+    "texto": "Eu sou Rodrigo Vaughan de Lemos, e aqui eu te conto os bastidores dos negócios mais bem-sucedidos do mundo. Então já me segue para não perder o próximo vídeo.",
+    "p_seg": 0.08,
+    "seg_por_mil": 0
+   },
+   {
+    "texto": "Eu sou Rodrigo Vaughan de Lemos, presidente do Grupo Gérbera_+. E aqui eu analiso estratégias de sucesso das grandes empresas do Brasil e do mundo. Então, segue o meu perfil para não perder o próximo vídeo.",
+    "p_seg": 0.08,
+    "seg_por_mil": 0
+   }
+  ]
+ },
+ {
+  "cliente": "Rafael Rodrigues",
+  "plataforma": "Instagram",
+  "n": 81,
+  "ajuda": [
+   {
+    "n": "histórias",
+    "com": 20,
+    "a": 0.35,
+    "b": 0.19672131147540983,
+    "d": 0.15327868852459015
+   },
+   {
+    "n": "eu te mostro / revelo / trago",
+    "com": 47,
+    "a": 0.2978723404255319,
+    "b": 0.14705882352941177,
+    "d": 0.15081351689612013
+   },
+   {
+    "n": "sem apresentação",
+    "com": 9,
+    "a": 0.3333333333333333,
+    "b": 0.2222222222222222,
+    "d": 0.1111111111111111
+   }
+  ],
+  "atrapalha": [
+   {
+    "n": "promessa amarrada ao assunto do vídeo",
+    "com": 20,
+    "a": 0.1,
+    "b": 0.2786885245901639,
+    "d": -0.1786885245901639
+   },
+   {
+    "n": "credencial na apresentação",
+    "com": 28,
+    "a": 0.10714285714285714,
+    "b": 0.3018867924528302,
+    "d": -0.19474393530997303
+   },
+   {
+    "n": "se você quer",
+    "com": 25,
+    "a": 0.08,
+    "b": 0.30357142857142855,
+    "d": -0.22357142857142853
+   }
+  ],
+  "top": [
+   {
+    "texto": "Meu nome é Rafael Rodrigues e eu te mostro a história de grandes mentes para você se inspirar e evoluir na carreira. Então já segue meu perfil para mais conteúdos como esse.",
+    "p_seg": 1,
+    "seg_por_mil": 25.17504464852828,
+    "coef": 35.29,
+    "link": "https://www.instagram.com/reel/DXcqxyQD9rG"
+   },
+   {
+    "texto": "Meu nome é Rafael Rodrigues e eu te mostro como crescer e evoluir na carreira. Então já segue o meu perfil.",
+    "p_seg": 0.976,
+    "seg_por_mil": 12.763824782352133,
+    "coef": 125.08,
+    "link": "https://www.instagram.com/reel/DVFKx-Qj1RP"
+   },
+   {
+    "texto": "O meu nome é Rafael Rodrigues e eu te mostro como a educação transforma vidas para você se inspirar, estudar mais e evoluir na sua carreira. Então já segue o meu perfil para não perder o próximo vídeo.",
+    "p_seg": 0.963,
+    "seg_por_mil": 12.408260134917256,
+    "coef": 139.57,
+    "link": "https://www.instagram.com/reel/DXkcaK3j4ct"
+   }
+  ],
+  "pior": [
+   {
+    "texto": "Eu sou Rafael Rodrigues, CEO e educador. E se você quer fazer parte da minoria que pensa diferente da média e busca conhecimento, já segue o meu perfil.",
+    "p_seg": 0.006,
+    "seg_por_mil": 0
+   },
+   {
+    "texto": "Eu sou Rafael Rodrigues. Aqui eu mostro o que os grandes empresários estão fazendo pra você se inspirar e evoluir na carreira. Então já segue meu perfil pra mais conteúdos como esse.",
+    "p_seg": 0.006,
+    "seg_por_mil": 0
+   }
+  ]
+ },
+ {
+  "cliente": "Manoel Victor",
+  "plataforma": "Instagram",
+  "n": 68,
+  "ajuda": [
+   {
+    "n": "todo dia / todos os dias",
+    "com": 19,
+    "a": 0.47368421052631576,
+    "b": 0.16326530612244897,
+    "d": 0.31041890440386677
+   },
+   {
+    "n": "promessa do território (sem palavra do assunto)",
+    "com": 39,
+    "a": 0.3076923076923077,
+    "b": 0.1724137931034483,
+    "d": 0.13527851458885942
+   },
+   {
+    "n": "sem apresentação",
+    "com": 27,
+    "a": 0.2962962962962963,
+    "b": 0.21951219512195122,
+    "d": 0.07678410117434506
+   }
+  ],
+  "atrapalha": [
+   {
+    "n": "se você quer",
+    "com": 28,
+    "a": 0.17857142857142858,
+    "b": 0.3,
+    "d": -0.12142857142857141
+   },
+   {
+    "n": "promessa amarrada ao assunto do vídeo",
+    "com": 12,
+    "a": 0.08333333333333333,
+    "b": 0.2857142857142857,
+    "d": -0.20238095238095238
+   },
+   {
+    "n": "estratégias",
+    "com": 28,
+    "a": 0.10714285714285714,
+    "b": 0.35,
+    "d": -0.24285714285714283
+   }
+  ],
+  "top": [
+   {
+    "texto": "então me segue por aqui não perder o",
+    "p_seg": 0.986,
+    "seg_por_mil": 5.305632132571499,
+    "coef": 54.27,
+    "link": "https://www.instagram.com/reel/DVb1oAQDPmw"
+   },
+   {
+    "texto": "Meu nome é Manoel Victor e todos os dias eu te mostro as melhores IAs e as novidades desse mercado, então já me segue para não ficar para trás.",
+    "p_seg": 0.971,
+    "seg_por_mil": 4.884856943475227,
+    "coef": 1.47,
+    "link": "https://www.instagram.com/reel/DXKt-r8jcVZ"
+   },
+   {
+    "texto": "então já me segue pra sair na frente dos seus concorrentes.",
+    "p_seg": 0.957,
+    "seg_por_mil": 4.589031759734654,
+    "coef": 10.08,
+    "link": "https://www.instagram.com/reel/DWJl9mWlJdy"
+   }
+  ],
+  "pior": [
+   {
+    "texto": "Meu nome é Manuel Victor e eu analiso estratégias de empresas vencedoras, se você gostou desse conteúdo, aproveite e me siga por aqui.",
+    "p_seg": 0.121,
+    "seg_por_mil": 0
+   },
+   {
+    "texto": "O meu nome é Manoel Victor e todos os dias eu trago um vídeo novo sobre as estratégias tecnológicas que os gigantes estão usando para escalar, então já me segue por aqui para não ficar para trás.",
+    "p_seg": 0.121,
+    "seg_por_mil": 0
+   }
+  ]
+ },
+ {
+  "cliente": "Dilson Peres",
+  "plataforma": "Instagram",
+  "n": 68,
+  "ajuda": [
+   {
+    "n": "todo dia / todos os dias",
+    "com": 8,
+    "a": 0.375,
+    "b": 0.21666666666666667,
+    "d": 0.15833333333333333
+   },
+   {
+    "n": "promessa do território (sem palavra do assunto)",
+    "com": 39,
+    "a": 0.28205128205128205,
+    "b": 0.1724137931034483,
+    "d": 0.10963748894783376
+   },
+   {
+    "n": "para não perder o próximo",
+    "com": 10,
+    "a": 0.3,
+    "b": 0.22413793103448276,
+    "d": 0.07586206896551723
+   }
+  ],
+  "atrapalha": [
+   {
+    "n": "sem apresentação",
+    "com": 6,
+    "a": 0.16666666666666666,
+    "b": 0.24193548387096775,
+    "d": -0.07526881720430109
+   },
+   {
+    "n": "promessa amarrada ao assunto do vídeo",
+    "com": 23,
+    "a": 0.17391304347826086,
+    "b": 0.26666666666666666,
+    "d": -0.0927536231884058
+   },
+   {
+    "n": "mais conteúdos como esse",
+    "com": 33,
+    "a": 0.18181818181818182,
+    "b": 0.2857142857142857,
+    "d": -0.10389610389610388
+   }
+  ],
+  "top": [
+   {
+    "texto": "Eu sou o Dilson Perez Júnior, especialista em direito tributário e te mostro todos os dias as melhores estratégias para economizar o seu dinheiro e da sua empresa. Então segue o meu perfil para mais vídeos como esse.",
+    "p_seg": 1,
+    "seg_por_mil": 23.138643368399602,
+    "coef": 21.7,
+    "link": "https://www.instagram.com/reel/DUmDIfOjR4-"
+   },
+   {
+    "texto": "eu sou Dilson Perez Junior, especialista em direito tributário, e como protegem para que você possa fazer o mesmo. Então, já segue o meu perfil para saber como faz isso.",
+    "p_seg": 0.986,
+    "seg_por_mil": 18.646398404327655,
+    "coef": 3.79,
+    "link": "https://www.instagram.com/reel/DVHfnIJjvo3"
+   },
+   {
+    "texto": "Eu sou o Gilson Pérez Jr., especialista em direito tributário, e se você quer entender como a reforma afeta o seu bolso antes da conta chegar, me segue para não perder o próximo vídeo.",
+    "p_seg": 0.972,
+    "seg_por_mil": 14.59855530155329,
+    "coef": 13.02,
+    "link": "https://www.instagram.com/reel/DZvkP1bB2-r"
+   }
+  ],
+  "pior": [
+   {
+    "texto": "Meu nome é Dilson Peres Jr., especialista em direito tributário e eu te ajudo a entender o sistema tributário brasileiro de forma simples. Então me segue para não perder o próximo vídeo.",
+    "p_seg": 0,
+    "seg_por_mil": 0.6505576208178439
+   },
+   {
+    "texto": "Meu nome é Dilson Peres Jr, especialista em direito tributário, e eu te mostro as melhores estratégias para economizar o seu dinheiro e da sua empresa. Então segue o meu perfil para mais conteúdos como este.",
+    "p_seg": 0.014,
+    "seg_por_mil": 0.6871984741388982
+   }
+  ]
+ },
+ {
+  "cliente": "Drielle Castelani",
+  "plataforma": "Instagram",
+  "n": 60,
+  "ajuda": [
+   {
+    "n": "histórias",
+    "com": 12,
+    "a": 0.4166666666666667,
+    "b": 0.22916666666666666,
+    "d": 0.18750000000000003
+   },
+   {
+    "n": "mais conteúdos como esse",
+    "com": 16,
+    "a": 0.375,
+    "b": 0.22727272727272727,
+    "d": 0.14772727272727273
+   },
+   {
+    "n": "segue o meu perfil",
+    "com": 38,
+    "a": 0.3157894736842105,
+    "b": 0.18181818181818182,
+    "d": 0.13397129186602869
+   }
+  ],
+  "atrapalha": [
+   {
+    "n": "promessa do território (sem palavra do assunto)",
+    "com": 17,
+    "a": 0.23529411764705882,
+    "b": 0.27906976744186046,
+    "d": -0.04377564979480164
+   },
+   {
+    "n": "promessa amarrada ao assunto do vídeo",
+    "com": 26,
+    "a": 0.23076923076923078,
+    "b": 0.29411764705882354,
+    "d": -0.06334841628959276
+   },
+   {
+    "n": "agora",
+    "com": 16,
+    "a": 0.125,
+    "b": 0.3181818181818182,
+    "d": -0.19318181818181818
+   }
+  ],
+  "top": [
+   {
+    "texto": "Meu nome é Drielle Castelani, e já treinei mais de 5 mil equipes de saúde. E se você quer mais vídeos de histórias que mudaram a medicina e impactam o brasileiro até hoje, segue o meu perfil.",
+    "p_seg": 1,
+    "seg_por_mil": 16.9039886751603,
+    "coef": 4.69,
+    "link": "https://www.instagram.com/reel/DbrIrx8JFZ-"
+   },
+   {
+    "texto": "Meu nome é Drielle Castelani e já treinei mais de 5.000 equipes de saúde. Segue o meu perfil para conhecer os nomes esquecidos da medicina e da história do Brasil.",
+    "p_seg": 0.983,
+    "seg_por_mil": 15.218126479540075,
+    "coef": 2.31,
+    "link": "https://www.instagram.com/reel/DcCT3QmJ8p2"
+   },
+   {
+    "texto": "Meu nome é Drielle Castellani e eu ensino médicos a construírem sua própria fila de pacientes sem depender de plano de saúde, nem de um mercado que trabalha contra você. Se você faz parte da minoria que não vai aceitar plantão de R$ 1.500 como destino, segue este perfil.",
+    "p_seg": 0.967,
+    "seg_por_mil": 8.315450643776824,
+    "coef": 2.91,
+    "link": "https://www.instagram.com/reel/DZ-_V4cJTNW"
+   }
+  ],
+  "pior": [
+   {
+    "texto": "Eu sou Driely Castellani, ajudo médicos de todo o Brasil a se comunicarem de forma eficiente por acreditar no poder da informação de qualidade. Para mais vídeos como esse, segue o meu perfil.",
+    "p_seg": 0.142,
+    "seg_por_mil": 0
+   },
+   {
+    "texto": "Sou Drielle Castelani e já treinei mais de 5.000 equipes de saúde. Para mais vídeos que te fazem pensar sobre saúde e tomar decisões melhores na sua vida, segue o meu perfil.",
+    "p_seg": 0.142,
+    "seg_por_mil": 0
+   }
+  ]
+ },
+ {
+  "cliente": "Marcos Pelozato",
+  "plataforma": "TikTok",
+  "n": 59,
+  "ajuda": [
+   {
+    "n": "promessa do território (sem palavra do assunto)",
+    "com": 17,
+    "a": 0.5294117647058824,
+    "b": 0.14285714285714285,
+    "d": 0.3865546218487395
+   },
+   {
+    "n": "segue o meu perfil",
+    "com": 39,
+    "a": 0.3333333333333333,
+    "b": 0.1,
+    "d": 0.2333333333333333
+   }
+  ],
+  "atrapalha": [
+   {
+    "n": "antes de todo mundo / da maioria / à frente",
+    "com": 6,
+    "a": 0,
+    "b": 0.2830188679245283,
+    "d": -0.2830188679245283
+   },
+   {
+    "n": "promessa amarrada ao assunto do vídeo",
+    "com": 36,
+    "a": 0.1388888888888889,
+    "b": 0.43478260869565216,
+    "d": -0.29589371980676327
+   },
+   {
+    "n": "pedido extra (comenta, compartilha, salva)",
+    "com": 12,
+    "a": 0,
+    "b": 0.3191489361702128,
+    "d": -0.3191489361702128
+   }
+  ],
+  "top": [
+   {
+    "texto": "Eu sou Marcos Pelozato, se você quer enxergar o negócio com a clareza que a maioria dos empresários nunca teve, segue o meu perfil agora.",
+    "p_seg": 1,
+    "seg_por_mil": 110.4895104895105,
+    "coef": 5.41,
+    "link": "https://www.tiktok.com/@marcospelozato/video/7672154109994093831"
+   },
+   {
+    "texto": "eu sou Marcos pelos atos e se você quer acompanhar mais histórias de empresas que quase morreram e voltaram mais fortes segue o meu perfil agora",
+    "p_seg": 0.983,
+    "seg_por_mil": 5.812174977057204,
+    "coef": 4.16,
+    "link": "https://www.tiktok.com/@marcospelozato/video/7654687826994269461"
+   },
+   {
+    "texto": "Eu sou Marcos Pelozato e se você quer entender como os números da economia afetam o seu bolso antes que você perceba, segue meu perfil agora.",
+    "p_seg": 0.966,
+    "seg_por_mil": 4.975124378109452,
+    "coef": 1.14,
+    "link": "https://www.tiktok.com/@marcospelozato/video/7672521199846575381"
+   }
+  ],
+  "pior": [
+   {
+    "texto": "Eu sou Marcos Pelozato e se você quer saber o que está por trás das decisões dos grandes empresários para se inspirar na sua carreira ou negócio, me segue agora.",
+    "p_seg": 0.241,
+    "seg_por_mil": 0
+   },
+   {
+    "texto": "Eu sou Marcos Pelosato e se você quer acompanhar mais histórias de empresas que quase morreram e voltaram mais fortes, segue o meu perfil agora.",
+    "p_seg": 0.241,
+    "seg_por_mil": 0
+   }
+  ]
+ },
+ {
+  "cliente": "Patrick Diorio",
+  "plataforma": "Instagram",
+  "n": 58,
+  "ajuda": [
+   {
+    "n": "me segue aqui",
+    "com": 21,
+    "a": 0.42857142857142855,
+    "b": 0.13513513513513514,
+    "d": 0.2934362934362934
+   },
+   {
+    "n": "promessa amarrada ao assunto do vídeo",
+    "com": 24,
+    "a": 0.375,
+    "b": 0.14705882352941177,
+    "d": 0.22794117647058823
+   },
+   {
+    "n": "eu te mostro / revelo / trago",
+    "com": 6,
+    "a": 0.3333333333333333,
+    "b": 0.23076923076923078,
+    "d": 0.10256410256410253
+   }
+  ],
+  "atrapalha": [
+   {
+    "n": "credencial na apresentação",
+    "com": 14,
+    "a": 0.14285714285714285,
+    "b": 0.2727272727272727,
+    "d": -0.12987012987012986
+   },
+   {
+    "n": "antes de todo mundo / da maioria / à frente",
+    "com": 6,
+    "a": 0,
+    "b": 0.2692307692307692,
+    "d": -0.2692307692307692
+   },
+   {
+    "n": "para não perder o próximo",
+    "com": 7,
+    "a": 0,
+    "b": 0.27450980392156865,
+    "d": -0.27450980392156865
+   }
+  ],
+  "top": [
+   {
+    "texto": "Meu nome é Patrick Diorio, e se você quer entender como a tecnologia está mudando o que significa ter companhia, me segue aqui.",
+    "p_seg": 1,
+    "seg_por_mil": 4.647141467632119,
+    "coef": 8.12,
+    "link": "https://www.instagram.com/reel/Dc4VXL7Nm81"
+   },
+   {
+    "texto": "e siga o meu perfil para receber mais vídeos como esse.",
+    "p_seg": 0.983,
+    "seg_por_mil": 4.605379885984063,
+    "coef": 146.97,
+    "link": "https://www.instagram.com/reel/DcUeHJiB5ZI"
+   },
+   {
+    "texto": "Meu nome é Patrick Diorio, e se você quer acompanhar os avanços da inteligência artificial e entender o que é fato e o que é previsão e o que realmente pode mudar o futuro, me segue aqui.",
+    "p_seg": 0.966,
+    "seg_por_mil": 4.479840716774515,
+    "coef": 1.97,
+    "link": "https://www.instagram.com/reel/DcejPYjxrN3"
+   }
+  ],
+  "pior": [
+   {
+    "texto": "Meu nome é Patrick Diorio, sou especialista em liderança técnica e mentor de carreira. Aqui, eu ajudo você a desenvolver habilidades que realmente fazem a diferença na sua evolução profissional. Então segue esse perfil pra não perder os próximos conteúdos.",
+    "p_seg": 0.198,
+    "seg_por_mil": 0
+   },
+   {
+    "texto": "Eu sou o Patrick Diorio e se você quer entender como estratégia e tecnologia se cruzam para moldar líderes do mercado, segue o meu perfil.",
+    "p_seg": 0.198,
+    "seg_por_mil": 0
+   }
+  ]
+ },
+ {
+  "cliente": "Pedro Elero",
+  "plataforma": "Instagram",
+  "n": 48,
+  "ajuda": [
+   {
+    "n": "histórias",
+    "com": 7,
+    "a": 0.42857142857142855,
+    "b": 0.21951219512195122,
+    "d": 0.20905923344947733
+   },
+   {
+    "n": "se você quer",
+    "com": 37,
+    "a": 0.2702702702702703,
+    "b": 0.18181818181818182,
+    "d": 0.08845208845208846
+   },
+   {
+    "n": "para não perder o próximo",
+    "com": 7,
+    "a": 0.2857142857142857,
+    "b": 0.24390243902439024,
+    "d": 0.04181184668989546
+   }
+  ],
+  "atrapalha": [
+   {
+    "n": "eu te mostro / revelo / trago",
+    "com": 8,
+    "a": 0.125,
+    "b": 0.275,
+    "d": -0.15000000000000002
+   },
+   {
+    "n": "agora",
+    "com": 12,
+    "a": 0.08333333333333333,
+    "b": 0.3055555555555556,
+    "d": -0.22222222222222227
+   },
+   {
+    "n": "promessa do território (sem palavra do assunto)",
+    "com": 15,
+    "a": 0.06666666666666667,
+    "b": 0.3333333333333333,
+    "d": -0.26666666666666666
+   }
+  ],
+  "top": [
+   {
+    "texto": "Eu sou o Pedro Elero e se você é como poucos que enxergam gestão e estratégia onde a maioria só vê polêmica, já segue meu perfil.",
+    "p_seg": 1,
+    "seg_por_mil": 6.636665832232074,
+    "coef": 89.7,
+    "link": "https://www.instagram.com/reel/DbeNjTKCCxZ"
+   },
+   {
+    "texto": "Eu sou Pedro Elero e se você quer aprender continuamente as estratégias de negócios mais inteligentes que as gigantes usam, segue meu perfil.",
+    "p_seg": 0.979,
+    "seg_por_mil": 6.351206388666587,
+    "coef": 30.67,
+    "link": "https://www.instagram.com/reel/Db-8ja2kp3Z"
+   },
+   {
+    "texto": "Eu sou Pedro Elero. Se você quer continuar recebendo conteúdos que contam as origens que ninguém imagina por trás das marcas mais famosas, já segue meu perfil.",
+    "p_seg": 0.957,
+    "seg_por_mil": 5.807200929152149,
+    "coef": 0.45,
+    "link": "https://www.instagram.com/reel/Db3S3O3o9zv"
+   }
+  ],
+  "pior": [
+   {
+    "texto": "Eu sou Pedro Elero e quem segue o meu perfil sai com uma sacada nova para construir marcas de sucesso todos os dias. Então não perca tempo e clica em seguir.",
+    "p_seg": 0.043,
+    "seg_por_mil": 0
+   },
+   {
+    "texto": "Meu nome é Pedro Eleiro, e se você é aquela pessoa que valoriza conhecimento, quer decifrar a estratégia de bastidores que geram milhões, já segue meu perfil agora.",
+    "p_seg": 0.043,
+    "seg_por_mil": 0
+   }
+  ]
+ },
+ {
+  "cliente": "Ricardo Schumacher",
+  "plataforma": "Instagram",
+  "n": 43,
+  "ajuda": [
+   {
+    "n": "promessa amarrada ao assunto do vídeo",
+    "com": 17,
+    "a": 0.29411764705882354,
+    "b": 0.23076923076923078,
+    "d": 0.06334841628959276
+   },
+   {
+    "n": "segue o meu perfil",
+    "com": 26,
+    "a": 0.2692307692307692,
+    "b": 0.23529411764705882,
+    "d": 0.0339366515837104
+   }
+  ],
+  "atrapalha": [
+   {
+    "n": "todo dia / todos os dias",
+    "com": 10,
+    "a": 0.2,
+    "b": 0.2727272727272727,
+    "d": -0.0727272727272727
+   },
+   {
+    "n": "para não perder o próximo",
+    "com": 10,
+    "a": 0.2,
+    "b": 0.2727272727272727,
+    "d": -0.0727272727272727
+   },
+   {
+    "n": "se você quer",
+    "com": 24,
+    "a": 0.20833333333333334,
+    "b": 0.3157894736842105,
+    "d": -0.10745614035087717
+   }
+  ],
+  "top": [
+   {
+    "texto": "Eu sou Ricardo Schumacher, Estrategista Tributário. Se você quer entender como o conhecimento tributário molda os maiores empresários brasileiros, já segue meu perfil.",
+    "p_seg": 1,
+    "seg_por_mil": 8.422664624808576,
+    "coef": 1.52,
+    "link": "https://www.instagram.com/reel/Dc6sTtMu0eP"
+   },
+   {
+    "texto": "Meu nome é Ricardo Schumacher, estrategista tributário. Se você quer entender como os impostos afetam o seu dia a dia, o seu cotidiano, já segue o meu perfil.",
+    "p_seg": 0.976,
+    "seg_por_mil": 5.104210974053594,
+    "coef": 1.26,
+    "link": "https://www.instagram.com/reel/DZ8HpEbBVJN"
+   },
+   {
+    "texto": "Eu sou Ricardo Schumacher, estrategista tributário. Se você quer entender o que o os jornais não te explicam sobre as mudanças que o governo propõe, já segue o meu perfil.",
+    "p_seg": 0.952,
+    "seg_por_mil": 5.02809819580006,
+    "coef": 6.56,
+    "link": "https://www.instagram.com/reel/Dc08GJFxgij"
+   }
+  ],
+  "pior": [
+   {
+    "texto": "Meu nome é Ricardo Schumacher, estrategista tributário, e eu mostro erros e acertos da contabilidade que salvam ou simplesmente derretem as empresas todos os dias. Então, já segue meu perfil.",
+    "p_seg": 0.071,
+    "seg_por_mil": 0
+   },
+   {
+    "texto": "Se você quer saber como pagar menos impostos legalmente, eu me chamo Ricardo Schumacher, sou estrategista tributário e todos os dias eu mostro por aqui como economizar milhões de reais para as empresas. Então, já segue o meu perfil para não perder nada.",
+    "p_seg": 0.071,
+    "seg_por_mil": 0
+   }
+  ]
+ },
+ {
+  "cliente": "João Paulo Albuquerque",
+  "plataforma": "TikTok",
+  "n": 43,
+  "ajuda": [
+   {
+    "n": "eu te mostro / revelo / trago",
+    "com": 23,
+    "a": 0.34782608695652173,
+    "b": 0.15,
+    "d": 0.19782608695652174
+   },
+   {
+    "n": "para não perder o próximo",
+    "com": 35,
+    "a": 0.2857142857142857,
+    "b": 0.125,
+    "d": 0.1607142857142857
+   },
+   {
+    "n": "promessa do território (sem palavra do assunto)",
+    "com": 21,
+    "a": 0.2857142857142857,
+    "b": 0.22727272727272727,
+    "d": 0.05844155844155843
+   }
+  ],
+  "atrapalha": [
+   {
+    "n": "se você quer",
+    "com": 20,
+    "a": 0.15,
+    "b": 0.34782608695652173,
+    "d": -0.19782608695652174
+   }
+  ],
+  "top": [
+   {
+    "texto": "Meu nome é JP Albuquerque, eu trago análises de negócio fora do óbvio, e você não vê em qualquer lugar. Me segue para não perder o próximo vídeo.",
+    "p_seg": 1,
+    "seg_por_mil": 21.479713603818613,
+    "coef": 0.8,
+    "link": "https://www.tiktok.com/@jp_albuquerque_/video/7660914586429705479"
+   },
+   {
+    "texto": "Meu nome é JP Albuquerque. Aqui eu trago análises de negócios que fogem do óbvio e que você não vê em qualquer lugar. Me segue para não perder o próximo vídeo.",
+    "p_seg": 0.976,
+    "seg_por_mil": 10.77621937066879,
+    "coef": 70.55,
+    "link": "https://www.tiktok.com/@jp_albuquerque_/video/7670195867558612242"
+   },
+   {
+    "texto": "Meu nome é JP Albuquerque e eu trago análises de negócios fora do óbvio e você não vê em qualquer lugar. Então me segue para não perder o próximo vídeo.",
+    "p_seg": 0.952,
+    "seg_por_mil": 10.619469026548673,
+    "coef": 1.22,
+    "link": "https://www.tiktok.com/@jp_albuquerque_/video/7670933808627158289"
+   }
+  ],
+  "pior": [
+   {
+    "texto": "se você quer criar algo que nunca existiu, precisa aceitar e vai errar muito antes de dar certo. Meu nome é JP Albuquerque. Se você quer continuar entendendo as estratégias que constroem marcas gigantes, me segue para não perder o próximo vídeo.",
+    "p_seg": 0.048,
+    "seg_por_mil": 0
+   },
+   {
+    "texto": "Meu nome é JP Albuquerque. Eu trago análises de negócio que fogem do óbvio e você não encontra em qualquer lugar. Então me segue pra não perder o próximo vídeo.",
+    "p_seg": 0.048,
+    "seg_por_mil": 0
+   }
+  ]
+ },
+ {
+  "cliente": "Franklin Tomich",
+  "plataforma": "Instagram",
+  "n": 40,
+  "ajuda": [
+   {
+    "n": "me segue aqui",
+    "com": 7,
+    "a": 0.42857142857142855,
+    "b": 0.21212121212121213,
+    "d": 0.21645021645021642
+   },
+   {
+    "n": "se você quer",
+    "com": 16,
+    "a": 0.375,
+    "b": 0.16666666666666666,
+    "d": 0.20833333333333334
+   },
+   {
+    "n": "credencial na apresentação",
+    "com": 33,
+    "a": 0.2727272727272727,
+    "b": 0.14285714285714285,
+    "d": 0.12987012987012986
+   }
+  ],
+  "atrapalha": [
+   {
+    "n": "eu te mostro / revelo / trago",
+    "com": 13,
+    "a": 0.23076923076923078,
+    "b": 0.25925925925925924,
+    "d": -0.028490028490028463
+   },
+   {
+    "n": "segue o meu perfil",
+    "com": 27,
+    "a": 0.2222222222222222,
+    "b": 0.3076923076923077,
+    "d": -0.0854700854700855
+   },
+   {
+    "n": "promessa amarrada ao assunto do vídeo",
+    "com": 21,
+    "a": 0.19047619047619047,
+    "b": 0.3157894736842105,
+    "d": -0.12531328320802004
+   }
+  ],
+  "top": [
+   {
+    "texto": "Meu nome é Franklin Tomich, tenho mais de 15 anos trabalhando com compra e venda de empresas. Se você quer aprender como grandes empresas estão redesenhando o mundo dos negócios, já segue o meu perfil.",
+    "p_seg": 1,
+    "seg_por_mil": 4.028812110853376,
+    "coef": 1.4,
+    "link": "https://www.instagram.com/reel/DaRMT8-tuVE"
+   },
+   {
+    "texto": "Meu nome é Franklin Tomich, atuo com fusões e aquisições há mais de 15 anos, e aqui eu trago todos os dias um caso como este. Então me segue para não perder o próximo caso.",
+    "p_seg": 0.974,
+    "seg_por_mil": 2.430184443236982,
+    "coef": 19.25,
+    "link": "https://www.instagram.com/reel/DZlIRExNwMk"
+   },
+   {
+    "texto": "Meu nome é Franklin Tomich, tenho mais de 15 anos atuando com vendas de empresas, e se você quer aprender com os movimentos das grandes empresas para aplicar nos seus negócios, já segue meu perfil.",
+    "p_seg": 0.949,
+    "seg_por_mil": 1.569222981523665,
+    "coef": 1,
+    "link": "https://www.instagram.com/reel/DagllhgO5-9"
+   }
+  ],
+  "pior": [
+   {
+    "texto": "Meu nome é Franklin Tomich, tenho mais de 15 anos de experiência em fusões e aquisições. E se você quer aprender com os erros das grandes empresas para não repeti-los nos seus negócios, segue aqui o meu perfil!",
+    "p_seg": 0,
+    "seg_por_mil": 0.04412235128009972
+   },
+   {
+    "texto": "Meu nome é Franklin Tomich, e aqui eu te mostro o que eu aprendi em 15 anos no mercado de fusões e aquisições, para você entender os bastidores de grandes negócios. Então já me segue aqui no canal!",
+    "p_seg": 0.026,
+    "seg_por_mil": 0.049585957256904845
+   }
+  ]
+ },
+ {
+  "cliente": "Pedro Elero",
+  "plataforma": "TikTok",
+  "n": 37,
+  "ajuda": [
+   {
+    "n": "agora",
+    "com": 7,
+    "a": 0.42857142857142855,
+    "b": 0.23333333333333334,
+    "d": 0.1952380952380952
+   },
+   {
+    "n": "histórias",
+    "com": 7,
+    "a": 0.42857142857142855,
+    "b": 0.23333333333333334,
+    "d": 0.1952380952380952
+   },
+   {
+    "n": "se você quer",
+    "com": 31,
+    "a": 0.2903225806451613,
+    "b": 0.16666666666666666,
+    "d": 0.12365591397849465
+   }
+  ],
+  "atrapalha": [
+   {
+    "n": "promessa do território (sem palavra do assunto)",
+    "com": 12,
+    "a": 0.25,
+    "b": 0.28,
+    "d": -0.030000000000000027
+   },
+   {
+    "n": "estratégias",
+    "com": 9,
+    "a": 0.2222222222222222,
+    "b": 0.2857142857142857,
+    "d": -0.06349206349206349
+   }
+  ],
+  "top": [
+   {
+    "texto": "Eu sou Pedro Eléro, e se você quer continuar recebendo histórias financeiras que te fazem pensar fora da caixa, segue meu perfil agora.",
+    "p_seg": 1,
+    "seg_por_mil": 7.194244604316547,
+    "coef": 0.78,
+    "link": "https://www.tiktok.com/@pedro_elero/video/7662120640387796232"
+   },
+   {
+    "texto": "Eu sou Pedro Elero e se você quer aprender a enxergar oportunidades de milhões escondidas em problemas do dia a dia, segue meu perfil agora.",
+    "p_seg": 0.972,
+    "seg_por_mil": 5.928853754940711,
+    "coef": 1.4,
+    "link": "https://www.tiktok.com/@pedro_elero/video/7673160367345913109"
+   },
+   {
+    "texto": "Eu sou o Pedro Elero e aqui eu mostro que a ciência descobre sobre hábitos que parecem simples, mas mudam o que acontece dentro do seu cérebro. Agora segue meu perfil pra não perder o próximo vídeo.",
+    "p_seg": 0.944,
+    "seg_por_mil": 5.780346820809248,
+    "coef": 0.85,
+    "link": "https://www.tiktok.com/@pedro_elero/video/7675388116139625746"
+   }
+  ],
+  "pior": [
+   {
+    "texto": "Eu sou o Pedro Elero, e se você quer entender por que algumas marcas dominam a atenção, enquanto outras desaparecem, segue meu perfil, porque aqui você aprende os mecanismos por trás das jogadas que realmente ficam na cabeça das pessoas.",
+    "p_seg": 0.111,
+    "seg_por_mil": 0
+   },
+   {
+    "texto": "Eu sou Pedro Elero, e aqui você aprende os mecanismos e as estratégias por trás das campanhas mais inteligentes do mundo. Então já segue meu perfil.",
+    "p_seg": 0.111,
+    "seg_por_mil": 0
+   }
+  ]
+ },
+ {
+  "cliente": "Leonardo Nogueira",
+  "plataforma": "Instagram",
+  "n": 32,
+  "ajuda": [
+   {
+    "n": "credencial na apresentação",
+    "com": 6,
+    "a": 0.5,
+    "b": 0.23076923076923078,
+    "d": 0.2692307692307692
+   },
+   {
+    "n": "se você quer",
+    "com": 14,
+    "a": 0.35714285714285715,
+    "b": 0.2222222222222222,
+    "d": 0.13492063492063494
+   },
+   {
+    "n": "promessa amarrada ao assunto do vídeo",
+    "com": 9,
+    "a": 0.3333333333333333,
+    "b": 0.2608695652173913,
+    "d": 0.07246376811594202
+   }
+  ],
+  "atrapalha": [
+   {
+    "n": "mais conteúdos como esse",
+    "com": 6,
+    "a": 0.16666666666666666,
+    "b": 0.3076923076923077,
+    "d": -0.14102564102564105
+   },
+   {
+    "n": "para não perder o próximo",
+    "com": 7,
+    "a": 0.14285714285714285,
+    "b": 0.32,
+    "d": -0.17714285714285716
+   },
+   {
+    "n": "eu te mostro / revelo / trago",
+    "com": 16,
+    "a": 0.1875,
+    "b": 0.375,
+    "d": -0.1875
+   }
+  ],
+  "top": [
+   {
+    "texto": "Eu sou Leonardo Nogueira, fundador da Barigui Locadora, do grupo Barigui, o maior revendedor de veículos do sul do Brasil. Se você quer continuar descobrindo histórias surpreendentes do mercado automotivo, segue o meu perfil.",
+    "p_seg": 1,
+    "seg_por_mil": 17.53048780487805,
+    "coef": 1.11,
+    "link": "https://www.instagram.com/reel/DYdfEx0MrTT"
+   },
+   {
+    "texto": "Eu sou Leonardo Nogueira, se você quer entender o que separa as empresas que duram das que somem, me segue aí.",
+    "p_seg": 0.969,
+    "seg_por_mil": 12.998726655348047,
+    "coef": 1.53,
+    "link": "https://www.instagram.com/reel/DYYJXhsvA5w"
+   },
+   {
+    "texto": "Eu sou Leonardo Nogueira, sócio da Barigui Locadora, do Grupo Barigui, o maior revendedor de veículos do sul do Brasil. E se você quer entender as forças que estão mudando o mercado antes que elas batam na sua porta, segue o meu perfil.",
+    "p_seg": 0.938,
+    "seg_por_mil": 12.46600296979686,
+    "coef": 14.19,
+    "link": "https://www.instagram.com/reel/DZ2OwErudA4"
+   }
+  ],
+  "pior": [
+   {
+    "texto": "Eu sou Leonardo Nogueira e todos os dias eu trago as histórias do mercado automotivo que ensinam algo sobre o mundo como essa. Você quer continuar aprendendo sobre tecnologia e negócios antes que eles virem manchete? Segue aí meu perfil.",
+    "p_seg": 0,
+    "seg_por_mil": 0.34755408810496136
+   },
+   {
+    "texto": "Eu sou Nogueira os bastidores do mercado e como as grandes marcas constróem Segue perfil.",
+    "p_seg": 0.031,
+    "seg_por_mil": 0.49377490918068634
+   }
+  ]
+ }
+]

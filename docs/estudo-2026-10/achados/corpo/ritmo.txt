@@ -1,0 +1,51 @@
+| característica | vídeos / roteiros | % topo com vs sem | lift [IC] | OR MH | OR MH ctl tamanho [IC] | lift desc/val | IG TT YT | lift acerto | ret_final IG (ctl tam) | leitura / ctl |
+|---|---|---|---|---|---|---|---|---|---|---|
+| ponte: 'olha isso/olha só' | 300 / 120 | 28% vs 26% | 1,10 [0,91-1,31] | 1,15 | 1,11 [0,85-1,45] | 1,19/1,00 | 1,11 1,02 1,16 | 1,19 | 0,83 OR 0,68 (n=42) | sem evidência / ctl: sem evidência |
+| ponte: 'entenda' | 141 / 59 | 33% vs 26% | 1,29 [1,01-1,61] | 1,47 | 1,45 [0,99-2,13] | 1,34/1,23 | 1,64 1,20 0,92 | 1,25 | 1,10 OR 1,40 (n=21) | ajuda (replica) / ctl: sinal sem replicação |
+| ponte: 'funciona assim' | 208 / 88 | 26% vs 26% | 1,01 [0,79-1,25] | 1,01 | 1,06 [0,77-1,47] | 1,03/0,99 | 1,01 1,19 0,83 | 1,00 | 1,26 OR 1,43 (n=40) | sem evidência / ctl: sem evidência |
+| ponte: 'ou seja' | 1205 / 520 | 30% vs 25% | 1,17 [1,07-1,27] | 1,35 | 1,36 [1,17-1,59] | 1,11/1,20 | 1,23 1,10 1,15 | 1,10 | 0,86 OR 0,79 (n=246) | ajuda (replica) / ctl: ajuda (replica) |
+| ponte: 'pensa comigo/pensa bem' | 116 / 45 | 33% vs 26% | 1,27 [0,97-1,62] | 1,44 | 1,39 [0,93-2,08] | 1,20/1,44 | 1,42 1,39 0,97 | 1,04 | 0,72 OR 0,57 (n=27) | sem evidência / ctl: sem evidência |
+| ponte: 'imagina' | 246 / 111 | 27% vs 26% | 1,06 [0,86-1,28] | 1,08 | 0,98 [0,73-1,32] | 0,95/1,15 | 0,99 0,77 1,47 | 1,07 | 0,84 OR 0,90 (n=55) | sem evidência / ctl: sem evidência |
+| ponte: 'e o pior / o pior é que' | 78 / 36 | 28% vs 26% | 1,09 [0,75-1,51] | 1,14 | 1,13 [0,67-1,91] | 0,55/1,54 | 1,08 1,11 1,11 | 1,02 | 0,70 OR 0,74 (n=22) | sem evidência / ctl: sem evidência |
+| ponte: 'só que' | 3251 / 1406 | 27% vs 24% | 1,05 [1,00-1,11] | 1,18 | 1,12 [0,99-1,27] | 1,07/1,04 | 1,03 1,03 1,11 | 1,06 | 1,07 OR 1,45 (n=658) | sem evidência / ctl: sem evidência |
+| ponte: 'até que' | 587 / 257 | 27% vs 26% | 1,06 [0,93-1,21] | 1,10 | 1,01 [0,82-1,25] | 1,19/0,93 | 1,11 0,88 1,17 | 0,96 | 1,35 OR 1,76 (n=117) | sem evidência / ctl: sem evidência |
+| ponte: 'foi aí que / foi quando' | 915 / 408 | 23% vs 26% | 0,87 [0,77-0,98] | 0,80 | 0,76 [0,64-0,91] | 0,83/0,91 | 0,83 0,92 0,90 | 0,87 | 0,98 OR 0,95 (n=205) | atrapalha (replica) / ctl: atrapalha (replica) |
+| ponte: 'e é aqui que / é aí que' | 324 / 142 | 30% vs 26% | 1,15 [0,97-1,35] | 1,23 | 1,21 [0,94-1,56] | 1,23/1,10 | 1,16 0,86 1,44 | 1,09 | 0,82 OR 0,80 (n=66) | sem evidência / ctl: sem evidência |
+| ponte: 'o detalhe é que' | 159 / 65 | 35% vs 26% | 1,34 [1,07-1,64] | 1,55 | 1,46 [1,03-2,07] | 1,32/1,39 | 1,17 1,21 1,70 | 1,11 | 1,32 OR 1,65 (n=38) | ajuda (replica) / ctl: ajuda (replica) |
+| ponte: 'repara / percebe' | 196 / 81 | 28% vs 26% | 1,09 [0,86-1,35] | 1,13 | 1,06 [0,76-1,47] | 0,94/1,17 | 1,46 0,94 0,72 | 0,94 | 0,66 OR 0,50 (n=41) | sem evidência / ctl: sem evidência |
+| ponte: 'pra você ter ideia' | 1011 / 415 | 29% vs 25% | 1,13 [1,03-1,24] | 1,24 | 1,18 [1,01-1,39] | 1,08/1,18 | 1,10 1,14 1,17 | 1,10 | 1,03 OR 1,14 (n=177) | ajuda (replica) / ctl: ajuda (replica) |
+| ponte: 'na prática' | 643 / 296 | 23% vs 26% | 0,89 [0,77-1,03] | 0,84 | 0,84 [0,69-1,03] | 0,86/0,92 | 0,88 0,74 1,08 | 0,97 | 0,70 OR 0,66 (n=137) | sem evidência / ctl: sem evidência |
+| ponte: 'isso significa / quer dizer' | 196 / 95 | 24% vs 26% | 0,93 [0,72-1,18] | 0,91 | 0,89 [0,63-1,25] | 0,79/1,02 | 0,84 1,15 0,87 | 0,99 | 0,99 OR 1,22 (n=43) | sem evidência / ctl: sem evidência |
+| ponte: 'sabe o que / sabe por quê' | 109 / 50 | 30% vs 26% | 1,17 [0,87-1,53] | 1,26 | 1,35 [0,88-2,08] | 1,20/1,06 | 1,09 1,50 0,97 | 1,01 | 0,77 OR 0,62 (n=35) | sem evidência / ctl: sem evidência |
+| loop: 'e tem mais / não para por aí / não é só isso' | 247 / 104 | 30% vs 26% | 1,15 [0,94-1,38] | 1,22 | 1,14 [0,85-1,52] | 1,37/1,03 | 1,28 1,13 0,97 | 1,08 | 0,94 OR 1,03 (n=37) | sem evidência / ctl: sem evidência |
+| loop: 'o mais impressionante/curioso/louco' | 266 / 109 | 27% vs 26% | 1,06 [0,87-1,28] | 1,09 | 1,12 [0,84-1,49] | 1,20/0,95 | 1,06 1,04 1,09 | 1,20 | 1,05 OR 0,94 (n=48) | sem evidência / ctl: sem evidência |
+| loop: 'o que ninguém/pouca gente sabe' | 148 / 66 | 27% vs 26% | 1,05 [0,80-1,35] | 1,06 | 0,92 [0,63-1,34] | 1,02/1,11 | 1,16 1,15 0,73 | 1,09 | 0,97 OR 0,80 (n=28) | sem evidência / ctl: sem evidência |
+| loop: 'no final / até o fim' | 244 / 107 | 25% vs 26% | 0,95 [0,76-1,18] | 0,94 | 0,85 [0,62-1,17] | 0,71/1,24 | 0,98 1,04 0,83 | 0,98 | 0,84 OR 0,75 (n=55) | sem evidência / ctl: sem evidência |
+| crono: nenhum ano citado | 2363 / 1013 | 25% vs 27% | 0,95 [0,89-1,02] | 0,88 | 0,96 [0,84-1,11] | 0,98/0,91 | 1,01 0,92 0,88 | 1,01 | 1,08 OR 1,02 (n=510) | sem evidência / ctl: sem evidência |
+| crono: 1 ano citado | 1351 / 580 | 29% vs 25% | 1,11 [1,02-1,21] | 1,21 | 1,23 [1,07-1,42] | 1,14/1,08 | 1,12 1,10 1,10 | 1,05 | 0,91 OR 0,88 (n=276) | ajuda (replica) / ctl: ajuda (replica) |
+| crono: 2-3 anos citados | 1783 / 749 | 25% vs 26% | 0,98 [0,91-1,06] | 0,97 | 0,87 [0,76-1,00] | 0,97/0,99 | 0,90 1,04 1,03 | 0,96 | 0,91 OR 0,98 (n=369) | sem evidência / ctl: sem evidência |
+| crono: 4+ anos citados | 808 / 371 | 26% vs 26% | 1,00 [0,89-1,12] | 1,00 | 0,97 [0,80-1,17] | 0,86/1,10 | 0,97 0,94 1,09 | 0,98 | 1,12 OR 1,26 (n=162) | sem evidência / ctl: sem evidência |
+| crono: 'anos/meses depois' | 829 / 370 | 25% vs 26% | 0,95 [0,85-1,07] | 0,93 | 0,88 [0,73-1,05] | 0,90/0,99 | 0,88 1,06 0,97 | 0,95 | 1,39 OR 1,91 (n=164) | sem evidência / ctl: sem evidência |
+| crono: 'tudo começou' | 204 / 80 | 28% vs 26% | 1,10 [0,88-1,36] | 1,15 | 1,18 [0,86-1,63] | 1,07/1,14 | 1,23 1,33 0,70 | 1,12 | 0,66 OR 0,56 (n=41) | sem evidência / ctl: sem evidência |
+| crono: 'hoje' no corpo | 2054 / 900 | 25% vs 26% | 0,97 [0,90-1,05] | 0,95 | 0,91 [0,80-1,04] | 0,99/0,96 | 0,98 0,92 1,02 | 0,97 | 0,87 OR 0,81 (n=416) | sem evidência / ctl: sem evidência |
+| viradas (mas/só que/porém) >=1,1 por 100 | 1580 / 669 | 25% vs 26% | 0,98 [0,90-1,07] | 0,97 | 1,05 [0,91-1,20] | 0,91/1,07 | 0,92 1,00 1,07 | 0,97 | 1,13 OR 1,26 (n=382) | sem evidência / ctl: sem evidência |
+| viradas <=0,4 por 100 | 1586 / 677 | 24% vs 26% | 0,94 [0,86-1,02] | 0,89 | 0,86 [0,75-0,99] | 0,91/0,97 | 0,98 1,00 0,81 | 0,99 | 0,74 OR 0,61 (n=289) | sem evidência / ctl: sem evidência |
+| 'então/por isso/com isso' >=0,5 por 100 | 1669 / 704 | 24% vs 26% | 0,93 [0,85-1,01] | 0,87 | 0,90 [0,79-1,03] | 0,90/0,95 | 0,93 0,81 1,03 | 0,98 | 1,08 OR 1,17 (n=370) | sem evidência / ctl: sem evidência |
+| 'então/por isso' ausente | 2720 / 1189 | 26% vs 25% | 1,03 [0,96-1,09] | 1,06 | 1,04 [0,93-1,18] | 1,03/1,02 | 1,01 1,09 0,97 | 1,00 | 0,95 OR 0,83 (n=571) | sem evidência / ctl: sem evidência |
+| números >=3,6 por 100 | 1509 / 661 | 26% vs 26% | 1,02 [0,94-1,11] | 1,04 | 1,02 [0,88-1,17] | 0,93/1,10 | 0,99 1,05 1,03 | 0,95 | 0,86 OR 0,81 (n=305) | sem evidência / ctl: sem evidência |
+| números <=1,2 por 100 | 1581 / 673 | 25% vs 26% | 0,99 [0,91-1,07] | 0,97 | 1,05 [0,91-1,21] | 1,03/0,94 | 1,06 1,00 0,86 | 1,01 | 1,05 OR 1,05 (n=327) | sem evidência / ctl: sem evidência |
+| nomes próprios >=6,8 por 100 | 1620 / 673 | 29% vs 25% | 1,12 [1,04-1,21] | 1,26 | 1,26 [1,10-1,45] | 1,11/1,13 | 1,13 1,15 1,08 | 1,07 | 1,04 OR 1,12 (n=346) | ajuda (replica) / ctl: ajuda (replica) |
+| nomes próprios <=3,1 por 100 | 1495 / 663 | 24% vs 26% | 0,92 [0,84-1,01] | 0,86 | 0,87 [0,75-1,01] | 0,93/0,92 | 0,95 0,88 0,93 | 0,97 | 0,80 OR 0,69 (n=320) | sem evidência / ctl: sem evidência |
+| 'você' >=0,6 por 100 no corpo | 1594 / 675 | 26% vs 26% | 1,01 [0,93-1,09] | 1,01 | 1,07 [0,93-1,24] | 1,01/1,01 | 1,00 1,07 0,96 | 1,01 | 0,77 OR 0,55 (n=352) | sem evidência / ctl: sem evidência |
+| 'você' ausente no corpo | 3086 / 1351 | 25% vs 26% | 0,98 [0,92-1,04] | 0,94 | 0,94 [0,84-1,07] | 1,00/0,96 | 0,99 0,98 0,96 | 0,97 | 1,12 OR 1,36 (n=620) | sem evidência / ctl: sem evidência |
+| 1ª pessoa (eu/me/meu) no corpo | 844 / 349 | 27% vs 26% | 1,04 [0,93-1,16] | 1,07 | 1,06 [0,88-1,27] | 1,00/1,08 | 1,10 1,01 0,99 | 1,02 | 1,00 OR 0,90 (n=174) | sem evidência / ctl: sem evidência |
+| pergunta no corpo (1+) | 1547 / 658 | 28% vs 25% | 1,09 [1,00-1,18] | 1,17 | 1,15 [1,00-1,31] | 1,10/1,08 | 1,12 1,05 1,09 | 1,02 | 1,09 OR 1,11 (n=360) | ajuda (replica) / ctl: ajuda (replica) |
+| citação entre aspas no corpo | 1409 / 594 | 27% vs 26% | 1,03 [0,95-1,12] | 1,06 | 1,01 [0,87-1,17] | 1,08/0,96 | 1,04 1,05 1,01 | 1,00 | 1,19 OR 1,40 (n=344) | sem evidência / ctl: sem evidência |
+| lista 'primeiro... terceiro' | 181 / 75 | 35% vs 25% | 1,37 [1,12-1,65] | 1,59 | 1,35 [0,98-1,88] | 1,37/1,37 | 1,37 1,33 1,42 | 1,33 | 1,16 OR 1,32 (n=40) | ajuda (replica) / ctl: sinal sem replicação |
+| frase média <=15,5 palavras | 1660 / 691 | 26% vs 26% | 1,01 [0,93-1,10] | 1,02 | 1,07 [0,93-1,24] | 1,02/0,99 | 1,01 1,01 1,02 | 0,97 | 1,12 OR 1,22 (n=455) | sem evidência / ctl: sem evidência |
+| frase média >=20 palavras | 1690 / 743 | 27% vs 25% | 1,05 [0,97-1,13] | 1,10 | 1,07 [0,93-1,22] | 1,19/0,97 | 1,03 1,16 0,96 | 1,04 | 0,88 OR 0,89 (n=262) | sem evidência / ctl: sem evidência |
+| frases curtas (<=6) >=13% | 1522 / 641 | 27% vs 25% | 1,04 [0,95-1,12] | 1,07 | 1,09 [0,95-1,26] | 1,02/1,06 | 1,04 1,03 1,04 | 0,99 | 1,17 OR 1,35 (n=391) | sem evidência / ctl: sem evidência |
+| nenhuma frase curta (<=6) | 2427 / 1046 | 25% vs 26% | 0,97 [0,91-1,04] | 0,94 | 0,96 [0,85-1,09] | 0,98/0,97 | 0,98 0,99 0,94 | 1,00 | 0,99 OR 0,98 (n=433) | sem evidência / ctl: sem evidência |
+| parágrafos abrindo com conectivo >=44% | 1655 / 699 | 27% vs 25% | 1,04 [0,96-1,13] | 1,08 | 1,11 [0,97-1,27] | 0,97/1,09 | 1,03 1,08 1,02 | 1,03 | 0,99 OR 1,00 (n=309) | sem evidência / ctl: sem evidência |
+| parágrafos abrindo com conectivo <=23% | 1556 / 677 | 24% vs 26% | 0,94 [0,86-1,03] | 0,89 | 0,91 [0,79-1,05] | 0,92/0,97 | 0,92 1,01 0,90 | 1,02 | 0,94 OR 0,80 (n=336) | sem evidência / ctl: sem evidência |
+| parágrafos abrindo com 'Mas/Só que' >=14% | 1843 / 799 | 26% vs 26% | 1,00 [0,93-1,08] | 1,00 | 1,02 [0,90-1,16] | 1,01/1,00 | 0,94 1,00 1,10 | 1,01 | 1,10 OR 1,22 (n=402) | sem evidência / ctl: sem evidência |

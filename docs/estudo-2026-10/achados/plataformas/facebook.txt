@@ -1,0 +1,24 @@
+## Facebook: 276 vídeos, 276 roteiros
+- por conta: Izabela Anholett 213, Renato Torres 55, Marcelo Germano 8
+- acerto da casa: 25%; coef mediano 1,33; views medianas 18000
+- FB x Instagram: 275 roteiros nas duas, correlação do percentil 0,49, mesmo dia 96%
+  - só Izabela Anholett: n=212, correlação 0,62
+  - só Renato Torres: n=55, correlação 0,06
+- FB x TikTok: 208 roteiros nas duas, correlação do percentil 0,66, mesmo dia 100%
+  - só Izabela Anholett: n=205, correlação 0,66
+- FB x YouTube: 223 roteiros nas duas, correlação do percentil 0,32, mesmo dia 94%
+  - só Izabela Anholett: n=212, correlação 0,35
+
+## Características no Facebook (avaliar com plats=[Facebook], n>=30; com 270 vídeos, só efeitos grandes aparecem)
+- hook com 'você': n=40, 8% topo vs 29%, lift 0,29 [0,10-0,77], OR MH 0,20 [0,06-0,67], desc/valid 0,39/0,19, atrapalha (replica)
+- funcao_subhook = puxa_espectador: n=32, 6% topo vs 28%, lift 0,24 [0,07-0,78], OR MH 0,17 [0,04-0,73], desc/valid 0,31/0,00, atrapalha (replica)
+
+## Pareado IG x FB (275 roteiros; positivo = melhor no IG)
+- 'Eu sou' escrito no bloco final: Δ 8.1 pp [0.1 a 16.1], n=212, clientes 1/1
+- payoff = futuro: Δ 9.6 pp [2.6 a 16.4], n=105, clientes 1/1
+- payoff = vantagem: Δ -13.4 pp [-21.7 a -5.2], n=38, clientes 1/1
+- promessa_hook = ensinar: Δ -18.9 pp [-29.7 a -8.3], n=23, clientes 1/1
+- tipo_conclusao = futuro: Δ 10.8 pp [2.5 a 20.0], n=28, clientes 1/1
+- recorte = estrangeiro: Δ -9.0 pp [-16.5 a -1.5], n=186, clientes 2/2
+- utilidade prática = sim: Δ -7.4 pp [-14.4 a -0.2], n=67, clientes 1/1
+- território: Pré-MBA: ChatGPT, novas IAs e empregos: Δ -7.7 pp [-14.7 a -0.8], n=80, clientes 1/1

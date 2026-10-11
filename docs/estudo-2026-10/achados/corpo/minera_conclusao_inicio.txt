@@ -1,0 +1,22 @@
+
+## conclusao_inicio x coef (Instagram+TikTok+YouTube): 3 candidatos na descoberta, 0 mantêm o sinal, 0 com IC total fora de 1
+AJUDA:
+ATRAPALHA:
+
+## conclusao_inicio x compart (Instagram+TikTok): 1 candidatos na descoberta, 0 mantêm o sinal, 0 com IC total fora de 1
+AJUDA:
+ATRAPALHA:
+
+## conclusao_inicio x comentarios (Instagram+TikTok+YouTube): 4 candidatos na descoberta, 1 mantêm o sinal, 0 com IC total fora de 1
+AJUDA:
+ATRAPALHA:
+
+## conclusao_inicio x salvamentos (TikTok): 1 candidatos na descoberta, 0 mantêm o sinal, 0 com IC total fora de 1
+AJUDA:
+ATRAPALHA:
+
+## conclusao_inicio x ret_final (Instagram): 2 candidatos na descoberta, 2 mantêm o sinal, 2 com IC total fora de 1
+AJUDA:
+  "as" rot=56 n=29 lift 1,86 OR desc 4,15 val 1,72 [0,39-7,58] total 2,97 [1,39-6,35]
+  "as vezes" rot=45 n=23 lift 1,68 OR desc 3,58 val 1,47 [0,25-8,50] total 2,56 [1,08-6,06]
+ATRAPALHA:

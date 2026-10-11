@@ -1,0 +1,110 @@
+
+### hook_china (todas): 149 roteiros candidatos
+- Thiago Bisewski | IG coef 77,22 p100 · TT coef 450,48 p100 · YT coef 713,36 p100 | título: Geely acaba de apresentar revolução chocante dos carros | hook: "A China acabou de humilhar o resto do mundo mais uma vez e agora foi dando uma facada no coração da indústria automobilística." | duração 116 s, 382 palavras
+- Izabela Anholett | IG coef 24,16 p97 · TT coef 63,46 p99 · YT coef 340,30 p100 | título: A China transformou seu computador em um óculos. | hook: "A China agora está destruindo os computadores!" | duração 119 s, 376 palavras
+- Izabela Anholett | IG coef 27,05 p95 · TT coef 17,67 p95 · YT coef 249,07 p100 | título: ROBÔS ACESSÍVEIS LIBERADOS PRA TODO MUNDO (O Pesadelo do Elon Musk chegou no AliExpress) | hook: "O Elon Musk acabou de ser humilhado pela China com o que ela acabou de liberar pro mundo." | duração 131 s, 417 palavras
+
+### terr=Carros chineses BYD e Geely dominando o Brasil (todas): 42 roteiros candidatos
+- Thiago Bisewski | IG coef 77,22 p100 · TT coef 450,48 p100 · YT coef 713,36 p100 | título: Geely acaba de apresentar revolução chocante dos carros | hook: "A China acabou de humilhar o resto do mundo mais uma vez e agora foi dando uma facada no coração da indústria automobilística." | duração 116 s, 382 palavras
+- Renato Mendes | IG coef 52,83 p94 · TT coef 146,13 p91 · YT coef 1,49 p94 | título: A Fiat vai usar a sua memória para frear a BYD | hook: "A Fiat quer vencer a BYD jogando todas as suas cartas justamente naquilo que a chinesa ainda não tem." | duração 118 s, 425 palavras
+- Renato Mendes | IG coef 86,10 p98 · TT coef 288,66 p98 · YT coef 1,28 p88 | título: A Geely deixou a BYD com medo depois dessa decisão | hook: "A chinesa que está comprando o mundo deu o passo definitivo para dominar o Brasil. E agora, o império da BYD está oficialmente ameaçado." | duração 129 s, 376 palavras
+
+### payoff=disputa (todas): 49 roteiros candidatos
+- Izabela Anholett | IG coef 34,95 p99 · TT coef 116,04 p100 · YT coef 28,12 p92 | título: Mark Zuckerberg em guerra com a Apple | hook: "O dono do Instagram acabou de declarar guerra à Apple, usando uma arma que pode literalmente mudar o mundo que a gente conhece e o campo de batalha é o seu rosto, tá?" | duração 140 s, 453 palavras
+- Renato Mendes | IG coef 86,10 p98 · TT coef 288,66 p98 · YT coef 1,28 p88 | título: A Geely deixou a BYD com medo depois dessa decisão | hook: "A chinesa que está comprando o mundo deu o passo definitivo para dominar o Brasil. E agora, o império da BYD está oficialmente ameaçado." | duração 129 s, 376 palavras
+- Izabela Anholett | IG coef 14,38 p86 · TT coef 101,30 p100 · YT coef 179,29 p96 | título: Samsung e Google declararam guerra ao Mark Zuckerberg | hook: "O Google e a Samsung acabaram de declarar guerra ao Mark Zuckerberg, e o seu próximo celular não vai estar no seu bolso, vai estar no seu rosto." | duração 134 s, 428 palavras
+
+### cta_compart (Instagram): 9 roteiros candidatos
+- Drielle Castelani | IG coef 11,84 p95 · TT coef 1,08 p42 | título: O Brasil destruiu o próprio gênio. | hook: "Esse cara fez sozinho o que nenhum cientista na história conseguiu. Mas os próprios brasileiros destruíram ele por inveja." | duração 155 s, 447 palavras
+- Marcio Grazino | IG coef 24,20 p94 · TT coef 0,57 p41 · YT coef 0,66 p26 | título: A maranhense que saiu do interior para vencer uma Copa do Mundo | hook: "Essa estudante do Maranhão fez história! Ela saiu do interior do estado para escrever o seu nome no topo do mundo." | duração 105 s, 360 palavras
+- Túlio Lichenstein | IG coef 8,81 p96 · TT coef 1,42 p63 · YT coef 1,20 p53 | título: O nordestino esquecido por trás da Embraer | hook: "Antes do Brasil ter a terceira maior fabricante de aviões do mundo, um cearense apostou tudo numa escola, não numa fábrica, e foi essa escola que tornou isso possível. Mas ele morreu sem que a maioria dos brasileiros soubesse o no..." | duração 100 s, 313 palavras
+
+### funcao_subhook=eleva_aposta (Instagram contra YouTube): 62 roteiros candidatos
+- Dilson Peres | IG coef 33,55 p98 · TT coef 54,40 p100 · YT coef 0,19 p0 | título: O segredo da Virgínia para ser bilionária | hook: "A Virgínia te enganou e o sucesso dela não veio das redes sociais." | duração 145 s, 437 palavras
+- Manoel Victor | IG coef 302,50 p100 · YT coef 0,36 p8 | título: Monster e FLRT | hook: "A Monster vai deixar de ser o energético dos gamers para invadir a bolsa das mulheres." | duração 91 s, 267 palavras
+- Marcio Grazino | IG coef 14,14 p91 · TT coef 0,81 p44 · YT coef 0,30 p3 | título: Por menos de 20 centavos, esses estudantes podem mudar a vida dos agricultores | hook: "Esses estudantes do interior do Ceará transformaram os restos do maracujá numa solução para os maiores problemas dos agricultores." | duração 107 s, 393 palavras
+
+### rot_lt300 (Instagram contra TikTok): 44 roteiros candidatos
+- Dilson Peres | IG coef 75,85 p100 · TT coef 0,00 p0 | título: O PIX de 90 milhões da Havan | hook: "A Havan fez um pix pros funcionários de 90 milhões de reais e quase ninguém ficou sabendo." | duração 88 s, 287 palavras
+- Rafael Rodrigues | IG coef 44,08 p91 · TT coef 0,79 p11 · YT coef 35,39 p93 | título: A brasileira que foi premiada pelo Google! | hook: "Essa brasileira ganhou um prêmio do Google ao fazer de graça o que muitos cursinhos cobram mais de mil reais por mês. E ela fez isso em apenas 48 horas." | duração 116 s, 293 palavras
+- Thiago Franco | IG coef 9,42 p87 · TT coef 0,53 p12 · YT coef 0,04 p0 | título: Zara | hook: "A Zara ficou bilionária com uma estratégia que ninguém copia" | duração 76 s, 229 palavras
+
+### terr=Pré-MBA: ChatGPT, novas IAs e empregos (TikTok contra Instagram): 18 roteiros candidatos
+- João Paulo Albuquerque | IG coef 0,51 p0 · TT coef 2,36 p86 | título: A Meta lançou um atendente gratuito para o WhatsApp. | hook: "O dono do WhatsApp criou um funcionário perfeito para você. Ele trabalha 24 horas por dia, 7 dias por semana, e não pede aumento." | duração 97 s, 349 palavras
+- Manoel Victor | IG coef 0,47 p30 · TT coef 6,83 p100 · YT coef 0,61 p41 | título: O Google matou o telemarketing | hook: "O Google acabou de destruir o atendente de marketing!" | duração 65 s, 235 palavras
+- Manoel Victor | IG coef 0,49 p17 · TT coef 3,31 p85 · YT coef 0,70 p51 | título: O comando que faz o ChatGPT falar igual gente | hook: "Esse é o segredo que faz o ChatGPT parar de falar como um robô e escrever como uma pessoa." | duração 70 s, 175 palavras
+
+### hook_nome (TikTok): 241 roteiros candidatos
+- Lincoln Fracari | TT coef 33,24 p95 · YT coef 0,17 p0 | título: A china está prendendo quem vê p*rnô | hook: "Por que o Brasil é hoje o 4º país que mais consome pornografia no mundo, enquanto na China esse tipo de conteúdo dá até cadeia?" | duração 179 s, 452 palavras
+- Lincoln Fracari | TT coef 26,94 p91 · YT coef 0,25 p3 | título: Herança digital na China humilha: Brasil, EUA e Europa. | hook: "No Brasil, se você comprar uma skin, um item ou um personagem dentro de um jogo e morrer amanhã, vai tudo para o "lixo". Na China, não." | duração 163 s, 440 palavras
+- João Paulo Albuquerque | IG coef 0,51 p0 · TT coef 2,36 p86 | título: A Meta lançou um atendente gratuito para o WhatsApp. | hook: "O dono do WhatsApp criou um funcionário perfeito para você. Ele trabalha 24 horas por dia, 7 dias por semana, e não pede aumento." | duração 97 s, 349 palavras
+
+### hook_mega (TikTok contra Instagram): 104 roteiros candidatos
+- Thiago Franco | IG coef 0,26 p3 · TT coef 7,17 p100 · YT coef 1,21 p84 | título: A taxa da blusinha: quem realmente pagou a conta. | hook: "Em 2023, o governo disse que sua blusinha da Shein era contrabando. Criou uma taxa, arrecadou 5 bilhões, e agora, em ano de eleição, quer tirar a taxa fingindo que nunca quis ela." | duração 103 s, 396 palavras
+- Café com Ferri | IG coef 0,06 p10 · TT coef 112,01 p100 · YT coef 0,87 p36 | título: A técnica secreta que o Trump usa para dominar qualquer ambiente | hook: "Existe uma razão pro Trump ser o político mais poderoso do planeta. E ela começa antes mesmo dele abrir a boca." | duração 112 s, 381 palavras
+- João Paulo Albuquerque | IG coef 0,29 p4 · TT coef 70,55 p94 · YT coef 1,50 p69 | título: Tentaram matar a Huawei e perderam US$33 bilhões. | hook: "Trump tentou matar essa empresa cortando toda a tecnologia dela. Só que isso causou um prejuízo de 33 bilhões de dólares para os próprios americanos." | duração 126 s, 388 palavras
+
+### hook_eua (TikTok): 15 roteiros candidatos
+- Café com Ferri | IG coef 0,06 p10 · TT coef 112,01 p100 · YT coef 0,87 p36 | título: A técnica secreta que o Trump usa para dominar qualquer ambiente | hook: "Existe uma razão pro Trump ser o político mais poderoso do planeta. E ela começa antes mesmo dele abrir a boca." | duração 112 s, 381 palavras
+- Leonardo Nogueira | IG coef 0,58 p48 · TT coef 111,48 p96 · YT coef 0,83 p18 | título: Carro do presidente: nem bazuca atravessa. | hook: "O carro do presidente dos Estados Unidos é muito mais insano do que você imagina." | duração 78 s, 284 palavras
+- Lincoln Fracari | IG coef 0,97 p36 · TT coef 33,26 p90 · YT coef 1,33 p42 | título: Espiões descobertos nos Estados Unidos | hook: "O FBI descobriu que esta mulher, que acabou de se tornar prefeita nos EUA, é, na verdade, uma “agente secreta” da China." | duração 162 s, 416 palavras
+
+### dur_lt90 (Instagram contra TikTok): 35 roteiros candidatos
+- Dilson Peres | IG coef 75,85 p100 · TT coef 0,00 p0 | título: O PIX de 90 milhões da Havan | hook: "A Havan fez um pix pros funcionários de 90 milhões de reais e quase ninguém ficou sabendo." | duração 88 s, 287 palavras
+- Thiago Franco | IG coef 9,42 p87 · TT coef 0,53 p12 · YT coef 0,04 p0 | título: Zara | hook: "A Zara ficou bilionária com uma estratégia que ninguém copia" | duração 76 s, 229 palavras
+- Fernando Pereira | IG coef 4,97 p96 · TT coef 0,27 p36 | título: O Brasil vai abastecer o maior exército da Europa. | hook: "A Alemanha está montando o maior exército desde a Guerra Fria, e quem vai abastecer esse exército não é a Europa, é o Brasil." | duração 83 s, 349 palavras
+
+### antagonista=problema (Instagram contra TikTok): 59 roteiros candidatos
+- Cadu Neiva | IG coef 4,23 p91 · TT coef 0,07 p10 · YT coef 15,69 p98 | título: O analfabeto que resolveu a seca do Brasil. | hook: "Um pedreiro analfabeto do sertão da Bahia fez mais pelo Brasil do que a maioria dos políticos." | duração 166 s, 482 palavras
+- Fernando Pereira | IG coef 2,24 p87 · TT coef 0,17 p10 · YT coef 1,26 p81 | título: Ana Paula/Leandro Boneco/Milena/Juliana Floss, campeã (campeão) do BBB26, vai perder TUDO | hook: "Ana Paula/Leandro Boneco/Milena/Juliano Floss é a (o) nova (o) vencedora (vencedor) milionária (milionário) do BBB, mas pode perder todo o prêmio em menos de 3 anos e muita gente nem imagina!" | duração 121 s, 393 palavras
+- Marcelo Germano | IG coef 4,71 p93 · TT coef 0,47 p19 | título: Faca no olho de menino construiu R$ 4 bilhões. | hook: "Uma faca cegou o olho de uma criança de 3 anos e criou, sem querer, um dos maiores supermercados do Brasil." | duração 128 s, 398 palavras
+
+### terr=Segredos de marcas globais como Starbucks e Red Bull (Instagram contra TikTok): 11 roteiros candidatos
+- João Paulo Albuquerque | IG coef 1,21 p86 · TT coef 0,29 p0 · YT coef 0,24 p8 | título: A marca de ioga que vale 10 bilhões de dólares. | hook: "Existe um estúdio de ioga em que nenhum dinheiro do mundo compra o acesso. Não porque é caro, mas porque não está à venda." | duração 125 s, 432 palavras
+- João Paulo Albuquerque | IG coef 74,51 p100 · TT coef 0,71 p17 · YT coef 0,75 p40 | título: A L'Oréal descobriu ouro no lixo do salão. | hook: "Se você acha que cabelo cortado no chão de um salão de beleza é lixo, essa empresa acaba de provar que você está perdendo dinheiro." | duração 107 s, 365 palavras
+- Thiago Franco | IG coef 9,42 p87 · TT coef 0,53 p12 · YT coef 0,04 p0 | título: Zara | hook: "A Zara ficou bilionária com uma estratégia que ninguém copia" | duração 76 s, 229 palavras
+
+### hook_moeda (YouTube): 48 roteiros candidatos
+- Lincoln Fracari | IG coef 0,67 p17 · YT coef 10,10 p91 | título: A startup que humilhou os EUA em 24 horas | hook: "Um chinês destruiu 600 bilhões de dólares em um único dia, sem comprar uma ação, sem disparar um tiro e sem que quase ninguém soubesse quem ele era." | duração 148 s, 485 palavras
+- Cadu Neiva | IG coef 1,22 p13 · TT coef 0,27 p22 · YT coef 1,67 p86 | título: Ele saiu do sertão sem nada e hoje gera R$ 10,5 bilhões por ano | hook: "Esse jovem do sertão construiu um império de R$ 10 bilhões sem um real no bolso." | duração 177 s, 437 palavras
+- Pedro Elero | IG coef 0,34 p0 · TT coef 0,90 p21 · YT coef 9,87 p85 | título: Esse cara “vendeu” água da torneira por mil dólares | hook: "O que esse YouTuber fez para vender água de torneira por mil dólares é exatamente o que grandes marcas fazem com você todo dia." | duração 163 s, 448 palavras
+
+### payoff=queda (YouTube contra TikTok): 19 roteiros candidatos
+- Manoel Victor | IG coef 0,82 p40 · TT coef 0,43 p0 · YT coef 2,36 p96 | título: Kodak | hook: "Essa empresa inventou a tecnologia que causou sua falência" | duração 80 s, 224 palavras
+- Dilson Peres | IG coef 44,45 p93 · TT coef 2,53 p52 · YT coef 45,26 p100 | título: Charlie Brown Jr. e INPI | hook: "O Charlie Brown Jr cometeu um erro fatal que se tornou hoje um pesadelo para os herdeiros da banda." | duração 118 s, 385 palavras
+- Rodrigo Waughan | IG coef 0,97 p66 · TT coef 1,05 p64 · YT coef 13,00 p97 | título: A queda de 1 bilhão da Victor Hugo. | hook: "Uma das marcas de luxo mais desejadas do Brasil está sendo devorada por um segredo de um bilhão de reais." | duração 142 s, 403 palavras
+
+### dur_120_149 (YouTube contra Instagram): 107 roteiros candidatos
+- Franklin Tomich | IG coef 0,35 p4 · YT coef 129,84 p98 | título: O guaraná que venceu a Coca-Cola no sul do brasil | hook: "A Coca Cola e o Guaraná Antarctica sempre ignoraram o Sul do Brasil. A Fruki aproveitou isso e montou uma das melhores estratégias do país." | duração 148 s, 419 palavras
+- Franklin Tomich | IG coef 0,20 p1 · YT coef 5,24 p92 | título: A chinesa que a Mercedes criou virou sua rival | hook: "Essa chinesa tá brigando com a Mercedes-Benz no Brasil. O curioso é que ela nasceu dentro da própria Mercedes, mas hoje é sua rival no mercado de luxo." | duração 139 s, 408 palavras
+- Thiago Franco | IG coef 0,68 p11 · TT coef 0,67 p24 · YT coef 52,26 p100 | título: A galinha de 3 bilhões por ano. | hook: "Essa galinha esquisita é a prova que dá pra ficar bilionário postando música na internet." | duração 129 s, 492 palavras
+
+### recorte=estrangeiro (YouTube): 111 roteiros candidatos
+- Izabela Anholett | IG coef 0,40 p6 · TT coef 0,37 p11 · YT coef 3,27 p98 | título: Quando os robôs LUTAM melhor… | hook: "Esses robôs subiram no palco na Chira e lutaram Kung Fu aos olhos de 600 milhões de pessoas" | duração 63 s, 189 palavras
+- Leonardo Nogueira | IG coef 0,03 p2 · TT coef 0,19 p4 · YT coef 1,88 p91 | título: BMW - IA | hook: "Os novos chefes da BMW agora são… ROBÔS." | duração 73 s, 217 palavras
+- Rafael Rodrigues | IG coef 0,26 p0 · TT coef 0,68 p5 · YT coef 8,56 p90 | título: Apple - Treinamento para clientes | hook: "Pensa comigo: Nos Anos 90 uma loja de informática era escura, cheia de peças eletrônicas, e ninguém entendia o que o vendedor falava." | duração 92 s, 226 palavras
+
+### tipo_conclusao=virada_final (YouTube): 22 roteiros candidatos
+- Thiago Franco | IG coef 0,68 p11 · TT coef 0,67 p24 · YT coef 52,26 p100 | título: A galinha de 3 bilhões por ano. | hook: "Essa galinha esquisita é a prova que dá pra ficar bilionário postando música na internet." | duração 129 s, 492 palavras
+- Leonardo Nogueira | IG coef 0,43 p35 · TT coef 0,65 p29 · YT coef 1,33 p100 | título: O segredo da volkswagen | hook: "Enquanto você acha que está escolhendo entre rivais, uma única empresa já decidiu o carro que você vai comprar daqui a vinte anos." | duração 125 s, 430 palavras
+- Marcos Pelozato | IG coef 1,23 p53 · YT coef 11,49 p91 | título: A Polaroid faliu 2 vezes e um desconhecido salvou tudo | hook: "A Polaroid faliu duas vezes, mas foi salva por uma tecnologia que o mundo inteiro tinha jogado fora." | duração 154 s, 455 palavras
+
+### payoff_qualquer=orgulho (Instagram contra YouTube): 59 roteiros candidatos
+- Rafael Rodrigues | IG coef 88,60 p99 · TT coef 74,98 p95 · YT coef 0,07 p3 | título: Menino cearense de 8 anos venceu olimpíada nos EUA. | hook: "Esse menino cearense de apenas 8 anos ainda não tem os dentes da frente, mas acabou de conquistar o pódio de uma olimpíada científica nos Estados Unidos." | duração 157 s, 380 palavras
+- Marcio Grazino | IG coef 14,14 p91 · TT coef 0,81 p44 · YT coef 0,30 p3 | título: Por menos de 20 centavos, esses estudantes podem mudar a vida dos agricultores | hook: "Esses estudantes do interior do Ceará transformaram os restos do maracujá numa solução para os maiores problemas dos agricultores." | duração 107 s, 393 palavras
+- Rafael Rodrigues | IG coef 8,26 p87 · TT coef 54,21 p94 · YT coef 0,03 p0 | título: Meninas do Maranhão venceram um enorme torneio de robótica. | hook: "Essas seis garotas do Maranhão provaram que o futuro da tecnologia é feminino, tem sotaque nordestino e se constrói com peças de LEGO." | duração 163 s, 379 palavras
+
+### payoff_qualquer=orgulho (TikTok contra YouTube): 63 roteiros candidatos
+- Rafael Rodrigues | IG coef 8,26 p87 · TT coef 54,21 p94 · YT coef 0,03 p0 | título: Meninas do Maranhão venceram um enorme torneio de robótica. | hook: "Essas seis garotas do Maranhão provaram que o futuro da tecnologia é feminino, tem sotaque nordestino e se constrói com peças de LEGO." | duração 163 s, 379 palavras
+- Rafael Rodrigues | IG coef 88,60 p99 · TT coef 74,98 p95 · YT coef 0,07 p3 | título: Menino cearense de 8 anos venceu olimpíada nos EUA. | hook: "Esse menino cearense de apenas 8 anos ainda não tem os dentes da frente, mas acabou de conquistar o pódio de uma olimpíada científica nos Estados Unidos." | duração 157 s, 380 palavras
+- Cadu Neiva | IG coef 16,20 p87 · TT coef 102,05 p100 · YT coef 0,54 p21 | título: O Brasil apagou um dos maiores médicos do país | hook: "Albert Einstein veio ao Brasil e ignorou presidentes, políticos e intelectuais famosos pra almoçar com esse médico baiano. Mas você provavelmente nunca ouviu falar dele." | duração 159 s, 412 palavras
+
+### terr=Estudantes brasileiros que inventaram soluções premiadas (Instagram contra YouTube): 36 roteiros candidatos
+- Rafael Rodrigues | IG coef 88,60 p99 · TT coef 74,98 p95 · YT coef 0,07 p3 | título: Menino cearense de 8 anos venceu olimpíada nos EUA. | hook: "Esse menino cearense de apenas 8 anos ainda não tem os dentes da frente, mas acabou de conquistar o pódio de uma olimpíada científica nos Estados Unidos." | duração 157 s, 380 palavras
+- Marcio Grazino | IG coef 63,48 p98 · TT coef 81,68 p100 · YT coef 0,16 p3 | título: A adolescente que inovou usando restos de lixo | hook: "Essa baiana pegou os restos de lixo e criou um produto que as grandes indústrias cobram fortunas pra vender" | duração 139 s, 499 palavras
+- Marcio Grazino | IG coef 14,14 p91 · TT coef 0,81 p44 · YT coef 0,30 p3 | título: Por menos de 20 centavos, esses estudantes podem mudar a vida dos agricultores | hook: "Esses estudantes do interior do Ceará transformaram os restos do maracujá numa solução para os maiores problemas dos agricultores." | duração 107 s, 393 palavras
+
+### antagonista=gigante (TikTok contra YouTube): 26 roteiros candidatos
+- João Paulo Albuquerque | IG coef 2,63 p100 · TT coef 441,80 p100 · YT coef 0,18 p6 | título: Ela perdeu o nome da empresa e faturou R$ 800 milhões. | hook: "Ela levou 10 anos para construir essa empresa. E um único dia para descobrir que podia ser destruída por causa da Nestlé." | duração 155 s, 477 palavras
+- Rodrigo Waughan | IG coef 0,90 p80 · TT coef 1,87 p87 · YT coef 0,03 p13 | título: Ele declarou guerra à Amazon com 53 metros quadrados. | hook: "Enquanto o mundo viu as livrarias falirem, esse japonês entendeu o problema e salvou a sua loja!" | duração 150 s, 379 palavras
+- Thiago Franco | IG coef 0,83 p62 · TT coef 0,31 p100 · YT coef 0,80 p27 | título: Drogasil vai matar todas as farmácias do seu bairro! | hook: "As farmácias de bairro MORRERAM!" | duração 90 s, 323 palavras

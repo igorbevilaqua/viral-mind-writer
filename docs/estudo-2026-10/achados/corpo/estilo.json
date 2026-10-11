@@ -1,0 +1,6169 @@
+{
+ "antítese 'não é X, é Y': nenhuma": {
+  "nome": "antítese 'não é X, é Y': nenhuma",
+  "coef": {
+   "nome": "antítese 'não é X, é Y': nenhuma",
+   "desfecho": "coef",
+   "leitura": "sem evidência",
+   "n": 4540,
+   "roteiros": 1942,
+   "clientes": 28,
+   "p": 0.259,
+   "p_sem": 0.255,
+   "lift": 1,
+   "ic": [
+    0.96,
+    1.05
+   ],
+   "or_mh": 1.02,
+   "or_ic": [
+    0.9,
+    1.15
+   ],
+   "desc": 0.99,
+   "val": 1.02,
+   "n_desc": 2184,
+   "n_val": 2356,
+   "plat": {
+    "Instagram": {
+     "n": 1910,
+     "lift": 1,
+     "lb": 0.92,
+     "ub": 1.08
+    },
+    "TikTok": {
+     "n": 1338,
+     "lift": 1,
+     "lb": 0.92,
+     "ub": 1.1
+    },
+    "YouTube": {
+     "n": 1292,
+     "lift": 1.01,
+     "lb": 0.92,
+     "ub": 1.11
+    }
+   }
+  },
+  "coef_ctl": {
+   "nome": "antítese 'não é X, é Y': nenhuma",
+   "desfecho": "coef",
+   "leitura": "sem evidência",
+   "n": 4540,
+   "roteiros": 1942,
+   "clientes": 28,
+   "p": 0.259,
+   "p_sem": 0.255,
+   "lift": 1,
+   "ic": [
+    0.96,
+    1.05
+   ],
+   "or_mh": 1,
+   "or_ic": [
+    0.88,
+    1.14
+   ],
+   "desc": 0.99,
+   "val": 1.02,
+   "n_desc": 2184,
+   "n_val": 2356,
+   "plat": {
+    "Instagram": {
+     "n": 1910,
+     "lift": 1,
+     "lb": 0.92,
+     "ub": 1.08
+    },
+    "TikTok": {
+     "n": 1338,
+     "lift": 1,
+     "lb": 0.92,
+     "ub": 1.1
+    },
+    "YouTube": {
+     "n": 1292,
+     "lift": 1.01,
+     "lb": 0.92,
+     "ub": 1.11
+    }
+   }
+  },
+  "estrito": {
+   "or": 0.979390961864404,
+   "lo": 0.8505593062918556,
+   "hi": 1.1277363601645742,
+   "leitura": "sem evidência"
+  },
+  "acerto": {
+   "nome": "antítese 'não é X, é Y': nenhuma",
+   "desfecho": "acerto",
+   "leitura": "sem evidência",
+   "n": 4540,
+   "roteiros": 1942,
+   "clientes": 28,
+   "p": 0.397,
+   "p_sem": 0.375,
+   "lift": 1.02,
+   "ic": [
+    0.98,
+    1.05
+   ],
+   "or_mh": 1.04,
+   "or_ic": [
+    0.92,
+    1.18
+   ],
+   "desc": 1,
+   "val": 1.03,
+   "n_desc": 2184,
+   "n_val": 2356,
+   "plat": {
+    "Instagram": {
+     "n": 1910,
+     "lift": 1.01,
+     "lb": 0.95,
+     "ub": 1.07
+    },
+    "TikTok": {
+     "n": 1338,
+     "lift": 1.03,
+     "lb": 0.97,
+     "ub": 1.09
+    },
+    "YouTube": {
+     "n": 1292,
+     "lift": 1.01,
+     "lb": 0.94,
+     "ub": 1.08
+    }
+   }
+  },
+  "ret_final": {
+   "nome": "antítese 'não é X, é Y': nenhuma",
+   "desfecho": "ret_final",
+   "leitura": "sem evidência",
+   "n": 880,
+   "roteiros": 880,
+   "clientes": 17,
+   "p": 0.285,
+   "p_sem": 0.206,
+   "lift": 1.1,
+   "ic": [
+    0.99,
+    1.22
+   ],
+   "or_mh": 1.53,
+   "or_ic": [
+    1.14,
+    2.06
+   ],
+   "desc": 1.09,
+   "val": 1.13,
+   "n_desc": 596,
+   "n_val": 284,
+   "plat": {
+    "Instagram": {
+     "n": 880,
+     "lift": 1.1,
+     "lb": 0.99,
+     "ub": 1.22
+    }
+   }
+  },
+  "compart": {
+   "nome": "antítese 'não é X, é Y': nenhuma",
+   "desfecho": "compart",
+   "leitura": "sem evidência",
+   "n": 2026,
+   "roteiros": 1509,
+   "clientes": 27,
+   "p": 0.248,
+   "p_sem": 0.281,
+   "lift": 0.97,
+   "ic": [
+    0.89,
+    1.04
+   ],
+   "or_mh": 0.85,
+   "or_ic": [
+    0.69,
+    1.04
+   ],
+   "desc": 0.98,
+   "val": 0.97,
+   "n_desc": 1171,
+   "n_val": 855,
+   "plat": {
+    "Instagram": {
+     "n": 899,
+     "lift": 0.97,
+     "lb": 0.87,
+     "ub": 1.08
+    },
+    "TikTok": {
+     "n": 1127,
+     "lift": 0.96,
+     "lb": 0.87,
+     "ub": 1.06
+    }
+   }
+  },
+  "salvamentos": {
+   "nome": "antítese 'não é X, é Y': nenhuma",
+   "desfecho": "salvamentos",
+   "leitura": "sem evidência",
+   "n": 1250,
+   "roteiros": 1250,
+   "clientes": 23,
+   "p": 0.254,
+   "p_sem": 0.257,
+   "lift": 1,
+   "ic": [
+    0.91,
+    1.09
+   ],
+   "or_mh": 0.93,
+   "or_ic": [
+    0.73,
+    1.2
+   ],
+   "desc": 1.01,
+   "val": 0.98,
+   "n_desc": 604,
+   "n_val": 646,
+   "plat": {
+    "TikTok": {
+     "n": 1250,
+     "lift": 1,
+     "lb": 0.91,
+     "ub": 1.09
+    }
+   }
+  },
+  "comentarios": {
+   "nome": "antítese 'não é X, é Y': nenhuma",
+   "desfecho": "comentarios",
+   "leitura": "sem evidência",
+   "n": 4540,
+   "roteiros": 1942,
+   "clientes": 28,
+   "p": 0.258,
+   "p_sem": 0.236,
+   "lift": 1.02,
+   "ic": [
+    0.97,
+    1.08
+   ],
+   "or_mh": 1.12,
+   "or_ic": [
+    0.98,
+    1.28
+   ],
+   "desc": 1.03,
+   "val": 1.02,
+   "n_desc": 2184,
+   "n_val": 2356,
+   "plat": {
+    "Instagram": {
+     "n": 1910,
+     "lift": 1.06,
+     "lb": 0.98,
+     "ub": 1.14
+    },
+    "TikTok": {
+     "n": 1338,
+     "lift": 0.98,
+     "lb": 0.89,
+     "ub": 1.07
+    },
+    "YouTube": {
+     "n": 1292,
+     "lift": 1.02,
+     "lb": 0.93,
+     "ub": 1.12
+    }
+   }
+  }
+ },
+ "antítese: 1": {
+  "nome": "antítese: 1",
+  "coef": {
+   "nome": "antítese: 1",
+   "desfecho": "coef",
+   "leitura": "sem evidência",
+   "n": 1175,
+   "roteiros": 518,
+   "clientes": 28,
+   "p": 0.254,
+   "p_sem": 0.259,
+   "lift": 0.98,
+   "ic": [
+    0.89,
+    1.08
+   ],
+   "or_mh": 0.98,
+   "or_ic": [
+    0.84,
+    1.13
+   ],
+   "desc": 1.01,
+   "val": 0.95,
+   "n_desc": 630,
+   "n_val": 545,
+   "plat": {
+    "Instagram": {
+     "n": 499,
+     "lift": 0.97,
+     "lb": 0.83,
+     "ub": 1.12
+    },
+    "TikTok": {
+     "n": 343,
+     "lift": 0.95,
+     "lb": 0.78,
+     "ub": 1.13
+    },
+    "YouTube": {
+     "n": 333,
+     "lift": 1.05,
+     "lb": 0.87,
+     "ub": 1.24
+    }
+   }
+  },
+  "coef_ctl": {
+   "nome": "antítese: 1",
+   "desfecho": "coef",
+   "leitura": "sem evidência",
+   "n": 1175,
+   "roteiros": 518,
+   "clientes": 28,
+   "p": 0.254,
+   "p_sem": 0.259,
+   "lift": 0.98,
+   "ic": [
+    0.89,
+    1.08
+   ],
+   "or_mh": 0.99,
+   "or_ic": [
+    0.85,
+    1.15
+   ],
+   "desc": 1.01,
+   "val": 0.95,
+   "n_desc": 630,
+   "n_val": 545,
+   "plat": {
+    "Instagram": {
+     "n": 499,
+     "lift": 0.97,
+     "lb": 0.83,
+     "ub": 1.12
+    },
+    "TikTok": {
+     "n": 343,
+     "lift": 0.95,
+     "lb": 0.78,
+     "ub": 1.13
+    },
+    "YouTube": {
+     "n": 333,
+     "lift": 1.05,
+     "lb": 0.87,
+     "ub": 1.24
+    }
+   }
+  },
+  "estrito": {
+   "or": 0.9845477747968515,
+   "lo": 0.8370472979582088,
+   "hi": 1.1580400811542046,
+   "leitura": "sem evidência"
+  },
+  "acerto": {
+   "nome": "antítese: 1",
+   "desfecho": "acerto",
+   "leitura": "sem evidência",
+   "n": 1175,
+   "roteiros": 518,
+   "clientes": 28,
+   "p": 0.38,
+   "p_sem": 0.393,
+   "lift": 0.97,
+   "ic": [
+    0.9,
+    1.05
+   ],
+   "or_mh": 0.98,
+   "or_ic": [
+    0.86,
+    1.13
+   ],
+   "desc": 1.01,
+   "val": 0.92,
+   "n_desc": 630,
+   "n_val": 545,
+   "plat": {
+    "Instagram": {
+     "n": 499,
+     "lift": 0.96,
+     "lb": 0.85,
+     "ub": 1.08
+    },
+    "TikTok": {
+     "n": 343,
+     "lift": 0.92,
+     "lb": 0.79,
+     "ub": 1.04
+    },
+    "YouTube": {
+     "n": 333,
+     "lift": 1.05,
+     "lb": 0.92,
+     "ub": 1.19
+    }
+   }
+  },
+  "ret_final": {
+   "nome": "antítese: 1",
+   "desfecho": "ret_final",
+   "leitura": "sem evidência",
+   "n": 290,
+   "roteiros": 290,
+   "clientes": 17,
+   "p": 0.231,
+   "p_sem": 0.267,
+   "lift": 0.89,
+   "ic": [
+    0.72,
+    1.09
+   ],
+   "or_mh": 0.84,
+   "or_ic": [
+    0.6,
+    1.16
+   ],
+   "desc": 0.91,
+   "val": 0.86,
+   "n_desc": 192,
+   "n_val": 98,
+   "plat": {
+    "Instagram": {
+     "n": 290,
+     "lift": 0.89,
+     "lb": 0.72,
+     "ub": 1.09
+    }
+   }
+  },
+  "compart": {
+   "nome": "antítese: 1",
+   "desfecho": "compart",
+   "leitura": "sem evidência",
+   "n": 476,
+   "roteiros": 368,
+   "clientes": 26,
+   "p": 0.288,
+   "p_sem": 0.25,
+   "lift": 1.12,
+   "ic": [
+    0.97,
+    1.29
+   ],
+   "or_mh": 1.2,
+   "or_ic": [
+    0.95,
+    1.51
+   ],
+   "desc": 1.09,
+   "val": 1.13,
+   "n_desc": 306,
+   "n_val": 170,
+   "plat": {
+    "Instagram": {
+     "n": 197,
+     "lift": 1.08,
+     "lb": 0.85,
+     "ub": 1.34
+    },
+    "TikTok": {
+     "n": 279,
+     "lift": 1.15,
+     "lb": 0.96,
+     "ub": 1.37
+    }
+   }
+  },
+  "salvamentos": {
+   "nome": "antítese: 1",
+   "desfecho": "salvamentos",
+   "leitura": "sem evidência",
+   "n": 310,
+   "roteiros": 310,
+   "clientes": 23,
+   "p": 0.271,
+   "p_sem": 0.252,
+   "lift": 1.06,
+   "ic": [
+    0.88,
+    1.27
+   ],
+   "or_mh": 1.21,
+   "or_ic": [
+    0.91,
+    1.61
+   ],
+   "desc": 1.01,
+   "val": 1.12,
+   "n_desc": 162,
+   "n_val": 148,
+   "plat": {
+    "TikTok": {
+     "n": 310,
+     "lift": 1.06,
+     "lb": 0.88,
+     "ub": 1.27
+    }
+   }
+  },
+  "comentarios": {
+   "nome": "antítese: 1",
+   "desfecho": "comentarios",
+   "leitura": "sem evidência",
+   "n": 1175,
+   "roteiros": 518,
+   "clientes": 28,
+   "p": 0.236,
+   "p_sem": 0.256,
+   "lift": 0.94,
+   "ic": [
+    0.84,
+    1.04
+   ],
+   "or_mh": 0.88,
+   "or_ic": [
+    0.76,
+    1.03
+   ],
+   "desc": 0.92,
+   "val": 0.96,
+   "n_desc": 630,
+   "n_val": 545,
+   "plat": {
+    "Instagram": {
+     "n": 499,
+     "lift": 0.84,
+     "lb": 0.71,
+     "ub": 0.99
+    },
+    "TikTok": {
+     "n": 343,
+     "lift": 1.08,
+     "lb": 0.9,
+     "ub": 1.27
+    },
+    "YouTube": {
+     "n": 333,
+     "lift": 0.94,
+     "lb": 0.77,
+     "ub": 1.13
+    }
+   }
+  }
+ },
+ "antítese: 2+": {
+  "nome": "antítese: 2+",
+  "coef": {
+   "nome": "antítese: 2+",
+   "desfecho": "coef",
+   "leitura": "sem evidência",
+   "n": 590,
+   "roteiros": 253,
+   "clientes": 27,
+   "p": 0.258,
+   "p_sem": 0.258,
+   "lift": 1,
+   "ic": [
+    0.87,
+    1.14
+   ],
+   "or_mh": 1,
+   "or_ic": [
+    0.83,
+    1.22
+   ],
+   "desc": 1.05,
+   "val": 0.94,
+   "n_desc": 321,
+   "n_val": 269,
+   "plat": {
+    "Instagram": {
+     "n": 249,
+     "lift": 1.08,
+     "lb": 0.88,
+     "ub": 1.31
+    },
+    "TikTok": {
+     "n": 176,
+     "lift": 1.08,
+     "lb": 0.84,
+     "ub": 1.35
+    },
+    "YouTube": {
+     "n": 165,
+     "lift": 0.8,
+     "lb": 0.59,
+     "ub": 1.06
+    }
+   }
+  },
+  "coef_ctl": {
+   "nome": "antítese: 2+",
+   "desfecho": "coef",
+   "leitura": "sem evidência",
+   "n": 590,
+   "roteiros": 253,
+   "clientes": 27,
+   "p": 0.258,
+   "p_sem": 0.258,
+   "lift": 1,
+   "ic": [
+    0.87,
+    1.14
+   ],
+   "or_mh": 1.02,
+   "or_ic": [
+    0.83,
+    1.24
+   ],
+   "desc": 1.05,
+   "val": 0.94,
+   "n_desc": 321,
+   "n_val": 269,
+   "plat": {
+    "Instagram": {
+     "n": 249,
+     "lift": 1.08,
+     "lb": 0.88,
+     "ub": 1.31
+    },
+    "TikTok": {
+     "n": 176,
+     "lift": 1.08,
+     "lb": 0.84,
+     "ub": 1.35
+    },
+    "YouTube": {
+     "n": 165,
+     "lift": 0.8,
+     "lb": 0.59,
+     "ub": 1.06
+    }
+   }
+  },
+  "estrito": {
+   "or": 1.0748006126310252,
+   "lo": 0.8722341510410847,
+   "hi": 1.3244108311205234,
+   "leitura": "sem evidência"
+  },
+  "acerto": {
+   "nome": "antítese: 2+",
+   "desfecho": "acerto",
+   "leitura": "sem evidência",
+   "n": 590,
+   "roteiros": 253,
+   "clientes": 27,
+   "p": 0.364,
+   "p_sem": 0.394,
+   "lift": 0.93,
+   "ic": [
+    0.84,
+    1.03
+   ],
+   "or_mh": 0.93,
+   "or_ic": [
+    0.77,
+    1.12
+   ],
+   "desc": 0.98,
+   "val": 0.87,
+   "n_desc": 321,
+   "n_val": 269,
+   "plat": {
+    "Instagram": {
+     "n": 249,
+     "lift": 1,
+     "lb": 0.84,
+     "ub": 1.16
+    },
+    "TikTok": {
+     "n": 176,
+     "lift": 0.94,
+     "lb": 0.77,
+     "ub": 1.12
+    },
+    "YouTube": {
+     "n": 165,
+     "lift": 0.83,
+     "lb": 0.66,
+     "ub": 1.02
+    }
+   }
+  },
+  "ret_final": {
+   "nome": "antítese: 2+",
+   "desfecho": "ret_final",
+   "leitura": "atrapalha (replica)",
+   "n": 147,
+   "roteiros": 147,
+   "clientes": 17,
+   "p": 0.156,
+   "p_sem": 0.272,
+   "lift": 0.6,
+   "ic": [
+    0.41,
+    0.86
+   ],
+   "or_mh": 0.51,
+   "or_ic": [
+    0.32,
+    0.82
+   ],
+   "desc": 0.62,
+   "val": 0.57,
+   "n_desc": 95,
+   "n_val": 52,
+   "plat": {
+    "Instagram": {
+     "n": 147,
+     "lift": 0.6,
+     "lb": 0.41,
+     "ub": 0.86
+    }
+   }
+  },
+  "compart": {
+   "nome": "antítese: 2+",
+   "desfecho": "compart",
+   "leitura": "sem evidência",
+   "n": 232,
+   "roteiros": 171,
+   "clientes": 24,
+   "p": 0.267,
+   "p_sem": 0.255,
+   "lift": 1.04,
+   "ic": [
+    0.84,
+    1.28
+   ],
+   "or_mh": 1.07,
+   "or_ic": [
+    0.78,
+    1.46
+   ],
+   "desc": 0.99,
+   "val": 1.08,
+   "n_desc": 155,
+   "n_val": 77,
+   "plat": {
+    "Instagram": {
+     "n": 94,
+     "lift": 1.11,
+     "lb": 0.79,
+     "ub": 1.49
+    },
+    "TikTok": {
+     "n": 138,
+     "lift": 1,
+     "lb": 0.74,
+     "ub": 1.31
+    }
+   }
+  },
+  "salvamentos": {
+   "nome": "antítese: 2+",
+   "desfecho": "salvamentos",
+   "leitura": "sem evidência",
+   "n": 160,
+   "roteiros": 160,
+   "clientes": 20,
+   "p": 0.231,
+   "p_sem": 0.258,
+   "lift": 0.91,
+   "ic": [
+    0.68,
+    1.18
+   ],
+   "or_mh": 0.84,
+   "or_ic": [
+    0.56,
+    1.25
+   ],
+   "desc": 0.92,
+   "val": 0.9,
+   "n_desc": 93,
+   "n_val": 67,
+   "plat": {
+    "TikTok": {
+     "n": 160,
+     "lift": 0.91,
+     "lb": 0.68,
+     "ub": 1.18
+    }
+   }
+  },
+  "comentarios": {
+   "nome": "antítese: 2+",
+   "desfecho": "comentarios",
+   "leitura": "sem evidência",
+   "n": 590,
+   "roteiros": 253,
+   "clientes": 27,
+   "p": 0.237,
+   "p_sem": 0.253,
+   "lift": 0.94,
+   "ic": [
+    0.81,
+    1.08
+   ],
+   "or_mh": 0.96,
+   "or_ic": [
+    0.78,
+    1.17
+   ],
+   "desc": 0.98,
+   "val": 0.92,
+   "n_desc": 321,
+   "n_val": 269,
+   "plat": {
+    "Instagram": {
+     "n": 249,
+     "lift": 0.89,
+     "lb": 0.7,
+     "ub": 1.11
+    },
+    "TikTok": {
+     "n": 176,
+     "lift": 1,
+     "lb": 0.77,
+     "ub": 1.28
+    },
+    "YouTube": {
+     "n": 165,
+     "lift": 0.96,
+     "lb": 0.72,
+     "ub": 1.24
+    }
+   }
+  }
+ },
+ "pergunta elíptica ('O resultado?'): 1+": {
+  "nome": "pergunta elíptica ('O resultado?'): 1+",
+  "coef": {
+   "nome": "pergunta elíptica ('O resultado?'): 1+",
+   "desfecho": "coef",
+   "leitura": "sem evidência",
+   "n": 353,
+   "roteiros": 140,
+   "clientes": 24,
+   "p": 0.286,
+   "p_sem": 0.256,
+   "lift": 1.11,
+   "ic": [
+    0.94,
+    1.3
+   ],
+   "or_mh": 1.17,
+   "or_ic": [
+    0.92,
+    1.49
+   ],
+   "desc": 1.09,
+   "val": 1.18,
+   "n_desc": 271,
+   "n_val": 82,
+   "plat": {
+    "Instagram": {
+     "n": 137,
+     "lift": 1.02,
+     "lb": 0.76,
+     "ub": 1.33
+    },
+    "TikTok": {
+     "n": 112,
+     "lift": 0.97,
+     "lb": 0.69,
+     "ub": 1.31
+    },
+    "YouTube": {
+     "n": 104,
+     "lift": 1.38,
+     "lb": 1.05,
+     "ub": 1.75
+    }
+   }
+  },
+  "coef_ctl": {
+   "nome": "pergunta elíptica ('O resultado?'): 1+",
+   "desfecho": "coef",
+   "leitura": "sem evidência",
+   "n": 353,
+   "roteiros": 140,
+   "clientes": 24,
+   "p": 0.286,
+   "p_sem": 0.256,
+   "lift": 1.11,
+   "ic": [
+    0.94,
+    1.3
+   ],
+   "or_mh": 1.19,
+   "or_ic": [
+    0.92,
+    1.53
+   ],
+   "desc": 1.09,
+   "val": 1.18,
+   "n_desc": 271,
+   "n_val": 82,
+   "plat": {
+    "Instagram": {
+     "n": 137,
+     "lift": 1.02,
+     "lb": 0.76,
+     "ub": 1.33
+    },
+    "TikTok": {
+     "n": 112,
+     "lift": 0.97,
+     "lb": 0.69,
+     "ub": 1.31
+    },
+    "YouTube": {
+     "n": 104,
+     "lift": 1.38,
+     "lb": 1.05,
+     "ub": 1.75
+    }
+   }
+  },
+  "estrito": {
+   "or": 1.3206753747895046,
+   "lo": 0.9951248810302742,
+   "hi": 1.7527282040919405,
+   "leitura": "sem evidência"
+  },
+  "acerto": {
+   "nome": "pergunta elíptica ('O resultado?'): 1+",
+   "desfecho": "acerto",
+   "leitura": "sem evidência",
+   "n": 353,
+   "roteiros": 140,
+   "clientes": 24,
+   "p": 0.377,
+   "p_sem": 0.392,
+   "lift": 0.96,
+   "ic": [
+    0.84,
+    1.1
+   ],
+   "or_mh": 1.1,
+   "or_ic": [
+    0.86,
+    1.41
+   ],
+   "desc": 0.9,
+   "val": 1.11,
+   "n_desc": 271,
+   "n_val": 82,
+   "plat": {
+    "Instagram": {
+     "n": 137,
+     "lift": 0.89,
+     "lb": 0.69,
+     "ub": 1.1
+    },
+    "TikTok": {
+     "n": 112,
+     "lift": 0.96,
+     "lb": 0.75,
+     "ub": 1.18
+    },
+    "YouTube": {
+     "n": 104,
+     "lift": 1.07,
+     "lb": 0.84,
+     "ub": 1.32
+    }
+   }
+  },
+  "ret_final": {
+   "nome": "pergunta elíptica ('O resultado?'): 1+",
+   "desfecho": "ret_final",
+   "leitura": "sem evidência",
+   "n": 98,
+   "roteiros": 98,
+   "clientes": 15,
+   "p": 0.296,
+   "p_sem": 0.256,
+   "lift": 1.14,
+   "ic": [
+    0.83,
+    1.52
+   ],
+   "or_mh": 1.11,
+   "or_ic": [
+    0.7,
+    1.76
+   ],
+   "desc": 1.16,
+   "val": 0.35,
+   "n_desc": 84,
+   "n_val": 14,
+   "plat": {
+    "Instagram": {
+     "n": 98,
+     "lift": 1.14,
+     "lb": 0.83,
+     "ub": 1.52
+    }
+   }
+  },
+  "compart": {
+   "nome": "pergunta elíptica ('O resultado?'): 1+",
+   "desfecho": "compart",
+   "leitura": "atrapalha (replica)",
+   "n": 141,
+   "roteiros": 108,
+   "clientes": 20,
+   "p": 0.17,
+   "p_sem": 0.261,
+   "lift": 0.66,
+   "ic": [
+    0.46,
+    0.94
+   ],
+   "or_mh": 0.6,
+   "or_ic": [
+    0.37,
+    0.96
+   ],
+   "desc": 0.62,
+   "val": 0.63,
+   "n_desc": 108,
+   "n_val": 33,
+   "plat": {
+    "Instagram": {
+     "n": 52,
+     "lift": 0.37,
+     "lb": 0.16,
+     "ub": 0.8
+    },
+    "TikTok": {
+     "n": 89,
+     "lift": 0.84,
+     "lb": 0.55,
+     "ub": 1.22
+    }
+   }
+  },
+  "salvamentos": {
+   "nome": "pergunta elíptica ('O resultado?'): 1+",
+   "desfecho": "salvamentos",
+   "leitura": "sem evidência",
+   "n": 106,
+   "roteiros": 106,
+   "clientes": 18,
+   "p": 0.217,
+   "p_sem": 0.258,
+   "lift": 0.85,
+   "ic": [
+    0.58,
+    1.19
+   ],
+   "or_mh": 0.82,
+   "or_ic": [
+    0.5,
+    1.36
+   ],
+   "desc": 0.95,
+   "val": 0.6,
+   "n_desc": 81,
+   "n_val": 25,
+   "plat": {
+    "TikTok": {
+     "n": 106,
+     "lift": 0.85,
+     "lb": 0.58,
+     "ub": 1.19
+    }
+   }
+  },
+  "comentarios": {
+   "nome": "pergunta elíptica ('O resultado?'): 1+",
+   "desfecho": "comentarios",
+   "leitura": "sem evidência",
+   "n": 353,
+   "roteiros": 140,
+   "clientes": 24,
+   "p": 0.232,
+   "p_sem": 0.253,
+   "lift": 0.92,
+   "ic": [
+    0.76,
+    1.11
+   ],
+   "or_mh": 0.89,
+   "or_ic": [
+    0.68,
+    1.17
+   ],
+   "desc": 1,
+   "val": 0.82,
+   "n_desc": 271,
+   "n_val": 82,
+   "plat": {
+    "Instagram": {
+     "n": 137,
+     "lift": 1.18,
+     "lb": 0.9,
+     "ub": 1.5
+    },
+    "TikTok": {
+     "n": 112,
+     "lift": 0.74,
+     "lb": 0.49,
+     "ub": 1.06
+    },
+    "YouTube": {
+     "n": 104,
+     "lift": 0.78,
+     "lb": 0.52,
+     "ub": 1.13
+    }
+   }
+  }
+ },
+ "pergunta curta (<=4 palavras): 1+": {
+  "nome": "pergunta curta (<=4 palavras): 1+",
+  "coef": {
+   "nome": "pergunta curta (<=4 palavras): 1+",
+   "desfecho": "coef",
+   "leitura": "sem evidência",
+   "n": 616,
+   "roteiros": 252,
+   "clientes": 28,
+   "p": 0.281,
+   "p_sem": 0.255,
+   "lift": 1.09,
+   "ic": [
+    0.96,
+    1.23
+   ],
+   "or_mh": 1.14,
+   "or_ic": [
+    0.95,
+    1.38
+   ],
+   "desc": 1.05,
+   "val": 1.19,
+   "n_desc": 446,
+   "n_val": 170,
+   "plat": {
+    "Instagram": {
+     "n": 248,
+     "lift": 1.07,
+     "lb": 0.87,
+     "ub": 1.3
+    },
+    "TikTok": {
+     "n": 184,
+     "lift": 1.01,
+     "lb": 0.78,
+     "ub": 1.27
+    },
+    "YouTube": {
+     "n": 184,
+     "lift": 1.2,
+     "lb": 0.96,
+     "ub": 1.47
+    }
+   }
+  },
+  "coef_ctl": {
+   "nome": "pergunta curta (<=4 palavras): 1+",
+   "desfecho": "coef",
+   "leitura": "sem evidência",
+   "n": 616,
+   "roteiros": 252,
+   "clientes": 28,
+   "p": 0.281,
+   "p_sem": 0.255,
+   "lift": 1.09,
+   "ic": [
+    0.96,
+    1.23
+   ],
+   "or_mh": 1.18,
+   "or_ic": [
+    0.96,
+    1.43
+   ],
+   "desc": 1.05,
+   "val": 1.19,
+   "n_desc": 446,
+   "n_val": 170,
+   "plat": {
+    "Instagram": {
+     "n": 248,
+     "lift": 1.07,
+     "lb": 0.87,
+     "ub": 1.3
+    },
+    "TikTok": {
+     "n": 184,
+     "lift": 1.01,
+     "lb": 0.78,
+     "ub": 1.27
+    },
+    "YouTube": {
+     "n": 184,
+     "lift": 1.2,
+     "lb": 0.96,
+     "ub": 1.47
+    }
+   }
+  },
+  "estrito": {
+   "or": 1.2565041135701214,
+   "lo": 1.006814834338642,
+   "hi": 1.5681161357298858,
+   "leitura": "sem evidência"
+  },
+  "acerto": {
+   "nome": "pergunta curta (<=4 palavras): 1+",
+   "desfecho": "acerto",
+   "leitura": "sem evidência",
+   "n": 616,
+   "roteiros": 252,
+   "clientes": 28,
+   "p": 0.38,
+   "p_sem": 0.392,
+   "lift": 0.97,
+   "ic": [
+    0.88,
+    1.07
+   ],
+   "or_mh": 1.09,
+   "or_ic": [
+    0.9,
+    1.32
+   ],
+   "desc": 0.9,
+   "val": 1.1,
+   "n_desc": 446,
+   "n_val": 170,
+   "plat": {
+    "Instagram": {
+     "n": 248,
+     "lift": 0.99,
+     "lb": 0.84,
+     "ub": 1.15
+    },
+    "TikTok": {
+     "n": 184,
+     "lift": 0.9,
+     "lb": 0.74,
+     "ub": 1.07
+    },
+    "YouTube": {
+     "n": 184,
+     "lift": 1.02,
+     "lb": 0.85,
+     "ub": 1.21
+    }
+   }
+  },
+  "ret_final": {
+   "nome": "pergunta curta (<=4 palavras): 1+",
+   "desfecho": "ret_final",
+   "leitura": "sem evidência",
+   "n": 156,
+   "roteiros": 156,
+   "clientes": 17,
+   "p": 0.314,
+   "p_sem": 0.252,
+   "lift": 1.21,
+   "ic": [
+    0.95,
+    1.51
+   ],
+   "or_mh": 1.25,
+   "or_ic": [
+    0.85,
+    1.84
+   ],
+   "desc": 1.2,
+   "val": 0.79,
+   "n_desc": 131,
+   "n_val": 25,
+   "plat": {
+    "Instagram": {
+     "n": 156,
+     "lift": 1.21,
+     "lb": 0.95,
+     "ub": 1.51
+    }
+   }
+  },
+  "compart": {
+   "nome": "pergunta curta (<=4 palavras): 1+",
+   "desfecho": "compart",
+   "leitura": "atrapalha (replica)",
+   "n": 255,
+   "roteiros": 196,
+   "clientes": 23,
+   "p": 0.18,
+   "p_sem": 0.264,
+   "lift": 0.7,
+   "ic": [
+    0.54,
+    0.91
+   ],
+   "or_mh": 0.62,
+   "or_ic": [
+    0.44,
+    0.87
+   ],
+   "desc": 0.68,
+   "val": 0.58,
+   "n_desc": 193,
+   "n_val": 62,
+   "plat": {
+    "Instagram": {
+     "n": 108,
+     "lift": 0.5,
+     "lb": 0.3,
+     "ub": 0.8
+    },
+    "TikTok": {
+     "n": 147,
+     "lift": 0.86,
+     "lb": 0.62,
+     "ub": 1.14
+    }
+   }
+  },
+  "salvamentos": {
+   "nome": "pergunta curta (<=4 palavras): 1+",
+   "desfecho": "salvamentos",
+   "leitura": "sem evidência",
+   "n": 173,
+   "roteiros": 173,
+   "clientes": 21,
+   "p": 0.249,
+   "p_sem": 0.256,
+   "lift": 0.97,
+   "ic": [
+    0.74,
+    1.25
+   ],
+   "or_mh": 1,
+   "or_ic": [
+    0.68,
+    1.48
+   ],
+   "desc": 1.08,
+   "val": 0.76,
+   "n_desc": 128,
+   "n_val": 45,
+   "plat": {
+    "TikTok": {
+     "n": 173,
+     "lift": 0.97,
+     "lb": 0.74,
+     "ub": 1.25
+    }
+   }
+  },
+  "comentarios": {
+   "nome": "pergunta curta (<=4 palavras): 1+",
+   "desfecho": "comentarios",
+   "leitura": "sem evidência",
+   "n": 616,
+   "roteiros": 252,
+   "clientes": 28,
+   "p": 0.253,
+   "p_sem": 0.252,
+   "lift": 1.01,
+   "ic": [
+    0.88,
+    1.15
+   ],
+   "or_mh": 1,
+   "or_ic": [
+    0.81,
+    1.23
+   ],
+   "desc": 1.05,
+   "val": 1.01,
+   "n_desc": 446,
+   "n_val": 170,
+   "plat": {
+    "Instagram": {
+     "n": 248,
+     "lift": 1.1,
+     "lb": 0.89,
+     "ub": 1.33
+    },
+    "TikTok": {
+     "n": 184,
+     "lift": 0.9,
+     "lb": 0.68,
+     "ub": 1.15
+    },
+    "YouTube": {
+     "n": 184,
+     "lift": 0.99,
+     "lb": 0.76,
+     "ub": 1.26
+    }
+   }
+  }
+ },
+ "perguntas no texto: 0": {
+  "nome": "perguntas no texto: 0",
+  "coef": {
+   "nome": "perguntas no texto: 0",
+   "desfecho": "coef",
+   "leitura": "sem evidência",
+   "n": 4016,
+   "roteiros": 1746,
+   "clientes": 28,
+   "p": 0.25,
+   "p_sem": 0.27,
+   "lift": 0.97,
+   "ic": [
+    0.92,
+    1.02
+   ],
+   "or_mh": 0.9,
+   "or_ic": [
+    0.8,
+    1.01
+   ],
+   "desc": 0.96,
+   "val": 0.99,
+   "n_desc": 1939,
+   "n_val": 2077,
+   "plat": {
+    "Instagram": {
+     "n": 1717,
+     "lift": 0.97,
+     "lb": 0.89,
+     "ub": 1.05
+    },
+    "TikTok": {
+     "n": 1168,
+     "lift": 0.96,
+     "lb": 0.87,
+     "ub": 1.06
+    },
+    "YouTube": {
+     "n": 1131,
+     "lift": 0.98,
+     "lb": 0.88,
+     "ub": 1.08
+    }
+   }
+  },
+  "coef_ctl": {
+   "nome": "perguntas no texto: 0",
+   "desfecho": "coef",
+   "leitura": "sem evidência",
+   "n": 4016,
+   "roteiros": 1746,
+   "clientes": 28,
+   "p": 0.25,
+   "p_sem": 0.27,
+   "lift": 0.97,
+   "ic": [
+    0.92,
+    1.02
+   ],
+   "or_mh": 0.93,
+   "or_ic": [
+    0.82,
+    1.05
+   ],
+   "desc": 0.96,
+   "val": 0.99,
+   "n_desc": 1939,
+   "n_val": 2077,
+   "plat": {
+    "Instagram": {
+     "n": 1717,
+     "lift": 0.97,
+     "lb": 0.89,
+     "ub": 1.05
+    },
+    "TikTok": {
+     "n": 1168,
+     "lift": 0.96,
+     "lb": 0.87,
+     "ub": 1.06
+    },
+    "YouTube": {
+     "n": 1131,
+     "lift": 0.98,
+     "lb": 0.88,
+     "ub": 1.08
+    }
+   }
+  },
+  "estrito": {
+   "or": 0.8457198675859761,
+   "lo": 0.7378940284332709,
+   "hi": 0.9693019144609077,
+   "leitura": "sem evidência"
+  },
+  "acerto": {
+   "nome": "perguntas no texto: 0",
+   "desfecho": "acerto",
+   "leitura": "sem evidência",
+   "n": 4016,
+   "roteiros": 1746,
+   "clientes": 28,
+   "p": 0.388,
+   "p_sem": 0.395,
+   "lift": 0.99,
+   "ic": [
+    0.96,
+    1.03
+   ],
+   "or_mh": 0.99,
+   "or_ic": [
+    0.88,
+    1.12
+   ],
+   "desc": 1.01,
+   "val": 0.98,
+   "n_desc": 1939,
+   "n_val": 2077,
+   "plat": {
+    "Instagram": {
+     "n": 1717,
+     "lift": 1.01,
+     "lb": 0.95,
+     "ub": 1.07
+    },
+    "TikTok": {
+     "n": 1168,
+     "lift": 0.98,
+     "lb": 0.92,
+     "ub": 1.05
+    },
+    "YouTube": {
+     "n": 1131,
+     "lift": 0.99,
+     "lb": 0.91,
+     "ub": 1.06
+    }
+   }
+  },
+  "ret_final": {
+   "nome": "perguntas no texto: 0",
+   "desfecho": "ret_final",
+   "leitura": "sem evidência",
+   "n": 835,
+   "roteiros": 835,
+   "clientes": 17,
+   "p": 0.251,
+   "p_sem": 0.272,
+   "lift": 0.97,
+   "ic": [
+    0.86,
+    1.09
+   ],
+   "or_mh": 1.01,
+   "or_ic": [
+    0.77,
+    1.33
+   ],
+   "desc": 0.96,
+   "val": 1.03,
+   "n_desc": 544,
+   "n_val": 291,
+   "plat": {
+    "Instagram": {
+     "n": 835,
+     "lift": 0.97,
+     "lb": 0.86,
+     "ub": 1.09
+    }
+   }
+  },
+  "compart": {
+   "nome": "perguntas no texto: 0",
+   "desfecho": "compart",
+   "leitura": "sem evidência",
+   "n": 1778,
+   "roteiros": 1307,
+   "clientes": 27,
+   "p": 0.263,
+   "p_sem": 0.245,
+   "lift": 1.02,
+   "ic": [
+    0.95,
+    1.11
+   ],
+   "or_mh": 1.1,
+   "or_ic": [
+    0.91,
+    1.34
+   ],
+   "desc": 1.04,
+   "val": 1,
+   "n_desc": 1034,
+   "n_val": 744,
+   "plat": {
+    "Instagram": {
+     "n": 817,
+     "lift": 1.05,
+     "lb": 0.94,
+     "ub": 1.17
+    },
+    "TikTok": {
+     "n": 961,
+     "lift": 1,
+     "lb": 0.9,
+     "ub": 1.11
+    }
+   }
+  },
+  "salvamentos": {
+   "nome": "perguntas no texto: 0",
+   "desfecho": "salvamentos",
+   "leitura": "sem evidência",
+   "n": 1083,
+   "roteiros": 1083,
+   "clientes": 23,
+   "p": 0.26,
+   "p_sem": 0.246,
+   "lift": 1.02,
+   "ic": [
+    0.92,
+    1.13
+   ],
+   "or_mh": 1.01,
+   "or_ic": [
+    0.79,
+    1.28
+   ],
+   "desc": 0.96,
+   "val": 1.07,
+   "n_desc": 517,
+   "n_val": 566,
+   "plat": {
+    "TikTok": {
+     "n": 1083,
+     "lift": 1.02,
+     "lb": 0.92,
+     "ub": 1.13
+    }
+   }
+  },
+  "comentarios": {
+   "nome": "perguntas no texto: 0",
+   "desfecho": "comentarios",
+   "leitura": "atrapalha (replica)",
+   "n": 4016,
+   "roteiros": 1746,
+   "clientes": 28,
+   "p": 0.237,
+   "p_sem": 0.278,
+   "lift": 0.94,
+   "ic": [
+    0.89,
+    0.99
+   ],
+   "or_mh": 0.78,
+   "or_ic": [
+    0.69,
+    0.88
+   ],
+   "desc": 0.96,
+   "val": 0.92,
+   "n_desc": 1939,
+   "n_val": 2077,
+   "plat": {
+    "Instagram": {
+     "n": 1717,
+     "lift": 0.96,
+     "lb": 0.88,
+     "ub": 1.04
+    },
+    "TikTok": {
+     "n": 1168,
+     "lift": 0.93,
+     "lb": 0.84,
+     "ub": 1.03
+    },
+    "YouTube": {
+     "n": 1131,
+     "lift": 0.92,
+     "lb": 0.82,
+     "ub": 1.02
+    }
+   }
+  }
+ },
+ "perguntas no texto: 1": {
+  "nome": "perguntas no texto: 1",
+  "coef": {
+   "nome": "perguntas no texto: 1",
+   "desfecho": "coef",
+   "leitura": "sem evidência",
+   "n": 1616,
+   "roteiros": 689,
+   "clientes": 28,
+   "p": 0.266,
+   "p_sem": 0.255,
+   "lift": 1.03,
+   "ic": [
+    0.95,
+    1.12
+   ],
+   "or_mh": 1.06,
+   "or_ic": [
+    0.93,
+    1.21
+   ],
+   "desc": 1.03,
+   "val": 1.03,
+   "n_desc": 815,
+   "n_val": 801,
+   "plat": {
+    "Instagram": {
+     "n": 670,
+     "lift": 0.99,
+     "lb": 0.87,
+     "ub": 1.13
+    },
+    "TikTok": {
+     "n": 480,
+     "lift": 1.06,
+     "lb": 0.91,
+     "ub": 1.22
+    },
+    "YouTube": {
+     "n": 466,
+     "lift": 1.06,
+     "lb": 0.91,
+     "ub": 1.23
+    }
+   }
+  },
+  "coef_ctl": {
+   "nome": "perguntas no texto: 1",
+   "desfecho": "coef",
+   "leitura": "sem evidência",
+   "n": 1616,
+   "roteiros": 689,
+   "clientes": 28,
+   "p": 0.266,
+   "p_sem": 0.255,
+   "lift": 1.03,
+   "ic": [
+    0.95,
+    1.12
+   ],
+   "or_mh": 1.05,
+   "or_ic": [
+    0.92,
+    1.2
+   ],
+   "desc": 1.03,
+   "val": 1.03,
+   "n_desc": 815,
+   "n_val": 801,
+   "plat": {
+    "Instagram": {
+     "n": 670,
+     "lift": 0.99,
+     "lb": 0.87,
+     "ub": 1.13
+    },
+    "TikTok": {
+     "n": 480,
+     "lift": 1.06,
+     "lb": 0.91,
+     "ub": 1.22
+    },
+    "YouTube": {
+     "n": 466,
+     "lift": 1.06,
+     "lb": 0.91,
+     "ub": 1.23
+    }
+   }
+  },
+  "estrito": {
+   "or": 1.1668712113396484,
+   "lo": 1.0097965645422016,
+   "hi": 1.3483789425155595,
+   "leitura": "sem evidência"
+  },
+  "acerto": {
+   "nome": "perguntas no texto: 1",
+   "desfecho": "acerto",
+   "leitura": "sem evidência",
+   "n": 1616,
+   "roteiros": 689,
+   "clientes": 28,
+   "p": 0.39,
+   "p_sem": 0.391,
+   "lift": 1,
+   "ic": [
+    0.94,
+    1.06
+   ],
+   "or_mh": 0.92,
+   "or_ic": [
+    0.81,
+    1.05
+   ],
+   "desc": 0.97,
+   "val": 1.03,
+   "n_desc": 815,
+   "n_val": 801,
+   "plat": {
+    "Instagram": {
+     "n": 670,
+     "lift": 0.96,
+     "lb": 0.87,
+     "ub": 1.06
+    },
+    "TikTok": {
+     "n": 480,
+     "lift": 1.01,
+     "lb": 0.9,
+     "ub": 1.12
+    },
+    "YouTube": {
+     "n": 466,
+     "lift": 1.03,
+     "lb": 0.92,
+     "ub": 1.15
+    }
+   }
+  },
+  "ret_final": {
+   "nome": "perguntas no texto: 1",
+   "desfecho": "ret_final",
+   "leitura": "sem evidência",
+   "n": 325,
+   "roteiros": 325,
+   "clientes": 17,
+   "p": 0.265,
+   "p_sem": 0.257,
+   "lift": 1.02,
+   "ic": [
+    0.85,
+    1.22
+   ],
+   "or_mh": 0.95,
+   "or_ic": [
+    0.7,
+    1.29
+   ],
+   "desc": 1,
+   "val": 1.06,
+   "n_desc": 223,
+   "n_val": 102,
+   "plat": {
+    "Instagram": {
+     "n": 325,
+     "lift": 1.02,
+     "lb": 0.85,
+     "ub": 1.22
+    }
+   }
+  },
+  "compart": {
+   "nome": "perguntas no texto: 1",
+   "desfecho": "compart",
+   "leitura": "sem evidência",
+   "n": 693,
+   "roteiros": 538,
+   "clientes": 27,
+   "p": 0.242,
+   "p_sem": 0.261,
+   "lift": 0.95,
+   "ic": [
+    0.83,
+    1.08
+   ],
+   "or_mh": 0.92,
+   "or_ic": [
+    0.75,
+    1.13
+   ],
+   "desc": 0.93,
+   "val": 0.98,
+   "n_desc": 419,
+   "n_val": 274,
+   "plat": {
+    "Instagram": {
+     "n": 280,
+     "lift": 0.95,
+     "lb": 0.77,
+     "ub": 1.16
+    },
+    "TikTok": {
+     "n": 413,
+     "lift": 0.94,
+     "lb": 0.79,
+     "ub": 1.11
+    }
+   }
+  },
+  "salvamentos": {
+   "nome": "perguntas no texto: 1",
+   "desfecho": "salvamentos",
+   "leitura": "sem evidência",
+   "n": 444,
+   "roteiros": 444,
+   "clientes": 23,
+   "p": 0.239,
+   "p_sem": 0.261,
+   "lift": 0.94,
+   "ic": [
+    0.79,
+    1.1
+   ],
+   "or_mh": 0.96,
+   "or_ic": [
+    0.74,
+    1.25
+   ],
+   "desc": 1.03,
+   "val": 0.85,
+   "n_desc": 234,
+   "n_val": 210,
+   "plat": {
+    "TikTok": {
+     "n": 444,
+     "lift": 0.94,
+     "lb": 0.79,
+     "ub": 1.1
+    }
+   }
+  },
+  "comentarios": {
+   "nome": "perguntas no texto: 1",
+   "desfecho": "comentarios",
+   "leitura": "ajuda (replica)",
+   "n": 1616,
+   "roteiros": 689,
+   "clientes": 28,
+   "p": 0.278,
+   "p_sem": 0.243,
+   "lift": 1.11,
+   "ic": [
+    1.02,
+    1.19
+   ],
+   "or_mh": 1.25,
+   "or_ic": [
+    1.09,
+    1.42
+   ],
+   "desc": 1.04,
+   "val": 1.16,
+   "n_desc": 815,
+   "n_val": 801,
+   "plat": {
+    "Instagram": {
+     "n": 670,
+     "lift": 1.08,
+     "lb": 0.95,
+     "ub": 1.22
+    },
+    "TikTok": {
+     "n": 480,
+     "lift": 1.11,
+     "lb": 0.96,
+     "ub": 1.28
+    },
+    "YouTube": {
+     "n": 466,
+     "lift": 1.14,
+     "lb": 0.98,
+     "ub": 1.31
+    }
+   }
+  }
+ },
+ "perguntas no texto: 2+": {
+  "nome": "perguntas no texto: 2+",
+  "coef": {
+   "nome": "perguntas no texto: 2+",
+   "desfecho": "coef",
+   "leitura": "sem evidência",
+   "n": 673,
+   "roteiros": 278,
+   "clientes": 28,
+   "p": 0.281,
+   "p_sem": 0.255,
+   "lift": 1.09,
+   "ic": [
+    0.96,
+    1.23
+   ],
+   "or_mh": 1.14,
+   "or_ic": [
+    0.95,
+    1.37
+   ],
+   "desc": 1.15,
+   "val": 1.01,
+   "n_desc": 381,
+   "n_val": 292,
+   "plat": {
+    "Instagram": {
+     "n": 271,
+     "lift": 1.19,
+     "lb": 0.99,
+     "ub": 1.41
+    },
+    "TikTok": {
+     "n": 209,
+     "lift": 1.07,
+     "lb": 0.86,
+     "ub": 1.32
+    },
+    "YouTube": {
+     "n": 193,
+     "lift": 0.96,
+     "lb": 0.75,
+     "ub": 1.22
+    }
+   }
+  },
+  "coef_ctl": {
+   "nome": "perguntas no texto: 2+",
+   "desfecho": "coef",
+   "leitura": "sem evidência",
+   "n": 673,
+   "roteiros": 278,
+   "clientes": 28,
+   "p": 0.281,
+   "p_sem": 0.255,
+   "lift": 1.09,
+   "ic": [
+    0.96,
+    1.23
+   ],
+   "or_mh": 1.08,
+   "or_ic": [
+    0.89,
+    1.31
+   ],
+   "desc": 1.15,
+   "val": 1.01,
+   "n_desc": 381,
+   "n_val": 292,
+   "plat": {
+    "Instagram": {
+     "n": 271,
+     "lift": 1.19,
+     "lb": 0.99,
+     "ub": 1.41
+    },
+    "TikTok": {
+     "n": 209,
+     "lift": 1.07,
+     "lb": 0.86,
+     "ub": 1.32
+    },
+    "YouTube": {
+     "n": 193,
+     "lift": 0.96,
+     "lb": 0.75,
+     "ub": 1.22
+    }
+   }
+  },
+  "estrito": {
+   "or": 1.0789047178943711,
+   "lo": 0.8715607191351868,
+   "hi": 1.3355757834632063,
+   "leitura": "sem evidência"
+  },
+  "acerto": {
+   "nome": "perguntas no texto: 2+",
+   "desfecho": "acerto",
+   "leitura": "sem evidência",
+   "n": 673,
+   "roteiros": 278,
+   "clientes": 28,
+   "p": 0.407,
+   "p_sem": 0.389,
+   "lift": 1.04,
+   "ic": [
+    0.95,
+    1.14
+   ],
+   "or_mh": 1.2,
+   "or_ic": [
+    1,
+    1.44
+   ],
+   "desc": 1,
+   "val": 1.09,
+   "n_desc": 381,
+   "n_val": 292,
+   "plat": {
+    "Instagram": {
+     "n": 271,
+     "lift": 1.04,
+     "lb": 0.89,
+     "ub": 1.2
+    },
+    "TikTok": {
+     "n": 209,
+     "lift": 1.07,
+     "lb": 0.91,
+     "ub": 1.24
+    },
+    "YouTube": {
+     "n": 193,
+     "lift": 1,
+     "lb": 0.83,
+     "ub": 1.19
+    }
+   }
+  },
+  "ret_final": {
+   "nome": "perguntas no texto: 2+",
+   "desfecho": "ret_final",
+   "leitura": "sem evidência",
+   "n": 157,
+   "roteiros": 157,
+   "clientes": 16,
+   "p": 0.287,
+   "p_sem": 0.255,
+   "lift": 1.11,
+   "ic": [
+    0.86,
+    1.4
+   ],
+   "or_mh": 1.07,
+   "or_ic": [
+    0.72,
+    1.59
+   ],
+   "desc": 1.2,
+   "val": 0.6,
+   "n_desc": 116,
+   "n_val": 41,
+   "plat": {
+    "Instagram": {
+     "n": 157,
+     "lift": 1.11,
+     "lb": 0.86,
+     "ub": 1.4
+    }
+   }
+  },
+  "compart": {
+   "nome": "perguntas no texto: 2+",
+   "desfecho": "compart",
+   "leitura": "sem evidência",
+   "n": 263,
+   "roteiros": 203,
+   "clientes": 26,
+   "p": 0.251,
+   "p_sem": 0.257,
+   "lift": 0.98,
+   "ic": [
+    0.79,
+    1.2
+   ],
+   "or_mh": 0.94,
+   "or_ic": [
+    0.69,
+    1.3
+   ],
+   "desc": 0.92,
+   "val": 1.05,
+   "n_desc": 179,
+   "n_val": 84,
+   "plat": {
+    "Instagram": {
+     "n": 93,
+     "lift": 0.71,
+     "lb": 0.45,
+     "ub": 1.06
+    },
+    "TikTok": {
+     "n": 170,
+     "lift": 1.13,
+     "lb": 0.89,
+     "ub": 1.42
+    }
+   }
+  },
+  "salvamentos": {
+   "nome": "perguntas no texto: 2+",
+   "desfecho": "salvamentos",
+   "leitura": "sem evidência",
+   "n": 193,
+   "roteiros": 193,
+   "clientes": 20,
+   "p": 0.264,
+   "p_sem": 0.254,
+   "lift": 1.04,
+   "ic": [
+    0.81,
+    1.3
+   ],
+   "or_mh": 1.06,
+   "or_ic": [
+    0.74,
+    1.52
+   ],
+   "desc": 1.13,
+   "val": 0.93,
+   "n_desc": 108,
+   "n_val": 85,
+   "plat": {
+    "TikTok": {
+     "n": 193,
+     "lift": 1.04,
+     "lb": 0.81,
+     "ub": 1.3
+    }
+   }
+  },
+  "comentarios": {
+   "nome": "perguntas no texto: 2+",
+   "desfecho": "comentarios",
+   "leitura": "sem evidência",
+   "n": 673,
+   "roteiros": 278,
+   "clientes": 28,
+   "p": 0.278,
+   "p_sem": 0.249,
+   "lift": 1.1,
+   "ic": [
+    0.97,
+    1.24
+   ],
+   "or_mh": 1.16,
+   "or_ic": [
+    0.96,
+    1.41
+   ],
+   "desc": 1.11,
+   "val": 1.11,
+   "n_desc": 381,
+   "n_val": 292,
+   "plat": {
+    "Instagram": {
+     "n": 271,
+     "lift": 1.05,
+     "lb": 0.85,
+     "ub": 1.27
+    },
+    "TikTok": {
+     "n": 209,
+     "lift": 1.15,
+     "lb": 0.92,
+     "ub": 1.4
+    },
+    "YouTube": {
+     "n": 193,
+     "lift": 1.14,
+     "lb": 0.9,
+     "ub": 1.41
+    }
+   }
+  }
+ },
+ "perguntas no texto: 3+": {
+  "nome": "perguntas no texto: 3+",
+  "coef": {
+   "nome": "perguntas no texto: 3+",
+   "desfecho": "coef",
+   "leitura": "sem evidência",
+   "n": 221,
+   "roteiros": 88,
+   "clientes": 23,
+   "p": 0.29,
+   "p_sem": 0.257,
+   "lift": 1.12,
+   "ic": [
+    0.91,
+    1.37
+   ],
+   "or_mh": 1.18,
+   "or_ic": [
+    0.88,
+    1.59
+   ],
+   "desc": 1.18,
+   "val": 0.97,
+   "n_desc": 157,
+   "n_val": 64,
+   "plat": {
+    "Instagram": {
+     "n": 88,
+     "lift": 1.28,
+     "lb": 0.94,
+     "ub": 1.69
+    },
+    "TikTok": {
+     "n": 69,
+     "lift": 1.12,
+     "lb": 0.76,
+     "ub": 1.57
+    },
+    "YouTube": {
+     "n": 64,
+     "lift": 0.91,
+     "lb": 0.57,
+     "ub": 1.36
+    }
+   }
+  },
+  "coef_ctl": {
+   "nome": "perguntas no texto: 3+",
+   "desfecho": "coef",
+   "leitura": "sem evidência",
+   "n": 221,
+   "roteiros": 88,
+   "clientes": 23,
+   "p": 0.29,
+   "p_sem": 0.257,
+   "lift": 1.12,
+   "ic": [
+    0.91,
+    1.37
+   ],
+   "or_mh": 1.17,
+   "or_ic": [
+    0.86,
+    1.6
+   ],
+   "desc": 1.18,
+   "val": 0.97,
+   "n_desc": 157,
+   "n_val": 64,
+   "plat": {
+    "Instagram": {
+     "n": 88,
+     "lift": 1.28,
+     "lb": 0.94,
+     "ub": 1.69
+    },
+    "TikTok": {
+     "n": 69,
+     "lift": 1.12,
+     "lb": 0.76,
+     "ub": 1.57
+    },
+    "YouTube": {
+     "n": 64,
+     "lift": 0.91,
+     "lb": 0.57,
+     "ub": 1.36
+    }
+   }
+  },
+  "estrito": {
+   "or": 1.4426555917379837,
+   "lo": 1.0112104865038747,
+   "hi": 2.058181935561738,
+   "leitura": "sem evidência"
+  },
+  "acerto": {
+   "nome": "perguntas no texto: 3+",
+   "desfecho": "acerto",
+   "leitura": "sem evidência",
+   "n": 221,
+   "roteiros": 88,
+   "clientes": 23,
+   "p": 0.371,
+   "p_sem": 0.392,
+   "lift": 0.95,
+   "ic": [
+    0.79,
+    1.12
+   ],
+   "or_mh": 1.12,
+   "or_ic": [
+    0.83,
+    1.52
+   ],
+   "desc": 0.92,
+   "val": 0.96,
+   "n_desc": 157,
+   "n_val": 64,
+   "plat": {
+    "Instagram": {
+     "n": 88,
+     "lift": 1.08,
+     "lb": 0.82,
+     "ub": 1.35
+    },
+    "TikTok": {
+     "n": 69,
+     "lift": 0.99,
+     "lb": 0.73,
+     "ub": 1.27
+    },
+    "YouTube": {
+     "n": 64,
+     "lift": 0.73,
+     "lb": 0.48,
+     "ub": 1.04
+    }
+   }
+  },
+  "ret_final": {
+   "nome": "perguntas no texto: 3+",
+   "desfecho": "ret_final",
+   "leitura": "sem evidência",
+   "n": 65,
+   "roteiros": 65,
+   "clientes": 13,
+   "p": 0.323,
+   "p_sem": 0.256,
+   "lift": 1.25,
+   "ic": [
+    0.86,
+    1.71
+   ],
+   "or_mh": 1.31,
+   "or_ic": [
+    0.74,
+    2.33
+   ],
+   "desc": 1.25,
+   "val": 0.82,
+   "n_desc": 53,
+   "n_val": 12,
+   "plat": {
+    "Instagram": {
+     "n": 65,
+     "lift": 1.25,
+     "lb": 0.86,
+     "ub": 1.71
+    }
+   }
+  },
+  "compart": {
+   "nome": "perguntas no texto: 3+",
+   "desfecho": "compart",
+   "leitura": "sem evidência",
+   "n": 90,
+   "roteiros": 69,
+   "clientes": 18,
+   "p": 0.278,
+   "p_sem": 0.256,
+   "lift": 1.08,
+   "ic": [
+    0.76,
+    1.47
+   ],
+   "or_mh": 1.12,
+   "or_ic": [
+    0.68,
+    1.84
+   ],
+   "desc": 0.93,
+   "val": 1.41,
+   "n_desc": 68,
+   "n_val": 22,
+   "plat": {
+    "Instagram": {
+     "n": 29,
+     "lift": 0.53,
+     "lb": 0.21,
+     "ub": 1.18
+    },
+    "TikTok": {
+     "n": 61,
+     "lift": 1.35,
+     "lb": 0.93,
+     "ub": 1.84
+    }
+   }
+  },
+  "salvamentos": {
+   "nome": "perguntas no texto: 3+",
+   "desfecho": "salvamentos",
+   "leitura": "sem evidência",
+   "n": 66,
+   "roteiros": 66,
+   "clientes": 16,
+   "p": 0.333,
+   "p_sem": 0.252,
+   "lift": 1.31,
+   "ic": [
+    0.91,
+    1.78
+   ],
+   "or_mh": 1.41,
+   "or_ic": [
+    0.81,
+    2.46
+   ],
+   "desc": 1.19,
+   "val": 1.68,
+   "n_desc": 48,
+   "n_val": 18,
+   "plat": {
+    "TikTok": {
+     "n": 66,
+     "lift": 1.31,
+     "lb": 0.91,
+     "ub": 1.78
+    }
+   }
+  },
+  "comentarios": {
+   "nome": "perguntas no texto: 3+",
+   "desfecho": "comentarios",
+   "leitura": "sem evidência",
+   "n": 221,
+   "roteiros": 88,
+   "clientes": 23,
+   "p": 0.303,
+   "p_sem": 0.25,
+   "lift": 1.2,
+   "ic": [
+    0.98,
+    1.46
+   ],
+   "or_mh": 1.25,
+   "or_ic": [
+    0.92,
+    1.71
+   ],
+   "desc": 1.24,
+   "val": 1.22,
+   "n_desc": 157,
+   "n_val": 64,
+   "plat": {
+    "Instagram": {
+     "n": 88,
+     "lift": 1.25,
+     "lb": 0.91,
+     "ub": 1.66
+    },
+    "TikTok": {
+     "n": 69,
+     "lift": 1.37,
+     "lb": 0.97,
+     "ub": 1.83
+    },
+    "YouTube": {
+     "n": 64,
+     "lift": 0.95,
+     "lb": 0.6,
+     "ub": 1.43
+    }
+   }
+  }
+ },
+ "tricolon 'X, Y e Z.' fechando parágrafo: 0": {
+  "nome": "tricolon 'X, Y e Z.' fechando parágrafo: 0",
+  "coef": {
+   "nome": "tricolon 'X, Y e Z.' fechando parágrafo: 0",
+   "desfecho": "coef",
+   "leitura": "sem evidência",
+   "n": 4489,
+   "roteiros": 1934,
+   "clientes": 28,
+   "p": 0.259,
+   "p_sem": 0.254,
+   "lift": 1.01,
+   "ic": [
+    0.96,
+    1.06
+   ],
+   "or_mh": 1.03,
+   "or_ic": [
+    0.9,
+    1.16
+   ],
+   "desc": 1.01,
+   "val": 1,
+   "n_desc": 2256,
+   "n_val": 2233,
+   "plat": {
+    "Instagram": {
+     "n": 1903,
+     "lift": 1,
+     "lb": 0.92,
+     "ub": 1.08
+    },
+    "TikTok": {
+     "n": 1319,
+     "lift": 1.02,
+     "lb": 0.93,
+     "ub": 1.12
+    },
+    "YouTube": {
+     "n": 1267,
+     "lift": 1,
+     "lb": 0.91,
+     "ub": 1.1
+    }
+   }
+  },
+  "coef_ctl": {
+   "nome": "tricolon 'X, Y e Z.' fechando parágrafo: 0",
+   "desfecho": "coef",
+   "leitura": "sem evidência",
+   "n": 4489,
+   "roteiros": 1934,
+   "clientes": 28,
+   "p": 0.259,
+   "p_sem": 0.254,
+   "lift": 1.01,
+   "ic": [
+    0.96,
+    1.06
+   ],
+   "or_mh": 1.08,
+   "or_ic": [
+    0.94,
+    1.23
+   ],
+   "desc": 1.01,
+   "val": 1,
+   "n_desc": 2256,
+   "n_val": 2233,
+   "plat": {
+    "Instagram": {
+     "n": 1903,
+     "lift": 1,
+     "lb": 0.92,
+     "ub": 1.08
+    },
+    "TikTok": {
+     "n": 1319,
+     "lift": 1.02,
+     "lb": 0.93,
+     "ub": 1.12
+    },
+    "YouTube": {
+     "n": 1267,
+     "lift": 1,
+     "lb": 0.91,
+     "ub": 1.1
+    }
+   }
+  },
+  "estrito": {
+   "or": 1.0579324096493499,
+   "lo": 0.9205255008372296,
+   "hi": 1.2158500577860518,
+   "leitura": "sem evidência"
+  },
+  "acerto": {
+   "nome": "tricolon 'X, Y e Z.' fechando parágrafo: 0",
+   "desfecho": "acerto",
+   "leitura": "sem evidência",
+   "n": 4489,
+   "roteiros": 1934,
+   "clientes": 28,
+   "p": 0.391,
+   "p_sem": 0.389,
+   "lift": 1,
+   "ic": [
+    0.97,
+    1.04
+   ],
+   "or_mh": 1.09,
+   "or_ic": [
+    0.97,
+    1.24
+   ],
+   "desc": 1,
+   "val": 1,
+   "n_desc": 2256,
+   "n_val": 2233,
+   "plat": {
+    "Instagram": {
+     "n": 1903,
+     "lift": 1,
+     "lb": 0.94,
+     "ub": 1.06
+    },
+    "TikTok": {
+     "n": 1319,
+     "lift": 1.01,
+     "lb": 0.94,
+     "ub": 1.07
+    },
+    "YouTube": {
+     "n": 1267,
+     "lift": 1,
+     "lb": 0.93,
+     "ub": 1.07
+    }
+   }
+  },
+  "ret_final": {
+   "nome": "tricolon 'X, Y e Z.' fechando parágrafo: 0",
+   "desfecho": "ret_final",
+   "leitura": "sem evidência",
+   "n": 959,
+   "roteiros": 959,
+   "clientes": 17,
+   "p": 0.264,
+   "p_sem": 0.246,
+   "lift": 1.02,
+   "ic": [
+    0.91,
+    1.13
+   ],
+   "or_mh": 1.17,
+   "or_ic": [
+    0.86,
+    1.58
+   ],
+   "desc": 1.03,
+   "val": 0.98,
+   "n_desc": 648,
+   "n_val": 311,
+   "plat": {
+    "Instagram": {
+     "n": 959,
+     "lift": 1.02,
+     "lb": 0.91,
+     "ub": 1.13
+    }
+   }
+  },
+  "compart": {
+   "nome": "tricolon 'X, Y e Z.' fechando parágrafo: 0",
+   "desfecho": "compart",
+   "leitura": "sem evidência",
+   "n": 1955,
+   "roteiros": 1448,
+   "clientes": 27,
+   "p": 0.251,
+   "p_sem": 0.27,
+   "lift": 0.98,
+   "ic": [
+    0.91,
+    1.06
+   ],
+   "or_mh": 0.88,
+   "or_ic": [
+    0.72,
+    1.07
+   ],
+   "desc": 1.01,
+   "val": 0.91,
+   "n_desc": 1177,
+   "n_val": 778,
+   "plat": {
+    "Instagram": {
+     "n": 860,
+     "lift": 1.02,
+     "lb": 0.91,
+     "ub": 1.13
+    },
+    "TikTok": {
+     "n": 1095,
+     "lift": 0.95,
+     "lb": 0.85,
+     "ub": 1.05
+    }
+   }
+  },
+  "salvamentos": {
+   "nome": "tricolon 'X, Y e Z.' fechando parágrafo: 0",
+   "desfecho": "salvamentos",
+   "leitura": "sem evidência",
+   "n": 1227,
+   "roteiros": 1227,
+   "clientes": 23,
+   "p": 0.249,
+   "p_sem": 0.272,
+   "lift": 0.97,
+   "ic": [
+    0.88,
+    1.07
+   ],
+   "or_mh": 0.85,
+   "or_ic": [
+    0.66,
+    1.09
+   ],
+   "desc": 0.98,
+   "val": 0.97,
+   "n_desc": 623,
+   "n_val": 604,
+   "plat": {
+    "TikTok": {
+     "n": 1227,
+     "lift": 0.97,
+     "lb": 0.88,
+     "ub": 1.07
+    }
+   }
+  },
+  "comentarios": {
+   "nome": "tricolon 'X, Y e Z.' fechando parágrafo: 0",
+   "desfecho": "comentarios",
+   "leitura": "sem evidência",
+   "n": 4489,
+   "roteiros": 1934,
+   "clientes": 28,
+   "p": 0.247,
+   "p_sem": 0.263,
+   "lift": 0.98,
+   "ic": [
+    0.93,
+    1.03
+   ],
+   "or_mh": 0.93,
+   "or_ic": [
+    0.81,
+    1.06
+   ],
+   "desc": 0.96,
+   "val": 1,
+   "n_desc": 2256,
+   "n_val": 2233,
+   "plat": {
+    "Instagram": {
+     "n": 1903,
+     "lift": 0.99,
+     "lb": 0.92,
+     "ub": 1.07
+    },
+    "TikTok": {
+     "n": 1319,
+     "lift": 1,
+     "lb": 0.91,
+     "ub": 1.1
+    },
+    "YouTube": {
+     "n": 1267,
+     "lift": 0.95,
+     "lb": 0.85,
+     "ub": 1.04
+    }
+   }
+  }
+ },
+ "tricolon: 1": {
+  "nome": "tricolon: 1",
+  "coef": {
+   "nome": "tricolon: 1",
+   "desfecho": "coef",
+   "leitura": "sem evidência",
+   "n": 1457,
+   "roteiros": 627,
+   "clientes": 28,
+   "p": 0.259,
+   "p_sem": 0.257,
+   "lift": 1,
+   "ic": [
+    0.92,
+    1.09
+   ],
+   "or_mh": 1.01,
+   "or_ic": [
+    0.88,
+    1.15
+   ],
+   "desc": 1,
+   "val": 1.01,
+   "n_desc": 691,
+   "n_val": 766,
+   "plat": {
+    "Instagram": {
+     "n": 609,
+     "lift": 1.01,
+     "lb": 0.88,
+     "ub": 1.15
+    },
+    "TikTok": {
+     "n": 429,
+     "lift": 0.96,
+     "lb": 0.82,
+     "ub": 1.13
+    },
+    "YouTube": {
+     "n": 419,
+     "lift": 1.04,
+     "lb": 0.88,
+     "ub": 1.21
+    }
+   }
+  },
+  "coef_ctl": {
+   "nome": "tricolon: 1",
+   "desfecho": "coef",
+   "leitura": "sem evidência",
+   "n": 1457,
+   "roteiros": 627,
+   "clientes": 28,
+   "p": 0.259,
+   "p_sem": 0.257,
+   "lift": 1,
+   "ic": [
+    0.92,
+    1.09
+   ],
+   "or_mh": 0.98,
+   "or_ic": [
+    0.86,
+    1.13
+   ],
+   "desc": 1,
+   "val": 1.01,
+   "n_desc": 691,
+   "n_val": 766,
+   "plat": {
+    "Instagram": {
+     "n": 609,
+     "lift": 1.01,
+     "lb": 0.88,
+     "ub": 1.15
+    },
+    "TikTok": {
+     "n": 429,
+     "lift": 0.96,
+     "lb": 0.82,
+     "ub": 1.13
+    },
+    "YouTube": {
+     "n": 419,
+     "lift": 1.04,
+     "lb": 0.88,
+     "ub": 1.21
+    }
+   }
+  },
+  "estrito": {
+   "or": 0.9713865114943636,
+   "lo": 0.8380739190899592,
+   "hi": 1.125905165665827,
+   "leitura": "sem evidência"
+  },
+  "acerto": {
+   "nome": "tricolon: 1",
+   "desfecho": "acerto",
+   "leitura": "sem evidência",
+   "n": 1457,
+   "roteiros": 627,
+   "clientes": 28,
+   "p": 0.393,
+   "p_sem": 0.39,
+   "lift": 1.01,
+   "ic": [
+    0.94,
+    1.07
+   ],
+   "or_mh": 0.98,
+   "or_ic": [
+    0.86,
+    1.12
+   ],
+   "desc": 1.01,
+   "val": 1.01,
+   "n_desc": 691,
+   "n_val": 766,
+   "plat": {
+    "Instagram": {
+     "n": 609,
+     "lift": 1,
+     "lb": 0.9,
+     "ub": 1.1
+    },
+    "TikTok": {
+     "n": 429,
+     "lift": 0.99,
+     "lb": 0.88,
+     "ub": 1.1
+    },
+    "YouTube": {
+     "n": 419,
+     "lift": 1.04,
+     "lb": 0.92,
+     "ub": 1.16
+    }
+   }
+  },
+  "ret_final": {
+   "nome": "tricolon: 1",
+   "desfecho": "ret_final",
+   "leitura": "sem evidência",
+   "n": 288,
+   "roteiros": 288,
+   "clientes": 17,
+   "p": 0.257,
+   "p_sem": 0.259,
+   "lift": 0.99,
+   "ic": [
+    0.81,
+    1.2
+   ],
+   "or_mh": 0.95,
+   "or_ic": [
+    0.69,
+    1.31
+   ],
+   "desc": 0.95,
+   "val": 1.14,
+   "n_desc": 184,
+   "n_val": 104,
+   "plat": {
+    "Instagram": {
+     "n": 288,
+     "lift": 0.99,
+     "lb": 0.81,
+     "ub": 1.2
+    }
+   }
+  },
+  "compart": {
+   "nome": "tricolon: 1",
+   "desfecho": "compart",
+   "leitura": "sem evidência",
+   "n": 628,
+   "roteiros": 483,
+   "clientes": 27,
+   "p": 0.275,
+   "p_sem": 0.251,
+   "lift": 1.07,
+   "ic": [
+    0.94,
+    1.22
+   ],
+   "or_mh": 1.18,
+   "or_ic": [
+    0.96,
+    1.46
+   ],
+   "desc": 0.97,
+   "val": 1.33,
+   "n_desc": 363,
+   "n_val": 265,
+   "plat": {
+    "Instagram": {
+     "n": 270,
+     "lift": 0.96,
+     "lb": 0.77,
+     "ub": 1.17
+    },
+    "TikTok": {
+     "n": 358,
+     "lift": 1.16,
+     "lb": 0.99,
+     "ub": 1.36
+    }
+   }
+  },
+  "salvamentos": {
+   "nome": "tricolon: 1",
+   "desfecho": "salvamentos",
+   "leitura": "sem evidência",
+   "n": 394,
+   "roteiros": 394,
+   "clientes": 23,
+   "p": 0.282,
+   "p_sem": 0.247,
+   "lift": 1.1,
+   "ic": [
+    0.94,
+    1.29
+   ],
+   "or_mh": 1.27,
+   "or_ic": [
+    0.97,
+    1.65
+   ],
+   "desc": 1.01,
+   "val": 1.17,
+   "n_desc": 185,
+   "n_val": 209,
+   "plat": {
+    "TikTok": {
+     "n": 394,
+     "lift": 1.1,
+     "lb": 0.94,
+     "ub": 1.29
+    }
+   }
+  },
+  "comentarios": {
+   "nome": "tricolon: 1",
+   "desfecho": "comentarios",
+   "leitura": "sem evidência",
+   "n": 1457,
+   "roteiros": 627,
+   "clientes": 28,
+   "p": 0.268,
+   "p_sem": 0.247,
+   "lift": 1.06,
+   "ic": [
+    0.98,
+    1.16
+   ],
+   "or_mh": 1.12,
+   "or_ic": [
+    0.97,
+    1.29
+   ],
+   "desc": 1.09,
+   "val": 1.03,
+   "n_desc": 691,
+   "n_val": 766,
+   "plat": {
+    "Instagram": {
+     "n": 609,
+     "lift": 1.05,
+     "lb": 0.92,
+     "ub": 1.19
+    },
+    "TikTok": {
+     "n": 429,
+     "lift": 1,
+     "lb": 0.84,
+     "ub": 1.17
+    },
+    "YouTube": {
+     "n": 419,
+     "lift": 1.15,
+     "lb": 0.99,
+     "ub": 1.34
+    }
+   }
+  }
+ },
+ "tricolon: 2+": {
+  "nome": "tricolon: 2+",
+  "coef": {
+   "nome": "tricolon: 2+",
+   "desfecho": "coef",
+   "leitura": "sem evidência",
+   "n": 359,
+   "roteiros": 152,
+   "clientes": 26,
+   "p": 0.237,
+   "p_sem": 0.259,
+   "lift": 0.92,
+   "ic": [
+    0.76,
+    1.1
+   ],
+   "or_mh": 0.89,
+   "or_ic": [
+    0.69,
+    1.14
+   ],
+   "desc": 0.91,
+   "val": 0.93,
+   "n_desc": 188,
+   "n_val": 171,
+   "plat": {
+    "Instagram": {
+     "n": 146,
+     "lift": 0.99,
+     "lb": 0.74,
+     "ub": 1.28
+    },
+    "TikTok": {
+     "n": 109,
+     "lift": 0.89,
+     "lb": 0.62,
+     "ub": 1.23
+    },
+    "YouTube": {
+     "n": 104,
+     "lift": 0.86,
+     "lb": 0.59,
+     "ub": 1.2
+    }
+   }
+  },
+  "coef_ctl": {
+   "nome": "tricolon: 2+",
+   "desfecho": "coef",
+   "leitura": "sem evidência",
+   "n": 359,
+   "roteiros": 152,
+   "clientes": 26,
+   "p": 0.237,
+   "p_sem": 0.259,
+   "lift": 0.92,
+   "ic": [
+    0.76,
+    1.1
+   ],
+   "or_mh": 0.79,
+   "or_ic": [
+    0.6,
+    1.03
+   ],
+   "desc": 0.91,
+   "val": 0.93,
+   "n_desc": 188,
+   "n_val": 171,
+   "plat": {
+    "Instagram": {
+     "n": 146,
+     "lift": 0.99,
+     "lb": 0.74,
+     "ub": 1.28
+    },
+    "TikTok": {
+     "n": 109,
+     "lift": 0.89,
+     "lb": 0.62,
+     "ub": 1.23
+    },
+    "YouTube": {
+     "n": 104,
+     "lift": 0.86,
+     "lb": 0.59,
+     "ub": 1.2
+    }
+   }
+  },
+  "estrito": {
+   "or": 0.8885413729240352,
+   "lo": 0.6745116967742653,
+   "hi": 1.1704849229055676,
+   "leitura": "sem evidência"
+  },
+  "acerto": {
+   "nome": "tricolon: 2+",
+   "desfecho": "acerto",
+   "leitura": "sem evidência",
+   "n": 359,
+   "roteiros": 152,
+   "clientes": 26,
+   "p": 0.373,
+   "p_sem": 0.392,
+   "lift": 0.96,
+   "ic": [
+    0.83,
+    1.09
+   ],
+   "or_mh": 0.76,
+   "or_ic": [
+    0.59,
+    0.97
+   ],
+   "desc": 0.96,
+   "val": 0.94,
+   "n_desc": 188,
+   "n_val": 171,
+   "plat": {
+    "Instagram": {
+     "n": 146,
+     "lift": 1.03,
+     "lb": 0.83,
+     "ub": 1.24
+    },
+    "TikTok": {
+     "n": 109,
+     "lift": 0.96,
+     "lb": 0.75,
+     "ub": 1.19
+    },
+    "YouTube": {
+     "n": 104,
+     "lift": 0.84,
+     "lb": 0.63,
+     "ub": 1.09
+    }
+   }
+  },
+  "ret_final": {
+   "nome": "tricolon: 2+",
+   "desfecho": "ret_final",
+   "leitura": "sem evidência",
+   "n": 70,
+   "roteiros": 70,
+   "clientes": 16,
+   "p": 0.2,
+   "p_sem": 0.262,
+   "lift": 0.77,
+   "ic": [
+    0.48,
+    1.19
+   ],
+   "or_mh": 0.64,
+   "or_ic": [
+    0.34,
+    1.2
+   ],
+   "desc": 0.82,
+   "val": 0.52,
+   "n_desc": 51,
+   "n_val": 19,
+   "plat": {
+    "Instagram": {
+     "n": 70,
+     "lift": 0.77,
+     "lb": 0.48,
+     "ub": 1.19
+    }
+   }
+  },
+  "compart": {
+   "nome": "tricolon: 2+",
+   "desfecho": "compart",
+   "leitura": "sem evidência",
+   "n": 151,
+   "roteiros": 117,
+   "clientes": 23,
+   "p": 0.245,
+   "p_sem": 0.257,
+   "lift": 0.96,
+   "ic": [
+    0.71,
+    1.25
+   ],
+   "or_mh": 0.93,
+   "or_ic": [
+    0.63,
+    1.39
+   ],
+   "desc": 1.05,
+   "val": 0.7,
+   "n_desc": 92,
+   "n_val": 59,
+   "plat": {
+    "Instagram": {
+     "n": 60,
+     "lift": 0.97,
+     "lb": 0.61,
+     "ub": 1.44
+    },
+    "TikTok": {
+     "n": 91,
+     "lift": 0.95,
+     "lb": 0.65,
+     "ub": 1.33
+    }
+   }
+  },
+  "salvamentos": {
+   "nome": "tricolon: 2+",
+   "desfecho": "salvamentos",
+   "leitura": "sem evidência",
+   "n": 99,
+   "roteiros": 99,
+   "clientes": 18,
+   "p": 0.232,
+   "p_sem": 0.257,
+   "lift": 0.91,
+   "ic": [
+    0.63,
+    1.27
+   ],
+   "or_mh": 0.84,
+   "or_ic": [
+    0.5,
+    1.4
+   ],
+   "desc": 1.2,
+   "val": 0.63,
+   "n_desc": 51,
+   "n_val": 48,
+   "plat": {
+    "TikTok": {
+     "n": 99,
+     "lift": 0.91,
+     "lb": 0.63,
+     "ub": 1.27
+    }
+   }
+  },
+  "comentarios": {
+   "nome": "tricolon: 2+",
+   "desfecho": "comentarios",
+   "leitura": "sem evidência",
+   "n": 359,
+   "roteiros": 152,
+   "clientes": 26,
+   "p": 0.245,
+   "p_sem": 0.252,
+   "lift": 0.97,
+   "ic": [
+    0.81,
+    1.16
+   ],
+   "or_mh": 0.91,
+   "or_ic": [
+    0.7,
+    1.18
+   ],
+   "desc": 1.11,
+   "val": 0.85,
+   "n_desc": 188,
+   "n_val": 171,
+   "plat": {
+    "Instagram": {
+     "n": 146,
+     "lift": 0.92,
+     "lb": 0.68,
+     "ub": 1.21
+    },
+    "TikTok": {
+     "n": 109,
+     "lift": 0.97,
+     "lb": 0.69,
+     "ub": 1.32
+    },
+    "YouTube": {
+     "n": 104,
+     "lift": 1.05,
+     "lb": 0.75,
+     "ub": 1.43
+    }
+   }
+  }
+ },
+ "frases seguidas começando com 'E': 1+": {
+  "nome": "frases seguidas começando com 'E': 1+",
+  "coef": {
+   "nome": "frases seguidas começando com 'E': 1+",
+   "desfecho": "coef",
+   "leitura": "sem evidência",
+   "n": 368,
+   "roteiros": 157,
+   "clientes": 26,
+   "p": 0.288,
+   "p_sem": 0.256,
+   "lift": 1.12,
+   "ic": [
+    0.95,
+    1.3
+   ],
+   "or_mh": 1.18,
+   "or_ic": [
+    0.93,
+    1.49
+   ],
+   "desc": 0.97,
+   "val": 1.25,
+   "n_desc": 179,
+   "n_val": 189,
+   "plat": {
+    "Instagram": {
+     "n": 152,
+     "lift": 1.25,
+     "lb": 0.99,
+     "ub": 1.56
+    },
+    "TikTok": {
+     "n": 106,
+     "lift": 0.99,
+     "lb": 0.7,
+     "ub": 1.34
+    },
+    "YouTube": {
+     "n": 110,
+     "lift": 1.06,
+     "lb": 0.77,
+     "ub": 1.4
+    }
+   }
+  },
+  "coef_ctl": {
+   "nome": "frases seguidas começando com 'E': 1+",
+   "desfecho": "coef",
+   "leitura": "sem evidência",
+   "n": 368,
+   "roteiros": 157,
+   "clientes": 26,
+   "p": 0.288,
+   "p_sem": 0.256,
+   "lift": 1.12,
+   "ic": [
+    0.95,
+    1.3
+   ],
+   "or_mh": 1.07,
+   "or_ic": [
+    0.85,
+    1.37
+   ],
+   "desc": 0.97,
+   "val": 1.25,
+   "n_desc": 179,
+   "n_val": 189,
+   "plat": {
+    "Instagram": {
+     "n": 152,
+     "lift": 1.25,
+     "lb": 0.99,
+     "ub": 1.56
+    },
+    "TikTok": {
+     "n": 106,
+     "lift": 0.99,
+     "lb": 0.7,
+     "ub": 1.34
+    },
+    "YouTube": {
+     "n": 110,
+     "lift": 1.06,
+     "lb": 0.77,
+     "ub": 1.4
+    }
+   }
+  },
+  "estrito": {
+   "or": 1.2373694249246838,
+   "lo": 0.9528024670421297,
+   "hi": 1.6069260383965227,
+   "leitura": "sem evidência"
+  },
+  "acerto": {
+   "nome": "frases seguidas começando com 'E': 1+",
+   "desfecho": "acerto",
+   "leitura": "sem evidência",
+   "n": 368,
+   "roteiros": 157,
+   "clientes": 26,
+   "p": 0.413,
+   "p_sem": 0.389,
+   "lift": 1.06,
+   "ic": [
+    0.93,
+    1.19
+   ],
+   "or_mh": 1.04,
+   "or_ic": [
+    0.83,
+    1.3
+   ],
+   "desc": 0.99,
+   "val": 1.13,
+   "n_desc": 179,
+   "n_val": 189,
+   "plat": {
+    "Instagram": {
+     "n": 152,
+     "lift": 1.04,
+     "lb": 0.85,
+     "ub": 1.25
+    },
+    "TikTok": {
+     "n": 106,
+     "lift": 1.13,
+     "lb": 0.9,
+     "ub": 1.36
+    },
+    "YouTube": {
+     "n": 110,
+     "lift": 1.01,
+     "lb": 0.79,
+     "ub": 1.25
+    }
+   }
+  },
+  "ret_final": {
+   "nome": "frases seguidas começando com 'E': 1+",
+   "desfecho": "ret_final",
+   "leitura": "sem evidência",
+   "n": 75,
+   "roteiros": 75,
+   "clientes": 15,
+   "p": 0.267,
+   "p_sem": 0.258,
+   "lift": 1.03,
+   "ic": [
+    0.69,
+    1.45
+   ],
+   "or_mh": 1.09,
+   "or_ic": [
+    0.62,
+    1.93
+   ],
+   "desc": 1.02,
+   "val": 0.99,
+   "n_desc": 55,
+   "n_val": 20,
+   "plat": {
+    "Instagram": {
+     "n": 75,
+     "lift": 1.03,
+     "lb": 0.69,
+     "ub": 1.45
+    }
+   }
+  },
+  "compart": {
+   "nome": "frases seguidas começando com 'E': 1+",
+   "desfecho": "compart",
+   "leitura": "sem evidência",
+   "n": 150,
+   "roteiros": 111,
+   "clientes": 24,
+   "p": 0.227,
+   "p_sem": 0.258,
+   "lift": 0.88,
+   "ic": [
+    0.65,
+    1.17
+   ],
+   "or_mh": 0.89,
+   "or_ic": [
+    0.6,
+    1.34
+   ],
+   "desc": 0.9,
+   "val": 0.82,
+   "n_desc": 93,
+   "n_val": 57,
+   "plat": {
+    "Instagram": {
+     "n": 64,
+     "lift": 0.91,
+     "lb": 0.57,
+     "ub": 1.36
+    },
+    "TikTok": {
+     "n": 86,
+     "lift": 0.87,
+     "lb": 0.57,
+     "ub": 1.26
+    }
+   }
+  },
+  "salvamentos": {
+   "nome": "frases seguidas começando com 'E': 1+",
+   "desfecho": "salvamentos",
+   "leitura": "sem evidência",
+   "n": 96,
+   "roteiros": 96,
+   "clientes": 19,
+   "p": 0.24,
+   "p_sem": 0.256,
+   "lift": 0.94,
+   "ic": [
+    0.65,
+    1.31
+   ],
+   "or_mh": 0.93,
+   "or_ic": [
+    0.57,
+    1.52
+   ],
+   "desc": 0.91,
+   "val": 0.96,
+   "n_desc": 49,
+   "n_val": 47,
+   "plat": {
+    "TikTok": {
+     "n": 96,
+     "lift": 0.94,
+     "lb": 0.65,
+     "ub": 1.31
+    }
+   }
+  },
+  "comentarios": {
+   "nome": "frases seguidas começando com 'E': 1+",
+   "desfecho": "comentarios",
+   "leitura": "sem evidência",
+   "n": 368,
+   "roteiros": 157,
+   "clientes": 26,
+   "p": 0.242,
+   "p_sem": 0.252,
+   "lift": 0.96,
+   "ic": [
+    0.8,
+    1.14
+   ],
+   "or_mh": 0.97,
+   "or_ic": [
+    0.75,
+    1.25
+   ],
+   "desc": 0.85,
+   "val": 1.05,
+   "n_desc": 179,
+   "n_val": 189,
+   "plat": {
+    "Instagram": {
+     "n": 152,
+     "lift": 1.06,
+     "lb": 0.81,
+     "ub": 1.36
+    },
+    "TikTok": {
+     "n": 106,
+     "lift": 0.85,
+     "lb": 0.59,
+     "ub": 1.2
+    },
+    "YouTube": {
+     "n": 110,
+     "lift": 0.92,
+     "lb": 0.65,
+     "ub": 1.27
+    }
+   }
+  }
+ },
+ "parágrafos do corpo abrindo com 'E' >=15%": {
+  "nome": "parágrafos do corpo abrindo com 'E' >=15%",
+  "coef": {
+   "nome": "parágrafos do corpo abrindo com 'E' >=15%",
+   "desfecho": "coef",
+   "leitura": "sem evidência",
+   "n": 1719,
+   "roteiros": 731,
+   "clientes": 28,
+   "p": 0.277,
+   "p_sem": 0.251,
+   "lift": 1.07,
+   "ic": [
+    0.99,
+    1.16
+   ],
+   "or_mh": 1.15,
+   "or_ic": [
+    1.02,
+    1.31
+   ],
+   "desc": 1.03,
+   "val": 1.11,
+   "n_desc": 824,
+   "n_val": 895,
+   "plat": {
+    "Instagram": {
+     "n": 709,
+     "lift": 1.13,
+     "lb": 1.01,
+     "ub": 1.26
+    },
+    "TikTok": {
+     "n": 511,
+     "lift": 1.02,
+     "lb": 0.88,
+     "ub": 1.18
+    },
+    "YouTube": {
+     "n": 499,
+     "lift": 1.05,
+     "lb": 0.9,
+     "ub": 1.21
+    }
+   }
+  },
+  "coef_ctl": {
+   "nome": "parágrafos do corpo abrindo com 'E' >=15%",
+   "desfecho": "coef",
+   "leitura": "sem evidência",
+   "n": 1719,
+   "roteiros": 731,
+   "clientes": 28,
+   "p": 0.277,
+   "p_sem": 0.251,
+   "lift": 1.07,
+   "ic": [
+    0.99,
+    1.16
+   ],
+   "or_mh": 1.19,
+   "or_ic": [
+    1.04,
+    1.36
+   ],
+   "desc": 1.03,
+   "val": 1.11,
+   "n_desc": 824,
+   "n_val": 895,
+   "plat": {
+    "Instagram": {
+     "n": 709,
+     "lift": 1.13,
+     "lb": 1.01,
+     "ub": 1.26
+    },
+    "TikTok": {
+     "n": 511,
+     "lift": 1.02,
+     "lb": 0.88,
+     "ub": 1.18
+    },
+    "YouTube": {
+     "n": 499,
+     "lift": 1.05,
+     "lb": 0.9,
+     "ub": 1.21
+    }
+   }
+  },
+  "estrito": {
+   "or": 1.253434694623343,
+   "lo": 1.0884598066653495,
+   "hi": 1.443414376961512,
+   "leitura": "sem evidência"
+  },
+  "acerto": {
+   "nome": "parágrafos do corpo abrindo com 'E' >=15%",
+   "desfecho": "acerto",
+   "leitura": "sem evidência",
+   "n": 1719,
+   "roteiros": 731,
+   "clientes": 28,
+   "p": 0.398,
+   "p_sem": 0.388,
+   "lift": 1.02,
+   "ic": [
+    0.96,
+    1.08
+   ],
+   "or_mh": 1.05,
+   "or_ic": [
+    0.93,
+    1.19
+   ],
+   "desc": 0.95,
+   "val": 1.1,
+   "n_desc": 824,
+   "n_val": 895,
+   "plat": {
+    "Instagram": {
+     "n": 709,
+     "lift": 1.02,
+     "lb": 0.93,
+     "ub": 1.12
+    },
+    "TikTok": {
+     "n": 511,
+     "lift": 1.04,
+     "lb": 0.94,
+     "ub": 1.15
+    },
+    "YouTube": {
+     "n": 499,
+     "lift": 0.99,
+     "lb": 0.88,
+     "ub": 1.1
+    }
+   }
+  },
+  "ret_final": {
+   "nome": "parágrafos do corpo abrindo com 'E' >=15%",
+   "desfecho": "ret_final",
+   "leitura": "sem evidência",
+   "n": 332,
+   "roteiros": 332,
+   "clientes": 16,
+   "p": 0.253,
+   "p_sem": 0.261,
+   "lift": 0.98,
+   "ic": [
+    0.81,
+    1.17
+   ],
+   "or_mh": 0.97,
+   "or_ic": [
+    0.71,
+    1.31
+   ],
+   "desc": 1.01,
+   "val": 0.76,
+   "n_desc": 241,
+   "n_val": 91,
+   "plat": {
+    "Instagram": {
+     "n": 332,
+     "lift": 0.98,
+     "lb": 0.81,
+     "ub": 1.17
+    }
+   }
+  },
+  "compart": {
+   "nome": "parágrafos do corpo abrindo com 'E' >=15%",
+   "desfecho": "compart",
+   "leitura": "ajuda (replica)",
+   "n": 704,
+   "roteiros": 536,
+   "clientes": 27,
+   "p": 0.291,
+   "p_sem": 0.244,
+   "lift": 1.14,
+   "ic": [
+    1.01,
+    1.27
+   ],
+   "or_mh": 1.34,
+   "or_ic": [
+    1.09,
+    1.63
+   ],
+   "desc": 1.18,
+   "val": 1.08,
+   "n_desc": 398,
+   "n_val": 306,
+   "plat": {
+    "Instagram": {
+     "n": 286,
+     "lift": 1.15,
+     "lb": 0.96,
+     "ub": 1.36
+    },
+    "TikTok": {
+     "n": 418,
+     "lift": 1.13,
+     "lb": 0.97,
+     "ub": 1.31
+    }
+   }
+  },
+  "salvamentos": {
+   "nome": "parágrafos do corpo abrindo com 'E' >=15%",
+   "desfecho": "salvamentos",
+   "leitura": "sem evidência",
+   "n": 474,
+   "roteiros": 474,
+   "clientes": 23,
+   "p": 0.259,
+   "p_sem": 0.254,
+   "lift": 1.02,
+   "ic": [
+    0.87,
+    1.18
+   ],
+   "or_mh": 1,
+   "or_ic": [
+    0.78,
+    1.29
+   ],
+   "desc": 1.01,
+   "val": 1.02,
+   "n_desc": 222,
+   "n_val": 252,
+   "plat": {
+    "TikTok": {
+     "n": 474,
+     "lift": 1.02,
+     "lb": 0.87,
+     "ub": 1.18
+    }
+   }
+  },
+  "comentarios": {
+   "nome": "parágrafos do corpo abrindo com 'E' >=15%",
+   "desfecho": "comentarios",
+   "leitura": "ajuda (replica)",
+   "n": 1719,
+   "roteiros": 731,
+   "clientes": 28,
+   "p": 0.282,
+   "p_sem": 0.241,
+   "lift": 1.12,
+   "ic": [
+    1.04,
+    1.2
+   ],
+   "or_mh": 1.28,
+   "or_ic": [
+    1.12,
+    1.46
+   ],
+   "desc": 1.11,
+   "val": 1.12,
+   "n_desc": 824,
+   "n_val": 895,
+   "plat": {
+    "Instagram": {
+     "n": 709,
+     "lift": 1.12,
+     "lb": 0.99,
+     "ub": 1.25
+    },
+    "TikTok": {
+     "n": 511,
+     "lift": 1.06,
+     "lb": 0.92,
+     "ub": 1.22
+    },
+    "YouTube": {
+     "n": 499,
+     "lift": 1.18,
+     "lb": 1.02,
+     "ub": 1.35
+    }
+   }
+  }
+ },
+ "metáfora de LLM (jornada, mergulho...)": {
+  "nome": "metáfora de LLM (jornada, mergulho...)",
+  "coef": {
+   "nome": "metáfora de LLM (jornada, mergulho...)",
+   "desfecho": "coef",
+   "leitura": "sem evidência",
+   "n": 106,
+   "roteiros": 44,
+   "clientes": 17,
+   "p": 0.217,
+   "p_sem": 0.258,
+   "lift": 0.84,
+   "ic": [
+    0.58,
+    1.18
+   ],
+   "or_mh": 0.79,
+   "or_ic": [
+    0.5,
+    1.26
+   ],
+   "desc": 0.51,
+   "val": 1.1,
+   "n_desc": 46,
+   "n_val": 60,
+   "plat": {
+    "Instagram": {
+     "n": 43,
+     "lift": 0.72,
+     "lb": 0.38,
+     "ub": 1.27
+    },
+    "TikTok": {
+     "n": 32,
+     "lift": 0.6,
+     "lb": 0.27,
+     "ub": 1.23
+    },
+    "YouTube": {
+     "n": 31,
+     "lift": 1.25,
+     "lb": 0.72,
+     "ub": 1.93
+    }
+   }
+  },
+  "coef_ctl": {
+   "nome": "metáfora de LLM (jornada, mergulho...)",
+   "desfecho": "coef",
+   "leitura": "sem evidência",
+   "n": 106,
+   "roteiros": 44,
+   "clientes": 17,
+   "p": 0.217,
+   "p_sem": 0.258,
+   "lift": 0.84,
+   "ic": [
+    0.58,
+    1.18
+   ],
+   "or_mh": 0.77,
+   "or_ic": [
+    0.47,
+    1.26
+   ],
+   "desc": 0.51,
+   "val": 1.1,
+   "n_desc": 46,
+   "n_val": 60,
+   "plat": {
+    "Instagram": {
+     "n": 43,
+     "lift": 0.72,
+     "lb": 0.38,
+     "ub": 1.27
+    },
+    "TikTok": {
+     "n": 32,
+     "lift": 0.6,
+     "lb": 0.27,
+     "ub": 1.23
+    },
+    "YouTube": {
+     "n": 31,
+     "lift": 1.25,
+     "lb": 0.72,
+     "ub": 1.93
+    }
+   }
+  },
+  "estrito": {
+   "or": 0.6502028385828857,
+   "lo": 0.38107534384598085,
+   "hi": 1.1093967062642356,
+   "leitura": "sem evidência"
+  },
+  "acerto": {
+   "nome": "metáfora de LLM (jornada, mergulho...)",
+   "desfecho": "acerto",
+   "leitura": "sem evidência",
+   "n": 106,
+   "roteiros": 44,
+   "clientes": 17,
+   "p": 0.302,
+   "p_sem": 0.392,
+   "lift": 0.77,
+   "ic": [
+    0.57,
+    1.01
+   ],
+   "or_mh": 0.68,
+   "or_ic": [
+    0.43,
+    1.08
+   ],
+   "desc": 0.59,
+   "val": 0.94,
+   "n_desc": 46,
+   "n_val": 60,
+   "plat": {
+    "Instagram": {
+     "n": 43,
+     "lift": 0.55,
+     "lb": 0.3,
+     "ub": 0.93
+    },
+    "TikTok": {
+     "n": 32,
+     "lift": 0.76,
+     "lb": 0.44,
+     "ub": 1.18
+    },
+    "YouTube": {
+     "n": 31,
+     "lift": 1.08,
+     "lb": 0.68,
+     "ub": 1.53
+    }
+   }
+  },
+  "ret_final": {
+   "nome": "metáfora de LLM (jornada, mergulho...)",
+   "desfecho": "ret_final",
+   "leitura": "amostra pequena",
+   "n": 17,
+   "roteiros": 17,
+   "clientes": 9,
+   "p": 0.353,
+   "p_sem": 0.258,
+   "lift": 1.36,
+   "ic": [
+    0.67,
+    2.27
+   ],
+   "or_mh": 1.65,
+   "or_ic": [
+    0.6,
+    4.55
+   ],
+   "desc": 1.34,
+   "val": 1.23,
+   "n_desc": 13,
+   "n_val": 4,
+   "plat": {
+    "Instagram": {
+     "n": 17,
+     "lift": 1.36,
+     "lb": 0.67,
+     "ub": 2.27
+    }
+   }
+  },
+  "compart": {
+   "nome": "metáfora de LLM (jornada, mergulho...)",
+   "desfecho": "compart",
+   "leitura": "sem evidência",
+   "n": 50,
+   "roteiros": 35,
+   "clientes": 16,
+   "p": 0.24,
+   "p_sem": 0.257,
+   "lift": 0.94,
+   "ic": [
+    0.56,
+    1.46
+   ],
+   "or_mh": 1.02,
+   "or_ic": [
+    0.52,
+    1.99
+   ],
+   "desc": 0.58,
+   "val": 1.53,
+   "n_desc": 23,
+   "n_val": 27,
+   "plat": {
+    "Instagram": {
+     "n": 23,
+     "lift": 0.5,
+     "lb": 0.18,
+     "ub": 1.24
+    },
+    "TikTok": {
+     "n": 27,
+     "lift": 1.31,
+     "lb": 0.73,
+     "ub": 2.05
+    }
+   }
+  },
+  "salvamentos": {
+   "nome": "metáfora de LLM (jornada, mergulho...)",
+   "desfecho": "salvamentos",
+   "leitura": "sem evidência",
+   "n": 30,
+   "roteiros": 30,
+   "clientes": 13,
+   "p": 0.2,
+   "p_sem": 0.256,
+   "lift": 0.78,
+   "ic": [
+    0.37,
+    1.46
+   ],
+   "or_mh": 0.71,
+   "or_ic": [
+    0.28,
+    1.79
+   ],
+   "desc": 0,
+   "val": 1.26,
+   "n_desc": 12,
+   "n_val": 18,
+   "plat": {
+    "TikTok": {
+     "n": 30,
+     "lift": 0.78,
+     "lb": 0.37,
+     "ub": 1.46
+    }
+   }
+  },
+  "comentarios": {
+   "nome": "metáfora de LLM (jornada, mergulho...)",
+   "desfecho": "comentarios",
+   "leitura": "sem evidência",
+   "n": 106,
+   "roteiros": 44,
+   "clientes": 17,
+   "p": 0.264,
+   "p_sem": 0.252,
+   "lift": 1.05,
+   "ic": [
+    0.75,
+    1.41
+   ],
+   "or_mh": 1.18,
+   "or_ic": [
+    0.75,
+    1.87
+   ],
+   "desc": 1.02,
+   "val": 1.06,
+   "n_desc": 46,
+   "n_val": 60,
+   "plat": {
+    "Instagram": {
+     "n": 43,
+     "lift": 1.01,
+     "lb": 0.59,
+     "ub": 1.59
+    },
+    "TikTok": {
+     "n": 32,
+     "lift": 0.86,
+     "lb": 0.43,
+     "ub": 1.52
+    },
+    "YouTube": {
+     "n": 31,
+     "lift": 1.31,
+     "lb": 0.75,
+     "ub": 2.02
+    }
+   }
+  }
+ },
+ "corrida de frases longas (>=12) <=3": {
+  "nome": "corrida de frases longas (>=12) <=3",
+  "coef": {
+   "nome": "corrida de frases longas (>=12) <=3",
+   "desfecho": "coef",
+   "leitura": "sem evidência",
+   "n": 576,
+   "roteiros": 239,
+   "clientes": 27,
+   "p": 0.248,
+   "p_sem": 0.259,
+   "lift": 0.96,
+   "ic": [
+    0.83,
+    1.11
+   ],
+   "or_mh": 0.95,
+   "or_ic": [
+    0.77,
+    1.15
+   ],
+   "desc": 1.02,
+   "val": 0.87,
+   "n_desc": 370,
+   "n_val": 206,
+   "plat": {
+    "Instagram": {
+     "n": 236,
+     "lift": 0.94,
+     "lb": 0.74,
+     "ub": 1.17
+    },
+    "TikTok": {
+     "n": 171,
+     "lift": 1,
+     "lb": 0.76,
+     "ub": 1.27
+    },
+    "YouTube": {
+     "n": 169,
+     "lift": 0.96,
+     "lb": 0.73,
+     "ub": 1.24
+    }
+   }
+  },
+  "coef_ctl": {
+   "nome": "corrida de frases longas (>=12) <=3",
+   "desfecho": "coef",
+   "leitura": "sem evidência",
+   "n": 576,
+   "roteiros": 239,
+   "clientes": 27,
+   "p": 0.248,
+   "p_sem": 0.259,
+   "lift": 0.96,
+   "ic": [
+    0.83,
+    1.11
+   ],
+   "or_mh": 1.03,
+   "or_ic": [
+    0.84,
+    1.27
+   ],
+   "desc": 1.02,
+   "val": 0.87,
+   "n_desc": 370,
+   "n_val": 206,
+   "plat": {
+    "Instagram": {
+     "n": 236,
+     "lift": 0.94,
+     "lb": 0.74,
+     "ub": 1.17
+    },
+    "TikTok": {
+     "n": 171,
+     "lift": 1,
+     "lb": 0.76,
+     "ub": 1.27
+    },
+    "YouTube": {
+     "n": 169,
+     "lift": 0.96,
+     "lb": 0.73,
+     "ub": 1.24
+    }
+   }
+  },
+  "estrito": {
+   "or": 1.06482103957935,
+   "lo": 0.8574109794278504,
+   "hi": 1.3224041603566365,
+   "leitura": "sem evidência"
+  },
+  "acerto": {
+   "nome": "corrida de frases longas (>=12) <=3",
+   "desfecho": "acerto",
+   "leitura": "sem evidência",
+   "n": 576,
+   "roteiros": 239,
+   "clientes": 27,
+   "p": 0.387,
+   "p_sem": 0.391,
+   "lift": 0.99,
+   "ic": [
+    0.89,
+    1.09
+   ],
+   "or_mh": 1.07,
+   "or_ic": [
+    0.88,
+    1.29
+   ],
+   "desc": 1.07,
+   "val": 0.79,
+   "n_desc": 370,
+   "n_val": 206,
+   "plat": {
+    "Instagram": {
+     "n": 236,
+     "lift": 1.02,
+     "lb": 0.86,
+     "ub": 1.18
+    },
+    "TikTok": {
+     "n": 171,
+     "lift": 0.93,
+     "lb": 0.76,
+     "ub": 1.11
+    },
+    "YouTube": {
+     "n": 169,
+     "lift": 1.02,
+     "lb": 0.84,
+     "ub": 1.22
+    }
+   }
+  },
+  "ret_final": {
+   "nome": "corrida de frases longas (>=12) <=3",
+   "desfecho": "ret_final",
+   "leitura": "sem evidência",
+   "n": 149,
+   "roteiros": 149,
+   "clientes": 17,
+   "p": 0.322,
+   "p_sem": 0.251,
+   "lift": 1.24,
+   "ic": [
+    0.97,
+    1.55
+   ],
+   "or_mh": 1.27,
+   "or_ic": [
+    0.86,
+    1.89
+   ],
+   "desc": 1.26,
+   "val": 0.99,
+   "n_desc": 114,
+   "n_val": 35,
+   "plat": {
+    "Instagram": {
+     "n": 149,
+     "lift": 1.24,
+     "lb": 0.97,
+     "ub": 1.55
+    }
+   }
+  },
+  "compart": {
+   "nome": "corrida de frases longas (>=12) <=3",
+   "desfecho": "compart",
+   "leitura": "sem evidência",
+   "n": 242,
+   "roteiros": 182,
+   "clientes": 22,
+   "p": 0.223,
+   "p_sem": 0.26,
+   "lift": 0.87,
+   "ic": [
+    0.68,
+    1.09
+   ],
+   "or_mh": 0.84,
+   "or_ic": [
+    0.6,
+    1.17
+   ],
+   "desc": 0.79,
+   "val": 0.93,
+   "n_desc": 181,
+   "n_val": 61,
+   "plat": {
+    "Instagram": {
+     "n": 98,
+     "lift": 0.87,
+     "lb": 0.59,
+     "ub": 1.22
+    },
+    "TikTok": {
+     "n": 144,
+     "lift": 0.87,
+     "lb": 0.64,
+     "ub": 1.17
+    }
+   }
+  },
+  "salvamentos": {
+   "nome": "corrida de frases longas (>=12) <=3",
+   "desfecho": "salvamentos",
+   "leitura": "sem evidência",
+   "n": 154,
+   "roteiros": 154,
+   "clientes": 19,
+   "p": 0.292,
+   "p_sem": 0.252,
+   "lift": 1.14,
+   "ic": [
+    0.89,
+    1.44
+   ],
+   "or_mh": 1.15,
+   "or_ic": [
+    0.78,
+    1.69
+   ],
+   "desc": 1.29,
+   "val": 0.93,
+   "n_desc": 101,
+   "n_val": 53,
+   "plat": {
+    "TikTok": {
+     "n": 154,
+     "lift": 1.14,
+     "lb": 0.89,
+     "ub": 1.44
+    }
+   }
+  },
+  "comentarios": {
+   "nome": "corrida de frases longas (>=12) <=3",
+   "desfecho": "comentarios",
+   "leitura": "sem evidência",
+   "n": 576,
+   "roteiros": 239,
+   "clientes": 27,
+   "p": 0.234,
+   "p_sem": 0.254,
+   "lift": 0.93,
+   "ic": [
+    0.8,
+    1.07
+   ],
+   "or_mh": 0.9,
+   "or_ic": [
+    0.72,
+    1.11
+   ],
+   "desc": 0.94,
+   "val": 0.96,
+   "n_desc": 370,
+   "n_val": 206,
+   "plat": {
+    "Instagram": {
+     "n": 236,
+     "lift": 0.95,
+     "lb": 0.75,
+     "ub": 1.18
+    },
+    "TikTok": {
+     "n": 171,
+     "lift": 0.92,
+     "lb": 0.69,
+     "ub": 1.19
+    },
+    "YouTube": {
+     "n": 169,
+     "lift": 0.91,
+     "lb": 0.68,
+     "ub": 1.19
+    }
+   }
+  }
+ },
+ "corrida de frases longas 4-6": {
+  "nome": "corrida de frases longas 4-6",
+  "coef": {
+   "nome": "corrida de frases longas 4-6",
+   "desfecho": "coef",
+   "leitura": "sem evidência",
+   "n": 2734,
+   "roteiros": 1174,
+   "clientes": 28,
+   "p": 0.256,
+   "p_sem": 0.259,
+   "lift": 0.99,
+   "ic": [
+    0.93,
+    1.06
+   ],
+   "or_mh": 0.98,
+   "or_ic": [
+    0.88,
+    1.1
+   ],
+   "desc": 0.96,
+   "val": 1.03,
+   "n_desc": 1451,
+   "n_val": 1283,
+   "plat": {
+    "Instagram": {
+     "n": 1152,
+     "lift": 1.02,
+     "lb": 0.92,
+     "ub": 1.12
+    },
+    "TikTok": {
+     "n": 812,
+     "lift": 0.96,
+     "lb": 0.85,
+     "ub": 1.08
+    },
+    "YouTube": {
+     "n": 770,
+     "lift": 0.98,
+     "lb": 0.87,
+     "ub": 1.1
+    }
+   }
+  },
+  "coef_ctl": {
+   "nome": "corrida de frases longas 4-6",
+   "desfecho": "coef",
+   "leitura": "sem evidência",
+   "n": 2734,
+   "roteiros": 1174,
+   "clientes": 28,
+   "p": 0.256,
+   "p_sem": 0.259,
+   "lift": 0.99,
+   "ic": [
+    0.93,
+    1.06
+   ],
+   "or_mh": 1,
+   "or_ic": [
+    0.88,
+    1.12
+   ],
+   "desc": 0.96,
+   "val": 1.03,
+   "n_desc": 1451,
+   "n_val": 1283,
+   "plat": {
+    "Instagram": {
+     "n": 1152,
+     "lift": 1.02,
+     "lb": 0.92,
+     "ub": 1.12
+    },
+    "TikTok": {
+     "n": 812,
+     "lift": 0.96,
+     "lb": 0.85,
+     "ub": 1.08
+    },
+    "YouTube": {
+     "n": 770,
+     "lift": 0.98,
+     "lb": 0.87,
+     "ub": 1.1
+    }
+   }
+  },
+  "estrito": {
+   "or": 0.9860742017761727,
+   "lo": 0.8675427094595403,
+   "hi": 1.1208005332835587,
+   "leitura": "sem evidência"
+  },
+  "acerto": {
+   "nome": "corrida de frases longas 4-6",
+   "desfecho": "acerto",
+   "leitura": "sem evidência",
+   "n": 2734,
+   "roteiros": 1174,
+   "clientes": 28,
+   "p": 0.386,
+   "p_sem": 0.395,
+   "lift": 0.99,
+   "ic": [
+    0.94,
+    1.03
+   ],
+   "or_mh": 1.01,
+   "or_ic": [
+    0.9,
+    1.12
+   ],
+   "desc": 0.94,
+   "val": 1.04,
+   "n_desc": 1451,
+   "n_val": 1283,
+   "plat": {
+    "Instagram": {
+     "n": 1152,
+     "lift": 1,
+     "lb": 0.93,
+     "ub": 1.07
+    },
+    "TikTok": {
+     "n": 812,
+     "lift": 0.95,
+     "lb": 0.87,
+     "ub": 1.04
+    },
+    "YouTube": {
+     "n": 770,
+     "lift": 1.01,
+     "lb": 0.92,
+     "ub": 1.1
+    }
+   }
+  },
+  "ret_final": {
+   "nome": "corrida de frases longas 4-6",
+   "desfecho": "ret_final",
+   "leitura": "sem evidência",
+   "n": 592,
+   "roteiros": 592,
+   "clientes": 17,
+   "p": 0.26,
+   "p_sem": 0.258,
+   "lift": 1,
+   "ic": [
+    0.87,
+    1.15
+   ],
+   "or_mh": 0.98,
+   "or_ic": [
+    0.76,
+    1.27
+   ],
+   "desc": 0.95,
+   "val": 1.13,
+   "n_desc": 418,
+   "n_val": 174,
+   "plat": {
+    "Instagram": {
+     "n": 592,
+     "lift": 1,
+     "lb": 0.87,
+     "ub": 1.15
+    }
+   }
+  },
+  "compart": {
+   "nome": "corrida de frases longas 4-6",
+   "desfecho": "compart",
+   "leitura": "sem evidência",
+   "n": 1173,
+   "roteiros": 884,
+   "clientes": 27,
+   "p": 0.251,
+   "p_sem": 0.261,
+   "lift": 0.98,
+   "ic": [
+    0.88,
+    1.08
+   ],
+   "or_mh": 0.95,
+   "or_ic": [
+    0.79,
+    1.14
+   ],
+   "desc": 0.95,
+   "val": 1.01,
+   "n_desc": 722,
+   "n_val": 451,
+   "plat": {
+    "Instagram": {
+     "n": 496,
+     "lift": 1,
+     "lb": 0.86,
+     "ub": 1.15
+    },
+    "TikTok": {
+     "n": 677,
+     "lift": 0.96,
+     "lb": 0.84,
+     "ub": 1.1
+    }
+   }
+  },
+  "salvamentos": {
+   "nome": "corrida de frases longas 4-6",
+   "desfecho": "salvamentos",
+   "leitura": "sem evidência",
+   "n": 751,
+   "roteiros": 751,
+   "clientes": 23,
+   "p": 0.265,
+   "p_sem": 0.248,
+   "lift": 1.04,
+   "ic": [
+    0.92,
+    1.17
+   ],
+   "or_mh": 1.09,
+   "or_ic": [
+    0.86,
+    1.36
+   ],
+   "desc": 1.04,
+   "val": 1.05,
+   "n_desc": 397,
+   "n_val": 354,
+   "plat": {
+    "TikTok": {
+     "n": 751,
+     "lift": 1.04,
+     "lb": 0.92,
+     "ub": 1.17
+    }
+   }
+  },
+  "comentarios": {
+   "nome": "corrida de frases longas 4-6",
+   "desfecho": "comentarios",
+   "leitura": "sem evidência",
+   "n": 2734,
+   "roteiros": 1174,
+   "clientes": 28,
+   "p": 0.246,
+   "p_sem": 0.257,
+   "lift": 0.98,
+   "ic": [
+    0.91,
+    1.04
+   ],
+   "or_mh": 0.95,
+   "or_ic": [
+    0.85,
+    1.08
+   ],
+   "desc": 0.98,
+   "val": 0.98,
+   "n_desc": 1451,
+   "n_val": 1283,
+   "plat": {
+    "Instagram": {
+     "n": 1152,
+     "lift": 0.98,
+     "lb": 0.88,
+     "ub": 1.08
+    },
+    "TikTok": {
+     "n": 812,
+     "lift": 1.02,
+     "lb": 0.9,
+     "ub": 1.14
+    },
+    "YouTube": {
+     "n": 770,
+     "lift": 0.93,
+     "lb": 0.81,
+     "ub": 1.05
+    }
+   }
+  }
+ },
+ "corrida de frases longas 7-9": {
+  "nome": "corrida de frases longas 7-9",
+  "coef": {
+   "nome": "corrida de frases longas 7-9",
+   "desfecho": "coef",
+   "leitura": "sem evidência",
+   "n": 1839,
+   "roteiros": 796,
+   "clientes": 28,
+   "p": 0.263,
+   "p_sem": 0.255,
+   "lift": 1.02,
+   "ic": [
+    0.95,
+    1.1
+   ],
+   "or_mh": 1.04,
+   "or_ic": [
+    0.92,
+    1.18
+   ],
+   "desc": 1,
+   "val": 1.04,
+   "n_desc": 886,
+   "n_val": 953,
+   "plat": {
+    "Instagram": {
+     "n": 778,
+     "lift": 1.03,
+     "lb": 0.91,
+     "ub": 1.15
+    },
+    "TikTok": {
+     "n": 538,
+     "lift": 1.04,
+     "lb": 0.9,
+     "ub": 1.19
+    },
+    "YouTube": {
+     "n": 523,
+     "lift": 1,
+     "lb": 0.86,
+     "ub": 1.15
+    }
+   }
+  },
+  "coef_ctl": {
+   "nome": "corrida de frases longas 7-9",
+   "desfecho": "coef",
+   "leitura": "sem evidência",
+   "n": 1839,
+   "roteiros": 796,
+   "clientes": 28,
+   "p": 0.263,
+   "p_sem": 0.255,
+   "lift": 1.02,
+   "ic": [
+    0.95,
+    1.1
+   ],
+   "or_mh": 1.03,
+   "or_ic": [
+    0.9,
+    1.17
+   ],
+   "desc": 1,
+   "val": 1.04,
+   "n_desc": 886,
+   "n_val": 953,
+   "plat": {
+    "Instagram": {
+     "n": 778,
+     "lift": 1.03,
+     "lb": 0.91,
+     "ub": 1.15
+    },
+    "TikTok": {
+     "n": 538,
+     "lift": 1.04,
+     "lb": 0.9,
+     "ub": 1.19
+    },
+    "YouTube": {
+     "n": 523,
+     "lift": 1,
+     "lb": 0.86,
+     "ub": 1.15
+    }
+   }
+  },
+  "estrito": {
+   "or": 1.0504057272191574,
+   "lo": 0.9159526500303637,
+   "hi": 1.204595228517796,
+   "leitura": "sem evidência"
+  },
+  "acerto": {
+   "nome": "corrida de frases longas 7-9",
+   "desfecho": "acerto",
+   "leitura": "sem evidência",
+   "n": 1839,
+   "roteiros": 796,
+   "clientes": 28,
+   "p": 0.411,
+   "p_sem": 0.382,
+   "lift": 1.05,
+   "ic": [
+    0.99,
+    1.11
+   ],
+   "or_mh": 1.1,
+   "or_ic": [
+    0.97,
+    1.24
+   ],
+   "desc": 1.07,
+   "val": 1.03,
+   "n_desc": 886,
+   "n_val": 953,
+   "plat": {
+    "Instagram": {
+     "n": 778,
+     "lift": 1.05,
+     "lb": 0.96,
+     "ub": 1.15
+    },
+    "TikTok": {
+     "n": 538,
+     "lift": 1.04,
+     "lb": 0.94,
+     "ub": 1.14
+    },
+    "YouTube": {
+     "n": 523,
+     "lift": 1.07,
+     "lb": 0.96,
+     "ub": 1.18
+    }
+   }
+  },
+  "ret_final": {
+   "nome": "corrida de frases longas 7-9",
+   "desfecho": "ret_final",
+   "leitura": "sem evidência",
+   "n": 393,
+   "roteiros": 393,
+   "clientes": 17,
+   "p": 0.239,
+   "p_sem": 0.267,
+   "lift": 0.92,
+   "ic": [
+    0.77,
+    1.1
+   ],
+   "or_mh": 0.9,
+   "or_ic": [
+    0.68,
+    1.2
+   ],
+   "desc": 0.91,
+   "val": 1,
+   "n_desc": 245,
+   "n_val": 148,
+   "plat": {
+    "Instagram": {
+     "n": 393,
+     "lift": 0.92,
+     "lb": 0.77,
+     "ub": 1.1
+    }
+   }
+  },
+  "compart": {
+   "nome": "corrida de frases longas 7-9",
+   "desfecho": "compart",
+   "leitura": "sem evidência",
+   "n": 818,
+   "roteiros": 597,
+   "clientes": 27,
+   "p": 0.279,
+   "p_sem": 0.247,
+   "lift": 1.09,
+   "ic": [
+    0.97,
+    1.21
+   ],
+   "or_mh": 1.17,
+   "or_ic": [
+    0.96,
+    1.42
+   ],
+   "desc": 1.13,
+   "val": 0.98,
+   "n_desc": 491,
+   "n_val": 327,
+   "plat": {
+    "Instagram": {
+     "n": 362,
+     "lift": 1.13,
+     "lb": 0.96,
+     "ub": 1.32
+    },
+    "TikTok": {
+     "n": 456,
+     "lift": 1.05,
+     "lb": 0.9,
+     "ub": 1.22
+    }
+   }
+  },
+  "salvamentos": {
+   "nome": "corrida de frases longas 7-9",
+   "desfecho": "salvamentos",
+   "leitura": "sem evidência",
+   "n": 507,
+   "roteiros": 507,
+   "clientes": 23,
+   "p": 0.247,
+   "p_sem": 0.259,
+   "lift": 0.97,
+   "ic": [
+    0.83,
+    1.12
+   ],
+   "or_mh": 0.96,
+   "or_ic": [
+    0.75,
+    1.22
+   ],
+   "desc": 0.86,
+   "val": 1.05,
+   "n_desc": 245,
+   "n_val": 262,
+   "plat": {
+    "TikTok": {
+     "n": 507,
+     "lift": 0.97,
+     "lb": 0.83,
+     "ub": 1.12
+    }
+   }
+  },
+  "comentarios": {
+   "nome": "corrida de frases longas 7-9",
+   "desfecho": "comentarios",
+   "leitura": "ajuda (replica)",
+   "n": 1839,
+   "roteiros": 796,
+   "clientes": 28,
+   "p": 0.277,
+   "p_sem": 0.242,
+   "lift": 1.1,
+   "ic": [
+    1.02,
+    1.18
+   ],
+   "or_mh": 1.22,
+   "or_ic": [
+    1.07,
+    1.39
+   ],
+   "desc": 1.09,
+   "val": 1.1,
+   "n_desc": 886,
+   "n_val": 953,
+   "plat": {
+    "Instagram": {
+     "n": 778,
+     "lift": 1.12,
+     "lb": 0.99,
+     "ub": 1.24
+    },
+    "TikTok": {
+     "n": 538,
+     "lift": 1.02,
+     "lb": 0.88,
+     "ub": 1.17
+    },
+    "YouTube": {
+     "n": 523,
+     "lift": 1.16,
+     "lb": 1.01,
+     "ub": 1.32
+    }
+   }
+  }
+ },
+ "corrida de frases longas 10+": {
+  "nome": "corrida de frases longas 10+",
+  "coef": {
+   "nome": "corrida de frases longas 10+",
+   "desfecho": "coef",
+   "leitura": "sem evidência",
+   "n": 1156,
+   "roteiros": 504,
+   "clientes": 28,
+   "p": 0.259,
+   "p_sem": 0.258,
+   "lift": 1,
+   "ic": [
+    0.91,
+    1.1
+   ],
+   "or_mh": 1.01,
+   "or_ic": [
+    0.87,
+    1.17
+   ],
+   "desc": 1.12,
+   "val": 0.93,
+   "n_desc": 428,
+   "n_val": 728,
+   "plat": {
+    "Instagram": {
+     "n": 492,
+     "lift": 0.94,
+     "lb": 0.8,
+     "ub": 1.1
+    },
+    "TikTok": {
+     "n": 336,
+     "lift": 1.04,
+     "lb": 0.86,
+     "ub": 1.23
+    },
+    "YouTube": {
+     "n": 328,
+     "lift": 1.06,
+     "lb": 0.89,
+     "ub": 1.26
+    }
+   }
+  },
+  "coef_ctl": {
+   "nome": "corrida de frases longas 10+",
+   "desfecho": "coef",
+   "leitura": "sem evidência",
+   "n": 1156,
+   "roteiros": 504,
+   "clientes": 28,
+   "p": 0.259,
+   "p_sem": 0.258,
+   "lift": 1,
+   "ic": [
+    0.91,
+    1.1
+   ],
+   "or_mh": 0.95,
+   "or_ic": [
+    0.82,
+    1.11
+   ],
+   "desc": 1.12,
+   "val": 0.93,
+   "n_desc": 428,
+   "n_val": 728,
+   "plat": {
+    "Instagram": {
+     "n": 492,
+     "lift": 0.94,
+     "lb": 0.8,
+     "ub": 1.1
+    },
+    "TikTok": {
+     "n": 336,
+     "lift": 1.04,
+     "lb": 0.86,
+     "ub": 1.23
+    },
+    "YouTube": {
+     "n": 328,
+     "lift": 1.06,
+     "lb": 0.89,
+     "ub": 1.26
+    }
+   }
+  },
+  "estrito": {
+   "or": 0.9188248239522453,
+   "lo": 0.7778811747162425,
+   "hi": 1.0853059368853324,
+   "leitura": "sem evidência"
+  },
+  "acerto": {
+   "nome": "corrida de frases longas 10+",
+   "desfecho": "acerto",
+   "leitura": "sem evidência",
+   "n": 1156,
+   "roteiros": 504,
+   "clientes": 28,
+   "p": 0.373,
+   "p_sem": 0.395,
+   "lift": 0.95,
+   "ic": [
+    0.88,
+    1.03
+   ],
+   "or_mh": 0.84,
+   "or_ic": [
+    0.72,
+    0.97
+   ],
+   "desc": 1,
+   "val": 0.94,
+   "n_desc": 428,
+   "n_val": 728,
+   "plat": {
+    "Instagram": {
+     "n": 492,
+     "lift": 0.91,
+     "lb": 0.8,
+     "ub": 1.02
+    },
+    "TikTok": {
+     "n": 336,
+     "lift": 1.09,
+     "lb": 0.97,
+     "ub": 1.22
+    },
+    "YouTube": {
+     "n": 328,
+     "lift": 0.87,
+     "lb": 0.74,
+     "ub": 1
+    }
+   }
+  },
+  "ret_final": {
+   "nome": "corrida de frases longas 10+",
+   "desfecho": "ret_final",
+   "leitura": "sem evidência",
+   "n": 183,
+   "roteiros": 183,
+   "clientes": 16,
+   "p": 0.246,
+   "p_sem": 0.261,
+   "lift": 0.95,
+   "ic": [
+    0.73,
+    1.21
+   ],
+   "or_mh": 1.01,
+   "or_ic": [
+    0.69,
+    1.48
+   ],
+   "desc": 1.12,
+   "val": 0.7,
+   "n_desc": 106,
+   "n_val": 77,
+   "plat": {
+    "Instagram": {
+     "n": 183,
+     "lift": 0.95,
+     "lb": 0.73,
+     "ub": 1.21
+    }
+   }
+  },
+  "compart": {
+   "nome": "corrida de frases longas 10+",
+   "desfecho": "compart",
+   "leitura": "sem evidência",
+   "n": 501,
+   "roteiros": 385,
+   "clientes": 27,
+   "p": 0.25,
+   "p_sem": 0.258,
+   "lift": 0.97,
+   "ic": [
+    0.83,
+    1.13
+   ],
+   "or_mh": 0.95,
+   "or_ic": [
+    0.75,
+    1.2
+   ],
+   "desc": 1.03,
+   "val": 1.02,
+   "n_desc": 238,
+   "n_val": 263,
+   "plat": {
+    "Instagram": {
+     "n": 234,
+     "lift": 0.86,
+     "lb": 0.67,
+     "ub": 1.08
+    },
+    "TikTok": {
+     "n": 267,
+     "lift": 1.07,
+     "lb": 0.88,
+     "ub": 1.3
+    }
+   }
+  },
+  "salvamentos": {
+   "nome": "corrida de frases longas 10+",
+   "desfecho": "salvamentos",
+   "leitura": "sem evidência",
+   "n": 308,
+   "roteiros": 308,
+   "clientes": 23,
+   "p": 0.227,
+   "p_sem": 0.261,
+   "lift": 0.89,
+   "ic": [
+    0.72,
+    1.09
+   ],
+   "or_mh": 0.85,
+   "or_ic": [
+    0.62,
+    1.15
+   ],
+   "desc": 0.91,
+   "val": 0.87,
+   "n_desc": 116,
+   "n_val": 192,
+   "plat": {
+    "TikTok": {
+     "n": 308,
+     "lift": 0.89,
+     "lb": 0.72,
+     "ub": 1.09
+    }
+   }
+  },
+  "comentarios": {
+   "nome": "corrida de frases longas 10+",
+   "desfecho": "comentarios",
+   "leitura": "sem evidência",
+   "n": 1156,
+   "roteiros": 504,
+   "clientes": 28,
+   "p": 0.235,
+   "p_sem": 0.256,
+   "lift": 0.93,
+   "ic": [
+    0.84,
+    1.03
+   ],
+   "or_mh": 0.86,
+   "or_ic": [
+    0.73,
+    1
+   ],
+   "desc": 0.94,
+   "val": 0.91,
+   "n_desc": 428,
+   "n_val": 728,
+   "plat": {
+    "Instagram": {
+     "n": 492,
+     "lift": 0.89,
+     "lb": 0.75,
+     "ub": 1.04
+    },
+    "TikTok": {
+     "n": 336,
+     "lift": 0.97,
+     "lb": 0.8,
+     "ub": 1.16
+    },
+    "YouTube": {
+     "n": 328,
+     "lift": 0.97,
+     "lb": 0.79,
+     "ub": 1.16
+    }
+   }
+  }
+ },
+ "todo parágrafo <=35 palavras": {
+  "nome": "todo parágrafo <=35 palavras",
+  "coef": {
+   "nome": "todo parágrafo <=35 palavras",
+   "desfecho": "coef",
+   "leitura": "sem evidência",
+   "n": 1387,
+   "roteiros": 539,
+   "clientes": 27,
+   "p": 0.275,
+   "p_sem": 0.253,
+   "lift": 1.07,
+   "ic": [
+    0.98,
+    1.16
+   ],
+   "or_mh": 1.13,
+   "or_ic": [
+    0.98,
+    1.3
+   ],
+   "desc": 1.05,
+   "val": 1.09,
+   "n_desc": 768,
+   "n_val": 619,
+   "plat": {
+    "Instagram": {
+     "n": 533,
+     "lift": 1.08,
+     "lb": 0.94,
+     "ub": 1.23
+    },
+    "TikTok": {
+     "n": 435,
+     "lift": 1.09,
+     "lb": 0.93,
+     "ub": 1.26
+    },
+    "YouTube": {
+     "n": 419,
+     "lift": 1.03,
+     "lb": 0.87,
+     "ub": 1.2
+    }
+   }
+  },
+  "coef_ctl": {
+   "nome": "todo parágrafo <=35 palavras",
+   "desfecho": "coef",
+   "leitura": "sem evidência",
+   "n": 1387,
+   "roteiros": 539,
+   "clientes": 27,
+   "p": 0.275,
+   "p_sem": 0.253,
+   "lift": 1.07,
+   "ic": [
+    0.98,
+    1.16
+   ],
+   "or_mh": 1.2,
+   "or_ic": [
+    1.04,
+    1.39
+   ],
+   "desc": 1.05,
+   "val": 1.09,
+   "n_desc": 768,
+   "n_val": 619,
+   "plat": {
+    "Instagram": {
+     "n": 533,
+     "lift": 1.08,
+     "lb": 0.94,
+     "ub": 1.23
+    },
+    "TikTok": {
+     "n": 435,
+     "lift": 1.09,
+     "lb": 0.93,
+     "ub": 1.26
+    },
+    "YouTube": {
+     "n": 419,
+     "lift": 1.03,
+     "lb": 0.87,
+     "ub": 1.2
+    }
+   }
+  },
+  "estrito": {
+   "or": 1.1576908061476752,
+   "lo": 0.9828237425537986,
+   "hi": 1.3636707627313862,
+   "leitura": "sem evidência"
+  },
+  "acerto": {
+   "nome": "todo parágrafo <=35 palavras",
+   "desfecho": "acerto",
+   "leitura": "sem evidência",
+   "n": 1387,
+   "roteiros": 539,
+   "clientes": 27,
+   "p": 0.411,
+   "p_sem": 0.385,
+   "lift": 1.05,
+   "ic": [
+    0.99,
+    1.12
+   ],
+   "or_mh": 1.16,
+   "or_ic": [
+    1.01,
+    1.33
+   ],
+   "desc": 0.95,
+   "val": 1.18,
+   "n_desc": 768,
+   "n_val": 619,
+   "plat": {
+    "Instagram": {
+     "n": 533,
+     "lift": 1.07,
+     "lb": 0.97,
+     "ub": 1.18
+    },
+    "TikTok": {
+     "n": 435,
+     "lift": 1.05,
+     "lb": 0.94,
+     "ub": 1.16
+    },
+    "YouTube": {
+     "n": 419,
+     "lift": 1.02,
+     "lb": 0.91,
+     "ub": 1.15
+    }
+   }
+  },
+  "ret_final": {
+   "nome": "todo parágrafo <=35 palavras",
+   "desfecho": "ret_final",
+   "leitura": "ajuda (replica)",
+   "n": 305,
+   "roteiros": 305,
+   "clientes": 17,
+   "p": 0.325,
+   "p_sem": 0.239,
+   "lift": 1.25,
+   "ic": [
+    1.06,
+    1.46
+   ],
+   "or_mh": 1.42,
+   "or_ic": [
+    1.04,
+    1.95
+   ],
+   "desc": 1.17,
+   "val": 1.45,
+   "n_desc": 227,
+   "n_val": 78,
+   "plat": {
+    "Instagram": {
+     "n": 305,
+     "lift": 1.25,
+     "lb": 1.06,
+     "ub": 1.46
+    }
+   }
+  },
+  "compart": {
+   "nome": "todo parágrafo <=35 palavras",
+   "desfecho": "compart",
+   "leitura": "sem evidência",
+   "n": 602,
+   "roteiros": 428,
+   "clientes": 26,
+   "p": 0.229,
+   "p_sem": 0.264,
+   "lift": 0.89,
+   "ic": [
+    0.77,
+    1.03
+   ],
+   "or_mh": 0.86,
+   "or_ic": [
+    0.68,
+    1.09
+   ],
+   "desc": 0.87,
+   "val": 0.94,
+   "n_desc": 370,
+   "n_val": 232,
+   "plat": {
+    "Instagram": {
+     "n": 245,
+     "lift": 0.84,
+     "lb": 0.65,
+     "ub": 1.05
+    },
+    "TikTok": {
+     "n": 357,
+     "lift": 0.94,
+     "lb": 0.77,
+     "ub": 1.12
+    }
+   }
+  },
+  "salvamentos": {
+   "nome": "todo parágrafo <=35 palavras",
+   "desfecho": "salvamentos",
+   "leitura": "sem evidência",
+   "n": 405,
+   "roteiros": 405,
+   "clientes": 21,
+   "p": 0.274,
+   "p_sem": 0.249,
+   "lift": 1.07,
+   "ic": [
+    0.91,
+    1.25
+   ],
+   "or_mh": 1.05,
+   "or_ic": [
+    0.79,
+    1.38
+   ],
+   "desc": 1.23,
+   "val": 0.91,
+   "n_desc": 219,
+   "n_val": 186,
+   "plat": {
+    "TikTok": {
+     "n": 405,
+     "lift": 1.07,
+     "lb": 0.91,
+     "ub": 1.25
+    }
+   }
+  },
+  "comentarios": {
+   "nome": "todo parágrafo <=35 palavras",
+   "desfecho": "comentarios",
+   "leitura": "sem evidência",
+   "n": 1387,
+   "roteiros": 539,
+   "clientes": 27,
+   "p": 0.246,
+   "p_sem": 0.254,
+   "lift": 0.98,
+   "ic": [
+    0.89,
+    1.07
+   ],
+   "or_mh": 1.03,
+   "or_ic": [
+    0.89,
+    1.19
+   ],
+   "desc": 0.95,
+   "val": 1.02,
+   "n_desc": 768,
+   "n_val": 619,
+   "plat": {
+    "Instagram": {
+     "n": 533,
+     "lift": 1.01,
+     "lb": 0.87,
+     "ub": 1.17
+    },
+    "TikTok": {
+     "n": 435,
+     "lift": 1,
+     "lb": 0.85,
+     "ub": 1.17
+    },
+    "YouTube": {
+     "n": 419,
+     "lift": 0.9,
+     "lb": 0.75,
+     "ub": 1.07
+    }
+   }
+  }
+ },
+ "algum parágrafo >45 palavras": {
+  "nome": "algum parágrafo >45 palavras",
+  "coef": {
+   "nome": "algum parágrafo >45 palavras",
+   "desfecho": "coef",
+   "leitura": "sem evidência",
+   "n": 1790,
+   "roteiros": 818,
+   "clientes": 28,
+   "p": 0.251,
+   "p_sem": 0.26,
+   "lift": 0.98,
+   "ic": [
+    0.9,
+    1.06
+   ],
+   "or_mh": 0.95,
+   "or_ic": [
+    0.84,
+    1.08
+   ],
+   "desc": 0.97,
+   "val": 0.98,
+   "n_desc": 871,
+   "n_val": 919,
+   "plat": {
+    "Instagram": {
+     "n": 796,
+     "lift": 0.99,
+     "lb": 0.87,
+     "ub": 1.11
+    },
+    "TikTok": {
+     "n": 517,
+     "lift": 0.99,
+     "lb": 0.85,
+     "ub": 1.14
+    },
+    "YouTube": {
+     "n": 477,
+     "lift": 0.94,
+     "lb": 0.8,
+     "ub": 1.1
+    }
+   }
+  },
+  "coef_ctl": {
+   "nome": "algum parágrafo >45 palavras",
+   "desfecho": "coef",
+   "leitura": "sem evidência",
+   "n": 1790,
+   "roteiros": 818,
+   "clientes": 28,
+   "p": 0.251,
+   "p_sem": 0.26,
+   "lift": 0.98,
+   "ic": [
+    0.9,
+    1.06
+   ],
+   "or_mh": 0.88,
+   "or_ic": [
+    0.77,
+    1.01
+   ],
+   "desc": 0.97,
+   "val": 0.98,
+   "n_desc": 871,
+   "n_val": 919,
+   "plat": {
+    "Instagram": {
+     "n": 796,
+     "lift": 0.99,
+     "lb": 0.87,
+     "ub": 1.11
+    },
+    "TikTok": {
+     "n": 517,
+     "lift": 0.99,
+     "lb": 0.85,
+     "ub": 1.14
+    },
+    "YouTube": {
+     "n": 477,
+     "lift": 0.94,
+     "lb": 0.8,
+     "ub": 1.1
+    }
+   }
+  },
+  "estrito": {
+   "or": 0.9678537701769909,
+   "lo": 0.8361338505953136,
+   "hi": 1.1203241200901881,
+   "leitura": "sem evidência"
+  },
+  "acerto": {
+   "nome": "algum parágrafo >45 palavras",
+   "desfecho": "acerto",
+   "leitura": "sem evidência",
+   "n": 1790,
+   "roteiros": 818,
+   "clientes": 28,
+   "p": 0.374,
+   "p_sem": 0.397,
+   "lift": 0.96,
+   "ic": [
+    0.9,
+    1.02
+   ],
+   "or_mh": 0.86,
+   "or_ic": [
+    0.76,
+    0.97
+   ],
+   "desc": 1,
+   "val": 0.92,
+   "n_desc": 871,
+   "n_val": 919,
+   "plat": {
+    "Instagram": {
+     "n": 796,
+     "lift": 0.93,
+     "lb": 0.85,
+     "ub": 1.02
+    },
+    "TikTok": {
+     "n": 517,
+     "lift": 0.98,
+     "lb": 0.88,
+     "ub": 1.09
+    },
+    "YouTube": {
+     "n": 477,
+     "lift": 0.97,
+     "lb": 0.87,
+     "ub": 1.09
+    }
+   }
+  },
+  "ret_final": {
+   "nome": "algum parágrafo >45 palavras",
+   "desfecho": "ret_final",
+   "leitura": "atrapalha (replica)",
+   "n": 374,
+   "roteiros": 374,
+   "clientes": 17,
+   "p": 0.193,
+   "p_sem": 0.285,
+   "lift": 0.74,
+   "ic": [
+    0.6,
+    0.91
+   ],
+   "or_mh": 0.6,
+   "or_ic": [
+    0.43,
+    0.83
+   ],
+   "desc": 0.75,
+   "val": 0.78,
+   "n_desc": 229,
+   "n_val": 145,
+   "plat": {
+    "Instagram": {
+     "n": 374,
+     "lift": 0.74,
+     "lb": 0.6,
+     "ub": 0.91
+    }
+   }
+  },
+  "compart": {
+   "nome": "algum parágrafo >45 palavras",
+   "desfecho": "compart",
+   "leitura": "sem evidência",
+   "n": 802,
+   "roteiros": 607,
+   "clientes": 27,
+   "p": 0.261,
+   "p_sem": 0.255,
+   "lift": 1.02,
+   "ic": [
+    0.9,
+    1.14
+   ],
+   "or_mh": 1.01,
+   "or_ic": [
+    0.82,
+    1.23
+   ],
+   "desc": 1.05,
+   "val": 0.94,
+   "n_desc": 476,
+   "n_val": 326,
+   "plat": {
+    "Instagram": {
+     "n": 375,
+     "lift": 0.93,
+     "lb": 0.77,
+     "ub": 1.1
+    },
+    "TikTok": {
+     "n": 427,
+     "lift": 1.09,
+     "lb": 0.94,
+     "ub": 1.27
+    }
+   }
+  },
+  "salvamentos": {
+   "nome": "algum parágrafo >45 palavras",
+   "desfecho": "salvamentos",
+   "leitura": "sem evidência",
+   "n": 473,
+   "roteiros": 473,
+   "clientes": 23,
+   "p": 0.262,
+   "p_sem": 0.253,
+   "lift": 1.03,
+   "ic": [
+    0.88,
+    1.19
+   ],
+   "or_mh": 1.1,
+   "or_ic": [
+    0.85,
+    1.43
+   ],
+   "desc": 0.88,
+   "val": 1.15,
+   "n_desc": 226,
+   "n_val": 247,
+   "plat": {
+    "TikTok": {
+     "n": 473,
+     "lift": 1.03,
+     "lb": 0.88,
+     "ub": 1.19
+    }
+   }
+  },
+  "comentarios": {
+   "nome": "algum parágrafo >45 palavras",
+   "desfecho": "comentarios",
+   "leitura": "sem evidência",
+   "n": 1790,
+   "roteiros": 818,
+   "clientes": 28,
+   "p": 0.241,
+   "p_sem": 0.256,
+   "lift": 0.96,
+   "ic": [
+    0.88,
+    1.04
+   ],
+   "or_mh": 0.86,
+   "or_ic": [
+    0.75,
+    0.99
+   ],
+   "desc": 0.9,
+   "val": 1,
+   "n_desc": 871,
+   "n_val": 919,
+   "plat": {
+    "Instagram": {
+     "n": 796,
+     "lift": 0.95,
+     "lb": 0.84,
+     "ub": 1.07
+    },
+    "TikTok": {
+     "n": 517,
+     "lift": 0.89,
+     "lb": 0.76,
+     "ub": 1.04
+    },
+    "YouTube": {
+     "n": 477,
+     "lift": 1.04,
+     "lb": 0.89,
+     "ub": 1.2
+    }
+   }
+  }
+ },
+ "exemplos": {
+  "antitese": {
+   "top": [
+    {
+     "texto": "Você tinha vergonha de usar Olympikus na escola. Hoje em dia, ela humilha a Nike e a Adidas no Brasil.\nAté pouco tempo atrás, usar Olympikus era quase um atestado de pobreza. Era o famoso \"tênis da ec",
+     "cliente": "Marcio Grazino",
+     "plataforma": "TikTok",
+     "coef": 740.21,
+     "views": 1293510,
+     "link": "https://www.tiktok.com/@marcio.grazino/video/7618421911848094994"
+    },
+    {
+     "texto": "Não é uma coisa muito funcional, é como uma cozinha onde cada utensílio fica numa gaveta diferente da casa, o que acaba criando algumas barreiras na eficiência.",
+     "cliente": "Thiago Bisewski",
+     "plataforma": "YouTube",
+     "coef": 713.36,
+     "views": 543225,
+     "link": "https://www.youtube.com/shorts/eF6Y3LzVvuE"
+    },
+    {
+     "texto": "Enquanto as gigantes gastam bilhões para criar tecnologia, esse jovem de 20 anos criou uma concorrente da Apple usando restos de lixo.\nJoão Rego tinha 20 anos e vivia em Moçambique, um dos países mais",
+     "cliente": "Rafael Rodrigues",
+     "plataforma": "Instagram",
+     "coef": 438.39,
+     "views": 1081942,
+     "link": "https://www.instagram.com/reel/DWKJvC7Dz8-"
+    }
+   ],
+   "pior": [
+    {
+     "texto": "O Brasil virou um cemitério de empresas, e o seu casamento pode ser a próxima vítima.\nPode parecer exagero, mas uma empresa quebrar longe de você pode terminar dentro da sua casa.\nEm 2025, o Brasil ba",
+     "cliente": "Marcos Pelozato",
+     "plataforma": "YouTube",
+     "coef": 0.01,
+     "views": 27,
+     "link": "https://www.youtube.com/shorts/HVVqSCMR8WA"
+    },
+    {
+     "texto": "Em um país de clima quente, a Oakley não era luxo, era uma identidade.",
+     "cliente": "Manoel Victor",
+     "plataforma": "YouTube",
+     "coef": 0.02,
+     "views": 20,
+     "link": "https://www.youtube.com/shorts/OUgH_2Rwjk8"
+    }
+   ]
+  },
+  "eliptica": {
+   "top": [
+    {
+     "texto": "A embreagem?",
+     "cliente": "Leonardo Nogueira",
+     "plataforma": "Instagram",
+     "coef": 438.27,
+     "views": 6189736,
+     "link": "https://www.instagram.com/reel/DYo3ldvOFHW"
+    },
+    {
+     "texto": "E o preço?",
+     "cliente": "Izabela Anholett",
+     "plataforma": "YouTube",
+     "coef": 340.3,
+     "views": 1791705,
+     "link": "https://www.youtube.com/shorts/SyprPGFoWus"
+    },
+    {
+     "texto": "Por quê?",
+     "cliente": "Marcos Pelozato",
+     "plataforma": "YouTube",
+     "coef": 145.9,
+     "views": 281582,
+     "link": "https://www.youtube.com/shorts/YvZSiHzOST8"
+    }
+   ],
+   "pior": [
+    {
+     "texto": "E adivinha?",
+     "cliente": "Manoel Victor",
+     "plataforma": "Instagram",
+     "coef": 0.03,
+     "views": 813,
+     "link": "https://www.instagram.com/reel/DTyXxckAlsf"
+    },
+    {
+     "texto": "O resultado?",
+     "cliente": "Rafael Rodrigues",
+     "plataforma": "YouTube",
+     "coef": 0.07,
+     "views": 136,
+     "link": "https://www.youtube.com/shorts/BFbKjloJUeY"
+    }
+   ]
+  },
+  "tricolon": {
+   "top": [
+    {
+     "texto": "Você tinha vergonha de usar Olympikus na escola. Hoje em dia, ela humilha a Nike e a Adidas no Brasil.\nAté pouco tempo atrás, usar Olympikus era quase um atestado de pobreza. Era o famoso \"tênis da economia\". Aquele calçado duro que sua mãe comprava pra você ir pra aula de educação física porque era",
+     "cliente": "Marcio Grazino",
+     "plataforma": "TikTok",
+     "coef": 740.21,
+     "views": 1293510,
+     "link": "https://www.tiktok.com/@marcio.grazino/video/7618421911848094994"
+    },
+    {
+     "texto": "Essa marca de carros que já está no Brasil acabou de fazer o impossível: ela criou um sistema que faz 45 km com apenas 1 litro de gasolina.\nPra você entender o tamanho disso: no nosso país, um carro a gasolina considerado econômico faz em torno de 12 km por litro.\nEssa marca é, na verdade, a montado",
+     "cliente": "Pedro Elero",
+     "plataforma": "TikTok",
+     "coef": 486.17,
+     "views": 275170,
+     "link": "https://www.tiktok.com/@pedro_elero/video/7687261571130608903"
+    },
+    {
+     "texto": "A China declarou guerra ao carro mais amado do Brasil. E em agosto o Corolla perdeu o trono pela primeira vez na história.\nDurante décadas existiu uma certeza na cabeça do brasileiro: carro chinês não presta e quem compra não sabe o que está fazendo.\nPor outro lado, outra certeza existe.\nEm carro ja",
+     "cliente": "Renato Mendes",
+     "plataforma": "TikTok",
+     "coef": 482.9,
+     "views": 558951,
+     "link": "https://www.tiktok.com/@renatofmendes79/video/7684211577305746708"
+    }
+   ],
+   "pior": [
+    {
+     "texto": "Esse homem pagou plano de saúde para quem limpava chão e ficou bilionário por causa disso.\nHoward Schultz cresceu em um conjunto habitacional pobre no Brooklyn, nos EUA, cercado por dificuldades e incertezas.\nSeu pai, Fred, era um homem simples, ex-soldado, que vivia pulando de emprego em emprego pa",
+     "cliente": "Rodrigo Waughan",
+     "plataforma": "YouTube",
+     "coef": 0.01,
+     "views": 8,
+     "link": "https://www.youtube.com/shorts/qEFZBioW4JE"
+    },
+    {
+     "texto": "A farmácia mais lembrada do Rio Grande do Norte faturou R$ 870 milhões e se tornou uma das maiores redes do país.\nTudo começou em 1955, quando João Patriota fundou a distribuidora Droguistas Potiguares na cidade de Natal, no Rio Grande do Norte.\nEle passou anos expandindo até virar a maior fornecedo",
+     "cliente": "Cadu Neiva",
+     "plataforma": "TikTok",
+     "coef": 0.03,
+     "views": 1483,
+     "link": "https://www.tiktok.com/@caduneiva/video/7658695719104056584"
+    }
+   ]
+  }
+ }
+}

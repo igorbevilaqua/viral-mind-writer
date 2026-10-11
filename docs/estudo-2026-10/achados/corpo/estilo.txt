@@ -1,0 +1,58 @@
+| característica | vídeos / roteiros | % topo vs sem | coef lift [IC] | OR ctl tam | OR estrito | IG / TT / YT | acerto | ret_final IG | compart IG+TT | salv TT | coment | leitura coef |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| antítese 'não é X, é Y': nenhuma | 4540 / 1942 | 26% vs 25% | 1,00 [0,96-1,05] | 1,00 [0,88-1,14] | 0,98 [0,85-1,13] | 1,00 / 1,00 / 1,01 | 1,02 OR 1,04 [0,92-1,18] 1,00/1,03 | 1,10 OR 1,53 [1,14-2,06] 1,09/1,13 | 0,97 OR 0,85 [0,69-1,04] 0,98/0,97 | 1,00 OR 0,93 [0,73-1,20] 1,01/0,98 | 1,02 OR 1,12 [0,98-1,28] 1,03/1,02 | sem evidência / ctl: sem evidência |
+| antítese: 1 | 1175 / 518 | 25% vs 26% | 0,98 [0,89-1,08] | 0,99 [0,85-1,15] | 0,98 [0,84-1,16] | 0,97 / 0,95 / 1,05 | 0,97 OR 0,98 [0,86-1,13] 1,01/0,92 | 0,89 OR 0,84 [0,60-1,16] 0,91/0,86 | 1,12 OR 1,20 [0,95-1,51] 1,09/1,13 | 1,06 OR 1,21 [0,91-1,61] 1,01/1,12 | 0,94 OR 0,88 [0,76-1,03] 0,92/0,96 | sem evidência / ctl: sem evidência |
+| antítese: 2+ | 590 / 253 | 26% vs 26% | 1,00 [0,87-1,14] | 1,02 [0,83-1,24] | 1,07 [0,87-1,32] | 1,08 / 1,08 / 0,80 | 0,93 OR 0,93 [0,77-1,12] 0,98/0,87 | 0,60 OR 0,51 [0,32-0,82] 0,62/0,57 ✓- | 1,04 OR 1,07 [0,78-1,46] 0,99/1,08 | 0,91 OR 0,84 [0,56-1,25] 0,92/0,90 | 0,94 OR 0,96 [0,78-1,17] 0,98/0,92 | sem evidência / ctl: sem evidência |
+| pergunta elíptica ('O resultado?'): 1+ | 353 / 140 | 29% vs 26% | 1,11 [0,94-1,30] | 1,19 [0,92-1,53] | 1,32 [1,00-1,75] | 1,02 / 0,97 / 1,38 | 0,96 OR 1,10 [0,86-1,41] 0,90/1,11 | 1,14 OR 1,11 [0,70-1,76] 1,16/0,35 | 0,66 OR 0,60 [0,37-0,96] 0,62/0,63 ✓- | 0,85 OR 0,82 [0,50-1,36] 0,95/0,60 | 0,92 OR 0,89 [0,68-1,17] 1,00/0,82 | sem evidência / ctl: sem evidência |
+| pergunta curta (<=4 palavras): 1+ | 616 / 252 | 28% vs 26% | 1,09 [0,96-1,23] | 1,18 [0,96-1,43] | 1,26 [1,01-1,57] | 1,07 / 1,01 / 1,20 | 0,97 OR 1,09 [0,90-1,32] 0,90/1,10 | 1,21 OR 1,25 [0,85-1,84] 1,20/0,79 | 0,70 OR 0,62 [0,44-0,87] 0,68/0,58 ✓- | 0,97 OR 1,00 [0,68-1,48] 1,08/0,76 | 1,01 OR 1,00 [0,81-1,23] 1,05/1,01 | sem evidência / ctl: sem evidência |
+| perguntas no texto: 0 | 4016 / 1746 | 25% vs 27% | 0,97 [0,92-1,02] | 0,93 [0,82-1,05] | 0,85 [0,74-0,97] | 0,97 / 0,96 / 0,98 | 0,99 OR 0,99 [0,88-1,12] 1,01/0,98 | 0,97 OR 1,01 [0,77-1,33] 0,96/1,03 | 1,02 OR 1,10 [0,91-1,34] 1,04/1,00 | 1,02 OR 1,01 [0,79-1,28] 0,96/1,07 | 0,94 OR 0,78 [0,69-0,88] 0,96/0,92 ✓- | sem evidência / ctl: sem evidência |
+| perguntas no texto: 1 | 1616 / 689 | 27% vs 25% | 1,03 [0,95-1,12] | 1,05 [0,92-1,20] | 1,17 [1,01-1,35] | 0,99 / 1,06 / 1,06 | 1,00 OR 0,92 [0,81-1,05] 0,97/1,03 | 1,02 OR 0,95 [0,70-1,29] 1,00/1,06 | 0,95 OR 0,92 [0,75-1,13] 0,93/0,98 | 0,94 OR 0,96 [0,74-1,25] 1,03/0,85 | 1,11 OR 1,25 [1,09-1,42] 1,04/1,16 ✓+ | sem evidência / ctl: sem evidência |
+| perguntas no texto: 2+ | 673 / 278 | 28% vs 25% | 1,09 [0,96-1,23] | 1,08 [0,89-1,31] | 1,08 [0,87-1,34] | 1,19 / 1,07 / 0,96 | 1,04 OR 1,20 [1,00-1,44] 1,00/1,09 | 1,11 OR 1,07 [0,72-1,59] 1,20/0,60 | 0,98 OR 0,94 [0,69-1,30] 0,92/1,05 | 1,04 OR 1,06 [0,74-1,52] 1,13/0,93 | 1,10 OR 1,16 [0,96-1,41] 1,11/1,11 | sem evidência / ctl: sem evidência |
+| perguntas no texto: 3+ | 221 / 88 | 29% vs 26% | 1,12 [0,91-1,37] | 1,17 [0,86-1,60] | 1,44 [1,01-2,06] | 1,28 / 1,12 / 0,91 | 0,95 OR 1,12 [0,83-1,52] 0,92/0,96 | 1,25 OR 1,31 [0,74-2,33] 1,25/0,82 | 1,08 OR 1,12 [0,68-1,84] 0,93/1,41 | 1,31 OR 1,41 [0,81-2,46] 1,19/1,68 | 1,20 OR 1,25 [0,92-1,71] 1,24/1,22 | sem evidência / ctl: sem evidência |
+| tricolon 'X, Y e Z.' fechando parágrafo: 0 | 4489 / 1934 | 26% vs 25% | 1,01 [0,96-1,06] | 1,08 [0,94-1,23] | 1,06 [0,92-1,22] | 1,00 / 1,02 / 1,00 | 1,00 OR 1,09 [0,97-1,24] 1,00/1,00 | 1,02 OR 1,17 [0,86-1,58] 1,03/0,98 | 0,98 OR 0,88 [0,72-1,07] 1,01/0,91 | 0,97 OR 0,85 [0,66-1,09] 0,98/0,97 | 0,98 OR 0,93 [0,81-1,06] 0,96/1,00 | sem evidência / ctl: sem evidência |
+| tricolon: 1 | 1457 / 627 | 26% vs 26% | 1,00 [0,92-1,09] | 0,98 [0,86-1,13] | 0,97 [0,84-1,13] | 1,01 / 0,96 / 1,04 | 1,01 OR 0,98 [0,86-1,12] 1,01/1,01 | 0,99 OR 0,95 [0,69-1,31] 0,95/1,14 | 1,07 OR 1,18 [0,96-1,46] 0,97/1,33 | 1,10 OR 1,27 [0,97-1,65] 1,01/1,17 | 1,06 OR 1,12 [0,97-1,29] 1,09/1,03 | sem evidência / ctl: sem evidência |
+| tricolon: 2+ | 359 / 152 | 24% vs 26% | 0,92 [0,76-1,10] | 0,79 [0,60-1,03] | 0,89 [0,67-1,17] | 0,99 / 0,89 / 0,86 | 0,96 OR 0,76 [0,59-0,97] 0,96/0,94 | 0,77 OR 0,64 [0,34-1,20] 0,82/0,52 | 0,96 OR 0,93 [0,63-1,39] 1,05/0,70 | 0,91 OR 0,84 [0,50-1,40] 1,20/0,63 | 0,97 OR 0,91 [0,70-1,18] 1,11/0,85 | sem evidência / ctl: sem evidência |
+| frases seguidas começando com 'E': 1+ | 368 / 157 | 29% vs 26% | 1,12 [0,95-1,30] | 1,07 [0,85-1,37] | 1,24 [0,95-1,61] | 1,25 / 0,99 / 1,06 | 1,06 OR 1,04 [0,83-1,30] 0,99/1,13 | 1,03 OR 1,09 [0,62-1,93] 1,02/0,99 | 0,88 OR 0,89 [0,60-1,34] 0,90/0,82 | 0,94 OR 0,93 [0,57-1,52] 0,91/0,96 | 0,96 OR 0,97 [0,75-1,25] 0,85/1,05 | sem evidência / ctl: sem evidência |
+| parágrafos do corpo abrindo com 'E' >=15% | 1719 / 731 | 28% vs 25% | 1,07 [0,99-1,16] | 1,19 [1,04-1,36] | 1,25 [1,09-1,44] | 1,13 / 1,02 / 1,05 | 1,02 OR 1,05 [0,93-1,19] 0,95/1,10 | 0,98 OR 0,97 [0,71-1,31] 1,01/0,76 | 1,14 OR 1,34 [1,09-1,63] 1,18/1,08 ✓+ | 1,02 OR 1,00 [0,78-1,29] 1,01/1,02 | 1,12 OR 1,28 [1,12-1,46] 1,11/1,12 ✓+ | sem evidência / ctl: sem evidência |
+| metáfora de LLM (jornada, mergulho...) | 106 / 44 | 22% vs 26% | 0,84 [0,58-1,18] | 0,77 [0,47-1,26] | 0,65 [0,38-1,11] | 0,72 / 0,60 / 1,25 | 0,77 OR 0,68 [0,43-1,08] 0,59/0,94 | 1,36 OR 1,65 [0,60-4,55] 1,34/1,23 | 0,94 OR 1,02 [0,52-1,99] 0,58/1,53 | 0,78 OR 0,71 [0,28-1,79] 0,00/1,26 | 1,05 OR 1,18 [0,75-1,87] 1,02/1,06 | sem evidência / ctl: sem evidência |
+| corrida de frases longas (>=12) <=3 | 576 / 239 | 25% vs 26% | 0,96 [0,83-1,11] | 1,03 [0,84-1,27] | 1,06 [0,86-1,32] | 0,94 / 1,00 / 0,96 | 0,99 OR 1,07 [0,88-1,29] 1,07/0,79 | 1,24 OR 1,27 [0,86-1,89] 1,26/0,99 | 0,87 OR 0,84 [0,60-1,17] 0,79/0,93 | 1,14 OR 1,15 [0,78-1,69] 1,29/0,93 | 0,93 OR 0,90 [0,72-1,11] 0,94/0,96 | sem evidência / ctl: sem evidência |
+| corrida de frases longas 4-6 | 2734 / 1174 | 26% vs 26% | 0,99 [0,93-1,06] | 1,00 [0,88-1,12] | 0,99 [0,87-1,12] | 1,02 / 0,96 / 0,98 | 0,99 OR 1,01 [0,90-1,12] 0,94/1,04 | 1,00 OR 0,98 [0,76-1,27] 0,95/1,13 | 0,98 OR 0,95 [0,79-1,14] 0,95/1,01 | 1,04 OR 1,09 [0,86-1,36] 1,04/1,05 | 0,98 OR 0,95 [0,85-1,08] 0,98/0,98 | sem evidência / ctl: sem evidência |
+| corrida de frases longas 7-9 | 1839 / 796 | 26% vs 26% | 1,02 [0,95-1,10] | 1,03 [0,90-1,17] | 1,05 [0,92-1,20] | 1,03 / 1,04 / 1,00 | 1,05 OR 1,10 [0,97-1,24] 1,07/1,03 | 0,92 OR 0,90 [0,68-1,20] 0,91/1,00 | 1,09 OR 1,17 [0,96-1,42] 1,13/0,98 | 0,97 OR 0,96 [0,75-1,22] 0,86/1,05 | 1,10 OR 1,22 [1,07-1,39] 1,09/1,10 ✓+ | sem evidência / ctl: sem evidência |
+| corrida de frases longas 10+ | 1156 / 504 | 26% vs 26% | 1,00 [0,91-1,10] | 0,95 [0,82-1,11] | 0,92 [0,78-1,09] | 0,94 / 1,04 / 1,06 | 0,95 OR 0,84 [0,72-0,97] 1,00/0,94 | 0,95 OR 1,01 [0,69-1,48] 1,12/0,70 | 0,97 OR 0,95 [0,75-1,20] 1,03/1,02 | 0,89 OR 0,85 [0,62-1,15] 0,91/0,87 | 0,93 OR 0,86 [0,73-1,00] 0,94/0,91 | sem evidência / ctl: sem evidência |
+| todo parágrafo <=35 palavras | 1387 / 539 | 27% vs 25% | 1,07 [0,98-1,16] | 1,20 [1,04-1,39] | 1,16 [0,98-1,36] | 1,08 / 1,09 / 1,03 | 1,05 OR 1,16 [1,01-1,33] 0,95/1,18 | 1,25 OR 1,42 [1,04-1,95] 1,17/1,45 ✓+ | 0,89 OR 0,86 [0,68-1,09] 0,87/0,94 | 1,07 OR 1,05 [0,79-1,38] 1,23/0,91 | 0,98 OR 1,03 [0,89-1,19] 0,95/1,02 | sem evidência / ctl: sem evidência |
+| algum parágrafo >45 palavras | 1790 / 818 | 25% vs 26% | 0,98 [0,90-1,06] | 0,88 [0,77-1,01] | 0,97 [0,84-1,12] | 0,99 / 0,99 / 0,94 | 0,96 OR 0,86 [0,76-0,97] 1,00/0,92 | 0,74 OR 0,60 [0,43-0,83] 0,75/0,78 ✓- | 1,02 OR 1,01 [0,82-1,23] 1,05/0,94 | 1,03 OR 1,10 [0,85-1,43] 0,88/1,15 | 0,96 OR 0,86 [0,75-0,99] 0,90/1,00 | sem evidência / ctl: sem evidência |
+
+antitese:
+  + Marcio Grazino | TikTok | 740.21 | Você tinha vergonha de usar Olympikus na escola. Hoje em dia, ela humilha a Nike e a Adidas no Brasil.
+Até pouco tempo atrás, usar Olympikus era quase um atestado de pobreza. Era o famoso "tênis da ec
+  + Thiago Bisewski | YouTube | 713.36 | Não é uma coisa muito funcional, é como uma cozinha onde cada utensílio fica numa gaveta diferente da casa, o que acaba criando algumas barreiras na eficiência.
+  + Rafael Rodrigues | Instagram | 438.39 | Enquanto as gigantes gastam bilhões para criar tecnologia, esse jovem de 20 anos criou uma concorrente da Apple usando restos de lixo.
+João Rego tinha 20 anos e vivia em Moçambique, um dos países mais
+  - Marcos Pelozato | YouTube | 0.01 | O Brasil virou um cemitério de empresas, e o seu casamento pode ser a próxima vítima.
+Pode parecer exagero, mas uma empresa quebrar longe de você pode terminar dentro da sua casa.
+Em 2025, o Brasil ba
+  - Manoel Victor | YouTube | 0.02 | Em um país de clima quente, a Oakley não era luxo, era uma identidade.
+
+eliptica:
+  + Leonardo Nogueira | Instagram | 438.27 | A embreagem?
+  + Izabela Anholett | YouTube | 340.30 | E o preço?
+  + Marcos Pelozato | YouTube | 145.90 | Por quê?
+  - Manoel Victor | Instagram | 0.03 | E adivinha?
+  - Rafael Rodrigues | YouTube | 0.07 | O resultado?
+
+tricolon:
+  + Marcio Grazino | TikTok | 740.21 | Você tinha vergonha de usar Olympikus na escola. Hoje em dia, ela humilha a Nike e a Adidas no Brasil.
+Até pouco tempo atrás, usar Olympikus era quase um atestado de pobreza. Era o famoso "tênis da economia". Aquele calçado duro que sua mãe comprava pra você ir pra aula de educação física porque era
+  + Pedro Elero | TikTok | 486.17 | Essa marca de carros que já está no Brasil acabou de fazer o impossível: ela criou um sistema que faz 45 km com apenas 1 litro de gasolina.
+Pra você entender o tamanho disso: no nosso país, um carro a gasolina considerado econômico faz em torno de 12 km por litro.
+Essa marca é, na verdade, a montado
+  + Renato Mendes | TikTok | 482.90 | A China declarou guerra ao carro mais amado do Brasil. E em agosto o Corolla perdeu o trono pela primeira vez na história.
+Durante décadas existiu uma certeza na cabeça do brasileiro: carro chinês não presta e quem compra não sabe o que está fazendo.
+Por outro lado, outra certeza existe.
+Em carro ja
+  - Rodrigo Waughan | YouTube | 0.01 | Esse homem pagou plano de saúde para quem limpava chão e ficou bilionário por causa disso.
+Howard Schultz cresceu em um conjunto habitacional pobre no Brooklyn, nos EUA, cercado por dificuldades e incertezas.
+Seu pai, Fred, era um homem simples, ex-soldado, que vivia pulando de emprego em emprego pa
+  - Cadu Neiva | TikTok | 0.03 | A farmácia mais lembrada do Rio Grande do Norte faturou R$ 870 milhões e se tornou uma das maiores redes do país.
+Tudo começou em 1955, quando João Patriota fundou a distribuidora Droguistas Potiguares na cidade de Natal, no Rio Grande do Norte.
+Ele passou anos expandindo até virar a maior fornecedo

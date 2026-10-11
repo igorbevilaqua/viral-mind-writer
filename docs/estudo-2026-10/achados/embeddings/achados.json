@@ -1,0 +1,583 @@
+[
+ {
+  "id": "EMB-T1",
+  "parte": "tema",
+  "achado": "Carro chinês (BYD, Geely) humilhando a montadora tradicional é o território mais seguro da casa, com ou sem China no hook.",
+  "numeros": {
+   "roteiros": 66,
+   "pct_topo": 0.47,
+   "base": 0.26,
+   "or_mh": 2.96,
+   "ic": [
+    2.08,
+    4.21
+   ],
+   "lift_ig": 1.76,
+   "lift_tt": 1.64,
+   "lift_yt": 2.12,
+   "lift_desc": 2,
+   "lift_val": 1.79,
+   "clientes_or_maior_1": "4 de 4",
+   "or_com_china_no_hook": 3.37,
+   "or_sem_china_no_hook": 2.17,
+   "k30_or": 2.55
+  },
+  "escopo": "global: Leonardo Cirino 7,87; Renato Mendes 7,46; Leonardo Nogueira 1,76; Lincoln Fracari 1,33; Instagram, TikTok e YouTube",
+  "exemplos": [
+   "Renato Mendes, TikTok, coef 482,9: A China declarou guerra ao carro mais amado do Brasil. E em agosto o Corolla perdeu o trono pela primeira vez na história.",
+   "Pedro Elero, TikTok, coef 486,2: Essa marca de carros que já está no Brasil acabou de fazer o impossível: ela criou um sistema que faz 45 km com apenas 1 litro de gasolina.",
+   "Contraexemplo, Lincoln Fracari, Instagram, coef 0,26: Elon Musk riu desses caras em 2011, mas acabou quebrando a cara!"
+  ],
+  "instrucao": "Pauta de carro chinês é a aposta de tema mais segura para clientes de tecnologia, carros e negócios. Ponha no ringue o carro que o brasileiro tem na garagem ou o ganho no bolso. Fraco: 'A China pisou no Elon Musk.' Forte: 'A China gastou bilhões para humilhar o Corolla.'",
+  "confianca": "alta"
+ },
+ {
+  "id": "EMB-T2",
+  "parte": "tema",
+  "achado": "No futebol, funciona o dinheiro do clube (dívida, dono, contrato, presidente); Seleção e Copa não.",
+  "numeros": {
+   "roteiros": 42,
+   "pct_topo": 0.49,
+   "or_mh": 3.24,
+   "ic": [
+    2.16,
+    4.87
+   ],
+   "lift_ig": 1.95,
+   "lift_tt": 2.05,
+   "lift_yt": 1.68,
+   "lift_desc": 1.82,
+   "lift_val": 1.94,
+   "copa_selecao": {
+    "roteiros": 41,
+    "pct_topo": 0.21,
+    "or_mh": 0.75,
+    "ic": [
+     0.46,
+     1.24
+    ]
+   }
+  },
+  "escopo": "global entre clientes que tocam futebol: Pedro Elero 5,16; Rafael Rodrigues 2,68; Manoel Victor 1,68",
+  "exemplos": [
+   "Pedro Elero, TikTok, coef 452,95: Ela foi ao Palmeiras para colocar o nome da empresa na camisa do clube. Acabou ficando com o cargo mais alto da história do time (...)",
+   "Fernando Pereira, YouTube, coef 19,56: Por que um dos maiores craques da história tem uma dívida de milhões que a Justiça tenta cobrar há mais de 20 anos e ainda não conseguiu?",
+   "Contraexemplo, Pedro Elero, YouTube, coef 0,09: O Neymar não é mais jogador de futebol!"
+  ],
+  "instrucao": "No futebol, a pauta é o dinheiro do clube: dívida, dono, contrato, presidente, patrocínio. Seleção e Copa como premissa não sustentam. Fraco: 'O Neymar se aposentou?!' Forte: 'A dívida insana do Palmeiras.'",
+  "confianca": "alta"
+ },
+ {
+  "id": "EMB-T3",
+  "parte": "payoff",
+  "achado": "Estudante inventor funciona quando o payoff é o problema caro resolvido com lixo ou centavos contra uma gigante; o prêmio sozinho não. Território saturando.",
+  "numeros": {
+   "roteiros": 89,
+   "pct_topo": 0.35,
+   "or_mh": 1.74,
+   "ic": [
+    1.29,
+    2.34
+   ],
+   "lift_ig": 1.39,
+   "lift_tt": 1.49,
+   "lift_yt": 1.15,
+   "lift_desc": 1.62,
+   "lift_val": 1.17,
+   "premiados": {
+    "roteiros": 87,
+    "pct_topo": 0.22,
+    "or_mh": 0.75
+   },
+   "or_desc_val": [
+    2.55,
+    1.36
+   ],
+   "volume_desc_val": [
+    "2,5%",
+    "3,8%"
+   ]
+  },
+  "escopo": "global nos clientes de inovação: Rafael Rodrigues 1,86; Marcio Grazino 1,75; Cadu Neiva 1,27",
+  "exemplos": [
+   "Marcio Grazino, Instagram, coef 124,35: Três estudantes de escola pública no interior da Bahia fizeram o que a indústria do chocolate não fez em 50 anos.",
+   "Rafael Rodrigues, Instagram, coef 438,39: Enquanto as gigantes gastam bilhões para criar tecnologia, esse jovem de 20 anos criou uma concorrente da Apple usando restos de lixo.",
+   "Contraexemplo, Rafael Rodrigues, YouTube, coef 0,03: Essas seis garotas do Maranhão provaram que o futuro da tecnologia é feminino, tem sotaque nordestino e se constrói com peças de LEGO."
+  ],
+  "instrucao": "Na pauta de estudante, o payoff é o problema caro resolvido com lixo ou centavos, contra uma gigante que não resolveu. O prêmio entra como prova no corpo, nunca como premissa. Fraco: 'Meninas do Maranhão venceram um enorme torneio de robótica.' Forte: 'Três estudantes de escola pública no interior da Bahia fizeram o que a indústria do chocolate não fez em 50 anos.' Dose o volume: o território saturou de um trimestre para o outro.",
+  "confianca": "media"
+ },
+ {
+  "id": "EMB-T4",
+  "parte": "tema",
+  "achado": "No tributário, imposto por trás da fortuna de um famoso funciona; empresa contra o governo, não.",
+  "numeros": {
+   "roteiros": 68,
+   "pct_topo": 0.41,
+   "or_mh": 3.99,
+   "ic": [
+    1.92,
+    8.29
+   ],
+   "lift_ig": 1.16,
+   "lift_tt": 3.1,
+   "lift_yt": 3.87,
+   "lift_desc": 2.03,
+   "lift_val": 1.41,
+   "ricardo_or": 1.92,
+   "dilson_lift": 3.25,
+   "dilson_roteiros": 5,
+   "empresa_x_governo_dilson_or": 0.4
+  },
+  "escopo": "do cliente: Ricardo Schumacher e Dilson Peres; mais forte no TikTok e no YouTube",
+  "exemplos": [
+   "Dilson Peres, YouTube, coef 237,78: O Silvio Santos fez uma jogada genial que evitou qualquer dor de cabeça para sua família.",
+   "Ricardo Schumacher, TikTok, coef 133,54: O Ratinho agora virou Paraguaio! Só que tem um detalhe nessa história que pode custar caro pra quem tá pensando em fazer o mesmo.",
+   "Contraexemplo, Dilson Peres, YouTube, coef 0,06: Foi assim que a Netflix descobriu como não pagar impostos por ANOS."
+  ],
+  "instrucao": "No tributário, o personagem é o famoso (Silvio Santos, Luciano Huck, Ratinho), não a empresa. Fraco: 'Foi assim que a Netflix descobriu como não pagar impostos por ANOS.' Forte: 'Esse homem recebe em torno de 4 milhões por mês da Globo e, mesmo assim, o salário não explica nem metade da fortuna dele.'",
+  "confianca": "media"
+ },
+ {
+  "id": "EMB-T5",
+  "parte": "tema",
+  "achado": "Para Lincoln Fracari, a China precisa estar tirando algo de alguém (emprego, mercado); curiosidade chinesa sem ameaça não funciona.",
+  "numeros": {
+   "roteiros": 69,
+   "pct_topo": 0.33,
+   "or_mh": 1.66,
+   "ic": [
+    1.12,
+    2.47
+   ],
+   "curiosidades_chinesas_or": 0.73
+  },
+  "escopo": "do cliente Lincoln Fracari",
+  "exemplos": [
+   "Lincoln Fracari, Instagram, coef 28,96: A China está acabando com os personal trainers e destruindo um mercado de 45 bilhões de dólares.",
+   "Contraexemplo, Lincoln Fracari, YouTube, coef 0,37: A China criou um animal de estimação imortal e ele pode ser seu."
+  ],
+  "instrucao": "Para Lincoln, a China tem que estar tirando algo de alguém: emprego, mercado, liderança. Curiosidade exótica sozinha não basta.",
+  "confianca": "media"
+ },
+ {
+  "id": "EMB-T6",
+  "parte": "tema",
+  "achado": "Para Marcelo Germano, a indústria de Santa Catarina nascida no quintal funciona; o genérico 'de vendedor humilde a império' não.",
+  "numeros": {
+   "roteiros": 57,
+   "pct_topo": 0.36,
+   "or_mh": 1.86,
+   "ic": [
+    1.13,
+    3.07
+   ],
+   "or_cliente": 2.13,
+   "generico_or_cliente": 0.94
+  },
+  "escopo": "do cliente Marcelo Germano",
+  "exemplos": [
+   "Marcelo Germano, TikTok, coef 39,13: Esses dois vizinhos passaram 70 anos tentando destruir um ao outro, mas acabaram se casando.",
+   "Marcelo Germano, Instagram, coef 22,87: Essa mãe viúva pegou alguns pedaços de pano para não deixar os filhos passarem fome... e acabou dominando o mercado de travesseiros da América Latina."
+  ],
+  "instrucao": "Para Marcelo Germano, a origem regional concreta (Santa Catarina, quintal, vizinhos rivais) é o tema; a jornada genérica de pobre a rico não sustenta.",
+  "confianca": "media"
+ },
+ {
+  "id": "EMB-T7",
+  "parte": "tema",
+  "achado": "Fundador que vendeu a empresa por milhões é o pior território da base, em todos os clientes.",
+  "numeros": {
+   "roteiros": 105,
+   "pct_topo": 0.13,
+   "or_mh": 0.43,
+   "ic": [
+    0.3,
+    0.62
+   ],
+   "lift_ig": 0.53,
+   "lift_tt": 0.48,
+   "lift_yt": 0.56,
+   "lift_desc": 0.54,
+   "lift_val": 0.5,
+   "clientes_or_menor_1": "8 de 8",
+   "k60_or": 0.52,
+   "vendedor_humilde_imperio_or": 0.76
+  },
+  "escopo": "global, evitar: Rafael Rodrigues 0,23; Thiago Franco 0,26; Marcio Grazino 0,26; João Paulo Albuquerque 0,33; Fernando Pereira 0,41; Marcelo Germano 0,43; Rodrigo Waughan 0,82",
+  "exemplos": [
+   "Rodrigo Waughan, YouTube, coef 0,01: Esse homem pagou plano de saúde para quem limpava chão e ficou bilionário por causa disso.",
+   "Thiago Franco, YouTube, coef 0,14: Esse ex-funcionário do Bill Gates criou uma máquina de imprimir dinheiro dentro da empresa",
+   "Exceção, Rodrigo Waughan, TikTok, coef 54,61: Esse garoto de 17 anos registrou um site com o próprio nome, mas acabou fazendo a Microsoft entrar em pânico."
+  ],
+  "instrucao": "Evite como premissa a história do fundador que vendeu a empresa por X milhões. Se o cliente pedir, troque a biografia pela briga com uma gigante em pânico (hipótese, não medida).",
+  "confianca": "alta"
+ },
+ {
+  "id": "EMB-T8",
+  "parte": "tema",
+  "achado": "Biografia de marca global ('o segredo da Starbucks, da Red Bull, da Oakley') falha em quase todos os clientes.",
+  "numeros": {
+   "roteiros": 144,
+   "pct_topo": 0.19,
+   "or_mh": 0.61,
+   "ic": [
+    0.45,
+    0.84
+   ],
+   "lift_ig": 0.79,
+   "lift_tt": 0.58,
+   "lift_yt": 0.8,
+   "lift_desc": 0.77,
+   "lift_val": 0.7,
+   "clientes_or_menor_1": "6 de 7"
+  },
+  "escopo": "global, evitar: Renato Mendes 0,47; Pedro Elero 0,49; Thiago Franco 0,55; Renato Torres 0,61; Manoel Victor 0,82",
+  "exemplos": [
+   "Marcio Grazino, YouTube, coef 0,01: O segredo que faz o mundo inteiro querer ir a Paris não é a Torre Eiffel, mas sim uma estratégia secreta que quase ninguém conhece",
+   "Manoel Victor, YouTube, coef 0,02: Nos anos 2000, a Oakley não era apenas uma marca de óculos, mas sim um fenômeno cultural (...)",
+   "Exceção, Pedro Elero, YouTube, coef 1.237,7: Essa marca de tênis manda uma faca de verdade dentro da caixa. E pede para você destruir o produto que acabou de comprar."
+  ],
+  "instrucao": "Evite o segredo de uma marca global como premissa. Se o tema for marca, use o fato bizarro concreto ou a marca brasileira humilhando a gringa. Fraco: 'Oakley.' Forte: 'O tênis indiano que vem com uma faca.'",
+  "confianca": "alta"
+ },
+ {
+  "id": "EMB-T9",
+  "parte": "tema",
+  "achado": "Marca feia ou falida que virou desejo (Crocs, Harley, Stanley) falha.",
+  "numeros": {
+   "roteiros": 48,
+   "pct_topo": 0.11,
+   "or_mh": 0.36,
+   "ic": [
+    0.19,
+    0.69
+   ],
+   "clientes_or_menor_1": "4 de 4",
+   "renato_torres_or": 0.14
+  },
+  "escopo": "global, evitar (clientes de marcas e cases)",
+  "exemplos": [],
+  "instrucao": "Evite a premissa 'a marca feia que virou desejo'.",
+  "confianca": "media"
+ },
+ {
+  "id": "EMB-T10",
+  "parte": "tema",
+  "achado": "A série Pré-MBA (ChatGPT, novas IAs, empregos) rende abaixo da base e piorou com o tempo.",
+  "numeros": {
+   "roteiros": 208,
+   "pct_topo": 0.21,
+   "or_mh": 0.66,
+   "ic": [
+    0.5,
+    0.88
+   ],
+   "lift_desc": 0.93,
+   "lift_val": 0.55,
+   "volume": [
+    "10%",
+    "5%"
+   ],
+   "or_desc_val": [
+    0.84,
+    0.36
+   ]
+  },
+  "escopo": "Izabela Anholett e satélites; global, evitar (3 de 4 clientes)",
+  "exemplos": [
+   "Izabela Anholett: 'Pré-MBA: O fim do trabalho como conhecemos' (pq médio 0,10) e depois 'Pré-MBA: Quem erra nisso fica humilhantemente atrasado' (0,06)."
+  ],
+  "instrucao": "Não insista no formato Pré-MBA genérico sobre IA e empregos; ele piora a cada trimestre.",
+  "confianca": "alta"
+ },
+ {
+  "id": "EMB-T11",
+  "parte": "tema",
+  "achado": "Territórios a evitar dentro de um cliente: empresa que venceu o governo no imposto (Dilson Peres), chocolates e doces que viraram fortuna (Rodrigo Waughan), dívida pública e governo empobrecendo o brasileiro (Fernando Pereira, Marcos Pelozato).",
+  "numeros": {
+   "dilson_empresa_governo_or": 0.4,
+   "dilson_roteiros": 79,
+   "chocolates_or": 0.47,
+   "divida_publica_or": 0.6,
+   "divida_publica_ic": [
+    0.38,
+    0.95
+   ]
+  },
+  "escopo": "do cliente",
+  "exemplos": [
+   "Dilson Peres, YouTube, coef 0,06: Foi assim que a Netflix descobriu como não pagar impostos por ANOS."
+  ],
+  "instrucao": "Dilson Peres: troque empresa contra o governo por famoso contra o imposto. Fernando Pereira: dívida pública como premissa rende abaixo da média da própria conta.",
+  "confianca": "media"
+ },
+ {
+  "id": "EMB-R1",
+  "parte": "tema",
+  "achado": "Repetir o tema de um acerto do próprio cliente ajuda; repetir o tema de um fracasso atrapalha. A novidade em si não ajuda nem atrapalha.",
+  "numeros": {
+   "acerto": {
+    "roteiros": 457,
+    "pct_topo": 0.31,
+    "or_mh": 1.41,
+    "ic": [
+     1.21,
+     1.63
+    ],
+    "com_territorio": 1.24,
+    "lift_ig": 1.29,
+    "lift_tt": 1.25,
+    "lift_yt": 0.99
+   },
+   "fraco": {
+    "roteiros": 260,
+    "pct_topo": 0.2,
+    "or_mh": 0.69,
+    "ic": [
+     0.56,
+     0.86
+    ],
+    "com_territorio": 0.74
+   },
+   "robustez_mesma_rede": {
+    "acerto_or": 1.56,
+    "fraco_or": 0.68
+   },
+   "novidade_faixas_or": [
+    0.91,
+    1.15
+   ],
+   "quase_copia_087": {
+    "roteiros": 160,
+    "or_mh": 1.38
+   }
+  },
+  "escopo": "global, Instagram e TikTok; no YouTube não muda",
+  "exemplos": [
+   "Izabela Anholett: 'Apple em guerra com Mark Zuckerberg' (pq 0,89) e 132 dias depois 'Mark Zuckerberg em guerra com a Apple' (0,97).",
+   "Izabela Anholett: 'Pré-MBA: O fim do trabalho como conhecemos' (0,10) e depois 'Pré-MBA: Quem erra nisso fica humilhantemente atrasado' (0,06)."
+  ],
+  "instrucao": "Tema que deu certo no cliente volta; tema que deu fraco não volta. Roteiro inédito para o cliente não rende mais por ser inédito.",
+  "confianca": "alta"
+ },
+ {
+  "id": "EMB-R2",
+  "parte": "tema",
+  "achado": "A melhor pauta é a primeira continuação de um acerto feita em até 21 dias; da segunda repetição em diante, só volte ao tema depois de 90 dias.",
+  "numeros": {
+   "primeira_rep_ate_21d": {
+    "roteiros": 32,
+    "pct_topo": 0.47,
+    "or_mh": 2.62,
+    "ic": [
+     1.67,
+     4.1
+    ],
+    "lift_desc": 2.35,
+    "lift_val": 1.36
+   },
+   "primeira_rep_21_90d": {
+    "roteiros": 58,
+    "pct_topo": 0.31,
+    "or_mh": 1.28
+   },
+   "segunda_mais_21_90d": {
+    "roteiros": 252,
+    "pct_topo": 0.27,
+    "or_mh": 1.07
+   },
+   "segunda_mais_90d": {
+    "roteiros": 78,
+    "pct_topo": 0.37,
+    "or_mh": 1.73,
+    "ic": [
+     1.27,
+     2.36
+    ]
+   }
+  },
+  "escopo": "global, Instagram e TikTok",
+  "exemplos": [
+   "Pedro Elero: 'A dívida insana do Palmeiras' (0,87) e 8 dias depois 'Foi patrocinar o time do marido, virou presidente' (0,92).",
+   "Thiago Franco: 'O Brás MORREU' (0,91) e 118 dias depois 'Estão matando as lojas de esquina!' (1,00).",
+   "Contraexemplo, Lincoln Fracari: 'Na China, a IA declarou guerra aos atores' (0,81) e 37 dias depois 'A IA está destruindo os atores na China' (0,06)."
+  ],
+  "instrucao": "Acertou, faça a continuação em até 21 dias (mesmo território, fato novo). Da segunda repetição em diante, espere 90 dias; entre 3 semanas e 3 meses, repetir não ganha nada.",
+  "confianca": "media"
+ },
+ {
+  "id": "EMB-R3",
+  "parte": "tema",
+  "achado": "Tema que já falhou em outro cliente da casa tende a falhar de novo; o acerto de outro cliente quase não transfere.",
+  "numeros": {
+   "fraco_outro": {
+    "roteiros": 698,
+    "pct_topo": 0.22,
+    "or_mh": 0.77,
+    "ic": [
+     0.67,
+     0.88
+    ],
+    "com_territorio": 0.77
+   },
+   "acerto_outro": {
+    "roteiros": 805,
+    "pct_topo": 0.28,
+    "or_mh": 1.17,
+    "ic": [
+     1.03,
+     1.33
+    ],
+    "com_territorio": 1.11,
+    "com_territorio_ic": [
+     0.97,
+     1.28
+    ]
+   }
+  },
+  "escopo": "global (todas as contas da casa)",
+  "exemplos": [],
+  "instrucao": "Antes de pautar, procure o tema nos outros clientes da casa: se já deu fraco lá, descarte; se deu certo lá, não conte com isso.",
+  "confianca": "media"
+ },
+ {
+  "id": "EMB-P1",
+  "parte": "plataforma",
+  "achado": "No YouTube Shorts, a sequência de acerto não existe: repetir tema de acerto ou de fracasso não muda o resultado.",
+  "numeros": {
+   "lift_yt_acerto": 0.99,
+   "lift_yt_fraco": 1,
+   "lift_ig_acerto": 1.29,
+   "lift_tt_acerto": 1.25
+  },
+  "escopo": "YouTube",
+  "exemplos": [],
+  "instrucao": "No YouTube, a regra de repetição não vale; lá a pauta é livre.",
+  "confianca": "media"
+ },
+ {
+  "id": "EMB-M1",
+  "parte": "tema",
+  "achado": "Modelagem é regra em Tecnologia e IA e deixou de pagar fora de Tecnologia a partir de julho. O ganho é de execução (retenção), não de tema.",
+  "numeros": {
+   "geral_or": 1.23,
+   "geral_ic": [
+    1.09,
+    1.4
+   ],
+   "tecnologia_or": 1.64,
+   "tecnologia_desc": 1.49,
+   "tecnologia_val": 1.9,
+   "fora_tec_desc": 1.48,
+   "fora_tec_val": 0.74,
+   "fora_tec_val_sem_4_clientes": 1.06,
+   "por_trimestre": {
+    "Q1": 1.6,
+    "Q2": 1.52,
+    "Q3": 1.03
+   },
+   "com_territorio_k30": 1.35,
+   "com_territorio_k60": 1.42,
+   "ret_final_or": 1.52,
+   "compart_or": 0.99,
+   "clientes_or_maior_1": "14 de 26",
+   "izabela_or": 2.95,
+   "negativos": {
+    "Pedro Elero": 0.3,
+    "Renato Mendes": 0.36,
+    "Thainá Iansen": 0.2,
+    "Túlio Lichenstein": 0.33
+   }
+  },
+  "escopo": "Tecnologia, IA e inovação (global no nicho); fora dele neutro ou negativo",
+  "exemplos": [
+   "Thiago Bisewski, YouTube, coef 713,4, modelado de link do Instagram: A China acabou de humilhar o resto do mundo mais uma vez e agora foi dando uma facada no coração da indústria automobilística.",
+   "Izabela Anholett, YouTube, coef 340,3, link do Instagram: A China agora está destruindo os computadores!",
+   "Contraexemplo, Thainá Iansen, YouTube, coef 0,09, link do Instagram: A Beyoncé te enganou e o segredo do império dela não é só talento."
+  ],
+  "instrucao": "Em Tecnologia e IA, modele: parta de um vídeo que já funcionou no Instagram e copie a forma (ordem das revelações, ritmo, onde cai a virada), não só o assunto. Fora de Tecnologia, a modelagem não é atalho e nunca deve ser regra para toda a pauta de um cliente.",
+  "confianca": "alta"
+ },
+ {
+  "id": "EMB-M2",
+  "parte": "plataforma",
+  "achado": "Link de modelagem do Instagram funciona (sobretudo postado no YouTube e no Instagram); link do TikTok não se separa do resto.",
+  "numeros": {
+   "link_instagram_or": 1.24,
+   "link_instagram_ic": [
+    1.08,
+    1.41
+   ],
+   "link_tiktok_or": 1.11,
+   "link_tiktok_ic": [
+    0.93,
+    1.34
+   ],
+   "ig_para_yt": 1.4,
+   "ig_para_ig": 1.32,
+   "ig_para_tt": 1.01
+  },
+  "escopo": "global",
+  "exemplos": [],
+  "instrucao": "Prefira modelar vídeos que funcionaram no Instagram; vídeo de origem do TikTok não garante nada.",
+  "confianca": "media"
+ },
+ {
+  "id": "EMB-S1",
+  "parte": "tema",
+  "achado": "Território que vira linha de produção satura em um trimestre: estudante inventor e criança premiada perderam a vantagem quando o volume subiu cerca de 50%; carro chinês dobrou de volume e não saturou.",
+  "numeros": {
+   "estudantes_lixo": {
+    "volume": [
+     "2,5%",
+     "3,8%"
+    ],
+    "or": [
+     2.55,
+     1.36
+    ]
+   },
+   "criancas_premiadas": {
+    "volume": [
+     "1,7%",
+     "2,7%"
+    ],
+    "or": [
+     2.14,
+     1.04
+    ]
+   },
+   "fortunas_famosos": {
+    "volume": [
+     "1,1%",
+     "3,4%"
+    ],
+    "or": [
+     6.56,
+     3.14
+    ]
+   },
+   "carros_chineses": {
+    "volume": [
+     "1,6%",
+     "3,8%"
+    ],
+    "or": [
+     2.16,
+     2.69
+    ]
+   },
+   "clubes": {
+    "or": [
+     2.7,
+     3.83
+    ]
+   }
+  },
+  "escopo": "global",
+  "exemplos": [],
+  "instrucao": "Dê teto de volume a cada território forte e troque o ângulo antes de dobrar a produção; reavalie a lista de territórios a cada trimestre.",
+  "confianca": "media"
+ }
+]

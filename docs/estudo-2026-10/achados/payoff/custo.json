@@ -1,0 +1,64 @@
+{
+  "modelo": "claude-sonnet-5-5",
+  "precos_usd_por_milhao": {
+    "in": 2,
+    "cw": 2.5,
+    "cr": 0.2,
+    "out": 10
+  },
+  "rodadas": {
+    "piloto_low": {
+      "modo": "low",
+      "chamadas": 2,
+      "input_tokens": 13532,
+      "cache_write_tokens": 5471,
+      "cache_read_tokens": 5471,
+      "output_tokens": 5732,
+      "recusas": 0,
+      "fallbacks": 0,
+      "custo_usd": 0.0992
+    },
+    "piloto_off": {
+      "modo": "off",
+      "chamadas": 2,
+      "input_tokens": 13532,
+      "cache_write_tokens": 5470,
+      "cache_read_tokens": 5470,
+      "output_tokens": 5920,
+      "recusas": 0,
+      "fallbacks": 0,
+      "custo_usd": 0.101
+    },
+    "final": {
+      "modo": "low",
+      "chamadas": 157,
+      "input_tokens": 963311,
+      "cache_write_tokens": 5683,
+      "cache_read_tokens": 886548,
+      "output_tokens": 406517,
+      "recusas": 0,
+      "fallbacks": 0,
+      "custo_usd": 6.1833
+    }
+  },
+  "total_usd": 6.3835,
+  "projecao_rodada_final": {
+    "base": "piloto_low (40 roteiros, esforço baixo)",
+    "usd_por_roteiro": 0.00211,
+    "roteiros": 2809,
+    "chamadas": 157,
+    "cache_leituras_usd": 0.173,
+    "usd_previsto": 6.15,
+    "decisao": "Sonnet 5.5 cabe no teto de US$ 10; Haiku não foi necessário"
+  },
+  "totais": {
+    "chamadas": 161,
+    "input_tokens": 990375,
+    "cache_write_tokens": 16624,
+    "cache_read_tokens": 897489,
+    "output_tokens": 418169,
+    "custo_usd": 6.3835
+  },
+  "teto_usd": 10,
+  "nota": "Custo calculado pelos tokens devolvidos pela API (usage) com os preços de lista do Sonnet 5.5; 0 recusas, 0 fallbacks, 0 falhas."
+}

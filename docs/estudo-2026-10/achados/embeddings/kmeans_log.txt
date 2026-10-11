@@ -1,0 +1,917 @@
+k=30 semente=1 coesão=0.8525
+k=30 semente=2 coesão=0.8530
+k=30 semente=3 coesão=0.8532
+k=30 semente=4 coesão=0.8536
+k=30 semente=5 coesão=0.8530
+k=30 semente=6 coesão=0.8532
+
+=== k=30: semente 4, coesão 0.8536 ===
+
+[30:0] n=118 clientes=14 | Fernando Pereira 75, Túlio Lichenstein 20, Marcos Pelozato 10
+  - O BRASILEIRO PERDEU DOIS NATAIS SEM PERCEBER
+  - O governo dobrou uma dívida que o Brasil desconhece
+  - O governo te endividou para te salvar depois
+  - Quem realmente empresta os trilhões que o Brasil deve
+  - O Brasil cresce, mas a dívida cresce mais
+  - O governo acabou de deixar todo mundo mais pobre?
+  - O próximo presidente já entra devendo
+  - A medida desesperada de Lula para vencer a eleição!
+
+[30:1] n=208 clientes=15 | Izabela Anholett 85, João Felipe Marques 43, Manoel Victor 34
+  - Pré-MBA: Péssima notícia para quem usa ChatGPT
+  - Pré-MBA: 99% usam o ChatGPT errado. Aqui está o truque certo
+  - Pré-MBA: A Nova IA que faz robôs trabalharem pra você
+  - Pré-MBA: Você não sabe o que é IA de verdade
+  - Pré-MBA: Famílias milionárias estão se formando agora
+  - Pré-MBA: NOVA PESQUISA REVELA AS PROFISSÕES AMEAÇADAS PELA IA
+  - Pré-MBA: O Google destruiu o ChatGPT
+  - Anthropic MATOU centenas de startups com isso
+
+[30:2] n=85 clientes=12 | Franklin Tomich 56, Túlio Lichenstein 9, Fernando Pereira 6
+  - Como a XP construiu um império economizando tempo
+  - Duas rivais investiram numa empresa quebrada… E deu certo!
+  - O erro que quase matou a maior telefônica do Brasil
+  - O "não" que rendeu R$ 1,8 bilhão em 12 dias.
+  - Um erro que criou uma das maiores empresas do Brasil
+  - O segredo por trás do maior império do varejo brasileiro
+  - Como o maior plano de saúde do Brasil afundou.
+  - O medo fez dois inimigos criarem um império juntos.
+
+[30:3] n=136 clientes=4 | Izabela Anholett 132, Thiago Bisewski 2, Patrick Diorio 1
+  - IA do Japão vai hackear a sua mente.
+  - IA que substitui humanos no telefone
+  - O Google acaba de MUDAR a escola PARA SEMPRE
+  - COMO ENCONTRAR QUALQUER FERRAMENTA DE IA
+  - China em guerra com o Mark Zuckerberg.
+  - Pré-MBA: A China está alugando rostos humanos para IA
+  - Sorria, a IA está te filmando!
+  - Como a China está CLONANDO as IAs e deixando mais baratas!
+
+[30:4] n=80 clientes=18 | Leonardo Cirino 14, Lincoln Fracari 13, Leonardo Nogueira 11
+  - O carro chinês que derrubou as concorrentes no Brasil.
+  - A briga dos chineses que mudou o Brasil para sempre
+  - A logo é deles. O carro não é mais.
+  - A VOLKSWAGEN PAGOU PRA SE TORNAR CHINESA
+  - Como a China humilhou as montadoras americanas e europeias?
+  - A chinesa que tá dominando o Brasil
+  - O próximo passo da BYD vai mudar a história dos carros para sempre
+  - A chinesa que está dominando os carros no Brasil
+
+[30:5] n=61 clientes=12 | Franklin Tomich 18, Marcelo Germano 11, João Paulo Albuquerque 7
+  - Como um casal quebrado criou um império de bilhões.
+  - A venda da Kopenhagen deixou os AMERICANOS mais ricos…
+  - Uma gigante pagou 1,5 bilhão por um biscoito carioca.
+  - 21 anos sem controlar a empresa que comprou.
+  - A sorveteria que cobra mais caro e tem fila na porta.
+  - Como uma dívida criou o café nº 1 do Brasil.
+  - O chocolate de verdade que conquistou o Brasil.
+  - O BRASIL ESTÁ EXPULSANDO AS GIGANTES AMERICANAS
+
+[30:6] n=82 clientes=6 | Lincoln Fracari 73, Fernando Pereira 4, Patrick Diorio 2
+  - Você depende da China pra ver esse vídeo.
+  - É o fim da escola na China?
+  - Como os Chineses estão curtindo shows DEITADOS
+  - O Piauí está virando o ativo mais caro do mercado global.
+  - China aprovou o plano que vai afetar a comida brasileira
+  - A China baniu o “tigrinho”
+  - Tática chinesa para vender mais
+  - China proibiu falar mal do sexo oposto
+
+[30:7] n=41 clientes=20 | Renato Mendes 7, Rodrigo Waughan 5, João Paulo Albuquerque 5
+  - O truque da Apple para vender mais, entregando menos.
+  - O NOVO IPHONE PODE CHEGAR A R$ 30 MIL
+  - A Apple copiou o mercado de carros para nunca mais perder um cliente
+  - Apple
+  - O Nokia da Barbie que vai fazer você ignorar o novo Iphone
+  - O segredo da Apple para triunfar
+  - A Apple te enganou falando que o foco dela eram os celulares
+  - O erro que custou à Apple $113 milhões
+
+[30:8] n=92 clientes=3 | Rodrigo Waughan 90, Pedro Elero 1, Marcio Grazino 1
+  - Esse queijo envergonhou marcas que gastam milhões.
+  - O gelo que vale milhões!
+  - A jogada de MKT da Milka pra vender mais.
+  - O bar que virou Bovespa!
+  - Semijoias ASMR
+  - O segredo da Netflix para vencer o TikTok
+  - ELES FAZEM FILAS DE 2 HORAS POR CAUSA DE UM BISCOITO.
+  - A sacada da Heinz para vender milhões
+
+[30:9] n=100 clientes=4 | Ricardo Schumacher 92, Marcos Pelozato 4, Dilson Peres 3
+  - O Brasil vai ter o maior imposto do planeta
+  - A cobertura que pode virar dor de cabeça
+  - Eles enfrentaram o mesmo problema e pagaram milhões.
+  - A fortuna do Pablo Marçal esconde um segredo
+  - A jogada da Boca Rosa que ninguém conta
+  - A herança do Lula revela um recado
+  - O maior vencedor da Mega-Sena é o Governo
+  - Uber vai virar coisa de rico.
+
+[30:10] n=118 clientes=4 | Dilson Peres 103, Marcos Pelozato 10, Fernando Pereira 4
+  - O PIX de R$ 346 Bilhões
+  - R$2 trilhões tirados do seu bolso sem você perceber
+  - A Marisa enfrentou o governo e venceu o sistema
+  - 2 bilhões para cobrar imposto automático?!
+  - Como a Ambev venceu o sistema duas vezes
+  - O segredo pra ganhar dinheiro do governo
+  - A Magazine Luiza enfrentou o governo e saiu com R$ 1 bilhão na conta
+  - As novelas estão mentindo pra você.
+
+[30:11] n=75 clientes=13 | Rafael Rodrigues 19, Café com Ferri 18, Patrick Diorio 10
+  - O erro infantil que faz as pessoas pararem de te ouvir
+  - Grandes líderes respondem apenas o essencial.
+  - As cinco frases que podem destruir a sua comunicação
+  - A comunicação muda tudo!
+  - Faça isso quando precisar conversar com alguém que você não gosta
+  - O erro silencioso que faz muito brasileiro ficar para trás
+  - O segredo insano que faz o FBI ser extremamente confiável
+  - Esse é o maior erro que você pode cometer quando você quer vender algo
+
+[30:12] n=55 clientes=11 | Thainá Iansen 22, Thiago Franco 9, Marcio Grazino 5
+  - A cancelada mais influente do Brasil
+  - De um cabo de vassoura a R$ 400 milhões
+  - De uma feirinha de rua para um império bilionário
+  - Ela pegou uns pedaços de tecido e transformou num império
+  - Como o “bom dia” nos stories virou um império milionário
+  - De banca de feira à 2 bilhões de faturamento
+  - Ela largou um negócio de R$100 milhões por uma base?
+  - Seu pai a educou pra falhar, se tornou bilionária
+
+[30:13] n=83 clientes=15 | Pedro Elero 26, Rafael Rodrigues 15, Thiago Franco 7
+  - O Neymar se aposentou?!
+  - A Seleção vale bilhões, mas não pelo que joga
+  - A CBF usou o Neymar para reacender o Brasil
+  - A estratégia secreta do contrato mais valioso da Copa
+  - A guerra bilionária Nike vs Adidas na Copa.
+  - A seleção não fez propaganda, mas as vendas explodiram.
+  - A Copa mais triste da história
+  - O terapeuta da Seleção Brasileira é um chinelo (literalmente).
+
+[30:14] n=83 clientes=12 | Patrick Diorio 32, João Felipe Marques 16, Thiago Bisewski 15
+  - China acaba de fazer máquinas obedecerem ao pensamento
+  - Esse robô chinês vai tranquilizar a sua rotina
+  - A OpenAI quer colocar um robô na sua casa
+  - Esse robô chinês já trabalha dentro de casas.
+  - Este robô pode redefinir como humanos e máquinas convivem.
+  - O que o Musk disse em Davos que ninguém processou direito.
+  - Plano da China pode mudar a economia mundial novamente.
+  - Ele pode entrar na sua casa enquanto você trabalha
+
+[30:15] n=126 clientes=18 | Marcelo Germano 59, Rodrigo Waughan 14, Marcio Grazino 10
+  - Vendia pirulito aos oito anos, hoje tem duzentas lojas.
+  - De vendedor de revistas e cigarros em SC pra dono de um império milionário.
+  - Como sair das dívidas e se tornar dono de um império
+  - Do fracasso a um império dos cosméticos.
+  - Esse mecânico se tornou um MAGNATA por causa de um pedaço de pano.
+  - De um tanque improvisado no quintal em Santa Catarina pra um negócio bilionário.
+  - Facada no olho criou o supermercado de R$4,5 bilhões
+  - De jogador frustrado a um império de 4 bilhões vendendo pão
+
+[30:16] n=202 clientes=6 | Rafael Rodrigues 137, Marcio Grazino 47, Cadu Neiva 12
+  - Acharam no próprio lixo a resposta que faltava
+  - Três alunos venceram um problema de R$1 milhão.
+  - Esses estudantes erraram 78 vezes até criar isso.
+  - Esses alunos transformaram o lixo da sala de aula em planta
+  - Esses baianos transformaram papel e coco em 200 mil reais
+  - Esses estudantes resolveram um problema que a indústria tenta esconder
+  - Fizeram ciência com panelas e chegaram à USP.
+  - Elas criaram um robô e foram parar no MIT.
+
+[30:17] n=72 clientes=4 | Drielle Castelani 64, Rafael Rodrigues 5, Cadu Neiva 2
+  - O Brasil forma médicos pra salvar. Não pra sobreviver.​﻿​
+  - Foi internado por salvar a vida de mulheres
+  - 75 milhões morreram para isso chegar até você.
+  - O médico que tem mais alcance que a maioria dos influencers
+  - A ironia mais cruel da medicina.
+  - A profissão mais disputada do Brasil virou armadilha
+  - Você paga plano de saúde e não está coberto.​﻿​
+  - O médico que usou o próprio coração como cobaia
+
+[30:18] n=105 clientes=19 | Rafael Rodrigues 21, João Paulo Albuquerque 12, Marcelo Germano 11
+  - O jovem gaúcho que vendeu sua empresa por quase 2 bilhões de reais.
+  - Investiram menos de 5 mil, venderam por 342 milhões.
+  - A XP criou os clientes que os bancos ignoravam.
+  - Da pobreza ao bilhão antes dos 30
+  - O ex-servente de pedreiro que fatura 100 milhões por ano
+  - Ray dalio, investidores lendários
+  - Ele criou uma solução simples e vendeu por milhões.
+  - Eles não sabiam vender e criaram a Hotmart.
+
+[30:19] n=57 clientes=11 | Leonardo Nogueira 32, Manoel Victor 8, Marcio Grazino 6
+  - O carro de US$ 20 milhões feito para não ser vendido
+  - Ferrari
+  - O segredo da volkswagen
+  - A decisão de Henry Ford que chocou o mundo...
+  - Quando o ronco de um V12 encontra a era elétrica.
+  - O opcional que só bilionários conseguem marcar.
+  - BMW
+  - O erro que fez o carro mais desejado do Brasil cair no esquecimento
+
+[30:20] n=57 clientes=9 | Franklin Tomich 41, Marcio Grazino 4, Marcos Pelozato 3
+  - Uma gigante destruiu o chiclete mais amado do Brasil
+  - O que aconteceu com a bicicleta da sua infância
+  - O chocolate que virava cigarro foi vendido em pedaços
+  - O que fez a bicicleta Monark sumir?
+  - A marca que ninguém venceu, mas sumiu mesmo assim
+  - O Ki-Suco sumiu e quase ninguém sabe o motivo
+  - A Colgate pagou us$1 bilhão por uma marca proibida
+  - A revista favorita da sua infância morreu
+
+[30:21] n=89 clientes=9 | Marcos Pelozato 77, Fernando Pereira 3, Túlio Lichenstein 2
+  - A Casas Bahia devia R$ 4 bilhões e sobreviveu.
+  - As marcas que você conhece estão quebrando em silêncio?
+  - O Dia quase afundou com dívida bilionária.
+  - Mais uma gigante ACABA de cair!
+  - O BRASIL ESTÁ SUFOCANDO SUAS MAIORES EMPRESAS
+  - O escândalo que quase acabou com a Americanas
+  - Polishop tinha solução pra tudo, menos para ele mesmo.
+  - Milhares de empresas quebrando, seu casamento é o próximo
+
+[30:22] n=109 clientes=6 | Thiago Franco 104, Lincoln Fracari 1, Marcio Grazino 1
+  - O conselho que está quebrando quem vende online
+  - Mercado Livre perdeu dinheiro e comemorou
+  - A jogada dupla que o Mercado Livre escondeu.
+  - Estão matando as lojas de esquina!
+  - Shopping center agora virou depósito.
+  - TRUMP ATACOU A CHINA E QUEM SANGROU FOI O MERCADO LIVRE
+  - MAGALU CORTOU COMISSÃO PELA METADE PRA ROUBAR VENDEDOR
+  - Amazon e Shopee abriram guerra no mesmo estado.
+
+[30:23] n=96 clientes=12 | Marcio Grazino 49, Cadu Neiva 22, Rafael Rodrigues 14
+  - Nordeste do Brasil humilhou a Europa com essa descoberta
+  - 250 mil reais economizados com água da chuva
+  - Bairro abandonado virou o maior distrito de inovação da América Latina. 
+  - Ela usou uma cafeteira para resolver um desastre ambiental
+  - O Brasil entrou na guerra dos chips.
+  - Oriente Médio foi buscar tecnologia no Nordeste.
+  - Ela passou 20 anos tentando fechar uma ferida
+  - Nordeste virou laboratório do futuro da energia​﻿​
+
+[30:24] n=72 clientes=6 | Fernando Pereira 62, Marcos Pelozato 5, Túlio Lichenstein 2
+  - Governo americano em alerta máximo.
+  - A China escolheu o Brasil pra vencer os EUA
+  - O Brasil controla EUA e China
+  - 40 Dias para o Petróleo Acabar
+  - Irã falou não pro Trump e seu bolso vai sentir .
+  - Brasil em alerta máximo
+  - O GRINGO ESTA DOMINANDO A BOLSA BRASILEIRA
+  - A Guerra Continua, e sua conta começou a subir
+
+[30:25] n=144 clientes=18 | Renato Torres 29, Renato Mendes 23, Pedro Elero 22
+  - Esse cara vale 1,3 bilhão de dólares vendendo roupa de treino
+  - Ela vendeu biscoitinho como se fosse item de luxo.
+  - Ele lucra mais quando você não vai à academia
+  - O sabor TADALA que dominou o Brasil
+  - Patagonia
+  - Faliu em 2001 e faturou 2 bilhões em 2019.
+  - O segredo de 100 bilhões de dólares da Starbucks.
+  - A Red Bull fingiu ter clientes até ter
+
+[30:26] n=24 clientes=5 | Leonardo Martins 20, Fernando Pereira 1, João Felipe Marques 1
+  - O iate japonês que produz o próprio combustível.
+  - A peça escondida que economiza milhões em combustível.
+  - Yamal: o gigante que abre caminho no Ártico.
+  - Em 7 dias, robôs construíram o barco do futuro.
+  - O veleiro de milhões de dólares que nunca navega
+  - Essa máquina faz barcos enfrentarem ondas sem balançar.
+  - Um iate atravessou a Europa sem gastar combustível
+  - As ondas do mar podem alimentar o mundo inteiro
+
+[30:27] n=50 clientes=9 | Cadu Neiva 40, Marcos Pelozato 3, Franklin Tomich 1
+  - De vendedor de garrafas a dono de um império bilionário.
+  - De vendedor de fumo aos 13 anos a milionário
+  - ele recusou 1 bilhão pra crescer sozinho
+  - Ele saiu do sertão sem nada e hoje gera R$ 10,5 bilhões por ano
+  - O segredo dessa bebida cearense que a Coca-Cola não consegue vencer
+  - Trocou cigarro por cuscuz e dominou o nordeste.
+  - Da seca do sertão à um império do LEITE.
+  - O nordestino que construiu um império do zero
+
+[30:28] n=93 clientes=11 | Leonardo Cirino 79, Manoel Victor 4, Túlio Lichenstein 2
+  - O Brasil uniu China e EUA para criar algo insano
+  - A IA não vai te demitir. Ela vai te promover
+  - A China escolheu o Brasil como aliado na maior disputa tecnológica do século
+  - O alimento que você vai comprar amanhã pode ter sido criado por IA hoje
+  - A China está usando IA para dominar o futuro
+  - A IA vai colocar R$31 bilhões no interior de SP
+  - O Brasil será a próxima potência tecnológica do mundo
+  - É por isso que a OpenAI decidiu fincar as suas raízes no Brasil
+
+[30:29] n=96 clientes=3 | Lincoln Fracari 94, Leonardo Nogueira 1, Izabela Anholett 1
+  - A China humilhou o planeta com essas 3 tecnologias.
+  - A polícia Chinesa veio do futuro!
+  - A China começou a dar CPF a robô
+  - O DIA QUE OS ROBÔS COMEÇARAM A SE REPRODUZIR
+  - O plano de 5 anos da China pra liderar a tecnologia do mundo.
+  - A China está trocando os mendigos por robôs
+  - A China construiu um sol artificial que não apaga
+  - A China fez o impossível!
+k=60 semente=1 coesão=0.8601
+k=60 semente=2 coesão=0.8610
+k=60 semente=3 coesão=0.8602
+k=60 semente=4 coesão=0.8605
+k=60 semente=5 coesão=0.8612
+k=60 semente=6 coesão=0.8603
+
+=== k=60: semente 5, coesão 0.8612 ===
+
+[60:0] n=66 clientes=17 | Leonardo Cirino 13, Renato Mendes 11, Leonardo Nogueira 10
+  - O carro chinês que derrubou as concorrentes no Brasil.
+  - A logo é deles. O carro não é mais.
+  - A briga dos chineses que mudou o Brasil para sempre
+  - A VOLKSWAGEN PAGOU PRA SE TORNAR CHINESA
+  - A chinesa que tá dominando o Brasil
+  - A Geely criou a maior ameaça à BYD no Brasil
+  - Essa é definitivamente a maior ameaça a Geely e BYD no Brasil
+  - Como a China humilhou as montadoras americanas e europeias?
+
+[60:1] n=37 clientes=6 | Leonardo Martins 18, Marcio Grazino 14, Cadu Neiva 2
+  - As ondas do mar podem alimentar o mundo inteiro
+  - O iate japonês que produz o próprio combustível.
+  - A peça escondida que economiza milhões em combustível.
+  - Em 7 dias, robôs construíram o barco do futuro.
+  - O veleiro de milhões de dólares que nunca navega
+  - Yamal: o gigante que abre caminho no Ártico.
+  - A China ergueu um prédio de 57 andares em 19 dias.
+  - Por que usaram 1600 toneladas para construir um prédio?!
+
+[60:2] n=32 clientes=12 | Rodrigo Waughan 13, Renato Torres 4, Pedro Elero 3
+  - Expulso de casa, ficou bilionário com doces.
+  - Um dia a empresa ia à falência. No outro até a Lacta copiou
+  - O chocolate de verdade que conquistou o Brasil.
+  - Ficou milionário copiando um vídeo do TikTok.
+  - Como um brasileiro humilhou os chocolates da Europa.
+  - Ele largou TUDO pra vender leite batido e se tornou MILIONÁRIO
+  - O golpe da Milka
+  - A Cacau show já é maior que o McDonald’s.
+
+[60:3] n=51 clientes=16 | Pedro Elero 6, Manoel Victor 6, Rodrigo Waughan 5
+  - O REMÉDIO QUE HUMILHOU A COCA-COLA.
+  - O rival que a Coca-Cola não conseguia vencer
+  - A Coca-Cola te manipulou
+  - A marca brasileira que humilhou a Coca-Cola.
+  - Red Bull
+  - Criou a Coca-Cola, mas morreu achando que tinha fracassado
+  - Coca-cola controla 70% de um mercado rival
+  - O refrigerante Maranhense que assustou a Coca
+
+[60:4] n=31 clientes=7 | Fernando Pereira 13, Marcos Pelozato 10, Túlio Lichenstein 3
+  - Ray dalio, investidores lendários
+  - Eike batista: De bilionário a ruína
+  - O maior campeão da história do BBB FALIU!
+  - Negaram o pedido de socorro e isso a salvou
+  - História de Eike Batista
+  - O que nenhum processo tirou de Eike Batista
+  - Como perder 20 bilhões de dólares em 48 horas
+  - Como o Banco da Rainha da Inglaterra faliu
+
+[60:5] n=43 clientes=11 | Marcos Pelozato 25, Fernando Pereira 3, João Paulo Albuquerque 3
+  - Como a Americanas afundou 77% em um único dia?
+  - Pão de Açúcar: O que ninguém te falou sobre o colapso.
+  - É o fim das empresas do Brasil?
+  - Como a OXXO assustou seus donos
+  - O prejuízo de R$ 3,7 bilhões para os brasileiros
+  - Esse será o FIM da Nestlé?!
+  - 46 bilhões de lucro, 3.535 famílias sem emprego
+  - A multa ficou maior que o imposto
+
+[60:6] n=89 clientes=3 | Dilson Peres 80, Ricardo Schumacher 5, Marcos Pelozato 4
+  - O PIX de R$ 346 Bilhões
+  - Como a Ambev venceu o sistema duas vezes
+  - A "fraude” de 1,7 bilhões que era legal.
+  - A Magazine Luiza enfrentou o governo e saiu com R$ 1 bilhão na conta
+  - A Marisa enfrentou o governo e venceu o sistema
+  - O segredo pra ganhar dinheiro do governo
+  - Como a Uber venceu o sistema
+  - Impostos e Royalties - Nike
+
+[60:7] n=45 clientes=10 | Café com Ferri 18, Rafael Rodrigues 14, Patrick Diorio 4
+  - O erro infantil que faz as pessoas pararem de te ouvir
+  - Grandes líderes respondem apenas o essencial.
+  - As cinco frases que podem destruir a sua comunicação
+  - Faça isso quando precisar conversar com alguém que você não gosta
+  - O erro silencioso que faz muito brasileiro ficar para trás
+  - A comunicação muda tudo!
+  - Quando você não concordar com o que o outro está falando, não diga “discordo”. Faça isso.
+  - Esse é o maior erro que você pode cometer quando você quer vender algo
+
+[60:8] n=67 clientes=11 | Fernando Pereira 47, Marcos Pelozato 6, Túlio Lichenstein 5
+  - O BRASILEIRO PERDEU DOIS NATAIS SEM PERCEBER
+  - O governo te endividou para te salvar depois
+  - Quem realmente empresta os trilhões que o Brasil deve
+  - O governo dobrou uma dívida que o Brasil desconhece
+  - O Brasil cresce, mas a dívida cresce mais
+  - O governo acabou de deixar todo mundo mais pobre?
+  - O segredo que os bancos escondem de você
+  - A desaceleração da economia chegou antes do previsto
+
+[60:9] n=69 clientes=7 | Lincoln Fracari 60, Leonardo Cirino 2, Izabela Anholett 2
+  - A China humilhou o planeta com essas 3 tecnologias.
+  - A polícia Chinesa veio do futuro!
+  - A China começou a dar CPF a robô
+  - O DIA QUE OS ROBÔS COMEÇARAM A SE REPRODUZIR
+  - A China matou os frentistas.
+  - O plano de 5 anos da China pra liderar a tecnologia do mundo.
+  - A China está trocando os mendigos por robôs
+  - Na China, a IA declarou guerra aos atores
+
+[60:10] n=20 clientes=11 | Patrick Diorio 4, Manoel Victor 3, Franklin Tomich 3
+  - A Uber declarou guerra aos PRÓPRIOS motoristas
+  - Elon Musk prevê fim da inteligência humana como conhecemos.
+  - Uber demite milhares enquanto carros começam a dirigir sozinhos
+  - A Uber não quer mais motoristas no seu aplicativo
+  - Uber demitiu em massa e o mercado comemora
+  - Musk vai construir a maior fábrica de chips mundial.
+  - ELON MUSK CONTRATOU UM FUNCIONÁRIO FANTASMA
+  - Elon Musk acredita que a IA ultrapassou a humanidade.
+
+[60:11] n=32 clientes=8 | Fernando Pereira 12, Túlio Lichenstein 6, Rafael Rodrigues 4
+  - O segredo de Buffet para lucrar mais
+  - A FRASE QUE MACHUCA!
+  - Neymar 35 vezes mais pobre que ESSE CARA
+  - Musk paga menos imposto e ganha menos que você
+  - Autor de Pai Rico & Pai Pobre está devendo 6 bilhões
+  - A promessa que movia o Bitcoin acabou!
+  - Buffett
+  - O segredo dos bilionários para criar a próxima geração de CEOs.
+
+[60:12] n=12 clientes=10 | João Paulo Albuquerque 2, Thainá Iansen 2, Pedro Elero 1
+  - A GERAÇÃO Z prefere CELULAR BURRO
+  - O APARELHO ULTRAPASSADO QUE A GERAÇÃO Z MAIS QUER
+  - Estão piorando tecnologias de propósito
+  - A Sony ressuscitou o Walkman e transformou a nostalgia em estratégia de mercado
+  - A invenção proibida de existir.
+  - Kodak
+  - A marca que a Sony enterrou voltou da morte.
+  - A Sony lucrou milhões com ideia nascida em SP.
+
+[60:13] n=89 clientes=5 | Rafael Rodrigues 42, Marcio Grazino 39, Cadu Neiva 6
+  - Por menos de 20 centavos, esses estudantes podem mudar a vida dos agricultores
+  - Acharam no próprio lixo a resposta que faltava
+  - Esses estudantes erraram 78 vezes até criar isso.
+  - Três estudantes resolvem o que filtros caros não resolvem.
+  - Esses estudantes baianos criaram uma solução para um problema que custa bilhões
+  - A adolescente que inovou usando restos de lixo
+  - A solução que a indústria não achou veio do Sertão
+  - Essa cearense resolveu o que muitas indústrias não conseguem
+
+[60:14] n=62 clientes=7 | Marcos Pelozato 51, Fernando Pereira 3, Túlio Lichenstein 2
+  - A Casas Bahia devia R$ 4 bilhões e sobreviveu.
+  - As marcas que você conhece estão quebrando em silêncio?
+  - Mais uma gigante ACABA de cair!
+  - O Dia quase afundou com dívida bilionária.
+  - Polishop tinha solução pra tudo, menos para ele mesmo.
+  - O BRASIL ESTÁ SUFOCANDO SUAS MAIORES EMPRESAS
+  - O maior devedor do Brasil acaba de cair
+  - O escândalo que quase acabou com a Americanas
+
+[60:15] n=87 clientes=8 | Rafael Rodrigues 78, Cadu Neiva 3, Izabela Anholett 1
+  - Três alunos venceram um problema de R$1 milhão.
+  - Esses estudantes brasileiros podem ajudar bilhões
+  - Elas criaram um robô e foram parar no MIT.
+  - O Rio virou referência de educação para o país inteiro
+  - Ele venceu o calor onde a NASA gasta milhões
+  - Paraenses vencem mundial de robótica dentro da China
+  - A peça que esse estudante criou salva a coluna.
+  - O projeto que mudou a vida de centenas de alunos cearenses
+
+[60:16] n=53 clientes=8 | Izabela Anholett 13, Leonardo Cirino 11, Patrick Diorio 8
+  - Esse robô chinês vai tranquilizar a sua rotina
+  - Assustador: robôs humanóides vistos circulando na China.
+  - A China decidiu mudar as relações humanas para sempre
+  - ROBÔS ACESSÍVEIS LIBERADOS PRA TODO MUNDO (O Pesadelo do Elon Musk chegou no AliExpress)
+  - Não é IA: China criou robô “transformer”
+  - A China criou uma profissão para te substituir
+  - A China está substituindo policiais humanos.
+  - O “namorado” robô chegou na China.
+
+[60:17] n=20 clientes=6 | Rodrigo Waughan 13, Manoel Victor 3, Marcos Pelozato 1
+  - O McDonald’s hackeou o cérebro humano.
+  - Burger King usou o McDonald’s como arma contra ele
+  - Como uma pizzaria quase falida bateu Apple e Amazon.
+  - O hambúrguer que queimou 300 milhões do McDonald's
+  - O Fast food brasileiro que o McDonald’s nunca conseguiu matar​﻿​
+  - Single Burger
+  - O dia que o Mc'Donalds quase quebrou
+  - O Subway declarou guerra ao McDonald’s e KFC
+
+[60:18] n=9 clientes=7 | Franklin Tomich 3, Thiago Franco 1, Marcos Pelozato 1
+  - O Ki-Suco sumiu e quase ninguém sabe o motivo
+  - Tylenol
+  - A Ki-suco faliu?!
+  - A empresa do Band-Aid se dividiu e ficou mais rica
+  - A bala que sumiu no mês em que foi vendida
+  - A marca que pagou para não ser vista
+  - O coelho das pilhas foi roubado pela concorrência
+  - Nova York provou o que está matando sua empresa.
+
+[60:19] n=53 clientes=12 | Leonardo Cirino 20, Izabela Anholett 10, Patrick Diorio 6
+  - A China escolheu o Brasil como aliado na maior disputa tecnológica do século
+  - O Brasil uniu China e EUA para criar algo insano
+  - ChatGPT, Gemini e Claude em GUERRA com a China
+  - Alerta: O Brasil pode ficar proibido de usar IA
+  - É por isso que a OpenAI decidiu fincar as suas raízes no Brasil
+  - A China está destruindo IA’s americanas
+  - A maior empresa da China chegou ao Brasil
+  - O Brasil ignorou os EUA e se aliou a China
+
+[60:20] n=55 clientes=10 | Leonardo Nogueira 35, Manoel Victor 5, Marcio Grazino 4
+  - O carro de US$ 20 milhões feito para não ser vendido
+  - Ferrari
+  - Quando o ronco de um V12 encontra a era elétrica.
+  - O opcional que só bilionários conseguem marcar.
+  - O erro que fez o carro mais desejado do Brasil cair no esquecimento
+  - A decisão de Henry Ford que chocou o mundo...
+  - O segredo da volkswagen
+  - BMW - IA
+
+[60:21] n=24 clientes=15 | Renato Mendes 5, Rodrigo Waughan 5, Manoel Victor 2
+  - O truque da Apple para vender mais, entregando menos.
+  - Apple
+  - O NOVO IPHONE PODE CHEGAR A R$ 30 MIL
+  - A Apple copiou o mercado de carros para nunca mais perder um cliente
+  - O segredo da Apple para triunfar
+  - A decisão que salvou a Apple da falência
+  - O erro que custou à Apple $113 milhões
+  - O Nokia da Barbie que vai fazer você ignorar o novo Iphone
+
+[60:22] n=57 clientes=11 | Marcelo Germano 43, Marcio Grazino 5, Marcos Pelozato 1
+  - Como transformar um puxadinho em uma indústria centenária
+  - De um tanque improvisado no quintal em Santa Catarina pra um negócio bilionário.
+  - O estado minúsculo que se tornou uma potência industrial.
+  - Esse mecânico se tornou um MAGNATA por causa de um pedaço de pano.
+  - Eles não tinham lugar pra vender e hoje faturam mais de R$ 25 bilhões
+  - Como dois peixinhos de Santa Catarina engoliram o mercado de moda do Brasil.
+  - Um império global que fatura bilhões vendendo ar.
+  - De uma oficina modesta para um império bilionário global
+
+[60:23] n=48 clientes=4 | Lincoln Fracari 43, Patrick Diorio 3, Marcio Grazino 1
+  - Você depende da China pra ver esse vídeo.
+  - A China construiu um sol artificial que não apaga
+  - O plano da China para dominar o mundo.
+  - O Piauí está virando o ativo mais caro do mercado global.
+  - A cidade secreta que esmagou o Vale do Silício.
+  - Tática chinesa para vender mais
+  - O plano de R$ 90 bilhões da China para comprar o Nordeste brasileiro
+  - A cidadezinha chinesa que domina os carros do futuro.
+
+[60:24] n=12 clientes=9 | Marcio Grazino 2, Renato Mendes 2, Franklin Tomich 2
+  - A Havaianas saiu da pobreza para o topo do mundo.
+  - O fracasso da Havaianas que virou negócio bilionário
+  - O chinelo que era piada virou #1 do mundo.
+  - O plástico barato que virou desejo mundial
+  - Chinelo que entrou na cesta básica e foi parar no Oscar
+  - A sandália de plástico que virou desejo mundial
+  - A sandália de plástico que virou símbolo de luxo
+  - A Lava Jato vendeu a dona da Havaianas duas vezes
+
+[60:25] n=51 clientes=3 | Thiago Franco 49, Renato Mendes 1, Manoel Victor 1
+  - Mercado Livre perdeu dinheiro e comemorou
+  - Amazon e Shopee abriram guerra no mesmo estado.
+  - A jogada dupla que o Mercado Livre escondeu.
+  - A Shopee ignorou São Paulo e o motivo assusta
+  - TRUMP ATACOU A CHINA E QUEM SANGROU FOI O MERCADO LIVRE
+  - Shopping center agora virou depósito.
+  - MAGALU CORTOU COMISSÃO PELA METADE PRA ROUBAR VENDEDOR
+  - O Mercado Livre declarou Guerra Contra a China
+
+[60:26] n=51 clientes=12 | Cadu Neiva 20, Marcelo Germano 7, Rodrigo Waughan 6
+  - Padaria do Ceará
+  - Chiquinho
+  - Ela perdeu o nome da empresa e faturou R$ 800 milhões.
+  - Como um casal quebrado criou um império de bilhões.
+  - Ele batia ponto na fábrica. Hoje fatura R$300 milhões​﻿​
+  - Esse nordestino morreu, mas sua marca virou R$ 100 milhões
+  - De vendedor de fumo aos 13 anos a milionário
+  - Um policial comprou pão e faturou 4 bilhões.
+
+[60:27] n=21 clientes=4 | Patrick Diorio 17, Manoel Victor 2, Izabela Anholett 1
+  - O truque que faz milhões de pessoas entregarem seus dados.
+  - Seu celular não te ouve. O que ele faz é pior.
+  - Seu emprego está ameaçado e você nem sabe.
+  - A IA está acompanhando sua vida em tempo real.
+  - O governo comprou um sistema para te achar.
+  - A IA pode se destruir em câmera lenta
+  - O ataque que faz sua IA acreditar em mentiras.
+  - O conhecimento está sendo destruído página por página.
+
+[60:28] n=35 clientes=1 | Drielle Castelani 35
+  - Você paga plano de saúde e não está coberto.​﻿​
+  - Pare de trabalhar muito e ganhar pouco.
+  - Essa conversa de WhatsApp vai te deixar com raiva.
+  - O Brasil forma médicos pra salvar. Não pra sobreviver.​﻿​
+  - A profissão mais disputada do Brasil virou armadilha
+  - Vendedor ganha mais que médico no Brasil.
+  - Se formou em medicina, mas não acha emprego.
+  - O segredo do Paulo Muzy para ganhar mais clientes
+
+[60:29] n=70 clientes=8 | Izabela Anholett 43, Manoel Victor 12, Leonardo Cirino 10
+  - Pré-MBA: Péssima notícia para quem usa ChatGPT
+  - Pré-MBA: 99% usam o ChatGPT errado. Aqui está o truque certo
+  - Pré-MBA: Você não sabe o que é IA de verdade
+  - Pré-MBA: Famílias milionárias estão se formando agora
+  - Pré-MBA: A IA está roubando seu emprego dos sonhos
+  - Pré-MBA: A Nova IA que faz robôs trabalharem pra você
+  - Pré-MBA: O Instagram vai destruir o ChatGPT?
+  - Pré-MBA: Histórico: Google muda para sempre depois de 27 anos.
+
+[60:30] n=68 clientes=3 | Ricardo Schumacher 61, Dilson Peres 6, Marcos Pelozato 1
+  - A fortuna do Pablo Marçal esconde um segredo
+  - A cobertura que pode virar dor de cabeça
+  - Eles enfrentaram o mesmo problema e pagaram milhões.
+  - A jogada da Boca Rosa que ninguém conta
+  - A herança do Lula revela um recado
+  - O segredo do Flamengo para não pagar impostos
+  - O contrato de Ancelotti esconde algo que ninguém contou.
+  - A riqueza de Luciano Huck esconde um segredo
+
+[60:31] n=39 clientes=10 | Thainá Iansen 20, João Paulo Albuquerque 5, Marcio Grazino 4
+  - De uma feirinha de rua para um império bilionário
+  - De um cabo de vassoura a R$ 400 milhões
+  - Roubaram a promoção dela e ela construiu um império
+  - De banca de feira à 2 bilhões de faturamento
+  - A cancelada mais influente do Brasil
+  - Seu pai a educou pra falhar, se tornou bilionária
+  - Ela pegou uns pedaços de tecido e transformou num império
+  - Ela largou um negócio de R$100 milhões por uma base?
+
+[60:32] n=99 clientes=1 | Izabela Anholett 99
+  - COMO ENCONTRAR QUALQUER FERRAMENTA DE IA
+  - Assustador: ChatGPT acabou de iniciar o fim dos empregos?
+  - O Google acaba de MUDAR a escola PARA SEMPRE
+  - O ChatGPT de vídeos acaba de morrer
+  - IA que substitui humanos no telefone
+  - Pré-MBA: Previsão assustadora de Musk para 2026.
+  - ESSA IA PARECE ILEGAL DE TÃO INJUSTA
+  - Google vai destruir os Call Centers
+
+[60:33] n=41 clientes=15 | Manoel Victor 12, Túlio Lichenstein 6, Rafael Rodrigues 4
+  - O ChatGPT ajudou essa empresa a faturar bilhões.
+  - EMPRESA MULTIPLICOU 100 VEZES COM IA
+  - Ele ganhou 15 milhões de reais em 48 horas
+  - Brasileiro cria IA advogada e fica bilionário.
+  - Essa empresa de apenas 15 pessoas vale mais de 6,6 bilhões em 12 meses
+  - A IA mudou a vida dele
+  - A INTELIGÊNCIA ARTIFICIAL ESTÁ MUDANDO A SUA COMIDA.
+  - O segredo da próxima empresa de US$ 1 Trilhão
+
+[60:34] n=20 clientes=3 | Fernando Pereira 10, Túlio Lichenstein 9, Ricardo Schumacher 1
+  - A medida desesperada de Lula para vencer a eleição!
+  - Lula quer mais 4 anos, mas não diz quanto isso vai custar
+  - O próximo presidente já entra devendo
+  - Renan Santos tem o plano mais ousado e o maior obstáculo das eleições
+  - Estamos vivendo algo inédito no Brasil!
+  - AGORA FICOU SÉRIO!
+  - MILEI REVOLTA O BRASIL!
+  - O plano do Flávio para salvar o Brasil no menor prazo possível
+
+[60:35] n=38 clientes=4 | Fernando Pereira 35, Marcos Pelozato 1, Dilson Peres 1
+  - 40 Dias para o Petróleo Acabar
+  - Governo americano em alerta máximo.
+  - Irã falou não pro Trump e seu bolso vai sentir .
+  - O mar que abastece o mundo acabou de esvaziar
+  - O lucro invisível da Rússia tá saindo do seu bolso
+  - A Guerra Continua, e sua conta começou a subir
+  - O plano para não perder tudo em 2026
+  - A China apagou parte da conversa com Trump
+
+[60:36] n=37 clientes=8 | Fernando Pereira 26, Marcos Pelozato 4, Marcio Grazino 2
+  - Brasil em alerta máximo
+  - A China escolheu o Brasil pra vencer os EUA
+  - O Brasil controla EUA e China
+  - O Brasil corre pra China, mas a China está saindo
+  - O PIX fez os EUA entrarem em pânico .
+  - A China tá vencendo os EUA no Brasil
+  - O BRASIL ESTÁ PAGANDO A CONTA DA GUERRA DOS EUA
+  - O Brasil entrou na lista negra do comércio mundial
+
+[60:37] n=65 clientes=9 | Leonardo Cirino 38, Izabela Anholett 11, Thiago Bisewski 8
+  - A Apple quer mudar como você usa IA no dia a dia
+  - A China destruiu o Mark Zuckerberg com esse lançamento
+  - Apple derrubou a maior barreira da comunicação
+  - Esses óculos chineses insanos assustaram até a Meta
+  - A Apple vai por uma câmera no seu ouvido​﻿​
+  - Apple em guerra com Mark Zuckerberg
+  - Agora, a IA vai vigiar até a sua boca
+  - Samsung e Google declararam guerra ao Mark Zuckerberg
+
+[60:38] n=29 clientes=4 | Lincoln Fracari 24, Franklin Tomich 2, Fernando Pereira 2
+  - O Brasil está se tornando chinês.
+  - O plano de bilhões da China para comprar o agro brasileiro.
+  - China aprovou o plano que vai afetar a comida brasileira
+  - A China baniu o “tigrinho”
+  - China e Trump fecham acordo, Brasil paga.
+  - A China controla a conta de luz no Brasil
+  - A china está prendendo quem vê p*rnô
+  - Por que o Brasil vai emprestar dinheiro da China?
+
+[60:39] n=29 clientes=5 | Izabela Anholett 14, Manoel Victor 6, João Felipe Marques 4
+  - Anthropic MATOU centenas de startups com isso
+  - CUIDADO: A IA AGORA TEM EMOÇÕES
+  - O FIM DO EXCEL?
+  - Até o Elon Musk está assustado com isso
+  - A rival do Elon Musk lançou 3 ferramentas insanas pra você usar AGORA
+  - Usuários abandonam ChatGPT por Claude
+  - Essa IA tá morando dentro do Chrome e você nem viu
+  - O segredo do Claude para eliminar engenheiros
+
+[60:40] n=92 clientes=17 | Rafael Rodrigues 15, Marcelo Germano 14, Rodrigo Waughan 10
+  - Como sair das dívidas e se tornar dono de um império
+  - O jovem gaúcho que vendeu sua empresa por quase 2 bilhões de reais.
+  - Investiram menos de 5 mil, venderam por 342 milhões.
+  - O ex-servente de pedreiro que fatura 100 milhões por ano
+  - Eles não sabiam vender e criaram a Hotmart.
+  - Ele criou uma solução simples e vendeu por milhões.
+  - De uma casa alugada em SP ao banco mais valioso da América Latina.
+  - A XP criou os clientes que os bancos ignoravam.
+
+[60:41] n=74 clientes=10 | Rodrigo Waughan 47, Pedro Elero 8, Renato Torres 4
+  - Semijoias ASMR
+  - Esse queijo envergonhou marcas que gastam milhões.
+  - O gelo que vale milhões!
+  - ELES FAZEM FILAS DE 2 HORAS POR CAUSA DE UM BISCOITO.
+  - A jogada de MKT da Milka pra vender mais.
+  - O bar que virou Bovespa!
+  - A loja que decidiu ficar invisível para ser famosa.
+  - O TRUQUE POR TRÁS DA PIPOCA DE R$ 165 DA VIRGÍNIA
+
+[60:42] n=99 clientes=7 | Franklin Tomich 91, Marcio Grazino 2, Dilson Peres 2
+  - Uma gigante pagou 1,5 bilhão por um biscoito carioca.
+  - A venda da Kopenhagen deixou os AMERICANOS mais ricos…
+  - A Yoki foi vendida com um desconto de R$1,2 bilhão
+  - 50 anos de história foram apagados em meses
+  - O que aconteceu com a bicicleta da sua infância
+  - Uma gigante destruiu o chiclete mais amado do Brasil
+  - 21 anos sem controlar a empresa que comprou.
+  - Como a XP construiu um império economizando tempo
+
+[60:43] n=64 clientes=4 | Rafael Rodrigues 31, Marcio Grazino 20, Cadu Neiva 12
+  - Menino cearense de 8 anos venceu olimpíada nos EUA.
+  - 16 ANOS, CAMPEÃO MUNDIAL EM 5 ÁREAS DIFERENTES
+  - Esse garoto saiu do interior do Ceará para o topo do mundo
+  - Menino cearense de 8 anos recebe medalha internacional
+  - O cearense que desafiou o mundo e foi ao MIT
+  - O governo escolheu ele como Embaixador da Ciência
+  - Irmãs cearenses sobem juntas ao pódio mundial.
+  - Dois irmãos cearenses podem ter achado asteroides.
+
+[60:44] n=31 clientes=7 | Patrick Diorio 22, Leonardo Cirino 2, Izabela Anholett 2
+  - Brasileiro criou uma IA que encontra corrupção em segundos.
+  - A vaga de R$ 35 mil que ninguém preenche
+  - A IA vai substituir essas profissões.
+  - A IA vai destruir essa profissão
+  - Formados em TI agora perdem emprego para Filosofia
+  - Os indianos estão treinando robôs para fazer o seu trabalho.
+  - Estudante brasileiro cria IA que traduz Libras.
+  - Por R$ 10, esses trabalhadores estão acelerando sua própria substituição
+
+[60:45] n=50 clientes=12 | Marcelo Germano 14, Cadu Neiva 12, Rodrigo Waughan 9
+  - De vendedor de garrafas a dono de um império bilionário.
+  - ele recusou 1 bilhão pra crescer sozinho
+  - De garimpeiro a bilionário
+  - Vendia pirulito aos oito anos, hoje tem duzentas lojas.
+  - Facada no olho criou o supermercado de R$4,5 bilhões
+  - Garoto do bailão criou um atacarejo de R$80 BILHÕES
+  - De vendedor de revistas e cigarros em SC pra dono de um império milionário.
+  - Ele saiu do sertão sem nada e hoje gera R$ 10,5 bilhões por ano
+
+[60:46] n=13 clientes=5 | Marcio Grazino 9, Rafael Rodrigues 1, Leonardo Nogueira 1
+  - O carro voador existe e ele é brasileiro
+  - Carro voador brasileiro já decolou e quase ninguém sabe.
+  - O carro voador está chegando no Brasil
+  - A canetinha emagrecedora que seca muito além da gordura.
+  - A Airbus criou um helicóptero que voa sem ninguém dentro
+  - A China agora tem hospital voador
+  - A Azul saiu dos grandes centros e dominou o Brasil
+  - O investimento que faz Luciano Hang ficar mais rico
+
+[60:47] n=34 clientes=2 | João Felipe Marques 33, Izabela Anholett 1
+  - Um motorista enganou 102 milhões de pessoas com IA.
+  - A IA pode estar sendo usado como armadilha nas suas compras!
+  - IA mais burra do mundo assustou seu próprio criador.
+  - Golpistas estão usando ChatGPT para te roubar.
+  - Essa IA tentou destruir um casamento.
+  - O ChatGPT pode te entregar para a polícia.
+  - Tem conteúdo de IA sendo pago por você.
+  - DISSERAM QUE A IA IA TOMAR SEU EMPREGO. MENTIRA!
+
+[60:48] n=32 clientes=10 | João Paulo Albuquerque 7, Renato Mendes 7, Renato Torres 5
+  - A Smartfit ficou BILIONÁRIA quando trocou o cliente rico pelo POBRE
+  - Ele lucra mais quando você não vai à academia
+  - A academia de R$ 49,90 que varreu a concorrência
+  - A academia mais cara do Brasil nunca deu desconto.
+  - A academia mais odiada do mundo
+  - Seria esse o fim da SmartFit?
+  - Como a Panobianco virou a academia favorita da geração Z sem copiar ninguém
+  - A academia com mais privacidade do mundo.
+
+[60:49] n=42 clientes=12 | Pedro Elero 17, Rafael Rodrigues 6, Manoel Victor 5
+  - O Neymar se aposentou?!
+  - O Botafogo disse não ao Palmeiras e deu uma aula pro futebol brasileiro
+  - A dívida insana do Palmeiras
+  - O John Textor trocou alguns títulos pelo futuro do Botafogo
+  - Jogador de 18 anos acaba de trocar São Paulo pelo Palmeiras
+  - De estagiário para milionário
+  - Esse cara contrariou a torcida para salvar o Flamengo
+  - Ele ganhava 1 milhão por mês, mesmo assim faliu
+
+[60:50] n=65 clientes=7 | Ricardo Schumacher 27, Dilson Peres 21, Fernando Pereira 8
+  - O Brasil vai ter o maior imposto do planeta
+  - A Reforma vai chegar sem você saber o preço
+  - Esse imposto misterioso pode encarecer tudo
+  - O número que o governo esconde de você
+  - 2 bilhões para cobrar imposto automático?!
+  - R$2 trilhões tirados do seu bolso sem você perceber
+  - Seu delivery vai ficar mais caro.
+  - Governo espera passar 6 trilhões pros bancos
+
+[60:51] n=52 clientes=5 | Drielle Castelani 37, Cadu Neiva 7, Rafael Rodrigues 6
+  - O médico brasileiro que venceu a França
+  - Foi internado por salvar a vida de mulheres
+  - 75 milhões morreram para isso chegar até você.
+  - O médico que usou o próprio coração como cobaia
+  - Ela curou uma doença de 4 mil anos e foi ROUBADA.​﻿​ 
+  - A ironia mais cruel da medicina.
+  - O Brasil mandou médicos pra guerra e esqueceu deles
+  - Salvou milhares de crianças e o Brasil nunca soube
+
+[60:52] n=43 clientes=5 | Thiago Franco 38, Rodrigo Waughan 2, Lincoln Fracari 1
+  - Estão matando as lojas de esquina!
+  - O fim do Supermercado?!
+  - O fim das Farmácias!
+  - O padrão das empresas que mais quebram no Brasil.
+  - Drogasil vai matar todas as farmácias do seu bairro!
+  - O Brás MORREU
+  - O fim da Santa Efigênia
+  - A Casas Bahia se rendeu aos concorrentes
+
+[60:53] n=28 clientes=10 | Rodrigo Waughan 6, Marcos Pelozato 4, Marcio Grazino 4
+  - Olympikus quase morreu antes de se tornar gigante
+  - A Olympikus saiu da vergonha para o topo do Brasil
+  - Como a Olympikus se tornou a maior marca de tênis do Brasil
+  - O tênis “de pobre” que venceu a Nike
+  - Como a dona da Olympikus saiu do fundo do poço pro topo do Brasil
+  - Ele recusou a Nike e dominou o Brasil.
+  - Estratégia de crescimento - Hoka
+  - A Nike vai morrer?
+
+[60:54] n=40 clientes=6 | Thiago Franco 35, Fernando Pereira 1, Rafael Rodrigues 1
+  - Um avatar de IA faturou R$ 40 milhões em uma live.
+  - Como o “bom dia” nos stories virou um império milionário
+  - A estratégia chinesa para faturar bilhões
+  - Estratégia de preços Temu
+  - Publicidade NuvemShop: Como transformar 7 mil reais em 1 milhão!
+  - Neymar parou de ser garoto-propaganda para virar o dono.
+  - Enquanto o Brasil chorava, esses três abriam um negócio milionário.
+  - Como Pablo Marçal ficou rico?
+
+[60:55] n=31 clientes=8 | Marcio Grazino 8, Cadu Neiva 8, João Paulo Albuquerque 7
+  - Ele transformou bitucas de cigarro em R$ 3 milhões
+  - Nordeste do Brasil humilhou a Europa com essa descoberta
+  - Essa marca de carvão revolucionou o mercado com esse produto genial
+  - A China fatura bilhões varrendo lixo.
+  - Ele resolveu o lixo têxtil sem construir nenhuma fábrica.
+  - O Brasil joga fora o que vale bilhões
+  - Essa empresa transforma lixo em ouro.
+  - O bombeiro que ficou milionário vendendo fogo
+
+[60:56] n=36 clientes=1 | Lincoln Fracari 36
+  - Como os Chineses estão curtindo shows DEITADOS
+  - É o fim da escola na China?
+  - Uma noiva chinesa em 3 dias por 300 mil?
+  - O segredo do Chinês para economizar!
+  - China proibiu falar mal do sexo oposto
+  - Vendas em live na China
+  - A China lançou os ricos da Shopee
+  - Como a China DOMINOU a comida do mundo inteiro
+
+[60:57] n=48 clientes=12 | Renato Torres 20, Manoel Victor 6, Renato Mendes 5
+  - Faliu em 2001 e faturou 2 bilhões em 2019.
+  - A marca que a geração Tik Tok está ressuscitando.
+  - Esse sapato feio vale 4 bilhões de dólares.
+  - Aceitar que é feio é o caminho mais lucrativo.
+  - Esse cara vale 1,3 bilhão de dólares vendendo roupa de treino
+  - As pessoas não ligam para o seu produto - Harley Davidson
+  - Como um copo rejeitado virou símbolo de sucesso.
+  - Patagonia
+
+[60:58] n=41 clientes=14 | Rafael Rodrigues 9, Pedro Elero 8, Thiago Franco 4
+  - A Seleção vale bilhões, mas não pelo que joga
+  - A bola com IA que vai determinar o hexa do Brasil
+  - A Copa mais triste da história
+  - A CBF usou o Neymar para reacender o Brasil
+  - A estratégia secreta do contrato mais valioso da Copa
+  - A seleção não fez propaganda, mas as vendas explodiram.
+  - O maior erro de Ancelotti
+  - A Nike escondeu essa chuteira por 6 meses
+
+[60:59] n=38 clientes=8 | Izabela Anholett 27, João Felipe Marques 3, Drielle Castelani 2
+  - IA do Japão vai hackear a sua mente.
+  - Chips cerebrais de Elon Musk serão implantados em humanos
+  - Governo poderá implantar memórias feitas por IA no seu cérebro.
+  - Transformando o cérebro humano em computador
+  - Esses computadores são feitos de… cérebro humano.
+  - O dono do Instagram vai ler sua mente
+  - A IA agora vai entrar no seu olho
+  - Essa IA pode prever Alzheimer 20 anos antes
+node src/embeddings/t2_kmeans.mjs  16.23s user 0.07s system 100% cpu 16.243 total

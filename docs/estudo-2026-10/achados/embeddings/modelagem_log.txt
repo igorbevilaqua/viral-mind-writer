@@ -1,0 +1,84 @@
+| característica | n vídeos | % topo com vs sem | lift [IC95] | OR MH [IC95] | lift descoberta / validação | Instagram | TikTok | YouTube | leitura |
+|---|---|---|---|---|---|---|---|---|---|
+| roteiro modelado | 2869 | 28% vs 24% | 1,07 [1,01 a 1,13] | 1,23 [1,09 a 1,40] | 1,13 / 1,01 | 1,10 (n=1147) | 1,03 (n=882) | 1,07 (n=840) | ajuda (replica) |
+| modelado de link instagram | 2057 | 28% vs 25% | 1,09 [1,01 a 1,17] | 1,24 [1,08 a 1,41] | 1,19 / 1,03 | 1,12 (n=830) | 1,01 (n=634) | 1,14 (n=593) | ajuda (replica) |
+| modelado de link tiktok | 681 | 27% vs 26% | 1,07 [0,94 a 1,20] | 1,11 [0,93 a 1,34] | 1,08 / 1,00 | 1,12 (n=267) | 1,11 (n=209) | 0,94 (n=205) | sem evidência |
+| modelado de link youtube | 28 | 11% vs 26% | 0,42 [0,14 a 1,06] | 0,34 [0,10 a 1,14] | 0,58 / 0,00 | 0,39 (n=10) | 0,43 (n=9) | 0,43 (n=9) | sem evidência |
+| modelado de link outro | 84 | 23% vs 26% | 0,88 [0,58 a 1,27] | 0,83 [0,49 a 1,39] | 0,95 / 0,78 | 0,73 (n=32) | 1,08 (n=25) | 0,86 (n=27) | sem evidência |
+
+MH por rede de postagem (só modelado vs não):
+  Instagram: n=1147 lift 1,10 OR 1,34 [1,10 a 1,63] desc/val 1,21/1,00 -> sinal sem replicação
+  TikTok: n=882 lift 1,03 OR 1,09 [0,87 a 1,37] desc/val 1,05/1,01 -> sem evidência
+  YouTube: n=840 lift 1,07 OR 1,25 [0,99 a 1,57] desc/val 1,09/1,04 -> sem evidência
+
+Origem do link x rede de postagem (OR MH):
+  link instagram postado no Instagram: n=830 lift 1,12 OR 1,32 [1,07 a 1,62] -> sinal sem replicação
+  link instagram postado no TikTok: n=634 lift 1,01 OR 1,01 [0,79 a 1,29] -> sem evidência
+  link instagram postado no YouTube: n=593 lift 1,14 OR 1,40 [1,09 a 1,79] -> ajuda (replica)
+  link tiktok postado no Instagram: n=267 lift 1,12 OR 1,21 [0,90 a 1,63] -> sem evidência
+  link tiktok postado no TikTok: n=209 lift 1,11 OR 1,20 [0,86 a 1,67] -> sem evidência
+  link tiktok postado no YouTube: n=205 lift 0,94 OR 0,92 [0,64 a 1,31] -> sem evidência
+
+Por macro nicho:
+  Tecnologia, IA e inovação: n=996 rot=419 lift 1,17 [1,06 a 1,29] OR 1,64 [1,33 a 2,02]
+  Negócios, marcas e cases: n=1140 rot=441 lift 1,03 [0,93 a 1,13] OR 1,09 [0,89 a 1,33]
+  Dinheiro, economia e geopolítica: n=678 rot=269 lift 1,00 [0,88 a 1,13] OR 0,99 [0,76 a 1,28]
+  Entretenimento: n=55 rot=55 lift 0,99 [0,62 a 1,49] OR 0,97 [0,32 a 2,94]
+
+Por cliente (com >=15 vídeos modelados):
+  Franklin Tomich: 15/133 roteiros modelados | n=30 lift 1,82 OR 2,96 [1,35 a 6,49]
+  Renato Torres: 20/57 roteiros modelados | n=26 lift 1,60 OR 3,30 [1,10 a 9,86]
+  Thiago Franco: 37/155 roteiros modelados | n=92 lift 1,38 OR 1,90 [1,13 a 3,17]
+  Dilson Peres: 36/113 roteiros modelados | n=100 lift 1,34 OR 2,02 [1,17 a 3,48]
+  Izabela Anholett: 143/221 roteiros modelados | n=421 lift 1,25 OR 2,95 [1,93 a 4,52]
+  Marcio Grazino: 52/147 roteiros modelados | n=153 lift 1,17 OR 1,40 [0,90 a 2,17]
+  Rodrigo Waughan: 67/130 roteiros modelados | n=194 lift 1,14 OR 1,49 [0,94 a 2,36]
+  Marcos Pelozato: 14/134 roteiros modelados | n=41 lift 1,14 OR 1,23 [0,60 a 2,50]
+  Leonardo Cirino: 59/106 roteiros modelados | n=66 lift 1,12 OR 1,45 [0,63 a 3,35]
+  João Felipe Marques: 40/64 roteiros modelados | n=41 lift 1,12 OR 1,57 [0,48 a 5,18]
+  Rafael Rodrigues: 59/217 roteiros modelados | n=176 lift 1,11 OR 1,23 [0,83 a 1,81]
+  João Paulo Albuquerque: 54/59 roteiros modelados | n=153 lift 1,09 OR - [- a -]
+  Leonardo Martins: 19/20 roteiros modelados | n=19 lift 1,05 OR - [- a -]
+  Thiago Bisewski: 17/21 roteiros modelados | n=51 lift 1,03 OR 1,24 [0,30 a 5,04]
+  Fernando Pereira: 63/163 roteiros modelados | n=160 lift 1,03 OR 1,06 [0,66 a 1,70]
+  Leonardo Nogueira: 30/52 roteiros modelados | n=69 lift 1,01 OR 1,02 [0,47 a 2,24]
+  Marcelo Germano: 28/99 roteiros modelados | n=41 lift 1,00 OR 1,00 [0,44 a 2,25]
+  Patrick Diorio: 55/78 roteiros modelados | n=55 lift 0,99 OR 0,97 [0,32 a 2,94]
+  Café com Ferri: 16/20 roteiros modelados | n=41 lift 0,98 OR 0,86 [0,20 a 3,71]
+  Manoel Victor: 54/83 roteiros modelados | n=152 lift 0,95 OR 0,83 [0,45 a 1,54]
+  Cadu Neiva: 36/87 roteiros modelados | n=86 lift 0,92 OR 0,84 [0,45 a 1,56]
+  Lincoln Fracari: 132/179 roteiros modelados | n=328 lift 0,91 OR 0,64 [0,40 a 1,02]
+  Renato Mendes: 40/55 roteiros modelados | n=120 lift 0,78 OR 0,36 [0,17 a 0,76]
+  Pedro Elero: 53/68 roteiros modelados | n=155 lift 0,77 OR 0,30 [0,15 a 0,61]
+  Thainá Iansen: 22/27 roteiros modelados | n=49 lift 0,71 OR 0,20 [0,05 a 0,72]
+  Túlio Lichenstein: 14/49 roteiros modelados | n=38 lift 0,51 OR 0,33 [0,11 a 0,92]
+  clientes com OR>1: 14 de 26
+
+OR MH do modelado, controlando:
+  cliente x rede (base): 1,23 [1,09 a 1,40]
+  + território k=30: 1,35 [1,17 a 1,55]
+  + território k=60: 1,42 [1,23 a 1,65]
+  + trimestre: 1,25 [1,09 a 1,43]
+  + novidade (faixa de sim c/ passado do cliente): 1,30 [1,14 a 1,48]
+  + território k=30 + trimestre: 1,35 [1,16 a 1,57]
+
+mediana da maior sim com o passado do cliente: modelado 0.789 x não modelado 0.797
+
+Modelado contra outros desfechos:
+  acerto: n=2869 lift 1,08 OR 1,27 [1,13 a 1,43] -> ajuda (replica)
+  ret_hook: n=701 lift 1,11 OR 1,43 [1,10 a 1,86] -> sem evidência
+  ret_sub: n=701 lift 1,12 OR 1,44 [1,11 a 1,88] -> sem evidência
+  ret_final: n=701 lift 1,14 OR 1,52 [1,17 a 1,97] -> ajuda (replica)
+  compart: n=1229 lift 1,00 OR 0,99 [0,82 a 1,20] -> sem evidência
+  seguidores: n=676 lift 1,07 OR 1,24 [0,95 a 1,62] -> sem evidência
+  comentarios: n=2869 lift 0,95 OR 0,86 [0,75 a 0,97] -> sem evidência
+
+OR MH do modelado por período (cliente x rede):
+  descoberta: todos 1,49 [1,24 a 1,77] | Tecnologia 1,49 [1,11 a 1,99] | demais nichos 1,48 [1,18 a 1,86] | % modelado 46%
+  validacao: todos 1,03 [0,85 a 1,23] | Tecnologia 1,90 [1,38 a 2,61] | demais nichos 0,74 [0,59 a 0,93] | % modelado 45%
+  2026Q1: n=949 OR 1,60 [1,13 a 2,25] % modelado 65%
+  2026Q2: n=2186 OR 1,52 [1,21 a 1,91] % modelado 37%
+  2026Q3: n=3170 OR 1,03 [0,85 a 1,23] % modelado 45%
+
+validação fora de Tecnologia: 0,74 [0,59 a 0,93] | + território k30 0,74 [0,57 a 0,96]
+  sem Pedro Elero, Renato Mendes, Thainá Iansen, Túlio Lichenstein: 1,06 [0,81 a 1,39]
