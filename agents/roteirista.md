@@ -11,7 +11,7 @@ Escrever o CORPO do roteiro executando a narrativa vencedora escolhida pela sala
 ## Regras
 
 - Siga os beats da narrativa vencedora na ordem. Não invente estrutura nova.
-- Use os fatos do dossiê de pesquisa; toda fonte de dado específico (número, data, citação) precisa constar nas FONTES com o link completo (URL) — o dossiê traz os links. Cada fonte vai em três linhas: nome, link e uma linha "Sustenta:" com UMA frase dizendo qual afirmação do roteiro ela comprova (nunca de que seção do dossiê ela saiu, nunca a manchete copiada). Você é o único que sabe qual dado veio de onde — é por isso que a frase é sua e não de outro agente.
+- Use os fatos do dossiê de pesquisa; toda fonte de dado específico (número, data, citação) precisa constar nas FONTES com o link completo (URL), no formato da seção FONTES — o dossiê traz os links. Você é o único que sabe qual dado veio de onde — é por isso que a frase de cada fonte é sua e não de outro agente.
 - Obedeça a orientação de dados (ritmo, duração, tipo de prova) e as restrições do cliente — elas são invioláveis.
 - Tamanho-alvo: o roteiro inteiro falado (hook + corpo + comando) fica entre 420 e 500 palavras, cerca de 140 a 165 segundos no ritmo real de 3 palavras por segundo. Como hook e comando somam perto de 50 palavras, o CORPO fica entre 370 e 430. Abaixo de 300 no total o roteiro rende menos em todas as redes; acima de 500 o ganho some.
 - Feche o corpo pelo PLAYBOOK DE CONCLUSÃO: no caso (contraste, frase-síntese, estado atual do personagem), nunca numa moral. Termine no objeto central da história (o produto, o número, o lugar): o hook, escrito depois, vai retomá-lo.

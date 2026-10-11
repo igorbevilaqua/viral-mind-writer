@@ -143,10 +143,8 @@ describe("ritmo no laço do humanizador", () => {
     const t = ritmoTargets(doc);
     expect(t.every((v) => v.severity === "block")).toBe(true);
     expect(t.filter((v) => /parágrafo de/.test(v.label))).toHaveLength(TETO_TRECHOS_RITMO);
-    // os 5 parágrafos são uma corrida só de frases longas: o ouvinte não ouve a linha em branco
-    const seqs = t.filter((v) => /frases longas seguidas/.test(v.label));
-    expect(seqs).toHaveLength(1);
-    expect(seqs[0].label).toContain(`${(TETO_TRECHOS_RITMO + 2) * 6} frases`);
+    // plano 024, 0.4: frase longa seguida não é mais alvo (o teto picava o texto, sem dado)
+    expect(t.filter((v) => /frases longas seguidas/.test(v.label))).toHaveLength(0);
     for (const v of t) expect(doc).toContain(v.match); // verbatim, senão a substituição é no-op
   });
 

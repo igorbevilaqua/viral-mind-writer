@@ -7,8 +7,6 @@ import {
   dedash,
   LABEL_ANUNCIO,
   paragrafosLongos,
-  sequenciasLongas,
-  MAX_LONGAS_SEGUIDAS,
   PARAGRAFO_MAX_PALAVRAS,
   type LintViolation,
 } from "./slop-lint";
@@ -73,15 +71,10 @@ export function ritmoTargets(text: string): LintViolation[] {
       match: p.texto,
       severity: "block" as const,
     }));
-  const sequencias = sequenciasLongas(text)
-    .sort((a, b) => b.tamanho - a.tamanho)
-    .slice(0, TETO_TRECHOS_RITMO)
-    .map((s) => ({
-      label: `${s.tamanho} frases longas seguidas sem nenhuma curta (teto ${MAX_LONGAS_SEGUIDAS})`,
-      match: s.texto,
-      severity: "block" as const,
-    }));
-  return [...paragrafos, ...sequencias];
+  // Frases longas seguidas NÃO viram alvo (plano 024, 0.4): o teto de 3 mandava encurtar e
+  // picava o texto, que é a reclamação nº 2 do time; o humano junta frases quando edita, e no
+  // estudo de outubro 90% dos roteiros da casa "violam" o teto sem nenhuma faixa separar resultado.
+  return paragrafos;
 }
 
 // 8. Humanizador: re-textura completa 1x + retries CIRÚRGICOS (só os trechos violados),
@@ -168,7 +161,6 @@ REGRA CENTRAL: elimine a CONSTRUÇÃO, não a palavra. Trocar sinônimo, pontua�
 
 RITMO E PARÁGRAFO são outra família e pedem outra correção:
 - parágrafo acima do teto de palavras → quebre em dois ou três parágrafos, escrevendo "${MARCA_PARAGRAFO}" onde entra a linha em branco. Se der, corte o que não carrega a ideia. NÃO invente informação para preencher.
-- frases longas seguidas → encurte UMA delas, ou entre com uma frase curta que quebre a inércia. NÃO alterne curta e longa a cada frase: o alvo é dinamismo, não metrônomo.
 
 O roteiro é LIDO EM VOZ ALTA: se a frase só funciona porque o olho reconstrói o que falta, ela está errada. A substituição PODE e costuma ficar mais longa que o trecho original — subordinar custa palavras, e isso é esperado, não um problema. Mantenha o sentido e a voz. NÃO reescreva o resto do roteiro, e não repita nem reordene as seções (## HEADLINE, ## ROTEIRO…). Responda EXATAMENTE uma linha por item, no formato "N. <texto substituto>", e nada mais.\n\n${lista}`,
           },

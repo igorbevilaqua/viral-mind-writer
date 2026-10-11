@@ -417,8 +417,10 @@ export async function runPipeline(
     const ecos = ecosNumericos(assembled);
     // Ritmo e parágrafo: sinal para o revisor aqui, e teto determinístico no humanizador depois.
     const paragrafos = paragrafosLongos(assembled);
+    // Sequências de frases longas seguem MEDIDAS no rastro, mas não vão mais ao revisor: o teto
+    // picava o texto (reclamação do time) e o estudo de outubro não achou efeito (plano 024, 0.4).
     const sequencias = sequenciasLongas(assembled);
-    const sinais = blocoSinaisRevisor(ecos, ecoHookAbertura, paragrafos, sequencias);
+    const sinais = blocoSinaisRevisor(ecos, ecoHookAbertura, paragrafos);
     // Portão de forma e procedência sobre a seção ESTUDOS do dossiê. Determinístico, sem LLM,
     // e sem abrir a URL — confirmar que a página existe e diz aquilo é a peça 3.
     const estudos = extrairEstudos(artifacts?.dossie ?? "");

@@ -99,7 +99,7 @@ Esforço: P (horas), M (1 a 3 dias), G (uma semana ou mais). Cada item termina c
 
 ### Onda 0: consertos e pendências (sem decisão de produto)
 
-**0.1 Hook duplicado no primeiro parágrafo (P).** `stripLeadingHook` passa a cortar também quando o primeiro bloco `ecoa()` o hook (a comparação fuzzy que já existe em `draft.ts:610`). `hookEcoaAbertura` roda também no texto final, depois do humanizador. Aceite: teste com o caso real de 09/10 (`c26b1711`), e 0 ocorrências nos roteiros novos.
+**0.1 Hook duplicado no primeiro parágrafo (P). FEITO no branch `escrita-024`.** `stripLeadingHook` passa a cortar também quando o primeiro bloco `ecoa()` o hook (a comparação fuzzy que já existe em `draft.ts:610`). `hookEcoaAbertura` roda também no texto final, depois do humanizador. Aceite: teste com o caso real de 09/10 (`c26b1711`), e 0 ocorrências nos roteiros novos.
 
 **0.2 O WIP do estudo de outubro vira o braço B do A/B (P).** Confirmado com a sessão de origem (estudo de 07/10, sessão 3f14d0f7): o trabalho está terminado e ficou sem commit de propósito, esperando aprovação. Inclui placar do hook em código, `selectHook` por placar, comando por território, prompts dos agentes ajustados e injeção dos playbooks novos quando ativos. Testes (826) e `tsc` passam. Como o Igor quer A/B antes de ativar (decisão 2), ele NÃO sobe direto: o push na main é deploy e mudaria os prompts em produção. Ele entra no banco de prova como braço B contra o código de hoje (1.5 e 2.1). Ao commitar, separar dos arquivos da outra sessão (checagem no Gemini, plano 023: `verificar.ts`, `gemini-search.ts`, `.env.example`, `.gitignore`, `codex-updates/state.json`).
 
@@ -110,13 +110,13 @@ Pendências conhecidas do WIP, registradas pela sessão de origem:
 - as exceções por cliente não estão em `vm_client_preferences` (5.1);
 - o ideador não vê o histórico datado que a regra de repetição de 21/90 dias precisa (2.2).
 
-**0.3 Commitar o estudo de outubro (P).** `docs/estudo-2026-10/` está fora do git.
+**0.3 Commitar o estudo de outubro (P). FEITO no branch `escrita-024`.** `docs/estudo-2026-10/` está fora do git.
 
-**0.4 Contradições óbvias dos prompts (P).** Unificar o tamanho (checklist "150 a 430 corpo" contra roteirista "370 a 430 corpo / 420 a 500 total"; ritmo real é 3,07 palavras/s), o formato de FONTES (`roteirista.md:14` contra `WRITER_FORMAT`), o travessão (style_guide permite 1, `dedash` remove todos) e o `revisao.md` que ainda descreve a saída por marcador quando o código usa tool. Remover o lint `MAX_LONGAS_SEGUIDAS` (teto de 3 frases longas seguidas): 90% dos roteiros humanos violam e nenhuma faixa separa resultado.
+**0.4 Contradições óbvias dos prompts (P). FEITO no branch `escrita-024`.** O que mora no banco (tamanho do checklist v3, travessão do style_guide v4) já está corrigido no checklist v4 e no style_guide v5 do estudo de outubro, então resolve junto com 2.1. No código: FONTES do roteirista alinhado ao formato, revisão sem o marcador antigo e com o hook fora da reescrita, e o teto de frases longas seguidas fora do revisor e do humanizador (continua medido no rastro). Unificar o tamanho (checklist "150 a 430 corpo" contra roteirista "370 a 430 corpo / 420 a 500 total"; ritmo real é 3,07 palavras/s), o formato de FONTES (`roteirista.md:14` contra `WRITER_FORMAT`), o travessão (style_guide permite 1, `dedash` remove todos) e o `revisao.md` que ainda descreve a saída por marcador quando o código usa tool. Remover o lint `MAX_LONGAS_SEGUIDAS` (teto de 3 frases longas seguidas): 90% dos roteiros humanos violam e nenhuma faixa separa resultado.
 
-**0.5 Observações de edição voltam a ser gravadas (P).** Pararam em 28/09 e há edições de 10/10. Achar o porquê (provável quebra no ETL ou no `finalizeSession`).
+**0.5 Observações de edição: alarme falso (verificado 11/10).** A varredura (`varrerEdicoes` em `lib/etl.ts`) roda no ETL semanal. A última rodada foi 05/10 e não havia edição nova desde 28/09. As edições de 10 e 11/10 (3 roteiros) entram na rodada de 12/10. O problema real é a latência de até 7 dias entre a edição e a lição, e ele fica para 3.4.
 
-**0.6 Pesquisador para de pedir número por número (P).** Em `agents/pesquisador.md`, trocar "Priorize números que surpreendem" por "traga os números que servem à tese, cada um marcado com a função que cumpre (contraste, dimensão, prova, autoridade)". O dossiê continua rico. Quem corta é o roteirista.
+**0.6 Pesquisador para de pedir número por número (P). FEITO no branch `escrita-024`, junto com o "o que é" de cada sigla/empresa pouco conhecida e o país pelo nome.** Em `agents/pesquisador.md`, trocar "Priorize números que surpreendem" por "traga os números que servem à tese, cada um marcado com a função que cumpre (contraste, dimensão, prova, autoridade)". O dossiê continua rico. Quem corta é o roteirista.
 
 ### Onda 1: banco de prova (antes de mexer na escrita)
 
