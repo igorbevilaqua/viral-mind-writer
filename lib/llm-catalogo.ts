@@ -24,7 +24,7 @@ export const MODELOS = [
   { id: "claude-opus-5", nome: "Opus 5", provedor: "anthropic", toolForcada: true, nota: "geração anterior, equilibrado" },
   { id: "claude-sonnet-5", nome: "Sonnet 5", provedor: "anthropic", toolForcada: true, nota: "bom padrão para análise" },
   { id: "claude-haiku-4-5", nome: "Haiku 4.5", provedor: "anthropic", toolForcada: true, nota: "o mais barato, para tarefa simples" },
-  { id: "grok-4.3", nome: "Grok 4.3", provedor: "xai", toolForcada: true, nota: "o único com busca na web ao vivo" },
+  { id: "grok-4.7", nome: "Grok 4.7", provedor: "xai", toolForcada: true, nota: "o único com busca na web ao vivo" },
 ] as const;
 
 export type ModeloId = (typeof MODELOS)[number]["id"];
@@ -66,7 +66,7 @@ export const FUNCOES_LLM = [
     slug: "pesquisa",
     nome: "Pesquisa na web",
     resumo: "busca os fatos, números e fontes que entram no roteiro",
-    padrao: "grok-4.3",
+    padrao: "grok-4.7",
     toolObrigatoria: true,
     fixo: true,
   },

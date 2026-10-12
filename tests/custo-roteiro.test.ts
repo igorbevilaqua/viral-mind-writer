@@ -39,7 +39,7 @@ describe("custoDaFuncao", () => {
   });
 
   test("modelo sem preço na tabela (Grok) custa zero, não NaN", () => {
-    expect(custoDaFuncao("pesquisa", "grok-4.3")).toBe(0);
+    expect(custoDaFuncao("pesquisa", "grok-4.7")).toBe(0);
   });
 });
 

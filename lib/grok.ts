@@ -9,7 +9,7 @@ export function grokClient(): OpenAI {
   });
 }
 
-export const RESEARCH_MODEL = process.env.VM_RESEARCH_MODEL ?? "grok-4.3";
+export const RESEARCH_MODEL = process.env.VM_RESEARCH_MODEL ?? "grok-4.7";
 
 /**
  * Separa falha de INFRA (crédito esgotado, cota, chave recusada) de falha de conteúdo.
