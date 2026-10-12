@@ -89,6 +89,14 @@
       "detail": "",
       "commit": "ca4bd6e",
       "addedAt": "2026-10-11T21:30:57.140Z"
+    },
+    {
+      "id": "mv569tz1",
+      "type": "improvement",
+      "summary": "Hooks mais curtos e provocativos: 1 ou 2 frases, um fato estranho e uma promessa, sem entregar a resposta",
+      "detail": "",
+      "commit": "c80138c",
+      "addedAt": "2026-10-12T11:32:09.864Z"
     }
   ],
   "lastRelease": {
