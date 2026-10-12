@@ -23,7 +23,15 @@ import { modeloDe } from "../llm-config";
 
 // Os prompts dos agentes vivem em agents/*.md — fonte única consumida pelo app e pela skill /goal.
 const promptCache = new Map<string, string>();
+// Na primeira leitura carrega a pasta inteira: o deploy da Hostinger apaga a pasta da versão
+// antiga com o processo ainda rodando, e a geração que estava no meio morria com ENOENT no
+// primeiro agente ainda não lido (sessão 43495956, 12/10/2026).
 export function agentPrompt(name: string): string {
+  if (!promptCache.size) {
+    const dir = path.join(process.cwd(), "agents");
+    for (const f of fs.readdirSync(dir))
+      if (f.endsWith(".md")) promptCache.set(f.slice(0, -3), fs.readFileSync(path.join(dir, f), "utf8"));
+  }
   let p = promptCache.get(name);
   if (!p) {
     p = fs.readFileSync(path.join(process.cwd(), "agents", `${name}.md`), "utf8");
