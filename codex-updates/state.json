@@ -97,6 +97,14 @@
       "detail": "",
       "commit": "c80138c",
       "addedAt": "2026-10-12T11:32:09.864Z"
+    },
+    {
+      "id": "mv5cypdo",
+      "type": "improvement",
+      "summary": "Pesquisa na web passa a usar o Grok 4.7, a versao mais nova",
+      "detail": "",
+      "commit": "e01cfb6",
+      "addedAt": "2026-10-12T14:39:28.007Z"
     }
   ],
   "lastRelease": {
