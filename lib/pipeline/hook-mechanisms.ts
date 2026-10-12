@@ -58,7 +58,8 @@ const ABERTURAS_MORTAS: [RegExp, string][] = [
   [/^\s*(nesse|neste) v[íi]deo/i, "abertura genérica"],
 ];
 
-const MAX_FRASES = 4;
+// Igor, 12/10/2026: hook de 1 ou 2 frases, a primeira arma e a segunda promete.
+const MAX_FRASES = 2;
 
 // Conta períodos falados. O lookaround impede que o ponto DENTRO de um número quebre a
 // contagem — "R$ 12.457,32" é uma frase só, e Ultra Especificidade vive desses números.
@@ -69,7 +70,7 @@ export function contarFrases(hook: string): number {
 }
 
 // Devolve os motivos de reprovação. Vazio = passou.
-export const MAX_PALAVRAS_HOOK = 40;
+export const MAX_PALAVRAS_HOOK = 30;
 
 export function hookLint(hook: string): string[] {
   const motivos: string[] = [];
@@ -81,7 +82,8 @@ export function hookLint(hook: string): string[] {
   const n = contarFrases(t);
   if (n > MAX_FRASES) motivos.push(`${n} frases (máximo ${MAX_FRASES})`);
   // Estudo de outubro: acima de 40 palavras faladas o resultado cai. Com o hook escrito antes do
-  // corpo (plano 024, 2.4) ele passou a carregar o começo do corpo, e o corpo o repetia.
+  // corpo (plano 024, 2.4) ele passou a carregar o começo do corpo, e o corpo o repetia. Os hooks
+  // humanos que viralizaram ficam em 20 a 25: 30 é o teto, não a meta.
   const palavras = t.split(/\s+/).length;
   if (palavras > MAX_PALAVRAS_HOOK) motivos.push(`${palavras} palavras (máximo ${MAX_PALAVRAS_HOOK})`);
   return motivos;
@@ -131,8 +133,11 @@ const MARCA = umaDe(
 const PROIBIU = umaDe("proibiu|proibiram|proibid\\w*|baniu|baniram|banid\\w*|bloqueou|bloquearam|cancelou|cancelaram|multou|multaram|processou|processaram|vetou|censurou|expulsou|prendeu|taxou|taxar");
 const EMBATE = umaDe("guerra|guerras|briga|contra|humilh\\w+|derrot\\w+|venceu|venceram|atac\\w+|ameac\\w+|rival|rivais|desafiou|enfrentou|declarou|declararam|peitou|bateu de frente");
 
+// Conta só a PRIMEIRA frase. A segunda é a promessa ("E o motivo pode custar caro pra você"), e
+// ela vive justamente de "você", "pode" e "nunca": contadas no hook inteiro, essas palavras
+// ensinavam o agente a trocar a promessa por mais um fato, e o hook passava a entregar a resposta.
 export function placarHook(hook: string): number {
-  const cru = (hook ?? "").trim().replace(/^["“'(]+/, "");
+  const cru = (hook ?? "").trim().replace(/^["“'(]+/, "").split(/(?<=(?<![0-9])[.!?])\s+/)[0];
   const t = semAcento(cru);
   const [p1 = "", p2 = ""] = cru.split(/\s+/);
   const nomeNoMeio = /\s[A-ZÁÉÍÓÚÂÊÔÃÕÇ][\p{L}]/u.test(cru); // maiúscula fora do início = nome próprio

@@ -19,16 +19,29 @@ Sem isso, o alvo padrão da operação: homem brasileiro, 20 a 60 anos, interess
 Você entrega de 5 a 6 `candidatos` a hook. A escolha do principal e das 3 variantes é feita DEPOIS pelos dados (pelo ranking de mecanismos vencedores) — seu trabalho é gerar bons candidatos, cada um com um mecanismo distinto e bem rotulado.
 
 Cada candidato tem:
-- `hook` — 2 a 4 frases faladas; duas é o padrão e o que mais segura os 3 primeiros segundos (uma frase só perde esse tempo no Instagram). Abre com o nome de quem age e usa uma fórmula do playbook (placar +2 é a meta). O corpo vai começar exatamente onde o hook termina.
+- `hook` — 1 ou 2 frases faladas, até umas 25 palavras (30 é o teto). A primeira abre com o nome de quem age e usa uma fórmula do playbook (placar +2 é a meta, e o placar conta só a primeira frase). A segunda promete, sem responder. O corpo vai começar exatamente onde o hook termina.
 - `mecanismo` — o mecanismo de curiosidade DOMINANTE (vocabulário canônico do playbook). Não classifique pelo sujeito da frase; classifique pelo que gera a curiosidade.
 - `formato` — 'Personagem Central' se gira em torno de uma pessoa, 'Visual' se depende do que se vê, senão 'Nenhum'.
 - `racional` — 1 frase: por que esse mecanismo vence para esta narrativa.
 
-## Frases curtas
+## Duas frases: o fato estranho e a promessa
 
-Duas frases é o formato que mais segura os 3 primeiros segundos: a primeira arma, a segunda vira. Quatro é o teto.
+O hook não explica nada. Ele mostra uma coisa estranha e promete que existe um motivo, um detalhe ou uma consequência. Quem conta o motivo é o corpo.
 
-Se uma frase precisa de vírgula para respirar, quebre em duas. É quase sempre melhor.
+- **Primeira frase: o fato estranho.** Uma cena ou um fato que qualquer pessoa entende ouvindo uma vez, sem contexto. Imagem vale mais que dado: "trocam de carro como trocam de iPhone" ganha de "um elétrico de três anos vale metade". No máximo um número, e só se ele for a própria surpresa.
+- **Segunda frase: a promessa.** Abre a pergunta e não fecha. Diz que existe um motivo, um detalhe, um risco ou um desfecho, e para aí. Pode falar com o espectador ("pode custar caro pra você", "chegou até o seu bolso").
+- **Uma frase só** também vale, quando ela já arma e provoca sozinha.
+
+Hooks da casa que viralizaram, alguns encurtados (de outras pautas, para mostrar o movimento, não para copiar a frase):
+- "A China iniciou a contagem regressiva para o fim de uma das profissões mais comuns do mundo: o dentista. Pelo menos do jeito que a gente conhece hoje."
+- "O que aconteceu com a Yopa? O sorvete da sua infância simplesmente sumiu, e o motivo foi uma decisão da Nestlé que quase ninguém conhece."
+- "O Palmeiras acabou de mandar uma promessa pra jogar com o Messi. E é por isso que Barcelona e Real Madrid invejam o maior clube do Brasil."
+- "Os Correios estão no vermelho há anos. E agora o risco chegou até o seu bolso."
+- "O Nubank deixou de ser 100% brasileiro. Só que esse passo representa muito mais do que você imagina."
+
+O erro que o time mais reprova: a segunda frase que EXPLICA. "O Playcenter fechou mesmo lotado. E o motivo tá num aluguel de 85 mil metros quadrados fatiado entre 25 donos" entregou a resposta e matou a curiosidade, com três números no caminho. "O Playcenter afundou por causa de um concorrente que ele mesmo criou" provoca e guarda o resto.
+
+Se uma frase precisa de vírgula para respirar, quebre em duas, ou corte o que está sobrando.
 
 ## Palavras simples
 
@@ -51,21 +64,23 @@ Candidato é eliminado automaticamente se:
 - Começa com saudação ou frase genérica que abriria qualquer vídeo.
 - Usa "você sabia que", "nesse vídeo", "hoje vou te mostrar", "presta atenção", "olá", "e aí pessoal".
 - É vago onde poderia ser específico: nenhum nome próprio, ou "essa empresa" / "esse cara" / "essa IA" no lugar do nome.
-- Tem placar negativo pela conta do playbook (abertura "Esse/Essa", "você", IA sem sujeito, ano em algarismo, "pode", "nunca" e palavra longa tiram ponto). Meta: +2.
+- A primeira frase tem placar negativo pela conta do playbook (abertura "Esse/Essa", "você", IA sem sujeito, ano em algarismo, "pode", "nunca" e palavra longa tiram ponto). Meta: +2. A segunda frase fica fora da conta.
+- Conta o motivo, o mecanismo ou o desfecho que o vídeo vai revelar. A promessa diz que ele existe, nunca qual é.
+- Tem mais de um número.
 - Contém travessão ou ponto e vírgula.
 - Você mesmo não consegue nomear qual mecanismo está usando.
 - Apresenta o TEMA em vez do IMPACTO.
-- Passa de 4 frases ou de 40 palavras. O hook abre a história, não conta o começo do corpo: o que explica vai para o corpo, que é escrito depois dele e começa onde ele para.
+- Passa de 2 frases ou de 30 palavras. O hook abre a história, não conta o começo do corpo: o que explica vai para o corpo, que é escrito depois dele e começa onde ele para.
 
-Especificidade é a régua: nome próprio > categoria · lugar exato > "o Brasil" · idade > "jovem" · "acabou de" > data. Número exato não separa hook bom de ruim nos roteiros da casa; nome, lugar e idade separam.
+Na primeira frase, especificidade é a régua: nome próprio > categoria · lugar exato > "o Brasil" · idade > "jovem" · "acabou de" > data. Número exato não separa hook bom de ruim nos roteiros da casa; nome, lugar e idade separam.
 
 ## Self-check obrigatório
 
 Antes de registrar cada candidato, passe-o por estes três testes binários. Reprovou em um, reescreva antes de entregar. Nenhum candidato fraco chega ao registro.
 
-1. **Gera curiosidade?** Abre uma lacuna que o espectador NÃO fecha sozinho? Existe uma pergunta implícita que só o vídeo responde? Se o hook entregou a resposta junto com a pergunta, ou se o senso comum resolve a lacuna, reprovou.
+1. **Gera curiosidade?** Abre uma lacuna que o espectador NÃO fecha sozinho? Existe uma pergunta implícita que só o vídeo responde? Se o hook entregou a resposta junto com a pergunta, ou se o senso comum resolve a lacuna, reprovou. Teste prático: se alguém ouvir só o hook e já souber contar o porquê para um amigo, reprovou.
 2. **É impactante?** Faz o olho arregalar nos primeiros 2 segundos? Tem algo concreto que destoa do feed (um nome que o público reconhece, "acabou de", briga com os dois lados nomeados, lugar exato, idade do personagem)? Se abriria qualquer vídeo, reprovou.
-3. **É simples?** Uma pessoa comum, ouvindo isso UMA vez enquanto rola o feed, entende na hora? Tem jargão ou sintaxe que exige esforço? Se exige, reprovou.
+3. **É simples?** Uma pessoa comum, ouvindo isso UMA vez enquanto rola o feed, entende na hora? Tem jargão, número que precisa de conta ou sintaxe que exige esforço? Se exige, reprovou.
 
 **Regra de ouro:** se você está em dúvida se passou, ele NÃO passou. Reescreva.
 

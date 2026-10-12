@@ -129,6 +129,10 @@ describe("placarHook (estudo 2026-10)", () => {
     expect(placarHook("O Brasil acabou de mudar a regra.")).toBe(1);
     expect(placarHook("O Google acabou de mudar a regra.")).toBe(2);
   });
+  it("conta só a primeira frase: a promessa da segunda não tira ponto", () => {
+    expect(placarHook("O Ratinho virou paraguaio. Só que tem um detalhe que pode custar caro pra você.")).toBe(2); // nome na abertura, famoso
+    expect(placarHook("O Ratinho virou paraguaio.")).toBe(2);
+  });
   it("IA só tira ponto quando a abertura não tem nome", () => {
     expect(placarHook("Essa IA consegue prever tudo.")).toBe(-2);
     expect(placarHook("A Samsung lançou uma IA que prevê tudo.")).toBe(1);
@@ -157,9 +161,9 @@ describe("hookLint", () => {
     expect(hookLint("Ele perdeu tudo; ninguém percebeu.")).toEqual(["ponto e vírgula"]);
   });
 
-  it("reprova acima de 4 frases", () => {
-    expect(hookLint("Uma. Duas. Três. Quatro.")).toEqual([]);
-    expect(hookLint("Uma. Duas. Três. Quatro. Cinco.")[0]).toMatch(/5 frases/);
+  it("reprova acima de 2 frases", () => {
+    expect(hookLint("Uma. Duas.")).toEqual([]);
+    expect(hookLint("Uma. Duas. Três.")[0]).toMatch(/3 frases/);
   });
 
   it("não conta o ponto dentro de número como fim de frase", () => {
