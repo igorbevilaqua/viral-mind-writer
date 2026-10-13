@@ -1,6 +1,32 @@
 import Anthropic from "@anthropic-ai/sdk";
+import { MODELOS } from "./llm-catalogo";
 
 export const anthropic = new Anthropic();
+
+// Tool forçada para modelo que não aceita (geração 5.5 e fable-5-1 dão 400 com `tool`/`any`):
+// troca por `auto` e pede a tool no fim do system. Mora no client porque é o ponto por onde
+// todo call site passa — os ~20 que forçam tool seguem escritos como estavam, e a tela de
+// configuração pode oferecer esses modelos em qualquer função.
+//
+// ponytail: `auto` + instrução é pedido, não garantia. Conferido contra a API em 13/10/2026
+// (opus-5-5 chamou a tool), e quem lê já trata a ausência de tool_use como erro da fase.
+const SEM_TOOL_FORCADA = new Set<string>(MODELOS.filter((m) => !m.toolForcada).map((m) => m.id));
+
+export function adaptarToolChoice<P extends Anthropic.MessageCreateParams>(p: P): P {
+  const tc = p.tool_choice;
+  if (!tc || (tc.type !== "tool" && tc.type !== "any") || !SEM_TOOL_FORCADA.has(String(p.model))) return p;
+  const pedido =
+    tc.type === "tool"
+      ? `Responda chamando a ferramenta ${tc.name}. Não responda em texto.`
+      : "Responda chamando uma das ferramentas. Não responda em texto.";
+  const system: Anthropic.TextBlockParam[] =
+    typeof p.system === "string" ? [{ type: "text", text: p.system }] : [...(p.system ?? [])];
+  return { ...p, tool_choice: { type: "auto" }, system: [...system, { type: "text", text: pedido }] };
+}
+
+const criar = anthropic.messages.create.bind(anthropic.messages);
+anthropic.messages.create = ((params: Anthropic.MessageCreateParams, opts?: Anthropic.RequestOptions) =>
+  criar(adaptarToolChoice(params), opts)) as typeof anthropic.messages.create;
 
 // Rascunho e humanizador = qualidade de escrita; análise e crítica = sonnet.
 //
