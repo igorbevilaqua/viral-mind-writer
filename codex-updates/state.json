@@ -113,6 +113,14 @@
       "detail": "Antes so dava para escolher o Opus 5.5 na escrita e na calibracao; agora ele (e o Sonnet 5.5 e o Fable 5.1) aparece em todas as funcoes",
       "commit": "b0adf57",
       "addedAt": "2026-10-13T18:26:16.775Z"
+    },
+    {
+      "id": "mv79vuzy",
+      "type": "fix",
+      "summary": "Edicao com o Bob nao trava mais quando ele precisa pesquisar mais de um dado",
+      "detail": "Corrige o erro 400 ao pedir ao Bob um trecho que exige mais de uma pesquisa",
+      "commit": "9cdedd7",
+      "addedAt": "2026-10-13T22:48:48.827Z"
     }
   ],
   "lastRelease": {
