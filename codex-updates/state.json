@@ -105,6 +105,14 @@
       "detail": "",
       "commit": "e01cfb6",
       "addedAt": "2026-10-12T14:39:28.007Z"
+    },
+    {
+      "id": "mv70i8mv",
+      "type": "feature",
+      "summary": "Opus 5.5 disponivel em todos os seletores de modelo da configuracao",
+      "detail": "Antes so dava para escolher o Opus 5.5 na escrita e na calibracao; agora ele (e o Sonnet 5.5 e o Fable 5.1) aparece em todas as funcoes",
+      "commit": "b0adf57",
+      "addedAt": "2026-10-13T18:26:16.775Z"
     }
   ],
   "lastRelease": {
