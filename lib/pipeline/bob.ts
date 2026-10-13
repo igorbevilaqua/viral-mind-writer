@@ -94,21 +94,28 @@ ${input.instrucao}`;
       messages,
     });
 
-    const toolUse = res.content.find((b): b is Anthropic.ToolUseBlock => b.type === "tool_use");
-    if (toolUse && toolUse.name === "pesquisar_web") {
-      const query = (toolUse.input as { query?: string }).query ?? input.instrucao;
-      onPhase?.({ phase: "pesquisando", query });
-      let resultado = "(a pesquisa não retornou dados — não invente números)";
-      try {
-        const r = await grokPesquisa(query);
-        if (r.texto.trim()) resultado = r.texto;
-        r.fontes.forEach((u) => fontes.add(u));
-      } catch (e) {
-        console.error("pesquisa do Bob falhou, seguindo sem dados frescos", e);
-      }
+    // O modelo pode pedir mais de uma pesquisa na mesma resposta (tool use paralelo). A API
+    // exige um tool_result para CADA tool_use: responder só ao primeiro dá 400 na rodada seguinte.
+    const toolUses = res.content.filter((b): b is Anthropic.ToolUseBlock => b.type === "tool_use");
+    if (toolUses.length) {
+      const resultados = await Promise.all(
+        toolUses.map(async (t): Promise<Anthropic.ToolResultBlockParam> => {
+          const query = (t.input as { query?: string }).query ?? input.instrucao;
+          onPhase?.({ phase: "pesquisando", query });
+          let resultado = "(a pesquisa não retornou dados — não invente números)";
+          try {
+            const r = await grokPesquisa(query);
+            if (r.texto.trim()) resultado = r.texto;
+            r.fontes.forEach((u) => fontes.add(u));
+          } catch (e) {
+            console.error("pesquisa do Bob falhou, seguindo sem dados frescos", e);
+          }
+          return { type: "tool_result", tool_use_id: t.id, content: resultado };
+        })
+      );
       onPhase?.({ phase: "escrevendo" });
       messages.push({ role: "assistant", content: res.content });
-      messages.push({ role: "user", content: [{ type: "tool_result", tool_use_id: toolUse.id, content: resultado }] });
+      messages.push({ role: "user", content: resultados });
       continue;
     }
 
