@@ -84,7 +84,10 @@ ${input.instrucao}`;
   for (let turn = 0; turn < 2; turn++) {
     const res = await anthropic.messages.create({
       model: ctx.modelo,
-      max_tokens: 2000,
+      // Folga para o thinking: ele divide o teto com a resposta (mesma correção de 9acaf7f no
+      // resto do pipeline). Com 2000, duas pesquisas grandes faziam o modelo pensar até o teto e
+      // não sobrava nada para o texto: a tela mostrava as fontes e uma sugestão vazia.
+      max_tokens: 8000,
       system: [
         // mesma ordem block1-estático/block2-persona do roteirista → reusa o prefixo cacheado
         { type: "text", text: buildStaticSystemBlock(ctx), cache_control: { type: "ephemeral" } },
@@ -106,7 +109,10 @@ ${input.instrucao}`;
           try {
             const r = await grokPesquisa(query);
             if (r.texto.trim()) resultado = r.texto;
-            r.fontes.forEach((u) => fontes.add(u));
+            // Só as fontes que a pesquisa CITA no texto: o Grok 4.7 devolve como citação toda
+            // página que abriu (71 numa busca só), e o campo FONTES virava uma parede de links.
+            const citadas = r.fontes.filter((u) => r.texto.includes(u));
+            (citadas.length ? citadas : r.fontes.slice(0, 3)).forEach((u) => fontes.add(u));
           } catch (e) {
             console.error("pesquisa do Bob falhou, seguindo sem dados frescos", e);
           }
@@ -121,8 +127,10 @@ ${input.instrucao}`;
 
     const block = res.content.find((b): b is Anthropic.TextBlock => b.type === "text");
     const texto = block ? dedash(block.text.trim()) : "";
+    // Sugestão vazia em silêncio parece que o Bob não entendeu; erro aparece na tela e diz o que houve.
+    if (!texto) throw new Error(`O Bob não chegou a escrever (${res.stop_reason}). Tente de novo.`);
     return { texto, fonte: fontes.size ? [...fontes].join("\n") : undefined };
   }
 
-  return { texto: "", fonte: fontes.size ? [...fontes].join("\n") : undefined };
+  throw new Error("O Bob não chegou a escrever. Tente de novo.");
 }

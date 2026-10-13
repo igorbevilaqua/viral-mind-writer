@@ -44,3 +44,23 @@ test("duas pesquisas na mesma resposta: cada tool_use ganha o seu tool_result", 
   expect(r.texto).toBe("texto final");
   expect(r.fonte).toBe("https://a.com\nhttps://b.com");
 });
+
+const pedido = { modo: "completar" as const, roteiro: "x".repeat(200), antes: "x".repeat(200), depois: "", instrucao: "dado" };
+const umaPesquisa = { content: [{ type: "tool_use", id: "t1", name: "pesquisar_web", input: { query: "a" } }] };
+
+test("fontes: só as que a pesquisa cita no texto, não toda página que o Grok abriu", async () => {
+  const { grokPesquisa } = await import("@/lib/pipeline/grok-search");
+  vi.mocked(grokPesquisa).mockResolvedValueOnce({
+    texto: "São 9h por dia (https://citada.com).",
+    fontes: ["https://citada.com", "https://so-aberta-1.com", "https://so-aberta-2.com"],
+  });
+  criar.mockResolvedValueOnce(umaPesquisa).mockResolvedValueOnce({ content: [{ type: "text", text: "ok" }] });
+  expect((await bobAssist("s", pedido)).fonte).toBe("https://citada.com");
+});
+
+test("resposta sem texto vira erro na tela, não sugestão vazia", async () => {
+  criar
+    .mockResolvedValueOnce(umaPesquisa)
+    .mockResolvedValueOnce({ stop_reason: "max_tokens", content: [{ type: "thinking", thinking: "" }] });
+  await expect(bobAssist("s", pedido)).rejects.toThrow("max_tokens");
+});
