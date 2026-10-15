@@ -1,5 +1,5 @@
 import { describe, expect, test, vi } from "vitest";
-import { TETO_POR_RODADA, verificarRoteiro, type ItemBusca, type Veredicto } from "@/lib/pipeline/verificar";
+import { TAM_LOTE, TETO_POR_RODADA, repartirLote, verificarRoteiro, type ItemBusca, type Veredicto } from "@/lib/pipeline/verificar";
 
 // Passo 3 + orquestração (017 §5, §8, §11). Determinístico: as três chamadas externas
 // (extração, busca, classificação) entram por injeção — nenhum teste toca rede.
@@ -130,7 +130,7 @@ describe("teto por rodada (§8, §11)", () => {
     const d = deps(muitas);
     const r = await verificarRoteiro({ roteiro, dossie: "", regime: "completa" }, d);
 
-    expect(d.buscar).toHaveBeenCalledTimes(TETO_POR_RODADA);
+    expect(d.buscar).toHaveBeenCalledTimes(Math.ceil(TETO_POR_RODADA / TAM_LOTE));
     expect(r.verificadas).toBe(TETO_POR_RODADA);
     expect(r.excedentes).toBe(3);
     // nada some: toda alegação extraída tem uma linha na tabela
@@ -176,5 +176,40 @@ describe("registro e progresso", () => {
     expect(eventos.map((e) => e.etapa)).toContain("classificando");
     const buscas = eventos.filter((e) => e.etapa === "buscando");
     expect(buscas.at(-1)).toEqual({ etapa: "buscando", feito: 2, total: 2 });
+  });
+});
+
+describe("busca em lote (custo da xAI)", () => {
+  const tres = ["A Vale lucrou 45 bilhões em 2024", "A Petrobras produziu 3 milhões de barris em 2023", "O Itaú tem 100 mil funcionários"];
+
+  test("uma chamada por lote, e cada alegação recebe só a sua seção e as URLs dela", async () => {
+    const resposta = {
+      texto: "### [1]\nconfirma https://a.com\n\n### [2] Petrobras\nnão bate https://b.com\n\n### [3]\nsem fonte",
+      fontes: ["https://a.com", "https://b.com", "https://c.com"],
+    };
+    const d = deps(tres, async () => resposta);
+    await verificarRoteiro({ roteiro, dossie: "", regime: "delta" }, d);
+
+    expect(d.buscar).toHaveBeenCalledTimes(1);
+    const itens = d.classificar.mock.calls[0][0];
+    expect(itens[0].busca).toEqual({ texto: "confirma https://a.com", fontes: ["https://a.com"] });
+    expect(itens[1].busca).toEqual({ texto: "não bate https://b.com", fontes: ["https://b.com"] });
+    // seção sem URL não herda a fonte das outras: o classificador atribuiria a fonte errada
+    expect(itens[2].busca.fontes).toEqual([]);
+  });
+
+  test("seção que o modelo pulou recebe a resposta inteira, nunca evidência vazia", () => {
+    const r = repartirLote({ texto: "### [1]\num\n### [3]\ntrês", fontes: ["https://x.com"] }, 3);
+    expect(r[1]).toEqual({ texto: "### [1]\num\n### [3]\ntrês", fontes: ["https://x.com"] });
+  });
+
+  test("crédito acabado no lote não tenta de novo uma por uma", async () => {
+    const d = deps(tres, async () => {
+      throw Object.assign(new Error("insufficient credits"), { status: 429 });
+    });
+    const r = await verificarRoteiro({ roteiro, dossie: "", regime: "delta" }, d);
+    expect(d.buscar).toHaveBeenCalledTimes(1);
+    expect(r.busca_indisponivel).toMatch(/crédito|cota/i);
+    expect(r.itens.every((i) => i.veredicto === "nao_verificavel")).toBe(true);
   });
 });

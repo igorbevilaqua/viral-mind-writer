@@ -355,6 +355,46 @@ const DEPS_PADRAO: DepsVerificacao = { buscar: grokPesquisa, extrair: extrairAle
 const queryDe = (alegacao: string) =>
   `Esta afirmação é factualmente correta? Traga os dados atuais e a URL da fonte de cada um: "${alegacao}"`;
 
+/**
+ * Alegações por chamada do Grok. Uma busca por alegação era ~13 chamadas por roteiro, e cada uma
+ * paga o prompt, o raciocínio e as buscas web dela: era o grosso da conta da xAI. Em lote o Grok
+ * faz as buscas que precisar dentro de UMA resposta.
+ * 3 e não 5, medido em 15/10 (3 roteiros, 42 alegações, Grok 4.3, contra uma busca por
+ * alegação): 5 por lote custou 72% menos, mas confirmou dois casos que a busca individual tinha
+ * pego como imprecisos (e ela estava certa). 3 por lote custou 60% menos e, no caso que deu para
+ * comparar, caiu em `nao_verificavel` em vez de confirmar: a direção segura do erro.
+ * ponytail: tamanho fixo; lote por assunto só se 3 também perder nuance.
+ */
+export const TAM_LOTE = 3;
+
+export const queryDeLote = (alegacoes: string[]) =>
+  `Verifique CADA afirmação abaixo, uma por uma. Para cada uma, diga se é factualmente correta e traga os dados atuais com a URL da fonte de cada dado. Responda em seções, uma por afirmação, na mesma ordem, e comece cada seção com a linha "### [n]" (o número da afirmação). Não junte duas afirmações na mesma seção.
+
+${alegacoes.map((a, i) => `[${i + 1}] "${a}"`).join("\n")}`;
+
+const URL = /https?:\/\/[^\s)\]]+/g;
+
+/**
+ * Reparte a resposta de um lote em uma evidência por alegação, pelo marcador "### [n]".
+ * Seção ausente (o modelo pulou o marcador) devolve a resposta inteira: o classificador julga
+ * com mais texto, nunca com nenhum. As fontes de cada seção são só as URLs que ELA cita — a lista
+ * do lote inteiro faria o classificador atribuir a uma alegação a fonte de outra.
+ */
+export function repartirLote(
+  busca: { texto: string; fontes: string[] },
+  n: number
+): { texto: string; fontes: string[] }[] {
+  const secoes = new Map<number, string>();
+  const partes = busca.texto.split(/^#{2,4}\s*\[(\d+)\][^\n]*$/m);
+  for (let i = 1; i < partes.length; i += 2) secoes.set(Number(partes[i]), partes[i + 1].trim());
+  return Array.from({ length: n }, (_, i) => {
+    const sec = secoes.get(i + 1);
+    if (!sec) return busca;
+    const citadas = busca.fontes.filter((u) => sec.includes(u));
+    return { texto: sec, fontes: [...new Set([...citadas, ...(sec.match(URL) ?? [])])] };
+  });
+}
+
 // Degradação segura em forma de item: nunca `confirmado`, nunca sem motivo visível (§11).
 const naoVerificavel = (alegacao: string, explicacao: string): ItemVerificado => ({
   alegacao,
@@ -401,22 +441,49 @@ export async function verificarRoteiro(
   let buscaIndisponivel: string | null = null;
   // Fail-soft POR ALEGAÇÃO (§11): o try/catch é de cada busca, não da rodada. Uma exceção
   // marca aquela alegação e as outras seguem — `Promise.all` só vê promessas resolvidas.
-  const buscas = await Promise.all(
-    aBuscar.map(async (alegacao) => {
-      try {
-        return { alegacao, busca: await deps.buscar(queryDe(alegacao), log), motivo: "busca falhou" };
-      } catch (e) {
-        console.error(`verificacao: busca falhou — ${alegacao.slice(0, 120)}`, e);
-        // Crédito/cota estourado não é "não achei fonte": NADA foi checado. O motivo entra no
-        // item e no registro, senão o selo mostra 🔍 igual a um veredicto de verdade.
-        const infra = falhaDeInfra(e);
-        if (infra) buscaIndisponivel ??= infra;
-        return { alegacao, busca: null, motivo: infra ? `a busca não rodou: ${infra}` : "busca falhou" };
-      } finally {
-        onProgresso?.({ etapa: "buscando", feito: ++feito, total: aBuscar.length });
-      }
-    })
+  const umaPorUma = async (alegacao: string) => {
+    try {
+      return { alegacao, busca: await deps.buscar(queryDe(alegacao), log), motivo: "busca falhou" };
+    } catch (e) {
+      console.error(`verificacao: busca falhou — ${alegacao.slice(0, 120)}`, e);
+      // Crédito/cota estourado não é "não achei fonte": NADA foi checado. O motivo entra no
+      // item e no registro, senão o selo mostra 🔍 igual a um veredicto de verdade.
+      const infra = falhaDeInfra(e);
+      if (infra) buscaIndisponivel ??= infra;
+      return { alegacao, busca: null, motivo: infra ? `a busca não rodou: ${infra}` : "busca falhou" };
+    } finally {
+      onProgresso?.({ etapa: "buscando", feito: ++feito, total: aBuscar.length });
+    }
+  };
+
+  // Lote primeiro (TAM_LOTE). Lote que falha por motivo transitório volta para a busca uma por
+  // uma, e é isso que mantém o fail-soft por alegação: sem o fallback, uma busca quebrada
+  // derrubaria as outras quatro do lote. Falha de INFRA não tenta de novo — crédito acabado
+  // acabaria igual nas cinco, e cada tentativa é uma cobrança a mais quando ainda há saldo.
+  const lotes = Array.from({ length: Math.ceil(aBuscar.length / TAM_LOTE) }, (_, k) =>
+    aBuscar.slice(k * TAM_LOTE, (k + 1) * TAM_LOTE)
   );
+  const buscas = (
+    await Promise.all(
+      lotes.map(async (lote) => {
+        if (lote.length === 1) return [await umaPorUma(lote[0])];
+        try {
+          const evidencias = repartirLote(await deps.buscar(queryDeLote(lote), log), lote.length);
+          feito += lote.length;
+          onProgresso?.({ etapa: "buscando", feito, total: aBuscar.length });
+          return lote.map((alegacao, i) => ({ alegacao, busca: evidencias[i], motivo: "busca falhou" }));
+        } catch (e) {
+          const infra = falhaDeInfra(e);
+          if (!infra) return Promise.all(lote.map(umaPorUma));
+          console.error(`verificacao: lote de ${lote.length} sem busca`, e);
+          buscaIndisponivel ??= infra;
+          feito += lote.length;
+          onProgresso?.({ etapa: "buscando", feito, total: aBuscar.length });
+          return lote.map((alegacao) => ({ alegacao, busca: null, motivo: `a busca não rodou: ${infra}` }));
+        }
+      })
+    )
+  ).flat();
 
   // Busca falha não vai para o passo 4: sem evidência, não há o que julgar, e o julgamento
   // determinístico aqui é o que garante que ela nunca vire `confirmado`.
