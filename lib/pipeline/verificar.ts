@@ -196,9 +196,9 @@ export async function extrairAlegacoes(
         role: "user",
         content: `Este é o roteiro FINAL, como vai ao ar. Nesta chamada você NÃO classifica nada — você só levanta o que há de verificável nele.
 
-Liste cada fato verificável: nomes, cargos, números, datas, eventos, relações de causa e efeito, citações, superlativos e status atual. Opinião, promessa, chamada para ação, hipérbole e figura de linguagem NÃO são alegações factuais — deixe fora. Quem apresenta se identificar ("eu sou X", "aqui é o X") também não é alegação a checar: é a assinatura do vídeo, não um fato sobre o mundo.
+Liste cada fato verificável: nomes, cargos, números, datas, eventos, relações de causa e efeito, citações, superlativos e status atual. Opinião, promessa, chamada para ação, hipérbole e figura de linguagem NÃO são alegações factuais — deixe fora. Hipótese ("se X vencer"), previsão do que ainda vai acontecer e cena ilustrativa (o que alguém viu ou sentiu, contado como imagem) também ficam fora: não há fonte que as confirme. Quem apresenta se identificar ("eu sou X", "aqui é o X") também não é alegação a checar: é a assinatura do vídeo, não um fato sobre o mundo.
 
-Cada alegação tem que ser COPIADA LITERALMENTE do roteiro, caractere a caractere. O texto que você devolver vai ser casado com o roteiro por uma máquina; paráfrase quebra o casamento. Copie o pedaço mínimo que ainda se sustenta sozinho — se o número só faz sentido com o sujeito, traga a frase inteira.
+Cada alegação tem que ser COPIADA LITERALMENTE do roteiro, caractere a caractere. O texto que você devolver vai ser casado com o roteiro por uma máquina; paráfrase quebra o casamento. Copie o pedaço mínimo que ainda se sustenta sozinho — se o número só faz sentido com o sujeito, traga a frase inteira. Quando o sujeito está na frase ANTERIOR ("Do lado republicano, 78%…", "Sete vezes menos.", "Em aproveitamento, são 66% contra 52%."), copie as duas frases juntas, do jeito que estão no roteiro: um número sem a quem ele se refere não tem como ser buscado.
 
 HOOK:
 ${roteiro.hook}
