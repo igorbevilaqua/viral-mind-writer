@@ -631,6 +631,9 @@ export async function verificarScriptSalvo(
   // disso não persistia nada. Por isso o merge no update abaixo. Resultado até hoje: chaves para
   // 10 fases e ZERO para `verificacao_*` em 63 roteiros.
   const log: UsageLog = {};
+  // Ligado ao hub para a busca da verificação aparecer em hub.atividades com o custo em US$:
+  // era a fase mais cara do Grok e a única sem registro nenhum.
+  bindUsageLog(log, { sessaoId: script.session_id, userId: null });
 
   const registro = await verificarRoteiro({
     roteiro: { hook: script.hook ?? "", roteiro: script.roteiro ?? "", comando: script.comando ?? "" },

@@ -333,7 +333,7 @@ export interface RegistroVerificacao {
 }
 
 export interface DepsVerificacao {
-  buscar: (query: string) => Promise<{ texto: string; fontes: string[] }>;
+  buscar: (query: string, log?: UsageLog) => Promise<{ texto: string; fontes: string[] }>;
   extrair: typeof extrairAlegacoes;
   classificar: typeof classificar;
 }
@@ -404,7 +404,7 @@ export async function verificarRoteiro(
   const buscas = await Promise.all(
     aBuscar.map(async (alegacao) => {
       try {
-        return { alegacao, busca: await deps.buscar(queryDe(alegacao)), motivo: "busca falhou" };
+        return { alegacao, busca: await deps.buscar(queryDe(alegacao), log), motivo: "busca falhou" };
       } catch (e) {
         console.error(`verificacao: busca falhou — ${alegacao.slice(0, 120)}`, e);
         // Crédito/cota estourado não é "não achei fonte": NADA foi checado. O motivo entra no

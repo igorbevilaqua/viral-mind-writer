@@ -1,5 +1,5 @@
 import { appDb, viralData } from "../db";
-import { anthropic, ANALYST_MODEL } from "../anthropic";
+import { anthropic, ANALYST_MODEL, bindUsageLog, recordUsage, type UsageLog } from "../anthropic";
 import { grokClient } from "../grok";
 import { modeloDe } from "../llm-config";
 import { cacarModelagens, type ModelagemSugerida } from "../modelagens/cacar";
@@ -213,9 +213,14 @@ export async function suggestThemes(clientId: string, emit: (e: SuggestEvent) =>
       });
 
     const pesquisaP = (async () => {
+      // Sem sessão aqui: o log existe só para a pauta entrar em hub.atividades com o custo.
+      const log: UsageLog = {};
+      bindUsageLog(log, { sessaoId: null, userId: null });
+      const t0 = Date.now();
+      const modelo = await modeloDe("pesquisa");
       try {
         const res = await grokClient().responses.create({
-          model: await modeloDe("pesquisa"),
+          model: modelo,
           instructions: agentPrompt("ideador-pesquisa"),
           input: `CLIENTE: ${nome}
 NICHO / TEMAS FORTES: ${nicho || "(não mapeado — use temas de negócios/economia/atualidades do Brasil)"}
@@ -224,6 +229,7 @@ ${prefs?.proibicoes?.length ? `PROIBIÇÕES DO CLIENTE (não sugerir nada que es
 Traga as oportunidades de pauta.`,
           tools: [{ type: "web_search" }] as never,
         });
+        recordUsage(log, "pauta", modelo, Date.now() - t0, res.usage);
         return res.output_text ?? "";
       } catch (e) {
         console.error("pesquisa de pautas falhou, seguindo só com dados internos", e);

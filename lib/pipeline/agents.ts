@@ -534,6 +534,7 @@ export async function research(
 ): Promise<string> {
   const t0 = Date.now();
   const modelo = await modeloDe("pesquisa");
+  let usage: Parameters<typeof recordUsage>[4];
   try {
     const res = await grokClient().responses.create({
       model: modelo,
@@ -541,6 +542,7 @@ export async function research(
       input: montarEntradaPesquisa(ctx, adapt),
       tools: [{ type: "web_search" }] as never,
     });
+    usage = res.usage;
     return res.output_text ?? "";
   } catch (e) {
     // Falha de INFRA não é fail-soft: sem dossiê o roteiro sai inteiro da memória do modelo, e é
@@ -560,8 +562,7 @@ export async function research(
     console.error("pesquisa grok falhou, seguindo sem dossiê", e);
     return "";
   } finally {
-    // Grok: só duração (usage não é compatível com o formato Anthropic)
-    recordUsage(ctx.usageLog, "pesquisa", modelo, Date.now() - t0);
+    recordUsage(ctx.usageLog, "pesquisa", modelo, Date.now() - t0, usage);
   }
 }
 

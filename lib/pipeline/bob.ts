@@ -1,5 +1,5 @@
 import Anthropic from "@anthropic-ai/sdk";
-import { anthropic } from "../anthropic";
+import { anthropic, bindUsageLog } from "../anthropic";
 import { grokPesquisa } from "./grok-search";
 import { agentPrompt, hookMechanismBlock, hookPreferenceBlock } from "./agents";
 import { buildStaticSystemBlock, buildDynamicSystemBlock } from "./draft";
@@ -42,6 +42,7 @@ export async function bobAssist(
 ): Promise<{ texto: string; fonte?: string }> {
   onPhase?.({ phase: "pensando" });
   const ctx = await loadContext(sessionId);
+  if (ctx.usageLog) bindUsageLog(ctx.usageLog, { sessaoId: sessionId, userId: ctx.userId });
 
   const posicao = `ROTEIRO EM EDIÇÃO (contexto — NÃO reescreva; ⟦AQUI⟧ marca onde seu texto entra):
 ${input.antes}⟦AQUI⟧${input.depois}`;
@@ -107,7 +108,7 @@ ${input.instrucao}`;
           onPhase?.({ phase: "pesquisando", query });
           let resultado = "(a pesquisa não retornou dados — não invente números)";
           try {
-            const r = await grokPesquisa(query);
+            const r = await grokPesquisa(query, ctx.usageLog, "bob_busca");
             if (r.texto.trim()) resultado = r.texto;
             // Só as fontes que a pesquisa CITA no texto: o Grok 4.7 devolve como citação toda
             // página que abriu (71 numa busca só), e o campo FONTES virava uma parede de links.

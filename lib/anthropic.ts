@@ -49,6 +49,8 @@ export interface FaseUsage {
   output_tokens: number;
   cache_creation_input_tokens: number;
   cache_read_input_tokens: number;
+  /** Custo exato em US$, só para provedor que o devolve (xAI). Ausente nas fases Anthropic. */
+  usd?: number;
 }
 export type UsageLog = Record<string, FaseUsage>;
 
@@ -56,12 +58,13 @@ export type UsageLog = Record<string, FaseUsage>;
 // chamada de LLM. Chave Symbol: não aparece em Object.keys nem em JSON.stringify, então
 // não polui o pipeline_trace.usage (que serializa o mesmo objeto).
 const HUB_CTX = Symbol("vm.hubCtx");
-export function bindUsageLog(log: UsageLog, ctx: { sessaoId: string; userId: string | null }): void {
+export function bindUsageLog(log: UsageLog, ctx: { sessaoId: string | null; userId: string | null }): void {
   (log as unknown as Record<symbol, unknown>)[HUB_CTX] = ctx;
 }
 
 // Acumula usage/duração numa fase — retries e chamadas paralelas somam na mesma chave.
-// Grok não expõe usage compatível: chame sem `usage` (registra só duração/modelo).
+// Grok devolve input/output_tokens no mesmo nome e, além disso, o custo exato em ticks
+// (1 US$ = 1e10 ticks): esse vira `usd`, porque o preço da busca na web não sai dos tokens.
 export function recordUsage(
   log: UsageLog | undefined,
   fase: string,
@@ -72,6 +75,7 @@ export function recordUsage(
     output_tokens?: number | null;
     cache_creation_input_tokens?: number | null;
     cache_read_input_tokens?: number | null;
+    cost_in_usd_ticks?: number | null;
   } | null
 ): void {
   if (!log) return;
@@ -91,15 +95,17 @@ export function recordUsage(
   f.output_tokens += usage?.output_tokens ?? 0;
   f.cache_creation_input_tokens += usage?.cache_creation_input_tokens ?? 0;
   f.cache_read_input_tokens += usage?.cache_read_input_tokens ?? 0;
+  const usd = usage?.cost_in_usd_ticks != null ? usage.cost_in_usd_ticks / 1e10 : null;
+  if (usd != null) f.usd = (f.usd ?? 0) + usd;
 
   // Telemetria por chamada de LLM (best-effort, fire-and-forget — registrarAtividade nunca lança).
   const hub = (log as unknown as Record<symbol, unknown>)[HUB_CTX] as
-    | { sessaoId: string; userId: string | null }
+    | { sessaoId: string | null; userId: string | null }
     | undefined;
   if (hub) {
     // import dinâmico: mantém hub.ts (e o lib/db.ts que ele carrega) fora do grafo de
     // módulos das funções puras daqui — senão testes sem env quebram só de importar.
-    const payload = { fase, modelo: model, tokens_in: usage?.input_tokens ?? 0, tokens_out: usage?.output_tokens ?? 0, ms };
+    const payload = { fase, modelo: model, tokens_in: usage?.input_tokens ?? 0, tokens_out: usage?.output_tokens ?? 0, ms, ...(usd != null && { usd }) };
     void import("./hub")
       .then((m) => m.registrarAtividade("llm", { sessaoId: hub.sessaoId, userId: hub.userId, payload }))
       .catch(() => {});
