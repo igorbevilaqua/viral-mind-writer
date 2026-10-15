@@ -129,6 +129,30 @@
       "detail": "",
       "commit": "d35cc41",
       "addedAt": "2026-10-15T12:24:22.505Z"
+    },
+    {
+      "id": "mv9w4o85",
+      "type": "fix",
+      "summary": "A checagem de fatos parou de sair inteira como nao verificavel em alguns roteiros",
+      "detail": "Com o Sonnet 5.5 na checagem, roteiros longos perdiam todos os veredictos",
+      "commit": "238cef5",
+      "addedAt": "2026-10-15T18:47:03.858Z"
+    },
+    {
+      "id": "mv9w4o96",
+      "type": "improvement",
+      "summary": "Checagem de fatos custa cerca de 60% menos no Grok",
+      "detail": "Busca 3 afirmacoes por vez em vez de uma por uma",
+      "commit": "238cef5",
+      "addedAt": "2026-10-15T18:47:03.893Z"
+    },
+    {
+      "id": "mv9w4oa1",
+      "type": "improvement",
+      "summary": "Checagem deixa de fora hipoteses e previsoes e entende numeros que dependem da frase anterior",
+      "detail": "",
+      "commit": "238cef5",
+      "addedAt": "2026-10-15T18:47:03.923Z"
     }
   ],
   "lastRelease": {
