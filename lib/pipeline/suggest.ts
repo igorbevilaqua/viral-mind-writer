@@ -1,6 +1,7 @@
 import { appDb, viralData } from "../db";
 import { anthropic, ANALYST_MODEL } from "../anthropic";
-import { grokClient, RESEARCH_MODEL } from "../grok";
+import { grokClient } from "../grok";
+import { modeloDe } from "../llm-config";
 import { cacarModelagens, type ModelagemSugerida } from "../modelagens/cacar";
 import { fmtNum } from "../format";
 import { agentPrompt, clientInsightBlock, toolInput, toolArray } from "./agents";
@@ -214,7 +215,7 @@ export async function suggestThemes(clientId: string, emit: (e: SuggestEvent) =>
     const pesquisaP = (async () => {
       try {
         const res = await grokClient().responses.create({
-          model: RESEARCH_MODEL,
+          model: await modeloDe("pesquisa"),
           instructions: agentPrompt("ideador-pesquisa"),
           input: `CLIENTE: ${nome}
 NICHO / TEMAS FORTES: ${nicho || "(não mapeado — use temas de negócios/economia/atualidades do Brasil)"}

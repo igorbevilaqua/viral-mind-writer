@@ -25,7 +25,8 @@ export const MODELOS = [
   { id: "claude-opus-5", nome: "Opus 5", provedor: "anthropic", toolForcada: true, nota: "geração anterior, equilibrado" },
   { id: "claude-sonnet-5", nome: "Sonnet 5", provedor: "anthropic", toolForcada: true, nota: "bom padrão para análise" },
   { id: "claude-haiku-4-5", nome: "Haiku 4.5", provedor: "anthropic", toolForcada: true, nota: "o mais barato, para tarefa simples" },
-  { id: "grok-4.7", nome: "Grok 4.7", provedor: "xai", toolForcada: true, nota: "o único com busca na web ao vivo" },
+  { id: "grok-4.7", nome: "Grok 4.7", provedor: "xai", toolForcada: true, nota: "busca mais fundo, ~6x o custo do 4.3" },
+  { id: "grok-4.3", nome: "Grok 4.3", provedor: "xai", toolForcada: true, nota: "busca mais rasa, bem mais barato" },
 ] as const;
 
 export type ModeloId = (typeof MODELOS)[number]["id"];
@@ -43,10 +44,9 @@ export const nomeDoModelo = (id: string) => modelo(id)?.nome ?? id;
  * `toolObrigatoria: true` quer dizer que a função arranca a resposta do modelo por tool
  * forçada (para modelo sem `toolForcada`, o client adapta — ver MODELOS).
  *
- * `fixo: true` é função que não se troca por aqui: pesquisa roda no Grok porque é o único com
- * busca ao vivo, e trocar o provedor não é mudar um id, é mudar o cliente. Ela aparece na
- * tela mesmo assim — a pergunta "quem faz a pesquisa?" tem resposta, e escondê-la só faria
- * alguém procurar.
+ * As funções de busca rodam no Grok porque é o único com busca ao vivo. Trocar de provedor ali
+ * não é mudar um id, é mudar o cliente — por isso `opcoesDe` só oferece modelo do mesmo
+ * provedor do padrão, e a troca fica entre versões do Grok.
  */
 export const FUNCOES_LLM = [
   {
@@ -69,7 +69,16 @@ export const FUNCOES_LLM = [
     resumo: "busca os fatos, números e fontes que entram no roteiro",
     padrao: "grok-4.7",
     toolObrigatoria: true,
-    fixo: true,
+  },
+  {
+    // Separada da pesquisa por custo: é uma chamada por afirmação do roteiro (até 20, mediana
+    // ~13) e uma por pergunta do Bob, contra UMA do dossiê. Com o 4.7 aqui, a verificação
+    // sozinha custava ~US$ 1,70 por roteiro (medido em 15/10/2026: 76 buscas em 6 roteiros).
+    slug: "busca",
+    nome: "Busca de fontes",
+    resumo: "procura na web a fonte de cada afirmação do roteiro e responde as pesquisas do Bob",
+    padrao: "grok-4.3",
+    toolObrigatoria: true,
   },
   {
     slug: "narrativas",

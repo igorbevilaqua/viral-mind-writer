@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import type Anthropic from "@anthropic-ai/sdk";
 import { recordUsage, trackedCreate } from "../anthropic";
-import { falhaDeInfra, grokClient, RESEARCH_MODEL } from "../grok";
+import { falhaDeInfra, grokClient } from "../grok";
 import { fmtNum } from "../format";
 import type { CalibrationPayload } from "../learning-loop";
 import type {
@@ -533,9 +533,10 @@ export async function research(
   adapt?: { transcricao: string; compreensao?: ModelagemCompreensao; replicar?: boolean }
 ): Promise<string> {
   const t0 = Date.now();
+  const modelo = await modeloDe("pesquisa");
   try {
     const res = await grokClient().responses.create({
-      model: RESEARCH_MODEL,
+      model: modelo,
       instructions: agentPrompt("pesquisador"),
       input: montarEntradaPesquisa(ctx, adapt),
       tools: [{ type: "web_search" }] as never,
@@ -560,7 +561,7 @@ export async function research(
     return "";
   } finally {
     // Grok: só duração (usage não é compatível com o formato Anthropic)
-    recordUsage(ctx.usageLog, "pesquisa", RESEARCH_MODEL, Date.now() - t0);
+    recordUsage(ctx.usageLog, "pesquisa", modelo, Date.now() - t0);
   }
 }
 

@@ -1,4 +1,5 @@
-import { grokClient, RESEARCH_MODEL } from "../grok";
+import { grokClient } from "../grok";
+import { modeloDe } from "../llm-config";
 
 // Busca web com fonte estruturada. Mora em módulo próprio, e não dentro do bob.ts onde nasceu,
 // porque passou a ter dois consumidores: o Bob (pedido factual na edição) e o passo 3 da
@@ -31,7 +32,7 @@ function citationUrls(res: unknown): string[] {
 // de prosa com links raspados por regex — sem ela, o passo 3 da verificação seria infra nova.
 export async function grokPesquisa(query: string): Promise<{ texto: string; fontes: string[] }> {
   const res = await grokClient().responses.create({
-    model: RESEARCH_MODEL,
+    model: await modeloDe("busca"),
     instructions:
       "Você é um pesquisador factual. Responda EXATAMENTE o que foi pedido com dados concretos (números, datas) e a URL da fonte de cada dado. Direto e conciso — sem opinião, sem enrolação.",
     input: query,

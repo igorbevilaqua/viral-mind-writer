@@ -74,8 +74,6 @@ export async function modeloDe(slug: FuncaoSlug): Promise<string> {
 export async function salvarModelo(slug: string, modeloId: string, userId: string | null) {
   const valido = modeloValidoPara(slug, modeloId);
   if (!valido) throw new Error(`modelo inválido para ${slug}: ${String(modeloId)}`);
-  const f = funcao(slug);
-  if (!f || "fixo" in f) throw new Error(`função não configurável: ${slug}`);
   const { error } = await (await db())
     .from("vm_config_llm")
     .insert({ funcao: slug, modelo: valido, decidido_por: userId });

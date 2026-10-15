@@ -87,3 +87,10 @@ describe("emDolar", () => {
     expect(emDolar(1.5)).toBe("US$ 1,50");
   });
 });
+
+// Busca roda no client da xAI: oferecer Claude ali seria um id que o Grok recusa com 400.
+test("funções de busca só oferecem Grok, e a busca por afirmação sai no barato", () => {
+  for (const slug of ["pesquisa", "busca"])
+    expect(opcoesDe(slug).every((m) => m.provedor === "xai")).toBe(true);
+  expect(FUNCOES_LLM.find((f) => f.slug === "busca")?.padrao).toBe("grok-4.3");
+});

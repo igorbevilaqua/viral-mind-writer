@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { configLLMAtual, trocarModeloLLM } from "@/lib/actions";
-import { FUNCOES_LLM, custoDaFuncao, custoDoRoteiro, emDolar, nomeDoModelo, opcoesDe } from "@/lib/llm-catalogo";
+import { FUNCOES_LLM, custoDaFuncao, custoDoRoteiro, emDolar, opcoesDe } from "@/lib/llm-catalogo";
 import { KASPAROV_EM_MANUTENCAO } from "@/lib/generation";
 import { BUILD_TAG } from "@/lib/version";
 
@@ -139,10 +139,9 @@ function AbaLLM() {
       <div className="mt-3 flex flex-col">
         {FUNCOES_LLM.map((f) => {
           const atual = mapa?.[f.slug];
-          const fixo = "fixo" in f;
           const opcoes = opcoesDe(f.slug);
           // Zero em duas situações diferentes: função que não entra num roteiro (Kasparov,
-          // carrossel, aprendizado) e a pesquisa, que roda no Grok e não devolve contagem de
+          // carrossel, aprendizado) e as de busca, que rodam no Grok e não devolvem contagem de
           // tokens. Nos dois casos a coluna fica vazia em vez de mostrar "US$ 0,00".
           const custo = atual ? custoDaFuncao(f.slug, atual) : 0;
           return (
@@ -162,13 +161,6 @@ function AbaLLM() {
               </span>
               {!mapa ? (
                 <span className="text-[12px] text-white/25">carregando…</span>
-              ) : fixo ? (
-                <span
-                  title="Só o Grok tem busca na web ao vivo: trocar o provedor desta função não é mudar um id."
-                  className="shrink-0 rounded-[8px] border border-white/[.1] px-2.5 py-1.5 text-[12px] text-white/40"
-                >
-                  {nomeDoModelo(atual ?? f.padrao)} · fixo
-                </span>
               ) : (
                 <select
                   value={atual ?? f.padrao}
