@@ -121,6 +121,14 @@
       "detail": "Corrige o erro 400 ao pedir ao Bob um trecho que exige mais de uma pesquisa",
       "commit": "9cdedd7",
       "addedAt": "2026-10-13T22:48:48.827Z"
+    },
+    {
+      "id": "mv9igj55",
+      "type": "improvement",
+      "summary": "Checagem de fontes e pesquisas do Bob voltam pro Grok 4.3 (bem mais barato); a pesquisa do dossie segue no 4.7, e as duas dao pra trocar em Configuracoes",
+      "detail": "",
+      "commit": "d35cc41",
+      "addedAt": "2026-10-15T12:24:22.505Z"
     }
   ],
   "lastRelease": {
