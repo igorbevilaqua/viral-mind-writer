@@ -41,9 +41,12 @@ export interface ItemBusca {
   busca: { texto: string; fontes: string[] };
 }
 
-// Teto de saída com folga: o sonnet-5 pensa por padrão dentro do mesmo teto, e thinking que
-// come o orçamento trunca o `tool_use` — o mesmo motivo do 8000 em `modelagem.ts:325-327`.
-const MAX_TOKENS = 8000;
+// Teto de saída com folga: o modelo pensa dentro do mesmo teto, e thinking que come o
+// orçamento trunca o `tool_use`. Era 8000 e bastava no sonnet-5; o sonnet-5-5 (checagem desde
+// 15/10) gasta 6.700 a 7.700 só na classificação, e no dia da troca 2 de 5 roteiros perderam
+// TODOS os veredictos por truncamento, com as buscas do Grok já pagas. Teto não é custo: só se
+// paga o que o modelo usa.
+const MAX_TOKENS = 16000;
 
 // Sem anotação `Anthropic.Tool` de propósito nas duas: o teste de contrato lê
 // `.input_schema.properties.<x>...enum`, e `Anthropic.Tool` apaga esse formato (input_schema vira
