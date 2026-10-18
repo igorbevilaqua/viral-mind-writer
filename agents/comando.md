@@ -14,3 +14,4 @@ O COMANDO final do vídeo: 1 a 2 frases faladas, vindo logo após o payoff do ro
 - Respeite a voz e as restrições do cliente (se o cliente tem bordão de CTA registrado nas preferências, use-o como base).
 - Nada de clichê de IA, nada de travessão.
 - Entregue APENAS o texto do comando, sem explicações.
+- Se receber a SKILL DO ROTEIRO, siga o pedido que ela indica para o registro deste roteiro.

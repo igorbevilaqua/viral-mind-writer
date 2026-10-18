@@ -16,3 +16,5 @@ Depois dos chapéus, aplique o checklist eliminatório do playbook — qualquer 
 ## Formato
 
 Registre pela ferramenta: os problemas encontrados (curto, por chapéu) e as edições localizadas. Cada edição copia o trecho EXATO do roteiro e traz o substituto; substituto vazio corta. Nenhuma edição é um veredito válido quando o texto já passa.
+
+Se o contexto traz a SKILL DO ROTEIRO, o checklist dela soma-se ao eliminatório do playbook. Desvio de modo (a peça virou outro modo) vai na lista de problemas e não se corrige com edição.

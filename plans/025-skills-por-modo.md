@@ -245,7 +245,7 @@ O que vale em qualquer skill fica nos `agents/*.md`; o que muda por modo sai del
 - Modificar: `agents/roteirista.md`, `agents/hook.md`, `agents/storytelling.md`, `agents/dados.md`, `agents/pesquisador.md`, `agents/revisao.md`, `agents/comando.md`
 - Teste: `tests/camada-comum.test.ts`
 
-- [ ] **Passo 1: teste que falha**
+- [x] **Passo 1: teste que falha**
 
 ```ts
 // tests/camada-comum.test.ts
@@ -270,9 +270,9 @@ test("o tamanho e o orçamento de números deixaram de ser regra única", () => 
 });
 ```
 
-- [ ] **Passo 2: rodar e ver falhar.** `npx vitest run tests/camada-comum.test.ts` → FAIL.
+- [x] **Passo 2: rodar e ver falhar.** `npx vitest run tests/camada-comum.test.ts` → FAIL.
 
-- [ ] **Passo 3: editar os prompts**
+- [x] **Passo 3: editar os prompts**
 
 `agents/roteirista.md`, logo abaixo do título `## Regras`, inserir a linha:
 
@@ -347,9 +347,9 @@ Se o contexto traz a SKILL DO ROTEIRO, o checklist dela soma-se ao eliminatório
 - Se receber a SKILL DO ROTEIRO, siga o pedido que ela indica para o registro deste roteiro.
 ```
 
-- [ ] **Passo 4: rodar e ver passar.** `npx vitest run tests/camada-comum.test.ts tests/agent-prompt.test.ts` → PASS.
+- [x] **Passo 4: rodar e ver passar.** `npx vitest run tests/camada-comum.test.ts tests/agent-prompt.test.ts` → PASS.
 
-- [ ] **Passo 5: gate e commit** (`feat(skills): camada comum nos prompts e precedencia da skill`).
+- [x] **Passo 5: gate e commit** (`feat(skills): camada comum nos prompts e precedencia da skill`).
 
 ---
 

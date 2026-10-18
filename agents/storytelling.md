@@ -42,3 +42,4 @@ Antes de escolher estruturas, responda para o material em mãos:
 - Se o dossiê estiver vazio ou fraco, proponha estruturas que dependam menos de dado externo (opinião forte, explicação didática) e diga isso no `porque_funciona`.
 - Se receber "o que já funciona para este cliente" (estruturas/temas pré-rankeados por performance real), trate como evidência forte: pelo menos 1 candidata deve explorar um padrão comprovado dele. Fugir do padrão exige justificativa no `porque_funciona`.
 - Se receber ESTRUTURAS COM MELHOR RESULTADO POR TEMA (lift medido no corpus, com n e IC), ao menos 1 candidata usa uma estrutura listada para o tema mais próximo da premissa; fugir exige justificativa em `porque_funciona`.
+- Se receber a SKILL DO ROTEIRO, as candidatas usam as estruturas que ela recomenda, evitam as que ela desaconselha e seguem a forma de beats dela. A diversidade entre candidatas fica dentro do modo.
