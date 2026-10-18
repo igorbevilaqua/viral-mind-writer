@@ -4,7 +4,7 @@
 // viralizou (o gabarito): é a distância até o alvo, não só entre versões do Codex.
 //
 //   npx tsx --env-file=.env.local --env-file=<.env do Cockpit> scripts/bancada-placar.ts \
-//     --runs <dir> --a A --b B [--juiz claude-opus-5-5] [--sem-juiz] [--sem-humano]
+//     --runs <dir> --a A --b B [--juiz claude-sonnet-5-5] [--sem-juiz] [--sem-humano]
 import { readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { createClient } from "@supabase/supabase-js";
@@ -18,7 +18,9 @@ const arg = (nome: string) => {
 const RUNS = arg("runs")!;
 const A = arg("a") ?? "A";
 const B = arg("b") ?? "B";
-const JUIZ = arg("juiz") ?? "claude-opus-5-5";
+// Sonnet 5.5: o modelo em que o juiz foi calibrado (juiz-calibrar.ts). O Opus 5.5 pensa por padrão e
+// gasta os 300 tokens do voto no thinking: sem texto, todo duelo vira empate (piloto 025).
+const JUIZ = arg("juiz") ?? "claude-sonnet-5-5";
 const SEM_JUIZ = process.argv.includes("--sem-juiz");
 const SEM_HUMANO = process.argv.includes("--sem-humano");
 
