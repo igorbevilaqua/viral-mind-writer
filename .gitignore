@@ -58,3 +58,6 @@ docs/estudo-*/*.json
 
 # graphify: grafo gerado localmente, artefato
 graphify-out/
+
+# banco de prova: saídas locais das rodadas (custam dinheiro, não entram no git)
+/runs/

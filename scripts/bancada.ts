@@ -13,6 +13,10 @@
 // --com-hook reaproveita também o hook da rodada montante (sem as variações): o braço difere
 // só do corpo para baixo. Só vale quando o braço NÃO muda o agente nem o playbook de hook.
 //
+// --skill-map h3=historia,h4=mecanismo (plano 025, piloto) fixa a skill de cada pauta na mão,
+// depois da premissa e antes da pesquisa. Pauta fora do mapa roda sem skill. Não combina com
+// --montante: a pesquisa muda com o modo.
+//
 //   npx tsx --env-file=.env.local scripts/bancada.ts --braco A --saida <dir> [--so h1,c3] [--n 5] [--montante <dir>/A]
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
@@ -23,6 +27,7 @@ import { research, proposeNarratives, rankNarratives } from "../lib/pipeline/age
 import { escolherVencedora, escreverRoteiro } from "../lib/pipeline/index";
 import { deepDedash } from "../lib/pipeline/slop-lint";
 import { PRECO_POR_MTOK } from "../lib/llm-catalogo";
+import { ehSkill } from "../lib/skills-catalogo";
 import type { SessionArtifacts } from "../lib/pipeline/types";
 import type { UsageLog } from "../lib/anthropic";
 
@@ -36,6 +41,14 @@ const MONTANTE = arg("montante");
 const COM_HOOK = process.argv.includes("--com-hook");
 const SO = arg("so")?.split(",");
 const N = Number(arg("n") ?? Infinity);
+const SKILL_MAP = new Map(
+  (arg("skill-map") ?? "").split(",").filter(Boolean).map((par) => {
+    const [id, s] = par.split("=");
+    if (!ehSkill(s)) throw new Error(`--skill-map: skill desconhecida "${s}" na pauta ${id}`);
+    return [id, s] as const;
+  })
+);
+if (SKILL_MAP.size && MONTANTE) throw new Error("braço com skill não reaproveita montante");
 const PAUTAS = arg("pautas") ?? "docs/escrita-2026-10/bancada/pautas.json";
 // hookRecentes compara session_id com este valor: um uuid que não existe deixa o anti-colapso
 // enxergar as últimas gerações reais do cliente, como em produção.
@@ -99,6 +112,9 @@ async function rodar(p: Pauta) {
     ctx.premissaOrigem = "derivada";
     ctx.premissaProvas = derivada.o_que_provaria;
     ctx.premissaContraintuitivo = derivada.angulo_contraintuitivo;
+    const skill = SKILL_MAP.get(p.id) ?? null;
+    ctx.skill = skill;
+    ctx.skillOrigem = skill ? "escolhida" : null;
     const dossie = await research(ctx);
     const candidatas = await proposeNarratives(ctx, dossie);
     const rank = await rankNarratives(ctx, dossie, candidatas);
@@ -122,6 +138,7 @@ async function rodar(p: Pauta) {
     braco: BRACO,
     playbooks: ctx.playbookVersions,
     premissa: ctx.premissa,
+    skill: ctx.skill,
     artifacts,
     headline: s.headline,
     hook: s.hook,
