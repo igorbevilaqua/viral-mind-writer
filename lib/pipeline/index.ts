@@ -740,7 +740,7 @@ export async function finalizarRoteiro(
   // picava o texto (reclamação do time) e o estudo de outubro não achou efeito (plano 024, 0.4).
   const sequencias = sequenciasLongas(assembled);
   // Plano 024, 1.2: o piso de clareza medido em código vai ao revisor junto dos outros sinais.
-  const piso = medirPiso(hookRes.hook, corpo);
+  const piso = medirPiso(hookRes.hook, corpo, ctx.skill);
   const sinais = [
     blocoSinaisRevisor(ecos, ecoHookAbertura, paragrafos),
     piso.violacoes.length ? `PISO DE CLAREZA (medido em código, corrija com edição):\n${piso.violacoes.map((v) => `- ${v}`).join("\n")}` : "",

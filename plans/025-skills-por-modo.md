@@ -754,7 +754,7 @@ No `pipeline_trace` do insert, ao lado de `hook_racional`:
 - Consome: `skillBlock(ctx, secao)` (Task 1).
 - Produz: `tamanhoDoRoteiro(ctx): string` em `draft.ts`; `medirPiso(hook, corpo, skill?)`.
 
-- [ ] **Passo 1: testes que falham**
+- [x] **Passo 1: testes que falham**
 
 ```ts
 // tests/skill-injecao.test.ts
@@ -837,9 +837,9 @@ test("demonstração e panorama têm teto de números próprio (estudo de modos)
 });
 ```
 
-- [ ] **Passo 2: ver falhar** (`npx vitest run tests/skill-injecao.test.ts tests/piso.test.ts`).
+- [x] **Passo 2: ver falhar** (`npx vitest run tests/skill-injecao.test.ts tests/piso.test.ts`).
 
-- [ ] **Passo 3: implementar**
+- [x] **Passo 3: implementar**
 
 `lib/pipeline/agents.ts`, importar `import { skillBlock } from "./skills";` e acrescentar um helper ao lado de `premissaBlock`:
 
@@ -928,7 +928,7 @@ const PISO_POR_SKILL: Partial<Record<Skill, Partial<typeof PISO>>> = {
 
 e em `medirPiso(hook, corpo, skill?: Skill | null)`, usar `const teto = { ...PISO, ...(skill ? PISO_POR_SKILL[skill] : {}) };` no lugar de `PISO` nas comparações de violação (o export `PISO` continua igual para quem já o lê). Em `index.ts`, `medirPiso(hookRes.hook, corpo, ctx.skill)`.
 
-- [ ] **Passo 4: rodar e ver passar**; gate; commit (`feat(skills): cada agente recebe a sua secao da skill; tamanho e piso por skill`).
+- [x] **Passo 4: rodar e ver passar**; gate; commit (`feat(skills): cada agente recebe a sua secao da skill; tamanho e piso por skill`).
 
 ---
 

@@ -8,6 +8,7 @@
 // Os tetos vêm da doutrina do plano 024 (§3) e do estudo de outubro; cada um diz de onde veio.
 import { dividirFrases } from "./slop-lint";
 import { ehCopiaDoHook } from "./draft";
+import type { Skill } from "../skills-catalogo";
 
 const contarPalavras = (t: string) => t.trim().split(/\s+/).filter(Boolean).length;
 const por100 = (k: number, n: number) => (n ? Math.round((k / n) * 10000) / 100 : 0);
@@ -105,6 +106,14 @@ export const PISO = {
   palavrasMax: 500, // acima o ganho some
 } as const;
 
+// Plano 025: o teto de números por skill. Na casa, densidade acima de 2,5 a cada 100 palavras
+// AJUDA demonstração (1,39, replica) e não muda panorama; em história acima de 1,8 atrapalha
+// (0,90, replica). docs/estudo-modos-2026-10/src/piso_por_modo.mjs.
+const PISO_POR_SKILL: Partial<Record<Skill, Partial<Record<keyof typeof PISO, number>>>> = {
+  demonstracao: { numerosPor100: 3.5 },
+  panorama: { numerosPor100: 3 },
+};
+
 export interface RelatorioPiso {
   palavras: number;
   metonimias: string[];
@@ -121,7 +130,8 @@ export interface RelatorioPiso {
 }
 
 /** Mede o roteiro FALADO (hook + corpo). `corpo` é o roteiro sem o hook, como é salvo. */
-export function medirPiso(hook: string | null, corpo: string): RelatorioPiso {
+export function medirPiso(hook: string | null, corpo: string, skill?: Skill | null): RelatorioPiso {
+  const teto = { ...PISO, ...(skill ? PISO_POR_SKILL[skill] : {}) };
   const texto = [hook, corpo].filter(Boolean).join("\n\n");
   const palavras = contarPalavras(texto);
   const nums = texto.match(NUMERO) ?? [];
@@ -141,14 +151,14 @@ export function medirPiso(hook: string | null, corpo: string): RelatorioPiso {
   const v: string[] = [];
   if (r.metonimias.length) v.push(`capital no lugar do país: ${r.metonimias.join(" | ")}`);
   if (r.siglas_sem_aposto.length) v.push(`sigla sem explicação na primeira menção: ${r.siglas_sem_aposto.join(", ")}`);
-  if (r.numeros_por_100 > PISO.numerosPor100) v.push(`${r.numeros} números (${r.numeros_por_100} a cada 100 palavras; teto ${PISO.numerosPor100})`);
-  if (exatos.length > PISO.numerosExatos) v.push(`números exatos demais para a fala (arredonde): ${exatos.join(", ")}`);
-  if (r.viradas_por_100 < PISO.viradasPor100) v.push(`pouca virada ("mas"): ${r.viradas_por_100} a cada 100 palavras (mínimo ${PISO.viradasPor100})`);
-  if (r.ou_seja > PISO.ouSeja) v.push(`"Ou seja" ${r.ou_seja} vezes (máximo ${PISO.ouSeja})`);
-  if (r.origem >= PISO.origem) v.push(`origem contada em ordem (${r.origem} marcadores como "nasceu", "foi aí que")`);
+  if (r.numeros_por_100 > teto.numerosPor100) v.push(`${r.numeros} números (${r.numeros_por_100} a cada 100 palavras; teto ${teto.numerosPor100})`);
+  if (exatos.length > teto.numerosExatos) v.push(`números exatos demais para a fala (arredonde): ${exatos.join(", ")}`);
+  if (r.viradas_por_100 < teto.viradasPor100) v.push(`pouca virada ("mas"): ${r.viradas_por_100} a cada 100 palavras (mínimo ${teto.viradasPor100})`);
+  if (r.ou_seja > teto.ouSeja) v.push(`"Ou seja" ${r.ou_seja} vezes (máximo ${teto.ouSeja})`);
+  if (r.origem >= teto.origem) v.push(`origem contada em ordem (${r.origem} marcadores como "nasceu", "foi aí que")`);
   if (r.hook_duplicado) v.push("a abertura do corpo repete o hook");
-  if (palavras < PISO.palavrasMin) v.push(`curto demais: ${palavras} palavras (mínimo ${PISO.palavrasMin})`);
-  if (palavras > PISO.palavrasMax) v.push(`longo demais: ${palavras} palavras (máximo ${PISO.palavrasMax})`);
+  if (palavras < teto.palavrasMin) v.push(`curto demais: ${palavras} palavras (mínimo ${teto.palavrasMin})`);
+  if (palavras > teto.palavrasMax) v.push(`longo demais: ${palavras} palavras (máximo ${teto.palavrasMax})`);
   return { ...r, violacoes: v };
 }
 

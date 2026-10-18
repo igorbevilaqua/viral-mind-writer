@@ -20,6 +20,7 @@ import { clientPrefsBlock } from "./draft";
 import { anexoModelagem, anexoReplicar } from "./replicar";
 import { selecionarBullets } from "../bullets";
 import { modeloDe } from "../llm-config";
+import { skillBlock } from "./skills";
 
 // Os prompts dos agentes vivem em agents/*.md — fonte única consumida pelo app e pela skill /goal.
 const promptCache = new Map<string, string>();
@@ -469,6 +470,13 @@ ${p}
 Esta é a afirmação que o vídeo defende, e tudo serve a ela: a abertura chama atenção PARA ela, o desenvolvimento a sustenta com prova, o fechamento entrega a CONSEQUÊNCIA dela. Não introduza tese concorrente e não a dilua em "por um lado, por outro". Fato que não serve a esta premissa fica fora, por interessante que seja.`;
 }
 
+// Plano 025: a seção da skill com a quebra de linha na frente, ou nada. Um helper só para os
+// cinco agentes daqui: cinco redações do mesmo `x ? "\n\n" + x : ""` divergem na primeira edição.
+const comSkill = (ctx: GenerationContext, secao: Parameters<typeof skillBlock>[1]) => {
+  const b = skillBlock(ctx, secao);
+  return b ? `\n\n${b}` : "";
+};
+
 // A pesquisa SERVE a premissa: ela busca o que confirma e enriquece uma tese específica, em vez
 // de varrer o tema no escuro. É por isso que o nó da premissa roda antes desta chamada.
 // `o_que_provaria` (quando a premissa foi derivada) é literalmente a pauta de busca.
@@ -525,7 +533,7 @@ export function montarEntradaPesquisa(
           .map((n) => `- ${n.url}${n.raw_content?.trim() ? `\n  comentários do usuário: ${n.raw_content.trim().slice(0, 500)}` : ""}`)
           .join("\n")}`
       : ""
-  }\n\n${fontesBlock()}\n\nMonte o dossiê.`;
+  }${comSkill(ctx, "pesquisa")}\n\n${fontesBlock()}\n\nMonte o dossiê.`;
 }
 
 export async function research(
@@ -674,7 +682,7 @@ Proponha as narrativas candidatas.`,
       max_tokens: maxTokens,
       tools: [NARRATIVAS_TOOL],
       tool_choice: { type: "tool", name: "registrar_narrativas" },
-      system: `${agentPrompt("storytelling")}\n\n# PLAYBOOK DE STORYTELLING\n${ctx.playbooks.storytelling ?? "(sem playbook)"}${ctx.playbooks.payoff ? `\n\n# PLAYBOOK DE PAYOFF (a recompensa que a narrativa entrega)\n${ctx.playbooks.payoff}` : ""}${ctx.playbooks.pauta ? `\n\n# PLAYBOOK DE PAUTA (territórios e repetição)\n${ctx.playbooks.pauta}` : ""}`,
+      system: `${agentPrompt("storytelling")}\n\n# PLAYBOOK DE STORYTELLING\n${ctx.playbooks.storytelling ?? "(sem playbook)"}${ctx.playbooks.payoff ? `\n\n# PLAYBOOK DE PAYOFF (a recompensa que a narrativa entrega)\n${ctx.playbooks.payoff}` : ""}${ctx.playbooks.pauta ? `\n\n# PLAYBOOK DE PAUTA (territórios e repetição)\n${ctx.playbooks.pauta}` : ""}${comSkill(ctx, "narrativas")}`,
       messages,
     });
 
@@ -768,7 +776,7 @@ export async function rankNarratives(
     max_tokens: 6000,
     tools: [RANKING_TOOL],
     tool_choice: { type: "tool", name: "registrar_ranking" },
-    system: `${agentPrompt("dados")}${ctx.estrategia ? `\n\n${ctx.estrategia}\n\nEm empate técnico entre candidatas, vence a que serve à aposta do ciclo.` : ""}\n\n# INSIGHTS DE PERFORMANCE (dados reais dos +6 mil vídeos)\n${insights}`,
+    system: `${agentPrompt("dados")}${ctx.estrategia ? `\n\n${ctx.estrategia}\n\nEm empate técnico entre candidatas, vence a que serve à aposta do ciclo.` : ""}\n\n# INSIGHTS DE PERFORMANCE (dados reais dos +6 mil vídeos)\n${insights}${comSkill(ctx, "dados")}`,
     messages: [
       {
         role: "user",
@@ -931,7 +939,8 @@ export async function designHook(
           text: `# PLAYBOOK DE HOOKS\n${ctx.playbooks.hook ?? "(sem playbook)"}${ctx.playbooks.subhook ? `\n\n# PLAYBOOK DE SUBHOOK (o hook emenda nele)\n${ctx.playbooks.subhook}` : ""}${ctx.playbooks.payoff ? `\n\n# PLAYBOOK DE PAYOFF (o hook promete o que ele entrega)\n${ctx.playbooks.payoff}` : ""}\n\n# GUIA DE ESTILO\n${ctx.playbooks.style_guide ?? ""}\n\n# PADRÕES PROIBIDOS\n${banned}`,
           cache_control: { type: "ephemeral" },
         },
-        { type: "text", text: agentPrompt("hook") },
+        // a skill fica fora do trecho cacheado: muda por sessão
+        { type: "text", text: `${agentPrompt("hook")}${comSkill(ctx, "hook")}` },
       ],
       messages: [
         {
@@ -1050,7 +1059,7 @@ export async function writeComando(ctx: GenerationContext, corpo: string): Promi
       model: await modeloDe("comando"),
       // thinking adaptativo divide o mesmo teto; 2000 garante o texto do CTA além do raciocínio.
       max_tokens: 2000,
-      system: `${agentPrompt("comando")}\n\n# PLAYBOOK DE COMANDOS\n${ctx.playbooks.comando ?? "(sem playbook)"}`,
+      system: `${agentPrompt("comando")}\n\n# PLAYBOOK DE COMANDOS\n${ctx.playbooks.comando ?? "(sem playbook)"}${comSkill(ctx, "comando")}`,
       messages: [
       {
         role: "user",

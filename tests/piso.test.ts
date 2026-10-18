@@ -113,3 +113,13 @@ describe("hook longo", () => {
     expect(hookLint("O Ratinho virou paraguaio no papel. Só que a Receita tem uma regra contra esse atalho.")).toEqual([]);
   });
 });
+
+test("demonstração e panorama têm teto de números próprio (estudo de modos)", () => {
+  const corpo = Array.from({ length: 30 }, (_, i) => `O motor tem ${i + 1} quilowatts e pesa ${i + 2} quilos, mas roda.`).join(" ");
+  const numeros = (r: ReturnType<typeof medirPiso>) => r.violacoes.find((v) => v.includes("números ("));
+  expect(numeros(medirPiso(null, corpo))).toContain("teto 1.8");
+  expect(numeros(medirPiso(null, corpo, "demonstracao"))).toContain("teto 3.5");
+  expect(numeros(medirPiso(null, corpo, "historia"))).toContain("teto 1.8");
+  // sem skill, o relatório é o de antes
+  expect(medirPiso(null, corpo, null)).toEqual(medirPiso(null, corpo));
+});

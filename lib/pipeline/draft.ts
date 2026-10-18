@@ -1,6 +1,7 @@
 import { anthropic, recordUsage } from "../anthropic";
 import { agentPrompt, bulletsBlock, clientInsightBlock, direcaoBlock, formatNarrativa, licaoRefs, licoesPara, premissaBlock, registrarBloco } from "./agents";
 import { anexoModelagem, anexoReplicar } from "./replicar";
+import { skillBlock } from "./skills";
 import { FRASE_LONGA, MAX_LONGAS_SEGUIDAS, PARAGRAFO_MAX_PALAVRAS, type EcoNumerico, type ParagrafoLongo, type SequenciaLonga } from "./slop-lint";
 import type { GenerationContext, ScriptSections } from "./types";
 
@@ -182,6 +183,11 @@ export function buildDynamicSystemBlock(ctx: GenerationContext): string {
   // A direção da conta vem logo depois da tese e antes do dossiê: é o enquadramento sob o
   // qual tudo abaixo é lido. Vazio quando o cliente não tem plano valendo.
   if (ctx.estrategia) parts.push(ctx.estrategia);
+
+  // Plano 025: a skill vem antes do dossiê pelo mesmo motivo da premissa: é a lente com que
+  // tudo abaixo é lido (o que conta como prova, como o corpo avança, onde fecha).
+  const skillRoteiro = skillBlock(ctx, "roteiro");
+  if (skillRoteiro) parts.push(skillRoteiro);
 
   if (ctx.artifacts) {
     const a = ctx.artifacts;
@@ -368,6 +374,14 @@ export function blocoSinaisRevisor(
 // Variante enxuta pro agente de revisão: ele corrige contra checklist, não imita voz —
 // dispensa few-shot e materiais do usuário; dossiê truncado a ~2000 chars. Briefs de
 // modelagem entram: fidelidade à arquitetura-modelo é item eliminatório da revisão.
+// Plano 025: com skill, o tamanho é o da seção roteiro dela (os quatro modos têm medianas e
+// faixas diferentes na casa). Sem skill, a faixa única de antes.
+export function tamanhoDoRoteiro(ctx: Pick<GenerationContext, "skill">): string {
+  return ctx.skill
+    ? "Tamanho-alvo: o da seção roteiro da SKILL DO ROTEIRO. Corpo abaixo de 250 palavras é eliminado na revisão."
+    : "Tamanho-alvo: 370 a 430 palavras no corpo, para o roteiro inteiro (com hook e comando) ficar entre 420 e 500, cerca de 140 a 165 segundos de fala. Corpo abaixo de 250 palavras é eliminado na revisão.";
+}
+
 export function buildReviewDynamicBlock(ctx: GenerationContext, sinais = ""): string {
   const parts: string[] = [];
   // Eliminatório na revisão: roteiro que não sustenta a premissa é roteiro errado, por bem
@@ -377,6 +391,8 @@ export function buildReviewDynamicBlock(ctx: GenerationContext, sinais = ""): st
     parts.push(
       `${premissa}\n\nITEM ELIMINATÓRIO: o roteiro sustenta esta premissa do início ao fim? A abertura chama atenção para ela, o meio a prova, o fim fecha a lacuna dela no próprio caso? Se ele defende outra tese, ou se dilui em duas, reescreva para a premissa acima.`
     );
+  const skillRevisao = skillBlock(ctx, "revisao");
+  if (skillRevisao) parts.push(skillRevisao);
   const replicando = anexoReplicar(ctx.attachments);
   if (ctx.modelagemBriefs.length) {
     parts.push(
@@ -502,7 +518,7 @@ export async function generateDraft(
     messages: [
       {
         role: "user",
-        content: `${task} Tamanho-alvo: 370 a 430 palavras no corpo, para o roteiro inteiro (com hook e comando) ficar entre 420 e 500, cerca de 140 a 165 segundos de fala. Corpo abaixo de 250 palavras é eliminado na revisão.${
+        content: `${task} ${tamanhoDoRoteiro(ctx)}${
           // Com modelagem o texto digitado já entrou como ORIENTAÇÃO na task: repeti-lo como
           // BRIEF seria oferecer ao roteirista um tema novo, que é justamente o que a Regra 3 proíbe.
           ctx.prompt.trim() && !modelando ? `\n\nBRIEF:\n${ctx.prompt}` : ""
