@@ -406,6 +406,8 @@ export async function loadContext(sessionId: string): Promise<GenerationContext>
     prompt: session.prompt,
     premissa: (session.premissa ?? "").trim(),
     premissaOrigem: (session.premissa_origem ?? null) as GenerationContext["premissaOrigem"],
+    skill: null, // plano 025, Task 3 troca pela coluna da sessão
+    skillOrigem: null,
     clientId: session.client_id,
     // A coluna só é LIDA hoje: o seletor da home saiu quando a tela de configuração passou a
     // mandar em quem escreve. As sessões criadas enquanto ele existiu têm valor gravado e
@@ -437,6 +439,8 @@ export async function loadContextAvulso(clientId: string | null): Promise<Genera
     prompt: "",
     premissa: "",
     premissaOrigem: null,
+    skill: null,
+    skillOrigem: null,
     clientId,
     modelo: await modeloDe("escrita"), // sem sessão não há escolha a herdar
     modoModelagem: false,
@@ -458,6 +462,8 @@ export async function loadContextBancada(clientId: string, prompt: string): Prom
   return {
     ...ctx,
     prompt,
+    skill: null,
+    skillOrigem: null,
     modelo: await modeloDe("escrita"),
     fewShot: fewShot.exemplos,
     fewShotCriterio: fewShot.criterio,

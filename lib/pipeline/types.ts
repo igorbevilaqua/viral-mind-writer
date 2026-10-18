@@ -173,6 +173,11 @@ export interface GenerationContext {
   // as provas viram a pauta de busca do pesquisador, o contraintuitivo alimenta o hook.
   premissaProvas?: string[];
   premissaContraintuitivo?: string | null;
+  // Plano 025: a skill de modo desta sessão. null = caminho único (sessão anterior ao 025, ou a
+  // escolha automática falhou): nenhum agente recebe bloco de skill.
+  skill: import("../skills-catalogo").Skill | null;
+  skillOrigem: "escolhida" | "sugerida" | null;
+  skillMotivo?: string;
   clientId: string | null;
   clientPrefs: ClientPrefs | null;
   // Quem ESCREVE esta sessão: a função "escrita" da configuração de LLM, ou o modelo gravado

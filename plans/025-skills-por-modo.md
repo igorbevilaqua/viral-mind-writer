@@ -84,7 +84,7 @@ O Igor revisa o texto das skills antes da Task 6 (é o que os agentes vão ler).
 
 O catálogo fica fora de `lib/pipeline/skills.ts` porque este lê disco (`node:fs`), e a home é componente de cliente: importar `fs` no bundle do navegador quebra o build. Mesmo desenho de `lib/llm-catalogo.ts`.
 
-- [ ] **Passo 1: escrever o teste que falha**
+- [x] **Passo 1: escrever o teste que falha**
 
 ```ts
 // tests/skills.test.ts
@@ -126,12 +126,12 @@ describe("skills por modo (plano 025)", () => {
 });
 ```
 
-- [ ] **Passo 2: rodar e ver falhar**
+- [x] **Passo 2: rodar e ver falhar**
 
 Rodar: `npx vitest run tests/skills.test.ts`
 Esperado: FAIL, "Cannot find module '@/lib/skills-catalogo'".
 
-- [ ] **Passo 3: implementar**
+- [x] **Passo 3: implementar**
 
 ```ts
 // lib/skills-catalogo.ts
@@ -218,12 +218,12 @@ export function quandoDasSkills(): string {
 
 e preencha `skill: null, skillOrigem: null` nos três construtores de contexto em `lib/pipeline/context.ts` (`loadContext`, `loadContextAvulso`, `loadContextBancada`; a Task 3 troca o de `loadContext` pela leitura da coluna).
 
-- [ ] **Passo 4: rodar e ver passar**
+- [x] **Passo 4: rodar e ver passar**
 
 Rodar: `npx vitest run tests/skills.test.ts`
 Esperado: PASS (11 testes).
 
-- [ ] **Passo 5: gate e commit**
+- [x] **Passo 5: gate e commit**
 
 ```bash
 npx tsc --noEmit && npx eslint . && npm run check && npm test
