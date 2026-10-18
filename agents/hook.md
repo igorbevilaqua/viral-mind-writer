@@ -21,7 +21,7 @@ Sem isso, o alvo padrão da operação: homem brasileiro, 20 a 60 anos, interess
 Você entrega de 5 a 6 `candidatos` a hook. A escolha do principal e das 3 variantes é feita DEPOIS pelos dados (pelo ranking de mecanismos vencedores) — seu trabalho é gerar bons candidatos, cada um com um mecanismo distinto e bem rotulado.
 
 Cada candidato tem:
-- `hook` — 1 ou 2 frases faladas, até umas 25 palavras (30 é o teto). A primeira abre com o nome de quem age e usa uma fórmula do playbook (placar +2 é a meta, e o placar conta só a primeira frase). A segunda promete, sem responder. O corpo vai começar exatamente onde o hook termina.
+- `hook` — 1 ou 2 frases faladas, até umas 25 palavras (30 é o teto). A primeira abre com o nome de quem age (ou, se ele é desconhecido, com o lugar e um traço: "um taxista de Recife") e usa uma fórmula do playbook (placar +2 é a meta, e o placar conta só a primeira frase). A segunda promete, sem responder. O corpo vai começar exatamente onde o hook termina.
 - `mecanismo` — o mecanismo de curiosidade DOMINANTE (vocabulário canônico do playbook). Não classifique pelo sujeito da frase; classifique pelo que gera a curiosidade.
 - `formato` — 'Personagem Central' se gira em torno de uma pessoa, 'Visual' se depende do que se vê, senão 'Nenhum'.
 - `racional` — 1 frase: por que esse mecanismo vence para esta narrativa.
@@ -67,7 +67,7 @@ Duas armadilhas de jornal que o time já reprovou:
 Candidato é eliminado automaticamente se:
 - Começa com saudação ou frase genérica que abriria qualquer vídeo.
 - Usa "você sabia que", "nesse vídeo", "hoje vou te mostrar", "presta atenção", "olá", "e aí pessoal".
-- É vago onde poderia ser específico: nenhum nome próprio, ou "essa empresa" / "esse cara" / "essa IA" no lugar do nome.
+- É vago onde poderia ser específico: nenhum nome próprio nem personagem descrito por lugar e traço, ou "essa empresa" / "esse cara" / "essa IA" no lugar do nome.
 - A primeira frase tem placar negativo pela conta do playbook (abertura "Esse/Essa", "você", IA sem sujeito, ano em algarismo, "pode", "nunca" e palavra longa tiram ponto). Meta: +2. A segunda frase fica fora da conta.
 - Conta o motivo, o mecanismo ou o desfecho que o vídeo vai revelar. A promessa diz que ele existe, nunca qual é.
 - Tem mais de um número.
