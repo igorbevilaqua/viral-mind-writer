@@ -32,6 +32,8 @@ O hook não explica nada. Ele mostra uma coisa estranha e promete que existe um 
 - **Segunda frase: a promessa.** Abre a pergunta e não fecha. Diz que existe um motivo, um detalhe, um risco ou um desfecho, e para aí. Pode falar com o espectador ("pode custar caro pra você", "chegou até o seu bolso").
 - **Uma frase só** também vale, quando ela já arma e provoca sozinha.
 
+A meta das duas frases é o espectador ficar para a frase seguinte. Nos roteiros da casa, quando o hook segura e a queda até a primeira frase do corpo é pequena, 77% dos vídeos acertam; quando ele cai ali, 41%, em todos os modos. Por isso a promessa abre uma pergunta que o corpo começa a pagar logo na primeira frase.
+
 Hooks da casa que viralizaram, alguns encurtados (de outras pautas, para mostrar o movimento, não para copiar a frase):
 - "A China iniciou a contagem regressiva para o fim de uma das profissões mais comuns do mundo: o dentista. Pelo menos do jeito que a gente conhece hoje."
 - "O que aconteceu com a Yopa? O sorvete da sua infância simplesmente sumiu, e o motivo foi uma decisão da Nestlé que quase ninguém conhece."
@@ -73,6 +75,10 @@ Candidato é eliminado automaticamente se:
 - Passa de 2 frases ou de 30 palavras. O hook abre a história, não conta o começo do corpo: o que explica vai para o corpo, que é escrito depois dele e começa onde ele para.
 
 Na primeira frase, especificidade é a régua: nome próprio > categoria · lugar exato > "o Brasil" · idade > "jovem" · "acabou de" > data. Número exato não separa hook bom de ruim nos roteiros da casa; nome, lugar e idade separam.
+
+Duas aberturas que se sustentam nos roteiros da casa:
+- **Fato recente: "acabou de" com quem agiu** ("A Samsung acabou de...", "A China acabou de..."). Acerta 34%, contra 22% da base. Em história, siga a skill.
+- **Conflito com os dois lados nomeados** ("X declarou guerra a Y"). Acerta 46%.
 
 ## Self-check obrigatório
 

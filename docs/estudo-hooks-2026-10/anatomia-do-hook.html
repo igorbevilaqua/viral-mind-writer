@@ -1,0 +1,1149 @@
+<title>Anatomia do Hook</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap">
+<style>
+/* Layout: uma coluna de leitura (1080px) com nav grudada; cada seção abre com o dado que a justifica e fecha com exemplos clicáveis. Tokens herdados do VM Academy. */
+:root{
+  --bg:#f5f1e8; --bg-2:#ffffff; --bg-3:#ebe5d8; --border:#e0d9cb; --border-forte:#8f8470;
+  --text:#1b2423; --text-2:#4a5553; --text-3:#606b68;
+  --accent:#0f766e; --accent-2:#0a5f58; --accent-soft:#d8efe9; --on-accent:#ffffff;
+  --green:#137a3a; --green-soft:#dbf2e2; --red:#b42323; --red-soft:#fbe1e1; --amber:#8f5a08; --amber-soft:#fbeecf;
+  --orange:#b8420f; --orange-soft:#fde5d8;
+  --mark-1:#00897a; --mark-2:#c2501a; --mark-mute:#c9c1b1;
+  --sans:"Instrument Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --display:"Space Grotesk","Instrument Sans",system-ui,sans-serif;
+  --r-sm:6px; --r-md:10px; --r-lg:14px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#131817; --bg-2:#1b2423; --bg-3:#232e2c; --border:#2d3937; --border-forte:#6b7a77;
+  --text:#eef0ea; --text-2:#b6bfba; --text-3:#93a09a;
+  --accent:#4fc6b8; --accent-2:#7fdccf; --accent-soft:#173c37; --on-accent:#0d1f1d;
+  --green:#6fd695; --green-soft:#163a27; --red:#f29b9b; --red-soft:#4a1f1f; --amber:#e8c46a; --amber-soft:#3f3214;
+  --orange:#f0a173; --orange-soft:#452416;
+  --mark-1:#22a193; --mark-2:#cc6a30; --mark-mute:#3c4a47; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#131817; --bg-2:#1b2423; --bg-3:#232e2c; --border:#2d3937; --border-forte:#6b7a77;
+  --text:#eef0ea; --text-2:#b6bfba; --text-3:#93a09a;
+  --accent:#4fc6b8; --accent-2:#7fdccf; --accent-soft:#173c37; --on-accent:#0d1f1d;
+  --green:#6fd695; --green-soft:#163a27; --red:#f29b9b; --red-soft:#4a1f1f; --amber:#e8c46a; --amber-soft:#3f3214;
+  --orange:#f0a173; --orange-soft:#452416;
+  --mark-1:#22a193; --mark-2:#cc6a30; --mark-mute:#3c4a47; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15px;line-height:1.6;margin:0}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg-2)}
+a{color:var(--accent)}
+a:hover{color:var(--accent-2)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+.wrap{max-width:1080px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;letter-spacing:-0.01em;margin:0}
+h2{font-size:clamp(24px,3.4vw,32px);line-height:1.15}
+h3{font-size:18px;line-height:1.3}
+p{margin:0}
+.num,.tab{font-variant-numeric:tabular-nums}
+.eyebrow{font-family:var(--display);font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+.muted{color:var(--text-2)}
+.small{font-size:13px}
+.lead{font-size:17px;max-width:68ch;color:var(--text-2)}
+
+/* nav */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg-2);border-bottom:1px solid var(--border)}
+.nav .wrap{display:flex;align-items:center;gap:16px;padding-block:10px}
+.brand{font-family:var(--display);font-weight:600;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);white-space:nowrap}
+.nav-links{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;min-width:0}
+.nav-links::-webkit-scrollbar{display:none}
+.nav-links a{font-size:13px;font-weight:500;color:var(--text-2);text-decoration:none;padding:6px 10px;border-radius:999px;white-space:nowrap}
+.nav-links a:hover{background:var(--bg-3);color:var(--text)}
+.nav-links a.on{background:var(--accent-soft);color:var(--accent)}
+
+/* hero */
+.hero{padding-block:48px 32px;display:grid;gap:20px}
+.hero h1{font-size:clamp(40px,7vw,76px);line-height:.98;font-weight:700}
+.hero h1 span{color:var(--accent)}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:8px}
+.kpi{background:var(--bg-2);border:1px solid var(--border);border-radius:var(--r-md);padding:14px 16px;display:grid;gap:2px}
+.kpi b{font-family:var(--display);font-size:28px;font-weight:600;line-height:1.1;font-variant-numeric:tabular-nums}
+.kpi span{font-size:12.5px;color:var(--text-2);line-height:1.35}
+@media (max-width:720px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+section.sec{padding-block:48px;border-top:1px solid var(--border);display:grid;gap:24px;scroll-margin-top:56px}
+.sec-head{display:grid;gap:10px;max-width:760px}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+@media (max-width:820px){.grid2,.grid3{grid-template-columns:minmax(0,1fr)}}
+.card{background:var(--bg-2);border:1px solid var(--border);border-radius:var(--r-md);padding:20px;display:grid;gap:14px;align-content:start;min-width:0}
+.card h3 + p{color:var(--text-2)}
+.note{border-left:none;background:var(--bg-3);border-radius:var(--r-md);padding:14px 16px;font-size:14px;color:var(--text-2)}
+.note b{color:var(--text)}
+.takeaway{background:var(--accent-soft);border-radius:var(--r-md);padding:16px 18px;display:grid;gap:6px}
+.takeaway .eyebrow{color:var(--accent)}
+.takeaway p{font-size:16px;font-weight:500}
+
+/* charts */
+.chart{display:grid;gap:10px}
+.chart-title{font-weight:600;font-size:14px}
+.chart-sub{font-size:12.5px;color:var(--text-3);margin-top:-6px}
+.hbar{display:grid;grid-template-columns:minmax(120px,38%) 1fr 64px;align-items:center;gap:10px;font-size:13px}
+.hbar .lab{color:var(--text);line-height:1.3;min-width:0}
+.hbar .lab small{display:block;color:var(--text-3);font-size:11.5px}
+.track{position:relative;height:18px;background:transparent}
+.track .fill{position:absolute;top:2px;bottom:2px;left:0;background:var(--mark-1);border-radius:0 4px 4px 0;min-width:2px}
+.track .fill.neg{background:var(--mark-2)}
+.track .fill.mute{background:var(--mark-mute)}
+.track .ref{position:absolute;top:-3px;bottom:-3px;width:0;border-left:1.5px dashed var(--text-3)}
+.hbar .val{font-variant-numeric:tabular-nums;text-align:right;font-weight:600}
+.div-track{position:relative;height:18px}
+.div-track .axis{position:absolute;top:-3px;bottom:-3px;left:50%;border-left:1px solid var(--text-3)}
+.div-track .fill{position:absolute;top:2px;bottom:2px;background:var(--mark-1)}
+.div-track .fill.pos{left:50%;border-radius:0 4px 4px 0}
+.div-track .fill.neg{right:50%;background:var(--mark-2);border-radius:4px 0 0 4px}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:12.5px;color:var(--text-2)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+.vbars{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;align-items:end;height:220px;padding-top:24px;border-bottom:1px solid var(--border)}
+.vbar{display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;gap:6px}
+.vbar .col{width:min(72px,70%);background:var(--mark-1);border-radius:4px 4px 0 0;min-height:3px}
+.vbar .v{font-family:var(--display);font-weight:600;font-size:20px;font-variant-numeric:tabular-nums}
+.vlabels{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;text-align:center;font-size:12.5px;color:var(--text-2);line-height:1.35}
+.vlabels b{color:var(--text);display:block;font-size:13px}
+.matrix{display:grid;grid-template-columns:auto 1fr 1fr;gap:8px;font-size:13px}
+.matrix .h{color:var(--text-3);font-size:12px;align-self:end;padding:0 4px}
+.matrix .rh{color:var(--text-3);font-size:12px;align-self:center;text-align:right;padding-right:4px;line-height:1.3}
+.cell{border-radius:var(--r-md);padding:14px;display:grid;gap:2px;border:1px solid var(--border);background:var(--bg-2)}
+.cell b{font-family:var(--display);font-size:26px;font-variant-numeric:tabular-nums;line-height:1.1}
+.cell span{font-size:12px;color:var(--text-2)}
+.cell.hot{background:var(--accent-soft);border-color:transparent}
+.cell.hot b{color:var(--accent)}
+#tip{position:fixed;z-index:20;pointer-events:none;background:var(--text);color:var(--bg);font-size:12.5px;line-height:1.4;padding:8px 10px;border-radius:8px;max-width:280px;opacity:0;transition:opacity .12s}
+#tip.show{opacity:1}
+[data-tip]{cursor:default}
+
+/* tabs + tables */
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tabs button{font:inherit;font-size:13px;font-weight:500;border:1px solid var(--border);background:var(--bg-2);color:var(--text-2);padding:7px 12px;border-radius:999px;cursor:pointer}
+.tabs button:hover{border-color:var(--border-forte);color:var(--text)}
+.tabs button[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.tools{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.tools input[type=search]{font:inherit;font-size:16px;padding:8px 12px;border:1px solid var(--border);border-radius:var(--r-md);background:var(--bg-2);color:var(--text);min-width:0;flex:1 1 220px}
+@media (min-width:640px){.tools input[type=search]{font-size:14px}}
+.tools label{font-size:13px;color:var(--text-2);display:flex;gap:6px;align-items:center}
+.tablebox{overflow-x:auto;border:1px solid var(--border);border-radius:var(--r-md);background:var(--bg-2)}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th{font-family:var(--display);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-3);text-align:left;font-weight:600;padding:10px 12px;border-bottom:1px solid var(--border);white-space:nowrap;background:var(--bg-2)}
+td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+tr:last-child td{border-bottom:none}
+tbody tr:hover td{background:var(--bg-3)}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+td.rk{color:var(--text-3);font-variant-numeric:tabular-nums;width:28px}
+td.hook{min-width:280px;max-width:520px}
+td.hook q{quotes:"“" "”"}
+td.cli{white-space:nowrap;color:var(--text-2)}
+.pill{display:inline-block;font-size:11px;font-weight:600;padding:1px 7px;border-radius:var(--r-sm);white-space:nowrap}
+.pill.vm{background:var(--accent-soft);color:var(--accent)}
+.pill.ok{background:var(--green-soft);color:var(--green)}
+.pill.warn{background:var(--amber-soft);color:var(--amber)}
+.pill.bad{background:var(--red-soft);color:var(--red)}
+.pill.neu{background:var(--bg-3);color:var(--text-2)}
+.lk{white-space:nowrap;font-weight:500;font-size:13px}
+.nets{display:flex;flex-wrap:wrap;gap:4px 10px;font-size:12.5px}
+.nets a{white-space:nowrap}
+.nets .miss{color:var(--text-3)}
+
+/* hooks / examples */
+.ex{display:grid;gap:4px;padding:12px 14px;border-radius:var(--r-md);background:var(--bg);border:1px solid var(--border)}
+.ex q{font-size:15px;line-height:1.45;quotes:"“" "”"}
+.ex .meta{font-size:12.5px;color:var(--text-3);display:flex;flex-wrap:wrap;gap:4px 10px}
+.ex.bad{background:var(--bg)}
+.ex .tag{font-size:11px;font-weight:600}
+.ex.good .tag{color:var(--green)}
+.ex.bad .tag{color:var(--red)}
+.formulas{display:grid;gap:12px}
+details.f{background:var(--bg-2);border:1px solid var(--border);border-radius:var(--r-md)}
+details.f[open]{border-color:var(--border-forte)}
+details.f summary{cursor:pointer;list-style:none;padding:16px 18px;display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center}
+details.f summary::-webkit-details-marker{display:none}
+details.f .fid{font-family:var(--display);font-weight:600;color:var(--accent);font-size:13px}
+details.f .ft{font-weight:600;font-size:16px}
+details.f .fm{font-size:12px;color:var(--text-3);text-align:right}
+details.f .fb{padding:0 18px 18px;display:grid;gap:12px}
+.mold{font-family:var(--display);font-size:15px;background:var(--bg-3);border-radius:var(--r-sm);padding:10px 12px;line-height:1.45}
+.mold em{font-style:normal;color:var(--accent);font-weight:600}
+
+/* lab */
+.lab-box{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:16px}
+@media (max-width:820px){.lab-box{grid-template-columns:minmax(0,1fr)}}
+textarea{font:inherit;font-size:16px;width:100%;min-height:120px;padding:12px;border:1px solid var(--border);border-radius:var(--r-md);background:var(--bg-2);color:var(--text);resize:vertical}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips button{font:inherit;font-size:12.5px;border:1px solid var(--border);background:var(--bg-2);color:var(--text-2);padding:5px 10px;border-radius:999px;cursor:pointer}
+.chips button:hover{border-color:var(--border-forte);color:var(--text)}
+.sig{display:grid;gap:8px}
+.sig .row{display:grid;grid-template-columns:20px 1fr;gap:8px;font-size:13.5px;padding:10px 12px;border-radius:var(--r-md);background:var(--bg-2);border:1px solid var(--border)}
+.sig .row b{display:block}
+.sig .row span{color:var(--text-2);font-size:12.5px}
+.sig .ico{font-weight:700;line-height:1.5}
+.sig .row.plus .ico{color:var(--green)}
+.sig .row.minus .ico{color:var(--red)}
+.sig .row.info .ico{color:var(--text-3)}
+.sumline{font-family:var(--display);font-weight:600;font-size:15px}
+
+/* pauta */
+.timeline{display:grid;gap:0;position:relative}
+.blk{display:grid;grid-template-columns:96px minmax(0,1fr);gap:18px;padding-block:18px;border-bottom:1px solid var(--border)}
+.blk:last-child{border-bottom:none}
+.blk .time{font-family:var(--display);font-weight:600;font-variant-numeric:tabular-nums;color:var(--accent);font-size:15px;line-height:1.3}
+.blk .time small{display:block;color:var(--text-3);font-weight:500;font-size:12px}
+.blk h3{margin-bottom:6px}
+.blk ul{margin:8px 0 0;padding-left:18px;display:grid;gap:4px;color:var(--text-2);font-size:14px}
+.blk ul b{color:var(--text)}
+.blk .slide{margin-top:10px;font-size:13px;background:var(--bg-3);border-radius:var(--r-sm);padding:8px 10px;color:var(--text-2)}
+.blk .slide b{color:var(--text)}
+.timebar{display:flex;height:12px;border-radius:999px;overflow:hidden;gap:2px;background:var(--bg-2)}
+.timebar span{background:var(--mark-1);opacity:.35}
+.timebar span:nth-child(odd){opacity:.75}
+@media (max-width:560px){.blk{grid-template-columns:minmax(0,1fr);gap:6px}}
+ul.clean{margin:0;padding-left:18px;display:grid;gap:6px}
+footer{padding-block:32px 56px;color:var(--text-3);font-size:12.5px;border-top:1px solid var(--border)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div id="tip" role="tooltip"></div>
+
+<nav class="nav" aria-label="Seções">
+  <div class="wrap">
+    <span class="brand">VM Academy</span>
+    <div class="nav-links" id="navlinks">
+      <a href="#tese">A tese</a>
+      <a href="#rankings">Rankings</a>
+      <a href="#ingredientes">Ingredientes</a>
+      <a href="#formulas">Fórmulas</a>
+      <a href="#subhook">Sub-hook</a>
+      <a href="#redes">Entre redes</a>
+      <a href="#nicho">Cliente e nicho</a>
+      <a href="#evitar">O que evitar</a>
+      <a href="#lab">Laboratório</a>
+      <a href="#pauta">Pauta da aula</a>
+      <a href="#metodo">Método</a>
+    </div>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<header class="hero">
+  <span class="eyebrow">Estudo de dados · base Oráculo · 17 de outubro de 2026</span>
+  <h1>Anatomia do <span>hook</span></h1>
+  <p class="lead">O que os nossos próprios vídeos dizem sobre os primeiros segundos. Rankings, padrões, fórmulas e o que evitar, com cada exemplo escrito e linkado, mais a pauta sugerida para uma aula de 45 minutos.</p>
+  <div class="kpis">
+    <div class="kpi"><b class="num">6.010</b><span>vídeos de clientes no Instagram nos últimos 12 meses</span></div>
+    <div class="kpi"><b class="num">1.290</b><span>com retenção do hook medida (IG), base da tese</span></div>
+    <div class="kpi"><b class="num">1.618</b><span>roteiros publicados em 3 ou mais redes</span></div>
+    <div class="kpi"><b class="num">11.511</b><span>hooks classificados nas categorias do playbook</span></div>
+  </div>
+</header>
+
+<!-- TESE -->
+<section class="sec" id="tese">
+  <div class="sec-head">
+    <span class="eyebrow">01 · A tese</span>
+    <h2>Quem segura nos primeiros segundos, distribui</h2>
+    <p class="lead">No Instagram, a retenção do hook é a métrica que mais separa acerto de erro. Os 7 pontos entre a mediana (64%) e o quartil de cima (71%) separam uma taxa de acerto de 23% de uma de 60%.</p>
+  </div>
+  <div class="grid2">
+    <div class="card chart">
+      <div class="chart-title">Taxa de acerto por quartil de retenção do hook</div>
+      <div class="chart-sub">Instagram, 1.290 vídeos, cerca de 322 por quartil. Acerto = acima do limiar do próprio canal.</div>
+      <div class="vbars" id="quartis"></div>
+      <div class="vlabels" id="quartis-lab"></div>
+      <p class="small muted">Calculando os quartis dentro de cada cliente, o resultado quase não muda: 4,9% no de baixo e 60,6% no de cima. Não é efeito de "cliente bom".</p>
+    </div>
+    <div class="card">
+      <div class="chart-title">O que acontece com quem retém 78% ou mais</div>
+      <div class="grid2">
+        <div class="cell hot"><b class="num">72%</b><span>viralizaram (100 mil+). São 58 de 81 vídeos, com mediana de 216 mil views.</span></div>
+        <div class="cell"><b class="num">1,9%</b><span>viralizaram entre os que retêm menos de 60%. São 9 de 469, com mediana de 4 mil.</span></div>
+      </div>
+      <div class="chart">
+        <div class="chart-title">Correlações no Instagram</div>
+        <div id="corr"></div>
+      </div>
+      <div class="takeaway">
+        <span class="eyebrow">Meta para o time</span>
+        <p>Hook acima de 71% no Instagram e acima de 68% no TikTok. É o quartil de cima de cada rede.</p>
+      </div>
+    </div>
+  </div>
+  <div class="note"><b>Leitura honesta:</b> é correlação. O algoritmo distribui o que retém, e a audiência fria que chega quando o vídeo já está distribuindo também mexe na retenção. A seta provavelmente vai nos dois sentidos. A duração do vídeo não muda a retenção do hook (correlação de 0,04), só a retenção final.</div>
+</section>
+
+<!-- RANKINGS -->
+<section class="sec" id="rankings">
+  <div class="sec-head">
+    <span class="eyebrow">02 · Rankings</span>
+    <h2>Os melhores hooks, por cinco réguas diferentes</h2>
+    <p class="lead">Views absolutas premiam canal grande. Coeficiente (views ÷ mediana do canal) premia quem furou a própria bolha. A régua combinada exige topo em distribuição e em retenção ao mesmo tempo.</p>
+  </div>
+  <div class="tabs" role="tablist" id="rank-tabs"></div>
+  <div class="tools">
+    <input type="search" id="rank-q" placeholder="Filtrar por palavra do hook ou cliente" aria-label="Filtrar ranking">
+    <label for="rank-vm"><input type="checkbox" id="rank-vm"> Só roteiros VM</label>
+  </div>
+  <p class="small muted" id="rank-desc"></p>
+  <div class="tablebox"><table id="rank-table"></table></div>
+  <div class="grid2">
+    <div class="card chart">
+      <div class="chart-title">Roteiro VM contra os demais</div>
+      <div class="chart-sub">Instagram, clientes, 12 meses. 2.644 vídeos VM e 3.366 de outras origens.</div>
+      <div id="vmvs"></div>
+      <div class="legend"><span><i style="background:var(--mark-1)"></i>Roteiro VM</span><span><i style="background:var(--mark-mute)"></i>Outros</span></div>
+    </div>
+    <div class="card">
+      <h3>O que o topo tem em comum</h3>
+      <ul class="clean">
+        <li><b>Sujeito concreto, ação no presente, consequência.</b> "Esse taxista... travou o software", "A Samsung lançou... o começo do fim". A explicação fica para depois.</li>
+        <li><b>Marca ou figura conhecida nas primeiras palavras:</b> Samsung, Toyota, BYD, China, Apple, Coca-Cola. Hooks com marca grande viralizam em 18,6% dos casos, contra 8,8% sem.</li>
+        <li><b>Os 25 primeiros da régua combinada são todos roteiros VM.</b> Retenção medida é quase exclusiva da VM, então essa lista mostra o padrão da casa no seu melhor.</li>
+        <li><b>Os 15 maiores vídeos de todos os tempos são de 2026.</b> O topo veio do método atual, e não de um acerto antigo isolado.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- INGREDIENTES -->
+<section class="sec" id="ingredientes">
+  <div class="sec-head">
+    <span class="eyebrow">03 · Ingredientes</span>
+    <h2>Os elementos que aparecem nos hooks que funcionam</h2>
+    <p class="lead">Duas leituras independentes chegam ao mesmo lugar: o texto do hook (marcadores medidos dentro de cada cliente) e as categorias do playbook (mecanismos geradores de curiosidade).</p>
+  </div>
+  <div class="grid2">
+    <div class="card chart">
+      <div class="chart-title">Marcadores do texto: quanto mudam a chance de acerto</div>
+      <div class="chart-sub">Instagram, efeito ajustado pelo cliente. 1,0 = igual ao esperado para aquele canal. Passe o mouse para ver n e força da evidência.</div>
+      <div id="feat"></div>
+      <div class="legend"><span><i style="background:var(--mark-1)"></i>Acima do esperado</span><span><i style="background:var(--mark-2)"></i>Abaixo do esperado</span></div>
+    </div>
+    <div class="card chart">
+      <div class="chart-title">Categorias do playbook: taxa de acerto no Instagram</div>
+      <div class="chart-sub">5.095 hooks classificados. Linha tracejada = base da rede (18,3%).</div>
+      <div id="mgc"></div>
+    </div>
+  </div>
+  <div class="grid3">
+    <div class="card chart">
+      <div class="chart-title">Quantos mecanismos no mesmo hook</div>
+      <div class="chart-sub">Instagram, % de acerto</div>
+      <div id="nmgc"></div>
+      <p class="small muted">O ponto ótimo é combinar dois. Um terceiro já não ajuda no IG.</p>
+    </div>
+    <div class="card chart">
+      <div class="chart-title">Pares de mecanismos que mais acertam</div>
+      <div class="chart-sub">Instagram, pares com 30+ vídeos</div>
+      <div id="pairs"></div>
+    </div>
+    <div class="card chart">
+      <div class="chart-title">Emoção sobre alguém, não credibilidade de quem fala</div>
+      <div class="chart-sub">Sentimento nos acertos ÷ nos não-acertos (IG)</div>
+      <div id="sent"></div>
+    </div>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <h3>Padrões que os dados mostram e o playbook ainda não nomeia</h3>
+      <p>Todos aparecem em 16 clientes ou mais e mantêm a taxa sem o maior cliente. Base do Instagram: 17,8% de acerto.</p>
+      <div id="novos"></div>
+    </div>
+    <div class="card">
+      <h3>O que não mexe na retenção do hook</h3>
+      <ul class="clean">
+        <li><b>Tamanho.</b> De 10 a 30 palavras, a retenção mediana fica entre 62% e 64%. Acima de 30 palavras a taxa de acerto cai um pouco (18,8%).</li>
+        <li><b>Número sozinho.</b> Cifra ou dinheiro no texto dá efeito de 0,90 a 0,99. Número funciona como prova do absurdo ("13 milhões de litros"), não como gancho.</li>
+        <li><b>Abrir com "Esse/Essa".</b> Neutro sozinho (0,96). Funciona quando o personagem é comum e o feito é desproporcional.</li>
+        <li><b>Superlativo.</b> "Maior", "único", "mais" viraram ruído (0,86).</li>
+        <li><b>Citar marca famosa sem conflito.</b> O nome aparece em 43% dos acertos e em 40% dos não-acertos. O que separa é colocar o nome em conflito com alguém.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- FORMULAS -->
+<section class="sec" id="formulas">
+  <div class="sec-head">
+    <span class="eyebrow">04 · Fórmulas</span>
+    <h2>Quinze moldes extraídos dos 50 hooks mais vistos</h2>
+    <p class="lead">Codificação manual dos 50 acertos de Instagram com mais views em 12 meses. A coluna da direita valida cada molde contra a base inteira, quando dá para medir por padrão de texto. Os seis primeiros são os que mais se repetem no topo.</p>
+  </div>
+  <div class="formulas" id="flist"></div>
+</section>
+
+<!-- SUBHOOK -->
+<section class="sec" id="subhook">
+  <div class="sec-head">
+    <span class="eyebrow">05 · Sub-hook</span>
+    <h2>Um bom hook vale 45%. Com um bom sub-hook, vale 77%</h2>
+    <p class="lead">A segunda frase decide se a audiência que parou fica. E o texto do hook não explica essa queda: em todos os marcadores medidos, ela fica entre 18 e 23 pontos. Por isso o sub-hook precisa de roteiro próprio.</p>
+  </div>
+  <div class="grid2">
+    <div class="card chart">
+      <div class="chart-title">Taxa de acerto por combinação de hook e queda até o sub-hook</div>
+      <div class="chart-sub">Instagram. Hook forte = 71%+. Queda pequena = até 17 pontos.</div>
+      <div class="matrix">
+        <span></span><span class="h">Queda até 17 pts</span><span class="h">Queda acima de 17 pts</span>
+        <span class="rh">Hook 71%+</span>
+        <div class="cell hot"><b class="num">77,1%</b><span>n=144 · 173 mil views medianas</span></div>
+        <div class="cell"><b class="num">45,5%</b><span>n=187 · 40 mil views medianas</span></div>
+        <span class="rh">Hook abaixo de 71%</span>
+        <div class="cell"><b class="num">16,7%</b><span>n=204 · 5,5 mil</span></div>
+        <div class="cell"><b class="num">10,1%</b><span>n=752 · 6,1 mil</span></div>
+      </div>
+      <p class="small muted">Queda pequena com hook fraco não salva o vídeo. As duas coisas precisam acontecer.</p>
+    </div>
+    <div class="card">
+      <h3>O que segura e o que solta</h3>
+      <p class="muted">Quem segura entrega uma segunda camada concreta: o absurdo se aprofunda. Quem solta entrega a resposta (o nome, o desfecho) ou promete uma história previsível.</p>
+      <div id="subpairs" style="display:grid;gap:10px"></div>
+    </div>
+  </div>
+</section>
+
+<!-- REDES -->
+<section class="sec" id="redes">
+  <div class="sec-head">
+    <span class="eyebrow">06 · Entre redes</span>
+    <h2>O hook que funciona em todas tem força especial</h2>
+    <p class="lead">Dos 1.618 roteiros publicados em 3 ou mais redes, 93 acertaram em todas (5,7%). Se as redes fossem independentes, isso aconteceria em cerca de 1% dos casos. Existe um fator de conteúdo e hook que viaja.</p>
+  </div>
+  <div class="grid3">
+    <div class="card chart">
+      <div class="chart-title">Taxa de acerto por rede</div>
+      <div class="chart-sub">Mesmo roteiro, melhor publicação por rede</div>
+      <div id="perrede"></div>
+      <p class="small muted">Facebook é a mais permissiva (amostra pequena). YouTube é a mais exigente e a menos previsível.</p>
+    </div>
+    <div class="card chart">
+      <div class="chart-title">Se pegou no IG, pega no TikTok?</div>
+      <div class="chart-sub">% de acerto no TikTok por faixa de coeficiente no IG</div>
+      <div id="ig2tt"></div>
+    </div>
+    <div class="card chart">
+      <div class="chart-title">E no YouTube?</div>
+      <div class="chart-sub">% de acerto no YouTube pela mesma faixa</div>
+      <div id="ig2yt"></div>
+    </div>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <h3>O que dá força multi-rede a um hook</h3>
+      <div class="chart" id="multi"></div>
+      <p class="small muted">Chance de acerto em todas as redes com e sem o marcador, sem a Izabela Anholett (que sozinha tem um terço dos acertos universais). "Guerra", "humilha" e "acabou de" só se sustentam com ela.</p>
+    </div>
+    <div class="card">
+      <h3>Seis princípios</h3>
+      <ul class="clean">
+        <li><b>Quem:</b> personagem que qualquer pessoa reconhece em 1 segundo. É o maior efeito.</li>
+        <li><b>Onde:</b> âncora geográfica que cria identidade ou rivalidade (Brasil, Nordeste, China).</li>
+        <li><b>Virada:</b> a quebra de expectativa dentro da mesma frase.</li>
+        <li><b>Tom:</b> afirmar, não perguntar. Quando há pergunta, ela vem depois da afirmação.</li>
+        <li><b>Forma:</b> uma frase que conta a história inteira, de 15 a 20 palavras, com número só como escala do feito.</li>
+        <li><b>Distribuição:</b> não mexa no hook entre redes. IG, TikTok e Facebook andam juntos (correlação de 0,56 a 0,62). O YouTube é aposta separada (0,30 a 0,38).</li>
+      </ul>
+      <div class="note"><b>O caso dos 86 bilhões (Dilson Peres):</b> abrindo com o número, o YouTube fez <a href="https://www.youtube.com/shorts/g1D21krOPso" target="_blank" rel="noopener">417 mil</a>. Abrindo com "O que? no porto do Rio...", o Instagram fez <a href="https://www.instagram.com/reel/DY2-kgOtE2N" target="_blank" rel="noopener">23 mil</a>. Mexer no hook entre redes costuma custar caro.</div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>Acertos universais, com o link de cada rede</h3>
+    <p class="muted">Os 6 maiores da Izabela Anholett (acerto nas 4 redes) e os melhores de outros clientes (acerto nas 3 redes publicadas). Entre parênteses, o coeficiente em cada rede.</p>
+    <div class="tablebox"><table id="univ"></table></div>
+  </div>
+</section>
+
+<!-- NICHO -->
+<section class="sec" id="nicho">
+  <div class="sec-head">
+    <span class="eyebrow">07 · Cliente e nicho</span>
+    <h2>Alguns hooks são regra geral. Outros são sotaque de canal</h2>
+    <p class="lead">Instagram, 6.062 vídeos de 33 clientes agrupados em 6 nichos pelo conteúdo dominante. O efeito de cada tipo de hook foi medido contra a taxa de acerto do próprio cliente, para um canal forte não inflar o tipo que ele mais usa.</p>
+  </div>
+  <div class="grid3">
+    <div class="card">
+      <span class="pill ok" style="justify-self:start">Regra geral</span>
+      <h3>Funciona em quase todo canal</h3>
+      <p class="muted">"Acabou de" (6 de 6 nichos, efeito mediano 1,97x), país ou região (16 de 23 clientes), abrir com marca ou pessoa conhecida (15 de 21) e conflito (9 de 14). Também positivos no TikTok e no YouTube.</p>
+    </div>
+    <div class="card">
+      <span class="pill warn" style="justify-self:start">Depende do nicho</span>
+      <h3>Funciona num lugar, falha no outro</h3>
+      <p class="muted">Abrir com "Você", abrir com "Esse/Essa", pergunta e "fatura N bilhões". As três primeiras interações se repetem em mais de uma rede, então são reais.</p>
+    </div>
+    <div class="card">
+      <span class="pill bad" style="justify-self:start">Quase sempre ruim</span>
+      <h3>Primeira pessoa</h3>
+      <p class="muted">15 de 18 clientes abaixo do esperado, efeito mediano 0,50x. TikTok 0,60x, YouTube 0,76x. Só escapa quem é o próprio personagem do canal.</p>
+    </div>
+  </div>
+  <div class="card chart">
+    <div class="chart-title">Mapa: tipo de hook × nicho</div>
+    <div class="chart-sub">Efeito ajustado pelo cliente (1,0 = esperado). Verde a partir de 1,3x, laranja até 0,75x. Entre parênteses, quantos vídeos usam o tipo. Traço = menos de 15 vídeos.</div>
+    <div class="tablebox"><table id="heat"></table></div>
+  </div>
+  <div class="card">
+    <h3>Guia por nicho: o que priorizar e o que evitar</h3>
+    <div class="tabs" role="tablist" id="nicho-tabs"></div>
+    <div id="nicho-card"></div>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <h3>Assinaturas de canal</h3>
+      <ul class="clean">
+        <li><b>"Guerra/humilha"</b> acerta 43% contra 29% na Izabela Anholett e 28% contra 9% no Fernando Pereira, mas só 7% contra 24% no Lincoln Fracari. No canal de geopolítica, conflito já é o tema e a palavra soa exagero: <a href="https://www.instagram.com/reel/Dczck8Sv8DC" target="_blank" rel="noopener">"A China humilhou o mundo todo com um caminhão..."</a> fez 11 mil.</li>
+        <li><b>"Esse/Essa + objeto surpreendente"</b> é do Marcelo Germano (3,1x) e do Rafael Rodrigues (1,8x). Em canal de IA vira cara de review e falha: <a href="https://www.instagram.com/reel/DbwgqcVtkkc" target="_blank" rel="noopener">"Esse novo modo do Spotify é sensacional..."</a> fez 4,7 mil.</li>
+        <li><b>Nostalgia de marca</b> ("Você se lembra do Ping Pong?") funciona no Franklin Tomich e no Marcio Grazino.</li>
+        <li><b>Pergunta de mistério de marca</b> funciona na Exame (5,5x): <a href="https://www.instagram.com/reel/DXKzC4Ah4eU" target="_blank" rel="noopener">"Por que a Red Bull tem metade do tamanho do Monster e custa mais caro e mesmo assim vende quase o dobro?"</a> fez 1,3 milhão.</li>
+        <li><b>Primeira pessoa</b> só funciona com apresentador-personagem: Rodrigo Waughan, Manoel Victor e Renato Torres (amostras pequenas).</li>
+        <li><b>Café com Ferri e João Paulo Albuquerque</b> não têm nenhum tipo acima do esperado. No corte de podcast quem decide é o tema e a fala espontânea.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Por que faz sentido</h3>
+      <ul class="clean">
+        <li><b>IA e tecnologia</b> é nicho de novidade: o público quer saber o que mudou hoje e quem brigou com quem.</li>
+        <li><b>Finanças</b> é cético: nome conhecido e fato externo dão gancho; "eu", superlativo e segredo soam como vendedor de curso.</li>
+        <li><b>Sociedade e geopolítica</b> é nicho de opinião: "Você acha que..." convida o espectador a se posicionar.</li>
+        <li><b>Ciência e inovação</b> vive do objeto surpreendente: pergunta e "deixa eu te contar" adiam a revelação (4% contra 26%).</li>
+        <li><b>Case de empresa</b> é memória e conversa com o dono do negócio. "Fatura 18 bilhões" virou clichê do nicho (3% contra 15%).</li>
+        <li><b>Empreendedorismo</b> é personagem e resultado. "Você e a sua empresa" soa como anúncio de mentoria (5% contra 16%).</li>
+      </ul>
+      <div class="takeaway"><span class="eyebrow">Regra de bolso</span><p>Comece com o que mudou no mundo, não com você nem com o espectador. A exceção do "Você" é quando o público é exatamente quem está assistindo.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- EVITAR -->
+<section class="sec" id="evitar">
+  <div class="sec-head">
+    <span class="eyebrow">08 · O que evitar</span>
+    <h2>Anti-padrões, com o pior exemplo real de cada um</h2>
+    <p class="lead">Taxa de acerto no Instagram de cada estrutura, contra a base de 17,8%. Hook sem nenhum mecanismo do playbook acerta 10,1%.</p>
+  </div>
+  <div class="grid2">
+    <div class="card chart">
+      <div class="chart-title">Taxa de acerto por estrutura (Instagram)</div>
+      <div class="chart-sub">Linha tracejada = base 17,8%</div>
+      <div id="anti"></div>
+    </div>
+    <div class="card">
+      <h3>Alertas para o playbook</h3>
+      <ul class="clean">
+        <li><b>Pergunta Direta e Pergunta Reflexiva</b> foram promovidas automaticamente a categoria e são anti-padrões (12,8% e 7,5%). O processo de promoção usa frequência, não desempenho.</li>
+        <li><b>Desafio de Crença</b> é o mecanismo mais pregado e o mais traiçoeiro: 7,3% no YouTube. Funciona só ancorado em fato e nome conhecidos (Maduro, Marçal).</li>
+        <li><b>Apelo à Autoridade</b> não para o scroll. O sentimento "Autoridade" aparece quase o dobro nos fracassos. Credencial fica para o corpo do vídeo.</li>
+        <li><b>Republicar não repete o resultado:</b> o mesmo hook do Irã, no mesmo canal, fez 3,4 milhões em 28/02 e 504 views em 01/03.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="tablebox"><table id="antitab"></table></div>
+</section>
+
+<!-- LAB -->
+<section class="sec" id="lab">
+  <div class="sec-head">
+    <span class="eyebrow">09 · Laboratório</span>
+    <h2>Teste um hook contra o que os dados mostram</h2>
+    <p class="lead">Cole um hook e veja quais marcadores medidos ele aciona. É um checklist com os números da base, não uma previsão de views. Serve para revisar roteiro e para o exercício ao vivo da aula.</p>
+  </div>
+  <div class="lab-box">
+    <div style="display:grid;gap:10px;align-content:start">
+      <label for="hookin" class="small muted">Hook</label>
+      <textarea id="hookin"></textarea>
+      <div class="small muted">Carregar um exemplo real:</div>
+      <div class="chips" id="labex"></div>
+    </div>
+    <div style="display:grid;gap:10px;align-content:start">
+      <div class="sumline" id="labsum" aria-live="polite"></div>
+      <div class="sig" id="labsig"></div>
+    </div>
+  </div>
+</section>
+
+<!-- PAUTA -->
+<section class="sec" id="pauta">
+  <div class="sec-head">
+    <span class="eyebrow">10 · Pauta da aula</span>
+    <h2>Estrutura recomendada para 45 minutos</h2>
+    <p class="lead">Oito blocos que vão do dado que choca ao exercício prático. Cada bloco traz o objetivo, o que mostrar e a sugestão de slide.</p>
+  </div>
+  <div class="timebar" id="timebar" aria-hidden="true"></div>
+  <div class="timeline" id="pautalist"></div>
+</section>
+
+<!-- METODO -->
+<section class="sec" id="metodo">
+  <div class="sec-head">
+    <span class="eyebrow">11 · Método e ressalvas</span>
+    <h2>De onde vêm os números</h2>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <h3>Base e réguas</h3>
+      <ul class="clean small">
+        <li>Fonte: Oráculo (Viral Data), consultas de leitura em 17/10/2026. Sem vídeos ainda maturando (menos de 7 dias), removidos, reposts e hooks vazios.</li>
+        <li><b>Acerto</b> = acima do limiar do próprio canal (o maior entre 10 mil e 3x a mediana móvel). <b>Viral</b> = 100 mil+. <b>Ultraviral</b> = 1 milhão+. <b>Coeficiente</b> = views ÷ mediana móvel do canal.</li>
+        <li>Cada análise tem a sua base, e por isso a taxa de referência muda: 18,3% nos hooks classificados do IG, 23,7% nos vídeos com retenção medida, 17,8% na busca por padrões de texto.</li>
+        <li>O mesmo conteúdo entre redes é ligado pelo id do roteiro no CRM. Os vídeos sem esse id ficam fora da análise entre redes.</li>
+        <li>Retenção do hook e do sub-hook são os dois primeiros pontos do funil de retenção, em %. A base não documenta o segundo exato de cada ponto; "primeiros 3 segundos" é inferência.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Cuidados antes de levar para a aula</h3>
+      <ul class="clean small">
+        <li><b>Tudo é associação, não causa.</b> Tema, cliente, edição, voz e momento da notícia pesam junto com o texto. O mesmo roteiro no IG e no TikTok tem correlação de só 0,32 na retenção do hook.</li>
+        <li><b>Rodrigo Waughan</b> tem retenção do IG em outra escala (mediana 106%) e ficou fora das análises de retenção.</li>
+        <li><b>Marcelo Germano</b> tem casos de fev/mar 2026 com retenção de 3% e centenas de milhares de views. Parece erro de coleta.</li>
+        <li><b>Thiago Bisewski</b> aparece com retenção de 99% e 100% numa amostra de 6 vídeos. Tratar como suspeito.</li>
+        <li><b>O repost do Irã</b> (01/03, Felipe Dantas) não está marcado como repost na base.</li>
+        <li>Hooks de vídeos sem roteiro da casa são transcrição da fala e foram mantidos literais, com oralidade.</li>
+        <li>Coeficientes muito altos (300x a 700x) vêm de canais com mediana baixa, como Franklin Tomich (cerca de 400 views).</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+</main>
+<footer><div class="wrap">VM Academy · Estudo de hooks · dados do Oráculo em 17/10/2026. Os exemplos abrem a publicação original.</div></footer>
+
+<script>
+const IG = c => "https://www.instagram.com/reel/" + c;
+const esc = s => String(s).replace(/[&<>"]/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));
+const fmt = n => n == null ? "—" : Number(n).toLocaleString("pt-BR");
+const fmtD = (n,d=1) => n == null ? "—" : Number(n).toLocaleString("pt-BR",{minimumFractionDigits:d,maximumFractionDigits:d});
+const short = n => n >= 1e6 ? fmtD(n/1e6,2).replace(/0$/,"") + " mi" : n >= 1e3 ? Math.round(n/1e3) + " mil" : String(n);
+const dt = s => s ? s.slice(8,10) + "/" + s.slice(5,7) + "/" + s.slice(2,4) : "—";
+
+/* hooks do Instagram: código -> [hook, cliente, data, views, coef, ret hook, ret sub-hook, roteiro VM] */
+const H = {
+"DbvGvW2hRek":["A Samsung lançou um par de óculos que é o começo do fim da era do celular. Deixa eu te explicar.","Izabela Anholett","2026-08-07",9391531,146.7,78,61,1],
+"DYo3ldvOFHW":["Esse taxista rodou tanto com seu Toyota que ele simplesmente travou o software da fábrica.","Leonardo Nogueira","2026-05-22",6192964,438.4,79,67,1],
+"DYSIvUclThT":["a única maneira de mudar de vida é mudando de ambiente? a única maneira de mudar de vida é mudar de ambiente.","Café com Ferri","2026-05-13",4638542,88.4,null,null,0],
+"DcqJw8tOFPK":["Ela era a dançarina mais desejada do Brasil. Ele, um cantor no começo. Mais de 20 anos depois, Xanddy e Carla Perez seguem juntos, e o motivo surpreende muita gente.","Marcos Pelozato","2026-08-30",4368113,478.9,null,null,0],
+"DdkDHUgBnEm":["O HB20 e o Onix serão destruídos por esse novo lançamento da BYD, que faz 71 quilômetros por litro.","Leonardo Cirino","2026-09-21",4088462,179.7,null,null,1],
+"DZcVckKByOp":["A contagem regressiva começou. A China vai implementar no Brasil os pagamentos com a palma da mão, ainda esse ano.","Izabela Anholett","2026-06-11",3476947,79.1,75,null,1],
+"DVt98MUka1u":["A China tá silenciosamente construindo um império no Nordeste brasileiro. E quando eu digo império, eu não estou exagerando.","Lincoln Fracari","2026-03-10",3351048,450.3,null,null,0],
+"DUbU6HoCohh":["A caminhada deu mais engajamento do que o Oscar.","Café com Ferri","2026-02-06",3237621,51.9,null,null,0],
+"DVbunyzDvij":["O mundo tem exatamente 40 dias até o petróleo acabar. E a culpa é de um pedaço de mar que o Irã acabou de sequestrar.","Fernando Pereira","2026-03-03",3212057,544.4,79,62,1],
+"Dd4cgRKzhhw":["O dono do Instagram acabou de declarar guerra à Apple. Usando uma arma que pode literalmente mudar o mundo que a gente conhece. E o campo de batalha é o seu rosto, tá?","Izabela Anholett","2026-09-29",3154215,40.1,null,null,1],
+"DWxGBlAh7DU":["TODA VEZ QUE VOCÊ ENTRA NUM SUPERMERCADO GRANDE NA ENTRADA SABENDO DAS PESSOAS, A MAIORIA DAS PESSOAS NÃO VAI COMPRAR.","Quarto Slot Exame","2026-04-05",2900423,344.9,null,null,0],
+"DUVzHjLE4gO":["Hoje eu fui numa reunião da da Cimed, recebi pessoas formadas lá que eles são um mais um dois. 10 slides pra fazer um, uma coisa óbvia.","Café com Ferri","2026-02-04",2830936,43.8,null,null,0],
+"DY-bwdmpj4e":["Esse é o cara mais odiado do mundo pelos donos de academia. Isso porque a academia tradicional vende o mesmo espaço para centenas de pessoas, ao mesmo tempo. Mas ele resolveu vender o espaço inteiro para uma pessoa só.","Renato Torres","2026-05-30",2621349,244.6,null,null,1],
+"DYDnO44EhKv":["aí o Zé Felipe veio falar esses dia que não quer que os menino viaje pra ir pra escola.","Café com Ferri","2026-05-07",2603890,51.0,null,null,0],
+"DWuSVeFEdwk":["essa estratégia assustadora fez esse empresário multiplicar 10x sua fortuna.","Cadu Neiva","2026-04-04",2532646,740.2,null,null,1],
+"DVmZmdRDn7q":["Essa fábrica de balas tem o melhor chocolate do Brasil, uma fábrica do interior do Rio Grande do Sul criou um chocolate tão bom que a Hershey's e a Nestlé começaram a copiar.","Marcelo Germano","2026-03-07",2487357,137.8,74,null,0],
+"DdkLxRzBKTs":["Esse é o maior golpe das lojas de shopping contra o governo. E o pior, o golpe é totalmente legal.","Dilson Peres","2026-09-21",2212971,55.7,null,null,1],
+"DX-KBg-thjK":["A sua cerveja do final de semana vai ficar mais cara por conta do governo.","Dilson Peres","2026-05-05",2131824,32.2,72,null,1],
+"DXaXOO3ibZs":["Coca-Cola gasta milhões no Nordeste, mas existe uma bebida cearense que ela não consegue superar.","Cadu Neiva","2026-04-21",2128919,154.9,null,null,1],
+"Dcw12PyNrZs":["A Geely chocou o mundo mais uma vez. Ela acabou de dar o passo mais revolucionário da história.","Leonardo Cirino","2026-09-01",2046089,93.7,null,null,1],
+"DYNOB6AAJOd":["Não tem como. Rapaz, cantor é tudo liso, pô. É tudo, é tudo quebrado. Cantor tem, tem 4, 5 cantores que tem avião para começar. Então, a galera não ganha grana demais? Para onde vai essa grana?","Café com Ferri","2026-05-11",1932647,37.9,null,null,0],
+"DZM4mrahLTo":["A criadora do ChatGPT tá preparando um golpe que vai destruir o iPhone em 2027. Um celular com IA e sem os apps tradicionais. Quase ninguém tá percebendo o que que isso significa.","Izabela Anholett","2026-06-05",1905875,48.4,78,null,1],
+"DcSAD1cEavD":["cara pagar funcionário no quinto dia útil, no final do dia, irmão, é só pra revoltar o cara.","Marcos Pelozato","2026-08-20",1874117,211.1,null,null,0],
+"DV1sUGdlZHO":["de um tanque num quintal para um sucesso bilionário","Marcelo Germano","2026-03-13",1865745,41.3,73,null,1],
+"DWzokn-k32y":["Tu achas que os artistas realmente eles acreditam no PT, votam realmente no PT ou eles estão só preocupados com os bilhões da Lei Rouanet? Não, estão preocupados com grana. Esquece.","Café com Ferri","2026-04-06",1842720,36.8,null,null,0],
+"DW4XTgRDt0a":["Você é dono de empresa e um dia pretende vender o seu negócio? Então fica até o final, pois tem uma surpresa pra você.","Franklin Tomich","2026-04-08",273411,729.1,null,null,0],
+"DcKNGwYuTIK":["Jovem cria IA que simula jutsu do Naruto. Esse cara criou uma IA que reconhece se você fez o rasengan certo. E agora a geração inteira que imitava o Naruto no espelho, pode descobrir se o jutsu funcionaria de verdade.","Patrick Diorio","2026-08-17",412692,457.3,85,71,1],
+"DWKJvC7Dz8-":["Enquanto as gigantes gastam bilhões para criar tecnologia, esse jovem de 20 anos criou uma concorrente da Apple usando restos de lixo.","Rafael Rodrigues","2026-03-21",1081942,438.4,71,null,1],
+"DYvEahZtxVE":["A Estrela, a Bombril, as Americanas e a Polishop, todas elas pediram recuperação judicial. A Varig e a Parmalat simplesmente desapareceram. E todas elas deixaram sinais muito antes da crise explodir.","Franklin Tomich","2026-05-24",187053,401.4,null,null,0],
+"DVliQCqjilr":["O Palmeiras fracassou em 2025. Essa é a frase que começou a circular depois do fim da temporada.","Pedro Elero","2026-03-07",411505,396.8,null,null,0],
+"DWzVGx_jfRB":["Você sabia que existe um órgão no Brasil que pode proibir a venda de uma empresa? Pois é, ele se chama CADE.","Franklin Tomich","2026-04-06",134415,385.1,null,null,0],
+"DWb3BkZDrCS":["Um bilhão, isto mesmo, um bilhão foi o preço que a dona da Nutella pagou para aquisição da Bold. Uma empresa criada em 2018 por um jovem de Divinópolis, em Minas Gerais.","Franklin Tomich","2026-03-28",170179,376.5,null,null,0],
+"DcejbHhB5pX":["de R$ 297 mil reais pra mais de R$ 700 mil todos os meses. E o segredo estava dentro do próprio ecossistema do Mercado Livre.","Thiago Franco","2026-08-25",781864,306.7,null,null,0],
+"DVDzbdUiYvV":["Essa campanha da Pepsi vai além da provocação. A Monster vai deixar de ser o energético dos gamers para invadir a bolsa das mulheres.","Manoel Victor","2026-02-22",727514,302.5,78,64,1],
+"DW1WFMlDtHu":["Você sabe como Bernardo Arnault, dono da Louis Vuitton, construiu uma fortuna de 500 bilhões de dólares? Ele não criou nenhuma marca ou construiu nenhuma empresa. Ele simplesmente comprou.","Franklin Tomich","2026-04-07",109766,300.7,null,null,0],
+"DZPs8ZuBt9M":["Essa IA recebeu a ordem explícita de não cometer crimes, mas cometeu. Depois, sentiu remorso e votou pela própria destruição. Sim, isso aconteceu de verdade.","João Felipe Marques","2026-06-06",510036,298.5,null,null,1],
+"DcggOMfJY86":["Esse vendedor do Mercado Livre foi de 400 mil para mais de 2 milhões de reais todos os meses! E a virada de chave foi quando eles pararam de usar Mercado Ads como se cada produto fosse igual!","Thiago Franco","2026-08-26",754977,296.4,null,null,0],
+"DWenTIujhmc":["Qual a diferença entre vender uma empresa na pessoa física ou na pessoa jurídica?","Franklin Tomich","2026-03-29",118177,261.5,null,null,0],
+"DduHhYxx97R":["Esse equipamento faz o barco parar de balançar, mesmo com o mar agitado. E não, ele não ancora a embarcação. E também não tenta controlar as ondas.","Leonardo Martins","2026-09-25",780453,242.6,null,null,1],
+"DcBhRCHD9Gk":["Essa marca de tênis manda uma faca de verdade dentro da caixa e pede para você destruir o produto que acabou de comprar.","Pedro Elero","2026-08-14",432403,224.9,82,74,1],
+"Dce9r_WJQp4":["Três estados do nordeste estão em guerra e o Brasil inteiro devia torcer para essa guerra nunca acabar.","Cadu Neiva","2026-08-25",1795148,217.5,null,null,0],
+"DQMk333kbwg":["Preciso saber programar bem para conseguir a primeira vaga?","Patrick Diorio","2025-10-24",215890,208.8,null,null,0],
+"DVzP5yVjxRA":["Você não percebeu, mas o São Paulo deu uma aula. Não de futebol, mas de gestão e liderança.","Rafael Rodrigues","2026-03-12",234940,118.3,84,72,1],
+"DY-krjmNG2R":["A chinesa dona da Volvo comprou alguma das maiores empresas do mundo e agora chegou no Brasil. E a estratégia por trás disso é sensacional.","Franklin Tomich","2026-05-30",990828,196.7,81,66,1],
+"DcmRAR0DFEz":["O Palmeiras acabou de mandar uma promessa para jogar com o Messi. E é por isso que cada vez mais Barcelona e Real Madrid invejam o maior clube do Brasil.","Pedro Elero","2026-08-28",150093,75.6,84,61,1],
+"DXPntylEZ0k":["E quando todo mundo achou que a guerra acabou, o governo brasileiro ligou um alerta de pânico com a atitude do Trump.","Fernando Pereira","2026-04-17",613002,91.1,82,70,1],
+"DbeNjTKCCxZ":["O Palmeiras acaba de tomar uma atitude que deixou muita gente revoltada, mas que você não pode ignorar.","Pedro Elero","2026-07-31",171823,89.6,82,70,1],
+"DVzCXslj2aC":["A empresa mais valiosa do mundo acabou de emitir [um alerta] que ninguém queria ouvir.","Fernando Pereira","2026-03-12",843605,132.7,81,65,1],
+"DcjvDmQmqyp":["Ela foi ao Palmeiras para colocar o nome da empresa na camisa do clube, acabou ficando com o cargo mais alto da história do time, se tornando a primeira mulher a presidi-lo em mais de 100 anos de existência.","Pedro Elero","2026-08-27",246765,126.7,81,65,1],
+"DbRQlG7xhNs":["Uma gambiarra insana de um brasileiro virou uma economia de 13 milhões de litros de água.","Marcio Grazino","2026-07-26",865497,59.7,83,68,1],
+"DWchpM_j7ac":["A Nike passou vergonha ao esquecer o mais importante sobre o Brasil. Nós somos brasileiros.","Rafael Rodrigues","2026-03-28",323376,107.6,81,67,1],
+"DcPFuYgmoMQ":["O Palmeiras acabou de fechar o semestre devendo 124 milhões de reais. Mas isso não foi um erro, foi uma das estratégias da presidente que quase ninguém sacou.","Pedro Elero","2026-08-19",131314,68.1,81,63,1],
+"DaY1yoxuPZ8":["Você se lembra do Ping Pong? O chiclete que fazia bola com figurinha dentro, simplesmente sumiu. E a culpada foi uma decisão corporativa que quase ninguém conhece.","Franklin Tomich","2026-07-04",1158776,62.2,81,67,1],
+"DX46fHqv7w7":["Essa brasileira ganhou um prêmio do Google ao fazer de graça o que muitos cursinhos cobram mais de mil reais por mês. E ela fez isso em 48 horas.","Rafael Rodrigues","2026-05-03",218219,44.1,84,68,1],
+"DVFKx-Qj1RP":["Os herdeiros largaram a faculdade e ficaram mais ricos. Os filhos dos milionários pararam de estudar e estão se tornando ainda mais ricos.","Rafael Rodrigues","2026-02-22",123709,125.1,79,54,1],
+"Dct8khVp1XE":["O brasileiro mais rico do mundo abriu mão de ser americano e o Congresso dos Estados Unidos ficou tão revoltado com isso que tentou criar uma lei só para impedir a volta dele para o país.","Ricardo Schumacher","2026-08-31",147917,56.7,81,63,1],
+"DY1-5KPxvUX":["Antigamente, ter uma Monarque era o sonho de todo brasileiro, só que por causa de uma das piores decisões da história, hoje você nem se lembra mais dela.","Marcio Grazino","2026-05-27",405265,45.3,82,72,1],
+"DVb1oAQDPmw":["O ingresso de futebol mais caro do mundo: o Real Madrid transformou seu estádio na sala de reunião mais cara do planeta. O ingresso custa 1,5 milhão de reais.","Manoel Victor","2026-03-03",129862,54.3,81,64,1],
+"DXOyr8JjkwH":["A Honda, uma das montadoras mais conservadoras do mercado, tomou uma das decisões mais ousadas da sua história ao tirar de linha um dos carros mais amados que o Brasil já viu, e o motivo pode te surpreender.","Leonardo Nogueira","2026-04-17",342439,43.9,82,65,1],
+"DajCYYMJpvN":["Uma cirurgia brasileira salvou mais de 8.000 pessoas ao provar que muitos tumores de câncer simplesmente desaparecem sozinhos. Mas é triste o motivo de você nunca ter ouvido falar nela.","Drielle Castelani","2026-07-08",129476,50.5,80,63,1],
+"DZqY9lQhqRE":["Esse médico esperou o chefe ir embora, trancou a sala e enfiou um tubo dentro do próprio coração.","Drielle Castelani","2026-06-16",216411,120.2,78,57,1],
+"DYxphfYtVma":["O Ratinho venceu o governo e cancelou uma multa de 58 milhões de reais. E a jogada que ele usou qualquer brasileiro pode repetir.","Dilson Peres",null,554003,null,85,67,1],
+"DaAYmA5h5HG":["Um brasileiro de 23 anos jogou fora uma vaga para estudar de graça em uma das melhores faculdades do mundo e voltou ao Brasil para criar uma IA. Menos de três anos depois, ele vale mais de 5 bilhões de reais.","Izabela Anholett",null,203737,null,85,61,1],
+"DZFKODih104":["O governo chinês declarou guerra ao dono do Instagram por causa de uma IA de 2 bilhões de dólares e proibiu seus fundadores de deixar o país.","Izabela Anholett",null,463084,null,84,70,1],
+"DW2XqA_DCo5":["Esse cearense resolveu um problema que os maiores médicos do mundo não conseguiram.","Rafael Rodrigues",null,60922,null,83,68,1],
+"Da1CQOdhW2y":["Uma banca de frutas na beira da estrada virou um negócio de R$ 170 milhões. E o segredo não estava na comida, estava no banheiro.","Marcos Pelozato",null,80911,null,82,64,1],
+"DcL4m2tB8CN":["A indústria brasileira declarou guerra contra a China. O motivo? O botijão de gás que fica ali na sua cozinha.","Fernando Pereira",null,52498,null,82,67,1],
+"DYrpwcbhHwR":["O Elon Musk acabou de ser humilhado pela China com o que ela acabou de liberar para o mundo.","Izabela Anholett",null,869253,null,81,70,1]
+};
+
+const RANKS = [
+ {id:"views", nome:"Mais vistos", desc:"Instagram, clientes, últimos 12 meses, ordenado por views. Retenção aparece quando foi medida.",
+  cols:["v","k","r"],
+  list:"DbvGvW2hRek DYo3ldvOFHW DYSIvUclThT DcqJw8tOFPK DdkDHUgBnEm DZcVckKByOp DVt98MUka1u DUbU6HoCohh DVbunyzDvij Dd4cgRKzhhw DWxGBlAh7DU DUVzHjLE4gO DY-bwdmpj4e DYDnO44EhKv DWuSVeFEdwk DVmZmdRDn7q DdkLxRzBKTs DX-KBg-thjK DXaXOO3ibZs Dcw12PyNrZs DYNOB6AAJOd DZM4mrahLTo DcSAD1cEavD DV1sUGdlZHO DWzokn-k32y"},
+ {id:"coef", nome:"Maior coeficiente", desc:"Views ÷ mediana do canal, com piso de 50 mil views. Canais pequenos inflam o coeficiente: Franklin Tomich tem mediana perto de 400 views.",
+  cols:["k","v","r"],
+  list:"DWuSVeFEdwk DW4XTgRDt0a DVbunyzDvij DcqJw8tOFPK DcKNGwYuTIK DVt98MUka1u DYo3ldvOFHW DWKJvC7Dz8- DYvEahZtxVE DVliQCqjilr DWzVGx_jfRB DWb3BkZDrCS DWxGBlAh7DU DcejbHhB5pX DVDzbdUiYvV DW1WFMlDtHu DZPs8ZuBt9M DcggOMfJY86 DWenTIujhmc DY-bwdmpj4e DduHhYxx97R DcBhRCHD9Gk Dce9r_WJQp4 DcSAD1cEavD DQMk333kbwg"},
+ {id:"combo", nome:"Views + retenção", desc:"Score = percentil do coeficiente × percentil da retenção do hook, entre os 1.290 vídeos com retenção medida. Só fica alto quem está no topo das duas.",
+  cols:["r","s","k","v"],
+  list:"DcKNGwYuTIK DcBhRCHD9Gk DVzP5yVjxRA DY-krjmNG2R DcmRAR0DFEz DXPntylEZ0k DbeNjTKCCxZ DVzCXslj2aC DcjvDmQmqyp DbRQlG7xhNs DWchpM_j7ac DVbunyzDvij DYo3ldvOFHW DcPFuYgmoMQ DaY1yoxuPZ8 DX46fHqv7w7 DVFKx-Qj1RP Dct8khVp1XE DY1-5KPxvUX DVb1oAQDPmw DXOyr8JjkwH DVDzbdUiYvV DbvGvW2hRek DajCYYMJpvN DZqY9lQhqRE"},
+ {id:"ret", nome:"Maior retenção no hook", desc:"Top 20 por retenção do hook com pelo menos 20 mil views. Todos os 20 foram acerto.",
+  cols:["r","s","v"],
+  list:"DYxphfYtVma DcKNGwYuTIK DaAYmA5h5HG DZFKODih104 DVzP5yVjxRA DX46fHqv7w7 DcmRAR0DFEz DbRQlG7xhNs DW2XqA_DCo5 DXPntylEZ0k DcBhRCHD9Gk DY1-5KPxvUX DXOyr8JjkwH DbeNjTKCCxZ Da1CQOdhW2y DcL4m2tB8CN DaY1yoxuPZ8 DY-krjmNG2R DYrpwcbhHwR DVzCXslj2aC"}
+];
+const COLN = {v:"Views", k:"Coef.", r:"Ret. hook", s:"Ret. sub"};
+const colVal = (k,h) => k==="v" ? fmt(h[3]) : k==="k" ? (h[4]==null?"—":fmtD(h[4])+"x") : k==="r" ? (h[5]==null?"—":h[5]+"%") : (h[6]==null?"—":h[6]+"%");
+
+let curRank = 0;
+function renderRank(){
+  const R = RANKS[curRank], q = document.getElementById("rank-q").value.trim().toLowerCase(), vm = document.getElementById("rank-vm").checked;
+  document.getElementById("rank-desc").textContent = R.desc;
+  const rows = R.list.split(" ").map((c,i)=>({c,i:i+1,h:H[c]}))
+    .filter(o => (!vm || o.h[7]) && (!q || (o.h[0]+" "+o.h[1]).toLowerCase().includes(q)));
+  let html = "<thead><tr><th>#</th><th>Hook</th><th>Cliente</th><th>Data</th>" + R.cols.map(k=>`<th class="n">${COLN[k]}</th>`).join("") + "<th>Link</th></tr></thead><tbody>";
+  html += rows.map(o => `<tr><td class="rk">${o.i}</td><td class="hook"><q>${esc(o.h[0])}</q>${o.h[7]?' <span class="pill vm">roteiro VM</span>':''}</td><td class="cli">${esc(o.h[1])}</td><td class="cli num">${dt(o.h[2])}</td>${R.cols.map(k=>`<td class="n">${colVal(k,o.h)}</td>`).join("")}<td><a class="lk" href="${IG(o.c)}" target="_blank" rel="noopener">Ver reel ↗</a></td></tr>`).join("");
+  if(!rows.length) html += `<tr><td colspan="9" class="muted">Nenhum hook deste ranking tem esse termo.</td></tr>`;
+  document.getElementById("rank-table").innerHTML = html + "</tbody>";
+}
+const tabs = document.getElementById("rank-tabs");
+tabs.innerHTML = RANKS.map((r,i)=>`<button role="tab" id="tab-${r.id}" aria-selected="${i===0}">${r.nome}</button>`).join("");
+tabs.addEventListener("click", e => {
+  const b = e.target.closest("button"); if(!b) return;
+  curRank = [...tabs.children].indexOf(b);
+  [...tabs.children].forEach((x,i)=>x.setAttribute("aria-selected", i===curRank));
+  try{ localStorage.setItem("hook-rank-tab", curRank) }catch(_){}
+  renderRank();
+});
+try{ const s = +localStorage.getItem("hook-rank-tab"); if(s>0 && s<RANKS.length){ curRank=s; [...tabs.children].forEach((x,i)=>x.setAttribute("aria-selected", i===s)); } }catch(_){}
+document.getElementById("rank-q").addEventListener("input", renderRank);
+document.getElementById("rank-vm").addEventListener("change", renderRank);
+renderRank();
+
+/* gráficos de barra */
+function hbars(el, rows, {max, ref, unit="%", dec=1} = {}){
+  const m = max || Math.max(...rows.map(r=>r.v)) * 1.08;
+  document.getElementById(el).innerHTML = `<div class="chart">` + rows.map(r => {
+    const w = Math.max(0, r.v / m * 100);
+    return `<div class="hbar" data-tip="${esc(r.tip || (r.l + ": " + fmtD(r.v,dec) + unit))}"><span class="lab">${esc(r.l)}${r.sub?`<small>${esc(r.sub)}</small>`:""}</span><span class="track"><span class="fill ${r.cls||""}" style="width:${w}%"></span>${ref!=null?`<span class="ref" style="left:${ref/m*100}%"></span>`:""}</span><span class="val">${fmtD(r.v,dec)}${unit}</span></div>`;
+  }).join("") + `</div>`;
+}
+// barras divergentes em torno de 1,0 (lift)
+function dbars(el, rows, span=1){
+  document.getElementById(el).innerHTML = `<div class="chart">` + rows.map(r => {
+    const d = r.v - 1, w = Math.min(50, Math.abs(d) / span * 50);
+    return `<div class="hbar" data-tip="${esc(r.tip || r.l)}"><span class="lab">${esc(r.l)}${r.sub?`<small>${esc(r.sub)}</small>`:""}</span><span class="div-track"><span class="axis"></span><span class="fill ${d>=0?"pos":"neg"}" style="width:${w}%"></span></span><span class="val">${fmtD(r.v,2)}x</span></div>`;
+  }).join("") + `</div>`;
+}
+
+// quartis
+const Q = [["Q1","3 a 55%",3.1,"3,1 mil"],["Q2","55 a 64%",8.7,"6,7 mil"],["Q3","64 a 71%",23.0,"14,3 mil"],["Q4","71 a 100%",60.2,"77,7 mil"]];
+document.getElementById("quartis").innerHTML = Q.map(q=>`<div class="vbar" data-tip="${q[0]} (retenção do hook ${q[1]}): ${fmtD(q[2])}% de acerto, mediana de ${q[3]} views"><span class="v">${fmtD(q[2])}%</span><span class="col" style="height:${q[2]/65*100}%"></span></div>`).join("");
+document.getElementById("quartis-lab").innerHTML = Q.map(q=>`<span><b>${q[0]}</b>${q[1]}<br>${q[3]} views</span>`).join("");
+
+hbars("corr",[
+ {l:"Retenção do hook × views",v:0.59,tip:"Correlação entre retenção do hook e log das views"},
+ {l:"Retenção do sub-hook × views",v:0.54,tip:"Correlação entre retenção do sub-hook e log das views"},
+ {l:"Retenção do hook × % não seguidores",v:0.48,tip:"Hook que retém chega mais a quem não segue"}],{max:1,unit:"",dec:2});
+
+hbars("vmvs",[
+ {l:"Viralizam (100 mil+)",sub:"Roteiro VM",v:14.0},{l:"",sub:"Outros",v:6.1,cls:"mute"},
+ {l:"Acima do limiar do canal",sub:"Roteiro VM",v:21.6},{l:"",sub:"Outros",v:14.9,cls:"mute"}],{max:25});
+
+dbars("feat",[
+ {l:"\"acabou de\" / \"acaba de\"",sub:"n=104 · evidência forte",v:1.82,tip:"n=104, 15 clientes. Retenção do hook 70% contra 63%. Acerto 44% contra 24% esperado. z≈4,7"},
+ {l:"\"acabou de\" + abre com nome",sub:"n=66 · combinado",v:1.82,tip:"n=66. 45,5% de acerto"},
+ {l:"Nostalgia (antigamente, sumiu)",sub:"n=33 · hipótese",v:1.35,tip:"n=33, só 7 clientes. Promissor, ainda não é regra"},
+ {l:"Abre com \"O/A + Nome\"",sub:"n=272 · forte",v:1.33,tip:"Marca ou pessoa conhecida na primeira palavra. 32,4% de acerto. z≈3,1"},
+ {l:"Choque (humilhou, pânico, mentindo)",sub:"n=206 · moderada",v:1.29,tip:"Retenção do hook 68% contra 63%. z≈2,3"},
+ {l:"Tempo (hoje, agora, ontem)",sub:"n=245 · moderada",v:1.24,tip:"z≈2,1"},
+ {l:"2ª frase abre novo mistério",sub:"n=77 · fraco",v:1.17,tip:"\"E o motivo...\", \"E o segredo...\". z≈0,8"},
+ {l:"Dinheiro (R$, milhões)",sub:"n=361",v:0.99,tip:"Neutro"},
+ {l:"Abre com \"Esse/Essa\"",sub:"n=244",v:0.96,tip:"Neutro"},
+ {l:"Contraste (mas, enquanto)",sub:"n=335",v:0.91,tip:"Neutro sozinho"},
+ {l:"Contém número",sub:"n=438",v:0.90,tip:"Neutro"},
+ {l:"Usa \"você\"",sub:"n=236",v:0.88,tip:"Levemente negativo"},
+ {l:"Superlativo (maior, único)",sub:"n=492",v:0.86,tip:"z≈-1,8"},
+ {l:"Pergunta (?)",sub:"n=92",v:0.85,tip:"Retenção 62% contra 64%. No TikTok, 53,5% contra 61%"},
+ {l:"Primeira pessoa (eu, meu)",sub:"n=56",v:0.80,tip:"3,5 pontos de retenção abaixo do próprio cliente"},
+ {l:"Tema IA sem personagem",sub:"n=160",v:0.79,tip:"IA com personagem e conflito funciona: veja o governo chinês contra o dono do Instagram (84%)"},
+ {l:"Tema governo sem personagem",sub:"n=115",v:0.73,tip:"z≈-1,6"}],0.9);
+
+hbars("mgc",[
+ {l:"Elemento Controverso",v:27.2,sub:"n=232"},{l:"Conflito Declarado",v:25.7,sub:"n=269"},{l:"Urgência",v:25.1,sub:"n=275 · a que mais viraliza: 32,7%"},
+ {l:"Esse Cara",v:24.5,sub:"n=1.077"},{l:"O Proibido",v:23.3,sub:"n=120"},{l:"Apelo Histórico",v:22.7,sub:"n=110"},
+ {l:"Contraste Extremo",v:21.6,sub:"n=1.614"},{l:"Superlativo",v:20.4,sub:"n=632"},{l:"Ultra Especificidade",v:20.2,sub:"n=870"},
+ {l:"Revelação Secreta",v:18.1,sub:"n=789",cls:"mute"},{l:"Desafio de Crença",v:17.6,sub:"n=663",cls:"neg"},{l:"Apelo à Autoridade",v:16.6,sub:"n=181",cls:"neg"},
+ {l:"Viés de Negatividade",v:16.1,sub:"n=774",cls:"neg"},{l:"Ordem Contra-intuitiva",v:15.3,sub:"n=72",cls:"neg"},{l:"Pergunta Direta",v:12.8,sub:"n=305 · promovida automaticamente",cls:"neg"},
+ {l:"Nenhum mecanismo",v:10.1,sub:"n=868",cls:"neg"},{l:"Apelo à Maioria",v:8.2,sub:"n=49",cls:"neg"},{l:"Pergunta Reflexiva",v:7.5,sub:"n=53 · promovida automaticamente",cls:"neg"}],{max:30,ref:18.3});
+
+hbars("nmgc",[{l:"Nenhum",v:10.1,cls:"neg"},{l:"Um",v:16.5},{l:"Dois",v:21.6},{l:"Três ou mais",v:19.1}],{max:25,ref:18.3});
+hbars("pairs",[
+ {l:"Esse Cara + O Proibido",v:38.7,sub:"n=31 · retenção 73%"},{l:"Conflito + Contraste",v:32.0,sub:"n=50"},
+ {l:"Crença + Ultra Especificidade",v:31.3,sub:"n=32"},{l:"Controverso + Esse Cara",v:29.7,sub:"n=37 · 43% viral"},
+ {l:"Urgência + Negatividade",v:27.5,sub:"n=120"},{l:"Crença + Negatividade",v:6.6,sub:"n=61 · vira sermão",cls:"neg"}],{max:42,ref:18.3});
+dbars("sent",[
+ {l:"Nostalgia",v:1.88},{l:"Medo",v:1.56},{l:"Escândalo",v:1.52},{l:"Admiração",v:1.42,sub:"o mais comum nos acertos"},{l:"Indignação",v:1.34},{l:"Curiosidade",v:1.23},
+ {l:"Didatismo",v:0.77},{l:"Ceticismo",v:0.63},{l:"Autoridade",v:0.56},{l:"Confiança",v:0.44}],1);
+
+hbars("novos",[
+ {l:"\"declar* guerra\" / \"em guerra\"",v:43.8,sub:"n=48 · recalculado na auditoria"},{l:"Regional (Nordeste, interior, estado)",v:39.1,sub:"n=294 · 24 clientes"},
+ {l:"Davi x Golias",v:36.6,sub:"n=93 · 27 clientes"},{l:"\"acabou de\"",v:32.1,sub:"n=349 · 29 clientes"},{l:"China",v:30.0,sub:"n=460 · 28 clientes"},
+ {l:"Sub-hook causal (\"e a culpa é\", \"o motivo\")",v:25.1,sub:"n=251 · 30 clientes"}],{max:46,ref:17.8});
+
+hbars("perrede",[{l:"Facebook",v:30.0,sub:"257 roteiros"},{l:"Instagram",v:23.9,sub:"1.616"},{l:"TikTok",v:22.2,sub:"1.598"},{l:"YouTube",v:19.5,sub:"1.612"}],{max:34});
+const BAND=["menos de 1x","1 a 3x","3 a 10x","10 a 30x","30x ou mais"];
+hbars("ig2tt",[5.0,19.0,48.4,64.1,69.9].map((v,i)=>({l:"IG "+BAND[i],v,tip:`Coeficiente no IG ${BAND[i]}: ${fmtD(v)}% de acerto no TikTok`})),{max:75,ref:22.2});
+hbars("ig2yt",[7.3,22.4,34.4,45.6,37.9].map((v,i)=>({l:"IG "+BAND[i],v,tip:`Coeficiente no IG ${BAND[i]}: ${fmtD(v)}% de acerto no YouTube`})),{max:75,ref:19.5});
+
+document.getElementById("multi").innerHTML = [
+ ["Marca ou famoso",8.6,4.0],["País ou região",6.4,3.3],["\"Quase ninguém percebeu\"",6.7,4.3],["Contraste (mas, enquanto)",5.3,4.2],["Pergunta (?)",2.4,4.6],["Primeira frase com até 12 palavras",3.4,4.9]
+].map(([l,a,b])=>`<div class="hbar" data-tip="${esc(l)}: ${fmtD(a)}% com, ${fmtD(b)}% sem"><span class="lab">${esc(l)}<small>com ${fmtD(a)}% · sem ${fmtD(b)}%</small></span><span class="track"><span class="fill ${a<b?"neg":""}" style="width:${a/10*100}%"></span><span class="ref" style="left:${b/10*100}%"></span></span><span class="val">${a>=b?"+":""}${fmtD(a-b)} pt</span></div>`).join("") + `<div class="legend"><span><i style="background:var(--mark-1)"></i>Com o marcador</span><span><i style="border-left:1.5px dashed var(--text-3);border-radius:0;width:2px"></i>Sem o marcador</span></div>`;
+
+/* acertos universais */
+const U = [
+ ["A Samsung lançou um par de óculos que é o começo do fim da era do celular.","Izabela Anholett",[["FB","557 mil","20,6","https://www.facebook.com/reel/2150015449258037"],["IG","9,39 mi","146,7","https://www.instagram.com/reel/DbvGvW2hRek"],["TT","455 mil","27,8","https://www.tiktok.com/@izabela.anholett/video/7669659195427376405"],["YT","2,72 mi","163,3","https://www.youtube.com/shorts/uI-qstDty4Y"]]],
+ ["A contagem regressiva começou. A China vai implementar no Brasil os pagamentos com a palma da mão, ainda esse ano.","Izabela Anholett",[["FB","255 mil","13,1","https://www.facebook.com/reel/1727613015357583"],["IG","3,48 mi","79,1","https://www.instagram.com/reel/DZcVckKByOp"],["TT","1,10 mi","83,8","https://www.tiktok.com/@izabela.anholett/video/7649512486550490388"],["YT","176 mil","60,0","https://www.youtube.com/shorts/Bag4yS36oXg"]]],
+ ["A China agora tá destruindo os computadores. Isso porque ela criou os primeiros óculos com IA programável do mundo.","Izabela Anholett",[["FB","809 mil","36,0","https://www.facebook.com/reel/1749778832876995"],["IG","1,33 mi","24,2","https://www.instagram.com/reel/DakboQ0Bfla"],["TT","1,02 mi","63,5","https://www.tiktok.com/@izabela.anholett/video/7659966063307934997"],["YT","1,79 mi","340,3","https://www.youtube.com/shorts/SyprPGFoWus"]]],
+ ["O dono do Instagram acabou de declarar guerra à Apple. Usando uma arma que pode literalmente mudar o mundo que a gente conhece. E o campo de batalha é o seu rosto, tá?","Izabela Anholett",[["FB","2,10 mi","50,6","https://www.facebook.com/reel/1667967728187258"],["IG","3,15 mi","40,1","https://www.instagram.com/reel/Dd4cgRKzhhw"],["TT","2,23 mi","110,1","https://www.tiktok.com/@izabela.anholett/video/7691032073427012870"],["YT","1,34 mi","33,9","https://www.youtube.com/shorts/12CH99HFtHk"]]],
+ ["A Apple oficialmente matou a Siri bobinha e o seu iPhone agora vai ser turbinado pelo Google.","Izabela Anholett",[["FB","176 mil","7,8","https://www.facebook.com/reel/27674808922151427"],["IG","1,60 mi","30,2","https://www.instagram.com/reel/DafSJJZhMXs"],["TT","802 mil","51,4","https://www.tiktok.com/@izabela.anholett/video/7657938250266447121"],["YT","524 mil","101,9","https://www.youtube.com/shorts/2HRRoDok-CI"]]],
+ ["O Elon Musk acabou de ser humilhado pela China com o que ela acabou de liberar para o mundo.","Izabela Anholett",[["FB","385 mil","18,8","https://www.facebook.com/reel/970152475816405"],["IG","869 mil","27,1","https://www.instagram.com/reel/DYrpwcbhHwR"],["TT","255 mil","17,7","https://www.tiktok.com/@izabela.anholett/video/7642889764588375303"],["YT","600 mil","249,1","https://www.youtube.com/shorts/tr7psrGU4fc"]]],
+ ["A China acabou de humilhar o resto do mundo mais uma vez, e agora foi dando uma facada no coração da indústria automobilística.","Thiago Bisewski",[["IG","224 mil","81,3","https://www.instagram.com/reel/DdTifh5RbIl"],["TT","733 mil","449,9","https://www.tiktok.com/@thiagobisewski/video/7685736723988483348"],["YT","683 mil","882,0","https://www.youtube.com/shorts/eF6Y3LzVvuE"]]],
+ ["Antigamente, você tinha vergonha de usar Olympikus na escola. Hoje em dia, ela humilha a Nike e a Adidas no Brasil.","Marcio Grazino",[["IG","649 mil","101,0","https://www.instagram.com/reel/DWBOY0QjSv4"],["TT","1,30 mi","741,8","https://www.tiktok.com/@marcio.grazino/video/7618421911848094994"],["YT","454 mil","277,8","https://www.youtube.com/shorts/CiiztW8lgFg"]]],
+ ["Um nordestino de apenas 14 anos criou uma máquina que pode salvar mais de 2 bilhões de pessoas.","Rafael Rodrigues",[["IG","134 mil","35,3","https://www.instagram.com/reel/DXcqxyQD9rG"],["TT","207 mil","243,4","https://www.tiktok.com/@rafaelrodriguesluiz/video/7631689058183351559"],["YT","1,08 mi","866,7","https://www.youtube.com/shorts/pdWWbMISqqI"]]],
+ ["Essa marca de carros que já está no Brasil acabou de fazer o impossível. Ela criou um sistema que faz 45 km com apenas 1 litro de gasolina.","Pedro Elero",[["IG","12 mil","5,7","https://www.instagram.com/reel/DdeNrVekxR0"],["TT","278 mil","484,6","https://www.tiktok.com/@pedro_elero/video/7687261571130608903"],["YT","425 mil","237,9","https://www.youtube.com/shorts/q_NJSRj-Vng"]]],
+ ["A China está construindo um verdadeiro país paralelo no nordeste brasileiro e quase ninguém está percebendo isso.","Lincoln Fracari",[["IG","1,21 mi","164,0","https://www.instagram.com/reel/DWxFzHvjhyk"],["TT","670 mil","291,1","https://www.tiktok.com/@lincolnfracari/video/7625446328075848981"],["YT","21 mil","12,3","https://www.youtube.com/shorts/TF3669jAKEE"]]],
+ ["Uma das famílias mais ricas do Brasil tem mais de 170 herdeiros. E todos eles estão proibidos de mandar na empresa. Mas, o mais curioso é que foram eles mesmo que se proibiram.","Pedro Elero",[["IG","124 mil","59,4","https://www.instagram.com/reel/DdWfdeQlVrC"],["TT","114 mil","208,0","https://www.tiktok.com/@pedro_elero/video/7686148334846774548"],["YT","266 mil","152,0","https://www.youtube.com/shorts/6KmQPF1Uaco"]]],
+ ["Os gênios do Brasil não estão em São Paulo ou no Rio. Na verdade, eles vêm de um estado do Nordeste. E isso não é por acaso.","Rafael Rodrigues",[["IG","620 mil","139,6","https://www.instagram.com/reel/DXkcaK3j4ct"],["TT","146 mil","163,0","https://www.tiktok.com/@rafaelrodriguesluiz/video/7632810269936323847"],["YT","63 mil","48,9","https://www.youtube.com/shorts/AcJIe1nlAbU"]]],
+ ["A empresa mais valiosa do mundo acabou de emitir um alerta que ninguém queria ouvir.","Fernando Pereira",[["IG","844 mil","132,7","https://www.instagram.com/reel/DVzCXslj2aC"],["TT","420 mil","117,2","https://www.tiktok.com/@fernandopereira.finance/video/7616466575205436692"],["YT","327 mil","125,5","https://www.youtube.com/shorts/FcGY_lupK74"]]],
+ ["A Nike passou vergonha ao esquecer o mais importante sobre o Brasil. Nós somos brasileiros.","Rafael Rodrigues",[["IG","323 mil","107,6","https://www.instagram.com/reel/DWchpM_j7ac"],["TT","490 mil","630,1","https://www.tiktok.com/@rafaelrodriguesluiz/video/7622445343443029255"],["YT","38 mil","36,0","https://www.youtube.com/shorts/ZiGzE8yw8Lg"]]],
+ ["Uma gambiarra insana de um brasileiro virou uma economia de 13 milhões de litros de água.","Marcio Grazino",[["IG","865 mil","59,7","https://www.instagram.com/reel/DbRQlG7xhNs"],["TT","395 mil","126,8","https://www.tiktok.com/@marcio.grazino/video/7666937765505846548"],["YT","878 mil","98,7","https://www.youtube.com/shorts/J71Dwmc2MGk"]]],
+ ["A Casas Bahia sobreviveu à hiperinflação, Plano Collor e pandemia. Agora fechou 298 lojas de uma vez e pouca gente consegue entender o porquê.","Marcos Pelozato",[["IG","227 mil","22,9","https://www.instagram.com/reel/DcCzESsscbT"],["TT","899 mil","1356,3","https://www.tiktok.com/@marcospelozato/video/7674077995404922130"],["YT","239 mil","67,5","https://www.youtube.com/shorts/dS887X28d5U"]]],
+ ["O Silvio Santos fez uma jogada genial que evitou qualquer dor de cabeça para sua família após a sua morte.","Dilson Peres",[["IG","1,31 mi","26,8","https://www.instagram.com/reel/DXkt-uODQv4"],["TT","267 mil","12,8","https://www.tiktok.com/@doutortax/video/7633204312407067925"],["YT","5,75 mi","237,8","https://www.youtube.com/shorts/Mny2Yyps5Ag"]]],
+ ["Os bancos vão cobrar um pedágio do governo toda vez que alguém fizer um pix ou passar o cartão. E adivinha quem vai pagar a conta?","Dilson Peres",[["IG","1,05 mi","26,4","https://www.instagram.com/reel/Ddue5rGvzRq"],["TT","290 mil","62,6","https://www.tiktok.com/@doutortax/video/7689556115364891924"],["YT","1,09 mi","12,8","https://www.youtube.com/shorts/XsGkMb5x6Jo"]]]
+];
+const NETN = {FB:"Facebook",IG:"Instagram",TT:"TikTok",YT:"YouTube"};
+document.getElementById("univ").innerHTML = "<thead><tr><th>Hook</th><th>Cliente</th><th>Cada rede</th></tr></thead><tbody>" +
+ U.map(u=>`<tr><td class="hook"><q>${esc(u[0])}</q></td><td class="cli">${esc(u[1])}</td><td><div class="nets">${u[2].map(n=>`<a href="${n[3]}" target="_blank" rel="noopener" title="${NETN[n[0]]}">${n[0]} ${n[1]} (${n[2]}x)</a>`).join("")}</div></td></tr>`).join("") + "</tbody>";
+
+/* fórmulas */
+const ex = (h,c,v,u,extra="") => ({h,c,v,u,extra});
+const F = [
+ {id:"F1",t:"Decreto de morte",n:"7 no top 50",val:"destruir, fim de, matou: 24,3% de acerto (n=185)",
+  m:"<em>[Marca ou tecnologia]</em> acabou de / vai <em>[destruir, matar, decretar o fim de]</em> <em>[algo que todo mundo conhece]</em>.",
+  w:"Impacto e contraste extremo: o novo mata o velho. É concreto porque o espectador conhece o que vai morrer.",
+  e:[ex("A Samsung lançou um par de óculos que é o começo do fim da era do celular. Deixa eu te explicar.","Izabela Anholett","9,39 mi",IG("DbvGvW2hRek")),
+     ex("O HB20 e o Onix serão destruídos por esse novo lançamento da BYD, que faz 71 quilômetros por litro.","Leonardo Cirino","4,09 mi",IG("DdkDHUgBnEm")),
+     ex("IA vai destruir essa profissão. A IA acabou de decretar a morte de uma das profissões mais comuns do mundo: o operador de empilhadeira.","Izabela Anholett","1,31 mi",IG("DWMAp_kDSDk"),"retenção 78%")]},
+ {id:"F2",t:"Guerra de gigantes",n:"6 no top 50",val:"\"declar* guerra\" ou \"em guerra\": 43,8% (n=48, média 17,7%)",
+  m:"<em>[Gigante A]</em> acabou de declarar guerra a <em>[Gigante B ou algo do seu dia a dia]</em>. E o campo de batalha é <em>[você, o seu X]</em>.",
+  w:"Conflito declarado ativa o instinto tribal; nomes que dividem opinião fazem o resto. O \"acabou de\" coloca urgência de graça.",
+  e:[ex("O dono do Instagram acabou de declarar guerra à Apple. Usando uma arma que pode literalmente mudar o mundo que a gente conhece. E o campo de batalha é o seu rosto, tá?","Izabela Anholett","3,15 mi",IG("Dd4cgRKzhhw")),
+     ex("O ChatGPT acabou de declarar guerra ao seu cabeleireiro.","Izabela Anholett","1,41 mi",IG("DaC9WT2BtnK"),"retenção 78%"),
+     ex("Três estados do nordeste estão em guerra e o Brasil inteiro devia torcer para essa guerra nunca acabar.","Cadu Neiva","1,80 mi",IG("Dce9r_WJQp4"))]},
+ {id:"F3",t:"Personagem comum, feito desproporcional",n:"4 no top 50",val:"\"Esse/Essa\" sozinho é neutro. Funciona com consequência absurda",
+  m:"Esse <em>[taxista, médico, jovem]</em> <em>[fez X]</em> tanto que <em>[consequência absurda]</em>.",
+  w:"O personagem é fácil de seguir e a consequência desproporcional abre a pergunta. Quanto mais comum o personagem e mais absurda a consequência, melhor.",
+  e:[ex("Esse taxista rodou tanto com seu Toyota que ele simplesmente travou o software da fábrica.","Leonardo Nogueira","6,19 mi",IG("DYo3ldvOFHW"),"retenção 79%"),
+     ex("Esse médico esperou o chefe ir embora, trancou a sala e enfiou um tubo dentro do próprio coração.","Drielle Castelani","216 mil",IG("DZqY9lQhqRE"),"coef. 120x"),
+     ex("Jovem cria IA que simula jutsu do Naruto.","Patrick Diorio","413 mil",IG("DcKNGwYuTIK"),"retenção 85%")]},
+ {id:"F4",t:"Davi x Golias",n:"4 no top 50",val:"36,6% de acerto (n=93, 27 clientes)",
+  m:"<em>[Gigante]</em> domina / gasta bilhões, mas <em>[pequeno, local, improvável]</em> vence / não é superado.",
+  w:"Contraste nós contra eles com orgulho regional, o elemento de maior efeito na base (2,5x). É a inversão de herói aplicada a marcas.",
+  e:[ex("Coca-Cola gasta milhões no Nordeste, mas existe uma bebida cearense que ela não consegue superar.","Cadu Neiva","2,13 mi",IG("DXaXOO3ibZs")),
+     ex("Enquanto as gigantes gastam bilhões para criar tecnologia, esse jovem de 20 anos criou uma concorrente da Apple usando restos de lixo.","Rafael Rodrigues","1,08 mi",IG("DWKJvC7Dz8-"),"coef. 438x"),
+     ex("Antigamente, você tinha vergonha de usar Olympikus na escola. Hoje em dia, ela humilha a Nike e a Adidas no Brasil.","Marcio Grazino","649 mil IG · 1,3 mi TT",IG("DWBOY0QjSv4"))]},
+ {id:"F5",t:"Potência silenciosa no Brasil",n:"6 citam a China no top 50",val:"China: 30,0% (n=460). No TikTok, 41,1%",
+  m:"A China <em>[está silenciosamente / acabou de / vai]</em> <em>[ação de escala]</em> no <em>[Brasil, Nordeste, seu mercado]</em>.",
+  w:"Revelação secreta com conflito geopolítico e território do público. \"Silenciosamente\" e \"quase ninguém percebeu\" dão a sensação de informação privilegiada.",
+  e:[ex("A China tá silenciosamente construindo um império no Nordeste brasileiro. E quando eu digo império, eu não estou exagerando.","Lincoln Fracari","3,35 mi",IG("DVt98MUka1u"),"coef. 450x"),
+     ex("A contagem regressiva começou. A China vai implementar no Brasil os pagamentos com a palma da mão, ainda esse ano.","Izabela Anholett","3,48 mi",IG("DZcVckKByOp"))]},
+ {id:"F6",t:"Sub-hook causal improvável",n:"6 no top 50",val:"25,1% (n=251, 30 clientes)",
+  m:"<em>[Fato grande]</em>. E a culpa é de / o motivo é / o segredo estava em <em>[algo pequeno e inesperado]</em>.",
+  w:"Curiosidade em dois tempos: a primeira frase dá relevância, a segunda abre a lacuna com uma causa desproporcional.",
+  e:[ex("O mundo tem exatamente 40 dias até o petróleo acabar. E a culpa é de um pedaço de mar que o Irã acabou de sequestrar.","Fernando Pereira","3,21 mi IG · 6,26 mi TT",IG("DVbunyzDvij"),"coef. 544x"),
+     ex("Esse é o maior golpe das lojas de shopping contra o governo. E o pior, o golpe é totalmente legal.","Dilson Peres","2,21 mi",IG("DdkLxRzBKTs")),
+     ex("Uma banca de frutas na beira da estrada virou um negócio de R$ 170 milhões. E o segredo não estava na comida, estava no banheiro.","Marcos Pelozato","81 mil",IG("Da1CQOdhW2y"),"retenção 82%")]},
+ {id:"F7",t:"Isso chega em você",n:"6 no top 50",val:"\"você\" sozinho fica abaixo da base (15,7%). Só funciona no segundo tempo",
+  m:"<em>[Fato macro]</em> + <em>[a sua cerveja, o seu iPhone, toda vez que você entra no mercado]</em>.",
+  w:"Percepção de relevância: o fato distante vira consequência pessoal. O \"você\" vem depois de um fato concreto, nunca como abertura acusatória.",
+  e:[ex("A sua cerveja do final de semana vai ficar mais cara por conta do governo.","Dilson Peres","2,13 mi",IG("DX-KBg-thjK"),"retenção 72%"),
+     ex("A Apple acabou de declarar guerra ao Mark Zuckerberg, e o seu próximo iPhone não vai estar no seu bolso, mas sim no seu rosto.","Izabela Anholett","1,78 mi",IG("DYjr8VwBC53"))]},
+ {id:"F8",t:"Ameaça, \"mas\", reviravolta",n:"4 no top 50",val:"\"mas\" sozinho é neutro (17,1%). Os dois lados precisam ser extremos",
+  m:"<em>[A]</em> ameaçou / estava prestes a <em>[X]</em>, mas hoje <em>[reversão ou punição]</em>.",
+  w:"O contraste extremo clássico do playbook: ontem bilionário, hoje preso.",
+  e:[ex("O Irã ameaçou esmagar os Estados Unidos, mas hoje um dos homens mais perversos da história está morto.","Felipe Dantas (canal da casa)","3,40 mi",IG("DVUvWMqDUzo")),
+     ex("A brasileira desconhecida tá prestes a mudar a história da humanidade. Mas infelizmente poderá ser punida por isso.","Igor Bevilaqua (canal da casa)","3,29 mi",IG("DU-tOKCjiRx"))]},
+ {id:"F9",t:"Herói e vilão invertidos",n:"4 no top 50",val:"46,2% (n=13, amostra pequena)",
+  m:"<em>[Quem todos odeiam]</em> salvou / inovou, ou <em>[o obstáculo]</em> era justamente quem <em>[jurava proteger]</em>.",
+  w:"Desafio de crença com elemento controverso: inverte o papel que o público esperava.",
+  e:[ex("Esse é o cara mais odiado do mundo pelos donos de academia...","Renato Torres","2,62 mi",IG("DY-bwdmpj4e")),
+     ex("O país mais perigoso do mundo virou o mais seguro da América Latina em quatro anos. E o obstáculo que impedia isso era exatamente quem jurava proteger o povo.","canal da casa","1,34 mi",IG("DePFrAPx57u"))]},
+ {id:"F10",t:"Superlativo histórico",n:"4 no top 50",val:"Sem medida por padrão de texto",
+  m:"<em>[Afirmação coletiva ou de marca]</em> + mais do que em qualquer outro momento da história / o passo mais revolucionário da história.",
+  w:"Superlativo com apelo histórico deixa a relevância clara em uma frase. Sozinho, superlativo é ruído.",
+  e:[ex("Estamos ficando burros. E mais burros do que em qualquer outro momento da história.","Igor Bevilaqua (canal da casa)","3,99 mi",IG("DV8w1VujrUd")),
+     ex("A Geely chocou o mundo mais uma vez. Ela acabou de dar o passo mais revolucionário da história.","Leonardo Cirino","2,05 mi",IG("Dcw12PyNrZs"))]},
+ {id:"F11",t:"Prazo exato, contagem regressiva",n:"3 no top 50",val:"17,2% de acerto e 16,4% viral (n=134): só funciona colado num fato forte",
+  m:"A contagem regressiva começou / O mundo tem exatamente <em>[N dias]</em> + <em>[mudança concreta]</em>.",
+  w:"Urgência com ultra especificidade. O prazo sozinho é neutro.",
+  e:[ex("O mundo tem exatamente 40 dias até o petróleo acabar...","Fernando Pereira","3,21 mi",IG("DVbunyzDvij")),
+     ex("Em breve só vai ser gordo quem quiser. Essa empresa acaba de se tornar a primeira farmacêutica a valer um trilhão de dólares após criar o Mounjaro.","Igor Bevilaqua (canal da casa)","1,50 mi",IG("DRsfRbKEojI"))]},
+ {id:"F12",t:"Crença derrubada com nome próprio",n:"2 no top 50",val:"Abre com ordem ou desafio: 30,4% (n=23). Sem âncora, afunda",
+  m:"Se você acredita que <em>[explicação popular sobre fato famoso]</em>, você caiu na <em>[maior mentira]</em>.",
+  w:"Desafio de crença ancorado em fato e personagem conhecidos. Sem a âncora, o mesmo mecanismo fica entre os piores.",
+  e:[ex("Se você acredita que a captura do Maduro foi feita porque o governo americano precisa do petróleo da Venezuela, você caiu na maior mentira da técnica.","Felipe Dantas (canal da casa)","2,29 mi",IG("DTGPeFxiST6")),
+     ex("O Mc Donald's não vende mais sorvete, ele está mentindo para você!","Dilson Peres","1,27 mi",IG("DU6lPDvDf9N"),"retenção 75%")]},
+ {id:"F13",t:"De origem humilde para resultado com número",n:"3 no top 50",val:"22,2% (n=54). Falha sem segredo ou vilão no sub-hook",
+  m:"De <em>[R$ 297 mil, um tanque no quintal]</em> para <em>[R$ 700 mil por mês, um sucesso bilionário]</em>. E o segredo foi <em>[X]</em>.",
+  w:"Antes e depois com número específico. Fica bom quando o sub-hook entrega o mecanismo; sem ele, a história é previsível e a audiência não precisa ficar.",
+  e:[ex("de R$ 297 mil reais pra mais de R$ 700 mil todos os meses. E o segredo estava dentro do próprio ecossistema do Mercado Livre.","Thiago Franco","782 mil",IG("DcejbHhB5pX"),"coef. 307x"),
+     ex("de um tanque num quintal para um sucesso bilionário","Marcelo Germano","1,87 mi",IG("DV1sUGdlZHO"))]},
+ {id:"F14",t:"Urgência vaga coletiva",n:"3 no top 50",val:"40,9% (n=22), mas todos de um canal de mediana alta. Usar com moderação",
+  m:"Tem algo muito estranho acontecendo / Enquanto você estava distraído + <em>todo mundo precisa saber</em>.",
+  w:"Lacuna de curiosidade pura. Há casos do mesmo molde no pior decil: depende do canal.",
+  e:[ex("Tem algo muito estranho acontecendo nesse exato momento e todo mundo precisa saber, pois a verdade é muito pior do que você imagina.","canal da casa","1,49 mi",IG("DVXGqozjdmC"))]},
+ {id:"F15",t:"Corte de conversa com opinião polêmica",n:"7 no top 50",val:"Formato de podcast. Ficam sem mecanismo no classificador e acertam pela polêmica",
+  m:"Frase espontânea com opinião forte sobre um grupo conhecido (cantores, artistas, patrões).",
+  w:"Funciona pela polêmica e pelo tom de conversa real. É outro jogo, sem roteiro da casa.",
+  e:[ex("cara pagar funcionário no quinto dia útil, no final do dia, irmão, é só pra revoltar o cara.","Marcos Pelozato","1,87 mi IG · 2,14 mi TT",IG("DcSAD1cEavD")),
+     ex("Não tem como. Rapaz, cantor é tudo liso, pô.","Café com Ferri","1,93 mi",IG("DYNOB6AAJOd"))]}
+];
+const exHTML = (e,cls="") => `<div class="ex ${cls}"><q>${esc(e.h)}</q><span class="meta"><span>${esc(e.c)}</span>${e.v && e.v!=="—"?`<span class="num">${esc(e.v)} views</span>`:""}${e.extra?`<span>${esc(e.extra)}</span>`:""}<a href="${e.u}" target="_blank" rel="noopener">Ver publicação ↗</a></span></div>`;
+document.getElementById("flist").innerHTML = F.map((f,i)=>`<details class="f" ${i<6?"open":""}><summary><span class="fid">${f.id}</span><span class="ft">${esc(f.t)}</span><span class="fm">${esc(f.n)}</span></summary><div class="fb"><div class="mold">${f.m}</div><p class="muted">${esc(f.w)}</p><p class="small"><b>Validação na base:</b> ${esc(f.val)}</p>${f.e.map(e=>exHTML(e)).join("")}</div></details>`).join("");
+
+/* sub-hook: segura x solta */
+const SP = [
+ [ex("Essa marca de tênis manda uma faca de verdade dentro da caixa e pede para você destruir o produto que acabou de comprar.","Pedro Elero","432 mil",IG("DcBhRCHD9Gk"),"hook 82% → sub 74%"),"good","Segurou: o absurdo não foi explicado"],
+ [ex("Uma avó de 64 anos criou a maior rede de franquia de bolos do Brasil e vendeu tudo por 200 milhões de reais. Essa avó tem nome: Sônia Ramos.","Franklin Tomich","—","https://www.instagram.com/reel/Da80qqmtllt","hook 69% → sub 30%"),"bad","Soltou: entregou o nome no hook"],
+ [ex("Você se lembra do Ping Pong? O chiclete que fazia bola com figurinha dentro, simplesmente sumiu. E a culpada foi uma decisão corporativa que quase ninguém conhece.","Franklin Tomich","1,16 mi",IG("DaY1yoxuPZ8"),"hook 81% → sub 67%"),"good","Segurou: a culpada fica para depois"],
+ [ex("Elon Musk está destruindo as fábricas da Tesla para criar uma nova raça de robôs.","Thiago Franco","—","https://www.instagram.com/reel/DVRXUZYEYIE","hook 71% → sub 35%"),"bad","Soltou: hook bom, sub-hook não aprofundou"]
+];
+document.getElementById("subpairs").innerHTML = SP.map(([e,c,t])=>exHTML({...e,extra:t+" · "+e.extra},c).replace('<q>',`<span class="tag">${c==="good"?"✓":"✕"} ${esc(t.split(":")[0])}</span><q>`)).join("");
+
+/* anti-padrões */
+hbars("anti",[
+ {l:"Acusar o espectador",v:0.0,sub:"n=23",cls:"neg"},{l:"Abrir com \"Imagina...\"",v:2.9,sub:"n=34",cls:"neg"},{l:"Lista de dicas",v:3.8,sub:"n=26",cls:"neg"},
+ {l:"CTA ou promoção no hook",v:6.3,sub:"n=16",cls:"neg"},{l:"Contexto de série ou evento",v:8.0,sub:"n=50",cls:"neg"},{l:"Abrir em 1ª pessoa",v:11.9,sub:"n=193 · TikTok 2,7%",cls:"neg"},
+ {l:"Anunciar o conteúdo",v:12.3,sub:"n=163 · Facebook 3,6%",cls:"neg"},{l:"Promessa vazia (\"mais do que parece\")",v:13.5,sub:"n=74",cls:"neg"},
+ {l:"Pergunta (?)",v:14.2,sub:"n=1.258 · Facebook 4,7%",cls:"neg"},{l:"\"Se você...\" de nicho",v:14.9,sub:"n=94",cls:"neg"}],{max:20,ref:17.8});
+const A = [
+ ["Acusar o espectador","O comércio brasileiro vai faturar 258 bilhões em 2026. E se o seu negócio no Marketplace não está crescendo, o mercado não é o problema. Você é","Thiago Franco","2,5 mil views · retenção 35%","https://www.instagram.com/reel/DYVHNmpJRTh"],
+ ["Abrir com \"Imagina...\"","Imagina um técnico que escala um jogador para uma posição que ele nunca treinou.","Marcelo Germano","2,3 mil views","https://www.instagram.com/reel/DZa2KqyBKHY"],
+ ["Lista de dicas","três dicas eh, para o empreendedor que tá começando agora...","Café com Ferri","9,3 mil views · coef. 0,16","https://www.instagram.com/reel/DaigrhwJes2"],
+ ["Contexto de série","Este é o primeiro vídeo da série onde eu analiso franquias nos Estados Unidos...","João Paulo Albuquerque","2,4 mil views","https://www.instagram.com/reel/DQ7h2xhEgse"],
+ ["Abrir em 1ª pessoa","Meu canal gera um pouquinho mais de meio milhão mês.","Lincoln Fracari","2 mil views","https://www.instagram.com/reel/DeHzaoJNRxg"],
+ ["Anunciar o conteúdo","A margem da Natura caiu 20% em um ano. E o que ela fez pra recuperar? Eu vou te mostrar aqui...","Thiago Franco","907 views","https://www.instagram.com/reel/DXrQkaGjaEN"],
+ ["Promessa vazia","Existe uma razão para o Trump ser o político mais poderoso do planeta. E ela começa antes mesmo dele abrir a boca.","Café com Ferri","64 mil views · coef. 0,06","https://www.instagram.com/reel/DbEcqtypv-k"],
+ ["Pergunta genérica","O fim dos programadores? Essa startup brasileira faturou três milhões de dólares em apenas dois dias.","(roteiro VM)","retenção do hook 32%","https://www.instagram.com/reel/DWd3vbcDOI5"],
+ ["Desafio de crença abstrato","disciplina vai mudar sua vida motivação não","(canal de cliente)","4 mil views · coef. 0,03","https://www.instagram.com/reel/DTsb5L7Drq5"],
+ ["Trajetória sem conflito","Esses dois irmãos construíram uma das maiores marcas do Brasil!","Marcelo Germano","retenção 51% · sub 24%","https://www.instagram.com/reel/DWANsxJFIaJ"]
+];
+document.getElementById("antitab").innerHTML = "<thead><tr><th>Anti-padrão</th><th>Pior exemplo real</th><th>Cliente</th><th>Resultado</th><th>Link</th></tr></thead><tbody>" +
+ A.map(a=>`<tr><td><span class="pill bad">${esc(a[0])}</span></td><td class="hook"><q>${esc(a[1])}</q></td><td class="cli">${esc(a[2])}</td><td class="cli">${esc(a[3])}</td><td><a class="lk" href="${a[4]}" target="_blank" rel="noopener">Ver ↗</a></td></tr>`).join("") + "</tbody>";
+
+/* laboratório */
+const RULES = [
+ {re:/acab(ou|a|aram) de/i, s:1, t:"Notícia acontecendo agora (\"acabou de\")", d:"1,82x a chance de acerto ajustada pelo cliente. Retenção do hook 70% contra 63%."},
+ {re:/^\s*(o|a|os|as)\s+[A-ZÁÉÍÓÚÂÊÔÃÕÇ]/, s:1, t:"Abre com nome conhecido (\"O/A + Nome\")", d:"1,33x a chance de acerto. Somado a \"acabou de\", 45,5% de acerto.", cs:true},
+ {re:/(declar\w* guerra|em guerra|humilh|destru|matou|mataram|pânico|panico|mentindo|vergonha|assustador|golpe|o fim d|começo do fim)/i, s:1, t:"Conflito ou choque com vilão", d:"\"Declar* guerra\" ou \"em guerra\" acerta 43,8%. Vocabulário de choque: 1,29x. Funciona melhor com sujeito nomeado."},
+ {re:/(nordest|cearense|baian|mineir|gaúch|paulista|carioca|interior d|brasil|china|chines|japão|japones|estados unidos|eua)/i, s:1, t:"Território do público (Brasil, região, China)", d:"Conteúdo regional acerta 39,1%; China, 30%. É o sinal multi-rede mais robusto depois de marca."},
+ {re:/(e a culpa|a culpada|o culpado|o motivo|o segredo|e o pior|o mais curioso|a jogada)/i, s:1, t:"Segunda frase abre um novo mistério", d:"Sub-hook causal acerta 25,1%. Ajuda a manter a audiência do hook para o sub-hook."},
+ {re:/(quase ninguém|ninguém (sabe|percebeu|conhece|ficou sabendo)|você nunca|silenciosamente)/i, s:1, t:"Informação privilegiada (\"quase ninguém percebeu\")", d:"Viraliza em 17,4% contra 9,3% sem."},
+ {re:/(antigamente|você se lembra|lembra d|sumiu)/i, s:1, t:"Nostalgia de marca", d:"Hipótese promissora: 42% de acerto, mas com só 33 vídeos de 7 clientes."},
+ {re:/\?/, s:-1, t:"Pergunta no hook", d:"0,85x no IG. Retenção 53,5% contra 61% no TikTok. Se for usar, a pergunta vem depois de uma afirmação concreta."},
+ {re:/^\s*(eu|meu|minha|hoje eu)\b/i, s:-1, t:"Abre em primeira pessoa", d:"11,9% de acerto no IG e 2,7% no TikTok. 3,5 pontos de retenção abaixo do próprio cliente."},
+ {re:/^\s*(você|vc)\b/i, s:-1, t:"Abre com \"Você\"", d:"Viraliza em 7,3% contra 9,7%. O \"você\" funciona no segundo tempo, depois do fato."},
+ {re:/^\s*imagin/i, s:-1, t:"Abre com \"Imagina...\"", d:"2,9% de acerto (n=34)."},
+ {re:/\b(\d+|duas|dois|três|tres|quatro|cinco|sete|dez)\s+(dicas|erros|passos|formas|maneiras|segredos)\b/i, s:-1, t:"Lista de dicas", d:"3,8% de acerto (n=26)."},
+ {re:/(neste vídeo|nesse vídeo|vou te mostrar|vou mostrar|olá|fala galera|primeiro vídeo da série|fica até o final)/i, s:-1, t:"Anuncia o conteúdo", d:"12,3% de acerto no IG, 3,6% no Facebook."},
+ {re:/(o problema é você|você é o problema|a culpa é sua|não é o problema\. você)/i, s:-1, t:"Acusa o espectador", d:"0% de acerto em 23 vídeos."},
+ {re:/(o nome dele é|o nome dela é|tem nome:|se chama)/i, s:-1, t:"Entrega a resposta no hook", d:"Hipótese: quem dá o nome cai 4,3 pontos de retenção. O caso da Sônia Ramos caiu de 69% para 30% no sub-hook."},
+ {re:/(do que parece|do que você imagina|vai te surpreender|surpreende muita gente)/i, s:0, t:"Promessa genérica", d:"Funciona só se a primeira frase já for concreta e chocante. Usada no lugar do fato, acerta 13,5%."}
+];
+const LABEX = [
+ ["Taxista Toyota","Esse taxista rodou tanto com seu Toyota que ele simplesmente travou o software da fábrica."],
+ ["Instagram x Apple","O dono do Instagram acabou de declarar guerra à Apple. E o campo de batalha é o seu rosto."],
+ ["Banca de frutas","Uma banca de frutas na beira da estrada virou um negócio de R$ 170 milhões. E o segredo não estava na comida, estava no banheiro."],
+ ["Pergunta genérica","O fim dos programadores? Essa startup brasileira faturou três milhões de dólares em apenas dois dias."],
+ ["Anúncio","A margem da Natura caiu 20% em um ano. E o que ela fez pra recuperar? Eu vou te mostrar aqui."],
+ ["Sônia Ramos","Uma avó de 64 anos criou a maior rede de franquia de bolos do Brasil e vendeu tudo por 200 milhões de reais. Essa avó tem nome: Sônia Ramos."]
+];
+const hin = document.getElementById("hookin");
+function runLab(){
+  const t = hin.value.trim();
+  const hits = t ? RULES.filter(r => r.re.test(t)) : [];
+  const words = t ? t.split(/\s+/).length : 0;
+  const plus = hits.filter(h=>h.s>0).length, minus = hits.filter(h=>h.s<0).length;
+  let rows = hits.map(h=>`<div class="row ${h.s>0?"plus":h.s<0?"minus":"info"}"><span class="ico">${h.s>0?"+":h.s<0?"−":"·"}</span><div><b>${esc(h.t)}</b><span>${esc(h.d)}</span></div></div>`);
+  if(words > 30) rows.push(`<div class="row minus"><span class="ico">−</span><div><b>Mais de 30 palavras (${words})</b><span>Acima de 30 palavras a taxa de acerto cai para 18,8%. Tamanho entre 10 e 30 palavras não muda a retenção.</span></div></div>`);
+  if(t && !plus) rows.push(`<div class="row info"><span class="ico">·</span><div><b>Nenhum ingrediente medido apareceu</b><span>Hook sem nenhum mecanismo do playbook acerta 10,1%. Tente um personagem conhecido, um conflito ou o território do público.</span></div></div>`);
+  document.getElementById("labsig").innerHTML = rows.join("") || `<div class="row info"><span class="ico">·</span><div><b>Cole um hook ao lado</b><span>Os sinais aparecem aqui enquanto você escreve.</span></div></div>`;
+  document.getElementById("labsum").textContent = t ? `${plus} ${plus===1?"sinal":"sinais"} a favor · ${minus + (words>30?1:0)} contra · ${words} palavras` : "";
+  try{ localStorage.setItem("hook-lab", hin.value) }catch(_){}
+}
+document.getElementById("labex").innerHTML = LABEX.map((e,i)=>`<button type="button" data-i="${i}">${esc(e[0])}</button>`).join("");
+document.getElementById("labex").addEventListener("click", e => { const b = e.target.closest("button"); if(!b) return; hin.value = LABEX[+b.dataset.i][1]; runLab(); });
+hin.addEventListener("input", runLab);
+let saved = null; try{ saved = localStorage.getItem("hook-lab") }catch(_){}
+hin.value = saved || LABEX[1][1];
+runLab();
+
+/* nicho: mapa de calor */
+const NICHOS = ["IA/Tecnologia","Finanças/Impostos","Sociedade/Geopolítica","Ciência/Inovação","Case de empresa","Empreendedorismo"];
+const HEAT = [
+ ["\"acabou de\"",[[1.56,121],[2.72,31],[1.60,40],[1.03,23],[2.40,27],[2.11,68]]],
+ ["Conflito ou choque",[[1.63,106],[2.49,48],[0.87,33],[1.77,49],[1.32,50],[1.48,75]]],
+ ["País ou região",[[1.57,131],[1.26,177],[1.35,288],[1.30,203],[1.33,165],[1.45,359]]],
+ ["Abre com marca ou nome",[[1.60,206],[1.89,109],[1.23,110],[0.88,66],[1.16,112],[1.65,184]]],
+ ["\"Quase ninguém sabe\"",[[1.05,41],[1.43,39],[1.02,21],[1.13,26],[1.01,22],[1.80,70]]],
+ ["Nostalgia",[null,null,null,[1.32,20],[1.21,29],[0.91,37]]],
+ ["Abre com \"Esse/Essa\"",[[0.55,108],[1.01,30],[1.00,40],[1.53,142],[1.06,110],[1.65,220]]],
+ ["Contém número",[[1.08,172],[0.93,205],[1.28,167],[0.94,189],[0.89,249],[1.34,651]]],
+ ["\"Fatura N bi\", \"virou império\"",[null,null,null,null,[0.25,32],[1.41,65]]],
+ ["Pergunta (?)",[[0.74,126],[1.11,125],[1.09,197],[0.16,50],[1.15,163],[0.63,525]]],
+ ["Abre com \"Você\"",[[0.70,21],[1.45,16],[1.43,39],[0.42,19],[1.22,57],[0.32,93]]],
+ ["Primeira pessoa",[[0.70,96],[0.36,143],[0.78,143],[0.27,62],[1.06,117],[0.63,457]]]
+];
+document.getElementById("heat").innerHTML = "<thead><tr><th>Tipo de hook</th>" + NICHOS.map(n=>`<th class="n">${n}</th>`).join("") + "</tr></thead><tbody>" +
+ HEAT.map(([t,cs])=>`<tr><td><b>${esc(t)}</b></td>${cs.map((c,i)=>{
+   if(!c) return `<td class="n muted">—</td>`;
+   const [v,n] = c, cls = v>=1.3 ? "ok" : v<=0.75 ? "bad" : "neu";
+   return `<td class="n" data-tip="${esc(t)} em ${NICHOS[i]}: ${fmtD(v,2)}x o esperado, ${n} vídeos"><span class="pill ${cls}">${fmtD(v,2)}x</span> <span class="small muted">(${n})</span></td>`;
+ }).join("")}</tr>`).join("") + "</tbody>";
+
+const NG = [
+ {n:"IA/Tecnologia", cl:"Izabela Anholett, Leonardo Cirino, João Felipe Marques, Manoel Victor, Patrick Diorio, Mariana Moreno, Thiago Bisewski · base 18,7%",
+  p:["\"Acabou de\" (1,56x; TikTok 2,01x)","Marca no início e briga de gigantes (marca 1,60x; conflito 1,63x)","País ou região (1,57x). Retenção do hook sobe de 63% para 69 a 71,5%"],
+  e:["\"Esse novo recurso...\" (0,55x; TikTok 0,29x): soa como review","Pergunta (0,74x)","Primeira pessoa (0,70x)"],
+  g:[["A Apple acabou de declarar guerra ao Mark Zuckerberg, e o seu próximo iPhone não vai estar no seu bolso, mas sim no seu rosto.","Izabela Anholett","1,78 mi",IG("DYjr8VwBC53")],["O HB20 e o Onix serão destruídos por esse novo lançamento da BYD, que faz 71 quilômetros por litro.","Leonardo Cirino","4,09 mi",IG("DdkDHUgBnEm")]],
+  b:["Esse novo modo do Spotify é sensacional. Agora, a IA vai virar o seu maior aliado na hora do treino.","Leonardo Cirino","4,7 mil",IG("DbwgqcVtkkc")]},
+ {n:"Finanças/Impostos", cl:"Dilson Peres, Ricardo Schumacher, Fernando Pereira, Lerry Granville, Túlio Lichenstein · base 14,5%",
+  p:["Notícia de choque (acabou de 2,72x; conflito 2,49x)","Nome famoso no início (1,89x)","\"Quase ninguém percebeu\" (1,43x)"],
+  e:["Primeira pessoa (0,36x)","Superlativo (0,40x), revelação secreta (0,61x) e urgência (0,66x): o público desconfia de promessa"],
+  g:[["O mundo tem exatamente 40 dias até o petróleo acabar. E a culpa é de um pedaço de mar que o Irã acabou de sequestrar.","Fernando Pereira","3,21 mi",IG("DVbunyzDvij")],["O Mc Donald's não vende mais sorvete, ele está mentindo para você!","Dilson Peres","1,27 mi",IG("DU6lPDvDf9N")]],
+  b:["Meu apartamento foi leiloado. Achei injusto. Depois entendi que era justiça.","Lerry Granville","17 mil · coef. 0,10",IG("DSF-_EaEQxt")]},
+ {n:"Sociedade/Geopolítica", cl:"Lincoln Fracari, Café com Ferri, Igor Bevilaqua · base 24,2%",
+  p:["País ou região (1,35x; no Lincoln 1,71x)","\"Acabou de\" (1,60x)","\"Você acha que...\" (1,43x): convida a se posicionar"],
+  e:["\"Humilhou\" e \"guerra\" no Instagram (0,87x; Lincoln 7% contra 24%)","Primeira pessoa (0,78x)"],
+  g:[["A China tá silenciosamente construindo um império no Nordeste brasileiro. E quando eu digo império, eu não estou exagerando.","Lincoln Fracari","3,35 mi",IG("DVt98MUka1u")],["O Neymar acabou de aceitar uma proposta de uma máquina infinita de dinheiro, a China...","Lincoln Fracari","1,2 mi",IG("DWFP4uYRPbD")]],
+  b:["A China humilhou o mundo todo com um caminhão...","Lincoln Fracari","11 mil · coef. 0,51",IG("Dczck8Sv8DC")]},
+ {n:"Ciência/Inovação", cl:"Rafael Rodrigues, Marcio Grazino, Leonardo Martins, Leonardo Nogueira, Drielle Castelani · base 24,6%",
+  p:["\"Esse/Essa\" + objeto surpreendente (1,53x)","Conflito com marca (1,77x)","Brasil ou região (1,30x) e nostalgia (1,32x)"],
+  e:["Pergunta (0,16x: 4% contra 26%; TikTok 0,35x)","Primeira pessoa (0,27x) e \"Você...\" (0,42x)","Viés de negatividade (0,39x): o público quer a descoberta, não o medo"],
+  g:[["Esse taxista rodou tanto com seu Toyota que ele simplesmente travou o software da fábrica.","Leonardo Nogueira","6,19 mi",IG("DYo3ldvOFHW")],["Antigamente, você tinha vergonha de usar Olympikus na escola. Hoje em dia, ela humilha a Nike e a Adidas no Brasil.","Marcio Grazino","649 mil",IG("DWBOY0QjSv4")]],
+  b:["O laboratório de Alagoas está usando moscas pra desenvolver um tratamento contra o Alzheimer. Deixa eu te contar essa história.","Rafael Rodrigues","2 mil",IG("Dd9vd2Zv0cG")]},
+ {n:"Case de empresa", cl:"Franklin Tomich, Rodrigo Waughan, João Paulo Albuquerque, Renato Torres, Renato Mendes · base 14,4%",
+  p:["\"Acabou de\" (2,40x)","Nostalgia de marca (27,6% contra 13,9%)","\"Você é dono de...\" (1,22x; TikTok 2,19x) e país (1,33x)"],
+  e:["\"Fatura N bilhões\", \"virou império\" (0,25x): clichê do nicho","Número solto (0,89x; YouTube 0,60x)"],
+  g:[["Você se lembra do Ping Pong? O chiclete que fazia bola com figurinha dentro, simplesmente sumiu. E a culpada foi uma decisão corporativa que quase ninguém conhece.","Franklin Tomich","1,16 mi",IG("DaY1yoxuPZ8")],["Você é dono de empresa e um dia pretende vender o seu negócio? Então fica até o final, pois tem uma surpresa pra você.","Franklin Tomich","273 mil · coef. 729",IG("DW4XTgRDt0a")]],
+  b:["A Havan fatura hoje 18 bilhões de reais fazendo o oposto da concorrência, mas existe um erro silencioso que pode estar engolindo esse império por dentro.","Rodrigo Waughan","1,5 mil",IG("DW3nD5SiDcG")]},
+ {n:"Empreendedorismo", cl:"Marcos Pelozato, Marcelo Germano, Thiago Franco, Cadu Neiva, Pedro Elero, Exame, Thainá Iansen · base 16,0%",
+  p:["\"Acabou de\" (2,11x)","\"Esse/Essa\" + personagem (1,65x) e marca no início (1,65x)","\"Quase ninguém sacou\" (1,80x). É o nicho que mais aceita urgência (2,35x)"],
+  e:["\"Você e a sua empresa\" (0,32x; TikTok 0,00x; YouTube 0,20x): soa como anúncio","Pergunta (0,63x) e primeira pessoa (0,63x)"],
+  g:[["essa estratégia assustadora fez esse empresário multiplicar 10x sua fortuna.","Cadu Neiva","2,53 mi · coef. 740",IG("DWuSVeFEdwk")],["Essa fábrica de balas tem o melhor chocolate do Brasil...","Marcelo Germano","2,49 mi",IG("DVmZmdRDn7q")]],
+  b:["Você que é empresário me responde uma pergunta agora rápida em três segundos...","Marcos Pelozato","2,5 mil",IG("DdeQHl_u3Xn")]}
+];
+const nt = document.getElementById("nicho-tabs");
+nt.innerHTML = NG.map((g,i)=>`<button role="tab" aria-selected="${i===0}">${esc(g.n)}</button>`).join("");
+function renderNicho(i){
+  const g = NG[i];
+  [...nt.children].forEach((b,j)=>b.setAttribute("aria-selected", j===i));
+  document.getElementById("nicho-card").innerHTML = `<div style="display:grid;gap:14px;margin-top:14px"><p class="small muted">${esc(g.cl)}</p><div class="grid2"><div><span class="pill ok">Priorize</span><ul class="clean" style="margin-top:8px">${g.p.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div><div><span class="pill bad">Evite</span><ul class="clean" style="margin-top:8px">${g.e.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div></div><div class="grid2"><div style="display:grid;gap:10px">${g.g.map(x=>exHTML(ex(...x),"good").replace("<q>",'<span class="tag">✓ Para copiar</span><q>')).join("")}</div><div style="display:grid;gap:10px">${exHTML(ex(...g.b),"bad").replace("<q>",'<span class="tag">✕ O que não fazer</span><q>')}</div></div></div>`;
+}
+nt.addEventListener("click", e => { const b = e.target.closest("button"); if(b) renderNicho([...nt.children].indexOf(b)); });
+renderNicho(0);
+
+/* pauta */
+const P = [
+ {t:"Abertura: o dado que muda a conversa", d:4,
+  o:"Fazer a turma entender que hook não é estilo, é a variável que mais separa acerto de erro.",
+  i:["Mostrar o gráfico dos quartis: <b>3% de acerto no quartil de baixo, 60% no de cima</b>.",
+     "Abrir com o maior vídeo do ano: <a href=\"https://www.instagram.com/reel/DbvGvW2hRek\" target=\"_blank\" rel=\"noopener\">Samsung, 9,4 milhões</a>, e perguntar o que a primeira frase faz.",
+     "Prometer o que a aula entrega: ingredientes, fórmulas, o que evitar e um teste ao vivo."],
+  s:"Um número gigante (60% contra 3%) e o hook da Samsung escrito embaixo."},
+ {t:"Como a gente mede um hook", d:4,
+  o:"Alinhar a régua para todo mundo ler os números do mesmo jeito.",
+  i:["Retenção do hook e do sub-hook: os dois primeiros pontos do funil.",
+     "Meta: <b>71% no Instagram, 68% no TikTok</b>.",
+     "Coeficiente e acerto: cada canal medido contra si mesmo, por isso um canal pequeno pode ter acerto.",
+     "Combinado: 78%+ de retenção viraliza em 72% dos casos."],
+  s:"O funil de 3 pontos com a meta marcada e a definição de acerto em uma linha."},
+ {t:"Os quatro ingredientes que funcionam em quase todo canal", d:7,
+  o:"Dar o vocabulário base, com prova e exemplo de cada um.",
+  i:["<b>Quem:</b> marca ou pessoa conhecida nas primeiras palavras (1,33x; abre com nome em 15 de 21 clientes).",
+     "<b>Quando:</b> \"acabou de\" transforma assunto em notícia (1,82x; retenção 70% contra 63%).",
+     "<b>Tensão:</b> conflito com vilão claro. \"Declar* guerra\" ou \"em guerra\" acerta 43,8%.",
+     "<b>Onde:</b> território do público. Regional acerta 39,1%, China 30%.",
+     "Contraste: hook sem nenhum mecanismo acerta 10,1%; com dois mecanismos, 21,6%."],
+  s:"Quatro colunas (Quem, Quando, Tensão, Onde), cada uma com um hook real e o número."},
+ {t:"Seis fórmulas para copiar", d:10,
+  o:"Transformar os ingredientes em moldes que o roteirista preenche.",
+  i:["F1 Decreto de morte: <a href=\"https://www.instagram.com/reel/DdkDHUgBnEm\" target=\"_blank\" rel=\"noopener\">BYD contra HB20 e Onix</a>.",
+     "F2 Guerra de gigantes: <a href=\"https://www.instagram.com/reel/Dd4cgRKzhhw\" target=\"_blank\" rel=\"noopener\">Instagram contra Apple</a>.",
+     "F3 Personagem comum, feito desproporcional: <a href=\"https://www.instagram.com/reel/DYo3ldvOFHW\" target=\"_blank\" rel=\"noopener\">o taxista do Toyota</a>.",
+     "F4 Davi x Golias: <a href=\"https://www.instagram.com/reel/DXaXOO3ibZs\" target=\"_blank\" rel=\"noopener\">Coca-Cola contra a bebida cearense</a>.",
+     "F5 Potência silenciosa: <a href=\"https://www.instagram.com/reel/DVt98MUka1u\" target=\"_blank\" rel=\"noopener\">China no Nordeste</a>.",
+     "F6 Sub-hook causal: <a href=\"https://www.instagram.com/reel/DVbunyzDvij\" target=\"_blank\" rel=\"noopener\">40 dias de petróleo</a>.",
+     "Para cada uma: molde na tela, um exemplo tocando, 30 segundos para a turma propor uma versão."],
+  s:"Um slide por fórmula: o molde com as lacunas destacadas e o hook real preenchido."},
+ {t:"O sub-hook decide se quem parou fica", d:5,
+  o:"Mostrar que o trabalho não acaba na primeira frase.",
+  i:["Hook forte que perde a audiência acerta 45%. Hook forte que segura até o sub-hook acerta <b>77%</b>.",
+     "Par para comparar: <a href=\"https://www.instagram.com/reel/Da1CQOdhW2y\" target=\"_blank\" rel=\"noopener\">banca de frutas</a> (82% → 64%) contra <a href=\"https://www.instagram.com/reel/Da80qqmtllt\" target=\"_blank\" rel=\"noopener\">Sônia Ramos</a> (69% → 30%).",
+     "Regra: abra a pergunta e não responda. Segure o nome, o motivo e o desfecho."],
+  s:"A matriz 2x2 (77% / 45% / 17% / 10%) e o par lado a lado."},
+ {t:"Cada canal tem seu sotaque: nicho e redes", d:6,
+  o:"Evitar que a turma aplique uma fórmula de outro canal sem pensar.",
+  i:["\"Você\" funciona em case de empresa e falha em empreendedorismo (5% contra 16%).",
+     "\"Esse/Essa\" funciona em ciência e falha em IA. Pergunta derruba ciência (4% contra 26%).",
+     "\"Guerra/humilha\" é assinatura da Izabela e falha no Lincoln.",
+     "Entre redes: mantenha o mesmo hook. IG acima de 10x leva a acerto no TikTok em 2 de cada 3 casos. O YouTube é aposta separada.",
+     "Hook universal: <a href=\"https://www.instagram.com/reel/DWBOY0QjSv4\" target=\"_blank\" rel=\"noopener\">Olympikus humilha a Nike</a>, acerto nas três redes."],
+  s:"O mapa tipo de hook × nicho com 3 células circuladas e o gráfico IG → TikTok."},
+ {t:"O que evitar", d:4,
+  o:"Dar uma lista curta de vetos com o pior exemplo real de cada um.",
+  i:["Acusar o espectador (0%), \"Imagina...\" (2,9%), lista de dicas (3,8%), anunciar o conteúdo (12,3%).",
+     "Primeira pessoa: 0,50x na mediana dos clientes.",
+     "Pergunta genérica: <a href=\"https://www.instagram.com/reel/DWd3vbcDOI5\" target=\"_blank\" rel=\"noopener\">\"O fim dos programadores?\"</a> reteve 32%.",
+     "Autoridade, didatismo e confiança aparecem mais nos fracassos. Credencial fica para o corpo do vídeo."],
+  s:"Tabela de vetos com a taxa de acerto de cada um em vermelho."},
+ {t:"Mão na massa e checklist", d:5,
+  o:"Fechar com prática: a turma reescreve hooks reais que falharam.",
+  i:["Projetar o Laboratório desta página e colar três hooks que falharam: Spotify, \"Você aumentou o orçamento do seu Mercado Ads\" e Sônia Ramos.",
+     "Reescrita guiada: troque o \"eu\" ou o \"você\" por um personagem conhecido, coloque o \"acabou de\" ou a tensão, segure a resposta para o sub-hook.",
+     "Checklist final: personagem conhecido · tensão (conflito, contraste ou proibido) · território do público · sub-hook que abre uma causa improvável · nada de eu, pergunta genérica ou anúncio."],
+  s:"O checklist em cinco linhas, para virar print de referência da turma."}
+];
+document.getElementById("timebar").innerHTML = P.map(p=>`<span style="flex:${p.d}" title="${esc(p.t)}"></span>`).join("");
+let acc = 0;
+document.getElementById("pautalist").innerHTML = P.map(p=>{ const a = acc; acc += p.d; return `<div class="blk"><div class="time">${a}–${acc} min<small>${p.d} min</small></div><div><h3>${esc(p.t)}</h3><p class="muted">${p.o}</p><ul>${p.i.map(x=>`<li>${x}</li>`).join("")}</ul><div class="slide"><b>Slide:</b> ${p.s}</div></div></div>`; }).join("");
+
+/* tooltip compartilhado */
+const tip = document.getElementById("tip");
+document.addEventListener("mousemove", e => {
+  const el = e.target.closest("[data-tip]");
+  if(!el){ tip.classList.remove("show"); return; }
+  tip.textContent = el.dataset.tip; tip.classList.add("show");
+  const x = Math.min(e.clientX + 14, innerWidth - tip.offsetWidth - 8), y = e.clientY + 16 + tip.offsetHeight > innerHeight ? e.clientY - tip.offsetHeight - 10 : e.clientY + 16;
+  tip.style.left = x + "px"; tip.style.top = y + "px";
+});
+
+/* nav ativa */
+const links = [...document.querySelectorAll("#navlinks a")];
+const io = new IntersectionObserver(es => es.forEach(en => { if(en.isIntersecting){ links.forEach(l => l.classList.toggle("on", l.getAttribute("href") === "#" + en.target.id)); } }), {rootMargin:"-45% 0px -50% 0px"});
+document.querySelectorAll("section.sec").forEach(s => io.observe(s));
+</script>

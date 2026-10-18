@@ -1,0 +1,3611 @@
+{
+ "licoes": [
+  {
+   "id": "272024d9-8a4a-4389-9615-f7a0743a190b",
+   "cliente": "Pedro Elero",
+   "source_kind": "edicao",
+   "modo": "mecanismo",
+   "ancora": "noticia",
+   "registro": "analitico",
+   "confianca": "alta"
+  },
+  {
+   "id": "21b4d0d7-4de6-4e48-8ca8-a75de40a99a2",
+   "cliente": "Fernando Pereira",
+   "source_kind": "edicao",
+   "modo": "mecanismo",
+   "ancora": "noticia",
+   "registro": "emotivo",
+   "confianca": "media"
+  },
+  {
+   "id": "787d01e4-4f88-4593-8cf5-fd1b22e43a0b",
+   "cliente": "João Paulo Albuquerque",
+   "source_kind": "correcao",
+   "modo": "panorama",
+   "ancora": "noticia",
+   "registro": "analitico",
+   "confianca": "media"
+  },
+  {
+   "id": "b8026d87-5b05-4adb-a02c-a1d25df59175",
+   "cliente": "João Paulo Albuquerque",
+   "source_kind": "correcao",
+   "modo": "panorama",
+   "ancora": "noticia",
+   "registro": "analitico",
+   "confianca": "media",
+   "nota": "mesma pauta da 2 (feito por humanos)"
+  },
+  {
+   "id": "38c55af9-5451-4c03-9887-ea03e3cdb639",
+   "cliente": null,
+   "source_kind": "correcao",
+   "modo": "mecanismo",
+   "ancora": "atemporal",
+   "registro": "analitico",
+   "confianca": "media"
+  },
+  {
+   "id": "92c798e0-b7a5-4bf6-8dc2-a87dc9ea7129",
+   "cliente": "Fernando Pereira",
+   "source_kind": "correcao",
+   "modo": "historia",
+   "ancora": "noticia",
+   "registro": "analitico",
+   "confianca": "media"
+  },
+  {
+   "id": "e8ed07af-55da-4672-a1e6-e8d340acc350",
+   "cliente": "Izabela Anholett",
+   "source_kind": "correcao",
+   "modo": "demonstracao",
+   "ancora": "noticia",
+   "registro": "analitico",
+   "confianca": "media"
+  },
+  {
+   "id": "c10f47fb-48cb-4427-9fe8-29b3190c5a25",
+   "cliente": "Fernando Pereira",
+   "source_kind": "correcao",
+   "modo": "mecanismo",
+   "ancora": "noticia",
+   "registro": "analitico",
+   "confianca": "alta"
+  },
+  {
+   "id": "034e75bb-caea-4e20-9e5b-4e2b2cb2d235",
+   "cliente": null,
+   "source_kind": "sessao",
+   "modo": null,
+   "ancora": null,
+   "registro": null,
+   "confianca": null,
+   "nota": "sessao sem roteiro (lição ensinada direto)"
+  },
+  {
+   "id": "08ea7943-8dbd-4b36-8802-9bb1e90f6bd6",
+   "cliente": "Izabela Anholett",
+   "source_kind": "curador",
+   "modo": null,
+   "ancora": null,
+   "registro": null,
+   "confianca": null,
+   "nota": "curador: linha de lift.json, não é roteiro"
+  },
+  {
+   "id": "dbc2f0d0-6de1-4b10-a1d3-c3ba50b0e927",
+   "cliente": "Fernando Pereira",
+   "source_kind": "curador",
+   "modo": null,
+   "ancora": null,
+   "registro": null,
+   "confianca": null,
+   "nota": "curador: linha de lift.json, não é roteiro"
+  },
+  {
+   "id": "0b68703c-e239-480b-b76c-39583d5049b7",
+   "cliente": "Fernando Pereira",
+   "source_kind": "correcao",
+   "modo": "mecanismo",
+   "ancora": "atemporal",
+   "registro": "analitico",
+   "confianca": "media"
+  },
+  {
+   "id": "21cbd061-2487-48d1-b4bb-b4033c66d4e7",
+   "cliente": "Pedro Elero",
+   "source_kind": "correcao",
+   "modo": "mecanismo",
+   "ancora": "atemporal",
+   "registro": "analitico",
+   "confianca": "media"
+  },
+  {
+   "id": "0d08ce60-61d2-4b92-b486-9bfed14982ac",
+   "cliente": "Franklin Tomich",
+   "source_kind": "correcao",
+   "modo": "historia",
+   "ancora": "passado",
+   "registro": "analitico",
+   "confianca": "alta"
+  },
+  {
+   "id": "66cbfd7b-1664-4c59-ad9f-2ad12106d882",
+   "cliente": "Franklin Tomich",
+   "source_kind": "edicao",
+   "modo": "panorama",
+   "ancora": "noticia",
+   "registro": "analitico",
+   "confianca": "media"
+  },
+  {
+   "id": "04d833de-2108-4fe5-876c-a8e01196e860",
+   "cliente": "Franklin Tomich",
+   "source_kind": "correcao",
+   "modo": "mecanismo",
+   "ancora": "noticia",
+   "registro": "analitico",
+   "confianca": "alta"
+  },
+  {
+   "id": "13680a9b-0c6f-454e-a506-4cc2c57ff421",
+   "cliente": "Lincoln Fracari",
+   "source_kind": "curador",
+   "modo": null,
+   "ancora": null,
+   "registro": null,
+   "confianca": null,
+   "nota": "curador: linha de lift.json, não é roteiro"
+  },
+  {
+   "id": "c184d0be-c850-4d63-ac8d-8750a60cf8eb",
+   "cliente": "Marcelo Germano",
+   "source_kind": "curador",
+   "modo": null,
+   "ancora": null,
+   "registro": null,
+   "confianca": null,
+   "nota": "curador: linha de lift.json, não é roteiro"
+  },
+  {
+   "id": "0769f545-e806-4b5f-8cee-9fe8ced52a15",
+   "cliente": null,
+   "source_kind": "correcao",
+   "modo": "historia",
+   "ancora": "noticia",
+   "registro": "emotivo",
+   "confianca": "media"
+  },
+  {
+   "id": "cf50d79a-e6b2-4ef0-ab38-c707e79d7796",
+   "cliente": "Franklin Tomich",
+   "source_kind": "correcao",
+   "modo": "historia",
+   "ancora": "passado",
+   "registro": "emotivo",
+   "confianca": "media"
+  },
+  {
+   "id": "06c46d5b-3873-4a17-bdac-dfe432b2a65d",
+   "cliente": "Franklin Tomich",
+   "source_kind": "correcao",
+   "modo": "historia",
+   "ancora": "noticia",
+   "registro": "analitico",
+   "confianca": "media"
+  },
+  {
+   "id": "c5eba4a2-8551-4c31-b34a-04b709a2cfc9",
+   "cliente": "Ricardo Schumacher",
+   "source_kind": "correcao",
+   "modo": "panorama",
+   "ancora": "noticia",
+   "registro": "analitico",
+   "confianca": "alta"
+  },
+  {
+   "id": "bb18a125-d62b-4c8b-971a-fae847565f7b",
+   "cliente": "Ricardo Schumacher",
+   "source_kind": "correcao",
+   "modo": "mecanismo",
+   "ancora": "noticia",
+   "registro": "emotivo",
+   "confianca": "media"
+  },
+  {
+   "id": "d01bf9e4-e211-4152-a7c7-833095a76357",
+   "cliente": "Franklin Tomich",
+   "source_kind": "correcao",
+   "modo": "mecanismo",
+   "ancora": "noticia",
+   "registro": "analitico",
+   "confianca": "media"
+  },
+  {
+   "id": "e4f4301d-76df-420f-acf2-07c9c9d20cc5",
+   "cliente": "Franklin Tomich",
+   "source_kind": "correcao",
+   "modo": "mecanismo",
+   "ancora": "noticia",
+   "registro": "analitico",
+   "confianca": "alta"
+  },
+  {
+   "id": "ef338f8b-5ee4-4cd9-b503-cf8b6e05ca39",
+   "cliente": "Túlio Lichenstein",
+   "source_kind": "correcao",
+   "modo": "historia",
+   "ancora": "passado",
+   "registro": "emotivo",
+   "confianca": "alta"
+  },
+  {
+   "id": "57270d50-d00a-4221-bdc8-dc78c03f1a8b",
+   "cliente": "Túlio Lichenstein",
+   "source_kind": "correcao",
+   "modo": "mecanismo",
+   "ancora": "atemporal",
+   "registro": "analitico",
+   "confianca": "media"
+  },
+  {
+   "id": "4509521a-dda0-4794-b992-35dffc18c2db",
+   "cliente": null,
+   "source_kind": "correcao",
+   "modo": "historia",
+   "ancora": "noticia",
+   "registro": "analitico",
+   "confianca": "media"
+  },
+  {
+   "id": "38fb998f-e95d-4dd8-a503-6b49038e713c",
+   "cliente": "Lincoln Fracari",
+   "source_kind": "correcao",
+   "modo": "demonstracao",
+   "ancora": "atemporal",
+   "registro": "analitico",
+   "confianca": "media"
+  },
+  {
+   "id": "2aef9b3f-f901-4fa6-919c-b238ad0c32cd",
+   "cliente": "Franklin Tomich",
+   "source_kind": "correcao",
+   "modo": "mecanismo",
+   "ancora": "noticia",
+   "registro": "analitico",
+   "confianca": "media"
+  },
+  {
+   "id": "59d620d1-6bd1-46dd-bffd-4519bf4863d0",
+   "cliente": null,
+   "source_kind": "correcao",
+   "modo": "panorama",
+   "ancora": "noticia",
+   "registro": "emotivo",
+   "confianca": "media"
+  },
+  {
+   "id": "7e69ae65-16ce-478b-abed-81546c03b24e",
+   "cliente": "Túlio Lichenstein",
+   "source_kind": "correcao",
+   "modo": "mecanismo",
+   "ancora": "noticia",
+   "registro": "analitico",
+   "confianca": "alta"
+  },
+  {
+   "id": "a7aca7ae-3622-46d0-a050-0d947ab7795d",
+   "cliente": "Túlio Lichenstein",
+   "source_kind": "correcao",
+   "modo": "mecanismo",
+   "ancora": "noticia",
+   "registro": "analitico",
+   "confianca": "media",
+   "nota": "mesma pauta da 31 e da 33 (iPhone dobrável)"
+  },
+  {
+   "id": "589c52cf-50f3-47c3-880e-97e902d01034",
+   "cliente": "Renato Mendes",
+   "source_kind": "correcao",
+   "modo": "mecanismo",
+   "ancora": "noticia",
+   "registro": "analitico",
+   "confianca": "media",
+   "nota": "mesma pauta da 31 e da 32 (iPhone dobrável)"
+  },
+  {
+   "id": "bc07d506-59a6-4a3e-9c73-001089eb1827",
+   "cliente": "Renato Mendes",
+   "source_kind": "correcao",
+   "modo": "mecanismo",
+   "ancora": "atemporal",
+   "registro": "analitico",
+   "confianca": "media"
+  },
+  {
+   "id": "b887e2d9-b56a-44ca-868f-b7192671449a",
+   "cliente": null,
+   "source_kind": "texto",
+   "modo": "mecanismo",
+   "ancora": "atemporal",
+   "registro": "analitico",
+   "confianca": "baixa",
+   "nota": "só o gancho e a leitura do piloto; mesmo roteiro da lição 34 (Rolls-Royce)"
+  },
+  {
+   "id": "4de9e309-3a28-4783-9794-a8d98e93ac4a",
+   "cliente": "Leonardo Cirino",
+   "source_kind": "correcao",
+   "modo": "demonstracao",
+   "ancora": "noticia",
+   "registro": "analitico",
+   "confianca": "alta"
+  },
+  {
+   "id": "e6b6db99-4610-47b2-ab6d-e5ee865d0723",
+   "cliente": "Túlio Lichenstein",
+   "source_kind": "correcao",
+   "modo": "panorama",
+   "ancora": "noticia",
+   "registro": "emotivo",
+   "confianca": "alta"
+  },
+  {
+   "id": "c068ca9b-c6b8-440d-b5ab-ad2427ea406f",
+   "cliente": "Fernando Pereira",
+   "source_kind": "correcao",
+   "modo": "mecanismo",
+   "ancora": "noticia",
+   "registro": "analitico",
+   "confianca": "alta"
+  },
+  {
+   "id": "129b738d-c9bc-4057-8283-ba6bea6eb8c6",
+   "cliente": "Fernando Pereira",
+   "source_kind": "correcao",
+   "modo": "mecanismo",
+   "ancora": "noticia",
+   "registro": "analitico",
+   "confianca": "alta",
+   "nota": "mesma pauta da 38 (MP das bets)"
+  },
+  {
+   "id": "97dd936d-d90d-4252-bea1-ac1b74070add",
+   "cliente": null,
+   "source_kind": "sessao",
+   "modo": null,
+   "ancora": null,
+   "registro": null,
+   "confianca": null,
+   "nota": "sessao sem roteiro"
+  },
+  {
+   "id": "7ee965a3-b116-4aeb-923a-c2aea6ec4fe3",
+   "cliente": null,
+   "source_kind": "correcao",
+   "modo": "panorama",
+   "ancora": "noticia",
+   "registro": "emotivo",
+   "confianca": "media"
+  },
+  {
+   "id": "f317dd22-2c7d-46f1-94a4-1ad4f8860322",
+   "cliente": null,
+   "source_kind": "sessao",
+   "modo": null,
+   "ancora": null,
+   "registro": null,
+   "confianca": null,
+   "nota": "sessao sem roteiro"
+  },
+  {
+   "id": "dd2d1b48-409c-4fc3-b590-d63cb1f43074",
+   "cliente": null,
+   "source_kind": "curador",
+   "modo": null,
+   "ancora": null,
+   "registro": null,
+   "confianca": null,
+   "nota": "curador mensal: relatório de 10 vídeos, não é um roteiro"
+  },
+  {
+   "id": "12d135bb-772c-42b8-8588-a8848ff06692",
+   "cliente": null,
+   "source_kind": "sessao",
+   "modo": null,
+   "ancora": null,
+   "registro": null,
+   "confianca": null,
+   "nota": "sessao sem roteiro"
+  },
+  {
+   "id": "6987ad21-3228-48b5-9c20-a001ab1cab77",
+   "cliente": null,
+   "source_kind": "correcao",
+   "modo": "mecanismo",
+   "ancora": "noticia",
+   "registro": "emotivo",
+   "confianca": "media"
+  }
+ ],
+ "learnings": [
+  {
+   "id": "662a4ae8-8607-4632-9c44-4a0d1410b20a",
+   "lesson_id": "272024d9-8a4a-4389-9615-f7a0743a190b",
+   "alcance": "modo",
+   "etapa": "hook",
+   "modos_aplicaveis": [
+    "mecanismo",
+    "panorama"
+   ],
+   "justificativa": "Gancho de polêmica com permissão de julgamento (\"deixou muita gente revoltada\") serve a caso de notícia explicado ou tese; em demonstração o gancho é o efeito e em conselho é a dor do espectador.",
+   "tema": "gancho_impacto"
+  },
+  {
+   "id": "a30e64c0-6b7d-496d-9dfb-6dc88f82c739",
+   "lesson_id": "272024d9-8a4a-4389-9615-f7a0743a190b",
+   "alcance": "modo",
+   "etapa": "fecho",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "panorama"
+   ],
+   "justificativa": "Ressalva que dá urgência à lição só existe onde o fecho é lição ou regra geral; em demonstração o fecho é tendência ou pergunta, em conselho é regra de comportamento.",
+   "tema": "fecho_cta"
+  },
+  {
+   "id": "d8a9e729-92a5-4a1c-b505-daacf924c44a",
+   "lesson_id": "272024d9-8a4a-4389-9615-f7a0743a190b",
+   "alcance": "modo",
+   "etapa": "estrutura",
+   "modos_aplicaveis": [
+    "mecanismo",
+    "historia"
+   ],
+   "justificativa": "Declarar o comportamento esperado antes do desvio é o \"senso comum contra realidade\" que o livro de códigos põe no centro do mecanismo; vale também para episódio de história com decisão contraintuitiva.",
+   "tema": "contraste_senso_comum"
+  },
+  {
+   "id": "8fa750cc-837f-45bc-9707-eb23799dc4e6",
+   "lesson_id": "272024d9-8a4a-4389-9615-f7a0743a190b",
+   "alcance": "modo",
+   "etapa": "corpo",
+   "modos_aplicaveis": [
+    "mecanismo"
+   ],
+   "justificativa": "Mesmo movimento de d8a9e729 (a expectativa errada da maioria antes da leitura certa), típico do mecanismo.",
+   "tema": "contraste_senso_comum"
+  },
+  {
+   "id": "5f0c1dfc-bd64-4d70-995c-dd6a4af6affd",
+   "lesson_id": "272024d9-8a4a-4389-9615-f7a0743a190b",
+   "alcance": "modo",
+   "etapa": "comando",
+   "modos_aplicaveis": [
+    "mecanismo",
+    "panorama",
+    "demonstracao"
+   ],
+   "justificativa": "CTA de exclusividade (\"se você é como poucos\") combina com análise de registro analítico; história emotiva e panorama de denúncia pedem compartilhar, conselho pede salvar. Ter CTA é universal; este formato não.",
+   "tema": "fecho_cta"
+  },
+  {
+   "id": "21491e78-4c7e-4535-873f-45e21ad41cd1",
+   "lesson_id": "272024d9-8a4a-4389-9615-f7a0743a190b",
+   "alcance": "modo",
+   "etapa": "fecho",
+   "modos_aplicaveis": [
+    "mecanismo",
+    "panorama",
+    "historia"
+   ],
+   "justificativa": "Ponte explícita do caso para a vida do espectador é a \"generalização\" do mecanismo e a \"ponte com o bolso\" do panorama; em história analítica vira lição de estratégia; conselho já é todo aplicação.",
+   "tema": "fecho_cta"
+  },
+  {
+   "id": "51fdf948-2b44-41b5-b3fe-9136f40b0499",
+   "lesson_id": "272024d9-8a4a-4389-9615-f7a0743a190b",
+   "alcance": "modo",
+   "etapa": "estrutura",
+   "modos_aplicaveis": [
+    "mecanismo",
+    "panorama"
+   ],
+   "justificativa": "Fato bruto antes da leitura é a etapa \"1 a 3 linhas de contexto do caso\" do mecanismo e do panorama ancorado em notícia; em história o fato é o próprio corpo e conselho não tem fato central.",
+   "tema": "fato_antes"
+  },
+  {
+   "id": "949f8358-97a0-4af1-b830-a5c76539bfc6",
+   "lesson_id": "21b4d0d7-4de6-4e48-8ca8-a75de40a99a2",
+   "alcance": "modo",
+   "etapa": "hook",
+   "modos_aplicaveis": [
+    "mecanismo",
+    "panorama",
+    "historia"
+   ],
+   "justificativa": "Nomear a emoção do grupo afetado (\"revoltados\") é gancho de registro emotivo em pauta política; não cabe em demonstração nem conselho. A parte \"concreto em vez de conceitual\" é universal e já está em efb4912d.",
+   "tema": "gancho_impacto"
+  },
+  {
+   "id": "25629faa-dbde-450b-9539-4e12750d475c",
+   "lesson_id": "21b4d0d7-4de6-4e48-8ca8-a75de40a99a2",
+   "alcance": "universal",
+   "etapa": "revisao",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "Cortar frase que só anuncia que vai explicar é a mesma regra da lição ativa 78361ea0.",
+   "tema": "enrolacao"
+  },
+  {
+   "id": "d2e5fc8f-20a3-497b-acbe-cb01a31cdc6b",
+   "lesson_id": "21b4d0d7-4de6-4e48-8ca8-a75de40a99a2",
+   "alcance": "caso",
+   "etapa": "corpo",
+   "modos_aplicaveis": [
+    "mecanismo",
+    "panorama"
+   ],
+   "justificativa": "\"Subiu\" no lugar de \"continua recebendo\" só vale porque o fato era verdadeiro; como regra (\"escolha a versão mais injusta do fato\") empurra para exagero e briga com as regras de precisão.",
+   "tema": "amplificar"
+  },
+  {
+   "id": "d3f39c0d-d829-4289-a178-6e9f0252badb",
+   "lesson_id": "21b4d0d7-4de6-4e48-8ca8-a75de40a99a2",
+   "alcance": "caso",
+   "etapa": "corpo",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "panorama"
+   ],
+   "justificativa": "\"Pela primeira vez em nossa história\" é superlativo que só vale se a fonte sustentar; como regra geral contradiz 9c416f65.",
+   "tema": "amplificar"
+  },
+  {
+   "id": "c012b7a7-15f0-48aa-8d36-31e57b68c28b",
+   "lesson_id": "21b4d0d7-4de6-4e48-8ca8-a75de40a99a2",
+   "alcance": "universal",
+   "etapa": "revisao",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "Enxugar lista e cortar redundância vale para qualquer roteiro.",
+   "tema": "enrolacao"
+  },
+  {
+   "id": "c6c1b6a9-dca2-4dd9-a4ce-c99acc864947",
+   "lesson_id": "21b4d0d7-4de6-4e48-8ca8-a75de40a99a2",
+   "alcance": "modo",
+   "etapa": "pesquisa",
+   "modos_aplicaveis": [
+    "panorama",
+    "mecanismo"
+   ],
+   "justificativa": "Trocar o genérico por dado local, atual e com número é a prova do panorama e do mecanismo ancorado em notícia; conselho quase não usa número e história usa número só como marco.",
+   "tema": "prova_dado"
+  },
+  {
+   "id": "7b32d3c9-70e0-4ee4-ad0a-15977348182d",
+   "lesson_id": "21b4d0d7-4de6-4e48-8ca8-a75de40a99a2",
+   "alcance": "modo",
+   "etapa": "fecho",
+   "modos_aplicaveis": [
+    "mecanismo",
+    "panorama",
+    "demonstracao"
+   ],
+   "justificativa": "Pergunta de opinião no fim combina com notícia política e com demonstração (\"te anima ou te assusta?\"); em história e conselho o fecho é lição ou regra.",
+   "tema": "fecho_cta"
+  },
+  {
+   "id": "990fa4ea-727d-4e1c-ae6f-55195f363b83",
+   "lesson_id": "787d01e4-4f88-4593-8cf5-fd1b22e43a0b",
+   "alcance": "modo",
+   "etapa": "pesquisa",
+   "modos_aplicaveis": [
+    "panorama",
+    "mecanismo"
+   ],
+   "justificativa": "Precedente análogo (orgânico contra industrializado) prova que a tendência é estrutural: recurso de tese, típico do panorama. A condição \"quando o tema for selo de status\" é de pauta.",
+   "tema": "prova_dado"
+  },
+  {
+   "id": "ce227d4b-37e8-4a44-b8d8-5baece3332d0",
+   "lesson_id": "787d01e4-4f88-4593-8cf5-fd1b22e43a0b",
+   "alcance": "cliente",
+   "etapa": "comando",
+   "modos_aplicaveis": [
+    "mecanismo",
+    "panorama"
+   ],
+   "justificativa": "O próprio aprendizado diz \"regra do cliente\": CTA que nomeia o empresário que decide é posicionamento de João Paulo Albuquerque.",
+   "tema": "fecho_cta"
+  },
+  {
+   "id": "ef8ef37d-0a67-404d-9a44-b2206d831e12",
+   "lesson_id": "787d01e4-4f88-4593-8cf5-fd1b22e43a0b",
+   "alcance": "modo",
+   "etapa": "hook",
+   "modos_aplicaveis": [
+    "mecanismo",
+    "panorama"
+   ],
+   "justificativa": "Inversão de crença com julgamento (\"a jogada de marketing mais calculada de 2026\") é o gancho do mecanismo e do panorama de tese.",
+   "tema": "gancho_impacto"
+  },
+  {
+   "id": "b85df3d2-046d-4907-9790-cc8ccc0bee1f",
+   "lesson_id": "787d01e4-4f88-4593-8cf5-fd1b22e43a0b",
+   "alcance": "modo",
+   "etapa": "corpo",
+   "modos_aplicaveis": [
+    "panorama",
+    "mecanismo"
+   ],
+   "justificativa": "Explicar a lei econômica por trás da tendência é o elo de causa do panorama e o conteúdo do mecanismo; demonstração explica física, não economia.",
+   "tema": "conexao"
+  },
+  {
+   "id": "e6e95bad-d3f5-48b6-819d-edd8d46b653e",
+   "lesson_id": "787d01e4-4f88-4593-8cf5-fd1b22e43a0b",
+   "alcance": "caso",
+   "etapa": "corpo",
+   "modos_aplicaveis": [
+    "panorama"
+   ],
+   "justificativa": "Frases de \"sinalização social\" saem do tema status e luxo; fora dessa pauta não há o que sinalizar.",
+   "tema": "angulo_pedido"
+  },
+  {
+   "id": "1fb1a9dd-4bd6-406b-81bb-897fca78fd6a",
+   "lesson_id": "b8026d87-5b05-4adb-a02c-a1d25df59175",
+   "alcance": "modo",
+   "etapa": "pesquisa",
+   "modos_aplicaveis": [
+    "panorama"
+   ],
+   "justificativa": "Casos nomeados e recentes como prova de tese é o \"1 a 3 exemplos nominais\" do panorama; em mecanismo o livro pede um caso só (ver 7fc52bcc).",
+   "tema": "prova_dado"
+  },
+  {
+   "id": "5d3003ed-cc92-40d6-be57-e8ee6845c3cd",
+   "lesson_id": "b8026d87-5b05-4adb-a02c-a1d25df59175",
+   "alcance": "modo",
+   "etapa": "comando",
+   "modos_aplicaveis": [
+    "historia",
+    "panorama",
+    "conselho"
+   ],
+   "justificativa": "Compartilhar com propósito é o CTA de registro emotivo (história, panorama de denúncia) ou de utilidade (conselho); em análise de mecanismo a casa usa seguir.",
+   "tema": "fecho_cta"
+  },
+  {
+   "id": "1846b7a8-e021-481d-807b-9fd2ec8dc0da",
+   "lesson_id": "b8026d87-5b05-4adb-a02c-a1d25df59175",
+   "alcance": "universal",
+   "etapa": "fecho",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "Uma frase-síntese antes do CTA existe em todos os modos (lição, regra, tendência, consequência, regra de comportamento); muda o conteúdo da frase, não a existência dela.",
+   "tema": "fecho_cta"
+  },
+  {
+   "id": "1f672405-64d0-449d-8f37-41d11591ca5d",
+   "lesson_id": "b8026d87-5b05-4adb-a02c-a1d25df59175",
+   "alcance": "pauta",
+   "etapa": "premissa",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "Como enquadrar temas de IA (ferramenta, não ameaça) é escolha de ângulo, e veio de pedido explícito do cliente.",
+   "tema": "angulo_pedido"
+  },
+  {
+   "id": "c9bfcd61-5109-4bd7-b06a-47dcd68a1d9e",
+   "lesson_id": "38c55af9-5451-4c03-9887-ea03e3cdb639",
+   "alcance": "universal",
+   "etapa": "hook",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "Cortar a antecâmara que parafraseia o gancho real vale em qualquer roteiro.",
+   "tema": "gancho_claro"
+  },
+  {
+   "id": "51936f16-0198-4f7e-aab5-0992d53bb927",
+   "lesson_id": "38c55af9-5451-4c03-9887-ea03e3cdb639",
+   "alcance": "universal",
+   "etapa": "hook",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "Um gancho só, sem parágrafo de aquecimento concorrente: regra de clareza.",
+   "tema": "gancho_claro"
+  },
+  {
+   "id": "d3c935d1-6dbe-4c21-bdd8-c79c540d399b",
+   "lesson_id": "92c798e0-b7a5-4bf6-8dc2-a87dc9ea7129",
+   "alcance": "modo",
+   "etapa": "premissa",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo"
+   ],
+   "justificativa": "Reorganizar a peça em torno do alvo pessoal concreto é escolha de história; panorama por definição não tem caso único e conselho fala do espectador.",
+   "tema": "personagem_emocao"
+  },
+  {
+   "id": "db6fd7e5-bca3-4a59-b1b0-88d8968c6df7",
+   "lesson_id": "92c798e0-b7a5-4bf6-8dc2-a87dc9ea7129",
+   "alcance": "modo",
+   "etapa": "estrutura",
+   "modos_aplicaveis": [
+    "historia"
+   ],
+   "justificativa": "Personagem nomeado como fio condutor é o que o revisor de história cobra (\"personagem nomeado em toda a peça\").",
+   "tema": "personagem_emocao"
+  },
+  {
+   "id": "d605daf3-0535-4ad1-b4be-c52923ea999f",
+   "lesson_id": "92c798e0-b7a5-4bf6-8dc2-a87dc9ea7129",
+   "alcance": "modo",
+   "etapa": "hook",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo"
+   ],
+   "justificativa": "\"Pessoa nomeada morta\" no lugar de \"guerra\" concentra o gancho num protagonista; serve a história e mecanismo, não a panorama (tese sobre fenômeno) nem a conselho.",
+   "tema": "gancho_impacto"
+  },
+  {
+   "id": "7e968f06-8b27-429a-8db0-89c9074c9929",
+   "lesson_id": "e8ed07af-55da-4672-a1e6-e8d340acc350",
+   "alcance": "cliente",
+   "etapa": "premissa",
+   "modos_aplicaveis": [
+    "demonstracao",
+    "conselho"
+   ],
+   "justificativa": "O par 3c3df870 diz que é preferência da Izabela Anholett; para Franklin Tomich o pedido é o oposto (bastidor, ef5f8b0a). Também combina com demonstração, onde o benefício é o conteúdo.",
+   "tema": "moldura_segredo"
+  },
+  {
+   "id": "cb0af903-7abb-4454-8f28-ea714b4b6e88",
+   "lesson_id": "e8ed07af-55da-4672-a1e6-e8d340acc350",
+   "alcance": "cliente",
+   "etapa": "fecho",
+   "modos_aplicaveis": [
+    "demonstracao",
+    "conselho"
+   ],
+   "justificativa": "Consequência de 7e968f06: fechar em prazo e benefício só faz sentido com o ângulo utilitário da cliente.",
+   "tema": "fecho_cta"
+  },
+  {
+   "id": "3896833a-6b9f-49dd-a613-9c3d04e40fdd",
+   "lesson_id": "e8ed07af-55da-4672-a1e6-e8d340acc350",
+   "alcance": "universal",
+   "etapa": "comando",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "O princípio (CTA coerente com a promessa do canal e com o corpo) vale para todos; a promessa em si vem do perfil do cliente.",
+   "tema": "fecho_cta"
+  },
+  {
+   "id": "3c3df870-7be9-4605-b401-c344b70aba2f",
+   "lesson_id": "e8ed07af-55da-4672-a1e6-e8d340acc350",
+   "alcance": "cliente",
+   "etapa": "premissa",
+   "modos_aplicaveis": [
+    "demonstracao",
+    "conselho"
+   ],
+   "justificativa": "Declarado no próprio texto como preferência da cliente, não princípio universal.",
+   "tema": "moldura_segredo"
+  },
+  {
+   "id": "031a67d1-5dff-4e13-925f-8ce526009610",
+   "lesson_id": "c10f47fb-48cb-4427-9fe8-29b3190c5a25",
+   "alcance": "modo",
+   "etapa": "pesquisa",
+   "modos_aplicaveis": [
+    "mecanismo",
+    "panorama"
+   ],
+   "justificativa": "\"Achar o número que mede o efeito\" é instrução do mecanismo; escolher a prova mais forte entre várias também é do panorama.",
+   "tema": "prova_dado"
+  },
+  {
+   "id": "64a5c847-c615-49ca-9f0b-011a1cab42c6",
+   "lesson_id": "c10f47fb-48cb-4427-9fe8-29b3190c5a25",
+   "alcance": "universal",
+   "etapa": "revisao",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "Cortar comparação que repete a mesma ideia.",
+   "tema": "enrolacao"
+  },
+  {
+   "id": "ee35b81a-0c58-4379-9e33-4dba77ff575a",
+   "lesson_id": "c10f47fb-48cb-4427-9fe8-29b3190c5a25",
+   "alcance": "universal",
+   "etapa": "fecho",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "Frase-ponte que resume a tese antes do CTA, igual a 1846b7a8.",
+   "tema": "fecho_cta"
+  },
+  {
+   "id": "1a3d2dc4-ec2c-4763-8b0e-b086e357a33c",
+   "lesson_id": "c10f47fb-48cb-4427-9fe8-29b3190c5a25",
+   "alcance": "modo",
+   "etapa": "estrutura",
+   "modos_aplicaveis": [
+    "mecanismo"
+   ],
+   "justificativa": "Validar o medo do espectador e virar a expectativa logo depois do gancho é o contraste senso comum contra realidade do mecanismo.",
+   "tema": "contraste_senso_comum"
+  },
+  {
+   "id": "78361ea0-9674-4129-9075-35f2289f3c24",
+   "lesson_id": "034e75bb-caea-4e20-9e5b-4e2b2cb2d235",
+   "alcance": "universal",
+   "etapa": "revisao",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "Lição ativa: frase de antecipação genérica sai ou vira rehook. Vale em qualquer modo.",
+   "tema": "enrolacao"
+  },
+  {
+   "id": "817b3b5c-1ebb-403b-9a25-ed032534e032",
+   "lesson_id": "08ea7943-8dbd-4b36-8802-9bb1e90f6bd6",
+   "alcance": "cliente",
+   "etapa": "hook",
+   "modos_aplicaveis": [
+    "mecanismo",
+    "panorama",
+    "demonstracao",
+    "historia"
+   ],
+   "justificativa": "Lift de tipo de gancho dentro do cliente (Izabela Anholett); é dado de perfil, não testado por modo.",
+   "tema": "preferencia_cliente"
+  },
+  {
+   "id": "c5844ee1-f944-4731-9baf-9383f77e1ede",
+   "lesson_id": "08ea7943-8dbd-4b36-8802-9bb1e90f6bd6",
+   "alcance": "cliente",
+   "etapa": "premissa",
+   "modos_aplicaveis": [
+    "demonstracao",
+    "mecanismo"
+   ],
+   "justificativa": "Tema INOVAÇÃO no topo da Izabela Anholett: escolha de pauta do perfil; inovação tende a cair em demonstração.",
+   "tema": "preferencia_cliente"
+  },
+  {
+   "id": "ff35f2b1-806b-4adb-accb-fb53ab78819f",
+   "lesson_id": "dbc2f0d0-6de1-4b10-a1d3-c3ba50b0e927",
+   "alcance": "cliente",
+   "etapa": "hook",
+   "modos_aplicaveis": [
+    "panorama",
+    "mecanismo"
+   ],
+   "justificativa": "Gancho de Urgência no topo de Fernando Pereira: dado de perfil.",
+   "tema": "preferencia_cliente"
+  },
+  {
+   "id": "3383caf4-c9fa-4135-8fd9-120236aa4a2f",
+   "lesson_id": "0b68703c-e239-480b-b76c-39583d5049b7",
+   "alcance": "modo",
+   "etapa": "hook",
+   "modos_aplicaveis": [
+    "panorama",
+    "mecanismo",
+    "demonstracao"
+   ],
+   "justificativa": "Corte de notícia logo após o gancho é nota de edição para roteiro com âncora notícia (atravessa modos); em história de passado e em conselho não há manchete a mostrar.",
+   "tema": "prova_dado"
+  },
+  {
+   "id": "893f1cbc-7692-47b6-ba66-b0778f358e6e",
+   "lesson_id": "0b68703c-e239-480b-b76c-39583d5049b7",
+   "alcance": "modo",
+   "etapa": "hook",
+   "modos_aplicaveis": [
+    "panorama"
+   ],
+   "justificativa": "Abrir pelo dado agregado (82% endividados) é o gancho do panorama (\"o dado maior primeiro\"); em história e mecanismo a casa pede o contrário (personagem, caso único: e4bae783, 29786df3).",
+   "tema": "gancho_impacto"
+  },
+  {
+   "id": "d7b95291-8fb3-486c-9ef9-efbb1a95feab",
+   "lesson_id": "0b68703c-e239-480b-b76c-39583d5049b7",
+   "alcance": "universal",
+   "etapa": "hook",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "Traduzir percentual em proporção tangível (10 pessoas, 2 sem dívida) é a regra \"analogia para todo número difícil\", útil em qualquer modo que use número.",
+   "tema": "numero_tangivel"
+  },
+  {
+   "id": "4bdcf879-9436-4566-b1ed-a77e24ec159d",
+   "lesson_id": "21cbd061-2487-48d1-b4bb-b4033c66d4e7",
+   "alcance": "cliente",
+   "etapa": "corpo",
+   "modos_aplicaveis": [
+    "mecanismo"
+   ],
+   "justificativa": "Benefício duplo (consumidor e empresário) veio do pedido de Pedro Elero (\"converse com o público em geral e com o empresário\"); é o público do perfil.",
+   "tema": "angulo_pedido"
+  },
+  {
+   "id": "61f662b3-a896-4469-aede-42b04e8b6073",
+   "lesson_id": "21cbd061-2487-48d1-b4bb-b4033c66d4e7",
+   "alcance": "pauta",
+   "etapa": "corpo",
+   "modos_aplicaveis": [
+    "mecanismo",
+    "demonstracao"
+   ],
+   "justificativa": "\"Ninguém foi demitido\" só se aplica a pautas de automação e só se for fato.",
+   "tema": "angulo_pedido"
+  },
+  {
+   "id": "928a9453-6357-4864-936c-e96be5c1bd03",
+   "lesson_id": "21cbd061-2487-48d1-b4bb-b4033c66d4e7",
+   "alcance": "modo",
+   "etapa": "corpo",
+   "modos_aplicaveis": [
+    "mecanismo"
+   ],
+   "justificativa": "Marcar a virada (\"agora vem a parte genial\") é o \"detalhe que vira o jogo\" do mecanismo; atrita com a lição ativa 78361ea0.",
+   "tema": "enrolacao"
+  },
+  {
+   "id": "53dd22ad-36cb-46ca-9988-4ec3a961f099",
+   "lesson_id": "21cbd061-2487-48d1-b4bb-b4033c66d4e7",
+   "alcance": "modo",
+   "etapa": "comando",
+   "modos_aplicaveis": [
+    "mecanismo",
+    "panorama"
+   ],
+   "justificativa": "Promessa de antecipação (\"antes de todo mundo\") é o CTA de análise de notícia de negócios; não serve a história emotiva nem a conselho.",
+   "tema": "fecho_cta"
+  },
+  {
+   "id": "c96476fb-fbd2-4d78-8467-3656a77304db",
+   "lesson_id": "0d08ce60-61d2-4b92-b486-9bfed14982ac",
+   "alcance": "universal",
+   "etapa": "revisao",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "Ao cortar dado incerto, repor algo verdadeiro que mantenha o arco: técnica de revisão para qualquer modo.",
+   "tema": "precisao"
+  },
+  {
+   "id": "58f8afe6-e013-434a-ace2-81af5b6e425b",
+   "lesson_id": "0d08ce60-61d2-4b92-b486-9bfed14982ac",
+   "alcance": "universal",
+   "etapa": "revisao",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "Data e superlativo sustentados pela fonte citada.",
+   "tema": "precisao"
+  },
+  {
+   "id": "9c416f65-ec45-4d99-9b56-0aba1cf6f3c6",
+   "lesson_id": "0d08ce60-61d2-4b92-b486-9bfed14982ac",
+   "alcance": "universal",
+   "etapa": "revisao",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "Desconfiar de superlativo absoluto (\"o primeiro do mundo\").",
+   "tema": "precisao"
+  },
+  {
+   "id": "ab2caa24-a8ab-4749-8db1-56c639063d08",
+   "lesson_id": "66cbfd7b-1664-4c59-ad9f-2ad12106d882",
+   "alcance": "modo",
+   "etapa": "hook",
+   "modos_aplicaveis": [
+    "panorama",
+    "mecanismo"
+   ],
+   "justificativa": "Frase de tese explícita logo após o título é o gancho de panorama que afirma um estado do mundo.",
+   "tema": "gancho_impacto"
+  },
+  {
+   "id": "8c11b99f-c389-402d-a574-38a3fcfe62f7",
+   "lesson_id": "66cbfd7b-1664-4c59-ad9f-2ad12106d882",
+   "alcance": "universal",
+   "etapa": "revisao",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "Costurar frases picadas com conectivo e reordenar para a leitura em voz alta.",
+   "tema": "conexao"
+  },
+  {
+   "id": "768afa86-c48a-4a5e-9032-69c1a407f1d9",
+   "lesson_id": "66cbfd7b-1664-4c59-ad9f-2ad12106d882",
+   "alcance": "cliente",
+   "etapa": "comando",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "Assinatura com nome, expertise recorrente e benefício é o formato de perfil de Franklin Tomich; ter CTA é universal, o texto é do cliente.",
+   "tema": "fecho_cta"
+  },
+  {
+   "id": "57caa066-27d1-4d7e-8f10-aaf240268ff3",
+   "lesson_id": "66cbfd7b-1664-4c59-ad9f-2ad12106d882",
+   "alcance": "universal",
+   "etapa": "corpo",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "Fechar cada bloco com o fato mais forte.",
+   "tema": "outros"
+  },
+  {
+   "id": "55d1af11-3bf6-4e8b-9cca-224436745753",
+   "lesson_id": "66cbfd7b-1664-4c59-ad9f-2ad12106d882",
+   "alcance": "universal",
+   "etapa": "corpo",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "Dizer o que é a marca estrangeira desconhecida: mesma regra da lição ativa 3a7a7215.",
+   "tema": "sigla_jargao"
+  },
+  {
+   "id": "fc8a0c30-b4f1-493f-9194-d536b368cc72",
+   "lesson_id": "66cbfd7b-1664-4c59-ad9f-2ad12106d882",
+   "alcance": "caso",
+   "etapa": "fecho",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "O corte da reflexão final dependeu de o CTA de Franklin Tomich já cumprir a virada; em geral a casa pede o contrário (1846b7a8, ee35b81a).",
+   "tema": "fecho_cta"
+  },
+  {
+   "id": "c535ad95-541a-4b34-b0f0-f84c3615fdb1",
+   "lesson_id": "66cbfd7b-1664-4c59-ad9f-2ad12106d882",
+   "alcance": "universal",
+   "etapa": "revisao",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "Trocar jargão por linguagem leiga.",
+   "tema": "sigla_jargao"
+  },
+  {
+   "id": "e1b2c016-2084-4fa5-bca0-c9109c947503",
+   "lesson_id": "66cbfd7b-1664-4c59-ad9f-2ad12106d882",
+   "alcance": "modo",
+   "etapa": "hook",
+   "modos_aplicaveis": [
+    "mecanismo",
+    "panorama",
+    "historia"
+   ],
+   "justificativa": "Contraste com revelação (\"quase ninguém percebeu\") cabe em caso explicado e tese; em demonstração a correção pediu tirar a moldura de segredo (91e30691, 49d6b498). A parte \"não abrir pela data\" é universal.",
+   "tema": "moldura_segredo"
+  },
+  {
+   "id": "ef5f8b0a-b03b-45fc-b926-64fb2c8e9250",
+   "lesson_id": "04d833de-2108-4fe5-876c-a8e01196e860",
+   "alcance": "modo",
+   "etapa": "premissa",
+   "modos_aplicaveis": [
+    "mecanismo",
+    "panorama"
+   ],
+   "justificativa": "Moldura de \"movimento silencioso nos bastidores que chega na sua mesa\" é ângulo de mecanismo e panorama; foi pedido de Franklin Tomich, oposto ao da Izabela Anholett (7e968f06).",
+   "tema": "moldura_segredo"
+  },
+  {
+   "id": "d46793e0-083e-4a71-8a22-5bf1e5c16318",
+   "lesson_id": "04d833de-2108-4fe5-876c-a8e01196e860",
+   "alcance": "modo",
+   "etapa": "premissa",
+   "modos_aplicaveis": [
+    "panorama",
+    "mecanismo"
+   ],
+   "justificativa": "Levar o tema corporativo até o prato do espectador é a \"cadeia até o bolso\" do panorama; em demonstração o equivalente é a cena de uso e em história a lição.",
+   "tema": "ponte_espectador"
+  },
+  {
+   "id": "04937269-66ea-48d8-95a7-6fa04ae1b52e",
+   "lesson_id": "04d833de-2108-4fe5-876c-a8e01196e860",
+   "alcance": "universal",
+   "etapa": "hook",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "Gancho entrega o impacto, não o contexto regulatório.",
+   "tema": "gancho_impacto"
+  },
+  {
+   "id": "bfbcb082-ddd8-4b13-bd52-0dbf51002075",
+   "lesson_id": "04d833de-2108-4fe5-876c-a8e01196e860",
+   "alcance": "universal",
+   "etapa": "comando",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "CTA retoma a imagem do gancho: coerência entre gancho e CTA.",
+   "tema": "fecho_cta"
+  },
+  {
+   "id": "fcac289a-df87-47bd-8e22-69149dd240e8",
+   "lesson_id": "13680a9b-0c6f-454e-a506-4cc2c57ff421",
+   "alcance": "cliente",
+   "etapa": "premissa",
+   "modos_aplicaveis": [
+    "panorama",
+    "mecanismo",
+    "historia"
+   ],
+   "justificativa": "Tema GEOPOLÍTICA no topo de Lincoln Fracari: dado de perfil.",
+   "tema": "preferencia_cliente"
+  },
+  {
+   "id": "e962c486-06da-42dc-ac08-d25058593a82",
+   "lesson_id": "c184d0be-c850-4d63-ac8d-8750a60cf8eb",
+   "alcance": "cliente",
+   "etapa": "hook",
+   "modos_aplicaveis": [
+    "historia"
+   ],
+   "justificativa": "Revelação Secreta no topo de Marcelo Germano, cliente 100% história no livro de códigos.",
+   "tema": "preferencia_cliente"
+  },
+  {
+   "id": "bc17b075-0894-4a1e-91d1-07d1025a2a2a",
+   "lesson_id": "0769f545-e806-4b5f-8cee-9fe8ced52a15",
+   "alcance": "modo",
+   "etapa": "estrutura",
+   "modos_aplicaveis": [
+    "historia"
+   ],
+   "justificativa": "Jornada emocional antes do dado técnico é estrutura de história de registro emotivo; em panorama e mecanismo o dado vem primeiro (5ca69355, 893f1cbc).",
+   "tema": "personagem_emocao"
+  },
+  {
+   "id": "acf076e8-5711-4644-a26e-6115e90b344e",
+   "lesson_id": "0769f545-e806-4b5f-8cee-9fe8ced52a15",
+   "alcance": "modo",
+   "etapa": "pesquisa",
+   "modos_aplicaveis": [
+    "panorama",
+    "mecanismo",
+    "historia"
+   ],
+   "justificativa": "Ancorar a comparação numa notícia recente e citável depende da âncora notícia, que atravessa modos; não se aplica a conselho nem a âncora passado.",
+   "tema": "material_usuario"
+  },
+  {
+   "id": "b6866347-e514-481c-850c-3090fcb644f5",
+   "lesson_id": "0769f545-e806-4b5f-8cee-9fe8ced52a15",
+   "alcance": "universal",
+   "etapa": "corpo",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "Cada elo nomeado, sem comprimir: vale para cronologia (história), passos (mecanismo), funcionamento (demonstração) e cadeia (panorama). Só com fonte (ver 49435f67).",
+   "tema": "conexao"
+  },
+  {
+   "id": "04e0f841-a93c-4a05-88cf-d9a54c93aac0",
+   "lesson_id": "0769f545-e806-4b5f-8cee-9fe8ced52a15",
+   "alcance": "universal",
+   "etapa": "hook",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "Abrir pelo contraste de resultado e não pela causa é a mesma regra de 04937269.",
+   "tema": "gancho_impacto"
+  },
+  {
+   "id": "30d88c18-064b-4e31-89e5-1cfe0b41e526",
+   "lesson_id": "cf50d79a-e6b2-4ef0-ab38-c707e79d7796",
+   "alcance": "modo",
+   "etapa": "revisao",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo"
+   ],
+   "justificativa": "Não comprimir a linha do tempo da fundação é o \"cronologia sem buraco\" do revisor de história; vale também para a origem contada dentro de um mecanismo.",
+   "tema": "precisao"
+  },
+  {
+   "id": "1fff96ba-fa90-45e6-ba1a-3e18706be750",
+   "lesson_id": "cf50d79a-e6b2-4ef0-ab38-c707e79d7796",
+   "alcance": "caso",
+   "etapa": "hook",
+   "modos_aplicaveis": [
+    "historia"
+   ],
+   "justificativa": "\"Deus é fiel\" é detalhe da Fortlev e do vídeo de referência; generalizar para \"fé e humildade funcionam para Franklin Tomich\" não tem base.",
+   "tema": "angulo_pedido"
+  },
+  {
+   "id": "eba0fe14-2ee9-4799-a4ff-fc7b41824ed6",
+   "lesson_id": "cf50d79a-e6b2-4ef0-ab38-c707e79d7796",
+   "alcance": "universal",
+   "etapa": "revisao",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "Quando o gancho muda, o corpo acompanha.",
+   "tema": "coerencia"
+  },
+  {
+   "id": "a530fc64-f08f-499c-aa66-4cf92f3ce2b5",
+   "lesson_id": "cf50d79a-e6b2-4ef0-ab38-c707e79d7796",
+   "alcance": "universal",
+   "etapa": "revisao",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "Afirmação sensível sem fonte primária vira formulação cautelosa ou sai.",
+   "tema": "precisao"
+  },
+  {
+   "id": "9fd3ea30-94ba-4569-b5b3-191bcf786e58",
+   "lesson_id": "cf50d79a-e6b2-4ef0-ab38-c707e79d7796",
+   "alcance": "universal",
+   "etapa": "revisao",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "Mesmo número citado duas vezes tem de bater.",
+   "tema": "precisao"
+  },
+  {
+   "id": "e5c34af6-b4a7-4af3-a755-90a80171848c",
+   "lesson_id": "06c46d5b-3873-4a17-bdac-dfe432b2a65d",
+   "alcance": "cliente",
+   "etapa": "tom",
+   "modos_aplicaveis": [
+    "mecanismo",
+    "historia"
+   ],
+   "justificativa": "Trocar denúncia moral por paradoxo de estratégia é o posicionamento de Franklin Tomich (d1a1c722); Ricardo Schumacher e Fernando Pereira pedem o oposto.",
+   "tema": "preferencia_cliente"
+  },
+  {
+   "id": "8c5f9581-c401-477d-982a-9140403abd13",
+   "lesson_id": "06c46d5b-3873-4a17-bdac-dfe432b2a65d",
+   "alcance": "modo",
+   "etapa": "estrutura",
+   "modos_aplicaveis": [
+    "mecanismo"
+   ],
+   "justificativa": "Reorganizar fatos datados em \"passos de um plano\" é transformar história em mecanismo; só vale se o modo escolhido for mecanismo.",
+   "tema": "contraste_senso_comum"
+  },
+  {
+   "id": "27cbf361-ab20-4492-8243-bac5f4deed57",
+   "lesson_id": "06c46d5b-3873-4a17-bdac-dfe432b2a65d",
+   "alcance": "universal",
+   "etapa": "fecho",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "O fecho volta à frase do gancho e paga a promessa; vale em qualquer modo.",
+   "tema": "fecho_cta"
+  },
+  {
+   "id": "271aa5f9-2c24-4c0f-9eec-6514b7f39ed0",
+   "lesson_id": "06c46d5b-3873-4a17-bdac-dfe432b2a65d",
+   "alcance": "cliente",
+   "etapa": "comando",
+   "modos_aplicaveis": [
+    "mecanismo"
+   ],
+   "justificativa": "CTA \"entender o jogo antes de ele te alcançar\" é a promessa de perfil de Franklin Tomich.",
+   "tema": "fecho_cta"
+  },
+  {
+   "id": "d1a1c722-8eaa-4ace-9626-63e2fd4cfde4",
+   "lesson_id": "06c46d5b-3873-4a17-bdac-dfe432b2a65d",
+   "alcance": "cliente",
+   "etapa": "tom",
+   "modos_aplicaveis": [
+    "mecanismo",
+    "historia"
+   ],
+   "justificativa": "Declarado como regra do cliente Franklin Tomich.",
+   "tema": "preferencia_cliente"
+  },
+  {
+   "id": "eca66ef3-df68-463c-9e3a-573a43481b64",
+   "lesson_id": "c5eba4a2-8551-4c31-b34a-04b709a2cfc9",
+   "alcance": "modo",
+   "etapa": "hook",
+   "modos_aplicaveis": [
+    "panorama",
+    "mecanismo"
+   ],
+   "justificativa": "Sinal de colapso dentro do gancho é gancho de panorama de crise (e de um cliente que pede alarme); em história a virada vem no meio por desenho.",
+   "tema": "gancho_impacto"
+  },
+  {
+   "id": "af94e12e-3d90-4b3f-84b5-2ac44b5505ba",
+   "lesson_id": "c5eba4a2-8551-4c31-b34a-04b709a2cfc9",
+   "alcance": "modo",
+   "etapa": "estrutura",
+   "modos_aplicaveis": [
+    "panorama",
+    "mecanismo"
+   ],
+   "justificativa": "Alarme nos primeiros segundos vale para tese de crise; em história a virada é guardada para o meio.",
+   "tema": "gancho_impacto"
+  },
+  {
+   "id": "fa3f1476-dbac-43a5-9ed5-319da1504e56",
+   "lesson_id": "c5eba4a2-8551-4c31-b34a-04b709a2cfc9",
+   "alcance": "universal",
+   "etapa": "corpo",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "Conectivo de causa ligando o dado à consequência.",
+   "tema": "conexao"
+  },
+  {
+   "id": "5ca69355-2c2f-4cb4-a7a9-eb866035b7e7",
+   "lesson_id": "c5eba4a2-8551-4c31-b34a-04b709a2cfc9",
+   "alcance": "modo",
+   "etapa": "estrutura",
+   "modos_aplicaveis": [
+    "panorama"
+   ],
+   "justificativa": "Alarme primeiro, grandeza do setor depois como contraste: ordem de panorama de crise.",
+   "tema": "prova_dado"
+  },
+  {
+   "id": "b7431b65-7f36-4170-80ca-628d03b2c1a9",
+   "lesson_id": "bb18a125-d62b-4c8b-971a-fae847565f7b",
+   "alcance": "universal",
+   "etapa": "fecho",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "O fecho volta ao contraste do gancho.",
+   "tema": "fecho_cta"
+  },
+  {
+   "id": "70fb2471-6152-4676-99a4-0b7b0a3a3500",
+   "lesson_id": "bb18a125-d62b-4c8b-971a-fae847565f7b",
+   "alcance": "modo",
+   "etapa": "hook",
+   "modos_aplicaveis": [
+    "mecanismo",
+    "panorama"
+   ],
+   "justificativa": "Promessa de autoridade contra o resultado real é gancho de notícia política (mecanismo ou panorama); depende de existir a fala e de ela ser verificável.",
+   "tema": "gancho_impacto"
+  },
+  {
+   "id": "3e8efe54-9e58-4760-8ff9-47748062c034",
+   "lesson_id": "bb18a125-d62b-4c8b-971a-fae847565f7b",
+   "alcance": "modo",
+   "etapa": "pesquisa",
+   "modos_aplicaveis": [
+    "mecanismo",
+    "panorama"
+   ],
+   "justificativa": "Buscar declarações públicas contraditórias é tarefa de pesquisa de pauta política e econômica com âncora notícia.",
+   "tema": "material_usuario"
+  },
+  {
+   "id": "d61aeb94-5723-4e9a-b635-5b24c617e9a0",
+   "lesson_id": "bb18a125-d62b-4c8b-971a-fae847565f7b",
+   "alcance": "cliente",
+   "etapa": "tom",
+   "modos_aplicaveis": [
+    "panorama",
+    "mecanismo"
+   ],
+   "justificativa": "\"Mais alarmista\" é pedido de Ricardo Schumacher; o curador (efb4912d) põe gancho de ameaça abstrata entre os piores e Franklin Tomich pede o contrário (e5c34af6).",
+   "tema": "preferencia_cliente"
+  },
+  {
+   "id": "b6e17276-cfb5-4ab7-bc51-ceb8108d0ee4",
+   "lesson_id": "d01bf9e4-e211-4152-a7c7-833095a76357",
+   "alcance": "universal",
+   "etapa": "pesquisa",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "Mapear quem é quem (comprador, financiador, quem leva a produção) antes de escrever: precisão de pesquisa.",
+   "tema": "precisao"
+  },
+  {
+   "id": "1a172f0f-c8f8-406f-905f-4f3a8b3c74cc",
+   "lesson_id": "d01bf9e4-e211-4152-a7c7-833095a76357",
+   "alcance": "universal",
+   "etapa": "revisao",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "Lista técnica conferida.",
+   "tema": "precisao"
+  },
+  {
+   "id": "892222af-aa14-450f-93cd-bffc9b5b0eb9",
+   "lesson_id": "d01bf9e4-e211-4152-a7c7-833095a76357",
+   "alcance": "universal",
+   "etapa": "revisao",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "Rotulado como regra de Franklin Tomich, mas é precisão geral: não atribuir nacionalidade sem fonte.",
+   "tema": "precisao"
+  },
+  {
+   "id": "d32716ef-e50f-4356-89e4-0f08efcda4ec",
+   "lesson_id": "d01bf9e4-e211-4152-a7c7-833095a76357",
+   "alcance": "universal",
+   "etapa": "revisao",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "Negócio condicional não vira concluído.",
+   "tema": "precisao"
+  },
+  {
+   "id": "e2f63706-4084-45a5-827d-8153617ab2b5",
+   "lesson_id": "d01bf9e4-e211-4152-a7c7-833095a76357",
+   "alcance": "universal",
+   "etapa": "revisao",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "Escopo de contrato não se generaliza.",
+   "tema": "precisao"
+  },
+  {
+   "id": "7d38d1ba-8dcc-4dd6-b890-7bd983c8e169",
+   "lesson_id": "e4f4301d-76df-420f-acf2-07c9c9d20cc5",
+   "alcance": "cliente",
+   "etapa": "pesquisa",
+   "modos_aplicaveis": [
+    "mecanismo"
+   ],
+   "justificativa": "Reação de concorrentes, Cade e varejo é a camada que o nicho de fusões e aquisições de Franklin Tomich pede (o próprio 455fed47 diz isso).",
+   "tema": "material_usuario"
+  },
+  {
+   "id": "8297eefb-a2e7-45d5-8996-194ee7eebbcb",
+   "lesson_id": "e4f4301d-76df-420f-acf2-07c9c9d20cc5",
+   "alcance": "modo",
+   "etapa": "corpo",
+   "modos_aplicaveis": [
+    "mecanismo"
+   ],
+   "justificativa": "Ligar o medo do mercado à vantagem do comprador é \"o detalhe que vira o jogo\" do mecanismo.",
+   "tema": "contraste_senso_comum"
+  },
+  {
+   "id": "455fed47-adc9-4b64-bdab-74e5f9931776",
+   "lesson_id": "e4f4301d-76df-420f-acf2-07c9c9d20cc5",
+   "alcance": "cliente",
+   "etapa": "pesquisa",
+   "modos_aplicaveis": [
+    "mecanismo"
+   ],
+   "justificativa": "Declarado como regra do nicho de Franklin Tomich.",
+   "tema": "material_usuario"
+  },
+  {
+   "id": "8bf47c27-1c78-4bba-ba79-cdff7b67274e",
+   "lesson_id": "ef338f8b-5ee4-4cd9-b503-cf8b6e05ca39",
+   "alcance": "universal",
+   "etapa": "revisao",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "Fato biográfico do gancho conferido antes de gravar.",
+   "tema": "precisao"
+  },
+  {
+   "id": "7231d7d7-3dba-4354-8a48-2c2c0682f23d",
+   "lesson_id": "ef338f8b-5ee4-4cd9-b503-cf8b6e05ca39",
+   "alcance": "universal",
+   "etapa": "revisao",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "Corrigir o fato preservando o arco (cadeia causal no lugar da afirmação falsa); mesmo princípio de c96476fb.",
+   "tema": "precisao"
+  },
+  {
+   "id": "130ba4fe-2ead-4021-92ab-d3395aea3b9e",
+   "lesson_id": "ef338f8b-5ee4-4cd9-b503-cf8b6e05ca39",
+   "alcance": "universal",
+   "etapa": "revisao",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "Precisão factual é pré-requisito.",
+   "tema": "precisao"
+  },
+  {
+   "id": "73dd12d3-b784-41c4-8c3f-b33b7138317a",
+   "lesson_id": "57270d50-d00a-4221-bdc8-dc78c03f1a8b",
+   "alcance": "universal",
+   "etapa": "hook",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "Gancho autossuficiente: nada que só faz sentido depois.",
+   "tema": "gancho_claro"
+  },
+  {
+   "id": "09f787b6-c809-4f58-b04e-a035b1881ff8",
+   "lesson_id": "57270d50-d00a-4221-bdc8-dc78c03f1a8b",
+   "alcance": "universal",
+   "etapa": "hook",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "Teste da pessoa comum na primeira leitura.",
+   "tema": "gancho_claro"
+  },
+  {
+   "id": "6110f329-3c70-4f52-a71c-45aaddd35248",
+   "lesson_id": "4509521a-dda0-4794-b992-35dffc18c2db",
+   "alcance": "caso",
+   "etapa": "fecho",
+   "modos_aplicaveis": [
+    "historia"
+   ],
+   "justificativa": "\"A correção virou a confissão\" é achado retórico daquele caso; como regra, convida a atribuir intenção sem fonte.",
+   "tema": "amplificar"
+  },
+  {
+   "id": "0d1a1273-da37-46d2-89e3-f406821e629c",
+   "lesson_id": "4509521a-dda0-4794-b992-35dffc18c2db",
+   "alcance": "modo",
+   "etapa": "estrutura",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo"
+   ],
+   "justificativa": "Contraste irônico central (o mercado cresceu, a líder encolheu) organiza a queda de marca e o paradoxo do mecanismo.",
+   "tema": "contraste_senso_comum"
+  },
+  {
+   "id": "e1f52f92-8f5f-4e97-ae34-795c334656c8",
+   "lesson_id": "4509521a-dda0-4794-b992-35dffc18c2db",
+   "alcance": "universal",
+   "etapa": "corpo",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "Metáfora de escala para número grande.",
+   "tema": "numero_tangivel"
+  },
+  {
+   "id": "11154422-44b2-4df6-9844-b244e7f047d0",
+   "lesson_id": "4509521a-dda0-4794-b992-35dffc18c2db",
+   "alcance": "modo",
+   "etapa": "corpo",
+   "modos_aplicaveis": [
+    "historia"
+   ],
+   "justificativa": "Aprofundar cada decisão como traição de identidade é escrita de história (queda de marca); em mecanismo o revisor cobra que a lição saia do mecanismo, não de moral.",
+   "tema": "personagem_emocao"
+  },
+  {
+   "id": "1f025268-4585-4f2a-b529-1c326320478f",
+   "lesson_id": "4509521a-dda0-4794-b992-35dffc18c2db",
+   "alcance": "modo",
+   "etapa": "estrutura",
+   "modos_aplicaveis": [
+    "historia",
+    "panorama"
+   ],
+   "justificativa": "Fatos amarrados a uma tese emocional crescente: história e panorama emotivo. A parte \"não listar fatos soltos\" é universal (59dd1576).",
+   "tema": "personagem_emocao"
+  },
+  {
+   "id": "46e7d4ce-cad9-4b33-803e-d7189bdcfc27",
+   "lesson_id": "38fb998f-e95d-4dd8-a503-6b49038e713c",
+   "alcance": "modo",
+   "etapa": "corpo",
+   "modos_aplicaveis": [
+    "demonstracao",
+    "mecanismo",
+    "panorama"
+   ],
+   "justificativa": "Explicar o porquê entre causa e resultado é o \"como funciona explicado e não só anunciado\" de demonstração e o conteúdo do mecanismo.",
+   "tema": "conexao"
+  },
+  {
+   "id": "476cb93b-9f6c-4373-a6ae-7d22124f8ecb",
+   "lesson_id": "38fb998f-e95d-4dd8-a503-6b49038e713c",
+   "alcance": "modo",
+   "etapa": "corpo",
+   "modos_aplicaveis": [
+    "mecanismo",
+    "demonstracao",
+    "panorama"
+   ],
+   "justificativa": "Frase mais longa e articulada no corpo explicativo; o próprio texto separa do gancho. Em história emotiva a frase curta ainda é recurso de ritmo.",
+   "tema": "conexao"
+  },
+  {
+   "id": "59dd1576-72ba-4ae4-9d4b-b873264592e6",
+   "lesson_id": "38fb998f-e95d-4dd8-a503-6b49038e713c",
+   "alcance": "universal",
+   "etapa": "corpo",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "Ponte lógica explícita entre saltos de assunto.",
+   "tema": "conexao"
+  },
+  {
+   "id": "02760182-dd16-4f8a-8f3e-266a895dcaa0",
+   "lesson_id": "2aef9b3f-f901-4fa6-919c-b238ad0c32cd",
+   "alcance": "universal",
+   "etapa": "hook",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "Referente claro em cada frase do gancho.",
+   "tema": "gancho_claro"
+  },
+  {
+   "id": "da2b124e-e5e0-42a6-be2f-2a983b80828f",
+   "lesson_id": "2aef9b3f-f901-4fa6-919c-b238ad0c32cd",
+   "alcance": "universal",
+   "etapa": "hook",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "Apresentar as entidades antes do vínculo entre elas.",
+   "tema": "gancho_claro"
+  },
+  {
+   "id": "f720a830-ea02-4df2-8178-c7ee140b7a13",
+   "lesson_id": "2aef9b3f-f901-4fa6-919c-b238ad0c32cd",
+   "alcance": "modo",
+   "etapa": "hook",
+   "modos_aplicaveis": [
+    "mecanismo",
+    "panorama",
+    "historia"
+   ],
+   "justificativa": "Conflito com personagem reconhecível mais revelação no lugar da mecânica contratual serve a caso de negócios; em demonstração a correção foi tirar a revelação (91e30691). \"Não abrir pela mecânica técnica\" é universal.",
+   "tema": "moldura_segredo"
+  },
+  {
+   "id": "e4bae783-fa7b-480d-b55d-6d29bf9310e9",
+   "lesson_id": "59d620d1-6bd1-46dd-bffd-4519bf4863d0",
+   "alcance": "modo",
+   "etapa": "estrutura",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo"
+   ],
+   "justificativa": "Um personagem nomeado carrega o fio: o livro de códigos diz que vale em história, em parte em mecanismo e demonstração, e não em panorama nem conselho. Aqui o pedido trocou o modo da peça.",
+   "tema": "personagem_emocao"
+  },
+  {
+   "id": "d65baf61-d92e-492a-aa4c-6ed3f1dc6390",
+   "lesson_id": "59d620d1-6bd1-46dd-bffd-4519bf4863d0",
+   "alcance": "modo",
+   "etapa": "estrutura",
+   "modos_aplicaveis": [
+    "historia"
+   ],
+   "justificativa": "Cada revelação entra pela boca do protagonista: técnica de história.",
+   "tema": "personagem_emocao"
+  },
+  {
+   "id": "2cee55e4-278c-4bb8-9cd1-9eebc95edc69",
+   "lesson_id": "7e69ae65-16ce-478b-abed-81546c03b24e",
+   "alcance": "universal",
+   "etapa": "pesquisa",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "Não descartar o contraponto da fonte que sustenta a tese.",
+   "tema": "material_usuario"
+  },
+  {
+   "id": "4d0fe8c4-beb1-4dbd-8dcc-3d58245fccc2",
+   "lesson_id": "7e69ae65-16ce-478b-abed-81546c03b24e",
+   "alcance": "modo",
+   "etapa": "hook",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "publi"
+   ],
+   "justificativa": "Número de impacto no gancho vale em todo modo factual; conselho quase não usa número e abre pela dor do espectador.",
+   "tema": "gancho_impacto"
+  },
+  {
+   "id": "88177ef0-a158-4d94-a348-5365ce285848",
+   "lesson_id": "7e69ae65-16ce-478b-abed-81546c03b24e",
+   "alcance": "universal",
+   "etapa": "revisao",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "Não omitir fato-chave da fonte para simplificar.",
+   "tema": "material_usuario"
+  },
+  {
+   "id": "f01ec65c-ee19-47da-bf37-069cd80dc4b2",
+   "lesson_id": "7e69ae65-16ce-478b-abed-81546c03b24e",
+   "alcance": "universal",
+   "etapa": "revisao",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "Interpretação vira atribuição a analistas.",
+   "tema": "precisao"
+  },
+  {
+   "id": "a311b18e-e046-4fe6-836f-09c80f02aa42",
+   "lesson_id": "a7aca7ae-3622-46d0-a050-0d947ab7795d",
+   "alcance": "universal",
+   "etapa": "corpo",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "Dado do briefing entra dentro da narrativa, não é sacrificado por ela.",
+   "tema": "material_usuario"
+  },
+  {
+   "id": "3e207043-c5a9-450a-91ba-bb151dc340cc",
+   "lesson_id": "a7aca7ae-3622-46d0-a050-0d947ab7795d",
+   "alcance": "universal",
+   "etapa": "corpo",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "Dado técnico costurado no fio do argumento, sem bloco solto.",
+   "tema": "material_usuario"
+  },
+  {
+   "id": "9cab2f26-31fa-40ea-a93c-f289cfd11344",
+   "lesson_id": "a7aca7ae-3622-46d0-a050-0d947ab7795d",
+   "alcance": "caso",
+   "etapa": "pesquisa",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "Incluir até menção secundária do briefing foi pedido daquele usuário; como regra, contradiz os pedidos de foco (b2ecc40a, c012b7a7).",
+   "tema": "material_usuario"
+  },
+  {
+   "id": "f553dc30-6046-4a31-8884-be6a2662c5d2",
+   "lesson_id": "a7aca7ae-3622-46d0-a050-0d947ab7795d",
+   "alcance": "modo",
+   "etapa": "corpo",
+   "modos_aplicaveis": [
+    "mecanismo"
+   ],
+   "justificativa": "Usar a especificação como prova do paradoxo de preço é o mecanismo usando dado de produto (R3).",
+   "tema": "prova_dado"
+  },
+  {
+   "id": "cb56daf2-ab14-4870-b254-870bfd05b3f8",
+   "lesson_id": "589c52cf-50f3-47c3-880e-97e902d01034",
+   "alcance": "universal",
+   "etapa": "pesquisa",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "Não omitir o fato que muda o enquadramento.",
+   "tema": "material_usuario"
+  },
+  {
+   "id": "7772fbab-ca12-4f25-a682-021c565f0d95",
+   "lesson_id": "589c52cf-50f3-47c3-880e-97e902d01034",
+   "alcance": "pauta",
+   "etapa": "corpo",
+   "modos_aplicaveis": [
+    "mecanismo"
+   ],
+   "justificativa": "Repetir a exclusão do modelo barato só vale para a pauta \"marca abandonou o consumidor comum\".",
+   "tema": "angulo_pedido"
+  },
+  {
+   "id": "53952941-6b3d-43e3-aec0-d632e302c083",
+   "lesson_id": "589c52cf-50f3-47c3-880e-97e902d01034",
+   "alcance": "caso",
+   "etapa": "hook",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "A correção real foi de preço errado (c32619a5); \"use o número máximo\" generaliza mal e briga com 9c416f65 e 53ec67ee.",
+   "tema": "amplificar"
+  },
+  {
+   "id": "c32619a5-c033-4a18-82fb-a3d816be6be6",
+   "lesson_id": "589c52cf-50f3-47c3-880e-97e902d01034",
+   "alcance": "universal",
+   "etapa": "pesquisa",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "Conferir preço e dado local.",
+   "tema": "precisao"
+  },
+  {
+   "id": "7fc52bcc-c4bc-493d-bf92-170af7b877d7",
+   "lesson_id": "bc07d506-59a6-4a3e-9c73-001089eb1827",
+   "alcance": "modo",
+   "etapa": "estrutura",
+   "modos_aplicaveis": [
+    "mecanismo",
+    "demonstracao",
+    "historia"
+   ],
+   "justificativa": "Um eixo de comparação até o fim vale onde há um caso ou paradoxo; panorama faz o contrário e empilha exemplos (1fb1a9dd, 23650f6e).",
+   "tema": "contraste_senso_comum"
+  },
+  {
+   "id": "b2ecc40a-d528-433e-8f7f-f4986cdc3333",
+   "lesson_id": "bc07d506-59a6-4a3e-9c73-001089eb1827",
+   "alcance": "universal",
+   "etapa": "hook",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "O corpo usa os mesmos atores que o gancho prometeu.",
+   "tema": "coerencia"
+  },
+  {
+   "id": "9d1e3e4c-57dd-4a98-89c6-5202350aed3d",
+   "lesson_id": "b887e2d9-b56a-44ca-868f-b7192671449a",
+   "alcance": "modo",
+   "etapa": "hook",
+   "modos_aplicaveis": [
+    "mecanismo"
+   ],
+   "justificativa": "Afirmação absoluta que parece absurda e o corpo resolve é o gancho típico do mecanismo; fora dele a ambiguidade briga com o teste da pessoa comum (09f787b6).",
+   "tema": "gancho_claro"
+  },
+  {
+   "id": "91e30691-3cb4-4811-afd7-a23ddf43b818",
+   "lesson_id": "4de9e309-3a28-4783-9794-a8d98e93ac4a",
+   "alcance": "modo",
+   "etapa": "hook",
+   "modos_aplicaveis": [
+    "demonstracao"
+   ],
+   "justificativa": "Abrir pelo efeito mais espantoso do produto é o gancho de demonstração.",
+   "tema": "moldura_segredo"
+  },
+  {
+   "id": "10c7ed3d-be00-49eb-83fd-452654acdec1",
+   "lesson_id": "4de9e309-3a28-4783-9794-a8d98e93ac4a",
+   "alcance": "modo",
+   "etapa": "premissa",
+   "modos_aplicaveis": [
+    "demonstracao"
+   ],
+   "justificativa": "Ângulo \"o que ele faz\" é a definição de demonstração.",
+   "tema": "moldura_segredo"
+  },
+  {
+   "id": "49d6b498-3559-4962-b6bc-9bc2ba02d689",
+   "lesson_id": "4de9e309-3a28-4783-9794-a8d98e93ac4a",
+   "alcance": "modo",
+   "etapa": "estrutura",
+   "modos_aplicaveis": [
+    "demonstracao"
+   ],
+   "justificativa": "Tirar a moldura de investigação quando a coisa é a atração evita escrever mecanismo onde o modo é demonstração.",
+   "tema": "moldura_segredo"
+  },
+  {
+   "id": "1527f486-6f1f-449e-a943-71047d5bdf1a",
+   "lesson_id": "e6b6db99-4610-47b2-ab6d-e5ee865d0723",
+   "alcance": "modo",
+   "etapa": "corpo",
+   "modos_aplicaveis": [
+    "panorama",
+    "historia"
+   ],
+   "justificativa": "Rosto humano para o custo social é registro emotivo (panorama de denúncia, história); mecanismo analítico não pede.",
+   "tema": "personagem_emocao"
+  },
+  {
+   "id": "507764ea-9e75-4d15-8888-9fab3277b02d",
+   "lesson_id": "e6b6db99-4610-47b2-ab6d-e5ee865d0723",
+   "alcance": "modo",
+   "etapa": "corpo",
+   "modos_aplicaveis": [
+    "panorama",
+    "mecanismo"
+   ],
+   "justificativa": "Nomear o que se perde na saída fecha a cadeia de consequência do panorama.",
+   "tema": "conexao"
+  },
+  {
+   "id": "4ba7cece-0485-4b94-abf3-3cde9cd94c2d",
+   "lesson_id": "e6b6db99-4610-47b2-ab6d-e5ee865d0723",
+   "alcance": "modo",
+   "etapa": "premissa",
+   "modos_aplicaveis": [
+    "panorama",
+    "mecanismo"
+   ],
+   "justificativa": "Pesar o lado do cidadão comum contra os grandes atores é a ponte com o espectador do panorama em pauta política e econômica.",
+   "tema": "ponte_espectador"
+  },
+  {
+   "id": "4c027968-7a13-42d6-851d-d408e781c148",
+   "lesson_id": "c068ca9b-c6b8-440d-b5ab-ad2427ea406f",
+   "alcance": "universal",
+   "etapa": "pesquisa",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "Prazo legal conferido na fonte primária.",
+   "tema": "precisao"
+  },
+  {
+   "id": "68f33fb3-c995-40ab-b498-39eee1f7c863",
+   "lesson_id": "c068ca9b-c6b8-440d-b5ab-ad2427ea406f",
+   "alcance": "universal",
+   "etapa": "revisao",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "Simplificar não pode apagar quem decide.",
+   "tema": "precisao"
+  },
+  {
+   "id": "fcdd04f9-4dd3-4dcd-80a6-6c221baca50e",
+   "lesson_id": "c068ca9b-c6b8-440d-b5ab-ad2427ea406f",
+   "alcance": "universal",
+   "etapa": "revisao",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "Hipótese não vira fato.",
+   "tema": "precisao"
+  },
+  {
+   "id": "53ec67ee-7343-4c13-8e46-a3a4687ec3f5",
+   "lesson_id": "c068ca9b-c6b8-440d-b5ab-ad2427ea406f",
+   "alcance": "universal",
+   "etapa": "revisao",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "Período de cada número.",
+   "tema": "precisao"
+  },
+  {
+   "id": "ee595b52-67ee-4383-8826-4974b9508ec0",
+   "lesson_id": "c068ca9b-c6b8-440d-b5ab-ad2427ea406f",
+   "alcance": "caso",
+   "etapa": "revisao",
+   "modos_aplicaveis": [
+    "mecanismo"
+   ],
+   "justificativa": "Separar outorga já paga de arrecadação futura é instância daquela pauta; a regra geral já está em fcdd04f9 e 53ec67ee.",
+   "tema": "precisao"
+  },
+  {
+   "id": "384cb44d-8c76-4acf-90dc-347802f58475",
+   "lesson_id": "129b738d-c9bc-4057-8283-ba6bea6eb8c6",
+   "alcance": "universal",
+   "etapa": "revisao",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "Afirmação factual verificável na fonte primária.",
+   "tema": "precisao"
+  },
+  {
+   "id": "49435f67-bb84-44ab-9efd-40cc631a268b",
+   "lesson_id": "129b738d-c9bc-4057-8283-ba6bea6eb8c6",
+   "alcance": "universal",
+   "etapa": "revisao",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "Cadeia causal sem fonte sai ou vira opinião de especialista nomeado.",
+   "tema": "precisao"
+  },
+  {
+   "id": "b3bc6dbf-55b8-41c0-8fa6-9aa66031f92b",
+   "lesson_id": "129b738d-c9bc-4057-8283-ba6bea6eb8c6",
+   "alcance": "universal",
+   "etapa": "premissa",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "Regra geral (prazo constitucional de toda MP) não vira sinal de intenção do caso.",
+   "tema": "precisao"
+  },
+  {
+   "id": "fa7bae45-9c4f-4ddc-87ef-b019287f4698",
+   "lesson_id": "129b738d-c9bc-4057-8283-ba6bea6eb8c6",
+   "alcance": "universal",
+   "etapa": "revisao",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "Maioria não vira unanimidade.",
+   "tema": "precisao"
+  },
+  {
+   "id": "56c0dfc3-9ee9-402b-8437-3611629df6e2",
+   "lesson_id": "129b738d-c9bc-4057-8283-ba6bea6eb8c6",
+   "alcance": "universal",
+   "etapa": "corpo",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "Nomear os agentes reais com cargo em vez de alusão genérica.",
+   "tema": "precisao"
+  },
+  {
+   "id": "3a7a7215-5166-447b-b602-eed369d8448c",
+   "lesson_id": "97dd936d-d90d-4252-bea1-ac1b74070add",
+   "alcance": "universal",
+   "etapa": "revisao",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "Lição ativa: sigla ou nome desconhecido explicado no mesmo trecho.",
+   "tema": "sigla_jargao"
+  },
+  {
+   "id": "c624a29b-63be-4365-afb2-4f474aa16f45",
+   "lesson_id": "7ee965a3-b116-4aeb-923a-c2aea6ec4fe3",
+   "alcance": "modo",
+   "etapa": "corpo",
+   "modos_aplicaveis": [
+    "panorama",
+    "mecanismo"
+   ],
+   "justificativa": "Nomear o padrão que une os casos (\"isso tem nome: rede\") é o clímax do panorama de lista de exemplos.",
+   "tema": "conexao"
+  },
+  {
+   "id": "23650f6e-1365-476f-ad51-e49af6ea325c",
+   "lesson_id": "7ee965a3-b116-4aeb-923a-c2aea6ec4fe3",
+   "alcance": "modo",
+   "etapa": "pesquisa",
+   "modos_aplicaveis": [
+    "panorama"
+   ],
+   "justificativa": "Número agregado que prova escala é a prova do panorama; o curador (29786df3) recomenda o oposto na escolha de pauta.",
+   "tema": "prova_dado"
+  },
+  {
+   "id": "10c15cba-be9c-4f43-95c0-c96652dd4730",
+   "lesson_id": "7ee965a3-b116-4aeb-923a-c2aea6ec4fe3",
+   "alcance": "modo",
+   "etapa": "estrutura",
+   "modos_aplicaveis": [
+    "panorama",
+    "mecanismo",
+    "conselho"
+   ],
+   "justificativa": "Marcadores de etapa (\"primeira peça\") servem a lista (panorama), passos (mecanismo) e técnicas (conselho); em história o marcador é o tempo.",
+   "tema": "conexao"
+  },
+  {
+   "id": "288eac63-2232-4419-b99a-9afb2787a5de",
+   "lesson_id": "7ee965a3-b116-4aeb-923a-c2aea6ec4fe3",
+   "alcance": "modo",
+   "etapa": "comando",
+   "modos_aplicaveis": [
+    "historia",
+    "panorama"
+   ],
+   "justificativa": "Pedir compartilhamento por causa é CTA de registro emotivo; em análise a casa pede seguir.",
+   "tema": "fecho_cta"
+  },
+  {
+   "id": "f8cff418-a8b9-4c2d-b1c8-6c0f61513616",
+   "lesson_id": "f317dd22-2c7d-46f1-94a4-1ad4f8860322",
+   "alcance": "universal",
+   "etapa": "pesquisa",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "Lição ativa: estudo citado com nome da fonte.",
+   "tema": "precisao"
+  },
+  {
+   "id": "8117a714-5e7e-4f6a-892c-88df415de266",
+   "lesson_id": "dd2d1b48-409c-4fc3-b590-d63cb1f43074",
+   "alcance": "pauta",
+   "etapa": "premissa",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "Escolher personagem ou marca famosa é decisão de pauta, tirada de 5 melhores e 5 piores vídeos.",
+   "tema": "angulo_pedido"
+  },
+  {
+   "id": "29786df3-d9c1-4d0a-9a3b-aa2dd5498ef9",
+   "lesson_id": "dd2d1b48-409c-4fc3-b590-d63cb1f43074",
+   "alcance": "pauta",
+   "etapa": "premissa",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao"
+   ],
+   "justificativa": "Preferir fato isolado a tese ampla é escolher história ou mecanismo em vez de panorama; amostra de 10 vídeos.",
+   "tema": "angulo_pedido"
+  },
+  {
+   "id": "efb4912d-ed4e-4aa3-a474-8656fb2ae1ad",
+   "lesson_id": "dd2d1b48-409c-4fc3-b590-d63cb1f43074",
+   "alcance": "universal",
+   "etapa": "hook",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "Número ou contradição concreta na primeira frase, não ameaça abstrata.",
+   "tema": "gancho_impacto"
+  },
+  {
+   "id": "ac05ad5f-cc42-40ab-a35d-6dec59b15541",
+   "lesson_id": "12d135bb-772c-42b8-8588-a8848ff06692",
+   "alcance": "universal",
+   "etapa": "pesquisa",
+   "modos_aplicaveis": [
+    "historia",
+    "mecanismo",
+    "demonstracao",
+    "panorama",
+    "conselho",
+    "publi"
+   ],
+   "justificativa": "Lição ativa: só comparar números cuja diferença o público percebe.",
+   "tema": "numero_tangivel"
+  },
+  {
+   "id": "08091624-7491-44bd-9477-a317c85f0255",
+   "lesson_id": "6987ad21-3228-48b5-9c20-a001ab1cab77",
+   "alcance": "pauta",
+   "etapa": "premissa",
+   "modos_aplicaveis": [
+    "panorama",
+    "mecanismo"
+   ],
+   "justificativa": "Trocar o eixo de educação para miséria e segurança é escolha de ângulo daquela pauta.",
+   "tema": "angulo_pedido"
+  },
+  {
+   "id": "5cf81286-c693-472c-a815-659f411a0374",
+   "lesson_id": "6987ad21-3228-48b5-9c20-a001ab1cab77",
+   "alcance": "caso",
+   "etapa": "corpo",
+   "modos_aplicaveis": [
+    "panorama",
+    "mecanismo"
+   ],
+   "justificativa": "Restringir o dado de educação à Bahia é pedido daquele roteiro.",
+   "tema": "angulo_pedido"
+  },
+  {
+   "id": "c6634cb5-a13a-4131-9c61-e1b227817512",
+   "lesson_id": "6987ad21-3228-48b5-9c20-a001ab1cab77",
+   "alcance": "modo",
+   "etapa": "premissa",
+   "modos_aplicaveis": [
+    "panorama",
+    "historia"
+   ],
+   "justificativa": "Privação sentida no corpo como eixo é registro emotivo (panorama de denúncia, história); em mecanismo analítico a tese anda por explicação.",
+   "tema": "personagem_emocao"
+  }
+ ],
+ "contradicoes": [
+  {
+   "a": "78361ea0-9674-4129-9075-35f2289f3c24",
+   "b": "928a9453-6357-4864-936c-e96be5c1bd03",
+   "pede_a": "cortar frase que só anuncia o que vem (\"Agora vem a parte que interessa pro seu bolso\"); lição ativa",
+   "pede_b": "marcar a virada com \"Agora vem a parte genial da jogada\"",
+   "explicacao": "nada",
+   "detalhe": "As duas frases são quase iguais. A lição ativa abre exceção para rehook com curiosidade forte; o aprendizado do Muffato não exige isso. Contradição real.",
+   "relacionados": []
+  },
+  {
+   "a": "9c416f65-ec45-4d99-9b56-0aba1cf6f3c6",
+   "b": "d3f39c0d-d829-4289-a178-6e9f0252badb",
+   "pede_a": "desconfiar de superlativo absoluto (\"o primeiro do mundo\")",
+   "pede_b": "nomear o ineditismo (\"pela primeira vez em nossa história\")",
+   "explicacao": "nada",
+   "detalhe": "Não depende de modo. Resolve-se com uma condição: superlativo só com fonte que o sustente.",
+   "relacionados": []
+  },
+  {
+   "a": "9c416f65-ec45-4d99-9b56-0aba1cf6f3c6",
+   "b": "9d1e3e4c-57dd-4a98-89c6-5202350aed3d",
+   "pede_a": "absoluto expõe o vídeo a correção, prefira formulação restrita",
+   "pede_b": "não qualifique a afirmação do gancho, o absoluto prende mais",
+   "explicacao": "modo",
+   "detalhe": "9d1e3e4c é recurso retórico do gancho de mecanismo (fato que parece absurdo e o corpo resolve), não afirmação factual. A tensão é real quando o absoluto é um fato verificável.",
+   "relacionados": []
+  },
+  {
+   "a": "09f787b6-c809-4f58-b04e-a035b1881ff8",
+   "b": "9d1e3e4c-57dd-4a98-89c6-5202350aed3d",
+   "pede_a": "uma pessoa comum entende o gancho na primeira leitura",
+   "pede_b": "ambiguidade que obriga a ficar para entender",
+   "explicacao": "modo",
+   "detalhe": "As correções de Sky e sala VIP condenam confusão (referente faltando, detalhe sem contexto); a do Rolls-Royce defende absurdo compreensível. Regra única possível: claro na leitura, surpreendente no sentido.",
+   "relacionados": [
+    "73dd12d3-b784-41c4-8c3f-b33b7138317a",
+    "02760182-dd16-4f8a-8f3e-266a895dcaa0"
+   ]
+  },
+  {
+   "a": "53952941-6b3d-43e3-aec0-d632e302c083",
+   "b": "53ec67ee-7343-4c13-8e46-a3a4687ec3f5",
+   "pede_a": "usar o número máximo para dar impacto (\"até 30 mil\")",
+   "pede_b": "precisar período e base de todo número",
+   "explicacao": "caso",
+   "detalhe": "53952941 generaliza uma correção de preço errado; a lição real é conferir o preço local (c32619a5).",
+   "relacionados": [
+    "9c416f65-ec45-4d99-9b56-0aba1cf6f3c6"
+   ]
+  },
+  {
+   "a": "893f1cbc-7692-47b6-ba66-b0778f358e6e",
+   "b": "e4bae783-fa7b-480d-b55d-6d29bf9310e9",
+   "pede_a": "abrir pelo dado agregado (82% endividados) em vez da história individual",
+   "pede_b": "ancorar num personagem nomeado em vez de uma massa de eventos",
+   "explicacao": "modo",
+   "detalhe": "Panorama abre pelo dado maior; história pelo personagem. Nos dois pedidos o usuário trocou o modo da peça (lição das duas famílias: mecanismo para gancho de panorama; lição do Coxon: panorama para história).",
+   "relacionados": [
+    "d605daf3-0535-4ad1-b4be-c52923ea999f",
+    "1527f486-6f1f-449e-a943-71047d5bdf1a"
+   ]
+  },
+  {
+   "a": "23650f6e-1365-476f-ad51-e49af6ea325c",
+   "b": "29786df3-d9c1-4d0a-9a3b-aa2dd5498ef9",
+   "pede_a": "número agregado que prova a escala do fenômeno",
+   "pede_b": "fato isolado e verificável em vez de tese ampla sobre grupo ou sistema",
+   "explicacao": "modo",
+   "detalhe": "29786df3 é na prática \"evite panorama\", tirado de 10 vídeos (5 melhores, 5 piores).",
+   "relacionados": []
+  },
+  {
+   "a": "1fb1a9dd-4bd6-406b-81bb-897fca78fd6a",
+   "b": "7fc52bcc-c4bc-493d-bf92-170af7b877d7",
+   "pede_a": "sustentar a tese com vários exemplos nomeados",
+   "pede_b": "manter um eixo de comparação só e tirar exemplos de outras marcas",
+   "explicacao": "modo",
+   "detalhe": "Panorama empilha exemplos; mecanismo mantém um caso e um contraste.",
+   "relacionados": [
+    "b2ecc40a-d528-433e-8f7f-f4986cdc3333"
+   ]
+  },
+  {
+   "a": "7e968f06-8b27-429a-8db0-89c9074c9929",
+   "b": "ef5f8b0a-b03b-45fc-b926-64fb2c8e9250",
+   "pede_a": "oportunidade e benefício, não estratégia oculta da empresa",
+   "pede_b": "movimento silencioso nos bastidores que chega à sua mesa",
+   "explicacao": "cliente",
+   "detalhe": "Izabela Anholett (utilitário, roteiro de demonstração) contra Franklin Tomich (bastidor, roteiro de mecanismo). Explica-se por cliente e também por modo.",
+   "relacionados": [
+    "3c3df870-7be9-4605-b401-c344b70aba2f"
+   ]
+  },
+  {
+   "a": "91e30691-3cb4-4811-afd7-a23ddf43b818",
+   "b": "f720a830-ea02-4df2-8178-c7ee140b7a13",
+   "pede_a": "abrir pelo efeito concreto do produto e tirar a moldura de \"decisão que ninguém viu\"",
+   "pede_b": "usar Contraste Extremo com Revelação Secreta como motor do gancho",
+   "explicacao": "modo",
+   "detalhe": "Demonstração contra mecanismo e panorama. O lift de Marcelo Germano (e962c486) mostra que Revelação Secreta também depende de cliente.",
+   "relacionados": [
+    "49d6b498-3559-4962-b6bc-9bc2ba02d689",
+    "e1b2c016-2084-4fa5-bca0-c9109c947503",
+    "e962c486-06da-42dc-ac08-d25058593a82"
+   ]
+  },
+  {
+   "a": "e5c34af6-b4a7-4af3-a755-90a80171848c",
+   "b": "d61aeb94-5723-4e9a-b635-5b24c617e9a0",
+   "pede_a": "paradoxo estratégico, não denúncia moral",
+   "pede_b": "gancho mais alarmista",
+   "explicacao": "cliente",
+   "detalhe": "Franklin Tomich contra Ricardo Schumacher; Fernando Pereira também pede revolta (949f8358) e tem lift de Urgência (ff35f2b1).",
+   "relacionados": [
+    "d1a1c722-8eaa-4ace-9626-63e2fd4cfde4",
+    "949f8358-97a0-4af1-b830-a5c76539bfc6"
+   ]
+  },
+  {
+   "a": "d61aeb94-5723-4e9a-b635-5b24c617e9a0",
+   "b": "efb4912d-ed4e-4aa3-a474-8656fb2ae1ad",
+   "pede_a": "gancho mais alarmista",
+   "pede_b": "ameaça abstrata no gancho está entre os piores; abra com número ou contradição concreta",
+   "explicacao": "nada",
+   "detalhe": "Conciliável se o alarme vier com data e número (o roteiro do avião tinha 2027 e 650 para 800 reais). Como regra solta, \"mais alarmista\" contradiz o único dado de desempenho da base.",
+   "relacionados": []
+  },
+  {
+   "a": "8c5f9581-c401-477d-982a-9140403abd13",
+   "b": "db6fd7e5-bca3-4a59-b1b0-88d8968c6df7",
+   "pede_a": "reorganizar fatos datados em passos de um plano, não cronologia",
+   "pede_b": "personagem nomeado como fio e cronologia sem buraco",
+   "explicacao": "modo",
+   "detalhe": "8c5f9581 transforma história em mecanismo. Só vale se o modo escolhido for mecanismo.",
+   "relacionados": [
+    "30d88c18-064b-4e31-89e5-1cfe0b41e526"
+   ]
+  },
+  {
+   "a": "11154422-44b2-4df6-9844-b244e7f047d0",
+   "b": "d1a1c722-8eaa-4ace-9626-63e2fd4cfde4",
+   "pede_a": "aprofundar emocionalmente cada decisão da queda (traição de identidade)",
+   "pede_b": "poder financeiro como jogo estratégico, não denúncia",
+   "explicacao": "cliente",
+   "detalhe": "Mesma família de pauta (queda e volta de empresa: Nike, Odebrecht), tratamento oposto. O roteiro sem cliente pediu emoção; Franklin Tomich pediu frieza. Também é diferença de registro.",
+   "relacionados": [
+    "1f025268-4585-4f2a-b529-1c326320478f"
+   ]
+  },
+  {
+   "a": "1846b7a8-e021-481d-807b-9fd2ec8dc0da",
+   "b": "fc8a0c30-b4f1-493f-9194-d536b368cc72",
+   "pede_a": "frase-síntese de impacto antes do CTA",
+   "pede_b": "cortar a reflexão final porque o CTA já faz a virada",
+   "explicacao": "caso",
+   "detalhe": "Depende de como o CTA do cliente está escrito: quando ele já carrega a virada (Franklin Tomich), a frase sobra.",
+   "relacionados": [
+    "ee35b81a-0c58-4379-9e33-4dba77ff575a"
+   ]
+  },
+  {
+   "a": "7b32d3c9-70e0-4ee4-ad0a-15977348182d",
+   "b": "1846b7a8-e021-481d-807b-9fd2ec8dc0da",
+   "pede_a": "fechar com pergunta de opinião",
+   "pede_b": "fechar com frase de impacto que resume a tese",
+   "explicacao": "modo",
+   "detalhe": "Pergunta em notícia política e em demonstração; frase de impacto em história e panorama emotivo. Não são exclusivas (frase e depois pergunta).",
+   "relacionados": [
+    "27cbf361-ab20-4492-8243-bac5f4deed57"
+   ]
+  },
+  {
+   "a": "5f0c1dfc-bd64-4d70-995c-dd6a4af6affd",
+   "b": "288eac63-2232-4419-b99a-9afb2787a5de",
+   "pede_a": "CTA de seguir por exclusividade (\"se você é como poucos\")",
+   "pede_b": "CTA de compartilhar por causa (\"todo brasileiro devia ver\")",
+   "explicacao": "modo",
+   "detalhe": "É a dimensão registro, não o modo: analítico pede seguir (exclusividade, autoridade, antecipação), emotivo pede compartilhar. Cliente também pesa.",
+   "relacionados": [
+    "768afa86-c48a-4a5e-9032-69c1a407f1d9",
+    "53dd22ad-36cb-46ca-9988-4ec3a961f099",
+    "5d3003ed-cc92-40d6-be57-e8ee6845c3cd"
+   ]
+  },
+  {
+   "a": "9cab2f26-31fa-40ea-a93c-f289cfd11344",
+   "b": "b2ecc40a-d528-433e-8f7f-f4986cdc3333",
+   "pede_a": "incluir até menção secundária do briefing (AirPods, Watch)",
+   "pede_b": "tirar exemplos de outras marcas e focar no duelo prometido",
+   "explicacao": "caso",
+   "detalhe": "Em cada sessão o usuário pediu explicitamente uma coisa. A regra que sobra é \"siga o briefing\".",
+   "relacionados": [
+    "c012b7a7-15f0-48aa-8d36-31e57b68c28b"
+   ]
+  },
+  {
+   "a": "b6866347-e514-481c-850c-3090fcb644f5",
+   "b": "49435f67-bb84-44ab-9efd-40cc631a268b",
+   "pede_a": "cadeia causal completa, elo por elo",
+   "pede_b": "cadeia causal sem fonte sai ou vira opinião de especialista nomeado",
+   "explicacao": "nada",
+   "detalhe": "Complementares se a regra for \"cada elo explícito e com fonte\". Pedir a cadeia completa sem essa condição empurra a inventar elo; o roteiro das bets mostra isso.",
+   "relacionados": [
+    "507764ea-9e75-4d15-8888-9fab3277b02d"
+   ]
+  },
+  {
+   "a": "68f33fb3-c995-40ab-b498-39eee1f7c863",
+   "b": "56c0dfc3-9ee9-402b-8437-3611629df6e2",
+   "pede_a": "\"só dois homens decidem\" distorce quem decide (há a comissão mista)",
+   "pede_b": "nomear Hugo Motta e Davi Alcolumbre como \"os dois homens\" que decidem",
+   "explicacao": "nada",
+   "detalhe": "Contradição real na mesma pauta (MP das bets, Fernando Pereira, mesmo dia), vinda de duas checagens diferentes. O texto final da segunda versão manteve \"são dois homens\".",
+   "relacionados": []
+  },
+  {
+   "a": "bc17b075-0894-4a1e-91d1-07d1025a2a2a",
+   "b": "5ca69355-2c2f-4cb4-a7a9-eb866035b7e7",
+   "pede_a": "jornada emocional antes do dado técnico",
+   "pede_b": "alarme e dado primeiro, grandeza depois",
+   "explicacao": "modo",
+   "detalhe": "História de registro emotivo contra panorama de crise. Mesma lógica separa bc17b075 de 51fdf948 (fato bruto antes da interpretação, mecanismo).",
+   "relacionados": [
+    "51fdf948-2b44-41b5-b3fe-9136f40b0499"
+   ]
+  },
+  {
+   "a": "d46793e0-083e-4a71-8a22-5bf1e5c16318",
+   "b": "7d38d1ba-8dcc-4dd6-b890-7bd983c8e169",
+   "pede_a": "não ficar na disputa entre empresas, levar ao prato do consumidor",
+   "pede_b": "mostrar a disputa de mercado: concorrentes, Cade, supermercados",
+   "explicacao": "pauta",
+   "detalhe": "Mesmo cliente (Franklin Tomich). A JBS toca o consumidor; a compra da Yoki pela 3Corações foi pedido explícito de bastidor de negociação.",
+   "relacionados": []
+  },
+  {
+   "a": "d2e5fc8f-20a3-497b-acbe-cb01a31cdc6b",
+   "b": "fa7bae45-9c4f-4ddc-87ef-b019287f4698",
+   "pede_a": "escolher a versão do fato que piora a injustiça (\"subiu\", \"até com aumento\")",
+   "pede_b": "não arredondar maioria para unanimidade",
+   "explicacao": "nada",
+   "detalhe": "Tensão de fundo entre amplificar e ser exato. Os aprendizados de amplificação vêm de edição humana de alto desempenho; os de exatidão vêm do checador.",
+   "relacionados": [
+    "d3f39c0d-d829-4289-a178-6e9f0252badb"
+   ]
+  }
+ ],
+ "temas": [
+  {
+   "tema": "precisao",
+   "nome": "Fato errado ou sem fonte",
+   "descricao": "Data, superlativo, prazo legal, escopo de contrato, hipótese dita como fato, número sem período, interpretação sem atribuição.",
+   "n_aprendizados": 27,
+   "n_licoes": 9,
+   "modos_dos_roteiros": {
+    "historia": 3,
+    "mecanismo": 5,
+    "sem_roteiro": 1
+   },
+   "clientes": [
+    "Fernando Pereira",
+    "Franklin Tomich",
+    "Renato Mendes",
+    "Túlio Lichenstein",
+    "sem cliente"
+   ],
+   "grupos_originais": {
+    "estrutura-paradoxo-contraste": 3,
+    "data-superlativo-sustentado-fonte": 1,
+    "desconfiar-superlativos": 1,
+    "nao-comprimir-linha-tempo": 1,
+    "sinalizar-fonte-nao-confirmada": 1,
+    "eliminar-contradicoes-dados": 1,
+    "verificar-lista-tecnica": 1,
+    "franklin-nao-atribuir-nacionalidade": 1,
+    "nao-afirmar-conclusao-condicional": 1,
+    "nao-generalizar-escopo-contrato": 1,
+    "verificar-fatos-biograficos-hook": 1,
+    "precisao-factual-briefing": 1,
+    "atribuir-interpretacao-a-fonte": 1,
+    "conferir-preco-dado-local": 1,
+    "sem grupo": 11
+   },
+   "regra_no_codex": "existente_furada",
+   "leitura": "Existe portão de checagem: cinco pedidos são relatórios colados com \"bloqueante\" e \"não bloqueante\". O erro nasce na escrita (compressão, superlativo, hipótese como fato) e é pego depois; em três casos foi o usuário quem pegou (Embraer, iPhone a 30 mil, data da Fox Kids pela fonte). Não depende de modo.",
+   "learning_ids": [
+    "c96476fb-fbd2-4d78-8467-3656a77304db",
+    "58f8afe6-e013-434a-ace2-81af5b6e425b",
+    "9c416f65-ec45-4d99-9b56-0aba1cf6f3c6",
+    "30d88c18-064b-4e31-89e5-1cfe0b41e526",
+    "a530fc64-f08f-499c-aa66-4cf92f3ce2b5",
+    "9fd3ea30-94ba-4569-b5b3-191bcf786e58",
+    "b6e17276-cfb5-4ab7-bc51-ceb8108d0ee4",
+    "1a172f0f-c8f8-406f-905f-4f3a8b3c74cc",
+    "892222af-aa14-450f-93cd-bffc9b5b0eb9",
+    "d32716ef-e50f-4356-89e4-0f08efcda4ec",
+    "e2f63706-4084-45a5-827d-8153617ab2b5",
+    "8bf47c27-1c78-4bba-ba79-cdff7b67274e",
+    "7231d7d7-3dba-4354-8a48-2c2c0682f23d",
+    "130ba4fe-2ead-4021-92ab-d3395aea3b9e",
+    "f01ec65c-ee19-47da-bf37-069cd80dc4b2",
+    "c32619a5-c033-4a18-82fb-a3d816be6be6",
+    "4c027968-7a13-42d6-851d-d408e781c148",
+    "68f33fb3-c995-40ab-b498-39eee1f7c863",
+    "fcdd04f9-4dd3-4dcd-80a6-6c221baca50e",
+    "53ec67ee-7343-4c13-8e46-a3a4687ec3f5",
+    "ee595b52-67ee-4383-8826-4974b9508ec0",
+    "384cb44d-8c76-4acf-90dc-347802f58475",
+    "49435f67-bb84-44ab-9efd-40cc631a268b",
+    "b3bc6dbf-55b8-41c0-8fa6-9aa66031f92b",
+    "fa7bae45-9c4f-4ddc-87ef-b019287f4698",
+    "56c0dfc3-9ee9-402b-8437-3611629df6e2",
+    "f8cff418-a8b9-4c2d-b1c8-6c0f61513616"
+   ],
+   "lesson_ids": [
+    "0d08ce60-61d2-4b92-b486-9bfed14982ac",
+    "cf50d79a-e6b2-4ef0-ab38-c707e79d7796",
+    "d01bf9e4-e211-4152-a7c7-833095a76357",
+    "ef338f8b-5ee4-4cd9-b503-cf8b6e05ca39",
+    "7e69ae65-16ce-478b-abed-81546c03b24e",
+    "589c52cf-50f3-47c3-880e-97e902d01034",
+    "c068ca9b-c6b8-440d-b5ab-ad2427ea406f",
+    "129b738d-c9bc-4057-8283-ba6bea6eb8c6",
+    "f317dd22-2c7d-46f1-94a4-1ad4f8860322"
+   ]
+  },
+  {
+   "tema": "gancho_impacto",
+   "nome": "Gancho que não entrega o impacto na primeira frase",
+   "descricao": "Abertura conceitual, por data, por contexto ou por causa, em vez do resultado, do número ou do conflito.",
+   "n_aprendizados": 13,
+   "n_licoes": 12,
+   "modos_dos_roteiros": {
+    "mecanismo": 6,
+    "panorama": 3,
+    "historia": 2,
+    "sem_roteiro": 1
+   },
+   "clientes": [
+    "Fernando Pereira",
+    "Franklin Tomich",
+    "João Paulo Albuquerque",
+    "Pedro Elero",
+    "Ricardo Schumacher",
+    "Túlio Lichenstein",
+    "sem cliente"
+   ],
+   "grupos_originais": {
+    "hook-contraste-julgamento": 1,
+    "hook-emocional-concreto": 4,
+    "dado-impacto-social-prioritario": 1,
+    "estrutura-paradoxo-contraste": 1,
+    "abrir-fato-chocante": 1,
+    "abrir-contraste-geopolitico-completo": 1,
+    "puxar-colapso-para-hook": 1,
+    "antecipar-alarme": 1,
+    "contrapor-fala-autoridade": 1,
+    "sem grupo": 1
+   },
+   "regra_no_codex": "existente_sem_criterio_de_modo",
+   "leitura": "O Codex já escolhe tipo de gancho (Contraste Extremo, Revelação Secreta, Urgência). As correções não pedem gancho do zero, pedem trocar o tipo; e o tipo certo muda com o modo: personagem (história), dado agregado (panorama), efeito (demonstração), contradição (mecanismo).",
+   "learning_ids": [
+    "662a4ae8-8607-4632-9c44-4a0d1410b20a",
+    "949f8358-97a0-4af1-b830-a5c76539bfc6",
+    "ef8ef37d-0a67-404d-9a44-b2206d831e12",
+    "d605daf3-0535-4ad1-b4be-c52923ea999f",
+    "893f1cbc-7692-47b6-ba66-b0778f358e6e",
+    "ab2caa24-a8ab-4749-8db1-56c639063d08",
+    "04937269-66ea-48d8-95a7-6fa04ae1b52e",
+    "04e0f841-a93c-4a05-88cf-d9a54c93aac0",
+    "eca66ef3-df68-463c-9e3a-573a43481b64",
+    "af94e12e-3d90-4b3f-84b5-2ac44b5505ba",
+    "70fb2471-6152-4676-99a4-0b7b0a3a3500",
+    "4d0fe8c4-beb1-4dbd-8dcc-3d58245fccc2",
+    "efb4912d-ed4e-4aa3-a474-8656fb2ae1ad"
+   ],
+   "lesson_ids": [
+    "272024d9-8a4a-4389-9615-f7a0743a190b",
+    "21b4d0d7-4de6-4e48-8ca8-a75de40a99a2",
+    "787d01e4-4f88-4593-8cf5-fd1b22e43a0b",
+    "92c798e0-b7a5-4bf6-8dc2-a87dc9ea7129",
+    "0b68703c-e239-480b-b76c-39583d5049b7",
+    "66cbfd7b-1664-4c59-ad9f-2ad12106d882",
+    "04d833de-2108-4fe5-876c-a8e01196e860",
+    "0769f545-e806-4b5f-8cee-9fe8ced52a15",
+    "c5eba4a2-8551-4c31-b34a-04b709a2cfc9",
+    "bb18a125-d62b-4c8b-971a-fae847565f7b",
+    "7e69ae65-16ce-478b-abed-81546c03b24e",
+    "dd2d1b48-409c-4fc3-b590-d63cb1f43074"
+   ]
+  },
+  {
+   "tema": "fecho_cta",
+   "nome": "Fecho e CTA",
+   "descricao": "Falta de CTA, CTA genérico, CTA que não conversa com o público do cliente, fecho que não volta ao gancho.",
+   "n_aprendizados": 18,
+   "n_licoes": 12,
+   "modos_dos_roteiros": {
+    "mecanismo": 6,
+    "panorama": 4,
+    "demonstracao": 1,
+    "historia": 1
+   },
+   "clientes": [
+    "Fernando Pereira",
+    "Franklin Tomich",
+    "Izabela Anholett",
+    "João Paulo Albuquerque",
+    "Pedro Elero",
+    "Ricardo Schumacher",
+    "sem cliente"
+   ],
+   "grupos_originais": {
+    "moral-final-ressalva-urgencia": 1,
+    "fechamento-cta-impacto": 8,
+    "ponte-aplicacao-pratica": 1,
+    "fechamento-pergunta-provocativa": 1,
+    "cta-publico-decisor": 1,
+    "estrutura-paradoxo-contraste": 2,
+    "cta-identidade-utilitaria": 1,
+    "ritmo-fluidez-corte": 1,
+    "cta-entender-o-jogo": 1,
+    "sem grupo": 1
+   },
+   "regra_no_codex": "existente_falta_perfil",
+   "leitura": "O bloco COMANDO aparece em todos os roteiros do Codex; duas edições humanas de julho e agosto dizem que a versão da sala terminava sem CTA. O que as correções pedem é o texto: a promessa do perfil do cliente e o pedido certo para o registro (seguir ou compartilhar).",
+   "learning_ids": [
+    "a30e64c0-6b7d-496d-9dfb-6dc88f82c739",
+    "5f0c1dfc-bd64-4d70-995c-dd6a4af6affd",
+    "21491e78-4c7e-4535-873f-45e21ad41cd1",
+    "7b32d3c9-70e0-4ee4-ad0a-15977348182d",
+    "ce227d4b-37e8-4a44-b8d8-5baece3332d0",
+    "5d3003ed-cc92-40d6-be57-e8ee6845c3cd",
+    "1846b7a8-e021-481d-807b-9fd2ec8dc0da",
+    "cb0af903-7abb-4454-8f28-ea714b4b6e88",
+    "3896833a-6b9f-49dd-a613-9c3d04e40fdd",
+    "ee35b81a-0c58-4379-9e33-4dba77ff575a",
+    "53dd22ad-36cb-46ca-9988-4ec3a961f099",
+    "768afa86-c48a-4a5e-9032-69c1a407f1d9",
+    "fc8a0c30-b4f1-493f-9194-d536b368cc72",
+    "bfbcb082-ddd8-4b13-bd52-0dbf51002075",
+    "27cbf361-ab20-4492-8243-bac5f4deed57",
+    "271aa5f9-2c24-4c0f-9eec-6514b7f39ed0",
+    "b7431b65-7f36-4170-80ca-628d03b2c1a9",
+    "288eac63-2232-4419-b99a-9afb2787a5de"
+   ],
+   "lesson_ids": [
+    "272024d9-8a4a-4389-9615-f7a0743a190b",
+    "21b4d0d7-4de6-4e48-8ca8-a75de40a99a2",
+    "787d01e4-4f88-4593-8cf5-fd1b22e43a0b",
+    "b8026d87-5b05-4adb-a02c-a1d25df59175",
+    "e8ed07af-55da-4672-a1e6-e8d340acc350",
+    "c10f47fb-48cb-4427-9fe8-29b3190c5a25",
+    "21cbd061-2487-48d1-b4bb-b4033c66d4e7",
+    "66cbfd7b-1664-4c59-ad9f-2ad12106d882",
+    "04d833de-2108-4fe5-876c-a8e01196e860",
+    "06c46d5b-3873-4a17-bdac-dfe432b2a65d",
+    "bb18a125-d62b-4c8b-971a-fae847565f7b",
+    "7ee965a3-b116-4aeb-923a-c2aea6ec4fe3"
+   ]
+  },
+  {
+   "tema": "material_usuario",
+   "nome": "Material do usuário ou da fonte cortado",
+   "descricao": "Briefing colado e informação da fonte que somem na versão escrita; pedido de incluir negociação, contraponto, especificações.",
+   "n_aprendizados": 10,
+   "n_licoes": 6,
+   "modos_dos_roteiros": {
+    "historia": 1,
+    "mecanismo": 5
+   },
+   "clientes": [
+    "Franklin Tomich",
+    "Renato Mendes",
+    "Ricardo Schumacher",
+    "Túlio Lichenstein",
+    "sem cliente"
+   ],
+   "grupos_originais": {
+    "estrutura-paradoxo-contraste": 2,
+    "sinalizar-fonte-nao-confirmada": 1,
+    "ângulo-oportunidade-nao-conspiracao": 1,
+    "camada-regulatoria-obrigatoria": 1,
+    "precisao-factual-briefing": 3,
+    "ritmo-fluidez-corte": 1,
+    "nao-omitir-fato-que-muda-angulo": 1
+   },
+   "regra_no_codex": "faltando",
+   "leitura": "Três pedidos são da mesma pauta (iPhone dobrável) e de dois clientes. Parece faltar regra de usar todo o material fornecido antes de economizar narrativa.",
+   "learning_ids": [
+    "acf076e8-5711-4644-a26e-6115e90b344e",
+    "3e8efe54-9e58-4760-8ff9-47748062c034",
+    "7d38d1ba-8dcc-4dd6-b890-7bd983c8e169",
+    "455fed47-adc9-4b64-bdab-74e5f9931776",
+    "2cee55e4-278c-4bb8-9cd1-9eebc95edc69",
+    "88177ef0-a158-4d94-a348-5365ce285848",
+    "a311b18e-e046-4fe6-836f-09c80f02aa42",
+    "3e207043-c5a9-450a-91ba-bb151dc340cc",
+    "9cab2f26-31fa-40ea-a93c-f289cfd11344",
+    "cb56daf2-ab14-4870-b254-870bfd05b3f8"
+   ],
+   "lesson_ids": [
+    "0769f545-e806-4b5f-8cee-9fe8ced52a15",
+    "bb18a125-d62b-4c8b-971a-fae847565f7b",
+    "e4f4301d-76df-420f-acf2-07c9c9d20cc5",
+    "7e69ae65-16ce-478b-abed-81546c03b24e",
+    "a7aca7ae-3622-46d0-a050-0d947ab7795d",
+    "589c52cf-50f3-47c3-880e-97e902d01034"
+   ]
+  },
+  {
+   "tema": "personagem_emocao",
+   "nome": "Falta personagem ou emoção",
+   "descricao": "Roteiro como lista de fatos sem protagonista; pedido de cena humana, de rosto para o número, de traição de identidade.",
+   "n_aprendizados": 9,
+   "n_licoes": 6,
+   "modos_dos_roteiros": {
+    "historia": 3,
+    "panorama": 2,
+    "mecanismo": 1
+   },
+   "clientes": [
+    "Fernando Pereira",
+    "Túlio Lichenstein",
+    "sem cliente"
+   ],
+   "grupos_originais": {
+    "resultado-evitado-concreto": 1,
+    "estrutura-paradoxo-contraste": 5,
+    "fatos-servem-tese-emocional": 1,
+    "sem grupo": 2
+   },
+   "regra_no_codex": "existente_ignorada_e_faltando",
+   "leitura": "Já existe regra geral de \"um personagem nomeado carrega a história\" (citada no livro de códigos), mas as queixas aparecem justamente em pautas de notícia (Coxon de passagem, Nike sem fio, El Salvador sem cena). A parte emocional não tem regra: depende do registro.",
+   "learning_ids": [
+    "d3c935d1-6dbe-4c21-bdd8-c79c540d399b",
+    "db6fd7e5-bca3-4a59-b1b0-88d8968c6df7",
+    "bc17b075-0894-4a1e-91d1-07d1025a2a2a",
+    "11154422-44b2-4df6-9844-b244e7f047d0",
+    "1f025268-4585-4f2a-b529-1c326320478f",
+    "e4bae783-fa7b-480d-b55d-6d29bf9310e9",
+    "d65baf61-d92e-492a-aa4c-6ed3f1dc6390",
+    "1527f486-6f1f-449e-a943-71047d5bdf1a",
+    "c6634cb5-a13a-4131-9c61-e1b227817512"
+   ],
+   "lesson_ids": [
+    "92c798e0-b7a5-4bf6-8dc2-a87dc9ea7129",
+    "0769f545-e806-4b5f-8cee-9fe8ced52a15",
+    "4509521a-dda0-4794-b992-35dffc18c2db",
+    "59d620d1-6bd1-46dd-bffd-4519bf4863d0",
+    "e6b6db99-4610-47b2-ab6d-e5ee865d0723",
+    "6987ad21-3228-48b5-9c20-a001ab1cab77"
+   ]
+  },
+  {
+   "tema": "conexao",
+   "nome": "Fatos soltos: frase picada, sem conectivo, sem o porquê",
+   "descricao": "Frases curtas que pulam de assunto, relação entre fatos não explicada, resultado sem o mecanismo.",
+   "n_aprendizados": 10,
+   "n_licoes": 7,
+   "modos_dos_roteiros": {
+    "panorama": 5,
+    "historia": 1,
+    "demonstracao": 1
+   },
+   "clientes": [
+    "Franklin Tomich",
+    "João Paulo Albuquerque",
+    "Lincoln Fracari",
+    "Ricardo Schumacher",
+    "Túlio Lichenstein",
+    "sem cliente"
+   ],
+   "grupos_originais": {
+    "nomear-mecanismo-economico": 1,
+    "ritmo-fluidez-corte": 3,
+    "estrutura-paradoxo-contraste": 2,
+    "conector-causa-colapso": 1,
+    "sem grupo": 3
+   },
+   "regra_no_codex": "faltando",
+   "leitura": "Duas queixas explícitas de \"frases picadas, poucos conectivos\" (Franklin Tomich, Lincoln Fracari) e uma de \"fatos sem conectar\" (Nike). Não deu para medir se há regra de frase curta sendo sobreaplicada: a proporção de parágrafos de uma frase é parecida nas versões do Codex (35%) e nas edições humanas (44%).",
+   "learning_ids": [
+    "b85df3d2-046d-4907-9790-cc8ccc0bee1f",
+    "8c11b99f-c389-402d-a574-38a3fcfe62f7",
+    "b6866347-e514-481c-850c-3090fcb644f5",
+    "fa3f1476-dbac-43a5-9ed5-319da1504e56",
+    "46e7d4ce-cad9-4b33-803e-d7189bdcfc27",
+    "476cb93b-9f6c-4373-a6ae-7d22124f8ecb",
+    "59dd1576-72ba-4ae4-9d4b-b873264592e6",
+    "507764ea-9e75-4d15-8888-9fab3277b02d",
+    "c624a29b-63be-4365-afb2-4f474aa16f45",
+    "10c15cba-be9c-4f43-95c0-c96652dd4730"
+   ],
+   "lesson_ids": [
+    "787d01e4-4f88-4593-8cf5-fd1b22e43a0b",
+    "66cbfd7b-1664-4c59-ad9f-2ad12106d882",
+    "0769f545-e806-4b5f-8cee-9fe8ced52a15",
+    "c5eba4a2-8551-4c31-b34a-04b709a2cfc9",
+    "38fb998f-e95d-4dd8-a503-6b49038e713c",
+    "e6b6db99-4610-47b2-ab6d-e5ee865d0723",
+    "7ee965a3-b116-4aeb-923a-c2aea6ec4fe3"
+   ]
+  },
+  {
+   "tema": "moldura_segredo",
+   "nome": "Moldura de segredo e bastidor (tirar ou pôr)",
+   "descricao": "Estratégia Oculta, \"decisão que ninguém viu\", bastidor silencioso.",
+   "n_aprendizados": 8,
+   "n_licoes": 5,
+   "modos_dos_roteiros": {
+    "demonstracao": 2,
+    "panorama": 1,
+    "mecanismo": 2
+   },
+   "clientes": [
+    "Franklin Tomich",
+    "Izabela Anholett",
+    "Leonardo Cirino"
+   ],
+   "grupos_originais": {
+    "ângulo-oportunidade-nao-conspiracao": 1,
+    "cliente-tech-desmascarador": 1,
+    "hook-emocional-concreto": 2,
+    "estrutura-paradoxo-contraste": 1,
+    "sem grupo": 3
+   },
+   "regra_no_codex": "existente_sem_criterio_de_modo",
+   "leitura": "O próprio aprendizado 7e968f06 diz que \"a sala tende a default para Estratégia Oculta\". Em demonstração os usuários pedem para tirar (Google, MediaTek); em mecanismo e panorama de Franklin Tomich pedem para pôr (JBS, Ferrero, Sky).",
+   "learning_ids": [
+    "7e968f06-8b27-429a-8db0-89c9074c9929",
+    "3c3df870-7be9-4605-b401-c344b70aba2f",
+    "e1b2c016-2084-4fa5-bca0-c9109c947503",
+    "ef5f8b0a-b03b-45fc-b926-64fb2c8e9250",
+    "f720a830-ea02-4df2-8178-c7ee140b7a13",
+    "91e30691-3cb4-4811-afd7-a23ddf43b818",
+    "10c7ed3d-be00-49eb-83fd-452654acdec1",
+    "49d6b498-3559-4962-b6bc-9bc2ba02d689"
+   ],
+   "lesson_ids": [
+    "e8ed07af-55da-4672-a1e6-e8d340acc350",
+    "66cbfd7b-1664-4c59-ad9f-2ad12106d882",
+    "04d833de-2108-4fe5-876c-a8e01196e860",
+    "2aef9b3f-f901-4fa6-919c-b238ad0c32cd",
+    "4de9e309-3a28-4783-9794-a8d98e93ac4a"
+   ]
+  },
+  {
+   "tema": "angulo_pedido",
+   "nome": "Troca de ângulo da pauta",
+   "descricao": "Pedido de focar outro eixo (miséria em vez de educação, IA como ferramenta, benefício duplo, exclusão do modelo barato).",
+   "n_aprendizados": 10,
+   "n_licoes": 7,
+   "modos_dos_roteiros": {
+    "panorama": 2,
+    "mecanismo": 3,
+    "historia": 1,
+    "sem_roteiro": 1
+   },
+   "clientes": [
+    "Franklin Tomich",
+    "João Paulo Albuquerque",
+    "Pedro Elero",
+    "Renato Mendes",
+    "sem cliente"
+   ],
+   "grupos_originais": {
+    "insight-sinalizacao-social": 1,
+    "ia-ferramenta-nao-ameaca": 1,
+    "estrutura-paradoxo-contraste": 2,
+    "preservar-fe-humildade": 1,
+    "exclusao-produto-barato-elitizacao": 1,
+    "sem grupo": 4
+   },
+   "regra_no_codex": "nao_se_aplica",
+   "leitura": "É decisão de pauta tomada pelo usuário naquela sessão. Não é regra de escrita.",
+   "learning_ids": [
+    "e6e95bad-d3f5-48b6-819d-edd8d46b653e",
+    "1f672405-64d0-449d-8f37-41d11591ca5d",
+    "4bdcf879-9436-4566-b1ed-a77e24ec159d",
+    "61f662b3-a896-4469-aede-42b04e8b6073",
+    "1fff96ba-fa90-45e6-ba1a-3e18706be750",
+    "7772fbab-ca12-4f25-a682-021c565f0d95",
+    "8117a714-5e7e-4f6a-892c-88df415de266",
+    "29786df3-d9c1-4d0a-9a3b-aa2dd5498ef9",
+    "08091624-7491-44bd-9477-a317c85f0255",
+    "5cf81286-c693-472c-a815-659f411a0374"
+   ],
+   "lesson_ids": [
+    "787d01e4-4f88-4593-8cf5-fd1b22e43a0b",
+    "b8026d87-5b05-4adb-a02c-a1d25df59175",
+    "21cbd061-2487-48d1-b4bb-b4033c66d4e7",
+    "cf50d79a-e6b2-4ef0-ab38-c707e79d7796",
+    "589c52cf-50f3-47c3-880e-97e902d01034",
+    "dd2d1b48-409c-4fc3-b590-d63cb1f43074",
+    "6987ad21-3228-48b5-9c20-a001ab1cab77"
+   ]
+  },
+  {
+   "tema": "contraste_senso_comum",
+   "nome": "Contraste senso comum contra realidade",
+   "descricao": "Dizer o que todo mundo faz ou acha antes de revelar o desvio.",
+   "n_aprendizados": 7,
+   "n_licoes": 6,
+   "modos_dos_roteiros": {
+    "mecanismo": 4,
+    "historia": 2
+   },
+   "clientes": [
+    "Fernando Pereira",
+    "Franklin Tomich",
+    "Pedro Elero",
+    "Renato Mendes",
+    "sem cliente"
+   ],
+   "grupos_originais": {
+    "estrutura-paradoxo-contraste": 7
+   },
+   "regra_no_codex": "existente_pede_explicito",
+   "leitura": "É o núcleo do mecanismo no livro de códigos e o Codex já usa estruturas de Paradoxo e Iconoclasta; as correções pedem que a expectativa errada seja dita com todas as letras.",
+   "learning_ids": [
+    "d8a9e729-92a5-4a1c-b505-daacf924c44a",
+    "8fa750cc-837f-45bc-9707-eb23799dc4e6",
+    "1a3d2dc4-ec2c-4763-8b0e-b086e357a33c",
+    "8c5f9581-c401-477d-982a-9140403abd13",
+    "8297eefb-a2e7-45d5-8996-194ee7eebbcb",
+    "0d1a1273-da37-46d2-89e3-f406821e629c",
+    "7fc52bcc-c4bc-493d-bf92-170af7b877d7"
+   ],
+   "lesson_ids": [
+    "272024d9-8a4a-4389-9615-f7a0743a190b",
+    "c10f47fb-48cb-4427-9fe8-29b3190c5a25",
+    "06c46d5b-3873-4a17-bdac-dfe432b2a65d",
+    "e4f4301d-76df-420f-acf2-07c9c9d20cc5",
+    "4509521a-dda0-4794-b992-35dffc18c2db",
+    "bc07d506-59a6-4a3e-9c73-001089eb1827"
+   ]
+  },
+  {
+   "tema": "prova_dado",
+   "nome": "Escolha da prova",
+   "descricao": "Qual dado usar: o que mede o efeito, o local e recente, o agregado, o exemplo nomeado.",
+   "n_aprendizados": 8,
+   "n_licoes": 8,
+   "modos_dos_roteiros": {
+    "mecanismo": 4,
+    "panorama": 4
+   },
+   "clientes": [
+    "Fernando Pereira",
+    "João Paulo Albuquerque",
+    "Ricardo Schumacher",
+    "Túlio Lichenstein",
+    "sem cliente"
+   ],
+   "grupos_originais": {
+    "dois-mundos-dado-local": 1,
+    "analogia-categoria-validada": 1,
+    "estrutura-paradoxo-contraste": 3,
+    "ângulo-oportunidade-nao-conspiracao": 1,
+    "hook-emocional-concreto": 1,
+    "sem grupo": 1
+   },
+   "regra_no_codex": "faltando_por_modo",
+   "leitura": "A regra geral de hoje é de densidade (números por 100 palavras); as correções pedem o número certo, e o certo muda com o modo.",
+   "learning_ids": [
+    "c6c1b6a9-dca2-4dd9-a4ce-c99acc864947",
+    "990fa4ea-727d-4e1c-ae6f-55195f363b83",
+    "1fb1a9dd-4bd6-406b-81bb-897fca78fd6a",
+    "031a67d1-5dff-4e13-925f-8ce526009610",
+    "3383caf4-c9fa-4135-8fd9-120236aa4a2f",
+    "5ca69355-2c2f-4cb4-a7a9-eb866035b7e7",
+    "f553dc30-6046-4a31-8884-be6a2662c5d2",
+    "23650f6e-1365-476f-ad51-e49af6ea325c"
+   ],
+   "lesson_ids": [
+    "21b4d0d7-4de6-4e48-8ca8-a75de40a99a2",
+    "787d01e4-4f88-4593-8cf5-fd1b22e43a0b",
+    "b8026d87-5b05-4adb-a02c-a1d25df59175",
+    "c10f47fb-48cb-4427-9fe8-29b3190c5a25",
+    "0b68703c-e239-480b-b76c-39583d5049b7",
+    "c5eba4a2-8551-4c31-b34a-04b709a2cfc9",
+    "a7aca7ae-3622-46d0-a050-0d947ab7795d",
+    "7ee965a3-b116-4aeb-923a-c2aea6ec4fe3"
+   ]
+  },
+  {
+   "tema": "enrolacao",
+   "nome": "Enrolação e anúncio do que vem",
+   "descricao": "Frase que só anuncia, lista redundante, comparação repetida.",
+   "n_aprendizados": 5,
+   "n_licoes": 4,
+   "modos_dos_roteiros": {
+    "mecanismo": 3,
+    "sem_roteiro": 1
+   },
+   "clientes": [
+    "Fernando Pereira",
+    "Pedro Elero",
+    "sem cliente"
+   ],
+   "grupos_originais": {
+    "ritmo-fluidez-corte": 3,
+    "simplificar-listas-cargos": 1,
+    "estrutura-paradoxo-contraste": 1
+   },
+   "regra_no_codex": "existente_efeito_incerto",
+   "leitura": "Lição ativa desde 06/09 (78361ea0). Oito dos dez roteiros posteriores ainda têm \"Agora olha\", \"Agora repara\", \"Agora pensa\" ou \"Agora coloca\"; parte delas é virada legítima, então não dá para dizer que a regra é ignorada.",
+   "learning_ids": [
+    "25629faa-dbde-450b-9539-4e12750d475c",
+    "c012b7a7-15f0-48aa-8d36-31e57b68c28b",
+    "64a5c847-c615-49ca-9f0b-011a1cab42c6",
+    "78361ea0-9674-4129-9075-35f2289f3c24",
+    "928a9453-6357-4864-936c-e96be5c1bd03"
+   ],
+   "lesson_ids": [
+    "21b4d0d7-4de6-4e48-8ca8-a75de40a99a2",
+    "c10f47fb-48cb-4427-9fe8-29b3190c5a25",
+    "034e75bb-caea-4e20-9e5b-4e2b2cb2d235",
+    "21cbd061-2487-48d1-b4bb-b4033c66d4e7"
+   ]
+  },
+  {
+   "tema": "gancho_claro",
+   "nome": "Gancho confuso",
+   "descricao": "Referente sem antecedente, vínculo entre entidades não apresentadas, detalhe que só faz sentido depois, dois ganchos concorrentes.",
+   "n_aprendizados": 7,
+   "n_licoes": 4,
+   "modos_dos_roteiros": {
+    "mecanismo": 4
+   },
+   "clientes": [
+    "Franklin Tomich",
+    "Túlio Lichenstein",
+    "sem cliente"
+   ],
+   "grupos_originais": {
+    "ritmo-fluidez-corte": 1,
+    "contraste-com-contexto": 1,
+    "hook-emocional-concreto": 3,
+    "teste-hook-pessoa-comum": 1,
+    "estabelecer-entidades-antes-vinculo": 1
+   },
+   "regra_no_codex": "faltando",
+   "leitura": "Os quatro casos são de compressão do gancho. Parece faltar um teste concreto (referente, autossuficiência), não uma regra de \"seja claro\".",
+   "learning_ids": [
+    "c9bfcd61-5109-4bd7-b06a-47dcd68a1d9e",
+    "51936f16-0198-4f7e-aab5-0992d53bb927",
+    "73dd12d3-b784-41c4-8c3f-b33b7138317a",
+    "09f787b6-c809-4f58-b04e-a035b1881ff8",
+    "02760182-dd16-4f8a-8f3e-266a895dcaa0",
+    "da2b124e-e5e0-42a6-be2f-2a983b80828f",
+    "9d1e3e4c-57dd-4a98-89c6-5202350aed3d"
+   ],
+   "lesson_ids": [
+    "38c55af9-5451-4c03-9887-ea03e3cdb639",
+    "57270d50-d00a-4221-bdc8-dc78c03f1a8b",
+    "2aef9b3f-f901-4fa6-919c-b238ad0c32cd",
+    "b887e2d9-b56a-44ca-868f-b7192671449a"
+   ]
+  },
+  {
+   "tema": "sigla_jargao",
+   "nome": "Sigla, marca ou jargão sem explicação",
+   "descricao": "CPFL, marcas estrangeiras, \"fusões e aquisições\".",
+   "n_aprendizados": 3,
+   "n_licoes": 2,
+   "modos_dos_roteiros": {
+    "panorama": 1,
+    "sem_roteiro": 1
+   },
+   "clientes": [
+    "Franklin Tomich",
+    "sem cliente"
+   ],
+   "grupos_originais": {
+    "nomear-categoria-marca-estrangeira": 1,
+    "jargao-para-linguagem-acessivel": 1,
+    "sem grupo": 1
+   },
+   "regra_no_codex": "existente_desde_10_10",
+   "leitura": "Virou lição ativa em 10/10 (3a7a7215). Antes faltava.",
+   "learning_ids": [
+    "55d1af11-3bf6-4e8b-9cca-224436745753",
+    "c535ad95-541a-4b34-b0f0-f84c3615fdb1",
+    "3a7a7215-5166-447b-b602-eed369d8448c"
+   ],
+   "lesson_ids": [
+    "66cbfd7b-1664-4c59-ad9f-2ad12106d882",
+    "97dd936d-d90d-4252-bea1-ac1b74070add"
+   ]
+  },
+  {
+   "tema": "numero_tangivel",
+   "nome": "Número sem tradução",
+   "descricao": "Percentual e bilhões sem imagem; comparação de números próximos.",
+   "n_aprendizados": 3,
+   "n_licoes": 3,
+   "modos_dos_roteiros": {
+    "mecanismo": 1,
+    "historia": 1,
+    "sem_roteiro": 1
+   },
+   "clientes": [
+    "Fernando Pereira",
+    "sem cliente"
+   ],
+   "grupos_originais": {
+    "estatistica-imagem-concreta": 1,
+    "metafora-escala-impacto": 1,
+    "sem grupo": 1
+   },
+   "regra_no_codex": "parcial",
+   "leitura": "A lição ativa ac05ad5f cobre a comparação; a tradução em imagem (sala com 10 pessoas, caberia quatro vezes no buraco) não tem regra.",
+   "learning_ids": [
+    "d7b95291-8fb3-486c-9ef9-efbb1a95feab",
+    "e1f52f92-8f5f-4e97-ae34-795c334656c8",
+    "ac05ad5f-cc42-40ab-a35d-6dec59b15541"
+   ],
+   "lesson_ids": [
+    "0b68703c-e239-480b-b76c-39583d5049b7",
+    "4509521a-dda0-4794-b992-35dffc18c2db",
+    "12d135bb-772c-42b8-8588-a8848ff06692"
+   ]
+  },
+  {
+   "tema": "preferencia_cliente",
+   "nome": "Preferência de cliente (tom e lift)",
+   "descricao": "Lift de gancho ou tema por cliente; tom pedido por cliente (jogo estratégico, alarme).",
+   "n_aprendizados": 8,
+   "n_licoes": 6,
+   "modos_dos_roteiros": {
+    "sem_roteiro": 4,
+    "historia": 1,
+    "mecanismo": 1
+   },
+   "clientes": [
+    "Fernando Pereira",
+    "Franklin Tomich",
+    "Izabela Anholett",
+    "Lincoln Fracari",
+    "Marcelo Germano",
+    "Ricardo Schumacher"
+   ],
+   "grupos_originais": {
+    "conflito-declarado-izabela": 1,
+    "inovacao-izabela": 1,
+    "urgencia-fernando": 1,
+    "geopolitica-lincoln-fracari": 1,
+    "revelacao-secreta-marcelo": 1,
+    "estrutura-paradoxo-contraste": 1,
+    "franklin-poder-jogo-estrategico": 1,
+    "hook-mais-alarmista": 1
+   },
+   "regra_no_codex": "faltando",
+   "leitura": "Não há perfil de cliente que guarde isso; hoje vira aprendizado solto que valeria para todos.",
+   "learning_ids": [
+    "817b3b5c-1ebb-403b-9a25-ed032534e032",
+    "c5844ee1-f944-4731-9baf-9383f77e1ede",
+    "ff35f2b1-806b-4adb-accb-fb53ab78819f",
+    "fcac289a-df87-47bd-8e22-69149dd240e8",
+    "e962c486-06da-42dc-ac08-d25058593a82",
+    "e5c34af6-b4a7-4af3-a755-90a80171848c",
+    "d1a1c722-8eaa-4ace-9626-63e2fd4cfde4",
+    "d61aeb94-5723-4e9a-b635-5b24c617e9a0"
+   ],
+   "lesson_ids": [
+    "08ea7943-8dbd-4b36-8802-9bb1e90f6bd6",
+    "dbc2f0d0-6de1-4b10-a1d3-c3ba50b0e927",
+    "13680a9b-0c6f-454e-a506-4cc2c57ff421",
+    "c184d0be-c850-4d63-ac8d-8750a60cf8eb",
+    "06c46d5b-3873-4a17-bdac-dfe432b2a65d",
+    "bb18a125-d62b-4c8b-971a-fae847565f7b"
+   ]
+  },
+  {
+   "tema": "amplificar",
+   "nome": "Amplificar além do fato",
+   "descricao": "Superlativo, número máximo, injustiça reforçada, confissão implícita.",
+   "n_aprendizados": 4,
+   "n_licoes": 3,
+   "modos_dos_roteiros": {
+    "mecanismo": 2,
+    "historia": 1
+   },
+   "clientes": [
+    "Fernando Pereira",
+    "Renato Mendes",
+    "sem cliente"
+   ],
+   "grupos_originais": {
+    "estrutura-paradoxo-contraste": 3,
+    "usar-numero-maximo-verificado": 1
+   },
+   "regra_no_codex": "nao_se_aplica",
+   "leitura": "Vêm de edições de alto desempenho e conflitam com o portão de precisão. Ficam como caso.",
+   "learning_ids": [
+    "d2e5fc8f-20a3-497b-acbe-cb01a31cdc6b",
+    "d3f39c0d-d829-4289-a178-6e9f0252badb",
+    "6110f329-3c70-4f52-a71c-45aaddd35248",
+    "53952941-6b3d-43e3-aec0-d632e302c083"
+   ],
+   "lesson_ids": [
+    "21b4d0d7-4de6-4e48-8ca8-a75de40a99a2",
+    "4509521a-dda0-4794-b992-35dffc18c2db",
+    "589c52cf-50f3-47c3-880e-97e902d01034"
+   ]
+  },
+  {
+   "tema": "pedido_literal_nao_aplicado",
+   "nome": "Pedido literal do usuário não aplicado no texto guardado",
+   "descricao": "Comparação entre context_note e transcript: gancho ditado que não aparece, CTA de compartilhar pedido que virou \"segue o perfil\", gancho que a checagem mandou ajustar e ficou igual.",
+   "n_aprendizados": 0,
+   "n_licoes": 6,
+   "modos_dos_roteiros": {
+    "panorama": 1,
+    "mecanismo": 5
+   },
+   "clientes": [
+    "Fernando Pereira",
+    "Franklin Tomich",
+    "João Paulo Albuquerque",
+    "Renato Mendes"
+   ],
+   "grupos_originais": {},
+   "regra_no_codex": "faltando_ou_concorrente",
+   "leitura": "GTA 6, Rolls-Royce e MP das bets: gancho ditado não aparece. Feito por humanos: o CTA de compartilhar pedido virou \"segue o perfil\". Terras raras e MP das bets (2ª versão): o corpo foi corrigido, o gancho que a checagem mandou mudar ficou. Os aprendizados extraídos supõem que o pedido foi aplicado. Só vale se o transcript guardado for mesmo a versão final.",
+   "learning_ids": [],
+   "lesson_ids": [
+    "b8026d87-5b05-4adb-a02c-a1d25df59175",
+    "c10f47fb-48cb-4427-9fe8-29b3190c5a25",
+    "d01bf9e4-e211-4152-a7c7-833095a76357",
+    "bc07d506-59a6-4a3e-9c73-001089eb1827",
+    "c068ca9b-c6b8-440d-b5ab-ad2427ea406f",
+    "129b738d-c9bc-4057-8283-ba6bea6eb8c6"
+   ]
+  }
+ ]
+}

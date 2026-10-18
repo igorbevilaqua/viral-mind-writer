@@ -1,0 +1,148 @@
+## Queda do subhook (hook ≥71 x queda ≤17)
+IG_todos 1288 H71_q<=17: 77.1% n=144 aj 2.52 IC90 2.20–3.23 | H71_q>17: 45.5% n=187 aj 1.64 IC90 1.34–2.05 | H<71_q<=17: 16.6% n=205 aj 0.78 IC90 0.58–0.97 | H<71_q>17: 10.1% n=752 aj 0.46 IC90 0.34–0.56 | dentro de hook≥71, clientes em que queda≤17 acerta mais: 9/0/0 (≥5 cada lado)
+IG_sim 1146 H71_q<=17: 76.9% n=143 aj 2.50 IC90 2.19–3.15 | H71_q>17: 41.0% n=173 aj 1.48 IC90 1.24–1.83 | H<71_q<=17: 17.0% n=171 aj 0.77 IC90 0.55–0.98 | H<71_q>17: 9.4% n=659 aj 0.44 IC90 0.36–0.52 | dentro de hook≥71, clientes em que queda≤17 acerta mais: 9/0/0 (≥5 cada lado)
+IG_nao 142 H71_q<=17: 100.0% n=1 aj 7.25 | H71_q>17: 100.0% n=14 aj 2.83 | H<71_q<=17: 14.7% n=34 aj 0.88 IC90 0.50–1.32 | H<71_q>17: 15.1% n=93 aj 0.60 IC90 0.22–0.86 | dentro de hook≥71, clientes em que queda≤17 acerta mais: 0/0/0 (≥5 cada lado)
+TT_sim 251 H71_q<=17: 47.6% n=21 aj 2.88 | H71_q>17: 10.0% n=50 aj 1.31 | H<71_q<=17: 7.4% n=54 aj 1.04 | H<71_q>17: 0.8% n=126 aj 0.11 | dentro de hook≥68, clientes em que queda≤17 acerta mais: 1/0/0 (≥5 cada lado)
+
+## Por modo (IG sim)
+| modo | n IG | acerto % | lift aj modo | n ret | hook med | Δhook vs cli | queda med | Δqueda vs cli | %hook≥71 | acerto se hook≥71 & queda≤17 (n) | se hook≥71 & queda>17 (n) | n TT ret | queda med TT |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| historia | 1031 | 22.4 | 1.04 | 446 | 64.0 | +0.0 | 21.0 | +0.0 | 28 | 84 (61) | 32 (66) | 136 | 21.0 |
+| mecanismo | 732 | 18.7 | 0.97 | 338 | 64.0 | +0.8 | 21.0 | +0.0 | 25 | 74 (42) | 43 (44) | 81 | 20 |
+| demonstracao | 477 | 28.9 | 1.09 | 162 | 68.0 | +0.0 | 20.0 | -0.5 | 40 | 73 (26) | 50 (38) | 15 | 18 |
+| panorama | 290 | 17.6 | 0.96 | 139 | 63 | +0.0 | 22 | +0.0 | 19 | 64 (11) | 53 (15) | 16 | 17.5 |
+
+## B1a: queda em mecanismo vs outros modos, dentro do mesmo cliente (IG sim, ret)
+clientes 13 mecanismo cai mais em 5 | menos em 7 | igual 1 | mediana das diferenças -0.5
+   ('Patrick Diorio', -3, 15, 43)
+   ('Manoel Victor', -3.0, 26, 39)
+   ('Drielle Castelani', -2.5, 12, 36)
+   ('Marcio Grazino', -2.0, 9, 96)
+   ('Marcos Pelozato', -1.0, 22, 64)
+   ('Franklin Tomich', -1.0, 16, 52)
+   ('Fernando Pereira', -0.5, 28, 95)
+   ('Thiago Franco', 0.0, 54, 49)
+   ('Izabela Anholett', 1, 11, 113)
+   ('Pedro Elero', 1, 21, 27)
+   ('Rafael Rodrigues', 1.5, 14, 61)
+   ('Leonardo Nogueira', 4.0, 12, 19)
+   ('Dilson Peres', 4.5, 58, 8)
+
+## B1b: parágrafo seguinte ao hook (roteiro do CRM) é contexto? (IG sim, ret)
+  historia      contexto   n= 169 queda med 21 Δqueda vs cli +0.0 | acerto 27% | hook≥71: n=44 acerto 57% %queda≤17 41%
+  historia      aprofunda  n=   5 queda med 21 Δqueda vs cli +2.0 | acerto 0% | hook≥71: n=1 acerto 0% %queda≤17 0%
+  historia      outro      n= 267 queda med 21 Δqueda vs cli +0.0 | acerto 27% | hook≥71: n=78 acerto 59% %queda≤17 54%
+  mecanismo     contexto   n=  92 queda med 19.0 Δqueda vs cli -0.5 | acerto 24% | hook≥71: n=29 acerto 59% %queda≤17 59%
+  mecanismo     aprofunda  n=   7 queda med 23 Δqueda vs cli +0.0 | acerto 29% | hook≥71: n=2 acerto 100% %queda≤17 50%
+  mecanismo     outro      n= 232 queda med 21.0 Δqueda vs cli +0.0 | acerto 19% | hook≥71: n=55 acerto 56% %queda≤17 44%
+   clientes (mecanismo) em que contexto acerta mais/neutro/menos (≥4 cada lado): 4 0 4
+  demonstracao  contexto   n=  19 queda med 19 Δqueda vs cli +0.5 | acerto 32% | hook≥71: n=7 acerto 71% %queda≤17 29%
+  demonstracao  aprofunda  n=   1 queda med 17 Δqueda vs cli -2.0 | acerto 0% | hook≥71: n=0 acerto nan% %queda≤17 0%
+  demonstracao  outro      n= 142 queda med 20.0 Δqueda vs cli -0.5 | acerto 32% | hook≥71: n=57 acerto 58% %queda≤17 42%
+  panorama      contexto   n=  25 queda med 21 Δqueda vs cli -1.0 | acerto 20% | hook≥71: n=7 acerto 43% %queda≤17 29%
+  panorama      aprofunda  n=   3 queda med 11 Δqueda vs cli -11.0 | acerto 0% | hook≥71: n=0 acerto nan% %queda≤17 0%
+  panorama      outro      n= 105 queda med 22 Δqueda vs cli +0.0 | acerto 17% | hook≥71: n=18 acerto 67% %queda≤17 44%
+  todos         contexto   n= 305 queda med 20 Δqueda vs cli +0.0 | acerto 26% | hook≥71: n=87 acerto 57% %queda≤17 45%
+  todos         aprofunda  n=  16 queda med 19.5 Δqueda vs cli +0.0 | acerto 12% | hook≥71: n=3 acerto 67% %queda≤17 33%
+  todos         outro      n= 746 queda med 21.0 Δqueda vs cli +0.0 | acerto 24% | hook≥71: n=208 acerto 59% %queda≤17 47%
+  diferença média de queda (contexto − resto) mecanismo: -1.0 pts, IC90 boot cliente -1.9 a +0.0
+  diferença média de queda (contexto − resto) todos: -1.2 pts, IC90 boot cliente -3.0 a +0.4
+  exemplos contexto (mecanismo):
+    - 77 -> 63 | Quase ninguém sabe, mas a cor dos fones de ouvido da Apple é uma das maiores sacadas de ma || Olha só isso: em 2001, a Apple lançou o iPod com um detalhe que ninguém planejou como estratégia: ele era pequ
+    - 60 -> 41 | Você não sabia, mas Dragon Ball Z previu há quase 40 anos como a inteligência artificial f || Em 1989, Dragon Ball Z estreou no Japão, quando ninguém estava pensando em IA.
+    - 67 -> 54 | O BBB te enganou e o vencedor não vai ganhar 5 milhões de verdade. || Isso porque o prêmio do Big Brother Brasil não é isento de imposto. O ganhador cai no paredão mais difícil de 
+    - 43 -> 21 | O homem que controlava o dinheiro de mais de 200 milhões de brasileiros tinha 50 milhões d || E quando o Pandora Papers, uma investigação internacional que vazou dados financeiros secretos de líderes do m
+    - 69 -> 52 | dia em que o Henry Ford chocou o mundo com uma decisão que, na época, parecia absurda. Mas || No começo do século XX, a fábrica Ford enfrentava um grande problema: a linha de montagem era tão exaustiva qu
+    - 74 -> 60 | A Coca-Cola é a marca de bebidas não alcoólicas mais valiosa do planeta, mas não pelo moti || Isso porque a Coca-Cola seria patrocinadora oficial das Olimpíadas de Tóquio 2020 e, em vez de esperar os jogo
+    - 55 -> 41 | O BBB te enganou e a Ana Paula não foi a única vencedora. || Isso porque o programa teve um segundo ganhador que a Globo nunca colocou no pódio. E o mais incrível é que el
+    - 66 -> 38 | Eles reduziram a violência pela metade, e a estratégia que ninguém entendeu não tinha nada || Em 1993, Nova York registrava quase 2.000 assassinatos por ano. Seis pessoas morrendo por dia. As ruas estavam
+
+## B2: abertura em panorama (e nos outros modos, para comparar)
+  historia:
+    pais/marca: n=150 acerto 23% aj 1.14 Δlogcoef +0.05 | ret n=74 Δhook -2.0 Δqueda +0.2
+    numero_1a_frase: n=324 acerto 22% aj 1.00 Δlogcoef +0.02 | ret n=140 Δhook +1.0 Δqueda +0.0
+    outro: n=557 acerto 23% aj 1.05 Δlogcoef +0.00 | ret n=232 Δhook +0.0 Δqueda +0.0
+  mecanismo:
+    pais/marca: n=241 acerto 22% aj 1.13 Δlogcoef +0.03 | ret n=119 Δhook +3.0 Δqueda -1.0
+    numero_1a_frase: n=144 acerto 19% aj 0.98 Δlogcoef -0.02 | ret n=72 Δhook -1.5 Δqueda +0.2
+    outro: n=347 acerto 17% aj 0.86 Δlogcoef -0.01 | ret n=147 Δhook +0.0 Δqueda +0.0
+  demonstracao:
+    pais/marca: n=168 acerto 34% aj 1.25 Δlogcoef +0.14 | ret n=56 Δhook +2.0 Δqueda -0.5
+    numero_1a_frase: n=53 acerto 23% aj 0.90 Δlogcoef +0.01 | ret n=21 Δhook +0.0 Δqueda -2.0
+    outro: n=256 acerto 27% aj 1.02 Δlogcoef -0.04 | ret n=85 Δhook -3.0 Δqueda +0.0
+  panorama:
+    pais/marca: n=76 acerto 21% aj 1.07 Δlogcoef +0.01 | ret n=39 Δhook +1.0 Δqueda +0.0
+    numero_1a_frase: n=51 acerto 22% aj 1.28 Δlogcoef +0.06 | ret n=23 Δhook +0.0 Δqueda +1.0
+    outro: n=163 acerto 15% aj 0.81 Δlogcoef -0.02 | ret n=77 Δhook -1.0 Δqueda -1.0
+    clientes em panorama em que pais/marca > número (≥3 cada lado): 1 1 2
+    abre literalmente com número (1º token): 3 acerto 33%
+    exemplos numero_1a_frase:
+     - normal None Aquela borra de café que você jogou no lixo hoje de manhã já é negócio de centenas de milhões de dólares lá fora. E o Br
+     - normal 54 Tem um monte de loja física de material de construção quebrando, sendo que é um mercado que está crescendo para mais de 
+     - normal None Tem gente pagando quase R$ 800 reais por mês em São Paulo, só para conseguir ficar sentado sem fazer absolutamente nada.
+     - normal 52 Em 2025, mais empresas brasileiras pediram recuperação judicial do que em qualquer outro momento da história. E o motivo
+     - acerto None Por R$ 10, esses trabalhadores estão acelerando sua própria substituição. Donas de casa estão recebendo R$ 10 por hora p
+     - normal None Mais de 200 indústrias brasileiras já cruzaram a Ponte da Amizade e foram se instalar no Paraguai.
+
+## B3: nome no hook, por modo (conhecido = em lista de marcas/famosos OU citado em hooks de ≥3 clientes)
+  historia:
+    conhecido    n= 304 acerto   20% aj 1.02 IC90 0.83–1.15 Δlogcoef +0.03 | ret n=137 Δhook +0.0 Δqueda +0.0
+    desconhecido n= 197 acerto   19% aj 0.85 IC90 0.68–1.01 Δlogcoef -0.06 | ret n=86 Δhook +0.0 Δqueda +0.0
+    so_lugar     n= 193 acerto   30% aj 1.30 IC90 1.07–1.42 Δlogcoef +0.05 | ret n=59 Δhook +2.0 Δqueda +0.5
+    sem_nome     n= 337 acerto   22% aj 1.02 IC90 0.90–1.07 Δlogcoef -0.00 | ret n=164 Δhook +0.0 Δqueda +0.5
+    clientes em história em que conhecido > desconhecido (≥4 cada lado): 9 1 3
+    exemplos conhecido:
+      - normal A LEGO quase faliu, até entender que não vendia brinquedo, vendia educação. | ents: ['LEGO']
+      - normal A Globo dominava a Copa do Mundo, até que esse youtuber fez 5 milhões de pessoas assistirem futebol com ele ao | ents: ['Globo', 'Copa do Mundo']
+      - acerto sabia que o funcionário mais bem pago da Ford não fazia absolutamente nada? | ents: ['Ford']
+      - normal A geração TikTok está ressuscitando uma marca brasileira dos anos 30 que quase morreu tentando ser moderna. | ents: ['TikTok']
+      - normal O laboratório de Alagoas está usando moscas pra desenvolver um tratamento contra o Alzheimer. Deixa eu te cont | ents: ['Alagoas', 'Alzheimer']
+      - normal Em breve, a NASA e o Elon Musk podem estar disputando a contratação dessa estudante pernambucana. | ents: ['NASA', 'Elon Musk']
+    exemplos desconhecido:
+      - normal A primeira rede social de sucesso do planeta finalmente tá voltando. Só que de um jeito extremamente diferente | ents: ['Orkut', 'MySpace']
+      - normal A maior companhia aérea da América Latina voava para mais de 140 destinos com dezenas de milhões de passageiro | ents: ['América Latina', 'Latam']
+      - normal Hong Kong criou a maior campanha a favor das drogas usando IA. Isso tudo para o Dia Internacional de Combate à | ents: ['Hong Kong', 'Dia Internacional de Combate', 'Drogas']
+      - normal Esses estudantes da USP construíram um império de 4 bilhões de reais. | ents: ['USP']
+      - normal Uma multinacional americana fechou a sua última fábrica no Brasil e colocou mais de 400 famílias em risco. Iss | ents: ['Brasil', 'Andradas', 'Minas']
+      - normal Quem diz que o Brasil não produz tecnologia, precisa conhecer a história dessas duas alunas de escola pública  | ents: ['Brasil', 'MIT']
+    nome como revelação em história: n=13 acerto 15% | ret n=5 Δhook -2.0 Δqueda +1.0
+    'império/fatura N bi' em história: n=95 acerto 19% aj 0.95
+  mecanismo:
+    conhecido    n= 377 acerto   20% aj 1.01 IC90 0.93–1.14 Δlogcoef +0.00 | ret n=183 Δhook +1.0 Δqueda -1.0
+    desconhecido n=  98 acerto   19% aj 1.01 IC90 0.72–1.30 Δlogcoef +0.04 | ret n=43 Δhook +2.0 Δqueda +0.0
+    so_lugar     n=  98 acerto   20% aj 0.94 IC90 0.57–1.32 Δlogcoef +0.01 | ret n=36 Δhook +0.5 Δqueda +0.2
+    sem_nome     n= 159 acerto   15% aj 0.86 IC90 0.67–1.11 Δlogcoef -0.06 | ret n=76 Δhook -1.5 Δqueda +1.2
+  demonstracao:
+    conhecido    n= 191 acerto   34% aj 1.25 IC90 0.81–1.27 Δlogcoef +0.14 | ret n=79 Δhook +1.0 Δqueda -1.5
+    desconhecido n=  39 acerto   31% aj 1.13 IC90 0.58–1.89 Δlogcoef -0.01 | ret n=14 Δhook -4.0 Δqueda +2.0
+    so_lugar     n= 116 acerto   32% aj 1.20 IC90 0.97–1.39 Δlogcoef -0.01 | ret n=20 Δhook +2.0 Δqueda -1.5
+    sem_nome     n= 131 acerto   19% aj 0.73 IC90 0.50–0.96 Δlogcoef -0.06 | ret n=49 Δhook -1.0 Δqueda +1.0
+  panorama:
+    conhecido    n=  77 acerto   10% aj 0.62 IC90 0.40–1.14 Δlogcoef -0.03 | ret n=46 Δhook -0.5 Δqueda +0.0
+    desconhecido n=  29 acerto   24% aj 1.20 IC90 0.53–2.51 Δlogcoef +0.17 | ret n=10 Δhook +1.0 Δqueda -1.0
+    so_lugar     n=  97 acerto   26% aj 1.27 IC90 1.08–1.48 Δlogcoef +0.08 | ret n=32 Δhook +3.0 Δqueda +0.0
+    sem_nome     n=  87 acerto   13% aj 0.74 IC90 0.45–1.05 Δlogcoef -0.09 | ret n=51 Δhook -1.0 Δqueda +0.5
+
+## Features da parte A dentro de cada modo (IG sim, lift aj. com taxa do cliente; n)
+| feature | historia | mecanismo | demonstracao | panorama |
+|---|---|---|---|---|
+| acabou_de | 1.03 (26) | 1.71 (46) | 1.64 (84) | 1.34 (27) |
+| abre_nome | 1.11 (128) | 1.20 (219) | 1.24 (159) | 0.96 (73) |
+| combo_acabou_nome | (9) | 1.98 (21) | 1.47 (47) | 1.56 (10) |
+| conflito | 1.31 (105) | 1.58 (53) | 1.56 (70) | 1.44 (41) |
+| guerra | (7) | 2.27 (11) | 1.60 (14) | (5) |
+| pais_regiao | 1.12 (336) | 0.98 (209) | 1.27 (163) | 0.92 (167) |
+| abre_esse | 1.01 (311) | 1.34 (65) | 0.86 (79) | 0.55 (10) |
+| pergunta | 1.12 (56) | 0.94 (56) | 0.81 (39) | 0.47 (23) |
+| primeira_pessoa | 0.73 (30) | 0.91 (25) | 1.49 (22) | 0.00 (16) |
+| num_1a_frase | 1.03 (368) | 1.01 (223) | 1.01 (73) | 1.17 (61) |
+| abre_pais_ou_marca | 1.14 (150) | 1.13 (241) | 1.25 (168) | 1.07 (76) |
+| subhook_causal | 1.79 (44) | 0.95 (48) | 1.44 (16) | 1.67 (14) |
+| nostalgia | 1.43 (46) | (3) | (5) | (2) |
+| imperio | 0.95 (95) | 0.84 (24) | (1) | (3) |
+
+mecanismo: desafio_de_crenca com/sem nome
+  com nome/marca: n=72 acerto 21% aj 1.07
+  sem: n=39 acerto 21% aj 1.02
+
+exportado 4570

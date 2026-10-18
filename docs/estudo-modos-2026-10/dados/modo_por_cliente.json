@@ -1,0 +1,1346 @@
+{
+ "6c5182af-2afd-428e-b224-d1efd7fe7355": {
+  "cliente": "Marcos Pelozato",
+  "roteiros": 137,
+  "modos": {
+   "historia": {
+    "fatia": 0.555,
+    "videos": 199,
+    "lift": 0.98,
+    "lb": 0.76,
+    "ub": 1.23
+   },
+   "mecanismo": {
+    "fatia": 0.328,
+    "videos": 124,
+    "lift": 1.01,
+    "lb": 0.74,
+    "ub": 1.33
+   },
+   "demonstracao": {
+    "fatia": 0,
+    "videos": 0,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "panorama": {
+    "fatia": 0.109,
+    "videos": 44,
+    "lift": 0.97,
+    "lb": 0.57,
+    "ub": 1.54
+   },
+   "conselho": {
+    "fatia": 0,
+    "videos": 0,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "publi": {
+    "fatia": 0,
+    "videos": 0,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   }
+  }
+ },
+ "4747cfd1-0808-4170-b8d1-ba7d0737cc90": {
+  "cliente": "Lincoln Fracari",
+  "roteiros": 193,
+  "modos": {
+   "historia": {
+    "fatia": 0.155,
+    "videos": 75,
+    "lift": 0.94,
+    "lb": 0.61,
+    "ub": 1.36
+   },
+   "mecanismo": {
+    "fatia": 0.259,
+    "videos": 123,
+    "lift": 1.17,
+    "lb": 0.88,
+    "ub": 1.51
+   },
+   "demonstracao": {
+    "fatia": 0.321,
+    "videos": 158,
+    "lift": 0.91,
+    "lb": 0.68,
+    "ub": 1.19
+   },
+   "panorama": {
+    "fatia": 0.264,
+    "videos": 120,
+    "lift": 0.98,
+    "lb": 0.71,
+    "ub": 1.3
+   },
+   "conselho": {
+    "fatia": 0,
+    "videos": 0,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "publi": {
+    "fatia": 0,
+    "videos": 0,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   }
+  }
+ },
+ "5237ca35-6bba-436c-9030-d267b914843d": {
+  "cliente": "Ricardo Schumacher",
+  "roteiros": 97,
+  "modos": {
+   "historia": {
+    "fatia": 0.031,
+    "videos": 3,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "mecanismo": {
+    "fatia": 0.938,
+    "videos": 115,
+    "lift": 0.96,
+    "lb": 0.69,
+    "ub": 1.28
+   },
+   "demonstracao": {
+    "fatia": 0,
+    "videos": 0,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "panorama": {
+    "fatia": 0.031,
+    "videos": 7,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "conselho": {
+    "fatia": 0,
+    "videos": 0,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "publi": {
+    "fatia": 0,
+    "videos": 0,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   }
+  }
+ },
+ "268046b7-d1e6-4ed9-b291-9f84b85d92dc": {
+  "cliente": "Thiago Franco",
+  "roteiros": 153,
+  "modos": {
+   "historia": {
+    "fatia": 0.242,
+    "videos": 91,
+    "lift": 0.88,
+    "lb": 0.59,
+    "ub": 1.27
+   },
+   "mecanismo": {
+    "fatia": 0.431,
+    "videos": 174,
+    "lift": 1.04,
+    "lb": 0.8,
+    "ub": 1.32
+   },
+   "demonstracao": {
+    "fatia": 0.013,
+    "videos": 6,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "panorama": {
+    "fatia": 0.268,
+    "videos": 90,
+    "lift": 1.03,
+    "lb": 0.71,
+    "ub": 1.43
+   },
+   "conselho": {
+    "fatia": 0.013,
+    "videos": 3,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "publi": {
+    "fatia": 0.033,
+    "videos": 10,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   }
+  }
+ },
+ "4333482d-3c47-4c41-a2ad-8c965c3b24a6": {
+  "cliente": "Leonardo Cirino",
+  "roteiros": 115,
+  "modos": {
+   "historia": {
+    "fatia": 0.043,
+    "videos": 6,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "mecanismo": {
+    "fatia": 0.122,
+    "videos": 17,
+    "lift": 1.16,
+    "lb": 0.52,
+    "ub": 2.09
+   },
+   "demonstracao": {
+    "fatia": 0.643,
+    "videos": 84,
+    "lift": 1.17,
+    "lb": 0.83,
+    "ub": 1.59
+   },
+   "panorama": {
+    "fatia": 0.087,
+    "videos": 10,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "conselho": {
+    "fatia": 0.017,
+    "videos": 2,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "publi": {
+    "fatia": 0.078,
+    "videos": 10,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   }
+  }
+ },
+ "efd9363f-dbd0-4923-9f38-e10315a14611": {
+  "cliente": "Rafael Rodrigues",
+  "roteiros": 225,
+  "modos": {
+   "historia": {
+    "fatia": 0.609,
+    "videos": 399,
+    "lift": 1.05,
+    "lb": 0.89,
+    "ub": 1.22
+   },
+   "mecanismo": {
+    "fatia": 0.107,
+    "videos": 71,
+    "lift": 1.04,
+    "lb": 0.7,
+    "ub": 1.48
+   },
+   "demonstracao": {
+    "fatia": 0.187,
+    "videos": 124,
+    "lift": 0.91,
+    "lb": 0.66,
+    "ub": 1.23
+   },
+   "panorama": {
+    "fatia": 0.071,
+    "videos": 47,
+    "lift": 1.08,
+    "lb": 0.66,
+    "ub": 1.63
+   },
+   "conselho": {
+    "fatia": 0.027,
+    "videos": 18,
+    "lift": 0.22,
+    "lb": 0.04,
+    "ub": 1
+   },
+   "publi": {
+    "fatia": 0,
+    "videos": 0,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   }
+  }
+ },
+ "421ca796-4154-40e9-b532-299f6a4b745a": {
+  "cliente": "Marcio Grazino",
+  "roteiros": 154,
+  "modos": {
+   "historia": {
+    "fatia": 0.61,
+    "videos": 281,
+    "lift": 1.08,
+    "lb": 0.89,
+    "ub": 1.29
+   },
+   "mecanismo": {
+    "fatia": 0.084,
+    "videos": 38,
+    "lift": 0.93,
+    "lb": 0.51,
+    "ub": 1.54
+   },
+   "demonstracao": {
+    "fatia": 0.273,
+    "videos": 126,
+    "lift": 0.87,
+    "lb": 0.62,
+    "ub": 1.19
+   },
+   "panorama": {
+    "fatia": 0.026,
+    "videos": 12,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "conselho": {
+    "fatia": 0,
+    "videos": 0,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "publi": {
+    "fatia": 0.006,
+    "videos": 3,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   }
+  }
+ },
+ "c491d466-d04d-40ae-9250-08e91053ad9f": {
+  "cliente": "Túlio Lichenstein",
+  "roteiros": 57,
+  "modos": {
+   "historia": {
+    "fatia": 0.298,
+    "videos": 41,
+    "lift": 1.17,
+    "lb": 0.7,
+    "ub": 1.78
+   },
+   "mecanismo": {
+    "fatia": 0.316,
+    "videos": 43,
+    "lift": 0.93,
+    "lb": 0.53,
+    "ub": 1.51
+   },
+   "demonstracao": {
+    "fatia": 0.07,
+    "videos": 8,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "panorama": {
+    "fatia": 0.316,
+    "videos": 44,
+    "lift": 1,
+    "lb": 0.58,
+    "ub": 1.58
+   },
+   "conselho": {
+    "fatia": 0,
+    "videos": 0,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "publi": {
+    "fatia": 0,
+    "videos": 0,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   }
+  }
+ },
+ "7f7847d4-da31-46b9-9f9a-b634c888be2d": {
+  "cliente": "Pedro Elero",
+  "roteiros": 73,
+  "modos": {
+   "historia": {
+    "fatia": 0.466,
+    "videos": 99,
+    "lift": 0.93,
+    "lb": 0.65,
+    "ub": 1.29
+   },
+   "mecanismo": {
+    "fatia": 0.384,
+    "videos": 83,
+    "lift": 1.25,
+    "lb": 0.9,
+    "ub": 1.66
+   },
+   "demonstracao": {
+    "fatia": 0.11,
+    "videos": 24,
+    "lift": 0.8,
+    "lb": 0.35,
+    "ub": 1.55
+   },
+   "panorama": {
+    "fatia": 0.041,
+    "videos": 9,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "conselho": {
+    "fatia": 0,
+    "videos": 0,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "publi": {
+    "fatia": 0,
+    "videos": 0,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   }
+  }
+ },
+ "e0853d4b-cae8-49d9-b048-966915f67e05": {
+  "cliente": "Rodrigo Waughan",
+  "roteiros": 139,
+  "modos": {
+   "historia": {
+    "fatia": 0.597,
+    "videos": 242,
+    "lift": 0.95,
+    "lb": 0.76,
+    "ub": 1.17
+   },
+   "mecanismo": {
+    "fatia": 0.353,
+    "videos": 139,
+    "lift": 0.94,
+    "lb": 0.69,
+    "ub": 1.23
+   },
+   "demonstracao": {
+    "fatia": 0.036,
+    "videos": 15,
+    "lift": 2.04,
+    "lb": 1.15,
+    "ub": 2.88
+   },
+   "panorama": {
+    "fatia": 0,
+    "videos": 0,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "conselho": {
+    "fatia": 0.014,
+    "videos": 6,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "publi": {
+    "fatia": 0,
+    "videos": 0,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   }
+  }
+ },
+ "220775c1-9ddd-4cb8-bf73-882f6976b24f": {
+  "cliente": "Izabela Anholett",
+  "roteiros": 230,
+  "modos": {
+   "historia": {
+    "fatia": 0.083,
+    "videos": 56,
+    "lift": 0.7,
+    "lb": 0.39,
+    "ub": 1.16
+   },
+   "mecanismo": {
+    "fatia": 0.065,
+    "videos": 44,
+    "lift": 0.62,
+    "lb": 0.31,
+    "ub": 1.14
+   },
+   "demonstracao": {
+    "fatia": 0.561,
+    "videos": 382,
+    "lift": 1.18,
+    "lb": 1.01,
+    "ub": 1.37
+   },
+   "panorama": {
+    "fatia": 0.061,
+    "videos": 41,
+    "lift": 0.76,
+    "lb": 0.4,
+    "ub": 1.33
+   },
+   "conselho": {
+    "fatia": 0.048,
+    "videos": 33,
+    "lift": 0.94,
+    "lb": 0.5,
+    "ub": 1.6
+   },
+   "publi": {
+    "fatia": 0.183,
+    "videos": 122,
+    "lift": 0.8,
+    "lb": 0.56,
+    "ub": 1.11
+   }
+  }
+ },
+ "e0d04683-5282-43cf-a67a-aba3193bf01f": {
+  "cliente": "Renato Mendes",
+  "roteiros": 64,
+  "modos": {
+   "historia": {
+    "fatia": 0.203,
+    "videos": 39,
+    "lift": 1.43,
+    "lb": 0.9,
+    "ub": 2.05
+   },
+   "mecanismo": {
+    "fatia": 0.547,
+    "videos": 104,
+    "lift": 0.99,
+    "lb": 0.7,
+    "ub": 1.36
+   },
+   "demonstracao": {
+    "fatia": 0.125,
+    "videos": 24,
+    "lift": 0.66,
+    "lb": 0.27,
+    "ub": 1.43
+   },
+   "panorama": {
+    "fatia": 0.125,
+    "videos": 24,
+    "lift": 0.66,
+    "lb": 0.27,
+    "ub": 1.43
+   },
+   "conselho": {
+    "fatia": 0,
+    "videos": 0,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "publi": {
+    "fatia": 0,
+    "videos": 0,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   }
+  }
+ },
+ "c7903b1d-930e-43d3-8576-ff0c0b275f1f": {
+  "cliente": "Fernando Pereira",
+  "roteiros": 169,
+  "modos": {
+   "historia": {
+    "fatia": 0.237,
+    "videos": 98,
+    "lift": 0.96,
+    "lb": 0.67,
+    "ub": 1.33
+   },
+   "mecanismo": {
+    "fatia": 0.231,
+    "videos": 85,
+    "lift": 1.01,
+    "lb": 0.7,
+    "ub": 1.41
+   },
+   "demonstracao": {
+    "fatia": 0,
+    "videos": 0,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "panorama": {
+    "fatia": 0.503,
+    "videos": 185,
+    "lift": 1.06,
+    "lb": 0.83,
+    "ub": 1.33
+   },
+   "conselho": {
+    "fatia": 0.006,
+    "videos": 3,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "publi": {
+    "fatia": 0.024,
+    "videos": 5,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   }
+  }
+ },
+ "7b437ccc-cd8d-4eea-9a69-5a905e9a3d88": {
+  "cliente": "Manoel Victor",
+  "roteiros": 82,
+  "modos": {
+   "historia": {
+    "fatia": 0.293,
+    "videos": 62,
+    "lift": 0.63,
+    "lb": 0.35,
+    "ub": 1.06
+   },
+   "mecanismo": {
+    "fatia": 0.378,
+    "videos": 88,
+    "lift": 1.24,
+    "lb": 0.9,
+    "ub": 1.64
+   },
+   "demonstracao": {
+    "fatia": 0.268,
+    "videos": 66,
+    "lift": 1,
+    "lb": 0.65,
+    "ub": 1.46
+   },
+   "panorama": {
+    "fatia": 0.024,
+    "videos": 5,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "conselho": {
+    "fatia": 0.024,
+    "videos": 6,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "publi": {
+    "fatia": 0.012,
+    "videos": 3,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   }
+  }
+ },
+ "8aa79284-2973-49c1-9198-ba03242a15ed": {
+  "cliente": "Patrick Diorio",
+  "roteiros": 78,
+  "modos": {
+   "historia": {
+    "fatia": 0.205,
+    "videos": 16,
+    "lift": 0.49,
+    "lb": 0.14,
+    "ub": 1.4
+   },
+   "mecanismo": {
+    "fatia": 0.231,
+    "videos": 18,
+    "lift": 1.3,
+    "lb": 0.63,
+    "ub": 2.19
+   },
+   "demonstracao": {
+    "fatia": 0.359,
+    "videos": 28,
+    "lift": 1.39,
+    "lb": 0.81,
+    "ub": 2.11
+   },
+   "panorama": {
+    "fatia": 0.167,
+    "videos": 13,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "conselho": {
+    "fatia": 0.038,
+    "videos": 3,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "publi": {
+    "fatia": 0,
+    "videos": 0,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   }
+  }
+ },
+ "22e9a877-f588-4935-b2b5-bba1f1ad312c": {
+  "cliente": "Marcelo Germano",
+  "roteiros": 90,
+  "modos": {
+   "historia": {
+    "fatia": 0.844,
+    "videos": 112,
+    "lift": 0.95,
+    "lb": 0.68,
+    "ub": 1.27
+   },
+   "mecanismo": {
+    "fatia": 0.067,
+    "videos": 8,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "demonstracao": {
+    "fatia": 0.011,
+    "videos": 1,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "panorama": {
+    "fatia": 0.033,
+    "videos": 4,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "conselho": {
+    "fatia": 0.044,
+    "videos": 7,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "publi": {
+    "fatia": 0,
+    "videos": 0,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   }
+  }
+ },
+ "8de0a02e-bc01-4430-b2ea-233edd67f587": {
+  "cliente": "João Paulo Albuquerque",
+  "roteiros": 60,
+  "modos": {
+   "historia": {
+    "fatia": 0.633,
+    "videos": 105,
+    "lift": 0.93,
+    "lb": 0.64,
+    "ub": 1.29
+   },
+   "mecanismo": {
+    "fatia": 0.233,
+    "videos": 42,
+    "lift": 1.35,
+    "lb": 0.85,
+    "ub": 1.96
+   },
+   "demonstracao": {
+    "fatia": 0.067,
+    "videos": 11,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "panorama": {
+    "fatia": 0.067,
+    "videos": 12,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "conselho": {
+    "fatia": 0,
+    "videos": 0,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "publi": {
+    "fatia": 0,
+    "videos": 0,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   }
+  }
+ },
+ "cee61f25-3ac5-40e6-96f9-edbfef4e803a": {
+  "cliente": "Café com Ferri",
+  "roteiros": 20,
+  "modos": {
+   "historia": {
+    "fatia": 0.1,
+    "videos": 4,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "mecanismo": {
+    "fatia": 0.4,
+    "videos": 22,
+    "lift": 1.66,
+    "lb": 0.98,
+    "ub": 2.38
+   },
+   "demonstracao": {
+    "fatia": 0,
+    "videos": 0,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "panorama": {
+    "fatia": 0.05,
+    "videos": 4,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "conselho": {
+    "fatia": 0.45,
+    "videos": 21,
+    "lift": 0.52,
+    "lb": 0.18,
+    "ub": 1.26
+   },
+   "publi": {
+    "fatia": 0,
+    "videos": 0,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   }
+  }
+ },
+ "1c78ff87-7f70-4138-b1f4-072511c4bc22": {
+  "cliente": "Dilson Peres",
+  "roteiros": 118,
+  "modos": {
+   "historia": {
+    "fatia": 0.068,
+    "videos": 21,
+    "lift": 1.66,
+    "lb": 0.95,
+    "ub": 2.45
+   },
+   "mecanismo": {
+    "fatia": 0.881,
+    "videos": 249,
+    "lift": 0.99,
+    "lb": 0.8,
+    "ub": 1.22
+   },
+   "demonstracao": {
+    "fatia": 0,
+    "videos": 0,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "panorama": {
+    "fatia": 0.025,
+    "videos": 9,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "conselho": {
+    "fatia": 0.008,
+    "videos": 3,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "publi": {
+    "fatia": 0.017,
+    "videos": 4,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   }
+  }
+ },
+ "2dc6917a-7f9f-48a5-a5aa-2ba29464281b": {
+  "cliente": "Franklin Tomich",
+  "roteiros": 133,
+  "modos": {
+   "historia": {
+    "fatia": 0.797,
+    "videos": 200,
+    "lift": 0.97,
+    "lb": 0.76,
+    "ub": 1.22
+   },
+   "mecanismo": {
+    "fatia": 0.195,
+    "videos": 47,
+    "lift": 1.08,
+    "lb": 0.66,
+    "ub": 1.62
+   },
+   "demonstracao": {
+    "fatia": 0,
+    "videos": 0,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "panorama": {
+    "fatia": 0.008,
+    "videos": 2,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "conselho": {
+    "fatia": 0,
+    "videos": 0,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "publi": {
+    "fatia": 0,
+    "videos": 0,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   }
+  }
+ },
+ "90207e43-3270-421c-b029-e0351b9d5aad": {
+  "cliente": "Leonardo Nogueira",
+  "roteiros": 55,
+  "modos": {
+   "historia": {
+    "fatia": 0.4,
+    "videos": 53,
+    "lift": 1.01,
+    "lb": 0.63,
+    "ub": 1.51
+   },
+   "mecanismo": {
+    "fatia": 0.364,
+    "videos": 47,
+    "lift": 0.73,
+    "lb": 0.4,
+    "ub": 1.24
+   },
+   "demonstracao": {
+    "fatia": 0.182,
+    "videos": 28,
+    "lift": 1.63,
+    "lb": 1.01,
+    "ub": 2.32
+   },
+   "panorama": {
+    "fatia": 0.055,
+    "videos": 9,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "conselho": {
+    "fatia": 0,
+    "videos": 0,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "publi": {
+    "fatia": 0,
+    "videos": 0,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   }
+  }
+ },
+ "2b7a90ab-3eb4-4124-ad91-51fa4885629a": {
+  "cliente": "Renato Torres",
+  "roteiros": 57,
+  "modos": {
+   "historia": {
+    "fatia": 0.509,
+    "videos": 33,
+    "lift": 0.65,
+    "lb": 0.31,
+    "ub": 1.23
+   },
+   "mecanismo": {
+    "fatia": 0.439,
+    "videos": 32,
+    "lift": 1.23,
+    "lb": 0.73,
+    "ub": 1.85
+   },
+   "demonstracao": {
+    "fatia": 0.018,
+    "videos": 1,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "panorama": {
+    "fatia": 0.035,
+    "videos": 2,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "conselho": {
+    "fatia": 0,
+    "videos": 0,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "publi": {
+    "fatia": 0,
+    "videos": 0,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   }
+  }
+ },
+ "56e457bd-c0f9-4064-89fe-dd5ce22de337": {
+  "cliente": "Thiago Bisewski",
+  "roteiros": 30,
+  "modos": {
+   "historia": {
+    "fatia": 0.1,
+    "videos": 9,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "mecanismo": {
+    "fatia": 0.033,
+    "videos": 3,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "demonstracao": {
+    "fatia": 0.833,
+    "videos": 75,
+    "lift": 1.15,
+    "lb": 0.8,
+    "ub": 1.57
+   },
+   "panorama": {
+    "fatia": 0.033,
+    "videos": 3,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "conselho": {
+    "fatia": 0,
+    "videos": 0,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "publi": {
+    "fatia": 0,
+    "videos": 0,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   }
+  }
+ },
+ "1f2210c5-8e6c-4aa4-b144-aace8f00de44": {
+  "cliente": "Thainá Iansen",
+  "roteiros": 32,
+  "modos": {
+   "historia": {
+    "fatia": 0.719,
+    "videos": 55,
+    "lift": 1.21,
+    "lb": 0.81,
+    "ub": 1.7
+   },
+   "mecanismo": {
+    "fatia": 0.125,
+    "videos": 9,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "demonstracao": {
+    "fatia": 0,
+    "videos": 0,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "panorama": {
+    "fatia": 0.031,
+    "videos": 3,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "conselho": {
+    "fatia": 0.125,
+    "videos": 7,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "publi": {
+    "fatia": 0,
+    "videos": 0,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   }
+  }
+ },
+ "bc02d790-b392-486e-8791-b001e6781492": {
+  "cliente": "João Felipe Marques",
+  "roteiros": 64,
+  "modos": {
+   "historia": {
+    "fatia": 0.281,
+    "videos": 18,
+    "lift": 1.91,
+    "lb": 1.11,
+    "ub": 2.71
+   },
+   "mecanismo": {
+    "fatia": 0.234,
+    "videos": 16,
+    "lift": 0.72,
+    "lb": 0.25,
+    "ub": 1.64
+   },
+   "demonstracao": {
+    "fatia": 0.297,
+    "videos": 19,
+    "lift": 0.4,
+    "lb": 0.11,
+    "ub": 1.2
+   },
+   "panorama": {
+    "fatia": 0.156,
+    "videos": 10,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "conselho": {
+    "fatia": 0.031,
+    "videos": 2,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "publi": {
+    "fatia": 0,
+    "videos": 0,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   }
+  }
+ },
+ "af6c4ac1-60dd-4407-8510-31d1108c52b6": {
+  "cliente": "Drielle Castelani",
+  "roteiros": 88,
+  "modos": {
+   "historia": {
+    "fatia": 0.636,
+    "videos": 83,
+    "lift": 1.05,
+    "lb": 0.73,
+    "ub": 1.45
+   },
+   "mecanismo": {
+    "fatia": 0.182,
+    "videos": 22,
+    "lift": 1.21,
+    "lb": 0.62,
+    "ub": 2
+   },
+   "demonstracao": {
+    "fatia": 0.034,
+    "videos": 3,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "panorama": {
+    "fatia": 0.114,
+    "videos": 14,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "conselho": {
+    "fatia": 0.034,
+    "videos": 3,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "publi": {
+    "fatia": 0,
+    "videos": 0,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   }
+  }
+ },
+ "5d4b5479-58c4-4834-8040-56484b975439": {
+  "cliente": "Cadu Neiva",
+  "roteiros": 95,
+  "modos": {
+   "historia": {
+    "fatia": 0.811,
+    "videos": 194,
+    "lift": 0.95,
+    "lb": 0.74,
+    "ub": 1.19
+   },
+   "mecanismo": {
+    "fatia": 0.105,
+    "videos": 15,
+    "lift": 0.74,
+    "lb": 0.26,
+    "ub": 1.66
+   },
+   "demonstracao": {
+    "fatia": 0.042,
+    "videos": 12,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "panorama": {
+    "fatia": 0.032,
+    "videos": 9,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "conselho": {
+    "fatia": 0,
+    "videos": 0,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "publi": {
+    "fatia": 0,
+    "videos": 0,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   }
+  }
+ },
+ "a6495ace-6dcf-4a82-b142-504e59e1bef8": {
+  "cliente": "Leonardo Martins",
+  "roteiros": 24,
+  "modos": {
+   "historia": {
+    "fatia": 0.25,
+    "videos": 11,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "mecanismo": {
+    "fatia": 0.042,
+    "videos": 2,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "demonstracao": {
+    "fatia": 0.625,
+    "videos": 29,
+    "lift": 1.06,
+    "lb": 0.56,
+    "ub": 1.75
+   },
+   "panorama": {
+    "fatia": 0.083,
+    "videos": 4,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "conselho": {
+    "fatia": 0,
+    "videos": 0,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   },
+   "publi": {
+    "fatia": 0,
+    "videos": 0,
+    "lift": null,
+    "lb": null,
+    "ub": null
+   }
+  }
+ }
+}
