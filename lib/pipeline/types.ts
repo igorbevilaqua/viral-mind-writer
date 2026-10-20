@@ -134,6 +134,7 @@ export interface ClientPrefs {
   vocabulario_evitar: string[];
   vocabulario_usar: string[];
   notas_entrevista: string | null;
+  perfil: string | null;
 }
 
 export interface BannedPhrase {

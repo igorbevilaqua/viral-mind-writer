@@ -23,6 +23,9 @@ export interface TaughtPayload {
   grupo?: string | null;
   // tamanho do grupo entre as lições ativas desta geração (quantas vezes o piloto pediu isto)
   recorrencia?: number;
+  // Plano 025: triagem da lição. Lição de alcance "modo" só entra nas skills listadas.
+  alcance?: string | null;
+  skills?: string[] | null;
 }
 
 // `dados` (formatInsightsForDados, agents.ts:136) agrupa TODO taught_* — por isso aparece em

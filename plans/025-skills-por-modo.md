@@ -363,7 +363,7 @@ Se o contexto traz a SKILL DO ROTEIRO, o checklist dela soma-se ao eliminatório
 **Interfaces:**
 - Produz: `ctx.skill`, `ctx.skillOrigem` lidos de `vm_sessions`; `ClientPrefs.perfil: string | null`; `TaughtPayload.alcance?: string | null`, `TaughtPayload.skills?: string[] | null`.
 
-- [ ] **Passo 1: as migrations**
+- [x] **Passo 1: as migrations**
 
 ```sql
 -- supabase/migrations/0051_roteiro_modo.sql
@@ -416,9 +416,9 @@ alter table public.vm_lesson_learnings add column if not exists skills text[];
 alter table public.vm_lesson_learnings add column if not exists absorvida_em text;
 ```
 
-**STOP:** o código das Tasks 3 a 11 lê essas colunas. Elas são aplicadas no banco (operador, via MCP) antes de qualquer deploy deste branch; aplicar antes não quebra nada da produção atual, porque só acrescenta colunas e uma tabela.
+**STOP:** o código das Tasks 3 a 11 lê essas colunas. Elas são aplicadas no banco (operador, via MCP) antes de qualquer deploy deste branch; aplicar antes não quebra nada da produção atual, porque só acrescenta colunas e uma tabela. Ao contrário quebra: o PostgREST devolve erro para coluna inexistente, então deploy sem a 0052 faz o select de `loadContext` falhar e nenhuma sessão gera ("sessão não encontrada"). Sem a 0053 ou a 0054 não há erro visível: as preferências do cliente e as lições ativas somem da geração em silêncio, porque esses dois selects não checam `error`.
 
-- [ ] **Passo 2: tipos**
+- [x] **Passo 2: tipos**
 
 Em `lib/pipeline/types.ts`, `ClientPrefs` ganha `perfil: string | null;` depois de `notas_entrevista`. Em `lib/pipeline/destinatarios.ts`, `TaughtPayload` ganha:
 
@@ -428,7 +428,7 @@ Em `lib/pipeline/types.ts`, `ClientPrefs` ganha `perfil: string | null;` depois 
   skills?: string[] | null;
 ```
 
-- [ ] **Passo 3: teste que falha**
+- [x] **Passo 3: teste que falha**
 
 ```ts
 // tests/contexto-skill.test.ts
@@ -445,7 +445,7 @@ test("skill válida passa com a origem", () => {
 });
 ```
 
-- [ ] **Passo 4: implementar em `lib/pipeline/context.ts`**
+- [x] **Passo 4: implementar em `lib/pipeline/context.ts`**
 
 ```ts
 import { ehSkill } from "../skills-catalogo";
@@ -463,7 +463,9 @@ E nos selects:
 - `loadEstadoComum`, preferências: acrescentar `perfil` à lista de colunas de `vm_client_preferences`.
 - `loadEstadoComum`, lições: `.select("id, dimensao, destinatarios, titulo, descricao, grupo, alcance, skills, created_at, vm_lessons!inner(client_id)")` e, no `payload`, `alcance: t.alcance ?? null, skills: t.skills ?? null,`.
 
-- [ ] **Passo 5: rodar** `npx vitest run tests/contexto-skill.test.ts` → PASS; gate; commit (`feat(skills): migrations 0051-0054 e skill da sessao no contexto`).
+Nota da execução (20/10/2026): o teste ganhou `vi.mock("@/lib/db")`, porque `context.ts` cria os clients do Supabase no import e sem env o arquivo nem carrega. Os fixtures de `ClientPrefs` em `tests/cliente-modelagem.test.ts` e `tests/kasparov-contexto.test.ts` ganharam `perfil: null`. A numeração 0051 a 0054 estava livre.
+
+- [x] **Passo 5: rodar** `npx vitest run tests/contexto-skill.test.ts` → PASS; gate; commit (`feat(skills): migrations 0051-0054 e skill da sessao no contexto`).
 
 ---
 

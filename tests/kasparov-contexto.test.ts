@@ -13,6 +13,7 @@ const prefs: ClientPrefs = {
   vocabulario_evitar: ["disruptivo"],
   vocabulario_usar: ["taxa efetiva"],
   notas_entrevista: null,
+  perfil: null,
 };
 
 const ctx = (over: Partial<GenerationContext> = {}) =>

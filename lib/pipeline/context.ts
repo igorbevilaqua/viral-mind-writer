@@ -18,6 +18,7 @@ import {
 } from "./few-shot";
 import { carregarEstrategia } from "./estrategia";
 import { modeloValidoPara } from "../llm-catalogo";
+import { ehSkill } from "../skills-catalogo";
 import { modeloDe } from "../llm-config";
 import type { Attachment, BannedPhrase, ClientPrefs, GenerationContext } from "./types";
 
@@ -222,7 +223,7 @@ async function loadEstadoComum(clientId: string | null, modoModelagem: boolean):
     clientId
       ? appDb
           .from("vm_client_preferences")
-          .select("proibicoes, tom_de_voz, temas_preferidos, vocabulario_evitar, vocabulario_usar, notas_entrevista, viral_data_cliente_id, clientes(nome)")
+          .select("proibicoes, tom_de_voz, temas_preferidos, vocabulario_evitar, vocabulario_usar, notas_entrevista, perfil, viral_data_cliente_id, clientes(nome)")
           .eq("client_id", clientId)
           .maybeSingle()
       : Promise.resolve({ data: null }),
@@ -295,7 +296,7 @@ async function loadEstadoComum(clientId: string | null, modoModelagem: boolean):
   try {
     const { data } = await appDb
       .from("vm_lesson_learnings")
-      .select("id, dimensao, destinatarios, titulo, descricao, grupo, created_at, vm_lessons!inner(client_id)")
+      .select("id, dimensao, destinatarios, titulo, descricao, grupo, alcance, skills, created_at, vm_lessons!inner(client_id)")
       .eq("active", true)
       .order("created_at", { ascending: false });
     const rows = (data ?? [])
@@ -330,6 +331,8 @@ async function loadEstadoComum(clientId: string | null, modoModelagem: boolean):
           destinatarios: t.destinatarios ?? [],
           dimensao: t.dimensao,
           grupo: t.grupo ?? null,
+          alcance: t.alcance ?? null,
+          skills: t.skills ?? null,
           recorrencia: recorrencia.get(t.grupo ?? t.id) ?? 1,
         },
       }))
@@ -377,10 +380,17 @@ async function carregarAnexos(sessionId: string) {
   return appDb.from("vm_attachments").select(colunas).eq("session_id", sessionId);
 }
 
+// Plano 025: a coluna é confiável só depois do check da 0052; o filtro aqui protege sessão
+// gravada por código antigo e qualquer valor fora das quatro.
+export function skillDaSessao(s: { skill?: unknown; skill_origem?: unknown }): Pick<GenerationContext, "skill" | "skillOrigem"> {
+  if (!ehSkill(s.skill)) return { skill: null, skillOrigem: null };
+  return { skill: s.skill, skillOrigem: s.skill_origem === "sugerida" ? "sugerida" : "escolhida" };
+}
+
 export async function loadContext(sessionId: string): Promise<GenerationContext> {
   const { data: session, error } = await appDb
     .from("vm_sessions")
-    .select("id, user_id, prompt, client_id, artifacts, premissa, premissa_origem, modelo")
+    .select("id, user_id, prompt, client_id, artifacts, premissa, premissa_origem, modelo, skill, skill_origem")
     .eq("id", sessionId)
     .single();
   if (error || !session) throw new Error(`sessão não encontrada: ${error?.message}`);
@@ -406,8 +416,7 @@ export async function loadContext(sessionId: string): Promise<GenerationContext>
     prompt: session.prompt,
     premissa: (session.premissa ?? "").trim(),
     premissaOrigem: (session.premissa_origem ?? null) as GenerationContext["premissaOrigem"],
-    skill: null, // plano 025, Task 3 troca pela coluna da sessão
-    skillOrigem: null,
+    ...skillDaSessao(session),
     clientId: session.client_id,
     // A coluna só é LIDA hoje: o seletor da home saiu quando a tela de configuração passou a
     // mandar em quem escreve. As sessões criadas enquanto ele existiu têm valor gravado e

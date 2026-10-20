@@ -12,6 +12,7 @@ const prefs: ClientPrefs = {
   vocabulario_evitar: ["sonegar"],
   vocabulario_usar: ["planejamento tributário"],
   notas_entrevista: "atende empresários do agro há 15 anos",
+  perfil: null,
 };
 
 const ctx = (modoModelagem: boolean, p: ClientPrefs | null = prefs) =>
