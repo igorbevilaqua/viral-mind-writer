@@ -10,6 +10,7 @@ interface Prefs {
   vocabulario_evitar: string[];
   vocabulario_usar: string[];
   notas_entrevista: string | null;
+  perfil?: string | null;
   updated_at?: string | null;
 }
 
@@ -56,6 +57,7 @@ export default function ClientPrefsEditor({
     vocabulario_evitar: (prefs?.vocabulario_evitar ?? []).join("\n"),
     vocabulario_usar: (prefs?.vocabulario_usar ?? []).join("\n"),
     notas_entrevista: prefs?.notas_entrevista ?? "",
+    perfil: prefs?.perfil ?? "",
   });
   const [pending, startTransition] = useTransition();
   const [saved, setSaved] = useState(false);
@@ -76,7 +78,8 @@ export default function ClientPrefsEditor({
     usar.length ||
     temas.length ||
     prefs?.tom_de_voz ||
-    prefs?.notas_entrevista
+    prefs?.notas_entrevista ||
+    prefs?.perfil
   );
   const av = avatarColor(client.nome);
   const subtitle = hasPrefs ? relTime(prefs?.updated_at) ?? "preferências registradas" : "sem preferências registradas";
@@ -153,6 +156,9 @@ export default function ClientPrefsEditor({
             <Field label="NOTAS DE ENTREVISTA" span2>
               <textarea value={form.notas_entrevista} onChange={set("notas_entrevista")} rows={4} className={inputCls} placeholder="ex: prefere gravar de manhã" />
             </Field>
+            <Field label="PERFIL DO CLIENTE" span2>
+              <textarea value={form.perfil} onChange={set("perfil")} rows={12} className={inputCls} placeholder="gerado dos estudos (modos, hook, outubro). Edite à vontade" />
+            </Field>
             <p className="sm:col-span-2 text-xs text-white/35 -mt-1">Uma linha por item nas listas. Tudo aqui entra como restrição inviolável nos roteiros.</p>
           </div>
         ) : (
@@ -175,6 +181,12 @@ export default function ClientPrefsEditor({
             </Section>
             <Section label="NOTAS DE ENTREVISTA" show={!!prefs?.notas_entrevista}>
               <Prose muted>{prefs?.notas_entrevista}</Prose>
+            </Section>
+            <Section label="PERFIL DO CLIENTE" show={!!prefs?.perfil}>
+              {/* o perfil é texto em linhas (seções e itens): sem isto o <p> junta tudo */}
+              <div className="whitespace-pre-line">
+                <Prose muted>{prefs?.perfil}</Prose>
+              </div>
             </Section>
           </div>
         )}

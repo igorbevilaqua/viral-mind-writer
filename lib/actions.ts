@@ -145,6 +145,7 @@ export async function savePreferences(clientId: string, form: {
   vocabulario_evitar: string;
   vocabulario_usar: string;
   notas_entrevista: string;
+  perfil: string;
 }) {
   // Regra 3: preferência de cliente é restrição inviolável no prompt dele — adm edita, todos leem.
   await exigirAcesso({ adm: "editar as preferências do cliente" });
@@ -157,6 +158,7 @@ export async function savePreferences(clientId: string, form: {
     vocabulario_evitar: toArray(form.vocabulario_evitar),
     vocabulario_usar: toArray(form.vocabulario_usar),
     notas_entrevista: form.notas_entrevista || null,
+    perfil: form.perfil || null,
     updated_at: new Date().toISOString(),
   });
   if (error) throw new Error(error.message);

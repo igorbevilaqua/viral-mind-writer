@@ -1122,7 +1122,7 @@ Esperado sem `--aplicar`: `faria: { universal: 62, modo: 61, cliente: 17, caso: 
 **Interfaces:**
 - Produz: `slugCliente(nome): string`, `leituraDoModo(m): string`, `montarPerfil(entrada): string` em `lib/perfil-cliente.ts`.
 
-- [ ] **Passo 1: teste que falha**
+- [x] **Passo 1: teste que falha**
 
 ```ts
 // tests/perfil-cliente.test.ts
@@ -1157,7 +1157,7 @@ test("o perfil tem as três partes e pula o que não existe", () => {
 });
 ```
 
-- [ ] **Passo 2: ver falhar**, depois implementar:
+- [x] **Passo 2: ver falhar**, depois implementar:
 
 ```ts
 // lib/perfil-cliente.ts
@@ -1242,7 +1242,7 @@ void (async () => {
 })();
 ```
 
-- [ ] **Passo 3: o perfil chega aos agentes.** Em `clientPrefsBlock` (`draft.ts`), no fim do template do bloco não modelagem (depois de `Notas da entrevista`):
+- [x] **Passo 3: o perfil chega aos agentes.** Em `clientPrefsBlock` (`draft.ts`), no fim do template do bloco não modelagem (depois de `Notas da entrevista`):
 
 ```ts
 ${p.perfil ? `\n# PERFIL DO CLIENTE (o que a casa aprendeu com ele; em conflito, a skill decide o modo e o perfil decide tom, território e o que evitar)\n${p.perfil}` : ""}
@@ -1250,10 +1250,11 @@ ${p.perfil ? `\n# PERFIL DO CLIENTE (o que a casa aprendeu com ele; em conflito,
 
 `clientPrefsBlock` já chega ao roteirista, à revisão, ao hook e à premissa; em modelagem o perfil fica de fora de propósito (o cliente vira só veto, `clientModelagemBlock`).
 
-- [ ] **Passo 4: edição.** `savePreferences` ganha `perfil: string` no `form` e `perfil: form.perfil || null` no upsert. `components/client-prefs-editor.tsx` ganha o campo, no mesmo padrão de `notas_entrevista` (estado inicial `perfil: prefs?.perfil ?? ""`, textarea com `rows={12}` e rótulo "PERFIL DO CLIENTE", e a seção de leitura com `<Prose muted>{prefs?.perfil}</Prose>`).
+- [x] **Passo 4: edição.** `savePreferences` ganha `perfil: string` no `form` e `perfil: form.perfil || null` no upsert. `components/client-prefs-editor.tsx` ganha o campo, no mesmo padrão de `notas_entrevista` (estado inicial `perfil: prefs?.perfil ?? ""`, textarea com `rows={12}` e rótulo "PERFIL DO CLIENTE", e a seção de leitura com `<Prose muted>{prefs?.perfil}</Prose>`).
 
-- [ ] **Passo 5: rodar** o teste → PASS; gate; commit (`feat(cliente): perfil do cliente gerado do estudo e editavel`).
-- [ ] **Passo 6 (operador, depois da 0053 e da triagem):** `npx tsx --env-file=.env.local scripts/gerar-perfis.ts`.
+- [x] **Passo 5: rodar** o teste → PASS; gate; commit (`feat(cliente): perfil do cliente gerado do estudo e editavel`).
+- [x] **Passo 5b (feito em 20/10/2026):** o perfil também leva o hook por cliente e por nicho (hooks_5 §2 e CRUZAMENTO "Perfil do cliente"), medido só no roteiro da casa (base do REFILTRO). O que o estudo com cortes dizia e o roteiro não repete entra como "sinal fraco", e o que nem aparece no roteiro fica de fora. "De X a império" e nostalgia (Decisão 5) aparecem mesmo perto do neutro. Rodado sem gravar: 24 perfis em `docs/perfis-2026-10/` para o time revisar. As lições por cliente ficam de fora até a 0054 e a triagem da Task 8.
+- [ ] **Passo 6 (operador, no release, depois da 0053 e da triagem):** `npx tsx --env-file=.env.local scripts/gerar-perfis.ts --aplicar`. Sem `--aplicar` o script só escreve os arquivos.
 
 ---
 

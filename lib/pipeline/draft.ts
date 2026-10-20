@@ -167,7 +167,7 @@ ${p.vocabulario_evitar.length ? `Nunca usar as palavras: ${p.vocabulario_evitar.
 ${p.tom_de_voz ? `Tom: ${p.tom_de_voz}` : ""}
 ${p.vocabulario_usar.length ? `Preferir vocabulário: ${p.vocabulario_usar.join(", ")}` : ""}
 ${p.temas_preferidos.length ? `Temas preferidos: ${p.temas_preferidos.join(", ")}` : ""}
-${p.notas_entrevista ? `Notas da entrevista: ${p.notas_entrevista}` : ""}`;
+${p.notas_entrevista ? `Notas da entrevista: ${p.notas_entrevista}` : ""}${p.perfil ? `\n\n# PERFIL DO CLIENTE (o que a casa aprendeu com ele. Em conflito, a skill decide o modo e o perfil decide tom, território e o que evitar)\n${p.perfil}` : ""}`;
 }
 
 export function buildDynamicSystemBlock(ctx: GenerationContext): string {
