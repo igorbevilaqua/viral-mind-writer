@@ -943,7 +943,7 @@ e em `medirPiso(hook, corpo, skill?: Skill | null)`, usar `const teto = { ...PIS
 **Interfaces:**
 - Produz: `ordenarPorSkill<T>(itens: T[], modoDe: (t: T) => string | undefined, skill: Skill | null): T[]` em `few-shot.ts`; `export async function fetchFewShot(prompt, clientId, skill: Skill | null = null)`.
 
-- [ ] **Passo 1: teste que falha**
+- [x] **Passo 1: teste que falha**
 
 ```ts
 // em tests/few-shot.test.ts
@@ -956,7 +956,7 @@ test("com skill, os roteiros da mesma skill vêm primeiro, na ordem de coeficien
 });
 ```
 
-- [ ] **Passo 2: ver falhar**, depois implementar em `few-shot.ts`:
+- [x] **Passo 2: ver falhar**, depois implementar em `few-shot.ts`:
 
 ```ts
 import type { Skill } from "../skills-catalogo";
@@ -1010,7 +1010,7 @@ async function fewShotDaSkill(skill: Skill, excluirCliente: string, quantos: num
 
 Em `fetchFewShot`, com `skill`: `const casa = await fewShotDaCasa(clientId, skill);` e, se `skill` e menos de 2 de `casa` têm o modo da skill na origem, `casa.splice(1, casa.length - 1, ...(await fewShotDaSkill(skill, clientId, 2)))` antes de devolver (ficam: o melhor do cliente, para a voz, e dois da skill). `loadContext` passa `skillDaSessao(session).skill` (o select de `vm_sessions` precisa vir antes do `Promise.all`; ele já vem); `loadContextBancada(clientId, prompt, skill = null)` repassa.
 
-- [ ] **Passo 3: rodar e ver passar**; gate; commit (`feat(skills): exemplos de voz da mesma skill`).
+- [x] **Passo 3: rodar e ver passar**; gate; commit (`feat(skills): exemplos de voz da mesma skill`).
 
 ---
 

@@ -2,6 +2,7 @@
 // voz" do humanizador). Lógica PURA: sem db, sem OpenAI — o ranking é a decisão que está em
 // discussão e ela precisa ser testável sem env, mesmo motivo de lib/performance-metrics.ts.
 import { fmtNum } from "../format";
+import type { Skill } from "../skills-catalogo";
 
 // O critério de hoje é `views`. `taxa_compartilhamento` só entra com aprovação humana
 // explícita (fila do Kasparov + migration 0036) — trocar o critério troca ~4 dos 5 exemplos.
@@ -112,6 +113,14 @@ export function rankFewShot(
     ...ordenar(doCliente, criterio).map(([c, por]) => exemplo(c, por, criterio, "cliente")),
     ...ordenar(globais, criterio).map(([c, por]) => exemplo(c, por, criterio, "global")),
   ].slice(0, n);
+}
+
+// Plano 025: exemplo vence regra (024, P3), e o exemplo certo é o do mesmo modo: um roteiro de
+// mecanismo ensina a explicar, não a contar uma trajetória. Estável: dentro de cada grupo, a
+// ordem de coeficiente que veio do banco se mantém.
+export function ordenarPorSkill<T>(itens: T[], modoDe: (t: T) => string | undefined, skill: Skill | null): T[] {
+  if (!skill) return itens;
+  return [...itens.filter((t) => modoDe(t) === skill), ...itens.filter((t) => modoDe(t) !== skill)];
 }
 
 /** Escopo efetivo do conjunto: "cliente" só quando exemplos do cliente entraram (≥3, por construção). */

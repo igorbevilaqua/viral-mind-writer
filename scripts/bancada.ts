@@ -14,7 +14,7 @@
 // só do corpo para baixo. Só vale quando o braço NÃO muda o agente nem o playbook de hook.
 //
 // --skill-map h3=historia,h4=mecanismo (plano 025, piloto) fixa a skill de cada pauta na mão,
-// depois da premissa e antes da pesquisa. Pauta fora do mapa roda sem skill. Não combina com
+// desde o contexto (exemplos de voz da skill) e antes da pesquisa. Pauta fora do mapa roda sem skill. Não combina com
 // --montante: a pesquisa muda com o modo.
 //
 //   npx tsx --env-file=.env.local scripts/bancada.ts --braco A --saida <dir> [--so h1,c3] [--n 5] [--montante <dir>/A]
@@ -88,7 +88,8 @@ function custo(log: UsageLog): number {
 
 async function rodar(p: Pauta) {
   const { clientId, prompt } = await resolver(p);
-  const ctx = await loadContextBancada(clientId, prompt);
+  // A skill do mapa entra já no contexto: os exemplos de voz vêm do mesmo modo, como na produção.
+  const ctx = await loadContextBancada(clientId, prompt, SKILL_MAP.get(p.id) ?? null);
 
   let artifacts: SessionArtifacts;
   let hookPronto: Parameters<typeof escreverRoteiro>[5];
@@ -112,9 +113,6 @@ async function rodar(p: Pauta) {
     ctx.premissaOrigem = "derivada";
     ctx.premissaProvas = derivada.o_que_provaria;
     ctx.premissaContraintuitivo = derivada.angulo_contraintuitivo;
-    const skill = SKILL_MAP.get(p.id) ?? null;
-    ctx.skill = skill;
-    ctx.skillOrigem = skill ? "escolhida" : null;
     const dossie = await research(ctx);
     const candidatas = await proposeNarratives(ctx, dossie);
     const rank = await rankNarratives(ctx, dossie, candidatas);

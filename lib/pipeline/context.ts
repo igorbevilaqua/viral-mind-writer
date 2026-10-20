@@ -9,6 +9,7 @@ import {
   resumirComparacao,
   CRITERIO_PADRAO,
   escopoFewShot,
+  ordenarPorSkill,
   type CandidatoFewShot,
   type ComparacaoCriterio,
   type CriterioFewShot,
@@ -18,7 +19,8 @@ import {
 } from "./few-shot";
 import { carregarEstrategia } from "./estrategia";
 import { modeloValidoPara } from "../llm-catalogo";
-import { ehSkill } from "../skills-catalogo";
+import { ehSkill, type Skill } from "../skills-catalogo";
+import { modosDosRoteiros } from "./modo-roteiro";
 import { modeloDe } from "../llm-config";
 import type { Attachment, BannedPhrase, ClientPrefs, GenerationContext } from "./types";
 
@@ -119,7 +121,7 @@ async function textosDoCrm(ids: string[]): Promise<Map<string, string>> {
   return new Map((data ?? []).filter((r) => r.script_text).map((r) => [r.id as string, limparNotasDoCrm(r.script_text as string)]));
 }
 
-async function fewShotDaCasa(clientId: string): Promise<ExemploFewShot[]> {
+async function fewShotDaCasa(clientId: string, skill: Skill | null): Promise<ExemploFewShot[]> {
   const desde = new Date(Date.now() - JANELA_DA_CASA_DIAS * 864e5).toISOString();
   const { data: topo, error } = await viralData
     .schema("oraculo")
@@ -137,10 +139,12 @@ async function fewShotDaCasa(clientId: string): Promise<ExemploFewShot[]> {
     .select("id, roteiro, crm_script_id")
     .in("id", topo.map((t) => t.video_id));
   const porId = new Map((videos ?? []).map((v) => [v.id, v]));
-  const escritos = await textosDoCrm((videos ?? []).map((v) => v.crm_script_id as string | null).filter((x): x is string => !!x));
+  const crmIds = (videos ?? []).map((v) => v.crm_script_id as string | null).filter((x): x is string => !!x);
+  // Sem a 0051 (ou sem rótulo), modos vem vazio e a ordem é a de sempre.
+  const [escritos, modos] = await Promise.all([textosDoCrm(crmIds), modosDosRoteiros(crmIds)]);
   const vistos = new Set<string>();
   const out: ExemploFewShot[] = [];
-  for (const t of topo) {
+  for (const t of ordenarPorSkill(topo, (t) => modos.get(porId.get(t.video_id)?.crm_script_id as string), skill)) {
     const v = porId.get(t.video_id);
     const chave = (v?.crm_script_id as string | null) ?? (t.video_id as string);
     const texto = (v?.crm_script_id && escritos.get(v.crm_script_id as string)) || (v?.roteiro as string | undefined);
@@ -148,7 +152,7 @@ async function fewShotDaCasa(clientId: string): Promise<ExemploFewShot[]> {
     vistos.add(chave);
     out.push({
       roteiro: texto,
-      origem: `roteiro ${escritos.has(chave) ? "escrito" : "transcrito"} da casa para este cliente — ${Number(t.coeficiente_viral).toFixed(1)}x a média do canal, ${fmtNum(Number(t.views_total))} views`,
+      origem: `roteiro ${escritos.has(chave) ? "escrito" : "transcrito"} da casa para este cliente — ${Number(t.coeficiente_viral).toFixed(1)}x a média do canal, ${fmtNum(Number(t.views_total))} views${modos.get(chave) ? ` · ${modos.get(chave)}` : ""}`,
       views: Number(t.views_total) || 0,
       taxa: null,
       criterio: "views",
@@ -159,14 +163,72 @@ async function fewShotDaCasa(clientId: string): Promise<ExemploFewShot[]> {
   return out;
 }
 
+// Plano 025: cliente que quase não escreve neste modo (Rodrigo Waughan tem 4% de demonstração,
+// onde rende 2,04x) ainda precisa de exemplo do modo. Vêm de outros clientes, com a origem dita.
+// ponytail: 200 rótulos quaisquer da skill (teto de URL do PostgREST, ver etl.ts), não os 200
+// melhores. Ordenar por coeficiente antes exigiria juntar vm_roteiro_modo ao fato_video no banco.
+async function fewShotDaSkill(skill: Skill, excluirCliente: string, quantos: number): Promise<ExemploFewShot[]> {
+  const desde = new Date(Date.now() - JANELA_DA_CASA_DIAS * 864e5).toISOString();
+  const { data: rot } = await appDb
+    .from("vm_roteiro_modo")
+    .select("crm_script_id")
+    .eq("modo", skill)
+    .neq("cliente_id", excluirCliente)
+    .neq("confianca", "baixa")
+    .limit(200);
+  const crmIds = (rot ?? []).map((r) => r.crm_script_id as string);
+  if (!crmIds.length) return [];
+  const { data: videos } = await viralData.from("videos").select("id, roteiro, crm_script_id").in("crm_script_id", crmIds);
+  if (!videos?.length) return [];
+  const { data: topo } = await viralData
+    .schema("oraculo")
+    .from("fato_video")
+    .select("video_id, coeficiente_viral, views_total")
+    .in("video_id", videos.map((v) => v.id))
+    .eq("maturando", false)
+    .gte("data_publicacao", desde)
+    .order("coeficiente_viral", { ascending: false })
+    .limit(20);
+  const porId = new Map(videos.map((v) => [v.id, v]));
+  const escritos = await textosDoCrm([...new Set((topo ?? []).map((t) => porId.get(t.video_id)?.crm_script_id as string).filter(Boolean))]);
+  const out: ExemploFewShot[] = [];
+  const vistos = new Set<string>();
+  for (const t of topo ?? []) {
+    const v = porId.get(t.video_id);
+    const crm = v?.crm_script_id as string | undefined;
+    const texto = (crm && escritos.get(crm)) || (v?.roteiro as string | undefined);
+    if (!crm || !texto || texto.length < 600 || vistos.has(crm)) continue;
+    vistos.add(crm);
+    out.push({
+      roteiro: texto,
+      origem: `roteiro ${escritos.has(crm) ? "escrito" : "transcrito"} da casa para OUTRO cliente, mesma skill (${skill}): ${Number(t.coeficiente_viral).toFixed(1)}x a média do canal`,
+      views: Number(t.views_total) || 0,
+      taxa: null,
+      criterio: "views",
+      escopo: "global",
+    });
+    if (out.length === quantos) break;
+  }
+  return out;
+}
+
 export async function fetchFewShot(
   prompt: string,
-  clientId: string | null
+  clientId: string | null,
+  skill: Skill | null = null
 ): Promise<{ exemplos: ExemploFewShot[]; criterio: CriterioFewShot; escopo: EscopoFewShot }> {
   if (clientId) {
     try {
-      const casa = await fewShotDaCasa(clientId);
-      if (casa.length === FEW_SHOT_DA_CASA) return { exemplos: casa, criterio: "views", escopo: "cliente" };
+      const casa = await fewShotDaCasa(clientId, skill);
+      if (casa.length === FEW_SHOT_DA_CASA) {
+        // Fica o melhor do cliente (já o da skill, se houver), para a voz, e os da skill completam.
+        // Sem a 0051 ou sem roteiro da skill, daSkill vem vazio e os 3 da casa ficam como estão.
+        if (skill && casa.filter((e) => e.origem.endsWith(` · ${skill}`)).length < 2) {
+          const daSkill = await fewShotDaSkill(skill, clientId, 2);
+          casa.splice(FEW_SHOT_DA_CASA - daSkill.length, daSkill.length, ...daSkill);
+        }
+        return { exemplos: casa, criterio: "views", escopo: "cliente" };
+      }
     } catch (e) {
       console.error("few-shot da casa falhou, seguindo pelo corpus", e);
     }
@@ -397,7 +459,7 @@ export async function loadContext(sessionId: string): Promise<GenerationContext>
 
   const [attachments, fewShot] = await Promise.all([
     carregarAnexos(sessionId),
-    fetchFewShot(session.prompt, session.client_id),
+    fetchFewShot(session.prompt, session.client_id, skillDaSessao(session).skill),
   ]);
   // Falha de query aqui gerava roteiro silenciosamente SEM materiais.
   if (attachments.error) throw new Error(`falha ao carregar anexos: ${attachments.error.message}`);
@@ -466,13 +528,13 @@ export async function loadContextAvulso(clientId: string | null): Promise<Genera
 
 // Banco de prova (plano 024, 1.1): o contexto de uma pauta sem sessão. Mesmo estado comum e
 // mesmo few-shot da geração real; sem anexos (as pautas do banco são tema digitado).
-export async function loadContextBancada(clientId: string, prompt: string): Promise<GenerationContext> {
-  const [ctx, fewShot] = await Promise.all([loadContextAvulso(clientId), fetchFewShot(prompt, clientId)]);
+export async function loadContextBancada(clientId: string, prompt: string, skill: Skill | null = null): Promise<GenerationContext> {
+  const [ctx, fewShot] = await Promise.all([loadContextAvulso(clientId), fetchFewShot(prompt, clientId, skill)]);
   return {
     ...ctx,
     prompt,
-    skill: null,
-    skillOrigem: null,
+    skill,
+    skillOrigem: skill ? "escolhida" : null,
     modelo: await modeloDe("escrita"),
     fewShot: fewShot.exemplos,
     fewShotCriterio: fewShot.criterio,

@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   candidatosDeDocumentos,
   escopoFewShot,
+  ordenarPorSkill,
   rankFewShot,
   resumirComparacao,
   taxaCompartilhamento,
@@ -184,5 +185,13 @@ describe("resumirComparacao — o que vai à mesa do humano", () => {
   it("nada a decidir (sem cobertura, ou conjuntos iguais) → null, sem botão no escuro", () => {
     expect(resumirComparacao("tema", [c("a", 100), c("b", 50)])).toBeNull();
     expect(resumirComparacao("tema", [c("a", 100, 10)], 5)).toBeNull();
+  });
+});
+
+describe("ordenarPorSkill (plano 025)", () => {
+  it("com skill, os roteiros da mesma skill vêm primeiro, na ordem de coeficiente", () => {
+    const itens = [{ id: "a", m: "mecanismo" }, { id: "b", m: "historia" }, { id: "c", m: undefined }, { id: "d", m: "historia" }];
+    expect(ordenarPorSkill(itens, (x) => x.m, "historia").map((x) => x.id)).toEqual(["b", "d", "a", "c"]);
+    expect(ordenarPorSkill(itens, (x) => x.m, null).map((x) => x.id)).toEqual(["a", "b", "c", "d"]);
   });
 });

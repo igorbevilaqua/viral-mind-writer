@@ -267,9 +267,8 @@ export async function runPipeline(
         ctx.skillOrigem = "sugerida";
         ctx.skillMotivo = escolha.motivo;
         await appDb.from("vm_sessions").update({ skill: escolha.skill, skill_origem: "sugerida" }).eq("id", sessionId);
-        // Os exemplos de voz foram buscados no loadContext, antes da skill existir.
-        // Task 7 do 025 passa ctx.skill aqui; até lá a busca é a mesma do loadContext.
-        ctx.fewShot = (await fetchFewShot(ctx.prompt, ctx.clientId)).exemplos;
+        // Os exemplos de voz foram buscados no loadContext, antes da skill existir: refaz com ela.
+        ctx.fewShot = (await fetchFewShot(ctx.prompt, ctx.clientId, ctx.skill)).exemplos;
       }
     }
     if (ctx.skill) emit({ type: "skill", skill: ctx.skill, origem: ctx.skillOrigem ?? "escolhida", motivo: ctx.skillMotivo });
