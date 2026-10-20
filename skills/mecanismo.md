@@ -67,11 +67,11 @@ Avanço: por explicação. Cada passo do mecanismo traz a sua consequência, e c
 
 Termo técnico é traduzido na mesma frase, pela função ("o órgão que autoriza compra de empresa"). O senso comum que o caso contraria é dito com todas as letras antes de ser desmontado.
 
-Um caso e um eixo até o fim. O personagem do caso não rouba o corpo: se o texto virou biografia, ele mudou de modo.
+Um caso e um eixo até o fim. O personagem do caso não rouba o corpo: se o texto virou biografia, ele mudou de modo. A sequência no tempo (primeiro, depois, anos depois) não é o avanço deste modo. A trajetória do caso cabe em duas frases de contexto, e o resto do corpo é a regra, a conta ou a jogada.
 
 Fim: este modo perde gente no fim. Guarde o detalhe que vira o jogo para o penúltimo parágrafo e mantenha a pergunta aberta até lá.
 
-Fecho: a regra geral que o caso prova, reaplicável, ou a consequência concreta para quem assiste. Dito no caso, retomando palavras do hook, nunca como moral.
+Fecho: a regra geral que o caso prova, reaplicável, ou a consequência concreta para quem assiste. Dito no caso, retomando palavras do hook, nunca como moral. Nunca feche com dica ou conselho ao espectador ("fique de olho", "antes de comprar"): na casa, dica para o espectador é payoff que perde.
 
 Tamanho: o roteiro inteiro falado fica entre 380 e 460 palavras, o corpo entre 330 e 410. Abaixo de 350 no total este modo perde alcance.
 
@@ -85,7 +85,7 @@ Além do checklist comum, nesta skill:
 - Um caso e um eixo do começo ao fim.
 - O personagem do caso não virou o assunto. Se virou, aponte nos problemas: a peça mudou de modo.
 - O detalhe decisivo não foi gasto cedo: a curiosidade se mantém até o penúltimo parágrafo.
-- A lição sai do mecanismo, não de uma moral.
+- A lição sai do mecanismo, não de uma moral nem de uma dica ao espectador.
 
 ## comando
 

@@ -63,6 +63,10 @@ Avanço: por recursos e funcionamento. A coisa é o sujeito da maioria das frase
 
 O "como funciona" é explicado, não só anunciado: o princípio físico ou técnico em uma ou duas frases simples.
 
+Sigla técnica (CPU, GPU, NPU) só entra com o que ela faz colado na primeira vez ("o chip que roda a inteligência artificial"), ou sai. Ficha técnica não é desculpa para sopa de letras.
+
+O corpo é a coisa funcionando. Mercado, país e tendência entram em uma frase de contexto, nunca como a prova: se o corpo virou dados do setor, a peça virou panorama.
+
 Estágio honesto: protótipo não é produto à venda, previsão não é lançamento. Preço em reais.
 
 Fim: este modo perde gente no fim. O recurso mais impressionante fecha a escada, e o fecho diz o que a coisa representa: a tendência que ela inaugura, a disputa que ela muda ou uma pergunta de lado ao espectador. Retome o efeito do hook.
@@ -74,11 +78,12 @@ Tamanho: o roteiro inteiro falado fica entre 380 e 480 palavras, o corpo entre 3
 Além do checklist comum, nesta skill:
 - Cada recurso virou cena de uso para quem assiste.
 - Todo número difícil tem analogia.
+- Nenhuma sigla sem o que ela faz colado.
 - O estágio é honesto (protótipo, à venda, previsão).
 - O preço está em reais.
 - Cada recurso tem fonte.
 - O funcionamento está explicado, não só anunciado.
-- O corpo não virou a estratégia da empresa nem a biografia de quem criou. Se virou, aponte nos problemas: a peça mudou de modo.
+- O corpo não virou a estratégia da empresa, a biografia de quem criou nem um panorama do setor. Se virou, aponte nos problemas: a peça mudou de modo.
 
 ## comando
 

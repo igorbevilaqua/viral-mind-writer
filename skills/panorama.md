@@ -59,6 +59,8 @@ Prova: estatística agregada com fonte nomeada e ano, e a cadeia de consequênci
 
 Densidade: aqui os números podem passar de 2 a cada 100 palavras sem custo (na casa, a densidade não muda o resultado deste modo). Mesmo assim, cada número cumpre uma função (contraste, dimensão, prova ou autoridade), e o número difícil ganha escala brasileira.
 
+Sigla e nome que o brasileiro não conhece (um modelo, um programa, um órgão estrangeiro) entram com o que são colado, ou saem.
+
 Avanço: por dados e cadeia causal. Nomeie o padrão que une os casos. A cadeia não pula elo, e a tese não diz mais do que os dados mostram: a ressalva honesta entra antes do fecho.
 
 Fim: este modo perde gente no fim. Feche numa consequência concreta para quem assiste, no bolso, no trabalho ou no país dele. Se o vídeo pede comentário, a pergunta de lado fica na conclusão.
@@ -69,6 +71,7 @@ Tamanho: o roteiro inteiro falado fica entre 380 e 460 palavras, o corpo entre 3
 
 Além do checklist comum, nesta skill:
 - Todo número tem fonte e ano.
+- Nenhuma sigla ou nome estrangeiro sem o que ele é.
 - Os números comparados têm a mesma base e o mesmo período.
 - A cadeia não pula elo.
 - A tese tem o tamanho dos dados.
