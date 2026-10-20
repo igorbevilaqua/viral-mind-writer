@@ -478,7 +478,7 @@ Nota da execução (20/10/2026): o teste ganhou `vi.mock("@/lib/db")`, porque `c
 **Interfaces:**
 - Produz: `formatarMix(contagem: Record<string, number>): string`, `mixDoCliente(clientId: string): Promise<Record<string, number>>`, `modosDosRoteiros(crmIds: string[]): Promise<Map<string, string>>`.
 
-- [ ] **Passo 1: teste que falha**
+- [x] **Passo 1: teste que falha**
 
 ```ts
 // tests/modo-roteiro.test.ts
@@ -499,7 +499,7 @@ test("sem roteiro rotulado, nada", () => {
 });
 ```
 
-- [ ] **Passo 2: ver falhar**, depois implementar:
+- [x] **Passo 2: ver falhar**, depois implementar:
 
 ```ts
 // lib/pipeline/modo-roteiro.ts
@@ -544,7 +544,7 @@ export async function modosDosRoteiros(crmIds: string[]): Promise<Map<string, st
 }
 ```
 
-- [ ] **Passo 3: o script de carga**
+- [x] **Passo 3: o script de carga**
 
 ```ts
 // scripts/seed-roteiro-modo.ts
@@ -569,7 +569,7 @@ void (async () => {
 })();
 ```
 
-- [ ] **Passo 4: rodar o teste** → PASS; gate; commit (`feat(skills): rotulos de modo da casa e mix do cliente`).
+- [x] **Passo 4: rodar o teste** → PASS; gate; commit (`feat(skills): rotulos de modo da casa e mix do cliente`).
 
 - [ ] **Passo 5 (operador, depois da 0051 aplicada):** `npx tsx --env-file=.env.local scripts/seed-roteiro-modo.ts` → esperado `vm_roteiro_modo: 2832 linhas`.
 

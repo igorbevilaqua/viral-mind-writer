@@ -211,7 +211,7 @@ Aceite: os temas 1, 2, 3 e 5 de `licoes.md` (hook, fluxo, clareza, tiques) chega
 | juiz pareado: Codex contra humano de topo (só se o juiz passar de 62% na calibração) | a medir (1.5) | ≥ 45% de preferência |
 | **teto (decisão do Igor): coeficiente viral OU compartilhamentos por mil** dos publicados contra a base humana do mesmo cliente × rede × trimestre. Vale melhora em um sem piora no outro. Compartilhamento só existe em IG e TT | percentil de coeficiente 0,66 (n=20, enviesado); compartilhamento a medir | manter ou subir com n ≥ 60 |
 
-**4.4 Religar coletas paradas (fora do repo, Viral Data).** Retenção (`metricas_retencao`) parou em 14/09. Texto de comentário parou em junho. Salvamento do IG nunca foi coletado. É o coletor (`Viral Data/api-viral-data`), não o Codex. Sem retenção, o hook e o subhook ficam sem sinal próprio.
+**4.4 Religar coletas paradas (fora do repo, Viral Data).** Retenção (`metricas_retencao`) parou em 14/09. Texto de comentário parou em junho. Salvamento do IG nunca foi coletado. Correção (20/10/2026, docs/ligacao-roteiro-video/RETENCAO.md): nenhum sistema coleta retenção. Ela entra só por planilha importada ou digitação no performa-social (`ImportRetentionModal`, `RetentionTab`), e cada cliente parou num dia diferente porque o time deixou de importar. Não há conta conectada (`instagram_tokens` vazia). Sem retenção, o hook e o subhook ficam sem sinal próprio.
 
 ### Onda 5: voz por cliente
 
