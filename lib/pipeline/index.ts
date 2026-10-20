@@ -1,7 +1,8 @@
 import { appDb } from "../db";
 import { bindUsageLog, type UsageLog } from "../anthropic";
 import { guardEmit, STALE_GENERATION_MS } from "../generation";
-import { loadContext } from "./context";
+import { fetchFewShot, loadContext } from "./context";
+import { escolherSkill } from "./escolher-skill";
 import {
   analyzeModelagem,
   ensureTranscript,
@@ -250,6 +251,29 @@ export async function runPipeline(
     // Congelada: daqui pra frente todo agente lê ctx.premissa via premissaBlock(), a mesma string.
     ctx.premissa = premissa;
 
+    // ── SKILL (plano 025): o modo decide o que a pesquisa busca, então vem antes dela. ──
+    // Escolhida na criação: já está no ctx. Automática: decidida aqui, uma vez, na primeira geração.
+    // Sessão antiga com candidatas cacheadas segue sem skill: trocar o modo no meio exigiria
+    // refazer a pesquisa, e essa troca é um botão da tela (trocarSkill), não uma surpresa.
+    if (!ctx.skill && !ctx.artifacts?.candidatas?.length) {
+      emit({ type: "phase", phase: "skill" });
+      const compreensaoModelagem = modelando ? compreensaoBlock((await modelagemP)[0]?.analysis ?? {}) : undefined;
+      const escolha = await escolherSkill(ctx, compreensaoModelagem).catch((e) => {
+        console.error("escolha da skill falhou, seguindo pelo caminho único", e);
+        return null;
+      });
+      if (escolha) {
+        ctx.skill = escolha.skill;
+        ctx.skillOrigem = "sugerida";
+        ctx.skillMotivo = escolha.motivo;
+        await appDb.from("vm_sessions").update({ skill: escolha.skill, skill_origem: "sugerida" }).eq("id", sessionId);
+        // Os exemplos de voz foram buscados no loadContext, antes da skill existir.
+        // Task 7 do 025 passa ctx.skill aqui; até lá a busca é a mesma do loadContext.
+        ctx.fewShot = (await fetchFewShot(ctx.prompt, ctx.clientId)).exemplos;
+      }
+    }
+    if (ctx.skill) emit({ type: "skill", skill: ctx.skill, origem: ctx.skillOrigem ?? "escolhida", motivo: ctx.skillMotivo });
+
     // ── Pesquisa + narrativas + ranking (só na primeira geração da sessão) ──
     let artifacts: SessionArtifacts | null = ctx.artifacts;
     if (!artifacts?.candidatas?.length) {
@@ -422,6 +446,10 @@ export async function runPipeline(
             violations,
             narrativa_escolhida: { indice: artifacts?.escolhida ?? null, titulo: narrativa?.titulo, estrutura: narrativa?.estrutura },
             hook_racional: hookRes.racional,
+            // Plano 025: a skill desta geração e por que ela foi escolhida.
+            skill: ctx.skill,
+            skill_origem: ctx.skillOrigem,
+            skill_motivo: ctx.skillMotivo ?? null,
             // Fase 3: mecanismo do hook (taxonomia canônica) → o flywheel atribui ratio × mecanismo
             hook_mecanismo: hookRes.mecanismo,
             // WP-F: o que o anti-colapso viu e por que escolheu — sem isso "por que não Contraste

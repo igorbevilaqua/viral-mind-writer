@@ -159,7 +159,7 @@ async function fewShotDaCasa(clientId: string): Promise<ExemploFewShot[]> {
   return out;
 }
 
-async function fetchFewShot(
+export async function fetchFewShot(
   prompt: string,
   clientId: string | null
 ): Promise<{ exemplos: ExemploFewShot[]; criterio: CriterioFewShot; escopo: EscopoFewShot }> {

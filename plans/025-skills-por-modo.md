@@ -586,7 +586,7 @@ void (async () => {
 - Consome: `quandoDasSkills()` (Task 1), `mixDoCliente`, `formatarMix` (Task 4).
 - Produz: `escolherSkill(ctx, compreensao?): Promise<EscolhaSkill | null>`, `lerEscolha(input)`, `interface EscolhaSkill { skill: Skill; motivo: string; alternativa: Skill | null }`; evento `{ type: "skill"; skill: Skill; origem: "escolhida" | "sugerida"; motivo?: string }`; fase `"skill"`.
 
-- [ ] **Passo 1: teste que falha**
+- [x] **Passo 1: teste que falha**
 
 ```ts
 // tests/escolher-skill.test.ts
@@ -633,7 +633,7 @@ describe("escolha da skill", () => {
 });
 ```
 
-- [ ] **Passo 2: ver falhar**, depois implementar:
+- [x] **Passo 2: ver falhar**, depois implementar:
 
 ```ts
 // lib/pipeline/escolher-skill.ts
@@ -698,14 +698,14 @@ export async function escolherSkill(ctx: GenerationContext, compreensao?: string
 }
 ```
 
-- [ ] **Passo 3: evento e fase em `lib/pipeline/types.ts`.** Em `PipelineEvent`, fase: acrescentar `| "skill"` depois de `"premissa"`. Novo membro da união:
+- [x] **Passo 3: evento e fase em `lib/pipeline/types.ts`.** Em `PipelineEvent`, fase: acrescentar `| "skill"` depois de `"premissa"`. Novo membro da união:
 
 ```ts
   // Plano 025: a skill da sessão, escolhida pelo usuário ou sugerida pela sala.
   | { type: "skill"; skill: import("../skills-catalogo").Skill; origem: "escolhida" | "sugerida"; motivo?: string }
 ```
 
-- [ ] **Passo 4: o lugar no pipeline (`lib/pipeline/index.ts`).** Logo depois de `ctx.premissa = premissa;` (fim do bloco da premissa), inserir:
+- [x] **Passo 4: o lugar no pipeline (`lib/pipeline/index.ts`).** Logo depois de `ctx.premissa = premissa;` (fim do bloco da premissa), inserir:
 
 ```ts
     // ── SKILL (plano 025): o modo decide o que a pesquisa busca, então vem antes dela. ──
@@ -742,7 +742,7 @@ No `pipeline_trace` do insert, ao lado de `hook_racional`:
             skill_motivo: ctx.skillMotivo ?? null,
 ```
 
-- [ ] **Passo 5: rodar** `npx vitest run tests/escolher-skill.test.ts` → PASS; gate; commit (`feat(skills): a sala sugere a skill depois da premissa`).
+- [x] **Passo 5: rodar** `npx vitest run tests/escolher-skill.test.ts` → PASS; gate; commit (`feat(skills): a sala sugere a skill depois da premissa`).
 
 ---
 

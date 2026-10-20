@@ -6,6 +6,7 @@ export type PipelineEvent =
       type: "phase";
       phase:
         | "premissa"
+        | "skill"
         | "pesquisa"
         | "modelagem"
         | "narrativas"
@@ -27,6 +28,8 @@ export type PipelineEvent =
   // Modo modelagem: a autópsia extraiu a tese do original e o pipeline PAROU aqui. O usuário
   // confirma/edita e o run 2 segue reusando os artifacts. Ver runPipeline.
   | { type: "premissa_pendente"; sugerida: string }
+  // Plano 025: a skill da sessão, escolhida pelo usuário ou sugerida pela sala.
+  | { type: "skill"; skill: import("../skills-catalogo").Skill; origem: "escolhida" | "sugerida"; motivo?: string }
   | { type: "token"; text: string }
   | { type: "done"; scriptId: string }
   // Lock não adquirido: OUTRA conexão já está gerando esta sessão. Não é erro — é o sistema
