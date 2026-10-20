@@ -280,7 +280,8 @@ Os itens de maior retorno por esforço são 0.1, 0.6, 1.2, 2.4, 2.5 e 3.1.
 | 2.9 aviso na tela | feito (C) | caixa "Clareza" na sessão |
 | 3.1 lição do pedido | feito (C) | o texto regenerado pela IA deixou de ser gabarito |
 | 3.2 / 3.3 | coberto em parte | a lição de clareza virou doutrina permanente (2.6) e chega ao hook |
-| 4.1 / 4.2 | pendente | último roteiro marcado como publicado no Codex: 11/09 |
+| 4.1 | feito no branch `plano-025-skills-modo`, falta release | `casarComCrm()` em `lib/script-matches.ts` no ETL, migration 0055, backfill `scripts/backfill-matches.ts`. Erro do casamento agora sai no Summary do Actions. RPC antiga `vm_match_scripts` mantida como está (estoura 8s desde 21/09; o corte de 75 dias não a traz para baixo de 8s). Pré-requisito: `CRM_*` na Hostinger. Ver `docs/ligacao-roteiro-video/INVESTIGACAO.md` |
+| 4.2 | pendente | com 4.1 no ar: roteiro sem `crm_script_id` depois de 14 dias = "não usado" |
 
 ## 9. Placar do banco de prova (11/10/2026)
 

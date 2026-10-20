@@ -15,7 +15,7 @@ import { chaveDoCluster, observacoesDaEdicao, type TipoMudanca } from "./edit-di
 import { aggregatePreferences, axisValue, wilsonLower, type CalibAxis, type CalibOption } from "./calibration";
 import { celulaEncolhida } from "./study-stats";
 import { syncScriptPerformance } from "./script-performance";
-import { casarRoteiros } from "./script-matches";
+import { casarComCrm, casarRoteiros } from "./script-matches";
 import { ESTRUTURAS } from "./pipeline/taxonomia";
 import { codexVsCanal, type FatoCvc, type RoteiroCvc } from "./codex-vs-canal";
 import { modeloDe } from "./llm-config";
@@ -613,6 +613,10 @@ export async function runWeeklyEtl() {
 
   // ── Plano 020, WP-A: casa roteiro do Codex com o vídeo publicado por texto. Antes do
   // Flywheel 1/3 de propósito: o que casar aqui já entra como publicado no mesmo run.
+  // Plano 024, 4.1: primeiro pelo CRM (acha o dobro e tira os casados da busca da RPC antiga).
+  // Erro ou pulo de qualquer um dos dois vai no resultado, que o Summary do Actions mostra.
+  const casadosCrm = await casarComCrm();
+  if (casadosCrm.pulado) console.warn(`casamento pelo CRM pulado: ${casadosCrm.pulado}`);
   const casados = await casarRoteiros();
 
   // ── Flywheel 1/3: os roteiros publicados que o resto do ciclo usa.
@@ -891,5 +895,6 @@ export async function runWeeklyEtl() {
     scriptsSynced: synced,
     scriptsSemCorpus: naoCasaram.length,
     casados,
+    casadosCrm,
   };
 }
