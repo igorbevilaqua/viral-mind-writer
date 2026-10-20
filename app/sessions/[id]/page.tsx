@@ -27,7 +27,7 @@ export default async function SessionPage({
     .select(
       // `debug` entra pela fase corrente (debug.phase, gravada a cada troca pelo runPipeline):
       // é o que o modo acompanhamento mostra no lugar de um spinner mudo.
-      "id, prompt, premissa, premissa_origem, status, error_message, artifacts, debug, generation_started_at, created_at, client_id, user_id, clientes(nome)"
+      "id, prompt, premissa, premissa_origem, skill, skill_origem, status, error_message, artifacts, debug, generation_started_at, created_at, client_id, user_id, clientes(nome)"
     )
     .eq("id", id)
     .maybeSingle();
@@ -135,6 +135,8 @@ export default async function SessionPage({
         prompt: session.prompt,
         premissa: session.premissa ?? null,
         premissa_origem: session.premissa_origem ?? null,
+        skill: session.skill ?? null,
+        skill_origem: session.skill_origem ?? null,
         status: session.status,
         error_message: session.error_message,
         clientNome: client?.nome ?? null,

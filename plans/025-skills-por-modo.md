@@ -1264,7 +1264,7 @@ ${p.perfil ? `\n# PERFIL DO CLIENTE (o que a casa aprendeu com ele; em conflito,
 - Modificar: `lib/actions.ts` (`createSession`, nova `trocarSkill`), `components/home-form.tsx`, `components/session-view.tsx`
 - Teste: `tests/acoes-skill.test.ts`
 
-- [ ] **Passo 1: teste que falha** (a regra de gravação mora numa função pura, para o teste não precisar subir `lib/actions.ts` com banco e autenticação)
+- [x] **Passo 1: teste que falha** (a regra de gravação mora numa função pura, para o teste não precisar subir `lib/actions.ts` com banco e autenticação)
 
 ```ts
 // tests/acoes-skill.test.ts
@@ -1279,7 +1279,7 @@ test("skill válida é gravada como escolhida; vazia ou fora das quatro vira aut
 });
 ```
 
-- [ ] **Passo 2: ver falhar**, depois implementar. Em `lib/skills-catalogo.ts`:
+- [x] **Passo 2: ver falhar**, depois implementar. Em `lib/skills-catalogo.ts`:
 
 ```ts
 // As duas colunas de vm_sessions para uma skill vinda da tela. Vazia ou inválida = automática:
@@ -1308,7 +1308,7 @@ export async function trocarSkill(sessionId: string, skill: string) {
 }
 ```
 
-- [ ] **Passo 3: home.** Em `components/home-form.tsx`: `import { DICA_SKILL, NOME_SKILL, SKILLS } from "@/lib/skills-catalogo";`, estado `const [skill, setSkill] = useState("");`, `skill: skill || null` no `createSession`, e ao lado do seletor de cliente, só quando não há material de modelagem (com modelagem, a sala classifica o original):
+- [x] **Passo 3: home.** Em `components/home-form.tsx`: `import { DICA_SKILL, NOME_SKILL, SKILLS } from "@/lib/skills-catalogo";`, estado `const [skill, setSkill] = useState("");`, `skill: skill || null` no `createSession`, e ao lado do seletor de cliente, só quando não há material de modelagem (com modelagem, a sala classifica o original):
 
 ```tsx
 {!temModelagem && (
@@ -1326,7 +1326,7 @@ export async function trocarSkill(sessionId: string, skill: string) {
 )}
 ```
 
-- [ ] **Passo 4: sessão.** Em `components/session-view.tsx`:
+- [x] **Passo 4: sessão.** Em `components/session-view.tsx`:
 - `TODAS_AS_FASES`: acrescentar `"skill"` depois de `"premissa"`; `PHASE_LABELS.skill = "Editor escolhendo o modo do roteiro: história, mecanismo, demonstração ou panorama..."`.
 - o tipo da sessão ganha `skill: string | null; skill_origem: string | null;` e a página que monta a sessão acrescenta as duas colunas ao select de `vm_sessions`.
 - estado `const [skillAtual, setSkillAtual] = useState({ skill: session.skill, origem: session.skill_origem, motivo: "" })`; no leitor de eventos, ao lado do `premissa_pendente`: `if (e.type === "skill") setSkillAtual({ skill: e.skill, origem: e.origem, motivo: e.motivo ?? "" });`.
@@ -1362,7 +1362,7 @@ export async function trocarSkill(sessionId: string, skill: string) {
 
 Use os nomes reais de `gerando`, `router` e `session` do componente (estão no corpo dele); o `?start=1` é o mesmo gatilho que a home usa para disparar a geração.
 
-- [ ] **Passo 5: rodar** o teste → PASS; gate; abrir `npm run dev`, criar sessão com "Skill: História" e com "automática", conferir a linha da skill e a troca (skill `run`); commit (`feat(skills): seletor na home, skill na sessao e troca de skill`).
+- [x] **Passo 5: rodar** o teste → PASS; gate; abrir `npm run dev`, criar sessão com "Skill: História" e com "automática", conferir a linha da skill e a troca (skill `run`); commit (`feat(skills): seletor na home, skill na sessao e troca de skill`).
 
 ---
 

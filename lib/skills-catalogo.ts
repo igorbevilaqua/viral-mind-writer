@@ -21,3 +21,13 @@ export const DICA_SKILL: Record<Skill, string> = {
 };
 
 export const ehSkill = (v: unknown): v is Skill => typeof v === "string" && (SKILLS as readonly string[]).includes(v);
+
+// O que o seletor da home traz marcado. "" = automática (a sala sugere depois da premissa).
+// Decisão final do Igor no release: trocar aqui por uma das SKILLS, se for o caso.
+export const SKILL_PADRAO_HOME: Skill | "" = "";
+
+// As duas colunas de vm_sessions para uma skill vinda da tela. Vazia ou inválida = automática:
+// a sala sugere depois da premissa (escolher-skill.ts).
+export function colunasDaSkill(v: unknown): { skill: Skill | null; skill_origem: "escolhida" | null } {
+  return ehSkill(v) ? { skill: v, skill_origem: "escolhida" } : { skill: null, skill_origem: null };
+}

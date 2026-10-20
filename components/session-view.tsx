@@ -16,7 +16,9 @@ import {
   updateSessionClient,
   confirmarPremissa,
   updatePremissa,
+  trocarSkill,
 } from "@/lib/actions";
+import { NOME_SKILL, SKILLS, type Skill } from "@/lib/skills-catalogo";
 import { useTeachDialog } from "@/components/teach-dialog";
 import { AvisoDeEdicao, Presentes, useOnline, usePresencaSessao } from "@/components/presenca";
 import type { Pessoa } from "@/lib/presenca";
@@ -81,7 +83,7 @@ export interface ScriptPerformance {
 
 // "verificacao" roda DEPOIS do save e depois do `done` (017 §8), mas ainda dentro do stream:
 // sem ela na lista, o stepper cai no fallback e mostra "Preparando" durante a verificação.
-const TODAS_AS_FASES = ["premissa", "pesquisa", "modelagem", "narrativas", "hook_comando", "roteiro", "revisao", "humanizacao", "salvando", "verificacao"] as const;
+const TODAS_AS_FASES = ["premissa", "skill", "pesquisa", "modelagem", "narrativas", "hook_comando", "roteiro", "revisao", "humanizacao", "salvando", "verificacao"] as const;
 
 // Replicar não passa por storytelling nem pelo agente Dados: a narrativa é a do original, montada
 // em código. Anunciar "Narrativas" numa trilha que nunca vai acender é mentir para quem espera.
@@ -97,6 +99,7 @@ const MODELAGEM_SEM_LINK: Record<string, string> = {
 
 const PHASE_LABELS: Record<string, string> = {
   premissa: "Editor-chefe definindo a premissa: qual é a tese que este vídeo vai defender...",
+  skill: "Editor escolhendo o modo do roteiro: história, mecanismo, demonstração ou panorama...",
   pesquisa: "Agente pesquisador vasculhando a web e o X em tempo real, conferindo cada alegação do vídeo...",
   modelagem: "Buscando a transcrição e fazendo a autópsia do vídeo: o que funcionou e por quê...",
   narrativas: "Storytelling propõe narrativas; o agente de dados rankeia pelo histórico de +6 mil vídeos...",
@@ -2065,6 +2068,8 @@ export default function SessionView({
     prompt: string;
     premissa: string | null;
     premissa_origem: string | null;
+    skill: string | null;
+    skill_origem: string | null;
     status: string;
     error_message: string | null;
     clientNome: string | null;
@@ -2112,6 +2117,9 @@ export default function SessionView({
   const [premissaPendente, setPremissaPendente] = useState(
     session.status === "aguardando_premissa" ? (artifacts?.premissa_sugerida ?? "") : ""
   );
+  // Skill da sessão (plano 025): vem do banco e é atualizada pelo evento `skill` do pipeline,
+  // que traz o motivo quando a sala sugeriu.
+  const [skillAtual, setSkillAtual] = useState({ skill: session.skill, origem: session.skill_origem, motivo: "" });
   const started = useRef(false);
   // Dono único do disparo: `generating` só vale no próximo render, então duplo clique e dois
   // caminhos concorrentes (autoStart + onConfirm da premissa) passariam os dois. O ref fecha
@@ -2166,6 +2174,7 @@ export default function SessionView({
             // Pausa do modo modelagem: o pipeline extraiu a tese do original e parou aqui.
             // Nada mais é escrito até confirmarPremissa disparar o run 2.
             if (e.type === "premissa_pendente") setPremissaPendente(e.sugerida);
+            if (e.type === "skill") setSkillAtual({ skill: e.skill, origem: e.origem, motivo: e.motivo ?? "" });
             if (e.type === "token") setStreamText((t) => t + e.text);
             if (e.type === "error") setError(e.message);
             // Outra conexão é a dona da geração: nada a reprocessar aqui. O refresh traz
@@ -2422,6 +2431,42 @@ export default function SessionView({
             generate();
           }}
         />
+      )}
+
+      {/* skill da sessão: o modo que a sala segue, com troca. Trocar refaz pesquisa e narrativas. */}
+      {skillAtual.skill && (
+        <div className="flex flex-wrap items-center gap-2 text-[12px] text-white/45">
+          <span>
+            Skill: <b className="text-white/75">{NOME_SKILL[skillAtual.skill as Skill]}</b>
+            {skillAtual.origem === "sugerida" ? " (sugerida pela sala)" : ""}
+            {skillAtual.motivo ? `: ${skillAtual.motivo}` : ""}
+          </span>
+          <select
+            value=""
+            disabled={generating || watching || closed}
+            onChange={async (e) => {
+              const nova = e.target.value;
+              if (!nova) return;
+              await trocarSkill(session.id, nova);
+              setSkillAtual({ skill: nova, origem: "escolhida", motivo: "" });
+              setNarrativas(null); // descartadas no servidor junto com o dossiê
+              // Direto, como no onUpdate da premissa: um push com ?start=1 não dispararia de novo
+              // numa aba que já consumiu o autoStart (started.current fica true).
+              generate();
+            }}
+            className="rounded-md border border-white/10 bg-transparent px-2 py-1 text-[11.5px] outline-none cursor-pointer disabled:opacity-40"
+            title="Trocar o modo refaz a pesquisa e as narrativas. A premissa fica."
+          >
+            <option value="" className="bg-neutral-900">
+              trocar...
+            </option>
+            {SKILLS.filter((s) => s !== skillAtual.skill).map((s) => (
+              <option key={s} value={s} className="bg-neutral-900">
+                {NOME_SKILL[s]}
+              </option>
+            ))}
+          </select>
+        </div>
       )}
 
       {/* dossiê de pesquisa */}

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { createSession, type NewAttachment } from "@/lib/actions";
 import { fmtNum, fmtRatio } from "@/lib/format";
 import type { ThemeSuggestion } from "@/lib/pipeline/suggest";
+import { DICA_SKILL, NOME_SKILL, SKILL_PADRAO_HOME, SKILLS } from "@/lib/skills-catalogo";
 
 const KIND_LABELS: Record<NewAttachment["kind"], { label: string; placeholder: string }> = {
   reference_script: { label: "Roteiro de referência", placeholder: "Cole o roteiro de referência..." },
@@ -109,6 +110,7 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
   const [premissa, setPremissa] = useState("");
   const [premissaAberta, setPremissaAberta] = useState(false);
   const [clientId, setClientId] = useState("");
+  const [skill, setSkill] = useState<string>(SKILL_PADRAO_HOME);
   const [attachments, setAttachments] = useState<NewAttachment[]>([]);
   const [pending, startTransition] = useTransition();
   const [extracting, setExtracting] = useState<number | null>(null);
@@ -265,6 +267,8 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
         premissa: premissa.trim(),
         clientId: clientId || null,
         attachments: attachments.filter(isUsable),
+        // Com modelagem o seletor some: a sala classifica o original.
+        skill: temModelagem ? null : skill || null,
       });
       router.push(`/sessions/${id}?start=1`);
     });
@@ -348,6 +352,23 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
               </option>
             ))}
           </select>
+          {!temModelagem && (
+            <select
+              value={skill}
+              onChange={(e) => setSkill(e.target.value)}
+              title={skill ? DICA_SKILL[skill as keyof typeof DICA_SKILL] : "A sala escolhe o modo depois de definir a premissa"}
+              className="rounded-[10px] border border-white/15 bg-white/[.04] px-3.5 py-2 text-[12.5px] text-white/70 outline-none cursor-pointer"
+            >
+              <option value="" className="bg-neutral-900 text-white">
+                Skill: automática
+              </option>
+              {SKILLS.map((s) => (
+                <option key={s} value={s} className="bg-neutral-900 text-white">
+                  {NOME_SKILL[s]}
+                </option>
+              ))}
+            </select>
+          )}
           <button
             onClick={suggest}
             disabled={!clientId || !!suggestPhase}

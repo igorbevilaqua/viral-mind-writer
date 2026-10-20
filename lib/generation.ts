@@ -28,6 +28,7 @@ export function isStaleGeneration(
 // fase: o stepper da geração ao vivo, o bloco de acompanhamento e a lista de sessões.
 export const PHASE_SHORT: Record<string, string> = {
   premissa: "Premissa",
+  skill: "Skill",
   pesquisa: "Pesquisa",
   modelagem: "Autópsia",
   narrativas: "Narrativas",

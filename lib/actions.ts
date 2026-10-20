@@ -21,6 +21,7 @@ import { verificarScriptSalvo } from "./pipeline";
 import type { RegistroVerificacao } from "./pipeline/verificar";
 import { escaparLiteral, validarPadrao } from "./regex-safety";
 import { normalizarTermo, validarTermo } from "./bullets";
+import { colunasDaSkill } from "./skills-catalogo";
 
 /**
  * Abre uma sessão nova usando o roteiro JÁ GERADO como material de referência.
@@ -90,6 +91,7 @@ export async function createSession(input: {
   premissa?: string;
   clientId: string | null;
   attachments: NewAttachment[];
+  skill?: string | null;
 }): Promise<string> {
   const userId = await currentUserId();
   // Premissa digitada é adotada VERBATIM (origem 'digitada'): o nó de derivação nem roda, então
@@ -102,6 +104,8 @@ export async function createSession(input: {
   // ser a confirmada da modelagem, e ignorá-la poria a sessão em laço eterno de confirmação.
   const temModelagem = input.attachments.some((a) => a.is_modelagem);
   const premissa = (temModelagem ? "" : input.premissa?.trim()) || null;
+  // Automática não grava nada: null já é o default, e a criação segue de pé antes da 0052.
+  const colunasSkill = colunasDaSkill(input.skill);
   const { data: session, error } = await appDb
     .from("vm_sessions")
     .insert({
@@ -110,6 +114,7 @@ export async function createSession(input: {
       premissa_origem: premissa ? "digitada" : null,
       client_id: input.clientId,
       user_id: userId,
+      ...(colunasSkill.skill ? colunasSkill : {}),
     })
     .select("id")
     .single();
@@ -616,6 +621,21 @@ export async function confirmarPremissa(sessionId: string, premissa: string) {
       status: "draft",
       error_message: null,
     })
+    .eq("id", sessionId);
+  if (error) throw new Error(error.message);
+  revalidatePath(`/sessions/${sessionId}`);
+}
+
+// Plano 025: trocar o modo troca o que a pesquisa busca. O dossiê, as narrativas e o ranking da
+// skill anterior não servem; a premissa fica (a tese não muda com o modo). A tela dispara a
+// geração em seguida, como no "Conjurar".
+export async function trocarSkill(sessionId: string, skill: string) {
+  await exigirAcesso({ sessao: sessionId });
+  const colunas = colunasDaSkill(skill);
+  if (!colunas.skill) throw new Error("skill inválida");
+  const { error } = await appDb
+    .from("vm_sessions")
+    .update({ ...colunas, artifacts: null, status: "draft", error_message: null })
     .eq("id", sessionId);
   if (error) throw new Error(error.message);
   revalidatePath(`/sessions/${sessionId}`);
