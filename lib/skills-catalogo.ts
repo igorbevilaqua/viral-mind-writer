@@ -12,12 +12,25 @@ export const NOME_SKILL: Record<Skill, string> = {
   panorama: "Panorama",
 };
 
-// Uma linha para o title do seletor: a pessoa reconhece o modo sem abrir o arquivo.
-export const DICA_SKILL: Record<Skill, string> = {
-  historia: "o que aconteceu com alguém, no tempo; segura até o fim",
-  mecanismo: "explica por dentro como um caso, regra ou negócio funciona",
-  demonstracao: "mostra uma coisa funcionando; a mais compartilhada",
-  panorama: "prova uma tendência com dados de várias fontes; gera comentário",
+// O "i" ao lado do seletor (components/skill-info.tsx): quando usar e uma pauta de exemplo.
+// Resumo da seção "quando" de cada skills/*.md, para quem nunca viu as skills.
+export const DICA_SKILL: Record<Skill, { quando: string; exemplo: string }> = {
+  historia: {
+    quando: "Conta o que aconteceu com alguém: trajetória, decisão, virada, queda. É a que mais segura o espectador até o fim.",
+    exemplo: "Como um taxista de Recife virou dono de 40 carros",
+  },
+  mecanismo: {
+    quando: "Explica por dentro a regra, a conta ou a estratégia por trás de um fato que parece absurdo.",
+    exemplo: "Por que a passagem fica mais cara quando você pesquisa de novo",
+  },
+  demonstracao: {
+    quando: "Mostra uma coisa funcionando: o que faz, por que funciona, o que muda. É a mais compartilhada.",
+    exemplo: "O carregador que enche a bateria do carro em 5 minutos",
+  },
+  panorama: {
+    quando: "Prova uma tendência, um mercado ou um país com dados de várias fontes. Os casos entram como exemplos.",
+    exemplo: "O Brasil está ficando sem jovens, e os números mostram onde",
+  },
 };
 
 export const ehSkill = (v: unknown): v is Skill => typeof v === "string" && (SKILLS as readonly string[]).includes(v);

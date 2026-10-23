@@ -19,6 +19,7 @@ import {
   trocarSkill,
 } from "@/lib/actions";
 import { NOME_SKILL, SKILLS, type Skill } from "@/lib/skills-catalogo";
+import { SkillInfo } from "@/components/skill-info";
 import { useTeachDialog } from "@/components/teach-dialog";
 import { AvisoDeEdicao, Presentes, useOnline, usePresencaSessao } from "@/components/presenca";
 import type { Pessoa } from "@/lib/presenca";
@@ -2466,6 +2467,7 @@ export default function SessionView({
               </option>
             ))}
           </select>
+          <SkillInfo />
         </div>
       )}
 

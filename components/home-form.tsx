@@ -6,6 +6,7 @@ import { createSession, type NewAttachment } from "@/lib/actions";
 import { fmtNum, fmtRatio } from "@/lib/format";
 import type { ThemeSuggestion } from "@/lib/pipeline/suggest";
 import { DICA_SKILL, NOME_SKILL, SKILL_PADRAO_HOME, SKILLS } from "@/lib/skills-catalogo";
+import { SkillInfo } from "@/components/skill-info";
 
 const KIND_LABELS: Record<NewAttachment["kind"], { label: string; placeholder: string }> = {
   reference_script: { label: "Roteiro de referência", placeholder: "Cole o roteiro de referência..." },
@@ -277,7 +278,7 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
   return (
     <div className="w-full max-w-2xl mt-9">
       {/* prompt */}
-      <div className="rounded-[18px] border border-white/[.12] bg-white/[.03] overflow-hidden focus-within:border-gold/40 transition-colors">
+      <div className="rounded-[18px] border border-white/[.12] bg-white/[.03] focus-within:border-gold/40 transition-colors">
         {temModelagem && (
           <p className="px-5 pt-4 text-[11px] uppercase tracking-wider text-amber-300/70">
             Direções{" "}
@@ -337,7 +338,7 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
               Definir a premissa <span className="text-white/20">(opcional — o que o vídeo afirma)</span>
             </button>
           ))}
-        <div className="flex items-center gap-2.5 px-3.5 py-3 border-t border-white/[.07] bg-white/[.02] flex-wrap">
+        <div className="flex items-center gap-2.5 px-3.5 py-3 border-t border-white/[.07] bg-white/[.02] rounded-b-[17px] flex-wrap">
           <select
             value={clientId}
             onChange={(e) => setClientId(e.target.value)}
@@ -353,21 +354,24 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
             ))}
           </select>
           {!temModelagem && (
-            <select
-              value={skill}
-              onChange={(e) => setSkill(e.target.value)}
-              title={skill ? DICA_SKILL[skill as keyof typeof DICA_SKILL] : "A sala escolhe o modo depois de definir a premissa"}
-              className="rounded-[10px] border border-white/15 bg-white/[.04] px-3.5 py-2 text-[12.5px] text-white/70 outline-none cursor-pointer"
-            >
-              <option value="" className="bg-neutral-900 text-white">
-                Skill: automática
-              </option>
-              {SKILLS.map((s) => (
-                <option key={s} value={s} className="bg-neutral-900 text-white">
-                  {NOME_SKILL[s]}
+            <span className="inline-flex items-center gap-1.5">
+              <select
+                value={skill}
+                onChange={(e) => setSkill(e.target.value)}
+                title={skill ? DICA_SKILL[skill as keyof typeof DICA_SKILL].quando : "A sala escolhe o modo depois de definir a premissa"}
+                className="rounded-[10px] border border-white/15 bg-white/[.04] px-3.5 py-2 text-[12.5px] text-white/70 outline-none cursor-pointer"
+              >
+                <option value="" className="bg-neutral-900 text-white">
+                  Skill: automática
                 </option>
-              ))}
-            </select>
+                {SKILLS.map((s) => (
+                  <option key={s} value={s} className="bg-neutral-900 text-white">
+                    {NOME_SKILL[s]}
+                  </option>
+                ))}
+              </select>
+              <SkillInfo />
+            </span>
           )}
           <button
             onClick={suggest}
