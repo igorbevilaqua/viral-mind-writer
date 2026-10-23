@@ -27,6 +27,84 @@ Plano 026, Task A. Dá a chance de um vídeo com roteiro VM cair no topo do pró
 
 **Recomendação.** Use para ordenar candidatos (Task B), sempre gravando a nota, a escolhida e o resultado depois. Na Task C, mostre a faixa e os dados da casa, não o número com decimal. Repita a medição em novembro (Task D) antes de deixar o preditor decidir sozinho, porque a margem sobre o portão é de 1 a 3 pontos.
 
+## Com o embedding da produção (OpenAI), rodada de 23/10
+
+A produção não tem Gemini. O Codex gera embedding com o OpenAI `text-embedding-3-small` (1.536 dimensões, `embed()` em `lib/pipeline/context.ts`), e o corpus da casa está na `public.documents` do viral data. Refiz o v0 trocando só o embedding. Features, regra dos 30 dias, logística, λ, meses e métricas são os mesmos. Custo: zero. Só leitura dos vetores que já estavam guardados.
+
+### Veredito: o embedding não muda nada. O OpenAI fica igual ao Gemini nos mesmos vídeos
+
+| v0 nos mesmos 2.471 vídeos (jul + ago + set até o dia 14) | par a par [IC95] | AUC | Brier | jul / ago / set |
+|---|---|---|---|---|
+| **OpenAI (documents)** | **58,7%** [56,7 a 61,2] | 0,581 | 0,187 | 57,8 / 58,5 / 63,1 |
+| Gemini (CRM) | 58,9% [56,9 a 61,4] | 0,577 | 0,187 | 58,2 / 59,2 / 60,3 |
+| Gemini, todos os 3.157 vídeos (a rodada de cima) | 60,9% [58,7 a 63,0] | 0,596 | 0,189 | 58,0 / 59,1 / 64,4 |
+
+- **Diferença entre os dois embeddings:** 0,2 ponto, bem dentro do ruído (IC de ±2 pontos).
+- **Portão (58%):** o OpenAI passa no número (58,7%), mas raspando, e o IC começa abaixo da linha (56,7%). O Gemini fica igual nesse recorte. Julho fica embaixo da linha com os dois.
+- **De onde vem a queda de 60,9% para 58,7%:** do recorte, não do embedding. A `documents` não tem a segunda metade de setembro, e era o mês mais forte. Nos mesmos vídeos, o Gemini também cai, para 58,9%.
+- **Brier:** 0,187, contra 0,188 de chutar a taxa de topo (25,1%) para todo mundo. Igual ao Gemini, então serve para ordenar e não para prometer número.
+- **Outubro:** não dá para medir. Nenhum vídeo de outubro tem documento.
+
+**Calibração (OpenAI, jul-set):** igual à do Gemini. Está certa até 40%. Acima disso exagera ainda mais: prevê 48% e o observado é 29%.
+
+| faixa prevista | vídeos | previsto | observado [IC95] |
+|---|---|---|---|
+| 0 a 15% | 120 | 12,2% | 12,5% [7,7 a 19,6] |
+| 15 a 22% | 556 | 19,2% | 18,3% [15,3 a 21,8] |
+| 22 a 30% | 1.096 | 25,7% | 25,2% [22,7 a 27,8] |
+| 30 a 40% | 511 | 33,9% | 33,7% [29,7 a 37,9] |
+| 40% ou mais | 188 | 47,6% | 29,3% [23,2 a 36,1] |
+
+### Para ordenar candidatos da mesma sessão: só a parte do texto
+
+Numa sessão do Codex, os candidatos têm o mesmo cliente, a mesma rede e o mesmo modo. Por isso a taxa do cliente, a tendência, o modo e a âncora não mudam a ordem entre eles. O que muda é a parte do texto: tema (kNN), repetição e catálogo de hook. Medi a nota só com essa parte, usando os pesos do v0 de cada mês.
+
+| só a parte do texto | par a par [IC95] | jul / ago / set |
+|---|---|---|
+| **OpenAI, 2.471 vídeos** | **57,6%** [55,7 a 60,1] | 58,2 / 56,0 / 62,6 |
+| Gemini, os mesmos vídeos | 57,4% [55,4 a 60,0] | 58,2 / 56,3 / 59,2 |
+| Gemini, todos os 3.157 vídeos | 60,1% [57,9 a 61,9] | 58,2 / 56,4 / 64,6 |
+| um modelo treinado só com o texto, OpenAI | 56,9% [55,2 a 59,6] | 58,2 / 54,6 / 62,0 |
+
+- **Leitura:** entre dois vídeos do mesmo cliente, na mesma rede e no mesmo mês, a parte do texto acerta qual foi topo em 57,6% das vezes. Fica meio ponto abaixo do portão.
+- **Limite da medida:** os pares aqui são vídeos diferentes, com temas diferentes. Os candidatos de uma sessão são variações do mesmo tema. Então o kNN muda pouco entre eles, e quem ordena é quase só o catálogo de hook. A acurácia nesse caso ainda não foi medida. A Task B precisa gravar as candidatas e o resultado para medir.
+
+### Os limiares novos
+
+Recalibrei do mesmo jeito do estudo de embeddings: o limiar do mesmo cliente é o percentil 97 dos cossenos entre roteiros do mesmo cliente, e o de outro cliente é o percentil 99,5 dos cossenos entre clientes. Rodei o mesmo cálculo no Gemini, na base de hoje (3.020 roteiros), e ele devolve 0,798 e 0,761. Ou seja, o método reproduz o 0,80 e o 0,76 de antes.
+
+| | mesmo cliente (p97) | outro cliente (p99,5) | mediana dentro / entre |
+|---|---|---|---|
+| Gemini 768 (antes) | 0,80 | 0,76 | 0,72 / 0,66 |
+| **OpenAI 1.536 (novo)** | **0,72** (0,723) | **0,69** (0,688) | 0,55 / 0,43 |
+
+- **Por que os números são mais baixos:** o OpenAI espalha mais os cossenos. Não dá para usar o 0,80 do Gemini nele.
+- **Separação:** o OpenAI separa melhor o cliente. A distância entre a mediana dentro e a mediana entre clientes é de 0,11 ponto, contra 0,06 no Gemini.
+- **Vizinhos acima do limiar:** com os limiares novos, 22% dos vídeos de teste ficam sem nenhum, contra 18% no Gemini.
+- **kNN sozinho:** o kNN cru dos 20 vizinhos dá 58,4% com OpenAI e 56,6% com Gemini. Com limiar, dá 55,5% e 56,4%. Nos dois embeddings o cru é melhor que o com limiar.
+
+### Cobertura: a `documents` parou em 14/09
+
+- **Vídeos:** dos 7.667 vídeos VM do estudo, 5.634 têm documento (73%). Dos 6.810 usados no preditor, 5.468 têm (80%).
+- **Roteiros:** dos 3.020 roteiros com embedding Gemini, 2.401 têm pelo menos um documento (80%). O roteiro recebe a média dos vetores dos seus vídeos, renormalizada. Os vídeos do mesmo roteiro têm cosseno mediano de 0,95 entre si.
+- **Por mês** (vídeos do preditor cujo roteiro tem documento):
+
+| fev | mar | abr | mai | jun | jul | ago | set | out |
+|---|---|---|---|---|---|---|---|---|
+| 312/313 | 594/594 | 610/611 | 663/665 | 897/897 | 957/957 | 1.032/1.032 | 482/1.168 | 1/573 |
+
+- **O último documento é de um vídeo de 14/09/2026.** Desde então nenhum vídeo VM entrou na `documents`.
+- **Por que isso importa:** a ingestão parou. Isso já afeta a produção hoje, porque o few-shot vetorial do Codex (`match_documents`) não vê nada do último mês e meio. E vai afetar o preditor: o kNN da casa só enxerga o que está na tabela.
+- **O que fazer antes da Task B:** religar a ingestão da `documents`. Para pontuar um candidato, o Codex usa o `embed()` que já existe. A chave é a mesma OpenAI, e custa frações de centavo por texto.
+
+### O que muda para a produção
+
+- **Modelo para a produção:** `modelo_openai.json`. Treinado com 5.547 vídeos (fevereiro a 14/09), λ = 3.000, 170 features.
+  - Cada feature tem o campo `texto`, que diz se ela entra na parte do texto.
+  - As features e a ordem dos pesos são quase as mesmas do Gemini. Pesam a taxa do cliente (negativa), "acabou de", região do Brasil, "Nem", "tema já fracassou em outro cliente" e A/O + nome.
+- **Texto do corpus:** é "Título + Assunto + roteiro" (o `content` da `documents`), não o roteiro do CRM. Na hora de pontuar, embutir o candidato no mesmo formato, ou pelo menos título + roteiro, para cair na mesma escala.
+- **Território:** no modo OpenAI, todo roteiro vai para o centróide mais próximo no espaço OpenAI, como um roteiro novo iria na produção. Os centróides usam os rótulos do k-means feito no Gemini (`clusters.json`), e essa feature pesa pouco.
+
 ## Contra os baselines e as variações
 
 Validação em janela móvel: treino até o mês M−1, teste no mês M, para julho, agosto e setembro. O λ (a força da regularização) foi escolhido em cada mês olhando só o mês anterior. Par a par com IC95 por bootstrap de grupos.
@@ -62,7 +140,7 @@ Por rede o v0 é igual nas três: Instagram 61,1%, TikTok 60,5% e YouTube 61,1%.
 
 ## Pesos do v0
 
-Modelo final treinado com 6.237 vídeos (fevereiro a setembro), λ = 3.000. A regularização forte deixa cada peso pequeno, então o que importa é o sinal e a ordem, não o tamanho. O peso está em unidades de 1 desvio-padrão da feature; OR é a razão de chances por desvio-padrão. As 171 features estão em `modelo.json`.
+Modelo final treinado com 6.237 vídeos (fevereiro a setembro), λ = 3.000. A regularização forte deixa cada peso pequeno, então o que importa é o sinal e a ordem, não o tamanho. O peso está em unidades de 1 desvio-padrão da feature; OR é a razão de chances por desvio-padrão. As 170 features estão em `modelo.json`.
 
 | feature | peso por DP | OR por DP |
 |---|---|---|
@@ -123,7 +201,7 @@ As notas altas são quase todas "estudante do interior". O modelo aprendeu com o
 4. **Pouco tempo.** São 3 meses de teste e 162 grupos. O IC é de ±2 pontos no conjunto e de ±3 a 4 por mês. De um mês para outro o resultado oscila entre 58% e 64%.
 5. **O λ escolhido ficou no topo da grade (3.000).** O modelo pede o máximo de encolhimento: cada feature carrega pouco sinal, e o ganho vem de somar muitas.
 6. **O modo só existe para os roteiros do estudo.** A `vm_roteiro_modo` tem as 2.832 linhas da carga inicial (origem estudo-2026-10). 211 dos 6.810 vídeos ficaram sem modo, todos de outubro: o ETL ainda não classificou os roteiros novos. Os territórios vêm do k-means do estudo, que não usa resultado; roteiro novo vai para o centróide mais próximo.
-7. **Produção.** Para pontuar texto novo é preciso o embedding dele na hora (gemini-embedding-001 truncado em 768), e as marcas de hook saem de `docs/estudo-2026-10/src/hooks/feat.mjs`, aplicadas ao 1º parágrafo do roteiro (`segment.mjs`).
+7. **Produção.** Para pontuar texto novo é preciso o embedding dele na hora. A produção só tem o OpenAI: use `modelo_openai.json` (ver a seção do OpenAI acima), e as marcas de hook saem de `docs/estudo-2026-10/src/hooks/feat.mjs`, aplicadas ao 1º parágrafo do roteiro (`segment.mjs`).
 
 ## O que eu tentaria em seguida
 
@@ -134,10 +212,13 @@ As notas altas são quase todas "estudante do interior". O modelo aprendeu com o
 
 ## Arquivos
 
-- `modelo.json`: a fórmula, o intercepto, e para cada uma das 171 features a definição, a média, o desvio-padrão e o peso; mais os limiares (0,80 / 0,76 / 30 dias / k). Basta para pontuar sem retreinar.
-- `resultado.json`: todas as métricas por modelo e por mês, as calibrações, os baselines, outubro, por rede, os pesos e os exemplos. `resultado_gap7.json` é a sensibilidade com a folga de 7 dias.
+- `modelo.json`: a fórmula, o intercepto, e para cada uma das 170 features a definição, a média, o desvio-padrão, o peso e se ela é da parte do texto; mais os limiares (0,80 / 0,76 / 30 dias / k). Basta para pontuar sem retreinar. É o modelo do Gemini.
+- `modelo_openai.json`: o mesmo, com o embedding da produção (OpenAI, `public.documents`), os limiares 0,72 / 0,69 e os percentis de onde eles saíram. É o que a Task B usa.
+- `resultado.json`: todas as métricas por modelo e por mês, as calibrações, os baselines, outubro, por rede, os pesos e os exemplos. `resultado_gap7.json` é a sensibilidade com a folga de 7 dias. `so_texto` é a nota só com a parte do texto.
+- `resultado_openai.json`: tudo isso na rodada OpenAI (só vídeos cujo roteiro tem documento). `resultado_gemini_cobertos.json` é o Gemini nesses mesmos vídeos, para comparar.
+- `src/export_documents.ts`: baixa da `public.documents` os vetores dos vídeos do estudo, só leitura, para `data/docs_emb.f32` e `data/docs_ids.json`.
 - `src/export_modo.ts`: lê a `vm_roteiro_modo`, só leitura.
-- `src/features.mjs`: as features sem vazamento.
+- `src/features.mjs`: as features sem vazamento. Com `EMB=openai`, usa o embedding da `documents` e recalcula os limiares.
 - `src/modelo.mjs`: a logística (IRLS em JS puro), a validação, as métricas e o `modelo.json`. Tem uma checagem embutida: nota perfeita dá 100% par a par, e a logística recupera um efeito sintético.
 
 Reproduzir. Numa pasta de trabalho fora do git:
@@ -152,6 +233,11 @@ node src/segment.mjs
 npx tsx --env-file=<Codex>/.env.local src/preditor/export_modo.ts                     # só leitura
 node src/preditor/features.mjs            # ~8 s; GAP=7 para a sensibilidade
 node src/preditor/modelo.mjs              # ~12 s; grava out/preditor/{resultado,modelo}.json
+# variante OpenAI (23/10):
+npx tsx --env-file=<Codex>/.env.local src/preditor/export_documents.ts                # só leitura, ~1,5 min
+EMB=openai node src/preditor/features.mjs
+EMB=openai node src/preditor/modelo.mjs   # grava resultado_openai.json e modelo_openai.json
+SO_DOC=1 node src/preditor/modelo.mjs     # Gemini nos mesmos vídeos: resultado_gemini_cobertos.json
 ```
 
 Base desta rodada (22/10/2026):

@@ -1,0 +1,2950 @@
+{
+ "arquivo": "preditor_features.json",
+ "lambdas": [
+  1,
+  10,
+  30,
+  100,
+  300,
+  1000,
+  3000
+ ],
+ "meses": [
+  "2026-07",
+  "2026-08",
+  "2026-09"
+ ],
+ "modelos": {
+  "completo": {
+   "feats": [
+    "knn20",
+    "sim_media",
+    "casa_taxa",
+    "log_n_casa",
+    "cli_taxa",
+    "log_n_cli",
+    "terr_c30",
+    "terr_c60",
+    "rep_acerto",
+    "rep_acerto_90",
+    "rep_fraco",
+    "fora_fraco",
+    "fora_acerto",
+    "cli90",
+    "cli_tend",
+    "modo_historia",
+    "modo_mecanismo",
+    "modo_demonstracao",
+    "modo_panorama",
+    "modo_conselho",
+    "modo_publi",
+    "modo_misto",
+    "ancora_noticia",
+    "ancora_passado",
+    "ancora_atemporal",
+    "hook_placar"
+   ],
+   "porMes": {
+    "2026-07": {
+     "treino": 3076,
+     "lambda": 1000,
+     "n": 957,
+     "topo": 0.2361546499477534,
+     "pares": {
+      "acc": 0.5782068965517242,
+      "lo": 0.512258064516129,
+      "hi": 0.6428125,
+      "pares": 3625,
+      "grupos": 48
+     },
+     "auc": 0.5814619323753375,
+     "brier": 0.17881882150027056
+    },
+    "2026-08": {
+     "treino": 4033,
+     "lambda": 100,
+     "n": 1032,
+     "topo": 0.25193798449612403,
+     "pares": {
+      "acc": 0.6413388712435866,
+      "lo": 0.6068736141906874,
+      "hi": 0.6743133111983097,
+      "pares": 4093,
+      "grupos": 55
+     },
+     "auc": 0.6097224990035871,
+     "brier": 0.18392891871287126
+    },
+    "2026-09": {
+     "treino": 5065,
+     "lambda": 10,
+     "n": 482,
+     "topo": 0.27800829875518673,
+     "pares": {
+      "acc": 0.6448893572181243,
+      "lo": 0.5746864310148233,
+      "hi": 0.7163561076604554,
+      "pares": 949,
+      "grupos": 46
+     },
+     "auc": 0.641136987476411,
+     "brier": 0.19014227003845122
+    }
+   },
+   "juntos": {
+    "n": 2471,
+    "topo": 0.2509105625252934,
+    "pares": {
+     "acc": 0.6153224875966309,
+     "lo": 0.5849735449735449,
+     "hi": 0.6506332055303823,
+     "pares": 8667,
+     "grupos": 149
+    },
+    "auc": 0.6037251006430701,
+    "brier": 0.18316180916470035
+   },
+   "calibracao": [
+    {
+     "faixa": "0-15%",
+     "n": 107,
+     "previsto": 0.12179035672265912,
+     "observado": 0.12149532710280374,
+     "lo": 0.07239365431718055,
+     "hi": 0.19683378375661123
+    },
+    {
+     "faixa": "15-22%",
+     "n": 435,
+     "previsto": 0.191622110567266,
+     "observado": 0.17701149425287357,
+     "lo": 0.1440163468051005,
+     "hi": 0.2156614959518305
+    },
+    {
+     "faixa": "22-30%",
+     "n": 1296,
+     "previsto": 0.2594138871109364,
+     "observado": 0.23919753086419754,
+     "lo": 0.21676420734572063,
+     "hi": 0.2631724249331662
+    },
+    {
+     "faixa": "30-40%",
+     "n": 510,
+     "previsto": 0.33373180283683435,
+     "observado": 0.3176470588235294,
+     "lo": 0.2787324261991307,
+     "hi": 0.3592883179368053
+    },
+    {
+     "faixa": "40-100%",
+     "n": 123,
+     "previsto": 0.46647125950013624,
+     "observado": 0.4715447154471545,
+     "lo": 0.3855280623168577,
+     "hi": 0.5592849958596395
+    }
+   ]
+  },
+  "sem_hook": {
+   "feats": [
+    "knn20",
+    "sim_media",
+    "casa_taxa",
+    "log_n_casa",
+    "cli_taxa",
+    "log_n_cli",
+    "terr_c30",
+    "terr_c60",
+    "rep_acerto",
+    "rep_acerto_90",
+    "rep_fraco",
+    "fora_fraco",
+    "fora_acerto",
+    "cli90",
+    "cli_tend",
+    "modo_historia",
+    "modo_mecanismo",
+    "modo_demonstracao",
+    "modo_panorama",
+    "modo_conselho",
+    "modo_publi",
+    "modo_misto",
+    "ancora_noticia",
+    "ancora_passado",
+    "ancora_atemporal"
+   ],
+   "porMes": {
+    "2026-07": {
+     "treino": 3076,
+     "lambda": 3000,
+     "n": 957,
+     "topo": 0.2361546499477534,
+     "pares": {
+      "acc": 0.527448275862069,
+      "lo": 0.45676959619952495,
+      "hi": 0.5843520782396088,
+      "pares": 3625,
+      "grupos": 48
+     },
+     "auc": 0.5300110165490357,
+     "brier": 0.18073106574472708
+    },
+    "2026-08": {
+     "treino": 4033,
+     "lambda": 1000,
+     "n": 1032,
+     "topo": 0.25193798449612403,
+     "pares": {
+      "acc": 0.6083557292939165,
+      "lo": 0.555195556584124,
+      "hi": 0.6668278529980658,
+      "pares": 4093,
+      "grupos": 55
+     },
+     "auc": 0.5895999402152252,
+     "brier": 0.18600219439382443
+    },
+    "2026-09": {
+     "treino": 5065,
+     "lambda": 10,
+     "n": 482,
+     "topo": 0.27800829875518673,
+     "pares": {
+      "acc": 0.5194942044257113,
+      "lo": 0.45005149330587024,
+      "hi": 0.5779427359490986,
+      "pares": 949,
+      "grupos": 46
+     },
+     "auc": 0.5763960370560988,
+     "brier": 0.19633923241344833
+    }
+   },
+   "juntos": {
+    "n": 2471,
+    "topo": 0.2509105625252934,
+    "pares": {
+     "acc": 0.5647859697703934,
+     "lo": 0.5307144446917427,
+     "hi": 0.6010223953261928,
+     "pares": 8667,
+     "grupos": 149
+    },
+    "auc": 0.5609165054634809,
+    "brier": 0.18597709613735852
+   },
+   "calibracao": [
+    {
+     "faixa": "0-15%",
+     "n": 22,
+     "previsto": 0.1229693971243452,
+     "observado": 0.045454545454545456,
+     "lo": 0.008069219301147859,
+     "hi": 0.21798489499518056
+    },
+    {
+     "faixa": "15-22%",
+     "n": 204,
+     "previsto": 0.19631865730677156,
+     "observado": 0.21568627450980393,
+     "lo": 0.1647776676670441,
+     "hi": 0.27710499682360645
+    },
+    {
+     "faixa": "22-30%",
+     "n": 2046,
+     "previsto": 0.2588393340372719,
+     "observado": 0.24486803519061584,
+     "lo": 0.22672459356988064,
+     "hi": 0.2639677604149346
+    },
+    {
+     "faixa": "30-40%",
+     "n": 176,
+     "previsto": 0.3307239514063495,
+     "observado": 0.3522727272727273,
+     "lo": 0.2855423977663727,
+     "hi": 0.42531426720991755
+    },
+    {
+     "faixa": "40-100%",
+     "n": 23,
+     "previsto": 0.47798237479790256,
+     "observado": 0.5217391304347826,
+     "lo": 0.32962429864218495,
+     "hi": 0.7076313046005428
+    }
+   ]
+  },
+  "tema_rep": {
+   "feats": [
+    "knn20",
+    "sim_media",
+    "casa_taxa",
+    "log_n_casa",
+    "cli_taxa",
+    "log_n_cli",
+    "terr_c30",
+    "terr_c60",
+    "rep_acerto",
+    "rep_acerto_90",
+    "rep_fraco",
+    "fora_fraco",
+    "fora_acerto"
+   ],
+   "porMes": {
+    "2026-07": {
+     "treino": 3076,
+     "lambda": 300,
+     "n": 957,
+     "topo": 0.2361546499477534,
+     "pares": {
+      "acc": 0.5426206896551724,
+      "lo": 0.46889460154241647,
+      "hi": 0.601536772777168,
+      "pares": 3625,
+      "grupos": 48
+     },
+     "auc": 0.5242878587944748,
+     "brier": 0.1808370588534139
+    },
+    "2026-08": {
+     "treino": 4033,
+     "lambda": 3000,
+     "n": 1032,
+     "topo": 0.25193798449612403,
+     "pares": {
+      "acc": 0.5724407525042756,
+      "lo": 0.5263157894736842,
+      "hi": 0.6187862153095456,
+      "pares": 4093,
+      "grupos": 55
+     },
+     "auc": 0.5528970705460343,
+     "brier": 0.1878791869476532
+    },
+    "2026-09": {
+     "treino": 5065,
+     "lambda": 3000,
+     "n": 482,
+     "topo": 0.27800829875518673,
+     "pares": {
+      "acc": 0.47629083245521603,
+      "lo": 0.4122497055359246,
+      "hi": 0.5383858267716536,
+      "pares": 949,
+      "grupos": 46
+     },
+     "auc": 0.5300759135357694,
+     "brier": 0.2007788885127993
+    }
+   },
+   "juntos": {
+    "n": 2471,
+    "topo": 0.2509105625252934,
+    "pares": {
+     "acc": 0.5494404061382254,
+     "lo": 0.5181715998501312,
+     "hi": 0.5846744111691357,
+     "pares": 8667,
+     "grupos": 149
+    },
+    "auc": 0.5256003729457486,
+    "brier": 0.1876680738631587
+   },
+   "calibracao": [
+    {
+     "faixa": "0-15%",
+     "n": 0,
+     "previsto": null,
+     "observado": null,
+     "lo": 0,
+     "hi": 1
+    },
+    {
+     "faixa": "15-22%",
+     "n": 84,
+     "previsto": 0.20924681471447182,
+     "observado": 0.2261904761904762,
+     "lo": 0.14985904898307537,
+     "hi": 0.32647107250833646
+    },
+    {
+     "faixa": "22-30%",
+     "n": 2378,
+     "previsto": 0.25696235377836874,
+     "observado": 0.2510513036164844,
+     "lo": 0.23403386154405456,
+     "hi": 0.2688717892767221
+    },
+    {
+     "faixa": "30-40%",
+     "n": 9,
+     "previsto": 0.3046531806344161,
+     "observado": 0.4444444444444444,
+     "lo": 0.188775429471914,
+     "hi": 0.7333526542559703
+    },
+    {
+     "faixa": "40-100%",
+     "n": 0,
+     "previsto": null,
+     "observado": null,
+     "lo": 0,
+     "hi": 1
+    }
+   ]
+  },
+  "tema_rep_hook": {
+   "feats": [
+    "knn20",
+    "sim_media",
+    "casa_taxa",
+    "log_n_casa",
+    "cli_taxa",
+    "log_n_cli",
+    "terr_c30",
+    "terr_c60",
+    "rep_acerto",
+    "rep_acerto_90",
+    "rep_fraco",
+    "fora_fraco",
+    "fora_acerto",
+    "hook_placar"
+   ],
+   "porMes": {
+    "2026-07": {
+     "treino": 3076,
+     "lambda": 3000,
+     "n": 957,
+     "topo": 0.2361546499477534,
+     "pares": {
+      "acc": 0.5892413793103448,
+      "lo": 0.5310975609756098,
+      "hi": 0.6436383035476126,
+      "pares": 3625,
+      "grupos": 48
+     },
+     "auc": 0.5919185743859182,
+     "brier": 0.17952993573578938
+    },
+    "2026-08": {
+     "treino": 4033,
+     "lambda": 3000,
+     "n": 1032,
+     "topo": 0.25193798449612403,
+     "pares": {
+      "acc": 0.6193501099438065,
+      "lo": 0.5816837586453614,
+      "hi": 0.6527323092420045,
+      "pares": 4093,
+      "grupos": 55
+     },
+     "auc": 0.589849043443603,
+     "brier": 0.1865671120308921
+    },
+    "2026-09": {
+     "treino": 5065,
+     "lambda": 3000,
+     "n": 482,
+     "topo": 0.27800829875518673,
+     "pares": {
+      "acc": 0.6322444678609063,
+      "lo": 0.5584562996594779,
+      "hi": 0.7096114519427403,
+      "pares": 949,
+      "grupos": 46
+     },
+     "auc": 0.6163256990907531,
+     "brier": 0.19821124523128333
+    }
+   },
+   "juntos": {
+    "n": 2471,
+    "topo": 0.2509105625252934,
+    "pares": {
+     "acc": 0.6081689165801315,
+     "lo": 0.5802116402116402,
+     "hi": 0.6423593827775013,
+     "pares": 8667,
+     "grupos": 149
+    },
+    "auc": 0.591630940555236,
+    "brier": 0.18611300215156182
+   },
+   "calibracao": [
+    {
+     "faixa": "0-15%",
+     "n": 0,
+     "previsto": null,
+     "observado": null,
+     "lo": 0,
+     "hi": 1
+    },
+    {
+     "faixa": "15-22%",
+     "n": 48,
+     "previsto": 0.21432204422386136,
+     "observado": 0.1875,
+     "lo": 0.10191276348200173,
+     "hi": 0.31940139348846214
+    },
+    {
+     "faixa": "22-30%",
+     "n": 2410,
+     "previsto": 0.2559108599678768,
+     "observado": 0.24937759336099585,
+     "lo": 0.23251183304259354,
+     "hi": 0.2670410787971892
+    },
+    {
+     "faixa": "30-40%",
+     "n": 13,
+     "previsto": 0.30753054740701685,
+     "observado": 0.7692307692307693,
+     "lo": 0.49743126004873084,
+     "hi": 0.918206209075343
+    },
+    {
+     "faixa": "40-100%",
+     "n": 0,
+     "previsto": null,
+     "observado": null,
+     "lo": 0,
+     "hi": 1
+    }
+   ]
+  },
+  "sem_hook_mais_catalogo": {
+   "feats": [
+    "knn20",
+    "sim_media",
+    "casa_taxa",
+    "log_n_casa",
+    "cli_taxa",
+    "log_n_cli",
+    "terr_c30",
+    "terr_c60",
+    "rep_acerto",
+    "rep_acerto_90",
+    "rep_fraco",
+    "fora_fraco",
+    "fora_acerto",
+    "cli90",
+    "cli_tend",
+    "modo_historia",
+    "modo_mecanismo",
+    "modo_demonstracao",
+    "modo_panorama",
+    "modo_conselho",
+    "modo_publi",
+    "modo_misto",
+    "ancora_noticia",
+    "ancora_passado",
+    "ancora_atemporal",
+    "hk_ab_artigo",
+    "hk_ab_artigo_nome",
+    "hk_ab_artigo_comum",
+    "hk_ab_nome_sem_artigo",
+    "hk_ab_demonstrativo",
+    "hk_ab_demonst_pessoa",
+    "hk_ab_demonst_cara",
+    "hk_ab_demonst_objeto",
+    "hk_ab_um_uma",
+    "hk_ab_voce",
+    "hk_ab_se_voce",
+    "hk_ab_pais",
+    "hk_ab_china",
+    "hk_ab_brasil",
+    "hk_ab_eua",
+    "hk_ab_numero",
+    "hk_ab_pergunta_qu",
+    "hk_ab_por_que",
+    "hk_ab_como",
+    "hk_ab_o_que",
+    "hk_ab_voce_sabia",
+    "hk_ab_enquanto",
+    "hk_ab_pouca_gente",
+    "hk_ab_existe",
+    "hk_ab_superlativo",
+    "hk_ab_uma_das",
+    "hk_ab_o_maior",
+    "hk_ab_em",
+    "hk_ab_tempo_atras",
+    "hk_ab_imagina",
+    "hk_ab_parece",
+    "hk_ab_muita_gente",
+    "hk_ab_pronome",
+    "hk_ab_isso",
+    "hk_ab_nem",
+    "hk_ab_os_as",
+    "hk_ab_tem",
+    "hk_acabou_de",
+    "hk_agora",
+    "hk_hoje",
+    "hk_ano_2025_26",
+    "hk_tempo_recente",
+    "hk_gerundio_esta",
+    "hk_ta_coloquial",
+    "hk_futuro_vai",
+    "hk_tempo_passado_ano",
+    "hk_verbo_passado",
+    "hk_v_criou",
+    "hk_v_queda",
+    "hk_v_venceu",
+    "hk_v_proibiu",
+    "hk_v_dinheiro",
+    "hk_v_recusou",
+    "hk_v_copiou",
+    "hk_v_transformou",
+    "hk_v_fez",
+    "hk_v_ser_capaz",
+    "hk_dinheiro",
+    "hk_moeda",
+    "hk_escala",
+    "hk_bilhao",
+    "hk_percentual",
+    "hk_num_digito",
+    "hk_num_redondo",
+    "hk_num_quebrado",
+    "hk_num_ano",
+    "hk_num_por_extenso",
+    "hk_superlativo",
+    "hk_s_maior",
+    "hk_s_primeiro",
+    "hk_s_unico",
+    "hk_s_do_mundo",
+    "hk_s_da_historia",
+    "hk_s_mais_adj",
+    "hk_ninguem",
+    "hk_quase_ninguem",
+    "hk_nunca",
+    "hk_segredo",
+    "hk_proibido",
+    "hk_nao",
+    "hk_contraste",
+    "hk_c_mas",
+    "hk_c_so_que",
+    "hk_c_enquanto",
+    "hk_c_nem",
+    "hk_c_mesmo",
+    "hk_por_causa",
+    "hk_porque",
+    "hk_o_motivo",
+    "hk_e_o_motivo",
+    "hk_problema",
+    "hk_voce",
+    "hk_te",
+    "hk_seu_sua",
+    "hk_segunda_pessoa",
+    "hk_eu_nos",
+    "hk_pessoa_comum",
+    "hk_especialista",
+    "hk_cargo_dono",
+    "hk_bilionario",
+    "hk_figura",
+    "hk_elon",
+    "hk_trump",
+    "hk_bigtech",
+    "hk_marca_china",
+    "hk_marca_consumo",
+    "hk_marca_br",
+    "hk_mega_marca",
+    "hk_china",
+    "hk_eua",
+    "hk_pais_est",
+    "hk_brasil",
+    "hk_regiao_br",
+    "hk_brasil_qualquer",
+    "hk_br_x_est",
+    "hk_so_est",
+    "hk_interior",
+    "hk_governo_lei",
+    "hk_ia",
+    "hk_empresa_marca",
+    "hk_guerra",
+    "hk_mundo",
+    "hk_vida_sonho",
+    "hk_hype_adj",
+    "hk_historia_palavra",
+    "hk_nome_proprio_qualquer",
+    "hk_sem_nome_proprio",
+    "hk_pal_ate12",
+    "hk_pal_13_17",
+    "hk_pal_18_22",
+    "hk_pal_23_27",
+    "hk_pal_28_34",
+    "hk_pal_35mais",
+    "hk_frases_1",
+    "hk_frases_2",
+    "hk_frases_3mais",
+    "hk_frase_longa",
+    "hk_termina_pergunta",
+    "hk_tem_pergunta",
+    "hk_reticencias",
+    "hk_exclamacao",
+    "hk_virgula_0",
+    "hk_virgula_2mais",
+    "hk_dois_pontos",
+    "hk_aspas"
+   ],
+   "porMes": {
+    "2026-07": {
+     "treino": 3076,
+     "lambda": 300,
+     "n": 957,
+     "topo": 0.2361546499477534,
+     "pares": {
+      "acc": 0.5815172413793104,
+      "lo": 0.5500565610859729,
+      "hi": 0.6101245693082428,
+      "pares": 3625,
+      "grupos": 48
+     },
+     "auc": 0.5821217147076982,
+     "brier": 0.18378679996154373
+    },
+    "2026-08": {
+     "treino": 4033,
+     "lambda": 3000,
+     "n": 1032,
+     "topo": 0.25193798449612403,
+     "pares": {
+      "acc": 0.5917419985340826,
+      "lo": 0.5524184216616524,
+      "hi": 0.6306117091100026,
+      "pares": 4093,
+      "grupos": 55
+     },
+     "auc": 0.562083997608609,
+     "brier": 0.18696470417565172
+    },
+    "2026-09": {
+     "treino": 5065,
+     "lambda": 3000,
+     "n": 482,
+     "topo": 0.27800829875518673,
+     "pares": {
+      "acc": 0.6027397260273972,
+      "lo": 0.5573440643863179,
+      "hi": 0.656731757451182,
+      "pares": 949,
+      "grupos": 46
+     },
+     "auc": 0.622737605078058,
+     "brier": 0.19471935118649072
+    }
+   },
+   "juntos": {
+    "n": 2471,
+    "topo": 0.2509105625252934,
+    "pares": {
+     "acc": 0.5886696665512865,
+     "lo": 0.569251566916554,
+     "hi": 0.6136843162865467,
+     "pares": 8667,
+     "grupos": 149
+    },
+    "auc": 0.5769078614872519,
+    "brier": 0.18724656800662007
+   },
+   "calibracao": [
+    {
+     "faixa": "0-15%",
+     "n": 101,
+     "previsto": 0.11948147993800352,
+     "observado": 0.15841584158415842,
+     "lo": 0.0999267161245613,
+     "hi": 0.24193758201663454
+    },
+    {
+     "faixa": "15-22%",
+     "n": 428,
+     "previsto": 0.19708141924047493,
+     "observado": 0.1705607476635514,
+     "lo": 0.13789527873266363,
+     "hi": 0.2090875038431697
+    },
+    {
+     "faixa": "22-30%",
+     "n": 1350,
+     "previsto": 0.256986940244694,
+     "observado": 0.2518518518518518,
+     "lo": 0.22942256844440664,
+     "hi": 0.27568940329586195
+    },
+    {
+     "faixa": "30-40%",
+     "n": 441,
+     "previsto": 0.3383926713976757,
+     "observado": 0.3219954648526077,
+     "lo": 0.28008501519119916,
+     "hi": 0.36698036718311117
+    },
+    {
+     "faixa": "40-100%",
+     "n": 151,
+     "previsto": 0.4761186817954535,
+     "observado": 0.32450331125827814,
+     "lo": 0.2549837940951799,
+     "hi": 0.40273092856333037
+    }
+   ]
+  },
+  "tema_mais_catalogo": {
+   "feats": [
+    "knn20",
+    "sim_media",
+    "casa_taxa",
+    "log_n_casa",
+    "cli_taxa",
+    "log_n_cli",
+    "terr_c30",
+    "terr_c60",
+    "rep_acerto",
+    "rep_acerto_90",
+    "rep_fraco",
+    "fora_fraco",
+    "fora_acerto",
+    "hk_ab_artigo",
+    "hk_ab_artigo_nome",
+    "hk_ab_artigo_comum",
+    "hk_ab_nome_sem_artigo",
+    "hk_ab_demonstrativo",
+    "hk_ab_demonst_pessoa",
+    "hk_ab_demonst_cara",
+    "hk_ab_demonst_objeto",
+    "hk_ab_um_uma",
+    "hk_ab_voce",
+    "hk_ab_se_voce",
+    "hk_ab_pais",
+    "hk_ab_china",
+    "hk_ab_brasil",
+    "hk_ab_eua",
+    "hk_ab_numero",
+    "hk_ab_pergunta_qu",
+    "hk_ab_por_que",
+    "hk_ab_como",
+    "hk_ab_o_que",
+    "hk_ab_voce_sabia",
+    "hk_ab_enquanto",
+    "hk_ab_pouca_gente",
+    "hk_ab_existe",
+    "hk_ab_superlativo",
+    "hk_ab_uma_das",
+    "hk_ab_o_maior",
+    "hk_ab_em",
+    "hk_ab_tempo_atras",
+    "hk_ab_imagina",
+    "hk_ab_parece",
+    "hk_ab_muita_gente",
+    "hk_ab_pronome",
+    "hk_ab_isso",
+    "hk_ab_nem",
+    "hk_ab_os_as",
+    "hk_ab_tem",
+    "hk_acabou_de",
+    "hk_agora",
+    "hk_hoje",
+    "hk_ano_2025_26",
+    "hk_tempo_recente",
+    "hk_gerundio_esta",
+    "hk_ta_coloquial",
+    "hk_futuro_vai",
+    "hk_tempo_passado_ano",
+    "hk_verbo_passado",
+    "hk_v_criou",
+    "hk_v_queda",
+    "hk_v_venceu",
+    "hk_v_proibiu",
+    "hk_v_dinheiro",
+    "hk_v_recusou",
+    "hk_v_copiou",
+    "hk_v_transformou",
+    "hk_v_fez",
+    "hk_v_ser_capaz",
+    "hk_dinheiro",
+    "hk_moeda",
+    "hk_escala",
+    "hk_bilhao",
+    "hk_percentual",
+    "hk_num_digito",
+    "hk_num_redondo",
+    "hk_num_quebrado",
+    "hk_num_ano",
+    "hk_num_por_extenso",
+    "hk_superlativo",
+    "hk_s_maior",
+    "hk_s_primeiro",
+    "hk_s_unico",
+    "hk_s_do_mundo",
+    "hk_s_da_historia",
+    "hk_s_mais_adj",
+    "hk_ninguem",
+    "hk_quase_ninguem",
+    "hk_nunca",
+    "hk_segredo",
+    "hk_proibido",
+    "hk_nao",
+    "hk_contraste",
+    "hk_c_mas",
+    "hk_c_so_que",
+    "hk_c_enquanto",
+    "hk_c_nem",
+    "hk_c_mesmo",
+    "hk_por_causa",
+    "hk_porque",
+    "hk_o_motivo",
+    "hk_e_o_motivo",
+    "hk_problema",
+    "hk_voce",
+    "hk_te",
+    "hk_seu_sua",
+    "hk_segunda_pessoa",
+    "hk_eu_nos",
+    "hk_pessoa_comum",
+    "hk_especialista",
+    "hk_cargo_dono",
+    "hk_bilionario",
+    "hk_figura",
+    "hk_elon",
+    "hk_trump",
+    "hk_bigtech",
+    "hk_marca_china",
+    "hk_marca_consumo",
+    "hk_marca_br",
+    "hk_mega_marca",
+    "hk_china",
+    "hk_eua",
+    "hk_pais_est",
+    "hk_brasil",
+    "hk_regiao_br",
+    "hk_brasil_qualquer",
+    "hk_br_x_est",
+    "hk_so_est",
+    "hk_interior",
+    "hk_governo_lei",
+    "hk_ia",
+    "hk_empresa_marca",
+    "hk_guerra",
+    "hk_mundo",
+    "hk_vida_sonho",
+    "hk_hype_adj",
+    "hk_historia_palavra",
+    "hk_nome_proprio_qualquer",
+    "hk_sem_nome_proprio",
+    "hk_pal_ate12",
+    "hk_pal_13_17",
+    "hk_pal_18_22",
+    "hk_pal_23_27",
+    "hk_pal_28_34",
+    "hk_pal_35mais",
+    "hk_frases_1",
+    "hk_frases_2",
+    "hk_frases_3mais",
+    "hk_frase_longa",
+    "hk_termina_pergunta",
+    "hk_tem_pergunta",
+    "hk_reticencias",
+    "hk_exclamacao",
+    "hk_virgula_0",
+    "hk_virgula_2mais",
+    "hk_dois_pontos",
+    "hk_aspas"
+   ],
+   "porMes": {
+    "2026-07": {
+     "treino": 3076,
+     "lambda": 300,
+     "n": 957,
+     "topo": 0.2361546499477534,
+     "pares": {
+      "acc": 0.5817931034482758,
+      "lo": 0.5502040816326531,
+      "hi": 0.6091673447247085,
+      "pares": 3625,
+      "grupos": 48
+     },
+     "auc": 0.5859744803457502,
+     "brier": 0.18260457729765542
+    },
+    "2026-08": {
+     "treino": 4033,
+     "lambda": 3000,
+     "n": 1032,
+     "topo": 0.25193798449612403,
+     "pares": {
+      "acc": 0.5653554849743464,
+      "lo": 0.5245191005147657,
+      "hi": 0.6029885057471265,
+      "pares": 4093,
+      "grupos": 55
+     },
+     "auc": 0.5461862295735352,
+     "brier": 0.18775694987385416
+    },
+    "2026-09": {
+     "treino": 5065,
+     "lambda": 3000,
+     "n": 482,
+     "topo": 0.27800829875518673,
+     "pares": {
+      "acc": 0.5985247629083246,
+      "lo": 0.5556745182012848,
+      "hi": 0.6497093023255814,
+      "pares": 949,
+      "grupos": 46
+     },
+     "auc": 0.598333762223366,
+     "brier": 0.19641871887917053
+    }
+   },
+   "juntos": {
+    "n": 2471,
+    "topo": 0.2509105625252934,
+    "pares": {
+     "acc": 0.5758624668281989,
+     "lo": 0.5575487465181058,
+     "hi": 0.6014571552849065,
+     "pares": 8667,
+     "grupos": 149
+    },
+    "auc": 0.5697578466739862,
+    "brier": 0.1874510624214627
+   },
+   "calibracao": [
+    {
+     "faixa": "0-15%",
+     "n": 101,
+     "previsto": 0.12201242150680237,
+     "observado": 0.1485148514851485,
+     "lo": 0.092115201386504,
+     "hi": 0.2306726995993642
+    },
+    {
+     "faixa": "15-22%",
+     "n": 461,
+     "previsto": 0.19850077790250711,
+     "observado": 0.19522776572668113,
+     "lo": 0.16162471352692923,
+     "hi": 0.23386828882053703
+    },
+    {
+     "faixa": "22-30%",
+     "n": 1345,
+     "previsto": 0.2558815447054932,
+     "observado": 0.24907063197026022,
+     "lo": 0.22669420348651909,
+     "hi": 0.27287639101471806
+    },
+    {
+     "faixa": "30-40%",
+     "n": 443,
+     "previsto": 0.33756916917656504,
+     "observado": 0.32054176072234764,
+     "lo": 0.2787855070478538,
+     "hi": 0.36538370190672875
+    },
+    {
+     "faixa": "40-100%",
+     "n": 121,
+     "previsto": 0.4786316268390386,
+     "observado": 0.3140495867768595,
+     "lo": 0.2381525195796507,
+     "hi": 0.40139070960036616
+    }
+   ]
+  }
+ },
+ "baselines": {
+  "taxa recente do cliente (cli90)": {
+   "porMes": {
+    "2026-07": {
+     "n": 957,
+     "topo": 0.2361546499477534,
+     "pares": {
+      "acc": 0.49586206896551727,
+      "lo": 0.4463780418788908,
+      "hi": 0.5466666666666666,
+      "pares": 3625,
+      "grupos": 48
+     },
+     "auc": 0.48191348982482474,
+     "brier": 0.18317868375714
+    },
+    "2026-08": {
+     "n": 1032,
+     "topo": 0.25193798449612403,
+     "pares": {
+      "acc": 0.45272416320547276,
+      "lo": 0.39950078822911195,
+      "hi": 0.503769520732364,
+      "pares": 4093,
+      "grupos": 55
+     },
+     "auc": 0.43013401753686725,
+     "brier": 0.1948978002150939
+    },
+    "2026-09": {
+     "n": 482,
+     "topo": 0.27800829875518673,
+     "pares": {
+      "acc": 0.46259220231822973,
+      "lo": 0.40214067278287463,
+      "hi": 0.534521158129176,
+      "pares": 949,
+      "grupos": 46
+     },
+     "auc": 0.43899039286326985,
+     "brier": 0.21283196924017622
+    }
+   },
+   "juntos": {
+    "n": 2471,
+    "topo": 0.2509105625252934,
+    "pares": {
+     "acc": 0.4718472366447444,
+     "lo": 0.4428620650051683,
+     "hi": 0.5002747856671796,
+     "pares": 8667,
+     "grupos": 149
+    },
+    "auc": 0.44965319530855163,
+    "brier": 0.1938573611296346
+   },
+   "calibracao": [
+    {
+     "faixa": "0-15%",
+     "n": 74,
+     "previsto": 0.11983057683546712,
+     "observado": 0.3108108108108108,
+     "lo": 0.21690691603479306,
+     "hi": 0.42338824747674825
+    },
+    {
+     "faixa": "15-22%",
+     "n": 423,
+     "previsto": 0.19275744082250096,
+     "observado": 0.3120567375886525,
+     "lo": 0.2697599440887499,
+     "hi": 0.3577365323559077
+    },
+    {
+     "faixa": "22-30%",
+     "n": 1650,
+     "previsto": 0.2575723242857783,
+     "observado": 0.2412121212121212,
+     "lo": 0.22118542154427503,
+     "hi": 0.2624410636040003
+    },
+    {
+     "faixa": "30-40%",
+     "n": 293,
+     "previsto": 0.3273842722124682,
+     "observado": 0.21843003412969283,
+     "lo": 0.17492906861649593,
+     "hi": 0.2692189214226361
+    },
+    {
+     "faixa": "40-100%",
+     "n": 31,
+     "previsto": 0.43490382424892254,
+     "observado": 0.0967741935483871,
+     "lo": 0.033464036094643976,
+     "hi": 0.2490028999817704
+    }
+   ]
+  },
+  "só kNN da casa (knn20)": {
+   "porMes": {
+    "2026-07": {
+     "n": 957,
+     "topo": 0.2361546499477534,
+     "pares": {
+      "acc": 0.5888275862068966,
+      "lo": 0.5411780383795309,
+      "hi": 0.6332835820895523,
+      "pares": 3625,
+      "grupos": 48
+     },
+     "auc": 0.5951902473275789,
+     "brier": 0.17907073609659854
+    },
+    "2026-08": {
+     "n": 1032,
+     "topo": 0.25193798449612403,
+     "pares": {
+      "acc": 0.5445883215245542,
+      "lo": 0.4989151398264224,
+      "hi": 0.5882352941176471,
+      "pares": 4093,
+      "grupos": 55
+     },
+     "auc": 0.5190040852929454,
+     "brier": 0.19556549781976795
+    },
+    "2026-09": {
+     "n": 482,
+     "topo": 0.27800829875518673,
+     "pares": {
+      "acc": 0.571127502634352,
+      "lo": 0.5151006711409396,
+      "hi": 0.6251287332646756,
+      "pares": 949,
+      "grupos": 46
+     },
+     "auc": 0.5802560473494596,
+     "brier": 0.19721483834716477
+    }
+   },
+   "juntos": {
+    "n": 2471,
+    "topo": 0.2509105625252934,
+    "pares": {
+     "acc": 0.5659974616360909,
+     "lo": 0.5350926763110307,
+     "hi": 0.5937199807877042,
+     "pares": 8667,
+     "grupos": 149
+    },
+    "auc": 0.5594722120562555,
+    "brier": 0.18949892362516235
+   },
+   "calibracao": [
+    {
+     "faixa": "0-15%",
+     "n": 206,
+     "previsto": 0.12030744336569585,
+     "observado": 0.23786407766990292,
+     "lo": 0.18485442327234958,
+     "hi": 0.30047165125243486
+    },
+    {
+     "faixa": "15-22%",
+     "n": 593,
+     "previsto": 0.18736649803260289,
+     "observado": 0.21079258010118043,
+     "lo": 0.17987842501191245,
+     "hi": 0.24542973045178176
+    },
+    {
+     "faixa": "22-30%",
+     "n": 731,
+     "previsto": 0.26160510715914254,
+     "observado": 0.22298221614227087,
+     "lo": 0.19429951463398507,
+     "hi": 0.25456130108466773
+    },
+    {
+     "faixa": "30-40%",
+     "n": 670,
+     "previsto": 0.3388308457711446,
+     "observado": 0.27611940298507465,
+     "lo": 0.24361500409003586,
+     "hi": 0.3111765077430122
+    },
+    {
+     "faixa": "40-100%",
+     "n": 271,
+     "previsto": 0.44753997539975443,
+     "observado": 0.36162361623616235,
+     "lo": 0.30672049858966494,
+     "hi": 0.4203950472374588
+    }
+   ]
+  },
+  "só kNN com limiar (casa_taxa)": {
+   "porMes": {
+    "2026-07": {
+     "n": 957,
+     "topo": 0.2361546499477534,
+     "pares": {
+      "acc": 0.5652413793103448,
+      "lo": 0.5067493112947659,
+      "hi": 0.6096187175043327,
+      "pares": 3625,
+      "grupos": 48
+     },
+     "auc": 0.5837257726716948,
+     "brier": 0.17952673543014572
+    },
+    "2026-08": {
+     "n": 1032,
+     "topo": 0.25193798449612403,
+     "pares": {
+      "acc": 0.5735401905692646,
+      "lo": 0.5311581422692534,
+      "hi": 0.618328758767917,
+      "pares": 4093,
+      "grupos": 55
+     },
+     "auc": 0.5441535472299721,
+     "brier": 0.1900173565194318
+    },
+    "2026-09": {
+     "n": 482,
+     "topo": 0.27800829875518673,
+     "pares": {
+      "acc": 0.517913593256059,
+      "lo": 0.44397759103641454,
+      "hi": 0.5889003083247688,
+      "pares": 949,
+      "grupos": 46
+     },
+     "auc": 0.5395758277577629,
+     "brier": 0.19923934331842647
+    }
+   },
+   "juntos": {
+    "n": 2471,
+    "topo": 0.2509105625252934,
+    "pares": {
+     "acc": 0.5639783085265951,
+     "lo": 0.532785038305543,
+     "hi": 0.5933955263436871,
+     "pares": 8667,
+     "grupos": 149
+    },
+    "auc": 0.5582069848904689,
+    "brier": 0.1877532825634095
+   },
+   "calibracao": [
+    {
+     "faixa": "0-15%",
+     "n": 76,
+     "previsto": 0.13315404022656135,
+     "observado": 0.19736842105263158,
+     "lo": 0.12341879212336242,
+     "hi": 0.30044044917440715
+    },
+    {
+     "faixa": "15-22%",
+     "n": 562,
+     "previsto": 0.19786094393814263,
+     "observado": 0.21708185053380782,
+     "lo": 0.18497969757226873,
+     "hi": 0.25302556750544913
+    },
+    {
+     "faixa": "22-30%",
+     "n": 1091,
+     "previsto": 0.2607848603306843,
+     "observado": 0.23373052245646195,
+     "lo": 0.20957887728236713,
+     "hi": 0.25975074994407366
+    },
+    {
+     "faixa": "30-40%",
+     "n": 585,
+     "previsto": 0.342389951910227,
+     "observado": 0.30427350427350425,
+     "lo": 0.2683657141479595,
+     "hi": 0.34273513198791133
+    },
+    {
+     "faixa": "40-100%",
+     "n": 157,
+     "previsto": 0.4400980562974558,
+     "observado": 0.3184713375796178,
+     "lo": 0.2506763412849138,
+     "hi": 0.39493772870692917
+    }
+   ]
+  },
+  "só território k=60": {
+   "porMes": {
+    "2026-07": {
+     "n": 957,
+     "topo": 0.2361546499477534,
+     "pares": {
+      "acc": 0.5001379310344828,
+      "lo": 0.45917621252741897,
+      "hi": 0.5431538911644236,
+      "pares": 3625,
+      "grupos": 48
+     },
+     "auc": 0.5278258658886481,
+     "brier": 0.18507109747999484
+    },
+    "2026-08": {
+     "n": 1032,
+     "topo": 0.25193798449612403,
+     "pares": {
+      "acc": 0.5653554849743464,
+      "lo": 0.5216041718400795,
+      "hi": 0.6143818334735072,
+      "pares": 4093,
+      "grupos": 55
+     },
+     "auc": 0.5529070346751694,
+     "brier": 0.18854171374538276
+    },
+    "2026-09": {
+     "n": 482,
+     "topo": 0.27800829875518673,
+     "pares": {
+      "acc": 0.5189673340358272,
+      "lo": 0.4541176470588235,
+      "hi": 0.566289825282631,
+      "pares": 949,
+      "grupos": 46
+     },
+     "auc": 0.5314054726368159,
+     "brier": 0.202185625440019
+    }
+   },
+   "juntos": {
+    "n": 2471,
+    "topo": 0.2509105625252934,
+    "pares": {
+     "acc": 0.5329987308180455,
+     "lo": 0.5035758882960608,
+     "hi": 0.5601662049861496,
+     "pares": 8667,
+     "grupos": 149
+    },
+    "auc": 0.538953224935083,
+    "brier": 0.18985898839970833
+   },
+   "calibracao": [
+    {
+     "faixa": "0-15%",
+     "n": 112,
+     "previsto": 0.13942023954018742,
+     "observado": 0.26785714285714285,
+     "lo": 0.19454473061185254,
+     "hi": 0.35656644188576486
+    },
+    {
+     "faixa": "15-22%",
+     "n": 648,
+     "previsto": 0.19012083143830824,
+     "observado": 0.2175925925925926,
+     "lo": 0.18753774629328185,
+     "hi": 0.2509761503343651
+    },
+    {
+     "faixa": "22-30%",
+     "n": 890,
+     "previsto": 0.25906717796349066,
+     "observado": 0.24719101123595505,
+     "lo": 0.2199763490118554,
+     "hi": 0.2765787453135821
+    },
+    {
+     "faixa": "30-40%",
+     "n": 585,
+     "previsto": 0.3389541761423614,
+     "observado": 0.22735042735042735,
+     "lo": 0.19522958296583592,
+     "hi": 0.2630288009526916
+    },
+    {
+     "faixa": "40-100%",
+     "n": 236,
+     "previsto": 0.4420516353121458,
+     "observado": 0.4067796610169492,
+     "lo": 0.34608478287299577,
+     "hi": 0.47046080388092854
+    }
+   ]
+  },
+  "só placar do hook": {
+   "porMes": {
+    "2026-07": {
+     "n": 957,
+     "topo": 0.2361546499477534,
+     "pares": {
+      "acc": 0.6041379310344828,
+      "lo": 0.5580110497237569,
+      "hi": 0.6481737686773658,
+      "pares": 3625,
+      "grupos": 48
+     },
+     "auc": 0.6111975351984795,
+     "brier": 1.7053291536050157
+    },
+    "2026-08": {
+     "n": 1032,
+     "topo": 0.25193798449612403,
+     "pares": {
+      "acc": 0.6068898118739311,
+      "lo": 0.5715408805031447,
+      "hi": 0.6402168555938886,
+      "pares": 4093,
+      "grupos": 55
+     },
+     "auc": 0.5821392985253089,
+     "brier": 1.9089147286821706
+    },
+    "2026-09": {
+     "n": 482,
+     "topo": 0.27800829875518673,
+     "pares": {
+      "acc": 0.6564805057955743,
+      "lo": 0.5745762711864407,
+      "hi": 0.7408575031525851,
+      "pares": 949,
+      "grupos": 46
+     },
+     "auc": 0.6286026762738034,
+     "brier": 1.946058091286307
+    }
+   },
+   "juntos": {
+    "n": 2471,
+    "topo": 0.2509105625252934,
+    "pares": {
+     "acc": 0.6111688011999539,
+     "lo": 0.586762551604741,
+     "hi": 0.6449527598209845,
+     "pares": 8667,
+     "grupos": 149
+    },
+    "auc": 0.602996636517314,
+    "brier": 1.8373128288142453
+   },
+   "calibracao": null
+  }
+ },
+ "outubro": {
+  "aviso": "só 1 vídeos de outubro com embedding"
+ },
+ "final": {
+  "conjunto": "sem_hook_mais_catalogo",
+  "n": 5547,
+  "lambda": 3000,
+  "pesos": [
+   {
+    "feature": "cli90",
+    "por_dp": -0.05736921671552553,
+    "or_por_dp": 0.9442453738227998,
+    "media": 0.25719195986406096,
+    "dp": 0.0499412755736046
+   },
+   {
+    "feature": "hk_regiao_br",
+    "por_dp": 0.035447328561524424,
+    "or_por_dp": 1.0360830747049221,
+    "media": 0.12186767622138092,
+    "dp": 0.3271329175026267
+   },
+   {
+    "feature": "hk_acabou_de",
+    "por_dp": 0.033937177205046805,
+    "or_por_dp": 1.0345196132730643,
+    "media": 0.07661799170722913,
+    "dp": 0.26598435114492075
+   },
+   {
+    "feature": "hk_ab_nem",
+    "por_dp": 0.029885495747919683,
+    "or_por_dp": 1.0303365492828058,
+    "media": 0.0016224986479177934,
+    "dp": 0.0402475607466519
+   },
+   {
+    "feature": "hk_ab_artigo",
+    "por_dp": 0.027253817831031597,
+    "or_por_dp": 1.027628600126969,
+    "media": 0.3948080043266631,
+    "dp": 0.48880941485027174
+   },
+   {
+    "feature": "hk_ia",
+    "por_dp": -0.02597592771745924,
+    "or_por_dp": 0.9743585443606193,
+    "media": 0.12403100775193798,
+    "dp": 0.32961692442586116
+   },
+   {
+    "feature": "hk_empresa_marca",
+    "por_dp": -0.024867625113368028,
+    "or_por_dp": 0.9754390271129773,
+    "media": 0.13322516675680549,
+    "dp": 0.33981792433513625
+   },
+   {
+    "feature": "hk_brasil_qualquer",
+    "por_dp": 0.024617413615241453,
+    "or_por_dp": 1.024922923948548,
+    "media": 0.32594195060393005,
+    "dp": 0.46872571450737377
+   },
+   {
+    "feature": "hk_guerra",
+    "por_dp": 0.02451811908020464,
+    "or_por_dp": 1.0248211597557637,
+    "media": 0.05552550928429782,
+    "dp": 0.2290031159242563
+   },
+   {
+    "feature": "hk_ab_artigo_nome",
+    "por_dp": 0.02428211895053581,
+    "or_por_dp": 1.02457933036618,
+    "media": 0.22336398053001622,
+    "dp": 0.4165003154042187
+   },
+   {
+    "feature": "hk_problema",
+    "por_dp": 0.024265736766869522,
+    "or_por_dp": 1.0245625456568948,
+    "media": 0.022534703443302686,
+    "dp": 0.14841459019930453
+   },
+   {
+    "feature": "hk_ab_brasil",
+    "por_dp": -0.023847382461274717,
+    "or_por_dp": 0.9764347194504822,
+    "media": 0.018748873264827836,
+    "dp": 0.13563684239957163
+   },
+   {
+    "feature": "hk_br_x_est",
+    "por_dp": 0.023561726570270818,
+    "or_por_dp": 1.0238414970202765,
+    "media": 0.06237605913106183,
+    "dp": 0.2418373138668572
+   },
+   {
+    "feature": "hk_v_proibiu",
+    "por_dp": 0.023336839958516972,
+    "or_por_dp": 1.023611274662972,
+    "media": 0.00847304849468181,
+    "dp": 0.09165836537866287
+   },
+   {
+    "feature": "hk_vida_sonho",
+    "por_dp": -0.02275883878995831,
+    "or_por_dp": 0.9774981899968489,
+    "media": 0.025779700739138274,
+    "dp": 0.15847746770104562
+   },
+   {
+    "feature": "ancora_noticia",
+    "por_dp": 0.02117717076037357,
+    "or_por_dp": 1.0214029983536879,
+    "media": 0.4905354245538129,
+    "dp": 0.49991041378593243
+   },
+   {
+    "feature": "casa_taxa",
+    "por_dp": 0.02103509617636633,
+    "or_por_dp": 1.0212578932557104,
+    "media": 0.27407843606315196,
+    "dp": 0.06560718376951452
+   },
+   {
+    "feature": "hk_china",
+    "por_dp": 0.019099868747343585,
+    "or_por_dp": 1.0192834380946802,
+    "media": 0.11681990265008113,
+    "dp": 0.3212055618990775
+   },
+   {
+    "feature": "hk_v_dinheiro",
+    "por_dp": -0.019076420877351334,
+    "or_por_dp": 0.981104382520149,
+    "media": 0.0461510726518839,
+    "dp": 0.2098121806401127
+   },
+   {
+    "feature": "ancora_passado",
+    "por_dp": -0.018997064647697216,
+    "or_por_dp": 0.9811822423541334,
+    "media": 0.370831079862989,
+    "dp": 0.48302731814115785
+   },
+   {
+    "feature": "hk_ab_os_as",
+    "por_dp": -0.018859191286244192,
+    "or_por_dp": 0.9813175305741914,
+    "media": 0.0268613665044168,
+    "dp": 0.16167817878097843
+   },
+   {
+    "feature": "hk_marca_china",
+    "por_dp": 0.01864558671013356,
+    "or_por_dp": 1.0188205010978706,
+    "media": 0.016405264106724354,
+    "dp": 0.12702807333937105
+   },
+   {
+    "feature": "hk_tempo_recente",
+    "por_dp": 0.01846019782788238,
+    "or_por_dp": 1.0186316406108156,
+    "media": 0.19920677843879575,
+    "dp": 0.3994038530896056
+   },
+   {
+    "feature": "hk_e_o_motivo",
+    "por_dp": 0.018410867306982052,
+    "or_por_dp": 1.0185813922207785,
+    "media": 0.014061654948620876,
+    "dp": 0.1177451689400716
+   },
+   {
+    "feature": "hk_nome_proprio_qualquer",
+    "por_dp": 0.01833618785696532,
+    "or_por_dp": 1.018505327962864,
+    "media": 0.6850549846764017,
+    "dp": 0.4644939748225212
+   },
+   {
+    "feature": "hk_sem_nome_proprio",
+    "por_dp": -0.0183361878569653,
+    "or_por_dp": 0.9818308972424553,
+    "media": 0.31494501532359837,
+    "dp": 0.4644939748225212
+   },
+   {
+    "feature": "hk_tempo_passado_ano",
+    "por_dp": -0.018146811251480897,
+    "or_por_dp": 0.9820168506519917,
+    "media": 0.014963043086352984,
+    "dp": 0.12140490281676353
+   },
+   {
+    "feature": "hk_ab_muita_gente",
+    "por_dp": -0.018073701781409955,
+    "or_por_dp": 0.9820886480080451,
+    "media": 0.010456102397692447,
+    "dp": 0.10171908532984836
+   },
+   {
+    "feature": "hk_te",
+    "por_dp": -0.01797665103347537,
+    "or_por_dp": 0.9821839650710936,
+    "media": 0.03010636380025239,
+    "dp": 0.1708799890536599
+   },
+   {
+    "feature": "modo_misto",
+    "por_dp": 0.017530440494414833,
+    "or_por_dp": 1.0176850005138354,
+    "media": 0.001081665765278529,
+    "dp": 0.032870895400806385
+   },
+   {
+    "feature": "hk_bilionario",
+    "por_dp": -0.01705596621778889,
+    "or_por_dp": 0.9830886633410189,
+    "media": 0.048674959437533805,
+    "dp": 0.21518761061289227
+   },
+   {
+    "feature": "hk_ab_em",
+    "por_dp": -0.016849004095581096,
+    "or_por_dp": 0.9832921465130305,
+    "media": 0.014061654948620876,
+    "dp": 0.11774516894007298
+   },
+   {
+    "feature": "hk_trump",
+    "por_dp": -0.01648602171522767,
+    "or_por_dp": 0.9836491290222156,
+    "media": 0.010275824770146024,
+    "dp": 0.10084756911020894
+   },
+   {
+    "feature": "hk_figura",
+    "por_dp": 0.016470772501798205,
+    "or_por_dp": 1.0166071634677925,
+    "media": 0.07030827474310439,
+    "dp": 0.2556658390277189
+   },
+   {
+    "feature": "hk_segredo",
+    "por_dp": -0.016324762485922698,
+    "or_por_dp": 0.9838077643130267,
+    "media": 0.04092302145303768,
+    "dp": 0.1981119071842678
+   },
+   {
+    "feature": "rep_fraco",
+    "por_dp": -0.0156262948696759,
+    "or_por_dp": 0.9844951622116515,
+    "media": 0.1242112853794844,
+    "dp": 0.3298224400550399
+   },
+   {
+    "feature": "hk_percentual",
+    "por_dp": -0.015287511380781408,
+    "or_por_dp": 0.984828749421234,
+    "media": 0.015503875968992248,
+    "dp": 0.12354556163185312
+   },
+   {
+    "feature": "hk_ab_demonst_objeto",
+    "por_dp": -0.015274628863403993,
+    "or_por_dp": 0.9848414365764333,
+    "media": 0.11339462772669912,
+    "dp": 0.31707457502837527
+   },
+   {
+    "feature": "knn20",
+    "por_dp": 0.015183346847984646,
+    "or_por_dp": 1.0152991994595613,
+    "media": 0.2688804650754836,
+    "dp": 0.09593848911230325
+   },
+   {
+    "feature": "fora_fraco",
+    "por_dp": -0.015120055124179016,
+    "or_por_dp": 0.9849936789658632,
+    "media": 0.3616369208581215,
+    "dp": 0.48047440965194677
+   },
+   {
+    "feature": "hk_num_por_extenso",
+    "por_dp": 0.015051998059619166,
+    "or_por_dp": 1.0151658498977272,
+    "media": 0.09320353344149991,
+    "dp": 0.29071744838505115
+   },
+   {
+    "feature": "hk_pais_est",
+    "por_dp": 0.014867928973513682,
+    "or_por_dp": 1.0149790064440705,
+    "media": 0.17847485127095727,
+    "dp": 0.3829119725664931
+   },
+   {
+    "feature": "hk_ab_nome_sem_artigo",
+    "por_dp": 0.014831481388595889,
+    "or_por_dp": 1.0149420135846976,
+    "media": 0.017847485127095726,
+    "dp": 0.13239695012247035
+   },
+   {
+    "feature": "hk_por_causa",
+    "por_dp": 0.014758553330163042,
+    "or_por_dp": 1.0148679985331448,
+    "media": 0.023796646836127637,
+    "dp": 0.15241511222804008
+   },
+   {
+    "feature": "hk_num_ano",
+    "por_dp": -0.014527262474997998,
+    "or_por_dp": 0.9855777490773746,
+    "media": 0.032089417703263026,
+    "dp": 0.1762375867252132
+   },
+   {
+    "feature": "hk_proibido",
+    "por_dp": 0.014448592265917637,
+    "or_por_dp": 1.0145534777153729,
+    "media": 0.00847304849468181,
+    "dp": 0.09165836537866155
+   },
+   {
+    "feature": "terr_c60",
+    "por_dp": 0.01366284793555414,
+    "or_por_dp": 1.0137566111800869,
+    "media": 0.27733296437900157,
+    "dp": 0.08955283002864924
+   },
+   {
+    "feature": "hk_v_recusou",
+    "por_dp": 0.01362039970345265,
+    "or_por_dp": 1.013713579917468,
+    "media": 0.014241932576167298,
+    "dp": 0.11848670783114645
+   },
+   {
+    "feature": "hk_interior",
+    "por_dp": 0.012588267971647278,
+    "or_por_dp": 1.0126678337314199,
+    "media": 0.020010816657652784,
+    "dp": 0.1400370803549837
+   },
+   {
+    "feature": "hk_ano_2025_26",
+    "por_dp": -0.012516310818885408,
+    "or_por_dp": 0.9875616924226106,
+    "media": 0.014422210203713719,
+    "dp": 0.11922336204181233
+   },
+   {
+    "feature": "hk_v_ser_capaz",
+    "por_dp": -0.012187341149543915,
+    "or_por_dp": 0.9878866237093598,
+    "media": 0.07355327203893997,
+    "dp": 0.26104250269124973
+   },
+   {
+    "feature": "hk_elon",
+    "por_dp": 0.011765764561288552,
+    "or_por_dp": 1.0118352534316208,
+    "media": 0.020010816657652784,
+    "dp": 0.14003708035498488
+   },
+   {
+    "feature": "hk_ab_o_que",
+    "por_dp": 0.01161069793976654,
+    "or_por_dp": 1.0116783637218272,
+    "media": 0.007751937984496124,
+    "dp": 0.08770316665880103
+   },
+   {
+    "feature": "hk_eua",
+    "por_dp": 0.011540922893913754,
+    "or_por_dp": 1.01160777628026,
+    "media": 0.033711916351180815,
+    "dp": 0.1804866284440901
+   },
+   {
+    "feature": "hk_nunca",
+    "por_dp": -0.011503839830018368,
+    "or_por_dp": 0.9885620763302895,
+    "media": 0.027221921759509646,
+    "dp": 0.16272949559077513
+   },
+   {
+    "feature": "hk_ab_demonstrativo",
+    "por_dp": -0.011287125270082821,
+    "or_por_dp": 0.9887763353413155,
+    "media": 0.23039480800432666,
+    "dp": 0.4210855500358143
+   },
+   {
+    "feature": "log_n_casa",
+    "por_dp": -0.011129747027557093,
+    "or_por_dp": 0.9889319594688272,
+    "media": 1.139507739469802,
+    "dp": 1.020208402416612
+   },
+   {
+    "feature": "modo_conselho",
+    "por_dp": -0.011072613452306668,
+    "or_por_dp": 0.98898846230144,
+    "media": 0.019650261402559942,
+    "dp": 0.13879527596200658
+   },
+   {
+    "feature": "hk_ab_existe",
+    "por_dp": -0.011027224742745019,
+    "or_por_dp": 0.9890333522302556,
+    "media": 0.014241932576167298,
+    "dp": 0.11848670783114482
+   },
+   {
+    "feature": "log_n_cli",
+    "por_dp": -0.010733818240604494,
+    "or_por_dp": 0.9893235836224404,
+    "media": 0.3919306290226472,
+    "dp": 0.6671605254524533
+   },
+   {
+    "feature": "hk_ab_enquanto",
+    "por_dp": -0.010665204742733133,
+    "or_por_dp": 0.9893914669028674,
+    "media": 0.034793582116459346,
+    "dp": 0.1832566199621768
+   },
+   {
+    "feature": "hk_ta_coloquial",
+    "por_dp": 0.01060751871501656,
+    "or_por_dp": 1.0106639778956763,
+    "media": 0.10293852532900667,
+    "dp": 0.3038785700441976
+   },
+   {
+    "feature": "hk_ab_pergunta_qu",
+    "por_dp": 0.010215784313992133,
+    "or_por_dp": 1.010268143583679,
+    "media": 0.030827474310438075,
+    "dp": 0.17285005391401378
+   },
+   {
+    "feature": "hk_ab_tempo_atras",
+    "por_dp": -0.010108208013439883,
+    "or_por_dp": 0.9899427082194765,
+    "media": 0.019289706147467098,
+    "dp": 0.13754131519006438
+   },
+   {
+    "feature": "hk_v_copiou",
+    "por_dp": 0.009935802648538444,
+    "or_por_dp": 1.0099853266199132,
+    "media": 0.009374436632413918,
+    "dp": 0.0963667814666367
+   },
+   {
+    "feature": "hk_ab_o_maior",
+    "por_dp": -0.009833385232409921,
+    "or_por_dp": 0.9902148044150137,
+    "media": 0.019469983775013522,
+    "dp": 0.13816983573419742
+   },
+   {
+    "feature": "hk_ab_uma_das",
+    "por_dp": 0.00970190349739053,
+    "or_por_dp": 1.0097491195347403,
+    "media": 0.014061654948620876,
+    "dp": 0.11774516894007268
+   },
+   {
+    "feature": "hk_v_queda",
+    "por_dp": -0.00959245329726171,
+    "or_por_dp": 0.9904534075264543,
+    "media": 0.03695691364701641,
+    "dp": 0.18865603669298542
+   },
+   {
+    "feature": "hk_ab_por_que",
+    "por_dp": 0.009554917185900031,
+    "or_por_dp": 1.0096007111433973,
+    "media": 0.014602487831260141,
+    "dp": 0.11995522156371205
+   },
+   {
+    "feature": "hk_ab_isso",
+    "por_dp": -0.009522605080915436,
+    "or_por_dp": 0.9905225913464992,
+    "media": 0.010275824770146024,
+    "dp": 0.10084756911020976
+   },
+   {
+    "feature": "hk_eu_nos",
+    "por_dp": 0.00950633869044776,
+    "or_por_dp": 1.0095516674510865,
+    "media": 0.019289706147467098,
+    "dp": 0.13754131519006477
+   },
+   {
+    "feature": "hk_s_da_historia",
+    "por_dp": 0.009383520636078961,
+    "or_por_dp": 1.009427683893371,
+    "media": 0.02704164413196322,
+    "dp": 0.1622047891235175
+   },
+   {
+    "feature": "hk_ab_demonst_cara",
+    "por_dp": -0.009054984410406346,
+    "or_por_dp": 0.9909858885000394,
+    "media": 0.03281052821344871,
+    "dp": 0.17814038691943468
+   },
+   {
+    "feature": "hk_v_fez",
+    "por_dp": -0.008927193644137998,
+    "or_por_dp": 0.9911125354380743,
+    "media": 0.0679646655850009,
+    "dp": 0.251685259435116
+   },
+   {
+    "feature": "hk_o_motivo",
+    "por_dp": 0.008823577999217487,
+    "or_por_dp": 1.0088626205106348,
+    "media": 0.019830539030106363,
+    "dp": 0.13941767732924062
+   },
+   {
+    "feature": "hk_mega_marca",
+    "por_dp": 0.008753284746994263,
+    "or_por_dp": 1.0087917067684007,
+    "media": 0.2522084009374437,
+    "dp": 0.4342802360619563
+   },
+   {
+    "feature": "hk_ab_artigo_comum",
+    "por_dp": 0.008722767709557388,
+    "or_por_dp": 1.0087609219038531,
+    "media": 0.1694609698936362,
+    "dp": 0.3751585659109498
+   },
+   {
+    "feature": "hk_exclamacao",
+    "por_dp": 0.00866450666763655,
+    "or_por_dp": 1.008702152153504,
+    "media": 0.052460789616008655,
+    "dp": 0.22295437912018196
+   },
+   {
+    "feature": "hk_ab_tem",
+    "por_dp": -0.008580747059582628,
+    "or_por_dp": 0.9914559624770142,
+    "media": 0.0075716603569497025,
+    "dp": 0.08668523701524314
+   },
+   {
+    "feature": "cli_taxa",
+    "por_dp": 0.008559198881487708,
+    "or_por_dp": 1.008595933555898,
+    "media": 0.2708634638535432,
+    "dp": 0.06125237756332244
+   },
+   {
+    "feature": "hk_escala",
+    "por_dp": 0.008156606787775062,
+    "or_por_dp": 1.008189962533143,
+    "media": 0.19325761672976383,
+    "dp": 0.39485327693423516
+   },
+   {
+    "feature": "hk_pal_ate12",
+    "por_dp": 0.007592985940752496,
+    "or_por_dp": 1.0076218857574955,
+    "media": 0.11249323958896701,
+    "dp": 0.31597232574348405
+   },
+   {
+    "feature": "hk_num_redondo",
+    "por_dp": 0.007560008517667794,
+    "or_por_dp": 1.007588657532153,
+    "media": 0.17396791058229674,
+    "dp": 0.3790818864967553
+   },
+   {
+    "feature": "hk_s_do_mundo",
+    "por_dp": 0.007475986628816519,
+    "or_por_dp": 1.007504001586488,
+    "media": 0.10185685956372814,
+    "dp": 0.30245998036690713
+   },
+   {
+    "feature": "hk_ab_voce",
+    "por_dp": -0.007448573780103683,
+    "or_por_dp": 0.992579098097609,
+    "media": 0.031728862448170185,
+    "dp": 0.17527732807159735
+   },
+   {
+    "feature": "hk_marca_br",
+    "por_dp": 0.0074406507545309265,
+    "or_por_dp": 1.0074684011807353,
+    "media": 0.05065801334054444,
+    "dp": 0.21929837898383753
+   },
+   {
+    "feature": "hk_ab_pais",
+    "por_dp": -0.0072321602664421536,
+    "or_por_dp": 0.9927939288731183,
+    "media": 0.06904633135027943,
+    "dp": 0.25353290807574924
+   },
+   {
+    "feature": "rep_acerto_90",
+    "por_dp": 0.007200525616499952,
+    "or_por_dp": 1.0072265117348704,
+    "media": 0.039300522805119885,
+    "dp": 0.19430901088823052
+   },
+   {
+    "feature": "hk_frase_longa",
+    "por_dp": 0.0070248692220151844,
+    "or_por_dp": 1.007049601495552,
+    "media": 0.0863529835947359,
+    "dp": 0.2808845773961533
+   },
+   {
+    "feature": "hk_ab_como",
+    "por_dp": -0.0069506015408577464,
+    "or_por_dp": 0.9930734980222196,
+    "media": 0.006670272219217595,
+    "dp": 0.08139889242329865
+   },
+   {
+    "feature": "hk_c_nem",
+    "por_dp": 0.006911552027388068,
+    "or_por_dp": 1.0069354919252704,
+    "media": 0.03154858482062376,
+    "dp": 0.17479494162143575
+   },
+   {
+    "feature": "modo_panorama",
+    "por_dp": -0.006480133181088157,
+    "or_por_dp": 0.9935408176028833,
+    "media": 0.11285379484405986,
+    "dp": 0.3164139943702718
+   },
+   {
+    "feature": "hk_especialista",
+    "por_dp": -0.006403304495738697,
+    "or_por_dp": 0.9936171529700761,
+    "media": 0.037137191274562824,
+    "dp": 0.18909791193663672
+   },
+   {
+    "feature": "hk_dinheiro",
+    "por_dp": 0.006361955060434945,
+    "or_por_dp": 1.006382235281004,
+    "media": 0.23273841716243016,
+    "dp": 0.42257691174405787
+   },
+   {
+    "feature": "hk_c_mesmo",
+    "por_dp": 0.00626843910209408,
+    "or_por_dp": 1.0062881268822015,
+    "media": 0.04218496484586263,
+    "dp": 0.20101092902332104
+   },
+   {
+    "feature": "hk_s_maior",
+    "por_dp": 0.006245841580918786,
+    "or_por_dp": 1.0062653875218734,
+    "media": 0.11772129078781324,
+    "dp": 0.32227781258265764
+   },
+   {
+    "feature": "hk_ab_numero",
+    "por_dp": 0.006171090329684149,
+    "or_por_dp": 1.0061901707363914,
+    "media": 0.014061654948620876,
+    "dp": 0.117745168940073
+   },
+   {
+    "feature": "hk_governo_lei",
+    "por_dp": -0.0061601214609908845,
+    "or_por_dp": 0.9938588131873545,
+    "media": 0.0746349378042185,
+    "dp": 0.26280137720944063
+   },
+   {
+    "feature": "hk_voce",
+    "por_dp": -0.006095186070110282,
+    "or_por_dp": 0.9939233518932693,
+    "media": 0.12853794844059852,
+    "dp": 0.33468783104750766
+   },
+   {
+    "feature": "hk_porque",
+    "por_dp": -0.006081662234703841,
+    "or_por_dp": 0.9939367936399787,
+    "media": 0.019109428519920677,
+    "dp": 0.13690967190656766
+   },
+   {
+    "feature": "cli_tend",
+    "por_dp": -0.006014435802333159,
+    "or_por_dp": 0.994003614710663,
+    "media": 0.006536120772476131,
+    "dp": 0.1483509805558231
+   },
+   {
+    "feature": "hk_virgula_2mais",
+    "por_dp": -0.00596343739136752,
+    "or_por_dp": 0.9940543086081505,
+    "media": 0.12385073012439156,
+    "dp": 0.32941118191712343
+   },
+   {
+    "feature": "hk_seu_sua",
+    "por_dp": -0.005879379574279941,
+    "or_por_dp": 0.9941378701553499,
+    "media": 0.1265548945375879,
+    "dp": 0.33247368799074617
+   },
+   {
+    "feature": "hk_c_mas",
+    "por_dp": 0.005829919445445826,
+    "or_por_dp": 1.005846946498517,
+    "media": 0.1519740400216333,
+    "dp": 0.35899572585357137
+   },
+   {
+    "feature": "hk_virgula_0",
+    "por_dp": 0.0055984691520087025,
+    "or_por_dp": 1.005614169866746,
+    "media": 0.5610239769244637,
+    "dp": 0.4962621023615749
+   },
+   {
+    "feature": "hk_pal_35mais",
+    "por_dp": 0.0055058664967883334,
+    "or_por_dp": 1.0055210516360533,
+    "media": 0.02794303226969533,
+    "dp": 0.16480964540120085
+   },
+   {
+    "feature": "hk_ninguem",
+    "por_dp": 0.005396874322737473,
+    "or_por_dp": 1.0054114636828049,
+    "media": 0.08292770867135389,
+    "dp": 0.27577292072623394
+   },
+   {
+    "feature": "hk_ab_eua",
+    "por_dp": 0.005141722843135004,
+    "or_por_dp": 1.0051549641847417,
+    "media": 0.0036055525509284298,
+    "dp": 0.05993790571692213
+   },
+   {
+    "feature": "hk_termina_pergunta",
+    "por_dp": -0.0051309550058558084,
+    "or_por_dp": 0.9948821858591114,
+    "media": 0.033711916351180815,
+    "dp": 0.18048662844408908
+   },
+   {
+    "feature": "hk_pal_13_17",
+    "por_dp": -0.005081135509788068,
+    "or_por_dp": 0.994931751622918,
+    "media": 0.24896340364160807,
+    "dp": 0.432412566062541
+   },
+   {
+    "feature": "modo_publi",
+    "por_dp": -0.004998642450141447,
+    "or_por_dp": 0.9950138299726495,
+    "media": 0.02541914548404543,
+    "dp": 0.15739444884400536
+   },
+   {
+    "feature": "hk_ab_se_voce",
+    "por_dp": -0.004991348390761678,
+    "or_por_dp": 0.9950210876890782,
+    "media": 0.010095547142599604,
+    "dp": 0.09996813027406666
+   },
+   {
+    "feature": "hk_v_venceu",
+    "por_dp": 0.004857608882784902,
+    "or_por_dp": 1.0048694261916873,
+    "media": 0.012979989183342347,
+    "dp": 0.1131879369197215
+   },
+   {
+    "feature": "sim_media",
+    "por_dp": -0.004811813254675007,
+    "or_por_dp": 0.9951997449726155,
+    "media": 0.7459725934786258,
+    "dp": 0.11374486643238599
+   },
+   {
+    "feature": "hk_frases_3mais",
+    "por_dp": -0.0046965325167701456,
+    "or_por_dp": 0.9953144789467602,
+    "media": 0.027221921759509646,
+    "dp": 0.16272949559077854
+   },
+   {
+    "feature": "hk_ab_china",
+    "por_dp": -0.004586200161754343,
+    "or_por_dp": 0.9954243003955219,
+    "media": 0.043627185866234,
+    "dp": 0.20426417825850793
+   },
+   {
+    "feature": "hk_s_mais_adj",
+    "por_dp": 0.004432814077599074,
+    "or_por_dp": 1.004442653531373,
+    "media": 0.010636380025238867,
+    "dp": 0.10258288085834175
+   },
+   {
+    "feature": "hk_ab_superlativo",
+    "por_dp": -0.004364711430534951,
+    "or_por_dp": 0.9956448000790376,
+    "media": 0.035514692626645035,
+    "dp": 0.18507673877145506
+   },
+   {
+    "feature": "ancora_atemporal",
+    "por_dp": -0.004081988744596913,
+    "or_por_dp": 0.9959263312469049,
+    "media": 0.13863349558319812,
+    "dp": 0.34556366922114046
+   },
+   {
+    "feature": "hk_nao",
+    "por_dp": 0.004071902487881162,
+    "or_por_dp": 1.0040802039465688,
+    "media": 0.15918514512349016,
+    "dp": 0.3658486499845293
+   },
+   {
+    "feature": "hk_brasil",
+    "por_dp": 0.004038462300228708,
+    "or_por_dp": 1.004046627877529,
+    "media": 0.2358031368307193,
+    "dp": 0.4244997261383439
+   },
+   {
+    "feature": "hk_pessoa_comum",
+    "por_dp": -0.004032162685071597,
+    "or_por_dp": 0.9959759555678503,
+    "media": 0.0796827113755183,
+    "dp": 0.27080136056408116
+   },
+   {
+    "feature": "hk_c_so_que",
+    "por_dp": 0.004004873974946199,
+    "or_por_dp": 1.0040129041991572,
+    "media": 0.018748873264827836,
+    "dp": 0.13563684239957244
+   },
+   {
+    "feature": "hk_tem_pergunta",
+    "por_dp": 0.0039029770873754105,
+    "or_por_dp": 1.0039106036212821,
+    "media": 0.048674959437533805,
+    "dp": 0.2151876106128917
+   },
+   {
+    "feature": "hk_aspas",
+    "por_dp": -0.003524445530175366,
+    "or_por_dp": 0.9964817580377864,
+    "media": 0.020191094285199208,
+    "dp": 0.1406535246510537
+   },
+   {
+    "feature": "hk_ab_pronome",
+    "por_dp": 0.003515551946520689,
+    "or_por_dp": 1.003521738747147,
+    "media": 0.017847485127095726,
+    "dp": 0.13239695012247113
+   },
+   {
+    "feature": "terr_c30",
+    "por_dp": -0.0032719425490824283,
+    "or_por_dp": 0.9967334044216897,
+    "media": 0.2759695915015969,
+    "dp": 0.08165676241365051
+   },
+   {
+    "feature": "hk_historia_palavra",
+    "por_dp": 0.003111733540264209,
+    "or_por_dp": 1.003116580008746,
+    "media": 0.04470885163151253,
+    "dp": 0.20666390642128313
+   },
+   {
+    "feature": "hk_v_transformou",
+    "por_dp": -0.0030771742245822016,
+    "or_por_dp": 0.9969275554234612,
+    "media": 0.07391382729403281,
+    "dp": 0.2616306049161222
+   },
+   {
+    "feature": "hk_num_digito",
+    "por_dp": 0.0030479014355792576,
+    "or_por_dp": 1.0030525510097743,
+    "media": 0.3008833603749775,
+    "dp": 0.4586420868437998
+   },
+   {
+    "feature": "modo_mecanismo",
+    "por_dp": 0.0030254147104749225,
+    "or_por_dp": 1.0030299958963909,
+    "media": 0.2729403281052821,
+    "dp": 0.44547043156542315
+   },
+   {
+    "feature": "modo_historia",
+    "por_dp": 0.002961484187731327,
+    "or_por_dp": 1.0029658737141298,
+    "media": 0.39967550027041643,
+    "dp": 0.48983159836212986
+   },
+   {
+    "feature": "hk_c_enquanto",
+    "por_dp": -0.0029475982246027865,
+    "or_por_dp": 0.9970567416779006,
+    "media": 0.04398774112132684,
+    "dp": 0.20506784182891677
+   },
+   {
+    "feature": "hk_ab_pouca_gente",
+    "por_dp": 0.002898647995287061,
+    "or_por_dp": 1.0029028531374813,
+    "media": 0.01334054443843519,
+    "dp": 0.1147282629194766
+   },
+   {
+    "feature": "hk_ab_um_uma",
+    "por_dp": 0.00276954114707337,
+    "or_por_dp": 1.002773379869171,
+    "media": 0.038939967550027044,
+    "dp": 0.19345192290909555
+   },
+   {
+    "feature": "hk_hype_adj",
+    "por_dp": -0.0027437479228566396,
+    "or_por_dp": 0.9972600127132767,
+    "media": 0.05444384351901929,
+    "dp": 0.22689140887636172
+   },
+   {
+    "feature": "modo_demonstracao",
+    "por_dp": 0.0026707103950944144,
+    "or_por_dp": 1.002674279919116,
+    "media": 0.16837930412835767,
+    "dp": 0.3742027713280685
+   },
+   {
+    "feature": "hk_frases_1",
+    "por_dp": 0.002576687989320056,
+    "or_por_dp": 1.002580010502898,
+    "media": 0.6630611141157382,
+    "dp": 0.4726638055355366
+   },
+   {
+    "feature": "hk_mundo",
+    "por_dp": 0.0023919929478551246,
+    "or_por_dp": 1.0023948560453677,
+    "media": 0.028303587524788173,
+    "dp": 0.16583876042111842
+   },
+   {
+    "feature": "hk_ab_parece",
+    "por_dp": 0.0022224851163172243,
+    "or_por_dp": 1.0022249566670192,
+    "media": 0.005768884081485488,
+    "dp": 0.07573377092116293
+   },
+   {
+    "feature": "hk_gerundio_esta",
+    "por_dp": 0.0021378796030427807,
+    "or_por_dp": 1.0021401664970524,
+    "media": 0.10618352262484226,
+    "dp": 0.30807236511542563
+   },
+   {
+    "feature": "hk_pal_23_27",
+    "por_dp": -0.0020608315691041513,
+    "or_por_dp": 0.9979412904862908,
+    "media": 0.20100955471425996,
+    "dp": 0.4007551791653295
+   },
+   {
+    "feature": "hk_ab_voce_sabia",
+    "por_dp": -0.0020591366388622375,
+    "or_por_dp": 0.9979429819285971,
+    "media": 0.0018027762754642149,
+    "dp": 0.042420823579520074
+   },
+   {
+    "feature": "hk_ab_imagina",
+    "por_dp": -0.002026851395994108,
+    "or_por_dp": 0.9979752012802392,
+    "media": 0.004326663061114116,
+    "dp": 0.06563492247172786
+   },
+   {
+    "feature": "hk_marca_consumo",
+    "por_dp": -0.002019146464472626,
+    "or_por_dp": 0.9979828906404481,
+    "media": 0.1023976924463674,
+    "dp": 0.30317058733992486
+   },
+   {
+    "feature": "hk_segunda_pessoa",
+    "por_dp": -0.001983825124413721,
+    "or_por_dp": 0.998018141356049,
+    "media": 0.24193257616729763,
+    "dp": 0.42825366870155834
+   },
+   {
+    "feature": "hk_s_unico",
+    "por_dp": 0.0019194281306818568,
+    "or_por_dp": 1.0019212714120163,
+    "media": 0.021813592933117,
+    "dp": 0.14607450186965287
+   },
+   {
+    "feature": "hk_s_primeiro",
+    "por_dp": 0.0019022566324456952,
+    "or_por_dp": 1.001904067070384,
+    "media": 0.017306652244456464,
+    "dp": 0.13041139533241053
+   },
+   {
+    "feature": "hk_hoje",
+    "por_dp": -0.0017594960381624154,
+    "or_por_dp": 0.9982420509675419,
+    "media": 0.06327744726879395,
+    "dp": 0.24346131507066765
+   },
+   {
+    "feature": "hk_v_criou",
+    "por_dp": -0.0016987021360383764,
+    "or_por_dp": 0.9983027398418226,
+    "media": 0.10492157923201731,
+    "dp": 0.30645234775324726
+   },
+   {
+    "feature": "hk_bigtech",
+    "por_dp": -0.0016783611945638932,
+    "or_por_dp": 0.9983230464659547,
+    "media": 0.10257797007391382,
+    "dp": 0.3034068722514727
+   },
+   {
+    "feature": "hk_verbo_passado",
+    "por_dp": -0.001640192661230161,
+    "or_por_dp": 0.9983611517196378,
+    "media": 0.43410852713178294,
+    "dp": 0.49563929808202734
+   },
+   {
+    "feature": "rep_acerto",
+    "por_dp": -0.0015999272623958493,
+    "or_por_dp": 0.998401351938926,
+    "media": 0.18514512349017487,
+    "dp": 0.38841525039314895
+   },
+   {
+    "feature": "hk_contraste",
+    "por_dp": 0.0012740057028697732,
+    "or_por_dp": 1.0012748175928827,
+    "media": 0.2307553632594195,
+    "dp": 0.4213161824407464
+   },
+   {
+    "feature": "hk_agora",
+    "por_dp": 0.0011844767994160501,
+    "or_por_dp": 1.0011851785691095,
+    "media": 0.04885523706508022,
+    "dp": 0.21556531000231413
+   },
+   {
+    "feature": "hk_pal_18_22",
+    "por_dp": -0.0011424220986123816,
+    "or_por_dp": 0.9988582302170831,
+    "media": 0.29349197764557416,
+    "dp": 0.45536187445070736
+   },
+   {
+    "feature": "hk_quase_ninguem",
+    "por_dp": 0.0011392015272832128,
+    "or_por_dp": 1.0011398506638187,
+    "media": 0.0679646655850009,
+    "dp": 0.2516852594351162
+   },
+   {
+    "feature": "hk_bilhao",
+    "por_dp": -0.0011360800454038077,
+    "or_por_dp": 0.9988645650492148,
+    "media": 0.09771047413016044,
+    "dp": 0.29692278015574214
+   },
+   {
+    "feature": "hk_superlativo",
+    "por_dp": 0.0010175945673038596,
+    "or_por_dp": 1.0010181124923199,
+    "media": 0.239949522264287,
+    "dp": 0.42705239611716506
+   },
+   {
+    "feature": "hk_cargo_dono",
+    "por_dp": -0.0010002225124956833,
+    "or_por_dp": 0.9990002775433053,
+    "media": 0.04002163331530557,
+    "dp": 0.19600995429335583
+   },
+   {
+    "feature": "hk_frases_2",
+    "por_dp": -0.0009811104675403583,
+    "or_por_dp": 0.9990193706639738,
+    "media": 0.30971696412475214,
+    "dp": 0.462376866049861
+   },
+   {
+    "feature": "hk_moeda",
+    "por_dp": 0.0009046577880343029,
+    "or_por_dp": 1.0009050671143152,
+    "media": 0.15071209662880836,
+    "dp": 0.357768026182546
+   },
+   {
+    "feature": "hk_dois_pontos",
+    "por_dp": -0.0008784736346210505,
+    "or_por_dp": 0.9991219121103785,
+    "media": 0.057688840814854876,
+    "dp": 0.2331541088213803
+   },
+   {
+    "feature": "hk_pal_28_34",
+    "por_dp": 0.0007387632813980905,
+    "or_por_dp": 1.0007390362342028,
+    "media": 0.11609879213989543,
+    "dp": 0.32034335111494455
+   },
+   {
+    "feature": "hk_futuro_vai",
+    "por_dp": -0.0006425394279286914,
+    "or_por_dp": 0.9993576669563238,
+    "media": 0.06886605372273301,
+    "dp": 0.25322622369610415
+   },
+   {
+    "feature": "fora_acerto",
+    "por_dp": 0.0005344601830322922,
+    "or_por_dp": 1.0005346030323239,
+    "media": 0.3758788534342888,
+    "dp": 0.4843489867597698
+   },
+   {
+    "feature": "hk_reticencias",
+    "por_dp": -0.00038696679427991195,
+    "or_por_dp": 0.9996131080677133,
+    "media": 0.019289706147467098,
+    "dp": 0.1375413151900643
+   },
+   {
+    "feature": "hk_num_quebrado",
+    "por_dp": -0.0002874667672370195,
+    "or_por_dp": 0.9997125745473752,
+    "media": 0.1074454660176672,
+    "dp": 0.30967876557799234
+   },
+   {
+    "feature": "hk_ab_demonst_pessoa",
+    "por_dp": 0.00028109937849310864,
+    "or_por_dp": 1.0002811388906256,
+    "media": 0.11700018027762754,
+    "dp": 0.32142050042370196
+   },
+   {
+    "feature": "hk_so_est",
+    "por_dp": -0.000015597803343257337,
+    "or_por_dp": 0.9999844023183019,
+    "media": 0.11609879213989543,
+    "dp": 0.3203433511149415
+   }
+  ]
+ },
+ "so_texto": {
+  "definicao": "nota = só a parte de tema + repetição + catálogo de hook do preditor linear do v0 (sem cliente, tendência, modo e âncora)",
+  "porMes": {
+   "2026-07": {
+    "n": 957,
+    "topo": 0.2361546499477534,
+    "pares": {
+     "acc": 0.5817931034482758,
+     "lo": 0.5491329479768786,
+     "hi": 0.6107561235356762,
+     "pares": 3625,
+     "grupos": 48
+    },
+    "auc": 0.5871427187874533,
+    "brier": 0.4561873781676191
+   },
+   "2026-08": {
+    "n": 1032,
+    "topo": 0.25193798449612403,
+    "pares": {
+     "acc": 0.563400928414366,
+     "lo": 0.5234828496042216,
+     "hi": 0.6015002344116268,
+     "pares": 4093,
+     "grupos": 55
+    },
+    "auc": 0.5468986648066959,
+    "brier": 0.2672896273894792
+   },
+   "2026-09": {
+    "n": 482,
+    "topo": 0.27800829875518673,
+    "pares": {
+     "acc": 0.5922023182297155,
+     "lo": 0.5460277427490542,
+     "hi": 0.6452328159645233,
+     "pares": 949,
+     "grupos": 46
+    },
+    "auc": 0.5982050952135872,
+    "brier": 0.2818754735516466
+   }
+  },
+  "juntos": {
+   "n": 2471,
+   "topo": 0.2509105625252934,
+   "pares": {
+    "acc": 0.5742471443406023,
+    "lo": 0.5542061281337047,
+    "hi": 0.5998334126606378,
+    "pares": 8667,
+    "grupos": 149
+   },
+   "auc": 0.5705995887140343,
+   "brier": 0.34329348224372663
+  }
+ },
+ "embedding": {
+  "emb": "gemini",
+  "so_roteiros_com_documento": true,
+  "limiares": {
+   "T_CLI": 0.8,
+   "T_OUT": 0.76
+  },
+  "percentis": null,
+  "n_teste_por_mes": {
+   "2026-07": 957,
+   "2026-08": 1032,
+   "2026-09": 482
+  }
+ },
+ "porRede": {
+  "Instagram": {
+   "n": 1067,
+   "topo": 0.23898781630740393,
+   "pares": {
+    "acc": 0.5913865546218487,
+    "lo": 0.5558282208588957,
+    "hi": 0.6260645161290322,
+    "pares": 3808,
+    "grupos": 61
+   },
+   "auc": 0.5779629093016517,
+   "brier": 0.17992817445419457
+  },
+  "TikTok": {
+   "n": 721,
+   "topo": 0.260748959778086,
+   "pares": {
+    "acc": 0.5973154362416108,
+    "lo": 0.5527426160337553,
+    "hi": 0.6428571428571429,
+    "pares": 2533,
+    "grupos": 46
+   },
+   "auc": 0.5846074009021596,
+   "brier": 0.19208438576190112
+  },
+  "YouTube": {
+   "n": 683,
+   "topo": 0.2591508052708638,
+   "pares": {
+    "acc": 0.5748065348237317,
+    "lo": 0.5287878787878788,
+    "hi": 0.6182659932659933,
+    "pares": 2326,
+    "grupos": 42
+   },
+   "auc": 0.5659878073290011,
+   "brier": 0.1935725699376311
+  }
+ },
+ "exemplos": {
+  "altos": [
+   {
+    "p": 0.6821460936595948,
+    "cliente": "Rafael Rodrigues",
+    "plataforma": "YouTube",
+    "data": "2026-07-31",
+    "titulo": "Estudantes de Jundiaí venceram o mundo em 20 dias.",
+    "hook": "Se você acha que é preciso meses para vencer um dos maiores campeonatos do mundo, esses sete estudantes do interior de São Paulo acabaram de provar o contrário.",
+    "topo": 0,
+    "pq": 0.4065934065934066,
+    "coef": 0.52,
+    "link": "https://www.youtube.com/shorts/0PetcAfOGfU"
+   },
+   {
+    "p": 0.6576679720870353,
+    "cliente": "Rafael Rodrigues",
+    "plataforma": "YouTube",
+    "data": "2026-07-27",
+    "titulo": "A cidade que ninguém espera ver na matemática.",
+    "hook": "Santa Catarina é famosa pelas tradições alemãs e pelo turismo. Mas agora, uma cidade do interior, com 37 mil habitantes, virou destaque por outro motivo: a mate",
+    "topo": 0,
+    "pq": 0.2032967032967033,
+    "coef": 0.36,
+    "link": "https://www.youtube.com/shorts/55fPA0PLxqI"
+   },
+   {
+    "p": 0.6571797270148735,
+    "cliente": "Marcio Grazino",
+    "plataforma": "TikTok",
+    "data": "2026-07-07",
+    "titulo": "Duas estudantes do interior da Bahia desafiaram a indústria cosmética",
+    "hook": "Essas estudantes do interior da Bahia usaram tomates para desafiar um problema que atinge mais da metade dos brasileiros.",
+    "topo": 1,
+    "pq": 0.96,
+    "coef": 59.6,
+    "link": "https://www.tiktok.com/@marcio.grazino/video/7659894074844957968"
+   },
+   {
+    "p": 0.6463635165177742,
+    "cliente": "Marcio Grazino",
+    "plataforma": "YouTube",
+    "data": "2026-07-15",
+    "titulo": "Por menos de 20 centavos, esses estudantes podem mudar a vida dos agricultores",
+    "hook": "Esses estudantes do interior do Ceará transformaram os restos do maracujá numa solução para os maiores problemas dos agricultores.",
+    "topo": 0,
+    "pq": 0.02,
+    "coef": 0.3,
+    "link": "https://www.youtube.com/shorts/jD40nnH4ODY"
+   },
+   {
+    "p": 0.6457661550514993,
+    "cliente": "Marcio Grazino",
+    "plataforma": "TikTok",
+    "data": "2026-07-03",
+    "titulo": "Esses baianos criaram um sistema para salvar colegas em sala de aula",
+    "hook": "Esses estudantes de escola pública no interior da Bahia prestaram atenção num problema sofrido pelos próprios colegas e criaram uma solução genial para ajudá-lo",
+    "topo": 0,
+    "pq": 0.7066666666666667,
+    "coef": 9.54,
+    "link": "https://www.tiktok.com/@marcio.grazino/video/7658434406373281040"
+   }
+  ],
+  "baixos": [
+   {
+    "p": 0.04050628006205872,
+    "cliente": "Renato Torres",
+    "plataforma": "Instagram",
+    "data": "2026-07-27",
+    "titulo": "O Ifood cobra sem te avisar, e você paga mesmo assim",
+    "hook": "Tem uma taxa quase invisível no iFood que pode gerar mais de R$ 150 milhões por mês. E você provavelmente já pagou ela sem nem perceber.",
+    "topo": 0,
+    "pq": 0.3125,
+    "coef": 0.54,
+    "link": "https://www.instagram.com/reel/DbTc564Bn75"
+   },
+   {
+    "p": 0.05558128252008625,
+    "cliente": "Renato Torres",
+    "plataforma": "Instagram",
+    "data": "2026-07-23",
+    "titulo": "O tênis que vendeu 9 milhões sem ser chuteira.",
+    "hook": "Enquanto as marcas vendiam chuteira para atleta, o Kichute vendeu sonho para criança. E foi assim que um calçado simples virou uniforme de uma geração.",
+    "topo": 0,
+    "pq": 0.0625,
+    "coef": 0.42,
+    "link": "https://www.instagram.com/reel/DbJlOP3BISI"
+   },
+   {
+    "p": 0.0804643115129224,
+    "cliente": "Rodrigo Waughan",
+    "plataforma": "YouTube",
+    "data": "2026-07-03",
+    "titulo": "O bilhetinho que salvou a Starbucks da falência.",
+    "hook": "Uma das marcas mais famosas da história tentou agradar todo mundo, quase perdeu tudo, mas a virada veio de um bilhetinho em um copo de café.",
+    "topo": 0,
+    "pq": 0.5460526315789473,
+    "coef": 1,
+    "link": "https://www.youtube.com/shorts/M7oo6Qhapn0"
+   },
+   {
+    "p": 0.08118187652885718,
+    "cliente": "Marcos Pelozato",
+    "plataforma": "TikTok",
+    "data": "2026-07-14",
+    "titulo": "Jorginho: o herdeiro que perdeu tudo.",
+    "hook": "Esse cara nasceu cercado por um império, mas gastou como se sua grana nunca pudesse acabar.",
+    "topo": 0,
+    "pq": 0.3595505617977528,
+    "coef": 0.92,
+    "link": "https://www.tiktok.com/@marcospelozato/video/7662514336052595984"
+   },
+   {
+    "p": 0.08271616917006032,
+    "cliente": "Rodrigo Waughan",
+    "plataforma": "Instagram",
+    "data": "2026-07-15",
+    "titulo": "Como uma pizzaria quase falida bateu Apple e Amazon.",
+    "hook": "Em 2009, o diretor da Domino’s sentou na frente de uma câmera e admitiu em voz alta: \"a nossa massa parece papelão molhado.” E isso acabou mudando completamente",
+    "topo": 0,
+    "pq": 0.49411764705882355,
+    "coef": 0.65,
+    "link": "https://www.instagram.com/reel/DazmgPLjiAH"
+   }
+  ]
+ }
+}

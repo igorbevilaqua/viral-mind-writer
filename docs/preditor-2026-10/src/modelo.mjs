@@ -3,15 +3,20 @@
 // e, com o modelo final (treino até o último mês maduro), modelo.json.
 //   node src/preditor/modelo.mjs            (GAP=30, o oficial)
 //   FEATS=data/preditor_features_gap7.json node src/preditor/modelo.mjs   (sensibilidade)
+//   EMB=openai node src/preditor/modelo.mjs   (embedding da public.documents; só vídeos cujo roteiro tem documento)
+//   SO_DOC=1 node src/preditor/modelo.mjs     (Gemini nos mesmos vídeos da rodada OpenAI, para comparar)
 import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { DATA, OUT, wilson } from "../lib.mjs";
-import { MODOS, ANCORAS, BASE } from "./features.mjs";
+import { MODOS, ANCORAS, BASE, EMB, LIMIARES, PERCENTIS } from "./features.mjs";
 import { HOOK } from "../hooks/feat.mjs";
 
-const ARQ = process.env.FEATS ?? DATA + "preditor_features.json";
+const ARQ = process.env.FEATS ?? DATA + `preditor_features${EMB === "openai" ? "_openai" : ""}.json`;
+const SO_DOC = EMB === "openai" || !!process.env.SO_DOC; // a documents parou em 14/09: setembro fica pela metade e outubro some
+const SUF = EMB === "openai" ? "_openai" : process.env.SO_DOC ? "_gemini_cobertos" : "";
+const { T_CLI: TC, T_OUT: TO } = LIMIARES, vg = (x) => x.toFixed(2).replace(".", ",");
 const MESES_TESTE = ["2026-07", "2026-08", "2026-09"];
 const LAMBDAS = [1, 10, 30, 100, 300, 1000, 3000]; // escolhido por mês: treina até M-2, mede par a par em M-1
-const TODAS = JSON.parse(readFileSync(ARQ, "utf8"));
+const TODAS = JSON.parse(readFileSync(ARQ, "utf8")).filter((f) => !SO_DOC || f.tem_doc);
 const F = TODAS.filter((f) => f.mes <= MESES_TESTE.at(-1));
 const OUTUBRO = TODAS.filter((f) => f.mes === "2026-10"); // parcial: só os já maduros, fora do estudo de hooks
 
@@ -19,15 +24,15 @@ const OUTUBRO = TODAS.filter((f) => f.mes === "2026-10"); // parcial: só os já
 export const DEF = {
   knn20: "taxa de topo dos 20 roteiros anteriores mais parecidos da casa (qualquer cliente, sem limiar)",
   sim_media: "similaridade média dos 10 roteiros anteriores mais parecidos da casa",
-  casa_taxa: "taxa de topo (encolhida para 26%, m=5) dos até 20 vizinhos acima do limiar: >= 0,80 no mesmo cliente, >= 0,76 em outro",
+  casa_taxa: `taxa de topo (encolhida para 26%, m=5) dos até 20 vizinhos acima do limiar: >= ${vg(TC)} no mesmo cliente, >= ${vg(TO)} em outro`,
   log_n_casa: "log(1 + nº de vizinhos acima do limiar na casa)",
-  cli_taxa: "taxa de topo (encolhida, m=3) dos até 10 roteiros anteriores do próprio cliente com cosseno >= 0,80",
-  log_n_cli: "log(1 + nº de roteiros anteriores do cliente com cosseno >= 0,80)",
-  rep_acerto: "1 se um roteiro anterior do cliente com cosseno >= 0,80 foi topo (pq médio >= 0,69)",
+  cli_taxa: `taxa de topo (encolhida, m=3) dos até 10 roteiros anteriores do próprio cliente com cosseno >= ${vg(TC)}`,
+  log_n_cli: `log(1 + nº de roteiros anteriores do cliente com cosseno >= ${vg(TC)})`,
+  rep_acerto: `1 se um roteiro anterior do cliente com cosseno >= ${vg(TC)} foi topo (pq médio >= 0,69)`,
   rep_acerto_90: "1 se esse acerto foi publicado 90 dias ou mais antes",
-  rep_fraco: "1 se um roteiro anterior do cliente com cosseno >= 0,80 foi fraco (pq médio <= 0,30)",
-  fora_fraco: "1 se um roteiro anterior de OUTRO cliente com cosseno >= 0,76 foi fraco",
-  fora_acerto: "1 se um roteiro anterior de OUTRO cliente com cosseno >= 0,76 foi topo",
+  rep_fraco: `1 se um roteiro anterior do cliente com cosseno >= ${vg(TC)} foi fraco (pq médio <= 0,30)`,
+  fora_fraco: `1 se um roteiro anterior de OUTRO cliente com cosseno >= ${vg(TO)} foi fraco`,
+  fora_acerto: `1 se um roteiro anterior de OUTRO cliente com cosseno >= ${vg(TO)} foi topo`,
   terr_c30: "taxa de topo histórica do território k=30 (encolhida, m=10)",
   terr_c60: "taxa de topo histórica do território k=60 (encolhida, m=10)",
   cli90: "taxa de topo do cliente na rede nos 90 dias anteriores ao corte (encolhida, m=10)",
@@ -92,6 +97,10 @@ export function treinar(linhas, feats, lambda = 1) {
   }
   return { feats, media, dp, intercepto: w[0], pesos: w.slice(1) };
 }
+// parte do texto do preditor linear: numa sessão do Codex cliente, rede, mês e modo são os mesmos
+// para todos os candidatos, então só esta parte muda a ordem entre eles
+export const TEXTO = new Set([...TEMA, ...REP, ...HOOK.map(([id]) => `hk_${id}`)]);
+export const parteTexto = (m, f) => m.feats.reduce((s, k, j) => s + (TEXTO.has(k) ? m.pesos[j] * (valor(f, k) - m.media[j]) / m.dp[j] : 0), 0);
 export const prever = (m, f) => sig(m.intercepto + m.feats.reduce((s, k, j) => s + m.pesos[j] * (valor(f, k) - m.media[j]) / m.dp[j], 0));
 
 // ---------- métricas ----------
@@ -147,13 +156,13 @@ function escolherLambda(tr, feats) {
 // ponytail: sem recalibração (Platt num mês só ficou instável e chegou a inverter a ordem); refazer na Task D com mais meses
 const res = { arquivo: ARQ.split("/").pop(), lambdas: LAMBDAS, meses: MESES_TESTE, modelos: {}, baselines: {} };
 const teste = F.filter((f) => MESES_TESTE.includes(f.mes));
-const notas = {}; // conjunto -> Map(video_id -> p)
+const notas = {}, modelosMes = {}; // conjunto -> Map(video_id -> p) / mês -> modelo
 for (const [nome, feats] of Object.entries(CONJUNTOS)) {
-  const p = new Map(), porMes = {};
+  const p = new Map(), porMes = {}; modelosMes[nome] = {};
   for (const M of MESES_TESTE) {
     const tr = F.filter((f) => f.mes < M), te = F.filter((f) => f.mes === M);
     const lambda = escolherLambda(tr, feats);
-    const m = treinar(tr, feats, lambda);
+    const m = treinar(tr, feats, lambda); modelosMes[nome][M] = m;
     for (const f of te) p.set(f.video_id, prever(m, f));
     porMes[M] = { treino: tr.length, lambda, ...medir(te, (f) => p.get(f.video_id)) };
   }
@@ -170,9 +179,15 @@ const ESCOLHIDO = process.env.CONJUNTO ?? "sem_hook_mais_catalogo"; // o melhor 
 const lambdaFinal = escolherLambda(F, CONJUNTOS[ESCOLHIDO]);
 const final = treinar(F, CONJUNTOS[ESCOLHIDO], lambdaFinal);
 // checagem extra fora da amostra: outubro parcial (vídeos já maduros), que o estudo de hooks não viu
-res.outubro = Object.fromEntries(Object.entries(CONJUNTOS).map(([n, fs]) => { const m = treinar(F, fs, escolherLambda(F, fs)); return [n, medir(OUTUBRO, (f) => prever(m, f))]; }));
+res.outubro = OUTUBRO.length < 100 ? { aviso: `só ${OUTUBRO.length} vídeos de outubro com embedding` } : Object.fromEntries(Object.entries(CONJUNTOS).map(([n, fs]) => { const m = treinar(F, fs, escolherLambda(F, fs)); return [n, medir(OUTUBRO, (f) => prever(m, f))]; }));
 res.final = { conjunto: ESCOLHIDO, n: F.length, lambda: lambdaFinal, pesos: final.feats.map((k, j) => ({ feature: k, por_dp: final.pesos[j], or_por_dp: Math.exp(final.pesos[j]), media: final.media[j], dp: final.dp[j] })).sort((a, b) => Math.abs(b.por_dp) - Math.abs(a.por_dp)) };
 
+// ordenar candidatos de uma sessão: a parte do texto do v0 (cada mês com o modelo treinado até M-1)
+{
+  const pt = new Map(); for (const M of MESES_TESTE) for (const f of teste.filter((f) => f.mes === M)) pt.set(f.video_id, parteTexto(modelosMes[ESCOLHIDO][M], f));
+  res.so_texto = { definicao: "nota = só a parte de tema + repetição + catálogo de hook do preditor linear do v0 (sem cliente, tendência, modo e âncora)", porMes: Object.fromEntries(MESES_TESTE.map((M) => [M, medir(teste.filter((f) => f.mes === M), (f) => pt.get(f.video_id))])), juntos: medir(teste, (f) => pt.get(f.video_id)) };
+}
+res.embedding = { emb: EMB, so_roteiros_com_documento: SO_DOC, limiares: LIMIARES, percentis: PERCENTIS, n_teste_por_mes: Object.fromEntries(MESES_TESTE.map((M) => [M, teste.filter((f) => f.mes === M).length])) };
 res.porRede = Object.fromEntries(["Instagram", "TikTok", "YouTube"].map((pl) => [pl, medir(teste.filter((f) => f.plataforma === pl), (f) => notas[ESCOLHIDO].get(f.video_id))]));
 // exemplos: maiores e menores notas no teste (um por roteiro), com o modelo escolhido
 const pEsc = notas[ESCOLHIDO], vistos = new Set();
@@ -181,17 +196,21 @@ const pega = (lista) => { const out = []; for (const f of lista) { if (vistos.ha
 res.exemplos = { altos: pega(ordenado), baixos: pega([...ordenado].reverse()) };
 
 mkdirSync(OUT + "preditor", { recursive: true });
-writeFileSync(OUT + `preditor/resultado${process.env.FEATS ? "_" + res.arquivo.replace(".json", "") : ""}.json`, JSON.stringify(res, null, 1));
-if (!process.env.FEATS) writeFileSync(OUT + "preditor/modelo.json", JSON.stringify({
-  versao: "preditor-v0-2026-10",
+writeFileSync(OUT + `preditor/resultado${process.env.FEATS ? "_" + res.arquivo.replace(".json", "") : SUF}.json`, JSON.stringify(res, null, 1));
+if (!process.env.FEATS && !process.env.SO_DOC) writeFileSync(OUT + `preditor/modelo${SUF}.json`, JSON.stringify({
+  versao: `preditor-v0-2026-10${SUF}`,
   desfecho: "probabilidade de o vídeo cair no quartil de cima do coeficiente viral no estrato cliente x rede x trimestre (régua de docs/estudo-2026-10/src/lib.mjs, base 26%)",
   treino: { ate_mes: MESES_TESTE.at(-1), desde: "2026-02", n: F.length, lambda: lambdaFinal, regra_vazamento: "vizinho só conta se publicado >= 30 dias antes do vídeo-alvo" },
-  embedding: "gemini-embedding-001 do CRM (script_embeddings), 768 primeiras dimensões renormalizadas; cosseno",
-  limiares: { mesmo_cliente: 0.80, outro_cliente: 0.76, topo_pq: 0.69, fraco_pq: 0.30, k_casa: 20, k_cliente: 10, k_sim: 10, gap_dias: 30, base: BASE },
+  embedding: EMB === "openai"
+    ? "OpenAI text-embedding-3-small (1536), o da public.documents e do embed() de lib/pipeline/context.ts; roteiro do corpus = média renormalizada dos vetores dos vídeos dele; cosseno"
+    : "gemini-embedding-001 do CRM (script_embeddings), 768 primeiras dimensões renormalizadas; cosseno",
+  ...(EMB === "openai" ? { como_calibrou: "mesmo_cliente = p97 do cosseno entre roteiros do mesmo cliente; outro_cliente = p99,5 entre clientes (o critério do estudo de embeddings, que deu 0,80/0,76 no Gemini)", percentis: PERCENTIS, texto_do_corpus: "Título + Assunto + roteiro (public.documents.content)" } : {}),
+  limiares: { mesmo_cliente: TC, outro_cliente: TO, topo_pq: 0.69, fraco_pq: 0.30, k_casa: 20, k_cliente: 10, k_sim: 10, gap_dias: 30, base: BASE },
   formula: "p = 1 / (1 + exp(-(intercepto + soma(peso_i * (x_i - media_i) / dp_i))))",
   aviso_calibracao: "calibrado entre 15% e 40% (92% dos vídeos); acima de 40% superestima (previsto 47%, observado 33% em jul-set). Mostrar no máximo '40% ou mais'.",
   intercepto: final.intercepto,
-  features: final.feats.map((k, j) => ({ nome: k, definicao: DEF[k], media: final.media[j], dp: final.dp[j], peso: final.pesos[j] })),
+  parte_texto: "para ordenar candidatos da mesma sessão basta somar peso*(x-media)/dp das features de tema, repetição e hk_* (as de cliente, modo e âncora são constantes na sessão)",
+  features: final.feats.map((k, j) => ({ nome: k, texto: TEXTO.has(k), definicao: DEF[k], media: final.media[j], dp: final.dp[j], peso: final.pesos[j] })),
 }, null, 1));
 
 // ---------- resumo no terminal ----------
@@ -200,6 +219,7 @@ const linha = (nome, r) => `${nome.padEnd(34)} par a par ${pc(r.pares.acc)} [${p
 console.log(`arquivo ${res.arquivo} | teste ${teste.length} vídeos, topo ${pc(teste.reduce((s, f) => s + f.y, 0) / teste.length)}`);
 for (const [n, r] of Object.entries(res.modelos)) { console.log(linha(n, r.juntos)); for (const M of MESES_TESTE) console.log("   " + linha(M, r.porMes[M])); }
 for (const [n, r] of Object.entries(res.baselines)) console.log(linha(n, r.juntos));
-for (const [n, r] of Object.entries(res.outubro)) console.log(linha("outubro " + n, r));
+console.log(linha("SÓ A PARTE DO TEXTO do " + ESCOLHIDO, res.so_texto.juntos)); for (const M of MESES_TESTE) console.log("   " + linha(M, res.so_texto.porMes[M]));
+if (!res.outubro.aviso) for (const [n, r] of Object.entries(res.outubro)) console.log(linha("outubro " + n, r));
 console.log("calibração", ESCOLHIDO, res.modelos[ESCOLHIDO].calibracao.map((c) => `${c.faixa}: n=${c.n} prev ${pc(c.previsto)} obs ${pc(c.observado)}`).join(" | "));
 console.log("pesos (por DP):", res.final.pesos.map((p) => `${p.feature} ${p.por_dp.toFixed(3)}`).join(", "));

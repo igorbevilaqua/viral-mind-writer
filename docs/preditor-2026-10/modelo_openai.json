@@ -1,0 +1,1397 @@
+{
+ "versao": "preditor-v0-2026-10_openai",
+ "desfecho": "probabilidade de o vídeo cair no quartil de cima do coeficiente viral no estrato cliente x rede x trimestre (régua de docs/estudo-2026-10/src/lib.mjs, base 26%)",
+ "treino": {
+  "ate_mes": "2026-09",
+  "desde": "2026-02",
+  "n": 5547,
+  "lambda": 3000,
+  "regra_vazamento": "vizinho só conta se publicado >= 30 dias antes do vídeo-alvo"
+ },
+ "embedding": "OpenAI text-embedding-3-small (1536), o da public.documents e do embed() de lib/pipeline/context.ts; roteiro do corpus = média renormalizada dos vetores dos vídeos dele; cosseno",
+ "como_calibrou": "mesmo_cliente = p97 do cosseno entre roteiros do mesmo cliente; outro_cliente = p99,5 entre clientes (o critério do estudo de embeddings, que deu 0,80/0,76 no Gemini)",
+ "percentis": {
+  "dentro_p50": 0.5450848937034607,
+  "dentro_p97": 0.7231820821762085,
+  "entre_p50": 0.43419259786605835,
+  "entre_p995": 0.6882701516151428
+ },
+ "texto_do_corpus": "Título + Assunto + roteiro (public.documents.content)",
+ "limiares": {
+  "mesmo_cliente": 0.72,
+  "outro_cliente": 0.69,
+  "topo_pq": 0.69,
+  "fraco_pq": 0.3,
+  "k_casa": 20,
+  "k_cliente": 10,
+  "k_sim": 10,
+  "gap_dias": 30,
+  "base": 0.26
+ },
+ "formula": "p = 1 / (1 + exp(-(intercepto + soma(peso_i * (x_i - media_i) / dp_i))))",
+ "aviso_calibracao": "calibrado entre 15% e 40% (92% dos vídeos); acima de 40% superestima (previsto 47%, observado 33% em jul-set). Mostrar no máximo '40% ou mais'.",
+ "intercepto": -1.085156420794534,
+ "parte_texto": "para ordenar candidatos da mesma sessão basta somar peso*(x-media)/dp das features de tema, repetição e hk_* (as de cliente, modo e âncora são constantes na sessão)",
+ "features": [
+  {
+   "nome": "knn20",
+   "texto": true,
+   "definicao": "taxa de topo dos 20 roteiros anteriores mais parecidos da casa (qualquer cliente, sem limiar)",
+   "media": 0.26802865328532804,
+   "dp": 0.09245430790702996,
+   "peso": 0.019585607824904344
+  },
+  {
+   "nome": "sim_media",
+   "texto": true,
+   "definicao": "similaridade média dos 10 roteiros anteriores mais parecidos da casa",
+   "media": 0.6490684579521424,
+   "dp": 0.11475171802677242,
+   "peso": -0.016116393237672236
+  },
+  {
+   "nome": "casa_taxa",
+   "texto": true,
+   "definicao": "taxa de topo (encolhida para 26%, m=5) dos até 20 vizinhos acima do limiar: >= 0,72 no mesmo cliente, >= 0,69 em outro",
+   "media": 0.2706498677180418,
+   "dp": 0.06327832595765578,
+   "peso": 0.022650332529199006
+  },
+  {
+   "nome": "log_n_casa",
+   "texto": true,
+   "definicao": "log(1 + nº de vizinhos acima do limiar na casa)",
+   "media": 1.0307153306739865,
+   "dp": 0.9965933020521119,
+   "peso": -0.016160531901713397
+  },
+  {
+   "nome": "cli_taxa",
+   "texto": true,
+   "definicao": "taxa de topo (encolhida, m=3) dos até 10 roteiros anteriores do próprio cliente com cosseno >= 0,72",
+   "media": 0.27082205170387463,
+   "dp": 0.06099134730109092,
+   "peso": 0.010898792176219755
+  },
+  {
+   "nome": "log_n_cli",
+   "texto": true,
+   "definicao": "log(1 + nº de roteiros anteriores do cliente com cosseno >= 0,72)",
+   "media": 0.3748089152400781,
+   "dp": 0.6465713511055486,
+   "peso": -0.013123537707772748
+  },
+  {
+   "nome": "terr_c30",
+   "texto": true,
+   "definicao": "taxa de topo histórica do território k=30 (encolhida, m=10)",
+   "media": 0.2748339441265954,
+   "dp": 0.07871856233814398,
+   "peso": -0.017654551350883903
+  },
+  {
+   "nome": "terr_c60",
+   "texto": true,
+   "definicao": "taxa de topo histórica do território k=60 (encolhida, m=10)",
+   "media": 0.277104015838228,
+   "dp": 0.08846172371392551,
+   "peso": 0.009544715676903757
+  },
+  {
+   "nome": "rep_acerto",
+   "texto": true,
+   "definicao": "1 se um roteiro anterior do cliente com cosseno >= 0,72 foi topo (pq médio >= 0,69)",
+   "media": 0.17577068685776095,
+   "dp": 0.3806249499169836,
+   "peso": -0.0019650979014676686
+  },
+  {
+   "nome": "rep_acerto_90",
+   "texto": true,
+   "definicao": "1 se esse acerto foi publicado 90 dias ou mais antes",
+   "media": 0.03299080584099513,
+   "dp": 0.17861246476927836,
+   "peso": 0.013189285113163
+  },
+  {
+   "nome": "rep_fraco",
+   "texto": true,
+   "definicao": "1 se um roteiro anterior do cliente com cosseno >= 0,72 foi fraco (pq médio <= 0,30)",
+   "media": 0.11934378943573103,
+   "dp": 0.32419261151181994,
+   "peso": -0.0082661172066559
+  },
+  {
+   "nome": "fora_fraco",
+   "texto": true,
+   "definicao": "1 se um roteiro anterior de OUTRO cliente com cosseno >= 0,69 foi fraco",
+   "media": 0.316928069226609,
+   "dp": 0.46527912930079035,
+   "peso": -0.027421580019175478
+  },
+  {
+   "nome": "fora_acerto",
+   "texto": true,
+   "definicao": "1 se um roteiro anterior de OUTRO cliente com cosseno >= 0,69 foi topo",
+   "media": 0.3354966648638904,
+   "dp": 0.4721637986219214,
+   "peso": -0.007058977021175444
+  },
+  {
+   "nome": "cli90",
+   "texto": false,
+   "definicao": "taxa de topo do cliente na rede nos 90 dias anteriores ao corte (encolhida, m=10)",
+   "media": 0.25719195986406096,
+   "dp": 0.0499412755736046,
+   "peso": -0.05630384254038168
+  },
+  {
+   "nome": "cli_tend",
+   "texto": false,
+   "definicao": "taxa dos 45 dias mais recentes menos a dos 45 anteriores (cliente x rede)",
+   "media": 0.006536120772476131,
+   "dp": 0.1483509805558231,
+   "peso": -0.006205484871587263
+  },
+  {
+   "nome": "modo_historia",
+   "texto": false,
+   "definicao": "1 se o modo do roteiro (vm_roteiro_modo) é historia",
+   "media": 0.39967550027041643,
+   "dp": 0.48983159836212986,
+   "peso": 0.0022739698041868966
+  },
+  {
+   "nome": "modo_mecanismo",
+   "texto": false,
+   "definicao": "1 se o modo do roteiro (vm_roteiro_modo) é mecanismo",
+   "media": 0.2729403281052821,
+   "dp": 0.44547043156542315,
+   "peso": 0.0029997331672202044
+  },
+  {
+   "nome": "modo_demonstracao",
+   "texto": false,
+   "definicao": "1 se o modo do roteiro (vm_roteiro_modo) é demonstracao",
+   "media": 0.16837930412835767,
+   "dp": 0.3742027713280685,
+   "peso": 0.00359170612496308
+  },
+  {
+   "nome": "modo_panorama",
+   "texto": false,
+   "definicao": "1 se o modo do roteiro (vm_roteiro_modo) é panorama",
+   "media": 0.11285379484405986,
+   "dp": 0.3164139943702718,
+   "peso": -0.00677173638247427
+  },
+  {
+   "nome": "modo_conselho",
+   "texto": false,
+   "definicao": "1 se o modo do roteiro (vm_roteiro_modo) é conselho",
+   "media": 0.019650261402559942,
+   "dp": 0.13879527596200658,
+   "peso": -0.011164738237664604
+  },
+  {
+   "nome": "modo_publi",
+   "texto": false,
+   "definicao": "1 se o modo do roteiro (vm_roteiro_modo) é publi",
+   "media": 0.02541914548404543,
+   "dp": 0.15739444884400536,
+   "peso": -0.004405833290243915
+  },
+  {
+   "nome": "modo_misto",
+   "texto": false,
+   "definicao": "1 se o modo do roteiro (vm_roteiro_modo) é misto",
+   "media": 0.001081665765278529,
+   "dp": 0.032870895400806385,
+   "peso": 0.017996397706629655
+  },
+  {
+   "nome": "ancora_noticia",
+   "texto": false,
+   "definicao": "1 se a âncora do roteiro é noticia",
+   "media": 0.4905354245538129,
+   "dp": 0.49991041378593243,
+   "peso": 0.022086635992834353
+  },
+  {
+   "nome": "ancora_passado",
+   "texto": false,
+   "definicao": "1 se a âncora do roteiro é passado",
+   "media": 0.370831079862989,
+   "dp": 0.48302731814115785,
+   "peso": -0.019541662961617173
+  },
+  {
+   "nome": "ancora_atemporal",
+   "texto": false,
+   "definicao": "1 se a âncora do roteiro é atemporal",
+   "media": 0.13863349558319812,
+   "dp": 0.34556366922114046,
+   "peso": -0.004636431513648058
+  },
+  {
+   "nome": "hk_ab_artigo",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): começa com A/O/Os/As",
+   "media": 0.3948080043266631,
+   "dp": 0.48880941485027174,
+   "peso": 0.027077702590755506
+  },
+  {
+   "nome": "hk_ab_artigo_nome",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): A/O + nome próprio (A China, O Google, A Apple)",
+   "media": 0.22336398053001622,
+   "dp": 0.4165003154042187,
+   "peso": 0.02423579326671065
+  },
+  {
+   "nome": "hk_ab_artigo_comum",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): A/O + substantivo comum (A empresa, O governo, O maior)",
+   "media": 0.1694609698936362,
+   "dp": 0.3751585659109498,
+   "peso": 0.008558632022087629
+  },
+  {
+   "nome": "hk_ab_nome_sem_artigo",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): começa direto com nome próprio (Elon Musk, Trump, BYD)",
+   "media": 0.017847485127095726,
+   "dp": 0.13239695012247035,
+   "peso": 0.014769602822358875
+  },
+  {
+   "nome": "hk_ab_demonstrativo",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): Esse/Essa/Esses/Este...",
+   "media": 0.23039480800432666,
+   "dp": 0.4210855500358143,
+   "peso": -0.010837317707302686
+  },
+  {
+   "nome": "hk_ab_demonst_pessoa",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): Esse/Essa + tipo de pessoa (personagem anônimo)",
+   "media": 0.11700018027762754,
+   "dp": 0.32142050042370196,
+   "peso": 0.000321195768357578
+  },
+  {
+   "nome": "hk_ab_demonst_cara",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): Esse cara / Essa mulher / Esse homem",
+   "media": 0.03281052821344871,
+   "dp": 0.17814038691943468,
+   "peso": -0.00925480878065766
+  },
+  {
+   "nome": "hk_ab_demonst_objeto",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): Esse/Essa + coisa (empresa, marca, IA, cidade)",
+   "media": 0.11339462772669912,
+   "dp": 0.31707457502837527,
+   "peso": -0.014717915467912358
+  },
+  {
+   "nome": "hk_ab_um_uma",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): Um/Uma + substantivo (Uma cidade, Um brasileiro)",
+   "media": 0.038939967550027044,
+   "dp": 0.19345192290909555,
+   "peso": 0.0030232511329974796
+  },
+  {
+   "nome": "hk_ab_voce",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): Você / Se você",
+   "media": 0.031728862448170185,
+   "dp": 0.17527732807159735,
+   "peso": -0.007631855803669
+  },
+  {
+   "nome": "hk_ab_se_voce",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): Se você...",
+   "media": 0.010095547142599604,
+   "dp": 0.09996813027406666,
+   "peso": -0.005311067297010578
+  },
+  {
+   "nome": "hk_ab_pais",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): O Brasil/A China/Os EUA/O Japão...",
+   "media": 0.06904633135027943,
+   "dp": 0.25353290807574924,
+   "peso": -0.007717503684192193
+  },
+  {
+   "nome": "hk_ab_china",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): A China...",
+   "media": 0.043627185866234,
+   "dp": 0.20426417825850793,
+   "peso": -0.005075870661047852
+  },
+  {
+   "nome": "hk_ab_brasil",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): O Brasil...",
+   "media": 0.018748873264827836,
+   "dp": 0.13563684239957163,
+   "peso": -0.023782662633327404
+  },
+  {
+   "nome": "hk_ab_eua",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): Os EUA / Os Estados Unidos",
+   "media": 0.0036055525509284298,
+   "dp": 0.05993790571692213,
+   "peso": 0.004833264742749879
+  },
+  {
+   "nome": "hk_ab_numero",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): começa com número",
+   "media": 0.014061654948620876,
+   "dp": 0.117745168940073,
+   "peso": 0.005255655156888251
+  },
+  {
+   "nome": "hk_ab_pergunta_qu",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): Por que / Como / O que / Qual / Quem / Quanto",
+   "media": 0.030827474310438075,
+   "dp": 0.17285005391401378,
+   "peso": 0.010337725658212232
+  },
+  {
+   "nome": "hk_ab_por_que",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): Por que...",
+   "media": 0.014602487831260141,
+   "dp": 0.11995522156371205,
+   "peso": 0.00932514954060154
+  },
+  {
+   "nome": "hk_ab_como",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): Como...",
+   "media": 0.006670272219217595,
+   "dp": 0.08139889242329865,
+   "peso": -0.006977432808242744
+  },
+  {
+   "nome": "hk_ab_o_que",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): O que...",
+   "media": 0.007751937984496124,
+   "dp": 0.08770316665880103,
+   "peso": 0.011953663088545355
+  },
+  {
+   "nome": "hk_ab_voce_sabia",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): Você sabia / Já pensou / Sabia que (genérico)",
+   "media": 0.0018027762754642149,
+   "dp": 0.042420823579520074,
+   "peso": -0.002384261549810426
+  },
+  {
+   "nome": "hk_ab_enquanto",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): Enquanto...",
+   "media": 0.034793582116459346,
+   "dp": 0.1832566199621768,
+   "peso": -0.01029260109101946
+  },
+  {
+   "nome": "hk_ab_pouca_gente",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): Pouca gente / Quase ninguém / Ninguém / Poucos",
+   "media": 0.01334054443843519,
+   "dp": 0.1147282629194766,
+   "peso": 0.0034227265651873384
+  },
+  {
+   "nome": "hk_ab_existe",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): Existe um/uma / Tem um/uma",
+   "media": 0.014241932576167298,
+   "dp": 0.11848670783114482,
+   "peso": -0.011424676857835894
+  },
+  {
+   "nome": "hk_ab_superlativo",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): Uma das / Um dos / O maior / A maior / O primeiro",
+   "media": 0.035514692626645035,
+   "dp": 0.18507673877145506,
+   "peso": -0.004641065510652112
+  },
+  {
+   "nome": "hk_ab_uma_das",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): Uma das / Um dos",
+   "media": 0.014061654948620876,
+   "dp": 0.11774516894007268,
+   "peso": 0.009463838383985528
+  },
+  {
+   "nome": "hk_ab_o_maior",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): O maior / A maior",
+   "media": 0.019469983775013522,
+   "dp": 0.13816983573419742,
+   "peso": -0.009941181939625916
+  },
+  {
+   "nome": "hk_ab_em",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): Em... (Em 2019, Em um, Em plena)",
+   "media": 0.014061654948620876,
+   "dp": 0.11774516894007298,
+   "peso": -0.016915722025910084
+  },
+  {
+   "nome": "hk_ab_tempo_atras",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): Antigamente / Durante / Há X anos / Nos anos / Em 19xx",
+   "media": 0.019289706147467098,
+   "dp": 0.13754131519006438,
+   "peso": -0.010421372906056499
+  },
+  {
+   "nome": "hk_ab_imagina",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): Imagina / Imagine",
+   "media": 0.004326663061114116,
+   "dp": 0.06563492247172786,
+   "peso": -0.0023179881334696637
+  },
+  {
+   "nome": "hk_ab_parece",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): Parece / Pode parecer",
+   "media": 0.005768884081485488,
+   "dp": 0.07573377092116293,
+   "peso": 0.002279811539727576
+  },
+  {
+   "nome": "hk_ab_muita_gente",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): Muita gente / Todo mundo / A maioria",
+   "media": 0.010456102397692447,
+   "dp": 0.10171908532984836,
+   "peso": -0.018045432633976125
+  },
+  {
+   "nome": "hk_ab_pronome",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): Ele/Ela/Eles",
+   "media": 0.017847485127095726,
+   "dp": 0.13239695012247113,
+   "peso": 0.0034460282538535665
+  },
+  {
+   "nome": "hk_ab_isso",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): Isso / Isto / Olha",
+   "media": 0.010275824770146024,
+   "dp": 0.10084756911020976,
+   "peso": -0.009105312525409463
+  },
+  {
+   "nome": "hk_ab_nem",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): Nem [grande] conseguiu...",
+   "media": 0.0016224986479177934,
+   "dp": 0.0402475607466519,
+   "peso": 0.03003348778552072
+  },
+  {
+   "nome": "hk_ab_os_as",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): Os/As + plural",
+   "media": 0.0268613665044168,
+   "dp": 0.16167817878097843,
+   "peso": -0.019092790921253742
+  },
+  {
+   "nome": "hk_ab_tem",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): Tem...",
+   "media": 0.0075716603569497025,
+   "dp": 0.08668523701524314,
+   "peso": -0.008968795534032898
+  },
+  {
+   "nome": "hk_acabou_de",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): acabou de / acaba de",
+   "media": 0.07661799170722913,
+   "dp": 0.26598435114492075,
+   "peso": 0.03437376080419494
+  },
+  {
+   "nome": "hk_agora",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): agora",
+   "media": 0.04885523706508022,
+   "dp": 0.21556531000231413,
+   "peso": 0.001115878893061487
+  },
+  {
+   "nome": "hk_hoje",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): hoje",
+   "media": 0.06327744726879395,
+   "dp": 0.24346131507066765,
+   "peso": -0.0019752571040993574
+  },
+  {
+   "nome": "hk_ano_2025_26",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): 2025/2026 ou 'esse ano'",
+   "media": 0.014422210203713719,
+   "dp": 0.11922336204181233,
+   "peso": -0.012215690513624028
+  },
+  {
+   "nome": "hk_tempo_recente",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): qualquer marca de agora (acabou de, agora, hoje, nesta semana, ontem, 2026, pela 1a vez, oficialmente)",
+   "media": 0.19920677843879575,
+   "dp": 0.3994038530896056,
+   "peso": 0.018744203677212936
+  },
+  {
+   "nome": "hk_gerundio_esta",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): está/tá + -ndo (algo em curso)",
+   "media": 0.10618352262484226,
+   "dp": 0.30807236511542563,
+   "peso": 0.00207844233644929
+  },
+  {
+   "nome": "hk_ta_coloquial",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): tá / tão / tô / pra (coloquial)",
+   "media": 0.10293852532900667,
+   "dp": 0.3038785700441976,
+   "peso": 0.010485400809166023
+  },
+  {
+   "nome": "hk_futuro_vai",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): vai + verbo / prestes a / em breve",
+   "media": 0.06886605372273301,
+   "dp": 0.25322622369610415,
+   "peso": -0.0008124874263175531
+  },
+  {
+   "nome": "hk_tempo_passado_ano",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): ano antigo (1800 a 2019) ou 'anos 80'",
+   "media": 0.014963043086352984,
+   "dp": 0.12140490281676353,
+   "peso": -0.01804051800299284
+  },
+  {
+   "nome": "hk_verbo_passado",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): verbo de ação no passado (criou, destruiu, venceu...)",
+   "media": 0.43410852713178294,
+   "dp": 0.49563929808202734,
+   "peso": -0.0012470512780361777
+  },
+  {
+   "nome": "hk_v_criou",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): criou/inventou/descobriu/desenvolveu/construiu/lançou",
+   "media": 0.10492157923201731,
+   "dp": 0.30645234775324726,
+   "peso": -0.0011803966809766757
+  },
+  {
+   "nome": "hk_v_queda",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): destruiu/faliu/quebrou/perdeu/fechou",
+   "media": 0.03695691364701641,
+   "dp": 0.18865603669298542,
+   "peso": -0.009087619264935351
+  },
+  {
+   "nome": "hk_v_venceu",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): venceu/derrotou/superou/ultrapassou/humilhou/dominou",
+   "media": 0.012979989183342347,
+   "dp": 0.1131879369197215,
+   "peso": 0.0048318363662208305
+  },
+  {
+   "nome": "hk_v_proibiu",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): proibiu/baniu/bloqueou/multou/processou/prendeu/cancelou",
+   "media": 0.00847304849468181,
+   "dp": 0.09165836537866287,
+   "peso": 0.02273637745306283
+  },
+  {
+   "nome": "hk_v_dinheiro",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): comprou/vendeu/gastou/pagou/investiu/faturou/lucrou",
+   "media": 0.0461510726518839,
+   "dp": 0.2098121806401127,
+   "peso": -0.019170942409635447
+  },
+  {
+   "nome": "hk_v_recusou",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): ignorou/recusou/rejeitou/abandonou/desistiu/largou",
+   "media": 0.014241932576167298,
+   "dp": 0.11848670783114645,
+   "peso": 0.01337020930248706
+  },
+  {
+   "nome": "hk_v_copiou",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): copiou/roubou/enganou/traiu",
+   "media": 0.009374436632413918,
+   "dp": 0.0963667814666367,
+   "peso": 0.009734826880324133
+  },
+  {
+   "nome": "hk_v_transformou",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): transformou/mudou/virou/tornou",
+   "media": 0.07391382729403281,
+   "dp": 0.2616306049161222,
+   "peso": -0.0034468331048413047
+  },
+  {
+   "nome": "hk_v_fez",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): fez/deu/colocou/deixou/levou (verbo genérico)",
+   "media": 0.0679646655850009,
+   "dp": 0.251685259435116,
+   "peso": -0.0091654957565178
+  },
+  {
+   "nome": "hk_v_ser_capaz",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): é capaz de / consegue / pode (capacidade)",
+   "media": 0.07355327203893997,
+   "dp": 0.26104250269124973,
+   "peso": -0.011790679890710313
+  },
+  {
+   "nome": "hk_dinheiro",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): qualquer dinheiro (R$, reais, dólares, milhões, bilhões, %)",
+   "media": 0.23273841716243016,
+   "dp": 0.42257691174405787,
+   "peso": 0.00562754955653728
+  },
+  {
+   "nome": "hk_moeda",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): R$ / reais / dólares",
+   "media": 0.15071209662880836,
+   "dp": 0.357768026182546,
+   "peso": 0.0008084122455620872
+  },
+  {
+   "nome": "hk_escala",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): milhões / bilhões / trilhões",
+   "media": 0.19325761672976383,
+   "dp": 0.39485327693423516,
+   "peso": 0.007147656251845435
+  },
+  {
+   "nome": "hk_bilhao",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): bilhão / bilhões / trilhão",
+   "media": 0.09771047413016044,
+   "dp": 0.29692278015574214,
+   "peso": -0.0019671291123555495
+  },
+  {
+   "nome": "hk_percentual",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): % / por cento",
+   "media": 0.015503875968992248,
+   "dp": 0.12354556163185312,
+   "peso": -0.01508325470627774
+  },
+  {
+   "nome": "hk_num_digito",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): algum número em algarismo",
+   "media": 0.3008833603749775,
+   "dp": 0.4586420868437998,
+   "peso": 0.0027484415252004395
+  },
+  {
+   "nome": "hk_num_redondo",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): número redondo (10, 100, 1 milhão)",
+   "media": 0.17396791058229674,
+   "dp": 0.3790818864967553,
+   "peso": 0.00726917912524401
+  },
+  {
+   "nome": "hk_num_quebrado",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): número quebrado (47, 58, 3,7)",
+   "media": 0.1074454660176672,
+   "dp": 0.30967876557799234,
+   "peso": -0.00046911775784381034
+  },
+  {
+   "nome": "hk_num_ano",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): ano em algarismo (1990, 2026)",
+   "media": 0.032089417703263026,
+   "dp": 0.1762375867252132,
+   "peso": -0.014654379248219239
+  },
+  {
+   "nome": "hk_num_por_extenso",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): número por extenso (dois, cinco, dez, cem, mil)",
+   "media": 0.09320353344149991,
+   "dp": 0.29071744838505115,
+   "peso": 0.015415122741112307
+  },
+  {
+   "nome": "hk_superlativo",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): maior/menor/melhor/pior/primeiro/único/recorde/do mundo",
+   "media": 0.239949522264287,
+   "dp": 0.42705239611716506,
+   "peso": 0.0008667795006907504
+  },
+  {
+   "nome": "hk_s_maior",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): maior/maiores",
+   "media": 0.11772129078781324,
+   "dp": 0.32227781258265764,
+   "peso": 0.006087140930729057
+  },
+  {
+   "nome": "hk_s_primeiro",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): primeiro/primeira",
+   "media": 0.017306652244456464,
+   "dp": 0.13041139533241053,
+   "peso": 0.002177944454474367
+  },
+  {
+   "nome": "hk_s_unico",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): único/única/só um",
+   "media": 0.021813592933117,
+   "dp": 0.14607450186965287,
+   "peso": 0.0022091707178126573
+  },
+  {
+   "nome": "hk_s_do_mundo",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): do mundo / do planeta",
+   "media": 0.10185685956372814,
+   "dp": 0.30245998036690713,
+   "peso": 0.007543942190060361
+  },
+  {
+   "nome": "hk_s_da_historia",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): da história",
+   "media": 0.02704164413196322,
+   "dp": 0.1622047891235175,
+   "peso": 0.00912831565598524
+  },
+  {
+   "nome": "hk_s_mais_adj",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): o/a mais + adjetivo (mais rico, mais odiado)",
+   "media": 0.010636380025238867,
+   "dp": 0.10258288085834175,
+   "peso": 0.004423434065464796
+  },
+  {
+   "nome": "hk_ninguem",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): ninguém",
+   "media": 0.08292770867135389,
+   "dp": 0.27577292072623394,
+   "peso": 0.00554961461619603
+  },
+  {
+   "nome": "hk_quase_ninguem",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): quase ninguém / pouca gente / poucos sabem",
+   "media": 0.0679646655850009,
+   "dp": 0.2516852594351162,
+   "peso": 0.0010181031519709291
+  },
+  {
+   "nome": "hk_nunca",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): nunca",
+   "media": 0.027221921759509646,
+   "dp": 0.16272949559077513,
+   "peso": -0.011858547764580457
+  },
+  {
+   "nome": "hk_segredo",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): segredo/secreto/escondido/oculto/por trás/mistério",
+   "media": 0.04092302145303768,
+   "dp": 0.1981119071842678,
+   "peso": -0.016276611138588134
+  },
+  {
+   "nome": "hk_proibido",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): proibido/ilegal/clandestino/banido",
+   "media": 0.00847304849468181,
+   "dp": 0.09165836537866155,
+   "peso": 0.014156896275621403
+  },
+  {
+   "nome": "hk_nao",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): tem 'não'",
+   "media": 0.15918514512349016,
+   "dp": 0.3658486499845293,
+   "peso": 0.003550708228146196
+  },
+  {
+   "nome": "hk_contraste",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): mas / só que / porém / enquanto / mesmo assim / em vez",
+   "media": 0.2307553632594195,
+   "dp": 0.4213161824407464,
+   "peso": 0.0012803258807433124
+  },
+  {
+   "nome": "hk_c_mas",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): mas",
+   "media": 0.1519740400216333,
+   "dp": 0.35899572585357137,
+   "peso": 0.005392792743869604
+  },
+  {
+   "nome": "hk_c_so_que",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): só que",
+   "media": 0.018748873264827836,
+   "dp": 0.13563684239957244,
+   "peso": 0.004265969623716962
+  },
+  {
+   "nome": "hk_c_enquanto",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): enquanto (em qualquer posição)",
+   "media": 0.04398774112132684,
+   "dp": 0.20506784182891677,
+   "peso": -0.002368171048956824
+  },
+  {
+   "nome": "hk_c_nem",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): nem",
+   "media": 0.03154858482062376,
+   "dp": 0.17479494162143575,
+   "peso": 0.006781712546193663
+  },
+  {
+   "nome": "hk_c_mesmo",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): mesmo / até mesmo",
+   "media": 0.04218496484586263,
+   "dp": 0.20101092902332104,
+   "peso": 0.006023224425517868
+  },
+  {
+   "nome": "hk_por_causa",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): por causa de",
+   "media": 0.023796646836127637,
+   "dp": 0.15241511222804008,
+   "peso": 0.014764806115011166
+  },
+  {
+   "nome": "hk_porque",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): porque",
+   "media": 0.019109428519920677,
+   "dp": 0.13690967190656766,
+   "peso": -0.006019391442421661
+  },
+  {
+   "nome": "hk_o_motivo",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): o motivo / e o motivo",
+   "media": 0.019830539030106363,
+   "dp": 0.13941767732924062,
+   "peso": 0.009158944554538927
+  },
+  {
+   "nome": "hk_e_o_motivo",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): e o motivo (é...)",
+   "media": 0.014061654948620876,
+   "dp": 0.1177451689400716,
+   "peso": 0.018872258515290154
+  },
+  {
+   "nome": "hk_problema",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): problema",
+   "media": 0.022534703443302686,
+   "dp": 0.14841459019930453,
+   "peso": 0.024282969736909715
+  },
+  {
+   "nome": "hk_voce",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): você/vocês",
+   "media": 0.12853794844059852,
+   "dp": 0.33468783104750766,
+   "peso": -0.006381736977377416
+  },
+  {
+   "nome": "hk_te",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): te (te contar, te mostrar)",
+   "media": 0.03010636380025239,
+   "dp": 0.1708799890536599,
+   "peso": -0.018109816961350386
+  },
+  {
+   "nome": "hk_seu_sua",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): seu/sua (do espectador)",
+   "media": 0.1265548945375879,
+   "dp": 0.33247368799074617,
+   "peso": -0.00641142806018562
+  },
+  {
+   "nome": "hk_segunda_pessoa",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): qualquer 2a pessoa (você, te, seu)",
+   "media": 0.24193257616729763,
+   "dp": 0.42825366870155834,
+   "peso": -0.0026354232303978774
+  },
+  {
+   "nome": "hk_eu_nos",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): eu/meu/a gente/nosso",
+   "media": 0.019289706147467098,
+   "dp": 0.13754131519006477,
+   "peso": 0.00912792224988819
+  },
+  {
+   "nome": "hk_pessoa_comum",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): pessoa comum (estudante, agricultor, motorista, idosa, criança)",
+   "media": 0.0796827113755183,
+   "dp": 0.27080136056408116,
+   "peso": -0.003928821544687991
+  },
+  {
+   "nome": "hk_especialista",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): cientista/pesquisador/médico/engenheiro/universidade",
+   "media": 0.037137191274562824,
+   "dp": 0.18909791193663672,
+   "peso": -0.006595955742595252
+  },
+  {
+   "nome": "hk_cargo_dono",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): o dono / fundador / CEO / criador / herdeiro",
+   "media": 0.04002163331530557,
+   "dp": 0.19600995429335583,
+   "peso": -0.0007669636600746526
+  },
+  {
+   "nome": "hk_bilionario",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): bilionário/milionário/ficou rico",
+   "media": 0.048674959437533805,
+   "dp": 0.21518761061289227,
+   "peso": -0.018022031035250477
+  },
+  {
+   "nome": "hk_figura",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): pessoa famosa (Musk, Trump, Lula, Neymar, Zuckerberg...)",
+   "media": 0.07030827474310439,
+   "dp": 0.2556658390277189,
+   "peso": 0.016604791321697773
+  },
+  {
+   "nome": "hk_elon",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): Elon Musk",
+   "media": 0.020010816657652784,
+   "dp": 0.14003708035498488,
+   "peso": 0.012205237472357562
+  },
+  {
+   "nome": "hk_trump",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): Trump",
+   "media": 0.010275824770146024,
+   "dp": 0.10084756911020894,
+   "peso": -0.016494272330215273
+  },
+  {
+   "nome": "hk_bigtech",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): big tech (Apple, Google, Amazon, Microsoft, Meta, Nvidia, Samsung, Tesla)",
+   "media": 0.10257797007391382,
+   "dp": 0.3034068722514727,
+   "peso": -0.001066373723748409
+  },
+  {
+   "nome": "hk_marca_china",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): marca chinesa (BYD, Shein, Shopee, Temu, Huawei, Xiaomi)",
+   "media": 0.016405264106724354,
+   "dp": 0.12702807333937105,
+   "peso": 0.020273423441257498
+  },
+  {
+   "nome": "hk_marca_consumo",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): marca de consumo global (Coca-Cola, McDonald's, Nike, Disney, Ferrari)",
+   "media": 0.1023976924463674,
+   "dp": 0.30317058733992486,
+   "peso": -0.0014879703514707912
+  },
+  {
+   "nome": "hk_marca_br",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): marca/instituição brasileira (Petrobras, Nubank, Havan, Globo, Pix, SUS)",
+   "media": 0.05065801334054444,
+   "dp": 0.21929837898383753,
+   "peso": 0.008017131373795228
+  },
+  {
+   "nome": "hk_mega_marca",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): qualquer marca grande (big tech + consumo + chinesa + BR)",
+   "media": 0.2522084009374437,
+   "dp": 0.4342802360619563,
+   "peso": 0.010020251356312
+  },
+  {
+   "nome": "hk_china",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): China/chinês",
+   "media": 0.11681990265008113,
+   "dp": 0.3212055618990775,
+   "peso": 0.019394161156404414
+  },
+  {
+   "nome": "hk_eua",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): EUA/americano",
+   "media": 0.033711916351180815,
+   "dp": 0.1804866284440901,
+   "peso": 0.011239141597348094
+  },
+  {
+   "nome": "hk_pais_est",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): qualquer país/lugar estrangeiro",
+   "media": 0.17847485127095727,
+   "dp": 0.3829119725664931,
+   "peso": 0.014871458907256437
+  },
+  {
+   "nome": "hk_brasil",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): Brasil/brasileiro",
+   "media": 0.2358031368307193,
+   "dp": 0.4244997261383439,
+   "peso": 0.00398534324987045
+  },
+  {
+   "nome": "hk_regiao_br",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): estado/cidade/região do Brasil (Nordeste, Bahia, interior, SP)",
+   "media": 0.12186767622138092,
+   "dp": 0.3271329175026267,
+   "peso": 0.03568495008828453
+  },
+  {
+   "nome": "hk_brasil_qualquer",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): Brasil ou região BR",
+   "media": 0.32594195060393005,
+   "dp": 0.46872571450737377,
+   "peso": 0.024756620061087534
+  },
+  {
+   "nome": "hk_br_x_est",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): Brasil (ou região) E estrangeiro no mesmo hook",
+   "media": 0.06237605913106183,
+   "dp": 0.2418373138668572,
+   "peso": 0.023335532672479398
+  },
+  {
+   "nome": "hk_so_est",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): só estrangeiro (sem Brasil)",
+   "media": 0.11609879213989543,
+   "dp": 0.3203433511149415,
+   "peso": 0.00015938250560442192
+  },
+  {
+   "nome": "hk_interior",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): interior / cidade pequena / roça",
+   "media": 0.020010816657652784,
+   "dp": 0.1400370803549837,
+   "peso": 0.012874882661768788
+  },
+  {
+   "nome": "hk_governo_lei",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): governo/lei/justiça/imposto/Receita/STF",
+   "media": 0.0746349378042185,
+   "dp": 0.26280137720944063,
+   "peso": -0.007360735867574107
+  },
+  {
+   "nome": "hk_ia",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): IA / inteligência artificial / ChatGPT / robô",
+   "media": 0.12403100775193798,
+   "dp": 0.32961692442586116,
+   "peso": -0.02390188112172941
+  },
+  {
+   "nome": "hk_empresa_marca",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): palavra 'empresa' ou 'marca' (genérica)",
+   "media": 0.13322516675680549,
+   "dp": 0.33981792433513625,
+   "peso": -0.02419882607594008
+  },
+  {
+   "nome": "hk_guerra",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): guerra/briga/contra/rival/ataque",
+   "media": 0.05552550928429782,
+   "dp": 0.2290031159242563,
+   "peso": 0.024459215931082582
+  },
+  {
+   "nome": "hk_mundo",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): o mundo / mundo inteiro / planeta",
+   "media": 0.028303587524788173,
+   "dp": 0.16583876042111842,
+   "peso": 0.002514010210000723
+  },
+  {
+   "nome": "hk_vida_sonho",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): vida / sonho / felicidade",
+   "media": 0.025779700739138274,
+   "dp": 0.15847746770104562,
+   "peso": -0.02263562274556236
+  },
+  {
+   "nome": "hk_hype_adj",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): adjetivo de hype (insano, absurdo, genial, bizarro, inacreditável)",
+   "media": 0.05444384351901929,
+   "dp": 0.22689140887636172,
+   "peso": -0.002439898054531648
+  },
+  {
+   "nome": "hk_historia_palavra",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): palavra 'história'",
+   "media": 0.04470885163151253,
+   "dp": 0.20666390642128313,
+   "peso": 0.0032428406893020008
+  },
+  {
+   "nome": "hk_nome_proprio_qualquer",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): algum nome próprio no hook",
+   "media": 0.6850549846764017,
+   "dp": 0.4644939748225212,
+   "peso": 0.01899328497126047
+  },
+  {
+   "nome": "hk_sem_nome_proprio",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): hook sem nenhum nome próprio",
+   "media": 0.31494501532359837,
+   "dp": 0.4644939748225212,
+   "peso": -0.018993284971260484
+  },
+  {
+   "nome": "hk_pal_ate12",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): hook <= 12 palavras",
+   "media": 0.11249323958896701,
+   "dp": 0.31597232574348405,
+   "peso": 0.007443146974547657
+  },
+  {
+   "nome": "hk_pal_13_17",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): hook 13 a 17 palavras",
+   "media": 0.24896340364160807,
+   "dp": 0.432412566062541,
+   "peso": -0.0054851843157748634
+  },
+  {
+   "nome": "hk_pal_18_22",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): hook 18 a 22 palavras",
+   "media": 0.29349197764557416,
+   "dp": 0.45536187445070736,
+   "peso": -0.00041717788710418755
+  },
+  {
+   "nome": "hk_pal_23_27",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): hook 23 a 27 palavras",
+   "media": 0.20100955471425996,
+   "dp": 0.4007551791653295,
+   "peso": -0.002223050416578917
+  },
+  {
+   "nome": "hk_pal_28_34",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): hook 28 a 34 palavras",
+   "media": 0.11609879213989543,
+   "dp": 0.32034335111494455,
+   "peso": 0.0010618878396497545
+  },
+  {
+   "nome": "hk_pal_35mais",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): hook >= 35 palavras",
+   "media": 0.02794303226969533,
+   "dp": 0.16480964540120085,
+   "peso": 0.0046158180040927164
+  },
+  {
+   "nome": "hk_frases_1",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): 1 frase",
+   "media": 0.6630611141157382,
+   "dp": 0.4726638055355366,
+   "peso": 0.002600501310554027
+  },
+  {
+   "nome": "hk_frases_2",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): 2 frases",
+   "media": 0.30971696412475214,
+   "dp": 0.462376866049861,
+   "peso": -0.0011221081887621842
+  },
+  {
+   "nome": "hk_frases_3mais",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): 3+ frases",
+   "media": 0.027221921759509646,
+   "dp": 0.16272949559077854,
+   "peso": -0.004365072081610557
+  },
+  {
+   "nome": "hk_frase_longa",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): alguma frase com 25+ palavras",
+   "media": 0.0863529835947359,
+   "dp": 0.2808845773961533,
+   "peso": 0.006967537012471166
+  },
+  {
+   "nome": "hk_termina_pergunta",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): termina em pergunta",
+   "media": 0.033711916351180815,
+   "dp": 0.18048662844408908,
+   "peso": -0.005498102800085088
+  },
+  {
+   "nome": "hk_tem_pergunta",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): tem pergunta",
+   "media": 0.048674959437533805,
+   "dp": 0.2151876106128917,
+   "peso": 0.0038216727711066277
+  },
+  {
+   "nome": "hk_reticencias",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): termina em reticências",
+   "media": 0.019289706147467098,
+   "dp": 0.1375413151900643,
+   "peso": -0.0010841814509049011
+  },
+  {
+   "nome": "hk_exclamacao",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): tem exclamação",
+   "media": 0.052460789616008655,
+   "dp": 0.22295437912018196,
+   "peso": 0.00893147852782937
+  },
+  {
+   "nome": "hk_virgula_0",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): sem vírgula",
+   "media": 0.5610239769244637,
+   "dp": 0.4962621023615749,
+   "peso": 0.005467245382264962
+  },
+  {
+   "nome": "hk_virgula_2mais",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): 2+ vírgulas",
+   "media": 0.12385073012439156,
+   "dp": 0.32941118191712343,
+   "peso": -0.006369345220723048
+  },
+  {
+   "nome": "hk_dois_pontos",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): tem dois-pontos",
+   "media": 0.057688840814854876,
+   "dp": 0.2331541088213803,
+   "peso": -0.0009494606552336877
+  },
+  {
+   "nome": "hk_aspas",
+   "texto": true,
+   "definicao": "hook (1º parágrafo do roteiro do CRM): tem aspas",
+   "media": 0.020191094285199208,
+   "dp": 0.1406535246510537,
+   "peso": -0.003015577328695781
+  }
+ ]
+}
