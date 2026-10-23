@@ -8,6 +8,8 @@ import type { ThemeSuggestion } from "@/lib/pipeline/suggest";
 import { DICA_SKILL, NOME_SKILL, SKILL_PADRAO_HOME, SKILLS } from "@/lib/skills-catalogo";
 import { SkillInfo } from "@/components/skill-info";
 
+const MOSTRAR_SUGERIR_TEMA = false;
+
 const KIND_LABELS: Record<NewAttachment["kind"], { label: string; placeholder: string }> = {
   reference_script: { label: "Roteiro de referência", placeholder: "Cole o roteiro de referência..." },
   news_link: {
@@ -373,17 +375,21 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
               <SkillInfo />
             </span>
           )}
-          <button
-            onClick={suggest}
-            disabled={!clientId || !!suggestPhase}
-            title={clientId ? "Sugerir temas com alto potencial para este cliente" : "Selecione um cliente para sugerir temas"}
-            className="inline-flex items-center justify-center gap-1.5 rounded-[10px] border border-gold/35 bg-gold/[.06] px-3.5 py-2.5 text-[12.5px] text-gold disabled:opacity-35 disabled:cursor-not-allowed hover:bg-gold/[.12] transition-colors"
-          >
-            <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor">
-              <path d="M8 1.5l1.4 3.6 3.6 1.4-3.6 1.4L8 11.5 6.6 7.9 3 6.5l3.6-1.4L8 1.5ZM13 10l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7L13 10Z" />
-            </svg>
-            {suggestPhase ? "Sugerindo..." : "Sugerir tema"}
-          </button>
+          {/* ponytail: escondido em 22/10/2026. 14 temas aplicados, nenhum publicado; volta quando a
+              sugestão vier do avaliador de pauta (docs/estrategia-2026-10/ESTRATEGIA.md, item 4). */}
+          {MOSTRAR_SUGERIR_TEMA && (
+            <button
+              onClick={suggest}
+              disabled={!clientId || !!suggestPhase}
+              title={clientId ? "Sugerir temas com alto potencial para este cliente" : "Selecione um cliente para sugerir temas"}
+              className="inline-flex items-center justify-center gap-1.5 rounded-[10px] border border-gold/35 bg-gold/[.06] px-3.5 py-2.5 text-[12.5px] text-gold disabled:opacity-35 disabled:cursor-not-allowed hover:bg-gold/[.12] transition-colors"
+            >
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor">
+                <path d="M8 1.5l1.4 3.6 3.6 1.4-3.6 1.4L8 11.5 6.6 7.9 3 6.5l3.6-1.4L8 1.5ZM13 10l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7L13 10Z" />
+              </svg>
+              {suggestPhase ? "Sugerindo..." : "Sugerir tema"}
+            </button>
+          )}
           <button
             onClick={submit}
             disabled={pending || !canSubmit}
