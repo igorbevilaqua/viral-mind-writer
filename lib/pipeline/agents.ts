@@ -902,6 +902,8 @@ export async function designHook(
   // Reprovados nos critérios de eliminação. Até a 2.0 isto só existia como console.warn —
   // o rastro precisa deles para responder "por que o hook não é aquele outro" (015 §4.1).
   descartados: { hook: string; motivos: string[] }[];
+  // Todos os candidatos que o agente devolveu, na ordem dele: o preditor sombra pontua cada um.
+  todos?: string[];
 }> {
   // Modo adaptação não tem narrativa vencedora: a arquitetura vem dos briefs de modelagem.
   const a = ctx.artifacts;
@@ -1016,6 +1018,7 @@ Gere de 5 a 6 candidatos a hook com FÓRMULAS DIFERENTES do playbook (seção 2)
     : "";
   return {
     descartados,
+    todos: brutos.map((c) => c.hook),
     motivo,
     hook: principal.hook,
     variantes: variantes.map((v) => v.hook),

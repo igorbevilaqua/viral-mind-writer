@@ -17,6 +17,7 @@ import { celulaEncolhida } from "./study-stats";
 import { syncScriptPerformance } from "./script-performance";
 import { casarComCrm, casarRoteiros } from "./script-matches";
 import { sincronizarCorpus } from "./corpus-embeddings";
+import { atualizarRotulos } from "./preditor";
 import { ESTRUTURAS } from "./pipeline/taxonomia";
 import { codexVsCanal, type FatoCvc, type RoteiroCvc } from "./codex-vs-canal";
 import { modeloDe } from "./llm-config";
@@ -619,6 +620,8 @@ export async function runWeeklyEtl() {
   // Corpus vetorial (few-shot e preditor): os vídeos novos com roteiro ganham embedding.
   // Melhor esforço, como o resto: falha vai no resultado e o ETL segue.
   const corpus = await sincronizarCorpus({ dias: 60 }).catch((e) => ({ erro: String(e?.message ?? e) }));
+  // Plano 026, Task B: rótulo de topo de cada vídeo VM, que o preditor sombra lê na geração.
+  const preditor = await atualizarRotulos().catch((e) => ({ erro: String(e?.message ?? e) }));
 
   const casadosCrm = await casarComCrm();
   if (casadosCrm.pulado) console.warn(`casamento pelo CRM pulado: ${casadosCrm.pulado}`);
@@ -902,5 +905,6 @@ export async function runWeeklyEtl() {
     casados,
     casadosCrm,
     corpus,
+    preditor,
   };
 }

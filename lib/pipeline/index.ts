@@ -26,6 +26,7 @@ import { verificarRoteiro, type Regime, type RegistroVerificacao } from "./verif
 import { blockCount, dedash, deepDedash, ecosNumericos, paragrafosLongos, sequenciasLongas } from "./slop-lint";
 import { APP_VERSION, GIT_SHA } from "../version";
 import { registrarAtividade } from "../hub";
+import { sombraDoPreditor } from "../preditor";
 import type { GenerationContext, PipelineEvent, SessionArtifacts } from "./types";
 
 // Piso de serviço à premissa para uma candidata ser elegível a vencer. Abaixo disso a narrativa
@@ -275,6 +276,8 @@ export async function runPipeline(
 
     // ── Pesquisa + narrativas + ranking (só na primeira geração da sessão) ──
     let artifacts: SessionArtifacts | null = ctx.artifacts;
+    // as narrativas que a sala propôs e rankeou NESTA rodada (preditor sombra, depois do done)
+    let narrativasNovas: { candidatas: SessionArtifacts["candidatas"]; escolhida: number } | null = null;
     if (!artifacts?.candidatas?.length) {
       // Com modelagem, a ordem importa: a autópsia primeiro, porque é ela que diz ao pesquisador
       // QUAL tese testar e QUAIS alegações checar. Pesquisa cega enriquece no escuro e
@@ -341,6 +344,7 @@ export async function runPipeline(
         const rank = await rankNarratives(ctx, dossie, candidatas);
         const valid = rank.ranking.filter((r) => candidatas[r.indice]);
         const vencedora = escolherVencedora(valid);
+        narrativasNovas = { candidatas, escolhida: vencedora };
 
         artifacts = {
           dossie,
@@ -530,6 +534,29 @@ export async function runPipeline(
 
     await registrarAtividade("roteiro_gerado", { sessaoId: sessionId, userId: hubUser, payload: { script_id: saved.id } });
     emit({ type: "done", scriptId: saved.id });
+
+    // Plano 026, Task B: o preditor v0 em modo sombra pontua as candidatas e grava a nota ao lado
+    // da escolhida. Não muda a escolha. Sem await e depois do done: não atrasa a entrega.
+    const sombra = { sessionId, scriptId: saved.id, clienteId: ctx.clientId, modo: ctx.skill };
+    const titulo = sections.headline || narrativa?.titulo || "sem título";
+    const hooks = hookRes.todos ?? [];
+    void sombraDoPreditor({
+      ...sombra,
+      fase: "hook",
+      // no formato do corpus (Título + roteiro): o hook candidato na frente do corpo entregue
+      candidatas: hooks.map((h) => ({ embutir: `Título: ${titulo}\n\n${h}\n\n${sections.roteiro ?? ""}`, hook: h })),
+      escolhida: hooks.indexOf(hookRes.hook),
+    });
+    if (narrativasNovas)
+      void sombraDoPreditor({
+        ...sombra,
+        fase: "narrativa",
+        candidatas: narrativasNovas.candidatas.map((c) => ({
+          embutir: `Título: ${c.titulo}\n\n${c.gancho_potencial}\n\n${c.beats.join("\n")}`,
+          hook: c.gancho_potencial,
+        })),
+        escolhida: narrativasNovas.escolhida,
+      });
 
     // ── Verificação factual (017 §8) ──
     // Fase própria, DEPOIS do save e DEPOIS do `done`: o roteiro está no banco e já foi
