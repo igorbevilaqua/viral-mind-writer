@@ -78,7 +78,7 @@ jobs:
           # Casamento que falhou ou foi pulado devolve 200 com o motivo dentro: vira aviso no run
           # para não repetir as 4 semanas de setembro em que a RPC quebrou calada.
           if grep -qE '"(erro|pulado)":' resultado.json; then
-            echo "::warning::casamento de roteiros com erro ou pulado (ver casados/casadosCrm no Summary)"
+            echo "::warning::casamento ou corpus com erro ou pulado (ver casados, casadosCrm e corpus no Summary)"
           fi
           if [ "$code" != "200" ]; then
             echo "::error::HTTP ${code} (esperado 200). 3xx = APP_URL com host ou esquema errado; 401 = CRON_SECRET ausente na Hostinger, diferente do secret do GitHub, ou app não reiniciado depois de criar a variável."
