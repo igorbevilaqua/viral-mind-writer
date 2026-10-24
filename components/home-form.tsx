@@ -2,7 +2,8 @@
 
 import { useEffect, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { createSession, type NewAttachment } from "@/lib/actions";
+import { avaliarPauta, createSession, type NewAttachment } from "@/lib/actions";
+import type { Avaliacao } from "@/lib/preditor/avaliador";
 import { fmtNum, fmtRatio } from "@/lib/format";
 import type { ThemeSuggestion } from "@/lib/pipeline/suggest";
 import { DICA_SKILL, NOME_SKILL, SKILL_PADRAO_HOME, SKILLS } from "@/lib/skills-catalogo";
@@ -122,6 +123,9 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
   const [sugestoes, setSugestoes] = useState<ThemeSuggestion[]>([]);
   const [suggestError, setSuggestError] = useState<string | null>(null);
   const [msgIdx, setMsgIdx] = useState(0);
+  const [avaliacao, setAvaliacao] = useState<Avaliacao | null>(null);
+  const [avaliacaoErro, setAvaliacaoErro] = useState<string | null>(null);
+  const [avaliando, setAvaliando] = useState(false);
   const promptRef = useRef<HTMLTextAreaElement>(null);
 
   // Rotaciona as frases de status enquanto a fase está ativa (reseta a cada troca de fase).
@@ -131,6 +135,12 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
     const id = setInterval(() => setMsgIdx((i) => i + 1), 2600);
     return () => clearInterval(id);
   }, [suggestPhase]);
+
+  // O card fala do tema e do cliente do clique: mudou um dos dois, ele sai em vez de ficar velho.
+  useEffect(() => {
+    setAvaliacao(null);
+    setAvaliacaoErro(null);
+  }, [prompt, clientId]);
 
   // Textarea que cresce com o conteúdo (sugestão aceita pode ser longa) até um teto, aí rola.
   // No celular o teto é a tela, não 340px fixos — senão o campo cobre o botão de conjurar.
@@ -228,6 +238,34 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
     }
   };
 
+  // Anexa um vídeo no modo Modelar. Modelar é 1:1 com o material (setModo): desmarca o anterior.
+  // Clique repetido no mesmo vídeo não empilha o mesmo anexo duas vezes.
+  const anexarModelagem = (url: string) =>
+    setAttachments((a) =>
+      a.some((x) => x.url === url)
+        ? a
+        : [
+            ...a.map((x) => (x.is_modelagem ? { ...x, is_modelagem: false, modo: null } : x)),
+            { kind: "video_link", is_modelagem: true, modo: "modelar", url, raw_content: "" },
+          ]
+    );
+
+  // Avaliador de pauta (plano 026, Task C): um embedding, nenhum LLM.
+  const avaliar = async () => {
+    if (!clientId || !prompt.trim() || avaliando) return;
+    setAvaliando(true);
+    setAvaliacaoErro(null);
+    try {
+      const r = await avaliarPauta(clientId, prompt, skill || null);
+      if (r.ok) setAvaliacao(r.ok);
+      else setAvaliacaoErro(r.erro ?? "falha ao avaliar");
+    } catch (e) {
+      setAvaliacaoErro(e instanceof Error ? e.message : String(e));
+    } finally {
+      setAvaliando(false);
+    }
+  };
+
   // modelagemUrl preenchida = aplica o tema E anexa o vídeo como modelagem. Daí em diante é o
   // pipeline de sempre (transcrição + autópsia acontecem na conjuração, não aqui).
   const applyTheme = (s: ThemeSuggestion, modelagemUrl?: string | null) => {
@@ -241,13 +279,7 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
         .map((f) => `- ${f}`)
         .join("\n")}`
     );
-    if (modelagemUrl)
-      setAttachments((a) =>
-        // Clique repetido no mesmo card não empilha o mesmo vídeo duas vezes.
-        a.some((x) => x.url === modelagemUrl)
-          ? a
-          : [...a, { kind: "video_link", is_modelagem: true, modo: "modelar", url: modelagemUrl, raw_content: "" }]
-      );
+    if (modelagemUrl) anexarModelagem(modelagemUrl);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -373,6 +405,18 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
                 ))}
               </select>
               <SkillInfo />
+              <button
+                onClick={avaliar}
+                disabled={!clientId || !prompt.trim() || avaliando}
+                title={
+                  clientId && prompt.trim()
+                    ? "Ver como temas parecidos foram na casa"
+                    : "Escolha um cliente e digite o tema para avaliar"
+                }
+                className="rounded-[10px] border border-white/15 bg-white/[.04] px-3 py-2 text-[12.5px] text-white/70 hover:border-white/30 hover:text-white/90 disabled:opacity-35 disabled:cursor-not-allowed transition-colors"
+              >
+                {avaliando ? "Avaliando..." : "Avaliar pauta"}
+              </button>
             </span>
           )}
           {/* ponytail: escondido em 22/10/2026. 14 temas aplicados, nenhum publicado; volta quando a
@@ -400,6 +444,14 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
           </button>
         </div>
       </div>
+
+      {/* avaliador de pauta */}
+      {!temModelagem && avaliacaoErro && (
+        <div className="mt-4 rounded-[14px] border border-red-500/30 bg-red-500/[.05] px-4 py-3 text-[13px] text-red-300">
+          Não deu para avaliar: {avaliacaoErro}
+        </div>
+      )}
+      {!temModelagem && avaliacao && <CardAvaliacao a={avaliacao} onModelar={anexarModelagem} />}
 
       {/* sugestões de tema (ideador) */}
       {suggestPhase && (
@@ -655,6 +707,66 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
           </div>
         ))}
       </div>
+    </div>
+  );
+}
+
+const plural = (n: number, um: string, varios: string) => `${n} ${n === 1 ? um : varios}`;
+
+function CardAvaliacao({ a, onModelar }: { a: Avaliacao; onModelar: (url: string) => void }) {
+  return (
+    <div className="mt-4 rounded-[14px] border border-white/10 bg-white/[.02] px-4 py-3.5 text-[13px] leading-relaxed text-white/70 space-y-1.5">
+      <span className="kicker text-white/40">AVALIAÇÃO DA PAUTA</span>
+      <p>
+        {a.n === 0
+          ? "A casa ainda não tem vídeo com tema parecido. Pouco histórico para avaliar."
+          : a.faixa
+            ? `${plural(a.n, "vídeo", "vídeos")} da casa com tema parecido. ${a.topo} ficaram no topo do próprio cliente.`
+            : `Pouco histórico da casa para este tema: só ${plural(a.n, "vídeo parecido", "vídeos parecidos")}, ${a.topo} no topo do cliente.`}
+      </p>
+      {a.faixa && (
+        <p>
+          Chance de topo: <b className="text-cream font-medium">{a.faixa}</b>.
+          {a.taxaCliente != null && ` O cliente costuma ficar no topo em ${Math.round(a.taxaCliente * 100)}% dos vídeos.`}
+        </p>
+      )}
+      {a.modo && (
+        <p>
+          Modo que mais rendeu entre os parecidos: <b className="text-cream font-medium">{NOME_SKILL[a.modo.skill]}</b>, com{" "}
+          {a.modo.topo} de {plural(a.modo.n, "vídeo", "vídeos")} no topo.
+        </p>
+      )}
+      {a.avisos.map((t) => (
+        <p key={t} className="text-amber-300/80">
+          {t}
+        </p>
+      ))}
+      {a.referencias.length > 0 && (
+        <div className="pt-1.5">
+          <p className="text-[11.5px] text-white/40">Referências da casa que ficaram no topo</p>
+          <ul className="mt-1 space-y-1.5">
+            {a.referencias.map((r) => (
+              <li key={r.url} className="flex items-center gap-2.5">
+                <a href={r.url} target="_blank" rel="noreferrer" className="min-w-0 flex-1 hover:text-white/90">
+                  <span className="block truncate text-[12.5px] text-white/75">{r.titulo ?? r.url}</span>
+                  <span className="block text-[11px] text-white/35">
+                    {[r.cliente, r.plataforma, r.coef != null ? `coeficiente ${r.coef.toLocaleString("pt-BR", { maximumFractionDigits: 1 })}` : null]
+                      .filter(Boolean)
+                      .join(" · ")}
+                  </span>
+                </a>
+                <button
+                  onClick={() => onModelar(r.url)}
+                  title="Anexa este vídeo no modo Modelar"
+                  className="shrink-0 rounded-[9px] border border-gold/40 bg-gold/[.07] px-3 py-1.5 text-[12px] font-semibold text-gold hover:bg-gold/[.13] transition-colors"
+                >
+                  Modelar este
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 }

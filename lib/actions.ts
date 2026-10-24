@@ -22,6 +22,8 @@ import type { RegistroVerificacao } from "./pipeline/verificar";
 import { escaparLiteral, validarPadrao } from "./regex-safety";
 import { normalizarTermo, validarTermo } from "./bullets";
 import { colunasDaSkill } from "./skills-catalogo";
+import { avaliarPauta as avaliar, type Avaliacao } from "./preditor/avaliador";
+import { UUID_RE } from "./generation";
 
 /**
  * Abre uma sessão nova usando o roteiro JÁ GERADO como material de referência.
@@ -74,6 +76,25 @@ export async function criarSessaoDoRoteiro(
     attachments: [{ kind: "reference_script", is_modelagem: true, modo, url: "", raw_content: texto }],
   });
   return { id };
+}
+
+/**
+ * Avaliador de pauta da home (plano 026, Task C). Só leitura: um embedding e selects, nenhum LLM.
+ * O erro volta como texto para o card, nunca derruba a home.
+ */
+export async function avaliarPauta(
+  clientId: string,
+  tema: string,
+  skill: string | null
+): Promise<{ ok?: Avaliacao; erro?: string }> {
+  if (!UUID_RE.test(clientId)) return { erro: "escolha um cliente" };
+  if (!tema.trim()) return { erro: "digite o tema" };
+  try {
+    return { ok: await avaliar(tema.trim(), clientId, skill) };
+  } catch (e) {
+    console.error("avaliador de pauta falhou", e);
+    return { erro: e instanceof Error ? e.message : String(e) };
+  }
 }
 
 export interface NewAttachment {
