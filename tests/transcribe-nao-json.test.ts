@@ -5,6 +5,7 @@ vi.mock("@/lib/db", () => ({ appDb: {}, viralData: {} }));
 beforeAll(() => {
   process.env.SUPADATA_API_KEY ??= "test";
   process.env.SCRAPECREATORS_API_KEY ??= "test";
+  delete process.env.OPENAI_API_KEY; // plano C (Whisper) fora destes testes
 });
 afterEach(() => vi.unstubAllGlobals());
 
@@ -41,9 +42,16 @@ describe("fetchTranscript: Instagram", () => {
     expect(fetchMock.mock.calls.map(([u]) => String(u)).some((u) => u.includes("scrapecreators"))).toBe(true);
   });
 
-  test("as duas fontes falhando: o erro final é o da segunda, com status", async () => {
+  // A tela recebe uma frase acionável. O que cada fonte respondeu vai no `debug`, para o admin.
+  test("as fontes falhando: frase para a tela, status de cada fonte no debug", async () => {
     vi.stubGlobal("fetch", async () => new Response(HTML_502, { status: 502 }));
-    await expect(fetchTranscript(REEL)).rejects.toThrow(/ScrapeCreators respondeu 502 sem JSON/);
+    type ErroComDebug = Error & { debug?: { falhas: { motivo: string }[] } };
+    const erro = (await fetchTranscript(REEL).then(
+      () => new Error("não lançou"),
+      (e: ErroComDebug) => e
+    )) as ErroComDebug;
+    expect(erro.message).toMatch(/nenhum serviço de transcrição conseguiu ler/);
+    expect(erro.debug?.falhas.map((f) => f.motivo).join(" ")).toMatch(/ScrapeCreators respondeu 502 sem JSON/);
   });
 
   // O bug relatado: o usuário viu "Looks like you're out of credits :(" — o inglês do
