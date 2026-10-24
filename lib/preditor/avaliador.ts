@@ -1,16 +1,16 @@
 // Plano 026, Task C: avaliador de pauta. Antes da sala, olha os vídeos da casa com tema parecido
-// com o que foi digitado e diz quantos são, quantos ficaram no topo do cliente, a chance estimada
-// pelo v0 (em faixa), o modo que mais rendeu, os avisos de repetição e até 3 referências da casa.
+// com o que foi digitado e diz quantos são, quantos ficaram no topo do cliente (em faixa), o modo
+// que rendeu acima dos parecidos, os avisos de repetição e até 3 referências da casa.
+// A faixa é a taxa observada nos parecidos, não o prever() do v0: o modelo foi validado roteiro
+// contra roteiro, e um tema de uma linha cai fora do que ele viu (deu 15 a 25% num tema cujos
+// parecidos tinham 9% de topo).
 // Custo: um embedding por clique. Nenhum LLM, nenhuma escrita.
 import OpenAI from "openai";
 import { appDb, viralData } from "../db";
-import { SKILLS, type Skill, ehSkill } from "../skills-catalogo";
+import { SKILLS, type Skill } from "../skills-catalogo";
 import { modosDosRoteiros } from "../pipeline/modo-roteiro";
 import modelo from "./modelo.json";
-import {
-  TOPO, featuresDoCliente, featuresDoTexto, medido, prever, vizinhanca, vizinhosDe,
-  type Rotulo, type Vizinho,
-} from "./index";
+import { TOPO, featuresDoCliente, medido, vizinhanca, vizinhosDe, type Rotulo, type Vizinho } from "./index";
 
 const L = modelo.limiares;
 // ponytail: um tema digitado é curto e o corpus é "Título + Assunto + roteiro", então o cosseno
@@ -22,7 +22,7 @@ export const MIN_N = 5; // abaixo disso: "pouco histórico", sem faixa
 const MIN_MODO = 3; // roteiros parecidos no modo para ele contar
 const SEQUENCIA_DIAS = 21; // acerto recente = bom momento para continuação (achado 7 do estudo)
 
-// O RELATORIO mostra que a calibração vale de 15% a 40% e exagera acima: nunca mostrar mais que isso.
+// Faixas largas porque n é pequeno: a taxa de 9 vídeos não sustenta um número com unidade.
 export function faixaDaChance(p: number): string {
   if (p < 0.15) return "abaixo de 15%";
   if (p < 0.25) return "15 a 25%";
@@ -67,7 +67,6 @@ export function resumir(o: {
   hoje: string;
   corte: string;
   modos: Map<string, string>;
-  chance: number;
 }): Resumo {
   const parecidos = o.vizCorte.filter((v) => v.sim >= PARECIDO);
   const ids = new Set(parecidos.map((v) => v.script_id));
@@ -75,14 +74,15 @@ export function resumir(o: {
   const n = videos.length;
   const topo = videos.filter((v) => v.pq! >= TOPO).length;
 
-  // modo que mais rendeu: taxa de topo por vídeo, entre os modos com MIN_MODO roteiros parecidos
+  // modo que mais rendeu: taxa de topo por vídeo, entre os modos com MIN_MODO roteiros parecidos,
+  // e só se ela passa a dos parecidos (senão "o que mais rendeu" é só o mais frequente)
   let modo: Resumo["modo"] = null;
   for (const s of SKILLS) {
     const scripts = parecidos.filter((v) => o.modos.get(v.script_id) === s).map((v) => v.script_id);
     if (scripts.length < MIN_MODO) continue;
     const vs = videos.filter((v) => scripts.includes(v.script_id));
     const t = vs.filter((v) => v.pq! >= TOPO).length;
-    if (vs.length && (!modo || t / vs.length > modo.topo / modo.n)) modo = { skill: s, n: vs.length, topo: t };
+    if (vs.length && t / vs.length > topo / n && (!modo || t / vs.length > modo.topo / modo.n)) modo = { skill: s, n: vs.length, topo: t };
   }
 
   // repetição, com as réguas de acerto e fracasso do modelo (topo_pq e fraco_pq)
@@ -99,7 +99,7 @@ export function resumir(o: {
   if (hit) avisos.push(`Tema parecido foi acerto deste cliente há ${diasEntre(hit.data, o.hoje)} dias. Bom momento para uma continuação.`);
 
   const simDe = new Map(parecidos.map((v) => [v.script_id, v.sim]));
-  return { n, topo, faixa: n >= MIN_N ? faixaDaChance(o.chance) : null, modo, avisos, refs: rankearReferencias(videos, simDe) };
+  return { n, topo, faixa: n >= MIN_N ? faixaDaChance(topo / n) : null, modo, avisos, refs: rankearReferencias(videos, simDe) };
 }
 
 // ---------------------------------------------------------------- rede e banco
@@ -110,15 +110,13 @@ export interface Avaliacao extends Omit<Resumo, "refs"> {
   referencias: Referencia[];
 }
 
-export async function avaliarComVetor(vetor: number[], clienteId: string, modo: string | null): Promise<Avaliacao> {
+export async function avaliarComVetor(vetor: number[], clienteId: string): Promise<Avaliacao> {
   const { hoje, corte, docs, rotulos, doCliente } = await vizinhanca([vetor], clienteId);
   const vizCorte = vizinhosDe(docs[0], rotulos, corte);
   const vizHoje = vizinhosDe(docs[0], rotulos, hoje);
   const cliente = featuresDoCliente(doCliente, corte);
-  // ponytail: hk vazio porque o tema não é hook, e o modo só entra se a skill já foi escolhida
-  const chance = prever({ ...featuresDoTexto(vizCorte, clienteId, hoje), ...cliente, modo: ehSkill(modo) ? modo : null, ancora: null, hk: [] });
   const modos = await modosDosRoteiros(vizCorte.filter((v) => v.sim >= PARECIDO).map((v) => v.script_id));
-  const r = resumir({ vizCorte, vizHoje, rotulos, clienteId, hoje, corte, modos, chance });
+  const r = resumir({ vizCorte, vizHoje, rotulos, clienteId, hoje, corte, modos });
 
   const idsRef = r.refs.map((x) => x.video_id);
   const idsCli = [...new Set(r.refs.map((x) => x.cliente_id).filter((c): c is string => !!c))];
@@ -152,8 +150,8 @@ export async function avaliarComVetor(vetor: number[], clienteId: string, modo: 
 }
 
 /** Um embedding (no formato do corpus, "Título: ...") e a avaliação. */
-export async function avaliarPauta(tema: string, clienteId: string, modo: string | null): Promise<Avaliacao> {
+export async function avaliarPauta(tema: string, clienteId: string): Promise<Avaliacao> {
   const res = await new OpenAI().embeddings.create({ model: "text-embedding-3-small", input: `Título: ${tema}`.slice(0, 8000) });
-  return avaliarComVetor(res.data[0].embedding, clienteId, modo);
+  return avaliarComVetor(res.data[0].embedding, clienteId);
 }
 

@@ -84,13 +84,12 @@ export async function criarSessaoDoRoteiro(
  */
 export async function avaliarPauta(
   clientId: string,
-  tema: string,
-  skill: string | null
+  tema: string
 ): Promise<{ ok?: Avaliacao; erro?: string }> {
   if (!UUID_RE.test(clientId)) return { erro: "escolha um cliente" };
   if (!tema.trim()) return { erro: "digite o tema" };
   try {
-    return { ok: await avaliar(tema.trim(), clientId, skill) };
+    return { ok: await avaliar(tema.trim(), clientId) };
   } catch (e) {
     console.error("avaliador de pauta falhou", e);
     return { erro: e instanceof Error ? e.message : String(e) };

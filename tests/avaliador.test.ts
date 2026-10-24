@@ -14,11 +14,11 @@ describe("avaliador de pauta", () => {
   });
 
   it("com menos de 5 vídeos parecidos não mostra faixa", () => {
-    const base = { vizHoje: [], clienteId: "c", hoje: "2026-10-23", corte: "2026-09-23", modos: new Map(), chance: 0.3 };
+    const base = { vizHoje: [], clienteId: "c", hoje: "2026-10-23", corte: "2026-09-23", modos: new Map() };
     const viz = [{ script_id: "A", cliente_id: "x", sim: 0.6, topo: 0.5, pq: 0.6, data: "2026-06-01" }];
     const quatro = [r("1", "A", 0.8), r("2", "A", 0.2), r("3", "A", 0.5), r("4", "A", 0.9)];
     expect(resumir({ ...base, vizCorte: viz, rotulos: quatro })).toMatchObject({ n: 4, topo: 2, faixa: null });
-    expect(resumir({ ...base, vizCorte: viz, rotulos: [...quatro, r("5", "A", 0.1)] })).toMatchObject({ n: 5, faixa: "25 a 40%" });
+    expect(resumir({ ...base, vizCorte: viz, rotulos: [...quatro, r("5", "A", 0.1)] })).toMatchObject({ n: 5, faixa: "40% ou mais" }) // 2 de 5 no topo;
     // vizinho abaixo do corte de parecido não conta
     expect(resumir({ ...base, vizCorte: [{ ...viz[0], sim: 0.5 }], rotulos: quatro }).n).toBe(0);
   });

@@ -256,7 +256,7 @@ export default function HomeForm({ clients }: { clients: { id: string; nome: str
     setAvaliando(true);
     setAvaliacaoErro(null);
     try {
-      const r = await avaliarPauta(clientId, prompt, skill || null);
+      const r = await avaliarPauta(clientId, prompt);
       if (r.ok) setAvaliacao(r.ok);
       else setAvaliacaoErro(r.erro ?? "falha ao avaliar");
     } catch (e) {
@@ -726,7 +726,7 @@ function CardAvaliacao({ a, onModelar }: { a: Avaliacao; onModelar: (url: string
       </p>
       {a.faixa && (
         <p>
-          Chance de topo: <b className="text-cream font-medium">{a.faixa}</b>.
+          Topo entre os parecidos: <b className="text-cream font-medium">{a.faixa}</b>.
           {a.taxaCliente != null && ` O cliente costuma ficar no topo em ${Math.round(a.taxaCliente * 100)}% dos vídeos.`}
         </p>
       )}
