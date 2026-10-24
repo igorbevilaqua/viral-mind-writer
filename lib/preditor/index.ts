@@ -48,7 +48,7 @@ export interface Features {
 }
 
 const encolher = (k: number, n: number, m: number) => (k + m * L.base) / (n + m);
-const menosDias = (d: string, n: number) => new Date(Date.parse(d) - n * DIA).toISOString().slice(0, 10);
+export const menosDias = (d: string, n: number) => new Date(Date.parse(d) - n * DIA).toISOString().slice(0, 10);
 const dias = (a: string, b: string) => Math.round((Date.parse(b) - Date.parse(a)) / DIA);
 export const medido = (r: Rotulo) => r.pq != null && REDES.includes(r.plataforma ?? "");
 
@@ -136,7 +136,7 @@ export function prever(f: Features): number {
 const TIMEOUT_MS = 20_000;
 const LOTE_IN = 100; // ids por .in(): a URL do PostgREST não aguenta centenas de uuids
 
-async function emLotes<T>(ids: string[], q: (lote: string[]) => PromiseLike<{ data: T[] | null; error: { message: string } | null }>): Promise<T[]> {
+export async function emLotes<T>(ids: string[], q: (lote: string[]) => PromiseLike<{ data: T[] | null; error: { message: string } | null }>): Promise<T[]> {
   const out: T[] = [];
   for (let i = 0; i < ids.length; i += LOTE_IN) {
     const { data, error } = await q(ids.slice(i, i + LOTE_IN));
@@ -291,7 +291,7 @@ export function rotularVideos(fato: Fato[], videos: Video[]): Rotulo[] {
   return linhas.map(({ video_id, script_id, cliente_id, plataforma, data, pq, p2 }) => ({ video_id, script_id, cliente_id, plataforma, data, pq: pq ?? p2 }));
 }
 
-async function paginar<T>(q: (a: number, b: number) => PromiseLike<{ data: T[] | null; error: { message: string } | null }>): Promise<T[]> {
+export async function paginar<T>(q: (a: number, b: number) => PromiseLike<{ data: T[] | null; error: { message: string } | null }>): Promise<T[]> {
   const out: T[] = [];
   for (let a = 0; ; a += 1000) {
     const { data, error } = await q(a, a + 999);

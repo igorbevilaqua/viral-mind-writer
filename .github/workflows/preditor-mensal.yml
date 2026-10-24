@@ -1,0 +1,81 @@
+name: Preditor mensal
+
+# Plano 026, Task D: o preditor se confere todo mês, sem ninguém lembrar. A rota pontua os vídeos
+# VM do último mês maduro pelo caminho da produção e devolve acurácia par a par, AUC, Brier e
+# calibração (lib/preditor/medir.ts). Só leitura e custo zero: dá para rodar à mão quantas vezes
+# quiser. Mesmos APP_URL (Variables) e CRON_SECRET (Secrets) do etl-semanal.yml.
+
+on:
+  schedule:
+    - cron: "17 11 5 * *" # dia 5, 11:17 UTC = 08:17 BRT
+  workflow_dispatch:
+    inputs:
+      mes:
+        description: "Mês AAAA-MM (vazio = último mês maduro)"
+        required: false
+        default: ""
+
+concurrency:
+  group: preditor-mensal
+  cancel-in-progress: false
+
+jobs:
+  medir:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Mede o preditor
+        env:
+          APP_URL: ${{ vars.APP_URL }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+          MES: ${{ github.event.inputs.mes }}
+        run: |
+          set -euo pipefail
+          if [ -z "${APP_URL:-}" ] || [ -z "${CRON_SECRET:-}" ]; then
+            echo "::error::Falta a variable APP_URL e/ou o secret CRON_SECRET (veja etl-semanal.yml)."
+            exit 1
+          fi
+          case "$APP_URL" in
+            https://*) ;;
+            *) echo "::error::APP_URL precisa começar com https:// (veio: ${APP_URL})"; exit 1 ;;
+          esac
+          APP_URL="${APP_URL%/}"
+          URL="${APP_URL}/api/cron/medir-preditor"
+          if [ -n "${MES:-}" ]; then URL="${URL}?mes=${MES}"; fi
+          echo "Chamando ${URL}"
+          # mesmo esquema do ETL: código checado à mão, sem -L, 3 tentativas
+          for tentativa in 1 2 3; do
+            code=$(curl -sS --max-time 600 -o resultado.json -w '%{http_code}' \
+              -H "Authorization: Bearer ${CRON_SECRET}" "${URL}" || echo "")
+            if [ "$code" = "200" ]; then break; fi
+            echo "::warning::tentativa ${tentativa} falhou (http='${code:-sem resposta}')"
+            [ "$tentativa" = 3 ] || sleep $((tentativa * 60))
+          done
+          cat resultado.json
+          echo
+          if [ "$code" != "200" ]; then
+            echo "::error::HTTP ${code} (esperado 200)."
+            exit 1
+          fi
+          acc=$(jq -r '.par_a_par.acc // "null"' resultado.json)
+          lo=$(jq -r '.par_a_par.lo // "null"' resultado.json)
+          mes=$(jq -r '.mes' resultado.json)
+          if [ "$(jq -r '.passou' resultado.json)" != "true" ]; then
+            echo "::warning::Preditor abaixo do portão em ${mes}: par a par ${acc} (portão 0,58), IC95 inferior ${lo} (mínimo 0,50). O preditor fica em modo sombra: só mostra dados, não decide nada."
+          fi
+          if [ "$(jq -r '.falhas' resultado.json)" != "0" ]; then
+            echo "::warning::$(jq -r '.falhas' resultado.json) vídeos sem match_documents (ver o JSON)."
+          fi
+
+      - name: Resumo
+        if: always()
+        run: |
+          [ -f resultado.json ] || exit 0
+          {
+            echo '### Preditor mensal'
+            jq -r '"Mês \(.mes) · par a par \((.par_a_par.acc // 0) * 1000 | round / 10)% [\((.par_a_par.lo // 0) * 1000 | round / 10) a \((.par_a_par.hi // 0) * 1000 | round / 10)] · portão 58% · passou: \(.passou) · \(.n) vídeos, \(.par_a_par.grupos) grupos"' resultado.json || true
+            echo
+            echo '```json'
+            cat resultado.json
+            echo
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"

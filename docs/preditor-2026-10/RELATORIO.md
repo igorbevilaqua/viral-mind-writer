@@ -210,6 +210,50 @@ As notas altas são quase todas "estudante do interior". O modelo aprendeu com o
 3. Pesar o kNN pelo tempo (vizinho recente vale mais), para pegar território que saturou.
 4. Um GBM pequeno não foi testado, porque a logística passou e é mais simples de levar para a produção.
 
+## Conferência mensal (Task D), rodada de 23/10
+
+**Como funciona.** Todo dia 5, o `.github/workflows/preditor-mensal.yml` chama `/api/cron/medir-preditor`, que roda `medirMes()` de `lib/preditor/medir.ts`.
+
+- **Mês medido:** o último mês que terminou há 30 dias ou mais. No dia 5 de novembro é setembro, no dia 5 de dezembro é outubro.
+- **Como pontua:** cada vídeo VM medido do mês passa pelo caminho da produção, com o `documents.embedding` guardado como vetor. O caminho é `match_documents` top-40, depois `vizinhosDe` com corte de 30 dias antes do vídeo, depois `featuresDoTexto` e `featuresDoCliente`, e por fim `prever`. O roteiro do próprio vídeo sai da vizinhança.
+- **Custo e escrita:** zero. Não chama embedding nem LLM, e não escreve nada.
+- **O que devolve:** par a par dentro de cliente × rede com IC95 por bootstrap de grupos, AUC, Brier contra a taxa de topo do mês, calibração nas faixas da tela (<15, 15-25, 25-40, 40+) e a checagem da sombra. A checagem da sombra compara a nota da candidata escolhida com o resultado do roteiro publicado.
+- **Aviso:** abaixo de 58%, ou com o IC inferior abaixo de 50%, o run sai com `::warning::` e o preditor fica em modo sombra.
+- **Rodar à mão:** "Run workflow", com o campo `mes` opcional.
+
+**Setembro, código da produção contra o offline:**
+
+| setembro | par a par [IC95] | AUC | Brier (base) | vídeos / grupos |
+|---|---|---|---|---|
+| **produção, mês inteiro** | **68,9%** [64,8 a 73,3] | 0,672 | 0,193 (0,202) | 1.171 / 59 |
+| produção, 01 a 14/09 | 69,7% [64,3 a 74,0] | 0,682 | 0,184 (0,194) | 526 / 47 |
+| produção, 15 a 30/09 | 67,2% [62,2 a 72,5] | 0,663 | 0,200 (0,208) | 645 / 56 |
+| offline OpenAI (`resultado_openai.json`, até 14/09) | 63,1% [58,4 a 68,7] | 0,637 | 0,194 | 482 / 46 |
+
+**Calibração (produção, setembro):**
+
+| faixa | vídeos | previsto | observado |
+|---|---|---|---|
+| <15% | 0 | - | - |
+| 15-25% | 505 | 21,9% | 17,6% |
+| 25-40% | 656 | 28,7% | 35,4% |
+| 40%+ | 10 | 43,3% | 90% |
+
+**Leitura.** A produção dá 5,8 pontos a mais que o offline, mas a comparação não é limpa:
+
+1. **O modelo da produção já viu metade do mês.** O `modelo_openai.json` foi treinado até 14/09. A primeira metade de setembro está dentro do treino, e o offline usou um modelo treinado só até agosto. A metade que ele não viu (15 a 30/09) dá 67,2%, com o IC inteiro acima do portão.
+2. **O caminho é outro:**
+   - **kNN:** o top-40 do HNSW, agrupado por roteiro, deixa uma mediana de 8 vizinhos maduros. O estudo usava o corpus inteiro.
+   - **Cliente:** a taxa do cliente junta as três redes.
+   - **Âncora e território:** ficam fora.
+   - **Hook:** sai do começo da transcrição do documento, não do 1º parágrafo do CRM. O Codex local não tem as chaves do CRM.
+3. **A calibração ordena bem, mas fica comprimida.** As notas ficam quase todas entre 15% e 40%. Nesse intervalo a faixa de baixo tem menos topo do que o previsto e a de cima tem mais. A faixa 40%+ tem só 10 vídeos.
+4. **A sombra ainda não mede nada** (n = 0). Em 23/10 a `vm_preditor_sombra` ainda estava vazia. Os roteiros pontuados em outubro entram na medição de 05/12, mas só os que forem publicados, casados e maduros.
+
+**Tempo:** 84 s para 1.171 vídeos, rodando local. A rota tem 300 s.
+
+**O teste de verdade é outubro, na medição de 05/12.** É o primeiro mês que o modelo da produção não viu.
+
 ## Arquivos
 
 - `modelo.json`: a fórmula, o intercepto, e para cada uma das 170 features a definição, a média, o desvio-padrão, o peso e se ela é da parte do texto; mais os limiares (0,80 / 0,76 / 30 dias / k). Basta para pontuar sem retreinar. É o modelo do Gemini.
