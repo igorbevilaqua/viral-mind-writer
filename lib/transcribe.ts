@@ -70,6 +70,9 @@ async function transcribeYouTube(videoId: string): Promise<Transcript> {
   return { title: data.videoDetails?.title as string | undefined, text };
 }
 
+// 45 × 2 s = 90 s de espera pelo job assíncrono. Objeto exportado para o teste zerar a espera.
+export const esperaJob = { ms: 2000, tentativas: 45 };
+
 async function transcribeViaSupadata(url: string, platform: string): Promise<Transcript> {
   const key = process.env.SUPADATA_API_KEY;
   if (!key)
@@ -80,9 +83,24 @@ async function transcribeViaSupadata(url: string, platform: string): Promise<Tra
     `https://api.supadata.ai/v1/transcript?url=${encodeURIComponent(url)}&text=true&lang=pt`,
     { headers: { "x-api-key": key } }
   );
-  const data = await jsonOuErro(res, "Supadata");
+  let data = await jsonOuErro(res, "Supadata");
   if (!res.ok) throw new Error(data.message ?? data.error ?? `Supadata respondeu ${res.status}`);
-  // ponytail: jobId = transcrição assíncrona (vídeos longos); polling se algum dia precisar
+  // Vídeo longo: 202 + jobId, transcrição assíncrona. Tratar isso como falha jogava o vídeo no
+  // plano B (ScrapeCreators), que recusa acima de 120 s: era o erro "Video is too long" da tela.
+  // ponytail: espera de até 90 s dentro da geração; fila própria se os vídeos crescerem.
+  for (let i = 0; data.jobId && !data.content && i < esperaJob.tentativas; i++) {
+    await new Promise((r) => setTimeout(r, esperaJob.ms));
+    const job = await jsonOuErro(
+      await fetch(`https://api.supadata.ai/v1/transcript/${data.jobId}`, { headers: { "x-api-key": key } }),
+      "Supadata"
+    );
+    if (job.status === "failed")
+      throw new Error(job.error?.message ?? (typeof job.error === "string" ? job.error : "Supadata falhou ao transcrever"));
+    if (job.status === "completed") data = job;
+  }
+  // o job pode devolver o conteúdo em pedaços ({text}[]) em vez do texto corrido do text=true
+  if (Array.isArray(data.content))
+    data.content = data.content.map((c: { text?: string }) => c.text ?? "").join(" ");
   if (!data.content || typeof data.content !== "string")
     throw new Error("Supadata não retornou transcrição; cole a transcrição manualmente");
   return { title: undefined, text: data.content.trim() };

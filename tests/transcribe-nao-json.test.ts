@@ -63,3 +63,36 @@ describe("fetchTranscript: Instagram", () => {
     expect(erro).not.toMatch(/out of credits/);
   });
 });
+
+// Plano 027, Task 1: vídeo longo volta do Supadata como job assíncrono (202 + jobId). Tratado
+// como falha, caía no ScrapeCreators, que recusa acima de 120 s.
+describe("fetchTranscript: job assíncrono do Supadata", () => {
+  test("202 com jobId: espera o job em vez de cair no plano B", async () => {
+    const { esperaJob } = await import("@/lib/transcribe");
+    esperaJob.ms = 0;
+    let consultas = 0;
+    const fetchMock = vi.fn(async (input: string | URL | Request) => {
+      const u = String(input);
+      if (u.includes("/transcript/job-1"))
+        return Response.json(++consultas < 2 ? { status: "active" } : { status: "completed", content: [{ text: "parte um" }, { text: "parte dois" }] });
+      if (u.includes("supadata")) return Response.json({ jobId: "job-1" }, { status: 202 });
+      throw new Error(`fetch inesperado: ${u}`);
+    });
+    vi.stubGlobal("fetch", fetchMock);
+
+    expect(await fetchTranscript(REEL)).toEqual({ title: undefined, text: "parte um parte dois" });
+    expect(consultas).toBe(2);
+  });
+
+  test("job que falha: aí sim cai no plano B", async () => {
+    const { esperaJob } = await import("@/lib/transcribe");
+    esperaJob.ms = 0;
+    vi.stubGlobal("fetch", async (input: string | URL | Request) => {
+      const u = String(input);
+      if (u.includes("/transcript/job-1")) return Response.json({ status: "failed", error: "sem áudio" });
+      if (u.includes("supadata")) return Response.json({ jobId: "job-1" }, { status: 202 });
+      return Response.json({ transcripts: [{ text: "do plano B" }] });
+    });
+    expect((await fetchTranscript(REEL)).text).toBe("do plano B");
+  });
+});

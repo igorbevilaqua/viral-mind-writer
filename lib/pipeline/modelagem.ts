@@ -326,7 +326,13 @@ export async function ensureTranscript(
     attachment.kind === "carousel_link"
       ? await leituraDeCarrossel(attachment.url, log)
       : await transcricaoDeUrl(attachment.url);
-  if (text) attachment.raw_content = text;
+  if (text) {
+    attachment.raw_content = text;
+    // Gravada: sem isso a sessão por link não guardava o original (não dava para comparar
+    // original × gerado depois) e cada regeração pagava a transcrição de novo. Best-effort.
+    const { error } = await appDb.from("vm_attachments").update({ raw_content: text }).eq("id", attachment.id);
+    if (error) console.error("modelagem: transcrição não gravada no anexo", error.message);
+  }
   return { text, erro };
 }
 
