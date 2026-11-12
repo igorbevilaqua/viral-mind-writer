@@ -116,6 +116,13 @@ export const FUNCOES_LLM = [
     toolObrigatoria: true,
   },
   {
+    slug: "leitura",
+    nome: "Leitura de vídeo (Modelagem)",
+    resumo: "lê o vídeo do /modelagem e guarda premissa, emoção, estrutura e os exemplos fortes",
+    padrao: "claude-sonnet-5",
+    toolObrigatoria: true,
+  },
+  {
     slug: "ideador",
     nome: "Sugestão de temas",
     resumo: "olha os dados do cliente e propõe assuntos com chance de viralizar",

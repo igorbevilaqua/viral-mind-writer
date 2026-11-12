@@ -196,7 +196,7 @@ export function modelagemTool() {
  * inclusive nos aninhados (o esqueleto tem quatro níveis). À mão seriam nove pontos para
  * errar em silêncio no próximo campo novo; aqui é uma passada só.
  */
-function estrito<T>(no: T): T {
+export function estrito<T>(no: T): T {
   if (Array.isArray(no)) return no.map(estrito) as unknown as T;
   if (!no || typeof no !== "object") return no;
   const o = { ...(no as Record<string, unknown>) };

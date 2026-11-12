@@ -2,6 +2,50 @@
 
 Escrito em 12/11/2026, sobre `origin/main` em 9c98fd8. Nada implementado.
 
+## 0. Revisão crítica (12/11, tarde): o 80/20
+
+Depois de escrito, o plano foi criticado a pedido do Igor. O que mudou, e isto VENCE o que
+estiver escrito abaixo em caso de conflito:
+
+1. **O ganho está em uma chamada, não em quatro passos.** O escritor com o original na mão e
+   regras claras (`agents/modelador.md`) resolve a maior parte. Prova em dois vídeos reais
+   (`scripts/modelar-prova.ts`, saída em `runs/027-prova/`):
+
+   | vídeo | versão | palavras | números | palavras por frase |
+   |---|---|---|---|---|
+   | quiet luxury | original | 302 | 3 | 12,6 |
+   | | novo (1 chamada, 58 s) | 290 | 2 | 10,7 |
+   | | produção (~10 min) | 530 | 15 | 16,1 |
+   | Selic | original | 507 | 11 | 14,9 |
+   | | novo (1 chamada, 99 s) | 531 | 1 | 9,5 |
+   | | produção | 608 | 19 | 14,1 |
+
+   O novo manteve Succession, trocou a "feira popular" pela 25 de Março e fechou com
+   consequência para o espectador. A produção quintuplicou os números.
+2. **Pesquisa deixa de ser passo obrigatório.** Dado é tempero: no máximo um dado novo, só para
+   afirmação que o espectador não engoliria. A pesquisa do §5 vira sob demanda: checagem dos
+   fatos do original depois da entrega (já existe) e "Confirmar com fonte" nas correções (§5.1).
+3. **A régua de complexidade é o original, medida em código** (`lib/modelagem/portoes.ts`):
+   tamanho ±20%, até 2 números a mais, frase média até 15% mais longa, nenhuma sequência de 6
+   palavras igual. É o que impede a volta do roteiro numérico.
+4. **O hook é onde se busca ganho, não só fidelidade.** Quatro hooks: um fiel e três puxando
+   alavancas (nome próprio, contraste simples, desafio de crença, urgência). Nome citado no hook
+   original nunca se perde; nome forte que está só no corpo sobe para o hook. Quem escolhe é o
+   usuário.
+5. **No máximo três melhorias por vídeo.** O original já funcionou; mexer em tudo é o caminho
+   para virar outro vídeo.
+6. **A leitura separada (Task 2) fica como opcional.** O modelador já devolve premissa, emoção e
+   peças fortes na mesma chamada. A leitura estruturada só entra se a tela ou as correções
+   precisarem dela (ex.: "Voltar ao original" por beat).
+7. **O banco de prova vem primeiro, não por último.** Ordem nova: (a) ler 8 a 10 provas e
+   ajustar o `modelador.md`; (b) rota `/modelagem` com a chamada única + portões + os 4 hooks;
+   (c) correções em lote; (d) o resto só se a leitura das provas pedir.
+
+Pendências conhecidas da prova: o portão de cópia pegou 3 trechos de 6 palavras no quiet luxury
+(falta a reescrita automática quando o portão reprova); "subiram 300%" virou "triplicou", que
+não é a mesma conta (argumento a favor da checagem pós-entrega); o custo por chamada não saiu
+no script.
+
 ## 1. O pedido
 
 Um mecanismo próprio de modelagem, em `/modelagem`: o usuário cola o link de um vídeo já
