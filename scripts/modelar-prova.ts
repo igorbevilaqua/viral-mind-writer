@@ -1,18 +1,14 @@
-// Banco de prova do /modelagem (plano 027): UMA chamada do modelador sobre o original de sessões
-// reais, lado a lado com o que a produção entregou, com as medidas em código.
-// Não grava nada no banco. Custo: uma chamada do modelo de escrita por sessão.
+// Banco de prova do /modelagem (plano 027): roda leitura → pesquisa → escrita sobre o original de
+// sessões reais e grava o resultado para leitura humana. Não grava nada no banco.
+// Custo por sessão: uma leitura, até 3 buscas no Grok e uma escrita (perto de US$ 0,50).
 //   npx tsx --env-file=.env.local scripts/modelar-prova.ts <sessionId> [sessionId...]
-// Saída: runs/027-prova/<sessionId>.md
+// Saída: runs/027-prova/v2/<sessionId>.json
 import fs from "node:fs";
 import path from "node:path";
 import { appDb } from "../lib/db";
-import { trackedCreate, type UsageLog } from "../lib/anthropic";
-import { modeloDe } from "../lib/llm-config";
-import { agentPrompt } from "../lib/pipeline/agents";
+import type { UsageLog } from "../lib/anthropic";
+import { modelar } from "../lib/modelagem/modelar";
 import { medir, portoes } from "../lib/modelagem/portoes";
-
-const secao = (texto: string, nome: string) =>
-  texto.match(new RegExp(`## ${nome}\\s*\\n([\\s\\S]*?)(?=\\n## [A-Z]|$)`))?.[1]?.trim() ?? "";
 
 async function uma(sessao: string) {
   const { data: s } = await appDb.from("vm_sessions").select("prompt").eq("id", sessao).single();
@@ -23,65 +19,35 @@ async function uma(sessao: string) {
     .eq("is_modelagem", true)
     .limit(1)
     .maybeSingle();
-  const { data: g } = await appDb
-    .from("vm_generated_scripts")
-    .select("hook, roteiro")
-    .eq("session_id", sessao)
-    .order("version", { ascending: false })
-    .limit(1)
-    .maybeSingle();
   const original = ((a?.raw_content as string | null) ?? "").trim();
   if (!original) throw new Error(`${sessao}: sessão sem original gravado`);
 
   const log: UsageLog = {};
   const t0 = Date.now();
-  const res = await trackedCreate(log, "modelador", {
-    model: await modeloDe("escrita"),
-    max_tokens: 16000,
-    system: agentPrompt("modelador"),
-    messages: [
-      {
-        role: "user",
-        content:
-          (s?.prompt?.trim() ? `DIREÇÃO DO USUÁRIO:\n${s.prompt.trim()}\n\n` : "") + `VÍDEO ORIGINAL (transcrição):\n${original}`,
-      },
-    ],
-  });
-  const texto = res.content.flatMap((b) => (b.type === "text" ? [b.text] : [])).join("\n");
+  const m = await modelar(original, s?.prompt ?? "", log);
   const seg = Math.round((Date.now() - t0) / 1000);
 
-  const hook1 = secao(texto, "HOOKS").match(/^1\.\s*(?:\[[^\]]*\]\s*)?(.+)$/m)?.[1] ?? "";
-  const novo = `${hook1}\n\n${secao(texto, "ROTEIRO")}`;
-  const producao = g ? `${g.hook ?? ""}\n\n${g.roteiro ?? ""}` : "";
-  const linha = (nome: string, t: string) => {
-    const m = medir(t);
-    return `| ${nome} | ${m.palavras} | ${m.numeros} | ${m.palavrasPorFrase} |`;
+  const saida = {
+    sessao,
+    seg,
+    uso: log,
+    medidas: { original: medir(m.originalQueFica), novo: medir(m.roteiro) },
+    portoes: portoes(m.originalQueFica, m.roteiro),
+    ...m,
   };
-  const usd = Object.values(log).reduce((x, f) => x + ((f as { usd?: number }).usd ?? 0), 0);
-
-  const md = [
-    `# ${sessao}`,
-    `${seg} s | US$ ${usd.toFixed(2)} | modelo ${res.model}`,
-    `| versão | palavras | números | palavras por frase |\n|---|---|---|---|\n${linha("original", original)}\n${linha("novo", novo)}\n${producao ? linha("produção", producao) : ""}`,
-    `Portões do novo: ${portoes(original, novo).join(" | ") || "passou"}`,
-    producao ? `Portões da produção: ${portoes(original, producao).join(" | ") || "passou"}` : "",
-    `## ORIGINAL\n${original}`,
-    `## NOVO\n${texto}`,
-    producao ? `## PRODUÇÃO (o que o Codex entregou)\n${producao}` : "",
-  ]
-    .filter(Boolean)
-    .join("\n\n");
-  const dir = path.join(process.cwd(), "runs", "027-prova");
+  const dir = path.join(process.cwd(), "runs", "027-prova", "v2");
   fs.mkdirSync(dir, { recursive: true });
-  fs.writeFileSync(path.join(dir, `${sessao}.md`), md);
-  console.log(md.split("## ORIGINAL")[0]);
+  fs.writeFileSync(path.join(dir, `${sessao}.json`), JSON.stringify(saida, null, 2));
+  console.log(
+    `${sessao} | ${seg} s | ${m.leitura.beats.length} blocos | ${m.reforcos.length} reforços | original ${JSON.stringify(saida.medidas.original)} novo ${JSON.stringify(saida.medidas.novo)}\nportões: ${saida.portoes.join(" | ") || "passou"}\nuso: ${JSON.stringify(log)}`
+  );
 }
 
 async function main() {
   const ids = process.argv.slice(2);
   if (!ids.length) throw new Error("passe ao menos um sessionId");
   // em série: é prova para leitura humana, não lote
-  for (const id of ids) await uma(id);
+  for (const id of ids) await uma(id).catch((e) => console.error(`${id} FALHOU`, e));
 }
 
 main().catch((e) => {

@@ -15,11 +15,20 @@ export interface Ativo {
   por_que: string;
 }
 
+export interface Reforco {
+  beat: number;
+  funcao: "provar" | "comparar" | "dar_escala" | "marcar_raridade";
+  pergunta: string;
+  por_que: string;
+}
+
 export interface Leitura {
   premissa: string;
   emocao: { predominante: string; motor: string };
   hook: { texto: string; promessa: string; mecanismo: string };
-  beats: { ordem: number; funcao: string; trecho: string }[];
+  tom: string;
+  beats: { ordem: number; funcao: string; trecho: string; ideia: string; sente: string; fica: boolean }[];
+  reforcos: Reforco[];
   ativos: Ativo[];
   palavras_dificeis: { termo: string; troca: string }[];
   nao_transferivel: string[];
@@ -57,8 +66,11 @@ export const LEITURA_SCHEMA = {
           ordem: { type: "number" },
           funcao: str("o que este bloco faz pelo vídeo"),
           trecho: str("o trecho LITERAL da transcrição"),
+          ideia: str("o que o bloco diz, contado com palavras NOVAS, sem repetir frase do original"),
+          sente: str("o que o espectador sente neste bloco"),
+          fica: { type: "boolean", description: "false quando o bloco é venda, CTA ou autopromoção do criador" },
         },
-        required: ["ordem", "funcao", "trecho"],
+        required: ["ordem", "funcao", "trecho", "ideia", "sente", "fica"],
       },
     },
     ativos: {
@@ -85,8 +97,23 @@ export const LEITURA_SCHEMA = {
       },
     },
     nao_transferivel: { type: "array", items: { type: "string" } },
+    tom: str("como o vídeo fala: registro, ritmo, a quem se dirige"),
+    reforcos: {
+      type: "array",
+      description: "de 0 a 2 pedidos de pesquisa de peça NOVA, o mais valioso primeiro; vazio é resposta válida",
+      items: {
+        type: "object",
+        properties: {
+          beat: { type: "number", description: "a ordem do beat que o reforço fortalece" },
+          funcao: { type: "string", enum: ["provar", "comparar", "dar_escala", "marcar_raridade"] },
+          pergunta: str("pergunta factual fechada para o pesquisador, com o contexto necessário"),
+          por_que: str("como a resposta deixaria aquele bloco mais forte, em 1 frase"),
+        },
+        required: ["beat", "funcao", "pergunta", "por_que"],
+      },
+    },
   },
-  required: ["premissa", "emocao", "hook", "beats", "ativos", "palavras_dificeis", "nao_transferivel"],
+  required: ["premissa", "emocao", "hook", "beats", "ativos", "palavras_dificeis", "nao_transferivel", "tom", "reforcos"],
 };
 
 export const palavras = (s: string) => s.trim().split(/\s+/).filter(Boolean).length;
@@ -109,4 +136,15 @@ export function oQueFaltouNaLeitura(l: Partial<Leitura> | null | undefined, tran
       "boa parte da transcrição (os beats cobrem menos de 70% dela)",
   ].filter((s): s is string => Boolean(s));
   return faltas.length ? `faltou ${faltas.join(", ")}` : "";
+}
+
+/** "[B2] texto [B3] texto" → { 2: "texto", 3: "texto" }. */
+export function partirBlocos(roteiro: string): Record<number, string> {
+  const partes = roteiro.split(/\[B(\d+)\]/);
+  const blocos: Record<number, string> = {};
+  for (let i = 1; i < partes.length; i += 2) {
+    const texto = partes[i + 1]?.trim();
+    if (texto) blocos[+partes[i]] = texto;
+  }
+  return blocos;
 }
