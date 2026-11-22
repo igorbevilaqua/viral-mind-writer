@@ -69,6 +69,8 @@ Toda meta está marcada como **META**. Todo prazo e custo está marcado como **E
   - Rafael Rodrigues: 155 vídeos, 36% contra 22% de topo, OR 1,98 [dados, fluxos].
 - **Fora do plano:** Pedro Elero e Marcos Pelozato cancelaram em 22/11. Nada se planeja para eles. Os vídeos deles continuam no treino e na conferência [dados].
 
+**Responsável pelo piloto:** Bianca (definido pelo Igor em 22/11/2026).
+
 ### 2.3 O que o piloto entrega
 
 1. **Modelador de uma chamada (plano 027).** Escritor com o original na mão. Portões em código: tamanho ±20%, até 2 números a mais, frase média até 15% mais longa, nenhuma sequência de 6 palavras igual. 4 hooks (1 fiel e 3 com alavancas). No máximo 3 melhorias por vídeo. Cerca de 1 a 2 minutos por roteiro contra cerca de 10 hoje. Na prova da branch: 58 s e 99 s [branch 027].
@@ -217,7 +219,7 @@ Esforço em dias de trabalho, tudo **ESTIMATIVA**. "Aprova" é o que precisa do 
 |---|---|---|---|---|
 | 0 | **Destino das branches locais** | Decidir e executar: (a) `plano-025-skills-modo`: Tasks C e D do 026, conserto da transcrição e "release 2.7", 5 commits; (b) `plano-027-modelagem`: 3 commits e 2 arquivos sem commit; (c) qual versão do modelador vai para o piloto (ver furo 3). As duas branches mexem em `lib/transcribe.ts` e `lib/pipeline/modelagem.ts`: entra a 025 primeiro, a 027 por cima. Enviar as duas ao GitHub para não perder trabalho | 0,5 a 1 dia | push das branches, merge, release 2.7, deploy |
 | 1 | **Piloto de modelagem** | Rota de modelagem com a chamada única, portões e 4 hooks (Tasks 5 do 027). Ordem dos hooks pelo v0 com faixa. Log em `vm_preditor_sombra`, com a posição em que cada hook apareceu. Cliente obrigatório | 3 a 4 dias | merge, deploy. Migração só se `vm_attachments.modo` ou `vm_preditor_sombra.fase` tiverem CHECK |
-| 2 | **Combinar o piloto com a equipe da Izabela** | Um responsável nomeado, combinado de uso (as modelagens dela passam pelo Codex por 4 semanas), canal de retorno | 0,5 dia, do Igor | decisão do Igor |
+| 2 | **Combinar o piloto com a equipe da Izabela** | Responsável pelo piloto: **Bianca** (definido pelo Igor em 22/11/2026). Combinado de uso (as modelagens dela passam pelo Codex por 4 semanas), canal de retorno | 0,5 dia, do Igor | decisão do Igor |
 | 3 | **Previsão congelada** | Migração no Oráculo (tabela + 2 RPCs). Passo no ETL que pontua os roteiros novos do CRM. Carga inicial dos roteiros ainda não postados | 2 a 3 dias | migração no Oráculo, exceção de escrita (furo 1), merge, deploy |
 | 4 | **Conferência semanal e painel** | Passo no ETL que cruza previsão com rótulo e grava `previsao_acuracia`, com os dois baselines. Painel no Oráculo. O Codex lê pela RPC | 2 a 3 dias | merge e deploy nos dois repos |
 | 5 | **Recalibração mensal com portão** | Task D ligada (vem na etapa 0). Regra dos 58% aplicada à tela: abaixo, some a ordem e a faixa | 0,5 a 1 dia | deploy |
@@ -242,7 +244,7 @@ Ordem sugerida da evolução: 6, 10 em sombra, 8, 9, 7. A etapa 6 vem primeiro p
 
 ## 5. Riscos
 
-1. **Adoção, o maior.** O Codex só gera dado se for usado, e o uso está em zero na última semana. Os 2 administradores fizeram 55% das sessões, e o único roteirista abriu 6 em 4 meses [fluxos]. Sem um responsável na equipe da Izabela, o piloto não acontece. Mitigação: etapa 2, regra de parada na semana 2, e o mecanismo da seção 3 não depende disso.
+1. **Adoção, o maior.** O Codex só gera dado se for usado, e o uso está em zero na última semana. Os 2 administradores fizeram 55% das sessões, e o único roteirista abriu 6 em 4 meses [fluxos]. A responsável pelo piloto é a Bianca (definido pelo Igor em 22/11/2026). Se ela não tiver tempo reservado para isso, o piloto não acontece. Mitigação: etapa 2, regra de parada na semana 2, e o mecanismo da seção 3 não depende disso.
 2. **Seleção.** Só vira vídeo o que o time escolhe, e o time mexe mais no roteiro mais fraco [fluxos]. Vale para o piloto e para os 4 hooks: só o escolhido vai ao ar, então a ordem dos hooks nunca é conferida dentro da mesma sessão.
 3. **n pequeno.** 4 semanas de piloto dão algo como 25 vídeos. Nenhuma conclusão de performance sai daí.
 4. **Cobertura de seguidores.** 7% a 25% dos vídeos, caindo, e 10 de 227 na Izabela [dados]. O alvo secundário só existe em dois clientes. Depende de uma decisão antiga, ainda aberta: planilha ou Graph API [survey 4.4].
@@ -275,7 +277,7 @@ Ordem sugerida da evolução: 6, 10 em sombra, 8, 9, 7. A etapa 6 vem primeiro p
 - **CHECK em `vm_attachments.modo` e em `vm_preditor_sombra.fase`.**
 - **Estado de produção:** migrations aplicadas, `vm_config_llm`, e se `CRM_SUPABASE_URL` e `CRM_SERVICE_ROLE_KEY` existem na Hostinger. Sem elas o casamento pelo CRM é pulado [survey].
 - **Se `oraculo` aceita escrita do service role do Codex** e se está nos schemas expostos.
-- **Quem é a equipe da Izabela no Codex** (quais das 6 contas) e se ela topa.
+- **Qual conta do Codex a Bianca usa** e quanto tempo por semana ela terá para o piloto.
 - **Quantos roteiros a Izabela escreve por semana.** Os 11 são estimativa a partir de vídeos.
 - **O OR da modelagem na Izabela só em set, out e nov.**
 - **A medição de outubro da Task D.** Sai em 05/12 se a branch 025 estiver em produção até lá.
