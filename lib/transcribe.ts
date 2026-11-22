@@ -114,7 +114,12 @@ async function transcribeViaSupadata(url: string, platform: string): Promise<Tra
 // tratamento de erro, e por isso continuou devolvendo o inglês do serviço ("Looks like you're
 // out of credits") na tela depois que o `sc` já traduzia o 402.
 async function transcribeViaScrapeCreators(url: string): Promise<Transcript> {
-  const data = await sc<{ transcripts?: { text?: string }[] }>("/v2/instagram/media/transcript", { url });
+  type R = { transcripts?: { text?: string }[] };
+  // reel acima de 120 s é recusado sem o opt-in, que custa 10 créditos por minuto em vez de 1 por reel
+  const data = await sc<R>("/v2/instagram/media/transcript", { url }).catch((e) => {
+    if (!/too long/i.test(String(e?.message))) throw e;
+    return sc<R>("/v2/instagram/media/transcript", { url, allow_long_transcription: "true" });
+  });
   const text = data.transcripts?.[0]?.text;
   if (typeof text !== "string" || !text.trim())
     throw new Error("ScrapeCreators não retornou transcrição; cole a transcrição manualmente");
