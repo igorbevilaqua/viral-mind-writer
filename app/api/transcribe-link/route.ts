@@ -1,6 +1,6 @@
 import { fetchTranscript } from "@/lib/transcribe";
 
-export const maxDuration = 60;
+export const maxDuration = 300; // espera de job do Supadata + Whisper de vídeo longo (lib/transcribe.ts)
 export const dynamic = "force-dynamic";
 
 // Transcrição automática de links de vídeo (usada pelo fluxo Ensinar).

@@ -146,19 +146,20 @@ export async function runPipeline(
     // Com modelagem, TUDO depende da transcrição — garanta antes de pagar qualquer LLM,
     // e antes de disparar modelagem e pesquisa (que a consomem em paralelo).
     if (modelando) {
-      const { text, erro } = await ensureTranscript(modelagens[0], ctx.usageLog);
+      const { text, erro, detalhe } = await ensureTranscript(modelagens[0], ctx.usageLog);
       if (!text) {
         // A mensagem diz qual material falhou: "transcrição do vídeo" para um carrossel mandaria
         // o usuário procurar um áudio que não existe.
         const oQue = modelagens[0].kind === "carousel_link" ? "ler o carrossel" : "obter a transcrição do vídeo";
-        throw new Error(
+        // `debug` = o que cada fonte respondeu; o catch abaixo grava em debug.detail e no hub.
+        throw Object.assign(new Error(
           `Não consegui ${oQue}${erro ? `: ${erro}` : ""}. ` +
             // Digitar um tema não salva mais a geração em nenhum dos modos: com o material
             // marcado, o assunto e a tese são os DELE. As saídas são colar o conteúdo ou
             // desmarcar o material — e a mensagem não pode mandar para o caminho errado.
             `Cole o conteúdo no campo do material e conjure de novo` +
             (replicando ? `.` : `, ou desmarque o material como Modelar para a sala escrever pelo tema digitado.`)
-        );
+        ), detalhe ? { debug: detalhe } : {});
       }
     }
 
@@ -620,7 +621,7 @@ export async function runPipeline(
     await appDb.from("vm_sessions").update({ status: "error", error_message: message }).eq("id", sessionId);
     // best-effort: se a coluna debug ainda não existir (migração não aplicada), não derruba o erro acima
     await appDb.from("vm_sessions").update({ debug }).eq("id", sessionId);
-    await registrarAtividade("erro", { sessaoId: sessionId, userId: hubUser, payload: { error_message: message, etapa: currentPhase } });
+    await registrarAtividade("erro", { sessaoId: sessionId, userId: hubUser, payload: { error_message: message, etapa: currentPhase, ...("detail" in debug ? { detalhe: debug.detail } : {}) } });
     emit({ type: "error", message });
   }
 }

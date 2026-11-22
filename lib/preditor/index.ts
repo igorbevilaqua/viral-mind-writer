@@ -19,7 +19,7 @@ import { marcasDoHook } from "./hook";
 export const VERSAO = modelo.versao;
 const L = modelo.limiares;
 const REDES = ["Instagram", "TikTok", "YouTube"];
-const TOPO = 0.75; // pq >= 0,75 é topo (lib.mjs, DESFECHOS.coef)
+export const TOPO = 0.75; // pq >= 0,75 é topo (lib.mjs, DESFECHOS.coef)
 const DIA = 86_400_000;
 
 export interface Rotulo {
@@ -48,9 +48,9 @@ export interface Features {
 }
 
 const encolher = (k: number, n: number, m: number) => (k + m * L.base) / (n + m);
-const menosDias = (d: string, n: number) => new Date(Date.parse(d) - n * DIA).toISOString().slice(0, 10);
+export const menosDias = (d: string, n: number) => new Date(Date.parse(d) - n * DIA).toISOString().slice(0, 10);
 const dias = (a: string, b: string) => Math.round((Date.parse(b) - Date.parse(a)) / DIA);
-const medido = (r: Rotulo) => r.pq != null && REDES.includes(r.plataforma ?? "");
+export const medido = (r: Rotulo) => r.pq != null && REDES.includes(r.plataforma ?? "");
 
 // Documento → roteiro, com o resultado conhecido até o corte (conhecido() de features.mjs).
 // ponytail: a similaridade do roteiro é a do melhor documento dele; no estudo era o centróide,
@@ -136,7 +136,7 @@ export function prever(f: Features): number {
 const TIMEOUT_MS = 20_000;
 const LOTE_IN = 100; // ids por .in(): a URL do PostgREST não aguenta centenas de uuids
 
-async function emLotes<T>(ids: string[], q: (lote: string[]) => PromiseLike<{ data: T[] | null; error: { message: string } | null }>): Promise<T[]> {
+export async function emLotes<T>(ids: string[], q: (lote: string[]) => PromiseLike<{ data: T[] | null; error: { message: string } | null }>): Promise<T[]> {
   const out: T[] = [];
   for (let i = 0; i < ids.length; i += LOTE_IN) {
     const { data, error } = await q(ids.slice(i, i + LOTE_IN));
@@ -153,18 +153,18 @@ export interface Candidata {
   hook: string; // o texto que o catálogo de hook lê
 }
 
-async function pontuar(candidatas: Candidata[], clienteId: string | null, modo: string | null) {
+/**
+ * A casa em volta de cada vetor: os documentos do match_documents, os rótulos dos roteiros ligados
+ * a eles e os rótulos do cliente nos 90 dias antes do corte. Só leitura. Serve à sombra (Task B) e
+ * ao avaliador de pauta (Task C).
+ */
+export async function vizinhanca(vetores: number[][], clienteId: string | null) {
   const hoje = new Date().toISOString().slice(0, 10);
   const corte = menosDias(hoje, L.gap_dias);
-  // um request de embedding para a fase inteira
-  const emb = await new OpenAI().embeddings.create({
-    model: "text-embedding-3-small",
-    input: candidatas.map((c) => c.embutir.slice(0, 8000)),
-  });
   const docs = await Promise.all(
-    emb.data.map(async (e) => {
+    vetores.map(async (v) => {
       const { data, error } = await viralData
-        .rpc("match_documents", { query_embedding: e.embedding, match_count: 40, match_threshold: 0.3 })
+        .rpc("match_documents", { query_embedding: v, match_count: 40, match_threshold: 0.3 })
         .select("video_id, similarity");
       if (error) throw new Error(`match_documents: ${error.message}`);
       return (data ?? []) as unknown as { video_id: string; similarity: number }[];
@@ -174,7 +174,7 @@ async function pontuar(candidatas: Candidata[], clienteId: string | null, modo: 
   const ligados = await emLotes<Rotulo>(idsDocs, (l) => appDb.from("vm_preditor_rotulos").select(COLS).in("video_id", l));
   const scripts = [...new Set(ligados.map((r) => r.script_id))];
   const rotulos = await emLotes<Rotulo>(scripts, (l) => appDb.from("vm_preditor_rotulos").select(COLS).in("script_id", l));
-  let cliente = { cli90: L.base, cli_tend: 0 };
+  let doCliente: Rotulo[] = [];
   if (clienteId) {
     const { data, error } = await appDb
       .from("vm_preditor_rotulos")
@@ -183,8 +183,19 @@ async function pontuar(candidatas: Candidata[], clienteId: string | null, modo: 
       .gte("data", menosDias(corte, 90))
       .lte("data", corte);
     if (error) throw new Error(error.message);
-    cliente = featuresDoCliente((data ?? []) as Rotulo[], corte);
+    doCliente = (data ?? []) as Rotulo[];
   }
+  return { hoje, corte, docs, rotulos, doCliente };
+}
+
+async function pontuar(candidatas: Candidata[], clienteId: string | null, modo: string | null) {
+  // um request de embedding para a fase inteira
+  const emb = await new OpenAI().embeddings.create({
+    model: "text-embedding-3-small",
+    input: candidatas.map((c) => c.embutir.slice(0, 8000)),
+  });
+  const { hoje, corte, docs, rotulos, doCliente } = await vizinhanca(emb.data.map((e) => e.embedding), clienteId);
+  const cliente = featuresDoCliente(doCliente, corte); // sem cliente: lista vazia dá base e tendência 0
   return candidatas.map((c, i) => {
     const viz = vizinhosDe(docs[i], rotulos, corte);
     const f: Features = { ...featuresDoTexto(viz, clienteId, hoje), ...cliente, modo, ancora: null, hk: marcasDoHook(c.hook) };
@@ -280,7 +291,7 @@ export function rotularVideos(fato: Fato[], videos: Video[]): Rotulo[] {
   return linhas.map(({ video_id, script_id, cliente_id, plataforma, data, pq, p2 }) => ({ video_id, script_id, cliente_id, plataforma, data, pq: pq ?? p2 }));
 }
 
-async function paginar<T>(q: (a: number, b: number) => PromiseLike<{ data: T[] | null; error: { message: string } | null }>): Promise<T[]> {
+export async function paginar<T>(q: (a: number, b: number) => PromiseLike<{ data: T[] | null; error: { message: string } | null }>): Promise<T[]> {
   const out: T[] = [];
   for (let a = 0; ; a += 1000) {
     const { data, error } = await q(a, a + 999);

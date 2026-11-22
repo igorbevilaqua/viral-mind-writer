@@ -316,18 +316,18 @@ export interface ModelagemResult {
 export async function ensureTranscript(
   attachment: Attachment,
   log?: UsageLog
-): Promise<{ text: string; erro: string | null }> {
+): Promise<{ text: string; erro: string | null; detalhe?: unknown }> {
   const linkavel = attachment.kind === "video_link" || attachment.kind === "carousel_link";
   if (attachment.raw_content?.trim() || !linkavel || !attachment.url)
     return { text: attachment.raw_content?.trim() ?? "", erro: null };
   // Vídeo tem áudio para transcrever; carrossel tem texto escrito nos slides para LER (visão).
   // Mesmo contrato de saída, porque daqui pra frente o pipeline só vê texto.
-  const { text, erro } =
+  const r =
     attachment.kind === "carousel_link"
       ? await leituraDeCarrossel(attachment.url, log)
       : await transcricaoDeUrl(attachment.url);
-  if (text) attachment.raw_content = text;
-  return { text, erro };
+  if (r.text) attachment.raw_content = r.text;
+  return r;
 }
 
 // Mesmo formato de retorno de `transcricaoDeUrl`: o motivo da falha volta como dado, não como
@@ -379,13 +379,15 @@ export function fontesComProcedencia(fontes: string | null, modelagens: Attachme
 
 // A mesma busca, sem anexo para mutar: é ela que o Kasparov usa. O cache aqui é o da
 // autópsia (por URL, abaixo) — quem acerta o cache nem chega a transcrever.
-export async function transcricaoDeUrl(url: string): Promise<{ text: string; erro: string | null }> {
+export async function transcricaoDeUrl(url: string): Promise<{ text: string; erro: string | null; detalhe?: unknown }> {
   try {
     const { title, text } = await fetchTranscript(url);
     return { text: (title ? `${title}\n\n${text}` : text).trim(), erro: null };
   } catch (e) {
     console.error("modelagem: transcrição do link falhou", url, e);
-    return { text: "", erro: e instanceof Error ? e.message : String(e) };
+    // `detalhe` = o que cada fonte de transcrição respondeu (lib/transcribe.ts), para o admin.
+    const detalhe = e && typeof e === "object" && "debug" in e ? (e as { debug: unknown }).debug : undefined;
+    return { text: "", erro: e instanceof Error ? e.message : String(e), detalhe };
   }
 }
 
@@ -568,10 +570,13 @@ export async function autopsiaDeUrl(url: string | null, opts: AutopsiaOpts = {})
 
   // Grava as duas chaves quando as duas existem: a autópsia paga numa sessão fica reusável
   // no debate avulso, e vice-versa.
+  // Vídeo longo transcrito só no começo (lib/transcribe.ts): o aviso fica na autópsia gravada,
+  // que é o que a sessão mostra, para o usuário saber que só a primeira parte foi usada.
+  const parcial = transcript.match(/^\[TRANSCRIÇÃO PARCIAL[^\]]*\]/)?.[0];
   await appDb.from("vm_modelagem_analyses").insert({
     attachment_id: opts.attachmentId ?? null,
     video_url: url,
-    analysis,
+    analysis: parcial ? { ...analysis, transcricao_parcial: parcial } : analysis,
     replication_brief: composed,
   });
 

@@ -2350,6 +2350,13 @@ export default function SessionView({
           </summary>
           {analyses.map((a, i) => (
             <div key={i} className="mt-3 space-y-3 text-sm">
+              {/* vídeo longo: lib/transcribe.ts transcreve só o começo e a autópsia guarda o aviso */}
+              {typeof (a.analysis as { transcricao_parcial?: unknown } | null)?.transcricao_parcial === "string" && (
+                <p className="text-amber-300/90 text-[13px]">
+                  Vídeo longo: usei só a primeira parte para a modelagem.{" "}
+                  {(a.analysis as { transcricao_parcial: string }).transcricao_parcial}
+                </p>
+              )}
               <p className="whitespace-pre-wrap text-white/80 leading-relaxed">{a.replication_brief}</p>
               <AnalysisSections analysis={a.analysis} />
               <details>
